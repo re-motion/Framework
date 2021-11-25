@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Sample
       WebMenuItem wxeMenuItem = new WebMenuItem();
       wxeMenuItem.Text = "WXE";
       wxeMenuItem.Command.Type = CommandType.WxeFunction;
-      wxeMenuItem.Command.WxeFunctionCommand.TypeName = TypeUtility.GetPartialAssemblyQualifiedName(typeof (TestWxeFunction));
+      wxeMenuItem.Command.WxeFunctionCommand.TypeName = TypeUtility.GetPartialAssemblyQualifiedName(typeof(TestWxeFunction));
 
       WebMenuItem filteredByServiceMenuItem = new WebMenuItem();
       filteredByServiceMenuItem.ItemID = "FilterByService";

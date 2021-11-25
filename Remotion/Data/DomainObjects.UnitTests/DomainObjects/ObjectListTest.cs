@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Initialization_WithData ()
     {
-      var givenData = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof (Customer), new DomainObjectCollectionData());
+      var givenData = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Customer), new DomainObjectCollectionData());
       var collection = new ObjectList<Customer>(givenData);
 
       var actualData = DomainObjectCollectionDataTestHelper.GetDataStrategy(collection);
@@ -89,18 +89,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Initialization_WithData_DerivedRequiredItemType ()
     {
       var dataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      dataStub.Stub(stub => stub.RequiredItemType).Return(typeof (Order));
+      dataStub.Stub(stub => stub.RequiredItemType).Return(typeof(Order));
       
       var collection = new ObjectList<DomainObject>(dataStub);
 
-      Assert.That(collection.RequiredItemType, Is.SameAs(typeof (Order)));
+      Assert.That(collection.RequiredItemType, Is.SameAs(typeof(Order)));
     }
 
     [Test]
     public void Initialization_WithIEnumerable_RequiredItemType ()
     {
       var list = new ObjectList<OrderItem>(new OrderItem[0]);
-      Assert.That(list.RequiredItemType, Is.SameAs(typeof (OrderItem)));
+      Assert.That(list.RequiredItemType, Is.SameAs(typeof(OrderItem)));
     }
 
     [Test]
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void ObjectList_IsIList ()
     {
       IList<OrderItem> list = new ObjectList<OrderItem>();
-      Assert.IsInstanceOf(typeof (IList<OrderItem>), list);
+      Assert.IsInstanceOf(typeof(IList<OrderItem>), list);
     }
 
     [Test]

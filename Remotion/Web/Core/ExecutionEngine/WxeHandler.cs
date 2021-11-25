@@ -89,7 +89,7 @@ namespace Remotion.Web.ExecutionEngine
     private const int c_HttpSessionTimeout = 409;
     private const int c_HttpFunctionTimeout = 409;
 
-    private static ILog s_log = LogManager.GetLogger(typeof (WxeHandler));
+    private static ILog s_log = LogManager.GetLogger(typeof(WxeHandler));
 
     /// <summary> Gets a flag indication whether session management is enabled for the application. </summary>
     /// <value> <see langword="true"/> if session management is enabled. </value>
@@ -211,10 +211,10 @@ namespace Remotion.Web.ExecutionEngine
       try
       {
         var type = WebTypeUtility.GetType(typeName, true, ignoreCase : true);
-        if (!typeof (WxeFunction).IsAssignableFrom(type))
+        if (!typeof(WxeFunction).IsAssignableFrom(type))
         {
           throw new WxeException(
-              string.Format("The function type '{0}' is invalid. Wxe functions must be derived from '{1}'.", typeName, typeof (WxeFunction).GetFullNameSafe()));
+              string.Format("The function type '{0}' is invalid. Wxe functions must be derived from '{1}'.", typeName, typeof(WxeFunction).GetFullNameSafe()));
         }
         return type;
       }
@@ -234,7 +234,7 @@ namespace Remotion.Web.ExecutionEngine
     protected WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
     {
       ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(WxeFunction));
 
       WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
       functionStates.CleanUpExpired();
@@ -407,7 +407,7 @@ namespace Remotion.Web.ExecutionEngine
       if (function.IsAborted)
         throw new ArgumentException("The function " + function.GetType().GetFullNameSafe() + " is aborted.");
 
-      function.ExceptionHandler.AppendCatchExceptionTypes(typeof (WxeUserCancelException));
+      function.ExceptionHandler.AppendCatchExceptionTypes(typeof(WxeUserCancelException));
       function.Execute(context);
     }
 

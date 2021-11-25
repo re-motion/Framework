@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
       control.ControlServicePath = resourceUrlFactory.CreateResourceUrl(
-              typeof (SecurityManagerAutoCompleteReferenceValueWebService),
+              typeof(SecurityManagerAutoCompleteReferenceValueWebService),
               ResourceType.UI,
               "SecurityManagerAutoCompleteReferenceValueWebService.asmx")
           .GetUrl();

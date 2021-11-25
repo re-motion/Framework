@@ -141,7 +141,7 @@ namespace Remotion.Web.UI.Controls
             validationErrorList.AddRange(row.ValidationErrors);
         }
       
-        return (ValidationError[])validationErrorList.ToArray(typeof (ValidationError));
+        return (ValidationError[])validationErrorList.ToArray(typeof(ValidationError));
       }
 
       /// <summary>
@@ -964,7 +964,7 @@ namespace Remotion.Web.UI.Controls
 
     // static members
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (FormGridManager));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(FormGridManager));
 
     // member fields
 
@@ -1077,7 +1077,7 @@ namespace Remotion.Web.UI.Controls
       foreach (FormGrid formGrid in _formGrids.Values)
         validationErrorList.AddRange(formGrid.GetValidationErrors());
     
-      return (ValidationError[])validationErrorList.ToArray(typeof (ValidationError));
+      return (ValidationError[])validationErrorList.ToArray(typeof(ValidationError));
     }
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
@@ -1235,7 +1235,7 @@ namespace Remotion.Web.UI.Controls
 
       HtmlHeadAppender.Current.RegisterCommonStyleSheet();
 
-      string key = typeof (FormGridManager).GetFullNameChecked() + "_Style";
+      string key = typeof(FormGridManager).GetFullNameChecked() + "_Style";
       if (!HtmlHeadAppender.Current.IsRegistered(key))
       {
         var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, "FormGrid.css");
@@ -1722,7 +1722,7 @@ namespace Remotion.Web.UI.Controls
         dataRow.ValidationMarker = CreateValidationMarker(toolTip.ToString());
       }
 
-      dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray(typeof (ValidationError));
+      dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray(typeof(ValidationError));
     }
 
     protected void EnsureTransformationStep (TransformationStep stepToBeCompleted)
@@ -2001,7 +2001,7 @@ namespace Remotion.Web.UI.Controls
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier));
+      IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier));
       IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
       _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 
@@ -3211,7 +3211,7 @@ namespace Remotion.Web.UI.Controls
         ArrayList tables = new ArrayList();
         foreach (FormGrid grid in _formGrids.Values)
           tables.Add(grid.Table);
-        return (HtmlTable[]) tables.ToArray(typeof (HtmlTable));
+        return (HtmlTable[]) tables.ToArray(typeof(HtmlTable));
       }
     }
 

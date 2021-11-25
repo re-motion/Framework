@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       _boundSource.Int32Property = 123;
 
       _classWithClonerCallback =
-          (ClassWithClonerCallback) LifetimeService.NewObject(TestableClientTransaction, typeof (ClassWithClonerCallback), ParamList.Empty);
+          (ClassWithClonerCallback) LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithClonerCallback), ParamList.Empty);
     }
 
     [Test]
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     public void CreateCloneHull_CreatesObjectOfSameType ()
     {
       var clone = _cloner.CreateCloneHull<DomainObject>(_classWithAllDataTypes);
-      Assert.That(clone.GetPublicDomainObjectType(), Is.SameAs(typeof (ClassWithAllDataTypes)));
+      Assert.That(clone.GetPublicDomainObjectType(), Is.SameAs(typeof(ClassWithAllDataTypes)));
     }
 
     [Test]
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     {
       ClassWithAllDataTypes clone = _cloner.CreateCloneHull(_classWithAllDataTypes);
       Assert.That(clone.Int32Property, Is.Not.EqualTo(_classWithAllDataTypes.Int32Property));
-      Assert.That(clone.Properties[typeof (ClassWithAllDataTypes), "Int32Property"].HasBeenTouched, Is.False);
+      Assert.That(clone.Properties[typeof(ClassWithAllDataTypes), "Int32Property"].HasBeenTouched, Is.False);
     }
 
     [Test]
@@ -160,9 +160,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       ClassWithAllDataTypes clone = _cloner.CreateValueClone(_classWithAllDataTypes);
 
       Assert.That(clone.Int32Property, Is.EqualTo(_classWithAllDataTypes.Int32Property));
-      Assert.That(clone.Properties[typeof (ClassWithAllDataTypes), "Int32Property"].GetOriginalValue<int>(),
-          Is.Not.EqualTo(_classWithAllDataTypes.Properties[typeof (ClassWithAllDataTypes), "Int32Property"].GetOriginalValue<int>()));
-      Assert.That(clone.Properties[typeof (ClassWithAllDataTypes), "Int32Property"].GetOriginalValue<int>(), Is.EqualTo(0));
+      Assert.That(clone.Properties[typeof(ClassWithAllDataTypes), "Int32Property"].GetOriginalValue<int>(),
+          Is.Not.EqualTo(_classWithAllDataTypes.Properties[typeof(ClassWithAllDataTypes), "Int32Property"].GetOriginalValue<int>()));
+      Assert.That(clone.Properties[typeof(ClassWithAllDataTypes), "Int32Property"].GetOriginalValue<int>(), Is.EqualTo(0));
     }
 
     [Test]
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     {
       Computer clone = _cloner.CreateValueClone(_computer1);
       Assert.That(_computer1.Employee, Is.Not.Null);
-      Assert.That(clone.Properties[typeof (Computer), "Employee"].GetOriginalValue<Employee>(), Is.Null);
+      Assert.That(clone.Properties[typeof(Computer), "Employee"].GetOriginalValue<Employee>(), Is.Null);
     }
 
     [Test]
@@ -381,7 +381,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       var cloneTransaction = ClientTransaction.CreateRootTransaction();
       _cloner.CloneTransaction = cloneTransaction;
       
-      var referencedObject = (ClassWithClonerCallback) LifetimeService.NewObject(TestableClientTransaction, typeof (ClassWithClonerCallback), ParamList.Empty);
+      var referencedObject = (ClassWithClonerCallback) LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithClonerCallback), ParamList.Empty);
       referencedObject.Property = 42;
       _classWithClonerCallback.ReferencedObject = referencedObject;
 

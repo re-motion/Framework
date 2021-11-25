@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       public readonly User User;
 
       internal Data (GuidRevisionValue revision, User user)
-          : base (revision)
+          : base(revision)
       {
         User = user;
       }

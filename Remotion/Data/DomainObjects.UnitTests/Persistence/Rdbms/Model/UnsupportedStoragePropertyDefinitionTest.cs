@@ -33,21 +33,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void SetUp ()
     {
       _innerException = new Exception("Inner!");
-      _unsupportedStorageProperty = new UnsupportedStoragePropertyDefinition(typeof (int), "Message", _innerException);
+      _unsupportedStorageProperty = new UnsupportedStoragePropertyDefinition(typeof(int), "Message", _innerException);
     }
 
     [Test]
     public void Initialization ()
     {
       Assert.That(_unsupportedStorageProperty.Message, Is.EqualTo("Message"));
-      Assert.That(_unsupportedStorageProperty.PropertyType, Is.SameAs(typeof (int)));
+      Assert.That(_unsupportedStorageProperty.PropertyType, Is.SameAs(typeof(int)));
       Assert.That(_unsupportedStorageProperty.InnerException, Is.SameAs(_innerException));
     }
 
     [Test]
     public void Initialization_WithNullInnerException ()
     {
-      var columnDefinition = new UnsupportedStoragePropertyDefinition(typeof (int), "Message", null);
+      var columnDefinition = new UnsupportedStoragePropertyDefinition(typeof(int), "Message", null);
 
       Assert.That(columnDefinition.InnerException, Is.Null);
       Assert.That(
@@ -118,14 +118,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyWithEquivalentProperties_CombinesProperties ()
     {
-      var property1 = new UnsupportedStoragePropertyDefinition(typeof (int), "x", new Exception());
-      var property2 = new UnsupportedStoragePropertyDefinition(typeof (int), "x", new Exception());
-      var property3 = new UnsupportedStoragePropertyDefinition(typeof (int), "x", new Exception());
+      var property1 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", new Exception());
+      var property2 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", new Exception());
+      var property3 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", new Exception());
 
       var result = property1.UnifyWithEquivalentProperties(new[] { property2, property3 });
 
       Assert.That(
-          result, Is.TypeOf<UnsupportedStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof (int)));
+          result, Is.TypeOf<UnsupportedStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof(int)));
       Assert.That(((UnsupportedStoragePropertyDefinition) result).Message, Is.EqualTo("x"));
       Assert.That(((UnsupportedStoragePropertyDefinition) result).InnerException, Is.SameAs(property1.InnerException));
     }
@@ -146,8 +146,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void UnifyWithEquivalentProperties_ThrowsForDifferentPropertyType ()
     {
       var exception = new Exception();
-      var property1 = new UnsupportedStoragePropertyDefinition(typeof (int), "x", exception);
-      var property2 = new UnsupportedStoragePropertyDefinition(typeof (string), "x", exception);
+      var property1 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", exception);
+      var property2 = new UnsupportedStoragePropertyDefinition(typeof(string), "x", exception);
 
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),
@@ -160,8 +160,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void UnifyWithEquivalentProperties_ThrowsForDifferentMessage ()
     {
       var exception = new Exception();
-      var property1 = new UnsupportedStoragePropertyDefinition(typeof (int), "x", exception);
-      var property2 = new UnsupportedStoragePropertyDefinition(typeof (int), "y", exception);
+      var property1 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", exception);
+      var property2 = new UnsupportedStoragePropertyDefinition(typeof(int), "y", exception);
       
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),
@@ -173,8 +173,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyWithEquivalentProperties_ThrowsForDifferentExceptionType ()
     {
-      var property1 = new UnsupportedStoragePropertyDefinition(typeof (int), "x", new InvalidOperationException());
-      var property2 = new UnsupportedStoragePropertyDefinition(typeof (int), "x", new ArgumentException());
+      var property1 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", new InvalidOperationException());
+      var property2 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", new ArgumentException());
 
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),

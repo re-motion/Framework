@@ -81,10 +81,10 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void Set_Value ()
     {
-      var indexer = typeof (IDataStore<string, int>).GetProperty("Item");
-      var parameter = Expression.Parameter(typeof (IDataStore<string, int>), "store");
+      var indexer = typeof(IDataStore<string, int>).GetProperty("Item");
+      var parameter = Expression.Parameter(typeof(IDataStore<string, int>), "store");
       var expression = (Expression<Action<IDataStore<string, int>>>) Expression.Lambda(
-          typeof (Action<IDataStore<string, int>>),
+          typeof(Action<IDataStore<string, int>>),
           Expression.Assign(
               Expression.MakeIndex(
                   parameter,

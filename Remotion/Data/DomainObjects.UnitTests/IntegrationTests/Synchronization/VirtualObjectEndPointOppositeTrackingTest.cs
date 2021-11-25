@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     private void CheckOriginalData (Computer expected)
     {
-      Assert.That(_employee1.Properties[typeof (Employee), "Computer"].GetOriginalValue<Computer>(), Is.SameAs(expected));
+      Assert.That(_employee1.Properties[typeof(Employee), "Computer"].GetOriginalValue<Computer>(), Is.SameAs(expected));
     }
 
     private void CheckCurrentData (Computer expected)

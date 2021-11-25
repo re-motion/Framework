@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void ValidEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
       CheckEnumerationValueInfo(
           new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void Null ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That(property.GetValueInfoByIdentifier(null, null), Is.Null);
     }
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void Empty ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That(property.GetValueInfoByIdentifier(string.Empty, null), Is.Null);
     }
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void UndefinedEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
       Assert.That(property.GetValueInfoByIdentifier("UndefinedValue", null), Is.Null);
     }
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void InvalidIdentifier ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
       Assert.That(
           () => property.GetValueInfoByIdentifier("Invalid", null),
           Throws.InstanceOf<ParseException>());
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
       var outValue = "MockValue1";
       var mockEnumerationGlobalizationService = new Mock<IEnumerationGlobalizationService>(MockBehavior.Strict);
       IBusinessObjectEnumerationProperty property = CreateProperty(
-          typeof (ClassWithValueType<TestEnum>),
+          typeof(ClassWithValueType<TestEnum>),
           "Scalar",
           new BindableObjectGlobalizationService(
               new Mock<IGlobalizationService>().Object,

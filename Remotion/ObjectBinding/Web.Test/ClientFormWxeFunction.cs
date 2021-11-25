@@ -26,7 +26,7 @@ namespace OBWTest
 public class ClientFormWxeFunction: WxeFunction
 {
   public ClientFormWxeFunction ()
-    : base (new NoneTransactionMode())
+    : base(new NoneTransactionMode())
   {
     Object = Person.GetObject(new Guid(0,0,0,0,0,0,0,0,0,0,1));
     SetExecutionCompletedScript("javascript:window.close();");
@@ -69,7 +69,7 @@ public class ClientFormWxeFunction: WxeFunction
 public class ClientFormClosingWxeFunction: WxeFunction
 {
   public ClientFormClosingWxeFunction ()
-    : base (new NoneTransactionMode())
+    : base(new NoneTransactionMode())
   {
   }
 
@@ -86,7 +86,7 @@ public class ClientFormClosingWxeFunction: WxeFunction
 public class ClientFormKeepAliveWxeFunction: WxeFunction
 {
   public ClientFormKeepAliveWxeFunction ()
-    : base (new NoneTransactionMode())
+    : base(new NoneTransactionMode())
   {
   }
 

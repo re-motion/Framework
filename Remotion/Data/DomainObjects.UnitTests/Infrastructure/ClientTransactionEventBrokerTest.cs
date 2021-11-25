@@ -207,9 +207,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void RaiseNewObjectCreatingEvent ()
     {
       CheckEventWithListenersFirst(
-          s => s.RaiseNewObjectCreatingEvent(typeof (Order)),
-          l => l.NewObjectCreating(_clientTransaction, typeof (Order)),
-          x => x.NewObjectCreating(_clientTransaction, typeof (Order)));
+          s => s.RaiseNewObjectCreatingEvent(typeof(Order)),
+          l => l.NewObjectCreating(_clientTransaction, typeof(Order)),
+          x => x.NewObjectCreating(_clientTransaction, typeof(Order)));
     }
 
     [Test]
@@ -719,7 +719,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RaiseRelationEndPointMapUnregisteringEvent ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof (Order), "OrderItems"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
       CheckEventWithListenersOnly(
           s => s.RaiseRelationEndPointMapUnregisteringEvent(endPointID),
           l => l.RelationEndPointMapUnregistering(_clientTransaction, endPointID));
@@ -728,7 +728,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RaiseRelationEndPointBecomingIncompleteEvent ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof (Order), "OrderItems"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
       CheckEventWithListenersOnly(
           s => s.RaiseRelationEndPointBecomingIncompleteEvent(endPointID),
           l => l.RelationEndPointBecomingIncomplete(_clientTransaction, endPointID));
@@ -783,7 +783,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RaiseVirtualRelationEndPointStateUpdatedEvent ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof (Order), "OrderItems"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
       var newEndPointChangeState = BooleanObjectMother.GetRandomBoolean();
       CheckEventWithListenersOnly(
           s => s.RaiseVirtualRelationEndPointStateUpdatedEvent(endPointID, newEndPointChangeState),

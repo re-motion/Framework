@@ -64,7 +64,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
       ISecurableObject securableObject = 
           new SecurableObject(ObjectSecurityStrategy.Create(securityContextFactoryStub.Object, InvalidationToken.Create()));
-      var methodInfo = typeof (SecurableObject).GetMethod("Delete", new Type[0]);
+      var methodInfo = typeof(SecurableObject).GetMethod("Delete", new Type[0]);
 
       var hasMethodAccess = _securityClient.HasMethodAccess(securableObject, methodInfo);
 
@@ -84,7 +84,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
       ISecurableObject securableObject = 
           new DerivedSecurableObject(ObjectSecurityStrategy.Create(securityContextFactoryStub.Object, InvalidationToken.Create()));
-      var methodInfo = typeof (DerivedSecurableObject).GetMethod("Make");
+      var methodInfo = typeof(DerivedSecurableObject).GetMethod("Make");
 
       var hasMethodAccess = _securityClient.HasMethodAccess(securableObject, methodInfo);
 
@@ -94,7 +94,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void HasAccess_StaticMethod ()
     {
-      var securityContext = SecurityContext.CreateStateless(typeof (SecurableObject));
+      var securityContext = SecurityContext.CreateStateless(typeof(SecurableObject));
       var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
       securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContext);
@@ -109,9 +109,9 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
           new FunctionalSecurityStrategy(),
           new ReflectionBasedMemberResolver());
 
-      var methodInfo = typeof (SecurableObject).GetMethod("IsValid", new[] { typeof (SecurableObject) });
+      var methodInfo = typeof(SecurableObject).GetMethod("IsValid", new[] { typeof(SecurableObject) });
 
-      var hasMethodAccess = securityClient.HasStaticMethodAccess(typeof (SecurableObject), methodInfo);
+      var hasMethodAccess = securityClient.HasStaticMethodAccess(typeof(SecurableObject), methodInfo);
 
       Assert.That(hasMethodAccess, Is.True);
     }
@@ -119,7 +119,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void HasAccess_StatelessMethod ()
     {
-      var securityContext = SecurityContext.CreateStateless(typeof (SecurableObject));
+      var securityContext = SecurityContext.CreateStateless(typeof(SecurableObject));
       var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
       securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContext);
@@ -134,9 +134,9 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
           new FunctionalSecurityStrategy(),
           new ReflectionBasedMemberResolver());
 
-      var methodInfo = typeof (SecurableObject).GetMethod("Delete", new Type[0]);
+      var methodInfo = typeof(SecurableObject).GetMethod("Delete", new Type[0]);
 
-      var hasMethodAccess = securityClient.HasStatelessMethodAccess(typeof (SecurableObject), methodInfo);
+      var hasMethodAccess = securityClient.HasStatelessMethodAccess(typeof(SecurableObject), methodInfo);
 
       Assert.That(hasMethodAccess, Is.True);
     }

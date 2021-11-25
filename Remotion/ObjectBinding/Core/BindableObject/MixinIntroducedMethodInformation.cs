@@ -92,12 +92,12 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T) (object) GetFastInvoker(typeof (T)); 
+      return (T) (object) GetFastInvoker(typeof(T)); 
     }
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
       return _mixinMethodInfo.GetFastInvoker(delegateType);
     }

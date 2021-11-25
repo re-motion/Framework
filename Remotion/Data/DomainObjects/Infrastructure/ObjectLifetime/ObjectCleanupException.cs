@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     private readonly Exception _cleanupException;
 
     public ObjectCleanupException (string message, ObjectID objectID, Exception innerException, Exception cleanupException)
-        : base (message, ArgumentUtility.CheckNotNull("innerException", innerException))
+        : base(message, ArgumentUtility.CheckNotNull("innerException", innerException))
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       ArgumentUtility.CheckNotNull("cleanupException", cleanupException);
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     protected ObjectCleanupException ([NotNull] SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _objectID = (ObjectID) info.GetValue("_objectID", typeof (ObjectID));
-      _cleanupException = (Exception) info.GetValue("_cleanupException", typeof (Exception));
+      _objectID = (ObjectID) info.GetValue("_objectID", typeof(ObjectID));
+      _cleanupException = (Exception) info.GetValue("_cleanupException", typeof(Exception));
     }
 
     public ObjectID ObjectID

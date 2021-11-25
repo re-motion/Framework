@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         IPersistenceExtension persistenceExtension,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
         Func<IDbConnection> connectionFactory)
-        : base (definition, persistenceExtension)
+        : base(definition, persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
       ArgumentUtility.CheckNotNull("connectionFactory", connectionFactory);

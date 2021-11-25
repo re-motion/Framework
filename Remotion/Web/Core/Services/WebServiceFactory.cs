@@ -31,7 +31,7 @@ namespace Remotion.Web.Services
   /// Default implementation of the <see cref="IWebServiceFactory"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IWebServiceFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IWebServiceFactory), Lifetime = LifetimeKind.Singleton)]
   public class WebServiceFactory : IWebServiceFactory
   {
     private static readonly ConcurrentDictionary<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>> s_serviceMethodCache =
@@ -83,20 +83,20 @@ namespace Remotion.Web.Services
       if (compiledType == null)
         throw new InvalidOperationException(string.Format("Web service '{0}' could not be compiled.", virtualPath));
 
-      if (!typeof (T).IsAssignableFrom(compiledType))
+      if (!typeof(T).IsAssignableFrom(compiledType))
       {
-        var message = typeof (T).IsInterface
+        var message = typeof(T).IsInterface
                           ? "Web service '{0}' does not implement mandatory interface '{1}'."
                           : "Web service '{0}' is not based on type '{1}'.";
 
-        throw new ArgumentException(string.Format(message, virtualPath, typeof (T).GetFullNameSafe()));
+        throw new ArgumentException(string.Format(message, virtualPath, typeof(T).GetFullNameSafe()));
       }
       return compiledType;
     }
 
     private IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethodsFromCache<T> ()
     {
-      return s_serviceMethodCache.GetOrAdd(typeof (T), s_getServiceMethodsFunc);
+      return s_serviceMethodCache.GetOrAdd(typeof(T), s_getServiceMethodsFunc);
     }
 
     private static IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>> GetServiceMethods (Type type)

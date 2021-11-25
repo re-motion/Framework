@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
 
       Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("UnitTestStorageProviderStub"));
       Assert.That(id.ClassID, Is.EqualTo("Official"));
-      Assert.That(id.Value.GetType(), Is.EqualTo(typeof (string)));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(string)));
       Assert.That(id.Value, Is.EqualTo("Arthur Dent"));
     }
 
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
 
       Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("UnitTestStorageProviderStub"));
       Assert.That(id.ClassID, Is.EqualTo("Official"));
-      Assert.That(id.Value.GetType(), Is.EqualTo(typeof (int)));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(int)));
       Assert.That(id.Value, Is.EqualTo(42));
     }
 
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
 
       Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("TestDomain"));
       Assert.That(id.ClassID, Is.EqualTo("Order"));
-      Assert.That(id.Value.GetType(), Is.EqualTo(typeof (Guid)));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(Guid)));
       Assert.That(id.Value, Is.EqualTo(new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
     }
 
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
 
       Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("UnitTestStorageProviderStub"));
       Assert.That(id.ClassID, Is.EqualTo("Official"));
-      Assert.That(id.Value.GetType(), Is.EqualTo(typeof (string)));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(string)));
       Assert.That(id.Value, Is.EqualTo("Multi|Value"));
     }
 
@@ -288,7 +288,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       Assert.That(result, Is.True);
       Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("TestDomain"));
       Assert.That(id.ClassID, Is.EqualTo("Order"));
-      Assert.That(id.Value.GetType(), Is.EqualTo(typeof (Guid)));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(Guid)));
       Assert.That(id.Value, Is.EqualTo(new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
     }
 

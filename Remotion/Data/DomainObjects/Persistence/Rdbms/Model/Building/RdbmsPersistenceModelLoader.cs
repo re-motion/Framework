@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
             string.Format(
                 "The storage entity definition of class '{0}' does not implement interface '{1}'.",
                 classDefinition.ID,
-                typeof (IRdbmsStorageEntityDefinition).Name));
+                typeof(IRdbmsStorageEntityDefinition).Name));
       }
 
       Assertion.IsNotNull(classDefinition.StorageEntityDefinition);
@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
                 "The property definition '{0}' of class '{1}' does not implement interface '{2}'.",
                 propertyDefinition.PropertyName,
                 classDefinition.ID,
-                typeof (IRdbmsStoragePropertyDefinition).Name));
+                typeof(IRdbmsStoragePropertyDefinition).Name));
         }
         
         Assertion.IsNotNull(propertyDefinition.StoragePropertyDefinition);

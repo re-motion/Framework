@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class CompletionDetectionStrategyTestFunction : WxeFunction
   {
     public CompletionDetectionStrategyTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

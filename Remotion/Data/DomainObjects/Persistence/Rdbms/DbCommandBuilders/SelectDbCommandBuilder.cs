@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IComparedColumnsSpecification comparedColumns,
         IOrderedColumnsSpecification  orderedColumns,
         ISqlDialect sqlDialect)
-        : base (sqlDialect)
+        : base(sqlDialect)
     {
       ArgumentUtility.CheckNotNull("table", table);
       ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);

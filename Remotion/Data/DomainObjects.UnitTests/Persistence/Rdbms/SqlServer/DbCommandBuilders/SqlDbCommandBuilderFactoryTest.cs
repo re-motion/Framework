@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
           new[] { _columnValue1, _columnValue2 },
           new[] { _orderColumn1, _orderColumn2 });
 
-      Assert.That(result, Is.TypeOf(typeof (SelectDbCommandBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(SelectDbCommandBuilder)));
       var dbCommandBuilder = (SelectDbCommandBuilder) result;
       Assert.That(dbCommandBuilder.Table, Is.SameAs(_tableDefinition));
       Assert.That(((SelectedColumnsSpecification) dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
           );
       var result = _factory.CreateForSelect(_tableDefinition, new[] { _column1, _column2 }, columnValueTable, new[] { _orderColumn1, _orderColumn2 });
 
-      Assert.That(result, Is.TypeOf(typeof (SelectDbCommandBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(SelectDbCommandBuilder)));
       var dbCommandBuilder = (SelectDbCommandBuilder) result;
       Assert.That(dbCommandBuilder.Table, Is.SameAs(_tableDefinition));
       Assert.That(((SelectedColumnsSpecification) dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
           new[] { _columnValue1, _columnValue2 },
           new[] { _orderColumn1, _orderColumn2 });
 
-      Assert.That(result, Is.TypeOf(typeof (UnionSelectDbCommandBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(UnionSelectDbCommandBuilder)));
       var dbCommandBuilder = (UnionSelectDbCommandBuilder) result;
       Assert.That(dbCommandBuilder.UnionViewDefinition, Is.SameAs(unionViewDefinition));
       Assert.That(((SelectedColumnsSpecification) dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     {
       var result = _factory.CreateForQuery("statement", new QueryParameterWithType[0]);
 
-      Assert.That(result, Is.TypeOf(typeof (QueryDbCommandBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(QueryDbCommandBuilder)));
       Assert.That(((QueryDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
     }
 
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     {
       var result = _factory.CreateForInsert(_tableDefinition, new[] { _columnValue1, _columnValue2 });
 
-      Assert.That(result, Is.TypeOf(typeof (InsertDbCommandBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(InsertDbCommandBuilder)));
       Assert.That(((InsertDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
       Assert.That(((InsertDbCommandBuilder) result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     {
       var result = _factory.CreateForUpdate(_tableDefinition, new[] { _columnValue1, _columnValue2 }, new[] { _columnValue2, _columnValue1 });
 
-      Assert.That(result, Is.TypeOf(typeof (UpdateDbCommandBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(UpdateDbCommandBuilder)));
       Assert.That(((UpdateDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
       Assert.That(((UpdateDbCommandBuilder) result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     {
       var result = _factory.CreateForDelete(_tableDefinition, new[] { _columnValue1, _columnValue2 });
 
-      Assert.That(result, Is.TypeOf(typeof (DeleteDbCommandBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(DeleteDbCommandBuilder)));
       Assert.That(((DeleteDbCommandBuilder) result).SqlDialect, Is.SameAs(_sqlDialectStub));
       Assert.That(((DeleteDbCommandBuilder) result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(

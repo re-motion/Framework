@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Definitions
   /// </remarks>
   public static class TargetClassDefinitionFactory
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (LogManager));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(LogManager));
 
     public static TargetClassDefinition CreateAndValidate (ClassContext context)
     {

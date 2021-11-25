@@ -157,7 +157,7 @@ namespace Remotion.ServiceLocation
       {
         var ctorInfo = GetSingleConstructor(decoratorImplementationInfo, serviceType);
 
-        var decoratedObjectArgumentExpression = Expression.Parameter(typeof (object));
+        var decoratedObjectArgumentExpression = Expression.Parameter(typeof(object));
         var serviceLocator = Expression.Constant(this);
         var parameterInfos = ctorInfo.GetParameters();
         var ctorArgExpressions = parameterInfos.Select(
@@ -187,7 +187,7 @@ namespace Remotion.ServiceLocation
       if (serviceImplementationInfo.Factory == null)
       {
         var isCompound = serviceImplementationInfo.RegistrationType == RegistrationType.Compound;
-        var expectedParameterType = isCompound ? typeof (IEnumerable<>).MakeGenericType(serviceType) : null;
+        var expectedParameterType = isCompound ? typeof(IEnumerable<>).MakeGenericType(serviceType) : null;
         var ctorInfo = GetSingleConstructor(serviceImplementationInfo, expectedParameterType);
         instanceFactory = CreateInstanceFactoryFromConstructorInfo(ctorInfo, isCompound);
       }
@@ -247,7 +247,7 @@ namespace Remotion.ServiceLocation
 
       MethodInfo resolutionMethod;
       Expression[] arguments;
-      if (parameterInfo.ParameterType.IsGenericType && parameterInfo.ParameterType.GetGenericTypeDefinition() == typeof (IEnumerable<>))
+      if (parameterInfo.ParameterType.IsGenericType && parameterInfo.ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
       {
         var elementType = parameterInfo.ParameterType.GetGenericArguments().Single();
         resolutionMethod = s_resolveIndirectCollectionDependencyMethod.MakeGenericMethod(elementType);
@@ -280,7 +280,7 @@ namespace Remotion.ServiceLocation
       IEnumerable<object> enumerable;
       try
       {
-        enumerable = GetAllInstances(typeof (T), isCompoundResolution);
+        enumerable = GetAllInstances(typeof(T), isCompoundResolution);
       }
       catch (ActivationException ex)
       {

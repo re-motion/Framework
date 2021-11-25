@@ -24,8 +24,8 @@ namespace Remotion.Mixins.UnitTests.Core
   [TestFixture]
   public class IgnoresClassAttributeTest
   {
-    private static readonly Type s_targetClassType = typeof (string);
-    private static readonly Type s_mixinType = typeof (int);
+    private static readonly Type s_targetClassType = typeof(string);
+    private static readonly Type s_mixinType = typeof(int);
 
     private MockRepository _mockRepository;
     private MixinConfigurationBuilder _configurationBuilderMock;
@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new IgnoresClassAttribute(typeof (string));
+      var attribute = new IgnoresClassAttribute(typeof(string));
       Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
 

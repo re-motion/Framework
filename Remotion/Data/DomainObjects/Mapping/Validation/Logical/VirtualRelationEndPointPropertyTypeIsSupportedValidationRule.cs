@@ -57,9 +57,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             relationEndPointDefinition.PropertyInfo.Name,
             relationEndPointDefinition.ClassDefinition.ClassType.Name,
             relationEndPointDefinition.PropertyInfo.PropertyType.Name,
-            typeof (DomainObject).Name,
-            typeof (ObjectList<>).Name,
-            typeof (IObjectList<>).Name);
+            typeof(DomainObject).Name,
+            typeof(ObjectList<>).Name,
+            typeof(IObjectList<>).Name);
       }
       return MappingValidationResult.CreateValidResult();
     }

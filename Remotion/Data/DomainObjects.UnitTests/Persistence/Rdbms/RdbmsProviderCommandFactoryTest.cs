@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateForRelationLookup ()
     {
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof (OrderItem), "Order");
+      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(OrderItem), "Order");
 
       var result = _factory.CreateForRelationLookup(relationEndPointDefinition, DomainObjectIDs.Order1, null);
 
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void CreateForSave ()
     {
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
-      SetPropertyValue(dataContainer, typeof (Computer), "SerialNumber", "123456");
+      SetPropertyValue(dataContainer, typeof(Computer), "SerialNumber", "123456");
       var result = _factory.CreateForSave(new[] { dataContainer });
 
       Assert.That(result, Is.Not.Null);

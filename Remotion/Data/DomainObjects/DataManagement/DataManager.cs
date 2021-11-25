@@ -443,7 +443,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     protected DataManager (SerializationInfo info, StreamingContext context)
     {
-      _deserializedData = (object[]) info.GetValue("doInfo.GetData", typeof (object[]));
+      _deserializedData = (object[]) info.GetValue("doInfo.GetData", typeof(object[]));
     }
 
     void IDeserializationCallback.OnDeserialization (object sender)

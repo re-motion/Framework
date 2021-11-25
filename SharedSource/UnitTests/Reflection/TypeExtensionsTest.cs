@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetAssemblyQualifiedNameSafe_WithSystemType_ReturnsAssemblyQualifiedName ()
     {
-      var typeArgument = typeof (string);
+      var typeArgument = typeof(string);
 
       Assert.That(typeArgument.AssemblyQualifiedName, Is.Not.Null);
       Assert.That(typeArgument.GetAssemblyQualifiedNameSafe(), Does.StartWith("System.String,"));
@@ -39,7 +39,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetAssemblyQualifiedNameSafe_WithGenericTypeParameter_ReturnsTypeName ()
     {
-      var genericTypeParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
+      var genericTypeParameters = typeof(CustomType<>).GetTypeInfo().GenericTypeParameters;
 
       Assert.That(genericTypeParameters[0].AssemblyQualifiedName, Is.Null);
       Assert.That(genericTypeParameters[0].FullName, Is.Null);
@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetAssemblyQualifiedNameChecked_WithSystemType_ReturnsAssemblyQualifiedName ()
     {
-      var typeArgument = typeof (CustomType<string>).GetGenericArguments();
+      var typeArgument = typeof(CustomType<string>).GetGenericArguments();
 
       Assert.That(typeArgument[0].AssemblyQualifiedName, Is.Not.Null);
       Assert.That(typeArgument[0].GetAssemblyQualifiedNameChecked(), Does.StartWith("System.String,"));
@@ -58,7 +58,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetAssemblyQualifiedNameChecked_WithGenericTypeParameter_Throws ()
     {
-      var genericTypeArgumentsParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
+      var genericTypeArgumentsParameters = typeof(CustomType<>).GetTypeInfo().GenericTypeParameters;
 
       Assert.That(genericTypeArgumentsParameters[0].AssemblyQualifiedName, Is.Null);
       Assert.That(
@@ -69,7 +69,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetFullNameSafe_WithSystemType_ReturnsFullName ()
     {
-      var typeArgument = typeof (string);
+      var typeArgument = typeof(string);
 
       Assert.That(typeArgument.FullName, Is.Not.Null);
       Assert.That(typeArgument.GetFullNameSafe(), Is.EqualTo("System.String"));
@@ -78,7 +78,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetFullNameSafe_WithGenericTypeParameter_ReturnsTypeName ()
     {
-      var genericTypeParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
+      var genericTypeParameters = typeof(CustomType<>).GetTypeInfo().GenericTypeParameters;
 
       Assert.That(genericTypeParameters[0].FullName, Is.Null);
       Assert.That(genericTypeParameters[0].GetFullNameSafe(), Is.EqualTo("T"));
@@ -87,7 +87,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetFullNameChecked_WithSystemType_ReturnsFullName ()
     {
-      var typeArgument = typeof (string);
+      var typeArgument = typeof(string);
 
       Assert.That(typeArgument.FullName, Is.Not.Null);
       Assert.That(typeArgument.GetFullNameChecked(), Is.EqualTo("System.String"));
@@ -96,7 +96,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetFullNameChecked_WithGenericTypeParameter_ThrowsInvalidOperationException ()
     {
-      var genericTypeParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
+      var genericTypeParameters = typeof(CustomType<>).GetTypeInfo().GenericTypeParameters;
 
       Assert.That(genericTypeParameters[0].FullName, Is.Null);
       Assert.That(
@@ -107,7 +107,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetNamespaceSafe_WithTypeWithNamespace_ReturnsNamespace ()
     {
-      var typeWithNamespace = typeof (string);
+      var typeWithNamespace = typeof(string);
 
       Assert.That(typeWithNamespace.Namespace, Is.Not.Null);
       Assert.That(typeWithNamespace.GetNamespaceSafe(), Is.EqualTo("System"));
@@ -116,7 +116,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetNamespaceSafe_WithTypeWithoutNamespace_ReturnsUndefined ()
     {
-      var typeWithoutNamespace = typeof (CustomType<>);
+      var typeWithoutNamespace = typeof(CustomType<>);
 
       Assert.That(typeWithoutNamespace.Namespace, Is.Null);
       Assert.That(typeWithoutNamespace.GetNamespaceSafe(), Is.EqualTo("<undefined>"));
@@ -125,7 +125,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetNamespaceChecked_WithTypeWithNamespace_ReturnsNamespace ()
     {
-      var typeWithNamespace = typeof (string);
+      var typeWithNamespace = typeof(string);
 
       Assert.That(typeWithNamespace.Namespace, Is.Not.Null);
       Assert.That(typeWithNamespace.GetNamespaceChecked(), Is.EqualTo("System"));
@@ -134,7 +134,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetNamespaceChecked_WithTypeWithoutNamespace_ThrowsInvalidOperationException ()
     {
-      var typeWithoutNamespace = typeof (CustomType<>);
+      var typeWithoutNamespace = typeof(CustomType<>);
 
       Assert.That(typeWithoutNamespace.Namespace, Is.Null);
       Assert.That(

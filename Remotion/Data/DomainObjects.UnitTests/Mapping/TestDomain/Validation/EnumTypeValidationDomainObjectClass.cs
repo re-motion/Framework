@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation
     public class ExtensibleEnumTypeWithValues : ExtensibleEnum<ExtensibleEnumTypeWithValues>
     {
       public ExtensibleEnumTypeWithValues (MethodBase currentMethod)
-          : base (currentMethod)
+          : base(currentMethod)
       {
       }
     }
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation
     public class ExtensibleEnumTypeWithoutValues : ExtensibleEnum<ExtensibleEnumTypeWithoutValues>
     {
       public ExtensibleEnumTypeWithoutValues (MethodBase currentMethod)
-          : base (currentMethod)
+          : base(currentMethod)
       {
       }
     }

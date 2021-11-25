@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
   public class TestableBusinessObjectPropertyPathPropertyEnumeratorBase : BusinessObjectPropertyPathPropertyEnumeratorBase
   {
     public TestableBusinessObjectPropertyPathPropertyEnumeratorBase (string propertyPathIdentifier)
-        : base (propertyPathIdentifier)
+        : base(propertyPathIdentifier)
     {
     }
 

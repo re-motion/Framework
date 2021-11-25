@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
   public class CollectionDeletionState : ChangeState
   {
     public CollectionDeletionState (object sender)
-      : base (sender)
+      : base(sender)
     {
     }
 
     public CollectionDeletionState (object sender, string message)
-      : base (sender, message)
+      : base(sender, message)
     {
     }
   }

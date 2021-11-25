@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         ILoadedObjectDataRegistrationAgent loadedObjectDataRegistrationAgent,
         ILoadedObjectDataProvider loadedObjectDataProvider,
         IEagerFetcher eagerFetcher)
-        : base (persistenceStrategy, loadedObjectDataRegistrationAgent, loadedObjectDataProvider)
+        : base(persistenceStrategy, loadedObjectDataRegistrationAgent, loadedObjectDataProvider)
     {
       ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
       ArgumentUtility.CheckNotNull("eagerFetcher", eagerFetcher);

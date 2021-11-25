@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result = _factory.CreateEndPointDataManager(relationEndPointID);
 
-      Assert.That(result, Is.TypeOf(typeof (DomainObjectCollectionEndPointDataManager)));
+      Assert.That(result, Is.TypeOf(typeof(DomainObjectCollectionEndPointDataManager)));
       Assert.That(((DomainObjectCollectionEndPointDataManager) result).EndPointID, Is.SameAs(relationEndPointID));
       Assert.That(((DomainObjectCollectionEndPointDataManager) result).ChangeDetectionStrategy, Is.SameAs(_changeDetectionStrategy));
     }

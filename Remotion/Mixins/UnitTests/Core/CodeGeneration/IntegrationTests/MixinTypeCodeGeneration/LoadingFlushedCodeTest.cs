@@ -57,7 +57,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Ignore ("RM-5902")]
     public void DeserializeAfterFlusheCode ()
     {
-      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof (MixinWithAbstractMembers));
+      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));
       var mixin = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
       var serializedData = Serializer.Serialize(mixedInstance);
 
@@ -73,7 +73,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Ignore ("RM-5902")]
     public void LoadFlushedCode_IncludesSerializationHelperTypes ()
     {
-      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof (MixinWithAbstractMembers));
+      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));
       var mixin = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
       var serializedData = Serializer.Serialize(mixedInstance);
 
@@ -103,7 +103,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       Assert.Ignore(".NET does not support assembly persistence.");
 #endif
 
-      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof (MixinWithAbstractMembers));
+      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));
       var mixin = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
 
       var identifier = GetConcreteMixinIdentifier(mixin);
@@ -128,7 +128,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       Assert.Ignore(".NET does not support assembly persistence.");
 #endif
 
-      CreateMixedType(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
+      CreateMixedType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
       
       var assembly = FlushAndLoadAssemblyWithoutLocking();
 
@@ -155,7 +155,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     private ConcreteMixinTypeIdentifier GetConcreteMixinIdentifier (MixinWithAbstractMembers mixin)
     {
       Assert.That(mixin, Is.AssignableTo<IGeneratedMixinType>());
-      var attribute = (ConcreteMixinTypeAttribute) mixin.GetType().GetCustomAttributes(typeof (ConcreteMixinTypeAttribute), false).Single();
+      var attribute = (ConcreteMixinTypeAttribute) mixin.GetType().GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).Single();
 
       return attribute.GetIdentifier();
     }

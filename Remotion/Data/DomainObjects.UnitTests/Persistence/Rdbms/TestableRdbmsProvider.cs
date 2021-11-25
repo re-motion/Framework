@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         IPersistenceExtension persistenceExtension,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory,
         Func<IDbConnection> connectionFactory)
-      : base (definition, persistenceExtension, commandFactory, connectionFactory)
+      : base(definition, persistenceExtension, commandFactory, connectionFactory)
     {
 
     }

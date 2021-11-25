@@ -36,7 +36,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _securityClient.CheckStaticMethodAccess(typeof (SecurableObject), "IsValid");
+      _securityClient.CheckStaticMethodAccess(typeof(SecurableObject), "IsValid");
 
       _testHelper.VerifyAll();
     }
@@ -46,7 +46,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckStaticMethodAccess(typeof (SecurableObject), "IsValid");
+        _securityClient.CheckStaticMethodAccess(typeof(SecurableObject), "IsValid");
       }
 
       _testHelper.VerifyAll();

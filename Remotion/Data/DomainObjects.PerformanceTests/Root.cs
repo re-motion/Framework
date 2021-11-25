@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       test.OneTimeSetUp();
 
       var testMethods = from m in test.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                        where m.IsDefined(typeof (TestAttribute), true) && !m.IsDefined(typeof (IgnoreAttribute), true)
+                        where m.IsDefined(typeof(TestAttribute), true) && !m.IsDefined(typeof(IgnoreAttribute), true)
                         orderby m.Name
                         select m;
       foreach (MethodInfo testMethod in testMethods)

@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class ListMenuTestFunction : WxeFunction
   {
     public ListMenuTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

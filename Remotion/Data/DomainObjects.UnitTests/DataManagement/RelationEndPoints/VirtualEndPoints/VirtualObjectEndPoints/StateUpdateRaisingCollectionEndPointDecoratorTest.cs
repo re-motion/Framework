@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       _listenerMock = MockRepository.GenerateStrictMock<IVirtualEndPointStateUpdateListener>();
       _innerEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
       _innerEndPointMock.Stub(stub => stub.HasChanged).Return(false);
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void DelegatedMembers ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
       var orderTicket = DomainObjectMother.CreateFakeObject<OrderTicket>();
 
@@ -166,8 +166,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation(ep => ep.IsNull, true);
       _decoratorTestHelper.CheckDelegation(ep => ep.ClientTransaction, ClientTransaction.CreateRootTransaction());
       _decoratorTestHelper.CheckDelegation(ep => ep.ObjectID, DomainObjectIDs.Order1);
-      _decoratorTestHelper.CheckDelegation(ep => ep.Definition, GetEndPointDefinition(typeof (Order), "OrderTicket"));
-      _decoratorTestHelper.CheckDelegation(ep => ep.RelationDefinition, GetRelationDefinition(typeof (Order), "OrderTicket"));
+      _decoratorTestHelper.CheckDelegation(ep => ep.Definition, GetEndPointDefinition(typeof(Order), "OrderTicket"));
+      _decoratorTestHelper.CheckDelegation(ep => ep.RelationDefinition, GetRelationDefinition(typeof(Order), "OrderTicket"));
       _decoratorTestHelper.CheckDelegation(ep => ep.HasBeenTouched, false);
       _decoratorTestHelper.CheckDelegation(ep => ep.HasBeenTouched, true);
       _decoratorTestHelper.CheckDelegation(ep => ep.GetDomainObject(), orderTicket);

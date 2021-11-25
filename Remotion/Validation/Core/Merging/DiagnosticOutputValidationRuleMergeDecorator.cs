@@ -32,7 +32,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Implements the <see cref="IValidationRuleCollectorMerger"/> interface as a decorator which logs the merge operation via the application default logging infrastructure.
   /// </summary>
-  [ImplementationFor (typeof (IValidationRuleCollectorMerger), Position = 0, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof(IValidationRuleCollectorMerger), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class DiagnosticOutputValidationRuleMergeDecorator : IValidationRuleCollectorMerger
   {
     private readonly ILog _logger;
@@ -50,7 +50,7 @@ namespace Remotion.Validation.Merging
 
       _validationRuleCollectorMerger = validationRuleCollectorMerger;
       _validatorFormatter = validatorFormatter;
-      _logger = logManager.GetLogger(typeof (DiagnosticOutputValidationRuleMergeDecorator));
+      _logger = logManager.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator));
     }
 
     public IValidationRuleCollectorMerger ValidationRuleCollectorMerger

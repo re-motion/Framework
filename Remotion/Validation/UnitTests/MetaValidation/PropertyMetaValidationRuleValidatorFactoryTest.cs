@@ -34,7 +34,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       
       var result = factory.CreatePropertyMetaValidationRuleValidator(new IPropertyMetaValidationRuleCollector[0]);
 
-      Assert.That(result, Is.TypeOf(typeof (PropertyMetaValidationRuleValidator)));
+      Assert.That(result, Is.TypeOf(typeof(PropertyMetaValidationRuleValidator)));
     }
   }
 }

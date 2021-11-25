@@ -48,7 +48,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("LastName"));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
       var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
           .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEqualValidator>(), propertyInformation))
@@ -57,7 +57,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
       var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof (NotEqualValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(NotEqualValidator)));
       Assert.That(((NotEqualValidator) result[0]).ComparisonValue, Is.EqualTo("test"));
       Assert.That(((NotEqualValidator) result[0]).ValidationMessage, Is.Not.Null);
 
@@ -68,7 +68,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator_CustomErrorMessage ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("LastName"));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
       _attribute.ErrorMessage = "CustomMessage";
 
       var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();

@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class CommandControlObject : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject, ISupportsDisabledState
   {
     public CommandControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

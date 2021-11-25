@@ -40,17 +40,17 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddClassType ()
     {
-      _serializer.AddClassType(typeof (DateTime));
+      _serializer.AddClassType(typeof(DateTime));
 
       var deserializer = new AttributeClassContextDeserializer(_serializer.Values);
-      Assert.That(deserializer.GetClassType(), Is.EqualTo(typeof (DateTime)));
+      Assert.That(deserializer.GetClassType(), Is.EqualTo(typeof(DateTime)));
     }
 
     [Test]
     public void AddMixins ()
     {
-      var mixinContext1 = MixinContextObjectMother.Create(mixinType: typeof (string), origin: MixinContextOriginObjectMother.Create(assembly: GetType().Assembly));
-      var mixinContext2 = MixinContextObjectMother.Create(mixinType: typeof (object));
+      var mixinContext1 = MixinContextObjectMother.Create(mixinType: typeof(string), origin: MixinContextOriginObjectMother.Create(assembly: GetType().Assembly));
+      var mixinContext2 = MixinContextObjectMother.Create(mixinType: typeof(object));
       _serializer.AddMixins(new[] {mixinContext1, mixinContext2});
 
       // Check that the chain of serializers correctly sets up the AttributeMixinContextOriginSerializer
@@ -67,10 +67,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddComposedInterfaces ()
     {
-      _serializer.AddComposedInterfaces(new[] {typeof (int), typeof (string)});
+      _serializer.AddComposedInterfaces(new[] {typeof(int), typeof(string)});
 
       var deserializer = new AttributeClassContextDeserializer(_serializer.Values);
-      Assert.That(deserializer.GetComposedInterfaces(), Is.EqualTo(new[] { typeof (int), typeof (string) }));
+      Assert.That(deserializer.GetComposedInterfaces(), Is.EqualTo(new[] { typeof(int), typeof(string) }));
     }
 
     [Test]

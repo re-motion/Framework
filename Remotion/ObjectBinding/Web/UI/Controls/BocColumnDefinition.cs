@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Layout")]
     [Description ("The width of the rendered column.")]
-    [DefaultValue (typeof (Unit), "")]
+    [DefaultValue (typeof(Unit), "")]
     [NotifyParentProperty (true)]
     public Unit Width
     {

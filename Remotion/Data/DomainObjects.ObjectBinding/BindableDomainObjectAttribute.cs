@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   public class BindableDomainObjectAttribute : UsesAttribute
   {
     public BindableDomainObjectAttribute ()
-        : base (typeof (BindableDomainObjectMixin))
+        : base(typeof(BindableDomainObjectMixin))
     {
     }
   }

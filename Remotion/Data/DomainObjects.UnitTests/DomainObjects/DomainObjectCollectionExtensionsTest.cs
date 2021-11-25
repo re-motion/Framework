@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _customer3NotInCollection = DomainObjectIDs.Customer3.GetObject<Customer>();
       _customer1FromOtherTransaction = DomainObjectMother.GetObjectInOtherTransaction<Customer>(_customer1.ID);
 
-      _collection = new DomainObjectCollection(typeof (Customer)) { _customer1, _customer2 };
+      _collection = new DomainObjectCollection(typeof(Customer)) { _customer1, _customer2 };
     }
 
     [Test]
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var list = _collection.AsList<Customer>();
 
-      Assert.That(list, Is.InstanceOf(typeof (DomainObjectCollectionWrapper<Customer>)));
+      Assert.That(list, Is.InstanceOf(typeof(DomainObjectCollectionWrapper<Customer>)));
       Assert.That(((DomainObjectCollectionWrapper<Customer>) list).WrappedCollection, Is.SameAs(_collection));
     }
 
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var readOnlyCollection = _collection.AsReadOnlyCollection();
 
-      Assert.That(readOnlyCollection, Is.InstanceOf(typeof (ReadOnlyCollection<DomainObject>)));
+      Assert.That(readOnlyCollection, Is.InstanceOf(typeof(ReadOnlyCollection<DomainObject>)));
       Assert.That(readOnlyCollection, Is.EqualTo(new[] { _customer1, _customer2 }));
     }
 
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var objectList = new ObjectList<Customer> { _customer1, _customer2 };
       var readOnlyCollection = objectList.AsReadOnlyCollection();
 
-      Assert.That(readOnlyCollection, Is.InstanceOf(typeof (ReadOnlyCollection<Customer>)));
+      Assert.That(readOnlyCollection, Is.InstanceOf(typeof(ReadOnlyCollection<Customer>)));
       Assert.That(readOnlyCollection, Is.EqualTo(new[] { _customer1, _customer2 }));
     }
   }

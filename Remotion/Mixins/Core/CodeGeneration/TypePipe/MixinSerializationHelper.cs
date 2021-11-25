@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull("mixin", mixin);
       ArgumentUtility.CheckNotNull("identifier", identifier);
 
-      info.SetType(typeof (MixinSerializationHelper));
+      info.SetType(typeof(MixinSerializationHelper));
 
       var identifierSerializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer(info, "__identifier");
       identifier.Serialize(identifierSerializer);
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var mixinType = pipeline.ReflectionService.GetAdditionalType(identifier);
 
-      _baseMemberValues = (object[]?) info.GetValue("__baseMemberValues", typeof (object[]));
+      _baseMemberValues = (object[]?) info.GetValue("__baseMemberValues", typeof(object[]));
 
       // Usually, instantiate a deserialized object using GetSafeUninitializedObject.
       // However, _baseMemberValues being null means that the object itself manages its member deserialization via ISerializable. In such a case, we
@@ -88,7 +88,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         _deserializedObject = FormatterServices.GetSafeUninitializedObject(mixinType);
       else
       {
-        Assertion.IsTrue(typeof (ISerializable).IsAssignableFrom(mixinType));
+        Assertion.IsTrue(typeof(ISerializable).IsAssignableFrom(mixinType));
         _deserializedObject = Activator.CreateInstance(
             mixinType, 
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 

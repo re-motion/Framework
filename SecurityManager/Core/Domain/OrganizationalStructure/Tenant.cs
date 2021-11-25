@@ -94,7 +94,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public abstract bool IsAbstract { get; set; }
 
     [DBBidirectionalRelation ("Children")]
-    [SearchAvailableObjectsServiceType (typeof (TenantPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(TenantPropertyTypeSearchService))]
     public abstract Tenant Parent { get; set; }
 
     [DBBidirectionalRelation ("Parent")]

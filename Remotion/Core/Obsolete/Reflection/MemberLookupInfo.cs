@@ -25,13 +25,13 @@ namespace Remotion.Reflection
   internal abstract class MemberLookupInfo
   {
     public MemberLookupInfo (string memberName, BindingFlags bindingFlags)
-        : this (memberName, bindingFlags, null, CallingConventions.Any, null)
+        : this(memberName, bindingFlags, null, CallingConventions.Any, null)
     {
       throw new NotImplementedException();
     }
 
     public MemberLookupInfo (string memberName)
-        : this (memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
+        : this(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
     {
       throw new NotImplementedException();
     }

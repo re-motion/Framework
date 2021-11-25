@@ -80,7 +80,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       
       ParentValidator.ErrorMessage = resourceManager.GetString(ResourceIdentifier.ParentValidatorErrorMessage);
       TenantLabel.Text = resourceManager.GetString(ResourceIdentifier.TenantLabelText);

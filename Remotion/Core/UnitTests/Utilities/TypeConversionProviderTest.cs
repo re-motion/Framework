@@ -35,14 +35,14 @@ namespace Remotion.UnitTests.Utilities
     // ReSharper restore EnumUnderlyingTypeIsInt
 
     private ITypeConversionProvider _provider;
-    private readonly Type _int32 = typeof (int);
-    private readonly Type _nullableInt32 = typeof (int?);
-    private readonly Type _string = typeof (string);
-    private readonly Type _stringArray = typeof (string[]);
-    private readonly Type _object = typeof (object);
-    private readonly Type _guid = typeof (Guid);
-    private readonly Type _int32Enum = typeof (Int32Enum);
-    private readonly Type _nullableInt32Enum = typeof (Int32Enum?);
+    private readonly Type _int32 = typeof(int);
+    private readonly Type _nullableInt32 = typeof(int?);
+    private readonly Type _string = typeof(string);
+    private readonly Type _stringArray = typeof(string[]);
+    private readonly Type _object = typeof(object);
+    private readonly Type _guid = typeof(Guid);
+    private readonly Type _int32Enum = typeof(Int32Enum);
+    private readonly Type _nullableInt32Enum = typeof(Int32Enum?);
 
     [SetUp]
     public void SetUp ()
@@ -205,13 +205,13 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CanConvert_FromDBNull_ToNullableInt32 ()
     {
-      Assert.That(_provider.CanConvert(typeof (DBNull), _nullableInt32), Is.True);
+      Assert.That(_provider.CanConvert(typeof(DBNull), _nullableInt32), Is.True);
     }
 
     [Test]
     public void CanConvert_FromDBNull_ToInt32 ()
     {
-      Assert.That(_provider.CanConvert(typeof (DBNull), _int32), Is.False);
+      Assert.That(_provider.CanConvert(typeof(DBNull), _int32), Is.False);
     }
 
     [Test]
@@ -544,7 +544,7 @@ namespace Remotion.UnitTests.Utilities
     {
       TypeConverterResult converterResult = _provider.GetTypeConverter(_nullableInt32, _string);
       Assert.That(converterResult, Is.Not.EqualTo(TypeConverterResult.Empty), "TypeConverterResult is not empty.");
-      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof (BidirectionalStringConverter)));
+      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof(BidirectionalStringConverter)));
     }
 
     [Test]
@@ -552,7 +552,7 @@ namespace Remotion.UnitTests.Utilities
     {
       TypeConverterResult converterResult = _provider.GetTypeConverter(_string, _nullableInt32);
       Assert.That(converterResult, Is.Not.EqualTo(TypeConverterResult.Empty), "TypeConverterResult is not empty.");
-      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof (BidirectionalStringConverter)));
+      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof(BidirectionalStringConverter)));
     }
 
     [Test]
@@ -575,7 +575,7 @@ namespace Remotion.UnitTests.Utilities
       TypeConverterResult converterResult = _provider.GetTypeConverter(_stringArray, _string);
       Assert.That(converterResult, Is.Not.EqualTo(TypeConverterResult.Empty), "TypeConverterResult is empty.");
       Assert.That(converterResult.TypeConverterType, Is.EqualTo(TypeConverterType.DestinationTypeConverter));
-      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof (BidirectionalStringConverter)));
+      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof(BidirectionalStringConverter)));
     }
 
     [Test]
@@ -584,34 +584,34 @@ namespace Remotion.UnitTests.Utilities
       TypeConverterResult converterResult = _provider.GetTypeConverter(_string, _stringArray);
       Assert.That(converterResult, Is.Not.EqualTo(TypeConverterResult.Empty), "TypeConverterResult is empty.");
       Assert.That(converterResult.TypeConverterType, Is.EqualTo(TypeConverterType.SourceTypeConverter));
-      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof (BidirectionalStringConverter)));
+      Assert.That(converterResult.TypeConverter.GetType(), Is.EqualTo(typeof(BidirectionalStringConverter)));
     }
 
     [Test]
     public void GetTypeConverter_ForNaByte ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (byte?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(byte?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForByte ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (byte));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(byte));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForNaInt16 ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (short?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(short?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForInt16 ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (short));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(short));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
@@ -632,98 +632,98 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void GetTypeConverter_ForNaInt64 ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (long?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(long?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForInt64 ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (long));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(long));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForNaSingle ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (float?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(float?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForSingle ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (float));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(float));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForNaDouble ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (double?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(double?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForDouble ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (double));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(double));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForNaDateTime ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (DateTime?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(DateTime?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForDateTime ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (DateTime));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(DateTime));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForNullableBoolean ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (bool?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(bool?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForBoolean ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (bool));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(bool));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForNaGuid ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (Guid?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(Guid?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForNaDecimal ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (decimal?));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(decimal?));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForDecimal ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (decimal));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(decimal));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
     [Test]
     public void GetTypeConverter_ForGuid ()
     {
-      TypeConverter converter = _provider.GetTypeConverter(typeof (Guid));
+      TypeConverter converter = _provider.GetTypeConverter(typeof(Guid));
       Assert.That(converter, Is.Null, "TypeConverter is not null.");
     }
 
@@ -735,7 +735,7 @@ namespace Remotion.UnitTests.Utilities
       Assert.That(converterFirstRun, Is.Not.Null, "TypeConverter from first run is null.");
       Assert.That(converterSecondRun, Is.Not.Null, "TypeConverter from second run is null.");
       Assert.That(converterSecondRun, Is.SameAs(converterFirstRun));
-      Assert.That(converterFirstRun.GetType(), Is.EqualTo(typeof (AdvancedEnumConverter)));
+      Assert.That(converterFirstRun.GetType(), Is.EqualTo(typeof(AdvancedEnumConverter)));
       Assert.That(((AdvancedEnumConverter)converterFirstRun).EnumType, Is.EqualTo(_int32Enum));
     }
 
@@ -748,7 +748,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void AddTypeConverter ()
     {
-      var converter = new NullableConverter(typeof (Guid?));
+      var converter = new NullableConverter(typeof(Guid?));
       Assert.That(_provider.GetTypeConverter(_guid), Is.Null);
       ((TypeConversionProvider) _provider).AddTypeConverter(_guid, converter);
       Assert.That(_provider.GetTypeConverter(_guid), Is.SameAs(converter));
@@ -757,7 +757,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void RemoveTypeConverter ()
     {
-      var converter = new NullableConverter(typeof (Guid?));
+      var converter = new NullableConverter(typeof(Guid?));
       ((TypeConversionProvider) _provider).AddTypeConverter(_guid, converter);
       Assert.That(_provider.GetTypeConverter(_guid), Is.SameAs(converter));
       ((TypeConversionProvider) _provider).RemoveTypeConverter(_guid);

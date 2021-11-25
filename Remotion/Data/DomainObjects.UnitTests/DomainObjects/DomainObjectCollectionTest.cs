@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       _collection = CreateCustomerCollection();
       _readOnlyCollection = DomainObjectCollectionFactory.Instance.CreateReadOnlyCollection(
-          typeof (DomainObjectCollection), 
+          typeof(DomainObjectCollection), 
           new[] { _customer1, _customer2 });
 
       _dataStrategyMock = MockRepository.GenerateMock<IDomainObjectCollectionData>();
@@ -66,9 +66,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var eventRaiserStub = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
       
       var modificationCheckingDecorator = 
-          DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStoreStub, typeof (Order), eventRaiserStub);
-      Assert.That(modificationCheckingDecorator, Is.InstanceOf(typeof (ModificationCheckingDomainObjectCollectionDataDecorator)));
-      Assert.That(modificationCheckingDecorator.RequiredItemType, Is.SameAs(typeof (Order)));
+          DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStoreStub, typeof(Order), eventRaiserStub);
+      Assert.That(modificationCheckingDecorator, Is.InstanceOf(typeof(ModificationCheckingDomainObjectCollectionDataDecorator)));
+      Assert.That(modificationCheckingDecorator.RequiredItemType, Is.SameAs(typeof(Order)));
 
       var eventRaisingDecorator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator>(
           (ModificationCheckingDomainObjectCollectionDataDecorator) modificationCheckingDecorator);
@@ -91,11 +91,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Initialization_WithItemType ()
     {
-      var collection = new DomainObjectCollection(typeof (Order));
+      var collection = new DomainObjectCollection(typeof(Order));
 
       Assert.That(collection.IsReadOnly, Is.False);
       Assert.That(collection.AssociatedEndPointID, Is.Null);
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof(Order));
     }
 
     [Test]
@@ -114,21 +114,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Initialization_WithEnumerable ()
     {
-      var collection = new DomainObjectCollection(new[] { _customer1, _customer2 }, typeof (Customer));
+      var collection = new DomainObjectCollection(new[] { _customer1, _customer2 }, typeof(Customer));
 
       Assert.That(collection, Is.EqualTo(new[] { _customer1, _customer2 }));
-      Assert.That(collection.RequiredItemType, Is.SameAs(typeof (Customer)));
+      Assert.That(collection.RequiredItemType, Is.SameAs(typeof(Customer)));
       Assert.That(collection.IsReadOnly, Is.False);
       Assert.That(collection.AssociatedEndPointID, Is.Null);
 
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof (Customer));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof(Customer));
     }
 
     [Test]
     public void Initialization_WithEnumerable_ChecksItems ()
     {
       Assert.That(
-          () => new DomainObjectCollection(new[] { _customer1 }, typeof (Order)),
+          () => new DomainObjectCollection(new[] { _customer1 }, typeof(Order)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' "
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void AssociatedEndPointID_AssociatedCollection ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
       _dataStrategyMock.Stub(stub => stub.AssociatedEndPointID).Return(endPointID);
       
       Assert.That(_collectionWithDataStrategyMock.AssociatedEndPointID, Is.EqualTo(endPointID));
@@ -508,7 +508,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(clonedCollection.IsReadOnly, Is.False);
       Assert.That(clonedCollection.RequiredItemType, Is.EqualTo(_collection.RequiredItemType));
 
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(clonedCollection, typeof (Customer));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(clonedCollection, typeof(Customer));
     }
 
     [Test]
@@ -540,7 +540,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var clone = (OrderCollection) orderCollection.Clone();
 
-      Assert.That(clone.GetType(), Is.EqualTo(typeof (OrderCollection)));
+      Assert.That(clone.GetType(), Is.EqualTo(typeof(OrderCollection)));
       Assert.That(clone.RequiredItemType, Is.EqualTo(orderCollection.RequiredItemType));
     }
 
@@ -581,14 +581,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var clone = (OrderCollection) orderCollection.Clone(true);
 
-      Assert.That(clone.GetType(), Is.EqualTo(typeof (OrderCollection)));
+      Assert.That(clone.GetType(), Is.EqualTo(typeof(OrderCollection)));
       Assert.That(clone.RequiredItemType, Is.Null);
     }
 
     [Test]
     public void TransformToAssociated ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
       var originalCollectionDataStrategy = DomainObjectCollectionDataTestHelper.GetDataStrategy(_collection);
       var originalCollectionContents = _collection.Cast<DomainObject>().ToArray();
       var originalEndPointContents =
@@ -597,7 +597,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var result = ((IAssociatableDomainObjectCollection) _collection).TransformToAssociated(endPointID, associatedCollectionDataStrategyFactory);
 
-      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(_collection, typeof (Order), endPointID);
+      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(_collection, typeof(Order), endPointID);
       Assert.That(result, Is.SameAs(originalCollectionDataStrategy));
       Assert.That(result, Is.EqualTo(originalCollectionContents));
       Assert.That(_collection, Is.EqualTo(originalEndPointContents));
@@ -613,7 +613,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var result = ((IAssociatableDomainObjectCollection) collection).TransformToStandAlone();
 
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof(Order));
       Assert.That(collection, Is.EqualTo(originalCollectionContents));
       Assert.That(result, Is.SameAs(originalCollectionDataStrategy));
     }
@@ -692,7 +692,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
     private DomainObjectCollection CreateCustomerCollection ()
     {
-      var collection = new DomainObjectCollection(typeof (Customer));
+      var collection = new DomainObjectCollection(typeof(Customer));
       collection.Add(_customer1);
       collection.Add(_customer2);
 
@@ -707,11 +707,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       collectionEndPointStub.Stub(stub => stub.GetData()).Return(endPointDataStub);
 
       var virtualEndPointProviderStub = MockRepository.GenerateStub<IVirtualEndPointProvider>();
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
       virtualEndPointProviderStub.Stub(stub => stub.GetOrCreateVirtualEndPoint(endPointID)).Return(collectionEndPointStub);
 
       var delegatingStrategy = new EndPointDelegatingDomainObjectCollectionData(endPointID, virtualEndPointProviderStub);
-      var associatedCollection = new OrderCollection(new ModificationCheckingDomainObjectCollectionDataDecorator(typeof (Order), delegatingStrategy));
+      var associatedCollection = new OrderCollection(new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), delegatingStrategy));
       Assert.That(DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(associatedCollection), Is.SameAs(collectionEndPointStub));
       return associatedCollection;
     }

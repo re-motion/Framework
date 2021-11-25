@@ -80,7 +80,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void TypesFromRunnerBaseAssemblyCanBeAccessed_EvenWithDifferentBaseDirectory ()
     {
-      AppDomainRunner.Run(@"c:\", delegate { Dev.Null = typeof (AppDomainRunnerBase); });
+      AppDomainRunner.Run(@"c:\", delegate { Dev.Null = typeof(AppDomainRunnerBase); });
     }
 
     [Test]

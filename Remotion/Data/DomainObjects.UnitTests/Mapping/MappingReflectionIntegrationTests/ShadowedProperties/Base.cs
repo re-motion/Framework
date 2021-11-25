@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
   {
     public int Name
     {
-      get { return Properties[typeof (Base), "Name"].GetValue<int>(); }
+      get { return Properties[typeof(Base), "Name"].GetValue<int>(); }
     }
   }
 }

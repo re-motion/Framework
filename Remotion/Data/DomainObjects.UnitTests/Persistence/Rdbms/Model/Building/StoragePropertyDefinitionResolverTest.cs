@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetStoragePropertiesForHierarchy_NonPersistentPropertiesAreFiltered ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       var nonPersistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "NonPersistentProperty", StorageClass.None);
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { nonPersistentProperty }, true));
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
@@ -140,8 +140,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var storageProperty2 = CreateStorageProperyDefinitionWithNameAndNullability("Test1", false);
       var storageProperty3 = CreateStorageProperyDefinitionWithNameAndNullability("Test1", true);
 
-      var propertyInfo = CreateFakePropertyInfo(typeof (Order), "OrderNumber");
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      var propertyInfo = CreateFakePropertyInfo(typeof(Order), "OrderNumber");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       var propertyDefinition1 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty1, "P1", propertyInfo);
       var propertyDefinition2 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty2, "P2", propertyInfo);
       var propertyDefinition3 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty3, "P3", propertyInfo);
@@ -163,8 +163,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var storageProperty1 = CreateStorageProperyDefinitionWithNameAndNullability("Test1", false);
       var storageProperty2 = CreateStorageProperyDefinitionWithNameAndNullability("Test2", false);
 
-      var propertyInfo = CreateFakePropertyInfo(typeof (Order), "OrderNumber");
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      var propertyInfo = CreateFakePropertyInfo(typeof(Order), "OrderNumber");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       var propertyDefinition1 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty1, "P1", propertyInfo);
       var propertyDefinition2 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty2, "P2", propertyInfo);
       classDefinition.SetPropertyDefinitions(
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub.Stub(stub => stub.Name).Return(propertyName);
       propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(declaringType));
-      propertyInformationStub.Stub(_ => _.PropertyType).Return(typeof (string));
+      propertyInformationStub.Stub(_ => _.PropertyType).Return(typeof(string));
       return propertyInformationStub;
     }
   }

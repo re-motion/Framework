@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public T GetValue<T> ()
     {
-      CheckType(typeof (T));
+      CheckType(typeof(T));
 
       object value = GetValueWithoutTypeCheck();
 
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public T GetOriginalValue<T> ()
     {
-      CheckType(typeof (T));
+      CheckType(typeof(T));
       return (T) GetOriginalValueWithoutTypeCheck();
     }
 
@@ -282,7 +282,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public void SetValue<T> (T value)
     {
-      CheckType(typeof (T));
+      CheckType(typeof(T));
       SetValueWithoutTypeCheck(value);
     }
 

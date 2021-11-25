@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var result = handle.Cast<DomainObject>();
 
       Assert.That(result, Is.SameAs(handle));
-      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof (IDomainObjectHandle<DomainObject>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(IDomainObjectHandle<DomainObject>)));
     }
 
     [Test]
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var result = handle.Cast<Order>();
 
       Assert.That(result, Is.SameAs(handle));
-      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof (IDomainObjectHandle<Order>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(IDomainObjectHandle<Order>)));
     }
 
     [Test]
@@ -196,8 +196,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void TypeProvider_OnInterface ()
     {
-      Assert.That(GetTypeConversionProvider().CanConvert(typeof (IDomainObjectHandle<Order>), typeof (string)), Is.True);
-      Assert.That(GetTypeConversionProvider().CanConvert(typeof (string), typeof (IDomainObjectHandle<Order>)), Is.True);
+      Assert.That(GetTypeConversionProvider().CanConvert(typeof(IDomainObjectHandle<Order>), typeof(string)), Is.True);
+      Assert.That(GetTypeConversionProvider().CanConvert(typeof(string), typeof(IDomainObjectHandle<Order>)), Is.True);
     }
 
     [Test]
@@ -206,14 +206,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
       // Using the DomainObjectHandle<T> class in APIs is not recommended, IDomainObjectHandle<T> should be used instead.
       // To get a type converter, the source type should always be explicitly given (as IDomainObjectHandle<T>), not inferred via value.GetType().
       // Therefore, we don't need a TypeConverter for DomainObjectHandle<T>.
-      Assert.That(GetTypeConversionProvider().CanConvert(typeof (DomainObjectHandle<Order>), typeof (string)), Is.False);
-      Assert.That(GetTypeConversionProvider().CanConvert(typeof (string), typeof (DomainObjectHandle<Order>)), Is.False);
+      Assert.That(GetTypeConversionProvider().CanConvert(typeof(DomainObjectHandle<Order>), typeof(string)), Is.False);
+      Assert.That(GetTypeConversionProvider().CanConvert(typeof(string), typeof(DomainObjectHandle<Order>)), Is.False);
     }
 
     [Test]
     public void HandleAttribute_OnInterface ()
     {
-      Assert.That(typeof (IDomainObjectHandle<>).IsDefined(typeof (DomainObjectHandleAttribute), false), Is.True);
+      Assert.That(typeof(IDomainObjectHandle<>).IsDefined(typeof(DomainObjectHandleAttribute), false), Is.True);
     }
 
     [Test]
@@ -221,7 +221,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       // Using the DomainObjectHandle<T> class in APIs is not recommended, IDomainObjectHandle<T> should be used instead.
       // Therefore, we don't need the handle attribute on DomainObjectHandle<T>.
-      Assert.That(typeof (DomainObjectHandle<>).IsDefined(typeof (DomainObjectHandleAttribute), false), Is.False);
+      Assert.That(typeof(DomainObjectHandle<>).IsDefined(typeof(DomainObjectHandleAttribute), false), Is.False);
     }
 
     private ITypeConversionProvider GetTypeConversionProvider ()

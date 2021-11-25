@@ -31,7 +31,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void SetUp ()
     {
       _sandboxTestRunner = new SandboxTestRunner();
-      _testFixtureTypes = new[] { typeof (DummyTest1) };
+      _testFixtureTypes = new[] { typeof(DummyTest1) };
     }
 
     [Test]
@@ -69,7 +69,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void RunTestFixture_WithSetupAndTearDownMethod ()
     {
-      var testResults = _sandboxTestRunner.RunTestFixture(typeof (DummyTest1)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
+      var testResults = _sandboxTestRunner.RunTestFixture(typeof(DummyTest1)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
 
       Assert.That(testResults.Count(), Is.EqualTo(3));
       foreach (var testResult in testResults)
@@ -79,7 +79,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void RunTestFixture_WithoutSetupAndTearDownMethod ()
     {
-      var testResults = _sandboxTestRunner.RunTestFixture(typeof (DummyTest2)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
+      var testResults = _sandboxTestRunner.RunTestFixture(typeof(DummyTest2)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
 
       Assert.That(testResults.Count(), Is.EqualTo(1));
       foreach (var testResult in testResults)
@@ -89,7 +89,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void RunTestFixture_WithoutTearDownMethod ()
     {
-      var testResults = _sandboxTestRunner.RunTestFixture(typeof (DummyTest3)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
+      var testResults = _sandboxTestRunner.RunTestFixture(typeof(DummyTest3)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
 
       Assert.That(testResults.Count(), Is.EqualTo(2));
       foreach (var testResult in testResults)
@@ -99,7 +99,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void RunTestFixture_WithoutSetupMethod ()
     {
-      var testResults = _sandboxTestRunner.RunTestFixture(typeof (DummyTest4)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
+      var testResults = _sandboxTestRunner.RunTestFixture(typeof(DummyTest4)).TestResults.Where(r => r.Status != SandboxTestStatus.Ignored);
 
       Assert.That(testResults.Count(), Is.EqualTo(2));
       foreach (var testResult in testResults)
@@ -118,7 +118,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_IgnoredTestMethod ()
     {
       var instance = new DummyTest5();
-      var testMethod = typeof (DummyTest5).GetMethod("TestIgnored");
+      var testMethod = typeof(DummyTest5).GetMethod("TestIgnored");
 
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       testResult.EnsureNotFailed();
@@ -129,7 +129,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_IgnoredTestFixture ()
     {
       var instance = new DummyTestIgnored();
-      var testMethod = typeof (DummyTestIgnored).GetMethod("TestIgnored");
+      var testMethod = typeof(DummyTestIgnored).GetMethod("TestIgnored");
 
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       testResult.EnsureNotFailed();
@@ -140,8 +140,8 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_SetupFailed ()
     {
       var instance = new DummyTest5();
-      var testMethod = typeof (DummyTest5).GetMethod("TestSucceeded");
-      var setupMethod = typeof (DummyTest5).GetMethod("TestThrowsException");
+      var testMethod = typeof(DummyTest5).GetMethod("TestSucceeded");
+      var setupMethod = typeof(DummyTest5).GetMethod("TestThrowsException");
 
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, setupMethod, null);
       Assert.That(testResult.Status, Is.EqualTo(SandboxTestStatus.FailedInSetUp));
@@ -151,8 +151,8 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_TearDownFailed ()
     {
       var instance = new DummyTest5();
-      var testMethod = typeof (DummyTest5).GetMethod("TestSucceeded");
-      var tearDownMethod = typeof (DummyTest5).GetMethod("TestThrowsException");
+      var testMethod = typeof(DummyTest5).GetMethod("TestSucceeded");
+      var tearDownMethod = typeof(DummyTest5).GetMethod("TestThrowsException");
 
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, tearDownMethod);
       Assert.That(testResult.Status, Is.EqualTo(SandboxTestStatus.FailedInTearDown));
@@ -162,7 +162,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_ExpectedExceptionSucceded ()
     {
       var instance = new DummyTest5();
-      var testMethod = typeof (DummyTest5).GetMethod("TestExpectedExceptionSucceeded");
+      var testMethod = typeof(DummyTest5).GetMethod("TestExpectedExceptionSucceeded");
       
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       testResult.EnsureNotFailed();
@@ -172,7 +172,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_ExpectedExceptionFailed ()
     {
       var instance = new DummyTest5();
-      var testMethod = typeof (DummyTest5).GetMethod("TestExpectedExceptionFailed");
+      var testMethod = typeof(DummyTest5).GetMethod("TestExpectedExceptionFailed");
 
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       Assert.That(testResult.Status, Is.EqualTo(SandboxTestStatus.Failed));
@@ -182,7 +182,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_TestSucceded ()
     {
       var instance = new DummyTest5();
-      var testMethod = typeof (DummyTest5).GetMethod("TestSucceeded");
+      var testMethod = typeof(DummyTest5).GetMethod("TestSucceeded");
       
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       Assert.That(testResult.Status, Is.EqualTo(SandboxTestStatus.Succeeded));
@@ -192,7 +192,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void RunTestMethod_TestFailed ()
     {
       var instance = new DummyTest5();
-      var testMethod = typeof (DummyTest5).GetMethod("TestFailed");
+      var testMethod = typeof(DummyTest5).GetMethod("TestFailed");
 
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       Assert.That(testResult.Status, Is.EqualTo(SandboxTestStatus.Failed));

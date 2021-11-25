@@ -84,12 +84,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       var controlState = (Tuple<object, int, Type>) savedState;
       base.LoadControlState(controlState.Item1);
       ControlStateValue = controlState.Item2;
-      Assertion.IsTrue(controlState.Item3 == typeof (ThirdControl), "Expected ControlState from 'ThirdControl' but was '{0}'.", controlState.Item3.Name);
+      Assertion.IsTrue(controlState.Item3 == typeof(ThirdControl), "Expected ControlState from 'ThirdControl' but was '{0}'.", controlState.Item3.Name);
     }
 
     protected override object SaveControlState ()
     {
-      return new Tuple<object, int, Type>(base.SaveControlState(), ControlStateValue, typeof (ThirdControl));
+      return new Tuple<object, int, Type>(base.SaveControlState(), ControlStateValue, typeof(ThirdControl));
     }
 
     protected override void LoadViewState (object savedState)
@@ -99,12 +99,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       var  statePair =  (Tuple<object, Type>) savedState;
       base.LoadViewState(statePair.Item1);
 
-      Assertion.IsTrue(statePair.Item2 == typeof (ThirdControl), "Expected ViewState from 'ThirdControl' but was '{0}'.", statePair.Item2.Name);
+      Assertion.IsTrue(statePair.Item2 == typeof(ThirdControl), "Expected ViewState from 'ThirdControl' but was '{0}'.", statePair.Item2.Name);
     }
 
     protected override object SaveViewState ()
     {
-      return new Tuple<object, Type>(base.SaveViewState(), typeof (ThirdControl));
+      return new Tuple<object, Type>(base.SaveViewState(), typeof(ThirdControl));
     }
 
     private int ViewStateValue

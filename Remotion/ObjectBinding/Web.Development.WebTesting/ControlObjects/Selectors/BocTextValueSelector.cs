@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocTextValueSelector : BocControlSelectorBase<BocTextValueControlObject>
   {
     public BocTextValueSelector ()
-        : base ("BocTextValue")
+        : base("BocTextValue")
     {
     }
 

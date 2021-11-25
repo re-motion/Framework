@@ -55,14 +55,14 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof (IAccessTypeReflector), _accessTypeReflector);
+      Assert.IsInstanceOf(typeof(IAccessTypeReflector), _accessTypeReflector);
       Assert.That(_accessTypeReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflector));
     }
 
     [Test]
     public void GetAccessTypesFromAssembly ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromAssembly(typeof (PaperFile).Assembly, _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromAssembly(typeof(PaperFile).Assembly, _cache);
 
       Assert.That(actualAccessTypes, Is.Not.Null);
       Assert.That(actualAccessTypes.Count, Is.EqualTo(2));
@@ -73,7 +73,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesFromInstanceMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof (SecurableObjectWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(SecurableObjectWithSecuredInstanceMethods), _cache);
 
       Assert.That(actualAccessTypes, Is.Not.Null);
       Assert.That(actualAccessTypes.Count, Is.EqualTo(9));
@@ -91,7 +91,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesFromStaticMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof (SecurableObjectWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(SecurableObjectWithSecuredStaticMethods), _cache);
 
       Assert.That(actualAccessTypes, Is.Not.Null);
       Assert.That(actualAccessTypes.Count, Is.EqualTo(9));
@@ -109,7 +109,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesDerivedClassFromInstanceMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof (DerivedSecurableObjectWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(DerivedSecurableObjectWithSecuredInstanceMethods), _cache);
 
       Assert.That(actualAccessTypes, Is.Not.Null);
       Assert.That(actualAccessTypes.Count, Is.EqualTo(10));
@@ -128,7 +128,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesDerivedClassFromStaticMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof (DerivedSecurableObjectWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(DerivedSecurableObjectWithSecuredStaticMethods), _cache);
 
       Assert.That(actualAccessTypes, Is.Not.Null);
       Assert.That(actualAccessTypes.Count, Is.EqualTo(10));
@@ -147,7 +147,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesFromCache ()
     {
-      List<EnumValueInfo> expectedAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof (PaperFile), _cache);
+      List<EnumValueInfo> expectedAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(PaperFile), _cache);
       List<EnumValueInfo> actualAccessTypes = _cache.GetAccessTypes();
 
       Assert.That(expectedAccessTypes.Count, Is.EqualTo(7));
@@ -158,7 +158,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesFromType_SecuredProperties ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof (SecurableObjectWithSecuredProperties), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(SecurableObjectWithSecuredProperties), _cache);
 
       Assert.That(actualAccessTypes, Is.Not.Null);
       Assert.That(actualAccessTypes.Count, Is.EqualTo(8));

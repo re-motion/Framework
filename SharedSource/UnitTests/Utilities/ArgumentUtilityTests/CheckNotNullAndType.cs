@@ -145,7 +145,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_Null_String_NonGeneric ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullAndType("arg", (object) null, typeof (string)),
+          () => ArgumentUtility.CheckNotNullAndType("arg", (object) null, typeof(string)),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -153,7 +153,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_Type_String_NonGeneric ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullAndType("arg", 13, typeof (string)),
+          () => ArgumentUtility.CheckNotNullAndType("arg", 13, typeof(string)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
@@ -163,7 +163,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_Null_Int_NonGeneric ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullAndType("arg", (object) null, typeof (int)),
+          () => ArgumentUtility.CheckNotNullAndType("arg", (object) null, typeof(int)),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -171,7 +171,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_Type_Int_NonGeneric ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullAndType("arg", 13.0, typeof (int)),
+          () => ArgumentUtility.CheckNotNullAndType("arg", 13.0, typeof(int)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Double' when type 'System.Int32' was expected.", "arg"));
     }
@@ -179,7 +179,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_Int_NonGeneric ()
     {
-      ArgumentUtility.CheckNotNullAndType("arg", 10, typeof (int));
+      ArgumentUtility.CheckNotNullAndType("arg", 10, typeof(int));
     }
   }
 }

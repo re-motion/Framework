@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
     }
 
     public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink, IEnumerable<DomainObject> invalidObjects) 
-        : this (transactionEventSink)
+        : this(transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("invalidObjects", invalidObjects);
 

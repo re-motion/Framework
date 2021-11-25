@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
           IResourceUrlFactory resourceUrlFactory,
           IGlobalizationService globalizationService,
           IRenderingFeatures renderingFeatures)
-          : base (resourceUrlFactory, globalizationService, renderingFeatures)
+          : base(resourceUrlFactory, globalizationService, renderingFeatures)
       {
       }
 
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ((IBusinessObjectBoundControl) Control).Property =
           ((IBusinessObject) businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
 
-      var dataSource = new BindableObjectDataSource { Type = typeof (TypeWithReference) };
+      var dataSource = new BindableObjectDataSource { Type = typeof(TypeWithReference) };
       dataSource.BusinessObject = (IBusinessObject) businessObject;
       dataSource.Register(Control);
       Control.DataSource = dataSource;
@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ((IBusinessObjectBoundControl) Control).Property =
           ((IBusinessObject) businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
 
-      var dataSource = new BindableObjectDataSource { Type = typeof (TypeWithReference) };
+      var dataSource = new BindableObjectDataSource { Type = typeof(TypeWithReference) };
       dataSource.Register(Control);
       Control.DataSource = dataSource;
 

@@ -20,7 +20,7 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
 {
   [DBTable]
-  [Uses (typeof (MixinAddingBidirectionalRelationTwice))]
+  [Uses (typeof(MixinAddingBidirectionalRelationTwice))]
   public class TargetClass1ForMixinAddingBidirectionalRelationTwice : DomainObject
   {
   }

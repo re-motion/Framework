@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class WebTabStripTestFunction : WxeFunction
   {
     public WebTabStripTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

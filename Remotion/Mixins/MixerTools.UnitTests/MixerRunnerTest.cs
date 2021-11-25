@@ -82,7 +82,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
         var compiler = new AssemblyCompiler(
             Path.Combine(TestContext.CurrentContext.TestDirectory, @"SampleAssembly"),
             Path.Combine(_parameters.BaseDirectory, "SampleAssembly.dll"), 
-            typeof (Mixin).Assembly.Location);
+            typeof(Mixin).Assembly.Location);
         compiler.Compile();
 
         var runner = new MixerRunner(_parameters);

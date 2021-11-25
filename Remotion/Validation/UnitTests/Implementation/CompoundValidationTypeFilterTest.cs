@@ -32,7 +32,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _type = typeof (string);
+      _type = typeof(string);
 
       _validationTypeFilter1 = new Mock<IValidationTypeFilter>();
       _validationTypeFilter2 = new Mock<IValidationTypeFilter>();

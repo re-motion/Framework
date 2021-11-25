@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     public const string StorageProviderID = "StubStorageProvider";
 
     public StubStorageProvider (StorageProviderDefinition definition, IPersistenceExtension persistenceExtension)
-      : base (definition, persistenceExtension)
+      : base(definition, persistenceExtension)
     {
     }
 

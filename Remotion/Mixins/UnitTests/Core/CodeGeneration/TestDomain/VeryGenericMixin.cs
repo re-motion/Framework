@@ -64,14 +64,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
     }
   }
 
-  [Uses (typeof (AbstractDerivedUltraGenericMixin<,>), AdditionalDependencies = new Type[] { typeof (IBT3Mixin6) })]
-  [Uses (typeof (BT3Mixin4))]
+  [Uses (typeof(AbstractDerivedUltraGenericMixin<,>), AdditionalDependencies = new Type[] { typeof(IBT3Mixin6) })]
+  [Uses (typeof(BT3Mixin4))]
   public class ClassOverridingUltraGenericStuff : BaseType3
   {
     [OverrideMixin]
     public string AbstractGenericMethod<T> ()
     {
-      return typeof (T).Name;
+      return typeof(T).Name;
     }
   }
 }

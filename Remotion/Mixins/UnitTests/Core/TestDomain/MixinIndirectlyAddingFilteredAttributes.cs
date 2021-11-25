@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [CopyCustomAttributes (typeof (AttributeSource), typeof (AttributeWithParameters2), typeof (AttributeWithParameters3))]
+  [CopyCustomAttributes (typeof(AttributeSource), typeof(AttributeWithParameters2), typeof(AttributeWithParameters3))]
   public class MixinIndirectlyAddingFilteredAttributes : Mixin<object>
   {
     [AttributeWithParameters (1, "one", Property = 4, Field = 5)]
@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
 
     [OverrideTarget]
-    [CopyCustomAttributes (typeof (AttributeSource), "AttributeSourceMethod", typeof (AttributeWithParameters2), typeof (AttributeWithParameters3))]
+    [CopyCustomAttributes (typeof(AttributeSource), "AttributeSourceMethod", typeof(AttributeWithParameters2), typeof(AttributeWithParameters3))]
     public new string ToString ()
     {
       return "";

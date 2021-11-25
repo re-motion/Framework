@@ -54,13 +54,13 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof (IEnumerationReflector), _enumerationReflector);
+      Assert.IsInstanceOf(typeof(IEnumerationReflector), _enumerationReflector);
     }
 
     [Test]
     public void GetValues ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(typeof (DomainAccessTypes), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(typeof(DomainAccessTypes), _cache);
 
       Assert.That(values, Is.Not.Null);
       Assert.That(values.Count, Is.EqualTo(2));
@@ -89,7 +89,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetValuesFromCache ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(typeof (DomainAccessTypes), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(typeof(DomainAccessTypes), _cache);
 
       Assert.That(_cache.GetEnumValueInfo(DomainAccessTypes.Journalize), Is.SameAs(values[DomainAccessTypes.Journalize]));
       Assert.That(_cache.GetEnumValueInfo(DomainAccessTypes.Archive), Is.SameAs(values[DomainAccessTypes.Archive]));
@@ -99,7 +99,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetMetadataWithInvalidType ()
     {
       Assert.That(
-          () => new EnumerationReflector().GetValues(typeof (string), _cache),
+          () => new EnumerationReflector().GetValues(typeof(string), _cache),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The type 'System.String' is not an enumerated type.", "type"));

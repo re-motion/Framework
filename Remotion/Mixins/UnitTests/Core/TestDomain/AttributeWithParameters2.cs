@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
 
     public AttributeWithParameters2 (int ctor, string dummy)
-      : this (ctor)
+      : this(ctor)
     {
     }
 

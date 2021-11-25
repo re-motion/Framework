@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
 
     public AclExpanderApplication ()
-        : this (new StreamWriterFactory())
+        : this(new StreamWriterFactory())
     {
     }
 

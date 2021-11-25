@@ -53,7 +53,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public void Build_ThrowsOnGenericTargetClass ()
     {
       Assert.That(
-          () => _builder.Build(ClassContextObjectMother.Create(typeof (BT3Mixin3<,>))),
+          () => _builder.Build(ClassContextObjectMother.Create(typeof(BT3Mixin3<,>))),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.Contains("contains generic parameters"));
     }
@@ -61,7 +61,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_SetsContext ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (BaseType1));
+      var classContext = ClassContextObjectMother.Create(typeof(BaseType1));
 
       var targetClassDefinition = _builder.Build(classContext);
       Assert.That(targetClassDefinition.ConfigurationContext, Is.SameAs(classContext));
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AddsPublicMembers ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (ClassWithDifferentMemberVisibilities));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassWithDifferentMemberVisibilities));
       
       var targetClassDefinition = _builder.Build(classContext);
       Assert.That(targetClassDefinition.Methods.Where(m => m.Name == "PublicMethod").ToArray(), Is.Not.Empty);
@@ -83,7 +83,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AddsProtectedMembers ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (ClassWithDifferentMemberVisibilities));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassWithDifferentMemberVisibilities));
 
       var targetClassDefinition = _builder.Build(classContext);
       Assert.That(targetClassDefinition.Methods.Where(m => m.Name == "ProtectedMethod").ToArray(), Is.Not.Empty);
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AddsProtectedInternalMembers ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (ClassWithDifferentMemberVisibilities));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassWithDifferentMemberVisibilities));
 
       var targetClassDefinition = _builder.Build(classContext);
       Assert.That(targetClassDefinition.Methods.Where(m => m.Name == "ProtectedInternalMethod").ToArray(), Is.Not.Empty);
@@ -105,21 +105,21 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AddsExplicitInterfaceMembers ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (ClassWithExplicitInterfaceImplementation));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassWithExplicitInterfaceImplementation));
 
       var targetClassDefinition = _builder.Build(classContext);
-      Assert.That(targetClassDefinition.Methods.Where(m => m.Name == typeof (IInterfaceWithAllKindsOfMembers).FullName + ".Method").ToArray(), 
+      Assert.That(targetClassDefinition.Methods.Where(m => m.Name == typeof(IInterfaceWithAllKindsOfMembers).FullName + ".Method").ToArray(), 
                    Is.Not.Empty);
-      Assert.That(targetClassDefinition.Properties.Where(p => p.Name == typeof (IInterfaceWithAllKindsOfMembers).FullName + ".Property").ToArray(), 
+      Assert.That(targetClassDefinition.Properties.Where(p => p.Name == typeof(IInterfaceWithAllKindsOfMembers).FullName + ".Property").ToArray(), 
                    Is.Not.Empty);
-      Assert.That(targetClassDefinition.Events.Where(e => e.Name == typeof (IInterfaceWithAllKindsOfMembers).FullName + ".Event").ToArray(),
+      Assert.That(targetClassDefinition.Events.Where(e => e.Name == typeof(IInterfaceWithAllKindsOfMembers).FullName + ".Event").ToArray(),
                    Is.Not.Empty);
     }
 
     [Test]
     public void Build_NoInternalOrPrivateMembers ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (ClassWithDifferentMemberVisibilities));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassWithDifferentMemberVisibilities));
 
       var targetClassDefinition = _builder.Build(classContext);
       Assert.That(targetClassDefinition.Methods.Where(m => m.Name == "PrivateMethod").ToArray(), Is.Empty);
@@ -134,7 +134,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AddsAttributes ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (BaseType1));
+      var classContext = ClassContextObjectMother.Create(typeof(BaseType1));
       var targetClassDefinition = _builder.Build(classContext);
       
       Assert.That(targetClassDefinition.CustomAttributes, Is.Not.Empty);
@@ -143,12 +143,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AddsComposedInterfaces ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (BaseType6), new[] { typeof (BT6Mixin1) }, new[] { typeof (ICBT6Mixin1) });
+      var classContext = ClassContextObjectMother.Create(typeof(BaseType6), new[] { typeof(BT6Mixin1) }, new[] { typeof(ICBT6Mixin1) });
       var targetClassDefinition = _builder.Build(classContext);
 
-      Assert.That(targetClassDefinition.ComposedInterfaceDependencies[typeof (ICBT6Mixin1)], Is.Not.Null);
+      Assert.That(targetClassDefinition.ComposedInterfaceDependencies[typeof(ICBT6Mixin1)], Is.Not.Null);
       
-      var requirement = targetClassDefinition.ComposedInterfaceDependencies[typeof (ICBT6Mixin1)].RequiredType;
+      var requirement = targetClassDefinition.ComposedInterfaceDependencies[typeof(ICBT6Mixin1)].RequiredType;
       Assert.That(requirement, Is.Not.Null);
       Assert.That(targetClassDefinition.RequiredTargetCallTypes, Has.Member(requirement));
     }
@@ -156,23 +156,23 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AddsMixins ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (BaseType1), typeof (BT1Mixin1));
+      var classContext = ClassContextObjectMother.Create(typeof(BaseType1), typeof(BT1Mixin1));
       var targetClassDefinition = _builder.Build(classContext);
 
-      Assert.That(targetClassDefinition.Mixins.Select(m => m.Type).ToArray(), Has.Member(typeof (BT1Mixin1)));
+      Assert.That(targetClassDefinition.Mixins.Select(m => m.Type).ToArray(), Has.Member(typeof(BT1Mixin1)));
     }
 
     [Test]
     public void Build_SortsMixins ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (BaseType7), 
-                                typeof (BT7Mixin0), 
-                                typeof (BT7Mixin1), 
-                                typeof (BT7Mixin2), 
-                                typeof (BT7Mixin3), 
-                                typeof (BT7Mixin5), 
-                                typeof (BT7Mixin9), 
-                                typeof (BT7Mixin10));
+      var classContext = ClassContextObjectMother.Create(typeof(BaseType7), 
+                                typeof(BT7Mixin0), 
+                                typeof(BT7Mixin1), 
+                                typeof(BT7Mixin2), 
+                                typeof(BT7Mixin3), 
+                                typeof(BT7Mixin5), 
+                                typeof(BT7Mixin9), 
+                                typeof(BT7Mixin10));
 
       var targetClassDefinition = _builder.Build(classContext);
 
@@ -183,14 +183,14 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public void Build_SetsIndexesOfSortedMixins ()
     {
       var classContext = ClassContextObjectMother.Create(
-          typeof (BaseType7),
-          typeof (BT7Mixin0),
-          typeof (BT7Mixin1),
-          typeof (BT7Mixin2),
-          typeof (BT7Mixin3),
-          typeof (BT7Mixin5),
-          typeof (BT7Mixin9),
-          typeof (BT7Mixin10));
+          typeof(BaseType7),
+          typeof(BT7Mixin0),
+          typeof(BT7Mixin1),
+          typeof(BT7Mixin2),
+          typeof(BT7Mixin3),
+          typeof(BT7Mixin5),
+          typeof(BT7Mixin9),
+          typeof(BT7Mixin10));
 
       var targetClassDefinition = _builder.Build(classContext);
 
@@ -201,11 +201,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public void Build_DetectsCyclicDependencies ()
     {
       var classContext =
-          ClassContextObjectMother.Create(typeof (NullTarget), typeof (NullMixin), typeof (NullMixin2)).ApplyMixinDependencies(
+          ClassContextObjectMother.Create(typeof(NullTarget), typeof(NullMixin), typeof(NullMixin2)).ApplyMixinDependencies(
               new[]
               {
-                  new MixinDependencySpecification(typeof (NullMixin), new[] { typeof (NullMixin2) }),
-                  new MixinDependencySpecification(typeof (NullMixin2), new[] { typeof (NullMixin) })
+                  new MixinDependencySpecification(typeof(NullMixin), new[] { typeof(NullMixin2) }),
+                  new MixinDependencySpecification(typeof(NullMixin2), new[] { typeof(NullMixin) })
               });
 
       Assert.That(
@@ -220,23 +220,23 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AppliesRequiredTargetCallTypeMethods ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (BaseType3), typeof (BT3Mixin1));
+      var classContext = ClassContextObjectMother.Create(typeof(BaseType3), typeof(BT3Mixin1));
 
       var targetClassDefinition = _builder.Build(classContext);
 
-      Assert.That(targetClassDefinition.RequiredTargetCallTypes[typeof (IBaseType31)].Methods.Select(r => r.InterfaceMethod).ToArray(),
-                   Has.Member(typeof (IBaseType31).GetMethod("IfcMethod")));
+      Assert.That(targetClassDefinition.RequiredTargetCallTypes[typeof(IBaseType31)].Methods.Select(r => r.InterfaceMethod).ToArray(),
+                   Has.Member(typeof(IBaseType31).GetMethod("IfcMethod")));
     }
 
     [Test]
     public void Build_AppliesRequiredBaseTypeMethods ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (BaseType3), typeof (BT3Mixin1));
+      var classContext = ClassContextObjectMother.Create(typeof(BaseType3), typeof(BT3Mixin1));
 
       var targetClassDefinition = _builder.Build(classContext);
 
-      Assert.That(targetClassDefinition.RequiredNextCallTypes[typeof (IBaseType31)].Methods.Select(r => r.InterfaceMethod).ToArray(),
-                   Has.Member(typeof (IBaseType31).GetMethod("IfcMethod")));
+      Assert.That(targetClassDefinition.RequiredNextCallTypes[typeof(IBaseType31)].Methods.Select(r => r.InterfaceMethod).ToArray(),
+                   Has.Member(typeof(IBaseType31).GetMethod("IfcMethod")));
     }
 
     [Test]
@@ -244,11 +244,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-      var classContext = ClassContextObjectMother.Create(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
       var targetClassDefinition = _builder.Build(classContext);
 
-      var overrider = targetClassDefinition.Methods[typeof (ClassOverridingMixinMembers).GetMethod("AbstractMethod")];
-      var overridden = targetClassDefinition.Mixins[0].Methods[typeof (MixinWithAbstractMembers).GetMethod("AbstractMethod", bindingFlags)];
+      var overrider = targetClassDefinition.Methods[typeof(ClassOverridingMixinMembers).GetMethod("AbstractMethod")];
+      var overridden = targetClassDefinition.Mixins[0].Methods[typeof(MixinWithAbstractMembers).GetMethod("AbstractMethod", bindingFlags)];
       
       Assert.That(overrider.Base, Is.SameAs(overridden));
       Assert.That(overridden.Overrides.ToArray(), Has.Member(overrider));
@@ -259,11 +259,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-      var classContext = ClassContextObjectMother.Create(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
       var targetClassDefinition = _builder.Build(classContext);
 
-      var overrider = targetClassDefinition.Properties[typeof (ClassOverridingMixinMembers).GetProperty("AbstractProperty")];
-      var overridden = targetClassDefinition.Mixins[0].Properties[typeof (MixinWithAbstractMembers).GetProperty("AbstractProperty", bindingFlags)];
+      var overrider = targetClassDefinition.Properties[typeof(ClassOverridingMixinMembers).GetProperty("AbstractProperty")];
+      var overridden = targetClassDefinition.Mixins[0].Properties[typeof(MixinWithAbstractMembers).GetProperty("AbstractProperty", bindingFlags)];
 
       Assert.That(overrider.Base, Is.SameAs(overridden));
       Assert.That(overridden.Overrides.ToArray(), Has.Member(overrider));
@@ -274,11 +274,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-      var classContext = ClassContextObjectMother.Create(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
       var targetClassDefinition = _builder.Build(classContext);
 
-      var overrider = targetClassDefinition.Events[typeof (ClassOverridingMixinMembers).GetEvent("AbstractEvent")];
-      var overridden = targetClassDefinition.Mixins[0].Events[typeof (MixinWithAbstractMembers).GetEvent("AbstractEvent", bindingFlags)];
+      var overrider = targetClassDefinition.Events[typeof(ClassOverridingMixinMembers).GetEvent("AbstractEvent")];
+      var overridden = targetClassDefinition.Mixins[0].Events[typeof(MixinWithAbstractMembers).GetEvent("AbstractEvent", bindingFlags)];
 
       Assert.That(overrider.Base, Is.SameAs(overridden));
       Assert.That(overridden.Overrides.ToArray(), Has.Member(overrider));
@@ -287,16 +287,16 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AnalyzesAttributeIntroductions ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (NullTarget), typeof (MixinAddingBT1Attribute));
+      var classContext = ClassContextObjectMother.Create(typeof(NullTarget), typeof(MixinAddingBT1Attribute));
       var targetClassDefinition = _builder.Build(classContext);
 
-      Assert.That(targetClassDefinition.ReceivedAttributes.Select(a => a.AttributeType).ToArray(), Has.Member(typeof (BT1Attribute)));
+      Assert.That(targetClassDefinition.ReceivedAttributes.Select(a => a.AttributeType).ToArray(), Has.Member(typeof(BT1Attribute)));
     }
 
     [Test]
     public void Build_AnalyzesSuppressorsOnClass ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (ClassWithSuppressAttribute), typeof (MixinAddingBT1Attribute));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassWithSuppressAttribute), typeof(MixinAddingBT1Attribute));
       var targetClassDefinition = _builder.Build(classContext);
 
       Assert.That(targetClassDefinition.ReceivedAttributes.Select(a => a.AttributeType).ToArray(), Is.Empty);
@@ -305,21 +305,21 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void Build_AnalyzesSuppressorsOnMixins ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (NullTarget), typeof (MixinAddingBT1Attribute), typeof (MixinSuppressingBT1Attribute));
+      var classContext = ClassContextObjectMother.Create(typeof(NullTarget), typeof(MixinAddingBT1Attribute), typeof(MixinSuppressingBT1Attribute));
       var targetClassDefinition = _builder.Build(classContext);
 
-      Assert.That(targetClassDefinition.ReceivedAttributes.Select(a => a.AttributeType).ToArray(), Has.No.Member(typeof (BT1Attribute)));
+      Assert.That(targetClassDefinition.ReceivedAttributes.Select(a => a.AttributeType).ToArray(), Has.No.Member(typeof(BT1Attribute)));
     }
 
     [Test]
     public void Build_AnalyzesAttributeIntroductionsOnMembers ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (GenericTargetClass<string>), typeof (MixinAddingBT1AttributeToMember));
+      var classContext = ClassContextObjectMother.Create(typeof(GenericTargetClass<string>), typeof(MixinAddingBT1AttributeToMember));
       var targetClassDefinition = _builder.Build(classContext);
 
-      var methodInfo = typeof (GenericTargetClass<string>).GetMethod("VirtualMethod");
+      var methodInfo = typeof(GenericTargetClass<string>).GetMethod("VirtualMethod");
       Assert.That(targetClassDefinition.Methods[methodInfo].ReceivedAttributes.Select(a => a.AttributeType).ToArray(), 
-                   Has.Member(typeof (BT1Attribute)));
+                   Has.Member(typeof(BT1Attribute)));
     }
   }
 }

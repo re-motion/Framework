@@ -25,7 +25,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithClassAttribute"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 1, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof(IValidatedTypeResolver), Position = 1, RegistrationType = RegistrationType.Decorator)]
   public class ClassTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _resolver;
@@ -66,7 +66,7 @@ namespace Remotion.Validation.Implementation
         throw new InvalidOperationException(
             string.Format(
                 "Invalid '{0}'-definition for collector '{1}': type '{2}' is not assignable from '{3}'.",
-                typeof (ApplyWithClassAttribute).Name,
+                typeof(ApplyWithClassAttribute).Name,
                 collectorType.GetFullNameSafe(),
                 validatedType.GetFullNameSafe(),
                 classOrMixinType.GetFullNameSafe()));

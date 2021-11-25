@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
-                 Driver = typeof (CustomSeleniumWebDriver)
+                 Driver = typeof(CustomSeleniumWebDriver)
              };
     }
 

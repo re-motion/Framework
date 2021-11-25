@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
       ArgumentUtility.CheckNotNull("property", property);
-      return typeof (ReferenceDataSourceTestDomainBase).IsAssignableFrom(property.PropertyType);
+      return typeof(ReferenceDataSourceTestDomainBase).IsAssignableFrom(property.PropertyType);
     }
 
     public void Delete (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, IBusinessObject value)

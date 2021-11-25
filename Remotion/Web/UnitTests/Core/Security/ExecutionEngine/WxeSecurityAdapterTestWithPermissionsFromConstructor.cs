@@ -162,7 +162,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Create, true);
 
-      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof (TestFunctionWithPermissionsFromConstructor));
+      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof(TestFunctionWithPermissionsFromConstructor));
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
@@ -176,7 +176,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Create, false);
 
-      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof (TestFunctionWithPermissionsFromConstructor));
+      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof(TestFunctionWithPermissionsFromConstructor));
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
@@ -191,7 +191,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityAdapter.HasStatelessAccess(typeof (TestFunctionWithPermissionsFromConstructor));
+        hasAccess = _securityAdapter.HasStatelessAccess(typeof(TestFunctionWithPermissionsFromConstructor));
       }
 
       _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
@@ -206,7 +206,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       _mockFunctionalSecurityStrategy
           .Setup(
               _ => _.HasAccess(
-                  typeof (SecurableObject),
+                  typeof(SecurableObject),
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
                   new[] { AccessType.Get(accessTypeEnum) }))

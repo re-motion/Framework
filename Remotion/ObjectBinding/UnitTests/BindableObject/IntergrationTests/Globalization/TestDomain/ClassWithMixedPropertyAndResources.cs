@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
 {
   [BindableObject]
   [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.ClassWithMixedPropertyAndResources")]
-  [Uses (typeof (MixinAddingProperty))]
+  [Uses (typeof(MixinAddingProperty))]
   public class ClassWithMixedPropertyAndResources
   {
     public string Value1 { get; set; }

@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
     [Test]
     public void UnidirectionalRelationToClassWithoutDerivation ()
     {
-      ObjectID client2 = CreateObjectID(typeof (TIClient), "{58535280-84EC-41d9-9F8F-BCAC64BB3709}");
+      ObjectID client2 = CreateObjectID(typeof(TIClient), "{58535280-84EC-41d9-9F8F-BCAC64BB3709}");
 
       DerivedClassWithEntityWithHierarchy derivedClassWithEntity1 = _derivedClassWithEntity1ID.GetObject<DerivedClassWithEntityWithHierarchy>();
       Assert.That(derivedClassWithEntity1.ClientFromAbstractBaseClass.ID, Is.EqualTo(DomainObjectIDs.Client));
@@ -209,22 +209,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
 
     private ObjectID CreateFolderObjectID (string guid)
     {
-      return CreateObjectID(typeof (TIFolder), guid);
+      return CreateObjectID(typeof(TIFolder), guid);
     }
 
     private ObjectID CreateFileObjectID (string guid)
     {
-      return CreateObjectID(typeof (TIFile), guid);
+      return CreateObjectID(typeof(TIFile), guid);
     }
 
     private ObjectID CreateDerivedClassWithEntityWithHierarchyObjectID (string guid)
     {
-      return CreateObjectID(typeof (DerivedClassWithEntityWithHierarchy), guid);
+      return CreateObjectID(typeof(DerivedClassWithEntityWithHierarchy), guid);
     }
 
     private ObjectID CreateDerivedClassWithEntityFromBaseClassWithHierarchyObjectID (string guid)
     {
-      return CreateObjectID(typeof (DerivedClassWithEntityFromBaseClassWithHierarchy), guid);
+      return CreateObjectID(typeof(DerivedClassWithEntityFromBaseClassWithHierarchy), guid);
     }
 
     private ObjectID CreateObjectID (Type classType, string guid)

@@ -41,7 +41,7 @@ public class ResourceIdentifiersAttribute: Attribute
 
   public static ResourceIdentifiersAttribute? GetAttribute (Type type)
   {
-    object[] attributes = type.GetCustomAttributes(typeof (ResourceIdentifiersAttribute), false);
+    object[] attributes = type.GetCustomAttributes(typeof(ResourceIdentifiersAttribute), false);
     if (attributes == null || attributes.Length == 0)
       return null;
     else
@@ -68,7 +68,7 @@ public class ResourceIdentifiersAttribute: Attribute
 
   /// <summary> Initializes a new instance. </summary>
   public ResourceIdentifiersAttribute ()
-    : this (true)
+    : this(true)
   {
   }
 

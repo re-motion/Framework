@@ -90,7 +90,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       Assert.That(PrivateInvoke.InvokePublicMethod(_dt, "f", 1, null), Is.EqualTo("f int string"));
       Assert.That(PrivateInvoke.InvokePublicMethod(_dt, "f", "test"), Is.EqualTo("f string"));
       Assert.That(PrivateInvoke.InvokePublicMethod(_dt, "f", new StringBuilder()), Is.EqualTo("f StringBuilder"));
-      Assert.That(PrivateInvoke.InvokeNonPublicMethod(_dt, typeof (TypeWithMethods), "f", 1, new StringBuilder()), Is.EqualTo("f int StringBuilder"));
+      Assert.That(PrivateInvoke.InvokeNonPublicMethod(_dt, typeof(TypeWithMethods), "f", 1, new StringBuilder()), Is.EqualTo("f int StringBuilder"));
     }
 
     [Test]

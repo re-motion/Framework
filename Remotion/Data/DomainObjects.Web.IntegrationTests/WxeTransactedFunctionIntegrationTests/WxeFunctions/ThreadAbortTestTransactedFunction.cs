@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public ThreadAbortTestTransactedFunction ()
-      : base (WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit)
+      : base(WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit)
     {
     }
 

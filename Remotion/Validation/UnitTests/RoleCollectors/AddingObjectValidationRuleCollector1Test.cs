@@ -41,7 +41,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [SetUp]
     public void SetUp ()
     {
-      _addingObjectValidationRuleCollector = AddingObjectValidationRuleCollector.Create<Customer>(typeof (CustomerValidationRuleCollector1));
+      _addingObjectValidationRuleCollector = AddingObjectValidationRuleCollector.Create<Customer>(typeof(CustomerValidationRuleCollector1));
       _objectValidatorExtractorMock = new Mock<IObjectValidatorExtractor>();
       _stubObjectValidator1 = new StubObjectValidator();
       _stubObjectValidator2 = new Mock<IObjectValidator>();

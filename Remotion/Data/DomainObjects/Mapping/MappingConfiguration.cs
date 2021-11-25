@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     private static readonly Fields s_fields = new Fields();
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (MappingConfiguration));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingConfiguration));
 
     public static IMappingConfiguration Current
     {

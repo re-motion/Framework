@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Key ()
     {
       IClientTransactionExtension extension = new SecurityClientTransactionExtension();
-      Assert.That(extension.Key, Is.EqualTo(typeof (SecurityClientTransactionExtension).FullName));
-      Assert.That(SecurityClientTransactionExtension.DefaultKey, Is.EqualTo(typeof (SecurityClientTransactionExtension).FullName));
+      Assert.That(extension.Key, Is.EqualTo(typeof(SecurityClientTransactionExtension).FullName));
+      Assert.That(SecurityClientTransactionExtension.DefaultKey, Is.EqualTo(typeof(SecurityClientTransactionExtension).FullName));
     }
 
     [Test]

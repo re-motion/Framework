@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _supervisor.Subordinates.Add(_subordinate);
 
-      Assert.That(_subordinate.Properties[typeof (Employee), "Supervisor"].GetRelatedObjectID(), Is.EqualTo(_supervisor.ID));
+      Assert.That(_subordinate.Properties[typeof(Employee), "Supervisor"].GetRelatedObjectID(), Is.EqualTo(_supervisor.ID));
     }
 
     [Test]

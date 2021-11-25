@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class DropDownMenuTestFunction : WxeFunction
   {
     public DropDownMenuTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     private ClientTransactionScope _transactionScope;
 
     protected TableInheritanceMappingTest ()
-      : base (new DatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)
+      : base(new DatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)
     {
     }
 

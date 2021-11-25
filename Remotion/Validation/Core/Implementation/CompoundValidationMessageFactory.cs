@@ -29,7 +29,7 @@ namespace Remotion.Validation.Implementation
   /// When calling the factory method, the first result that is not <see langword="null" /> will be used.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IValidationMessageFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(IValidationMessageFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
 
   public class CompoundValidationMessageFactory : IValidationMessageFactory
   {

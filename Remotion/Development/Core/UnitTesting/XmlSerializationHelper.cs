@@ -41,7 +41,7 @@ namespace Remotion.Development.UnitTesting
     {
       using (MemoryStream stream = new MemoryStream(bytes))
       {
-        XmlSerializer serializer = new XmlSerializer(typeof (T));
+        XmlSerializer serializer = new XmlSerializer(typeof(T));
 
         var result = serializer.Deserialize(stream);
         if (result == null)

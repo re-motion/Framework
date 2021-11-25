@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Definitions
     private MultiDictionary<TKey, TValue> _items = new MultiDictionary<TKey, TValue>();
 
     public MultiDefinitionCollection (KeyMaker keyMaker)
-        : base (keyMaker, null)
+        : base(keyMaker, null)
     {
     }
 

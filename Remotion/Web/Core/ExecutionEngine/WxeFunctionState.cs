@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public class WxeFunctionState
   {
-    private static ILog s_log = LogManager.GetLogger(typeof (WxeFunctionState));
+    private static ILog s_log = LogManager.GetLogger(typeof(WxeFunctionState));
 
     private WxeFunction _function;
     private int _lifetime;
@@ -38,7 +38,7 @@ namespace Remotion.Web.ExecutionEngine
     private int _postBackID;
 
     public WxeFunctionState (WxeFunction function, bool enableCleanUp)
-        : this (
+        : this(
             function,
             WebConfiguration.Current.ExecutionEngine.FunctionTimeout,
             enableCleanUp)

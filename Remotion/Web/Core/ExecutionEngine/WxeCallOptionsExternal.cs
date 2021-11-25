@@ -33,22 +33,22 @@ namespace Remotion.Web.ExecutionEngine
     private readonly bool _returningPostback;
 
     public WxeCallOptionsExternal (string target)
-        : this (target, null, true, WxePermaUrlOptions.Null)
+        : this(target, null, true, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsExternal (string target, string features)
-        : this (target, features, true, WxePermaUrlOptions.Null)
+        : this(target, features, true, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsExternal (string target, string? features, bool returningPostback)
-        : this (target, features, returningPostback, WxePermaUrlOptions.Null)
+        : this(target, features, returningPostback, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsExternal (string target, string? features, bool returningPostback, WxePermaUrlOptions permaUrlOptions)
-        : base (permaUrlOptions)
+        : base(permaUrlOptions)
     {
       ArgumentUtility.CheckNotNullOrEmpty("target", target);
 

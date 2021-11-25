@@ -29,37 +29,37 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _converter = new ExtensibleEnumConverter(typeof (Color));
+      _converter = new ExtensibleEnumConverter(typeof(Color));
     }
 
     [Test]
     public void CanConvertFrom_String ()
     {
-      Assert.That(_converter.CanConvertFrom(null, typeof (string)), Is.True);
+      Assert.That(_converter.CanConvertFrom(null, typeof(string)), Is.True);
     }
 
     [Test]
     public void CanConvertFrom_OtherTypes ()
     {
-      Assert.That(_converter.CanConvertFrom(null, typeof (object)), Is.False);
-      Assert.That(_converter.CanConvertFrom(null, typeof (int)), Is.False);
-      Assert.That(_converter.CanConvertFrom(null, typeof (Enum)), Is.False);
-      Assert.That(_converter.CanConvertFrom(null, typeof (Color)), Is.False);
+      Assert.That(_converter.CanConvertFrom(null, typeof(object)), Is.False);
+      Assert.That(_converter.CanConvertFrom(null, typeof(int)), Is.False);
+      Assert.That(_converter.CanConvertFrom(null, typeof(Enum)), Is.False);
+      Assert.That(_converter.CanConvertFrom(null, typeof(Color)), Is.False);
     }
 
     [Test]
     public void CanConvertTo_String ()
     {
-      Assert.That(_converter.CanConvertTo(null, typeof (string)), Is.True);
+      Assert.That(_converter.CanConvertTo(null, typeof(string)), Is.True);
     }
 
     [Test]
     public void CanConvertTo_OtherTypes ()
     {
-      Assert.That(_converter.CanConvertTo(null, typeof (object)), Is.False);
-      Assert.That(_converter.CanConvertTo(null, typeof (int)), Is.False);
-      Assert.That(_converter.CanConvertTo(null, typeof (Enum)), Is.False);
-      Assert.That(_converter.CanConvertTo(null, typeof (Color)), Is.False);
+      Assert.That(_converter.CanConvertTo(null, typeof(object)), Is.False);
+      Assert.That(_converter.CanConvertTo(null, typeof(int)), Is.False);
+      Assert.That(_converter.CanConvertTo(null, typeof(Enum)), Is.False);
+      Assert.That(_converter.CanConvertTo(null, typeof(Color)), Is.False);
     }
 
     [Test]
@@ -105,14 +105,14 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void ConvertTo_String_Null ()
     {
-      var stringValue = _converter.ConvertTo(null, null, null, typeof (string));
+      var stringValue = _converter.ConvertTo(null, null, null, typeof(string));
       Assert.That(stringValue, Is.Null);
     }
 
     [Test]
     public void ConvertTo_String_Value ()
     {
-      var stringValue = _converter.ConvertTo(null, null, Color.Values.Red(), typeof (string));
+      var stringValue = _converter.ConvertTo(null, null, Color.Values.Red(), typeof(string));
       Assert.That(stringValue, Is.EqualTo(Color.Values.Red().ID));
     }
 
@@ -120,7 +120,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     public void ConvertTo_String_InvalidValue ()
     {
       Assert.That(
-          () => _converter.ConvertTo(null, null, 12, typeof (string)),
+          () => _converter.ConvertTo(null, null, 12, typeof(string)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Cannot convert values of type 'System.Int32' to type 'System.String'. This converter only supports values of type "
@@ -131,7 +131,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     public void ConvertTo_InvalidType ()
     {
       Assert.That(
-          () => _converter.ConvertTo(null, null, Color.Values.Red(), typeof (int)),
+          () => _converter.ConvertTo(null, null, Color.Values.Red(), typeof(int)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Cannot convert values to type 'System.Int32'. This converter only supports converting to type 'System.String'."));

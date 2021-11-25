@@ -31,9 +31,9 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       return new MixinContext(
           mixinKind,
-          mixinType ?? typeof (UnspecifiedType),
+          mixinType ?? typeof(UnspecifiedType),
           introducedMemberVisibility,
-          explicitDependencies ?? new[] { typeof (object), typeof (string) },
+          explicitDependencies ?? new[] { typeof(object), typeof(string) },
           origin ?? MixinContextOriginObjectMother.Create());
     }
 

@@ -22,7 +22,7 @@ namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
   {
     public override int AbstractT
     {
-      get { return default (int); }
+      get { return default(int); }
       set { }
     }
 

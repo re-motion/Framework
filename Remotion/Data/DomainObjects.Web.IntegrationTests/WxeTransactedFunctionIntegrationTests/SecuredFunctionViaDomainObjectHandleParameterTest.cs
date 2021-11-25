@@ -75,13 +75,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       FunctionalSecurityStrategyStub
           .Stub(
               stub => stub.HasAccess(
-                  Arg.Is(typeof (SecurableDomainObject)),
+                  Arg.Is(typeof(SecurableDomainObject)),
                   Arg.Is(SecurityProviderStub),
                   Arg.Is(SecurityPrincipalStub),
                   Arg<IReadOnlyList<AccessType>>.List.Equal(new[] { TestAccessTypeValue })))
           .Return(true);
 
-      Assert.That(WxeFunction.HasAccess(typeof (FunctionWithSecuredDomainObjectHandleParameter)), Is.True);
+      Assert.That(WxeFunction.HasAccess(typeof(FunctionWithSecuredDomainObjectHandleParameter)), Is.True);
     }
 
     [Test]
@@ -90,13 +90,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       FunctionalSecurityStrategyStub
           .Stub(
               stub => stub.HasAccess(
-                  Arg.Is(typeof (SecurableDomainObject)),
+                  Arg.Is(typeof(SecurableDomainObject)),
                   Arg.Is(SecurityProviderStub),
                   Arg.Is(SecurityPrincipalStub),
                   Arg<IReadOnlyList<AccessType>>.List.Equal(new[] { TestAccessTypeValue })))
           .Return(false);
 
-      Assert.That(WxeFunction.HasAccess(typeof (FunctionWithSecuredDomainObjectHandleParameter)), Is.False);
+      Assert.That(WxeFunction.HasAccess(typeof(FunctionWithSecuredDomainObjectHandleParameter)), Is.False);
     }
 
     private FunctionWithSecuredDomainObjectHandleParameter CreateWxeFunction (ClientTransaction clientTransaction)

@@ -26,7 +26,7 @@ namespace OBWTest.Validation
   public class BocValidationTestWxeFunction : WxeFunction
   {
     public BocValidationTestWxeFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
       ReturnUrl = "StartForm.aspx";
       Variables["id"] = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1).ToString();

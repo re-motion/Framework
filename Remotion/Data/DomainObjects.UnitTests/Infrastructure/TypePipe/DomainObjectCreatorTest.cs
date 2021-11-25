@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _transaction = ClientTransaction.CreateRootTransaction();
       _order1InitializationContext = CreateFakeInitializationContext(DomainObjectIDs.Order1, _transaction);
-      var objectID = new ObjectID(typeof (TargetClassForPersistentMixin), Guid.NewGuid());
+      var objectID = new ObjectID(typeof(TargetClassForPersistentMixin), Guid.NewGuid());
       _targetClassForPersistentMixinInitializationContext = CreateFakeInitializationContext(objectID, _transaction);
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var order = _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
 
-      Assert.That(order, Is.InstanceOf(typeof (Order)));
+      Assert.That(order, Is.InstanceOf(typeof(Order)));
       Assert.That(order.ID, Is.EqualTo(DomainObjectIDs.Order1));
       Assert.That(order.RootTransaction, Is.EqualTo(_transaction));
     }

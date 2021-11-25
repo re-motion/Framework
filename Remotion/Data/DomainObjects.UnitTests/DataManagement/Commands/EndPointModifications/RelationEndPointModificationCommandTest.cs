@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _transaction = new TestableClientTransaction();
       _objectID = DomainObjectIDs.Order1;
       _domainObject = _transaction.ExecuteInScope(() => Order.NewObject());
-      _endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
+      _endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
       
       _endPointMock = MockRepository.GenerateMock<IRelationEndPoint>();
       _endPointMock.Stub(mock => mock.ClientTransaction).Return(_transaction);

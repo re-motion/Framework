@@ -29,18 +29,18 @@ namespace Remotion.Web.UI.Controls
     private ListMenuLineBreaks _lineBreaks = ListMenuLineBreaks.All;
 
     public ListMenu (IControl? ownerControl, Type[] supportedWebMenuItemTypes)
-        : base (ownerControl, supportedWebMenuItemTypes)
+        : base(ownerControl, supportedWebMenuItemTypes)
     {
       EnableClientScript = true;
     }
 
     public ListMenu (IControl? ownerControl)
-        : this (ownerControl, new[] { typeof (WebMenuItem) })
+        : this(ownerControl, new[] { typeof(WebMenuItem) })
     {
     }
 
     public ListMenu ()
-        : this (null)
+        : this(null)
     {
     }
 

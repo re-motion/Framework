@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var factories = ((CompoundValidatorFactory<IBocCheckBox>) instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
-          Is.EqualTo(new[] { typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+          Is.EqualTo(new[] { typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]

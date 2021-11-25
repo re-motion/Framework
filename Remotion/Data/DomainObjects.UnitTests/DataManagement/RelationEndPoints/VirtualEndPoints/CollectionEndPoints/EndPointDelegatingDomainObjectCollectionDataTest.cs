@@ -424,7 +424,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private void StubCollectionEndPoint (ICollectionEndPoint<ReadOnlyDomainObjectCollectionDataDecorator> endPointStub, ClientTransaction clientTransaction, Order owningOrder)
     {
       endPointStub.Stub(stub => stub.ClientTransaction).Return(clientTransaction);
-      var relationEndPointDefinition = owningOrder.ID.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof (Order).FullName + ".OrderItems");
+      var relationEndPointDefinition = owningOrder.ID.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
       endPointStub.Stub(mock => mock.ObjectID).Return(owningOrder.ID);
       endPointStub.Stub(mock => mock.Definition).Return(relationEndPointDefinition);
       endPointStub.Stub(mock => mock.GetDomainObject()).Return(owningOrder);

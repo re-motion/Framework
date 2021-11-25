@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public void SetUp ()
     {
-      _classType = typeof (ClassNotInMapping);
+      _classType = typeof(ClassNotInMapping);
       _relationProperty = MockRepository.GenerateStub<IPropertyInformation>();
       _classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType("Test", _classType, _relationProperty);
     }

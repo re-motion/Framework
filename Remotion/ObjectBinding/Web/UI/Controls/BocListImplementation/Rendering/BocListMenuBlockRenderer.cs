@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// Responsible for rendering the menu block of a <see cref="BocList"/>.
   /// </summary>
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="BocListRenderer"/>.</remarks>
-  [ImplementationFor (typeof (IBocListMenuBlockRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocListMenuBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListMenuBlockRenderer : IBocListMenuBlockRenderer
   {
     private const string c_whiteSpace = "&nbsp;";

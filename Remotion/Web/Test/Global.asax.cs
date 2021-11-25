@@ -29,7 +29,7 @@ namespace Remotion.Web.Test
 {
   public class Global : HttpApplication
   {
-    private static ILog s_log = LogManager.GetLogger(typeof (Global));
+    private static ILog s_log = LogManager.GetLogger(typeof(Global));
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     protected void Application_Start (Object sender, EventArgs e)

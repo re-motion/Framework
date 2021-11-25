@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
 
       var manager = _factory.CreateInvalidDomainObjectManager(_fakeConstructedTransaction, eventSink);
-      Assert.That(manager, Is.TypeOf(typeof (InvalidDomainObjectManager)));
+      Assert.That(manager, Is.TypeOf(typeof(InvalidDomainObjectManager)));
       Assert.That(((InvalidDomainObjectManager) manager).TransactionEventSink, Is.SameAs(eventSink));
     }
 
@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(endPointFactory.EndPointProvider, Is.SameAs(endPointProvider));
       Assert.That(endPointFactory.TransactionEventSink, Is.SameAs(eventSink));
       
-      Assert.That(endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf(typeof (DomainObjectCollectionEndPointDataManagerFactory)));
+      Assert.That(endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf(typeof(DomainObjectCollectionEndPointDataManagerFactory)));
       var domainObjectCollectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory) endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
       Assert.That(domainObjectCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubDomainObjectCollectionEndPointChangeDetectionStrategy>());
       Assert.That(endPointFactory.VirtualObjectEndPointDataManagerFactory, Is.TypeOf<VirtualObjectEndPointDataManagerFactory>());
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           Is.TypeOf<AssociatedDomainObjectCollectionDataStrategyFactory>()
               .With.Property((AssociatedDomainObjectCollectionDataStrategyFactory f) => f.VirtualEndPointProvider).SameAs(endPointProvider));
 
-      Assert.That(endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf(typeof (VirtualCollectionEndPointDataManagerFactory)));
+      Assert.That(endPointFactory.VirtualCollectionEndPointDataManagerFactory, Is.TypeOf(typeof(VirtualCollectionEndPointDataManagerFactory)));
       var virtualCollectionEndPointDataManagerFactory = (VirtualCollectionEndPointDataManagerFactory) endPointFactory.VirtualCollectionEndPointDataManagerFactory;
       Assert.That(virtualCollectionEndPointDataManagerFactory.DataContainerMap, Is.SameAs(dataContainerMap));
 
@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           dataManager,
           hierarchyManager);
 
-      Assert.That(result, Is.TypeOf(typeof (ObjectLoader)));
+      Assert.That(result, Is.TypeOf(typeof(ObjectLoader)));
       var objectLoader = (ObjectLoader) result;
       Assert.That(objectLoader.PersistenceStrategy, Is.SameAs(persistenceStrategy));
       Assert.That(

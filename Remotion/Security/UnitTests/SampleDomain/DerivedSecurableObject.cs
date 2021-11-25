@@ -31,7 +31,7 @@ namespace Remotion.Security.UnitTests.SampleDomain
     }
 
     public DerivedSecurableObject (IObjectSecurityStrategy objectSecurityStrategy)
-      : base (objectSecurityStrategy)
+      : base(objectSecurityStrategy)
     {
     }
 

@@ -27,23 +27,23 @@ namespace Remotion.Reflection
     private static readonly ConcurrentDictionary<Tuple<Type, string>, Delegate> s_instanceMethodCache = new ConcurrentDictionary<Tuple<Type, string>, Delegate>();
 
     public MethodLookupInfo (string name, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
-        : base (name, bindingFlags, binder, callingConvention, parameterModifiers)
+        : base(name, bindingFlags, binder, callingConvention, parameterModifiers)
     {
     }
 
     public MethodLookupInfo (string name, BindingFlags bindingFlags)
-        : base (name, bindingFlags)
+        : base(name, bindingFlags)
     {
     }
 
     public MethodLookupInfo (string name)
-        : base (name)
+        : base(name)
     {
     }
 
     public Delegate GetInstanceMethodDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
       return s_instanceMethodCache.GetOrAdd(
             new Tuple<Type, string>(delegateType, MemberName),

@@ -110,20 +110,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     {
       foreach (var method in GetType().GetMethods())
       {
-        var testCaseAttribute = (TestMethodAttribute) Attribute.GetCustomAttribute(method, typeof (TestMethodAttribute), true);
+        var testCaseAttribute = (TestMethodAttribute) Attribute.GetCustomAttribute(method, typeof(TestMethodAttribute), true);
         if (testCaseAttribute != null)
         {
-          if (method.ReturnType != typeof (void) || method.GetParameters().Length != 0)
+          if (method.ReturnType != typeof(void) || method.GetParameters().Length != 0)
             throw new NotSupportedException("Only methods with a void() signature are allowed as test methods.");
 
-          if (testCaseAttribute.GetType() != typeof (T))
+          if (testCaseAttribute.GetType() != typeof(T))
           {
             throw new InvalidOperationException(
                 string.Format(
                     "Method '{0}.{1}'s TestMethodAttribute must be a '{2}' but is a '{3}'.",
                     GetType().Name,
                     method.Name,
-                    typeof (T).Name,
+                    typeof(T).Name,
                     testCaseAttribute.GetType().Name));
           }
 
@@ -146,12 +146,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
             }
 
             // Handle CategoryAttribute
-            var categoryAttribute = (CategoryAttribute) Attribute.GetCustomAttribute(method, typeof (CategoryAttribute));
+            var categoryAttribute = (CategoryAttribute) Attribute.GetCustomAttribute(method, typeof(CategoryAttribute));
             if (categoryAttribute != null)
               testCaseData.SetCategory(categoryAttribute.Name);
 
             // Handle IgnoreAttribute
-            var ignoreAttribute = (IgnoreAttribute) Attribute.GetCustomAttribute(method, typeof (IgnoreAttribute));
+            var ignoreAttribute = (IgnoreAttribute) Attribute.GetCustomAttribute(method, typeof(IgnoreAttribute));
             if (ignoreAttribute != null)
             {
               var dummyTest = new TestSuite("");
@@ -160,7 +160,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
             }
 
             // Handle ExplicitAttribute
-            var explicitAttribute = (ExplicitAttribute) Attribute.GetCustomAttribute(method, typeof (ExplicitAttribute));
+            var explicitAttribute = (ExplicitAttribute) Attribute.GetCustomAttribute(method, typeof(ExplicitAttribute));
             if (explicitAttribute != null)
             {
               var dummyTest = new TestSuite("");

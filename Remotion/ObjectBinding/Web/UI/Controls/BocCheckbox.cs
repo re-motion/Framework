@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // static members
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectBooleanProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectBooleanProperty) };
 
     // member fields
 
@@ -210,7 +210,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
@@ -315,7 +315,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [Description ("The flag that determines whether to show the description next to the checkbox. Undefined is interpreted as false.")]
     [Category ("Appearance")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? ShowDescription
     {
       get { return _showDescription; }
@@ -354,7 +354,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Behavior")]
     [Description ("The boolean value to which this control defaults if the assigned value is null.")]
     [NotifyParentProperty (true)]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? DefaultValue
     {
       get { return _defaultValue; }

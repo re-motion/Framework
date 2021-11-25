@@ -44,33 +44,33 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void MixAttribute_Defaults ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (string), typeof (int));
+      MixAttribute attribute = new MixAttribute(typeof(string), typeof(int));
       Assert.That(attribute.AdditionalDependencies, Is.Empty);
       Assert.That(attribute.SuppressedMixins, Is.Empty);
       Assert.That(attribute.IntroducedMemberVisibility, Is.EqualTo(MemberVisibility.Private));
       Assert.That(attribute.MixinKind, Is.EqualTo(MixinKind.Extending));
-      Assert.That(attribute.TargetType, Is.EqualTo(typeof (string)));
-      Assert.That(attribute.MixinType, Is.EqualTo(typeof (int)));
+      Assert.That(attribute.TargetType, Is.EqualTo(typeof(string)));
+      Assert.That(attribute.MixinType, Is.EqualTo(typeof(int)));
     }
 
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new MixAttribute(typeof (string), typeof (int));
+      var attribute = new MixAttribute(typeof(string), typeof(int));
       Assert.That(attribute.IgnoresDuplicates, Is.True);
     }
 
     [Test]
     public void Apply ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -85,15 +85,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_SuppressedMixins ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
-      attribute.SuppressedMixins = new[] { typeof (int) };
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
+      attribute.SuppressedMixins = new[] { typeof(int) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -108,15 +108,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_AdditionalDependencies ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
-      attribute.AdditionalDependencies = new[] { typeof (string) };
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
+      attribute.AdditionalDependencies = new[] { typeof(string) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -131,15 +131,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_Extending ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
       attribute.MixinKind = MixinKind.Extending;
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -154,15 +154,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_Used ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
       attribute.MixinKind = MixinKind.Used;
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Used,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -177,15 +177,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_PrivateVisibility ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
       attribute.IntroducedMemberVisibility = MemberVisibility.Private;
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -200,15 +200,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_PublicVisibility ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
       attribute.IntroducedMemberVisibility = MemberVisibility.Public;
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Public,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -223,16 +223,16 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_InvalidOperation ()
     {
-      MixAttribute attribute = new MixAttribute(typeof (object), typeof (float));
-      attribute.SuppressedMixins = new[] { typeof (int) };
-      attribute.AdditionalDependencies = new[] { typeof (string) };
+      MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
+      attribute.SuppressedMixins = new[] { typeof(int) };
+      attribute.AdditionalDependencies = new[] { typeof(string) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (float),
+                  typeof(object),
+                  typeof(float),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -249,20 +249,20 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Equals_True ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object))
+      var attribute1 = new MixAttribute(typeof(string), typeof(object))
                          {
                              MixinKind = MixinKind.Used,
-                             AdditionalDependencies = new[] {typeof (int), typeof (double)},
+                             AdditionalDependencies = new[] {typeof(int), typeof(double)},
                              IntroducedMemberVisibility = MemberVisibility.Public,
-                             SuppressedMixins = new[] {typeof (float), typeof (DateTime)}
+                             SuppressedMixins = new[] {typeof(float), typeof(DateTime)}
                          };
 
-      var attribute2 = new MixAttribute(typeof (string), typeof (object))
+      var attribute2 = new MixAttribute(typeof(string), typeof(object))
       {
         MixinKind = MixinKind.Used,
-        AdditionalDependencies = new[] { typeof (int), typeof (double) },
+        AdditionalDependencies = new[] { typeof(int), typeof(double) },
         IntroducedMemberVisibility = MemberVisibility.Public,
-        SuppressedMixins = new[] { typeof (float), typeof (DateTime) }
+        SuppressedMixins = new[] { typeof(float), typeof(DateTime) }
       };
 
       Assert.That(attribute1, Is.EqualTo(attribute2));
@@ -271,8 +271,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Equals_False_TargetType ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object));
-      var attribute2 = new MixAttribute(typeof (int), typeof (object));
+      var attribute1 = new MixAttribute(typeof(string), typeof(object));
+      var attribute2 = new MixAttribute(typeof(int), typeof(object));
 
       Assert.That(attribute1, Is.Not.EqualTo(attribute2));
     }
@@ -280,8 +280,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Equals_False_MixinType ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object));
-      var attribute2 = new MixAttribute(typeof (string), typeof (int));
+      var attribute1 = new MixAttribute(typeof(string), typeof(object));
+      var attribute2 = new MixAttribute(typeof(string), typeof(int));
 
       Assert.That(attribute1, Is.Not.EqualTo(attribute2));
     }
@@ -289,8 +289,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Equals_False_MixinKind ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object)) { MixinKind = MixinKind.Extending };
-      var attribute2 = new MixAttribute(typeof (string), typeof (object)) { MixinKind = MixinKind.Used };
+      var attribute1 = new MixAttribute(typeof(string), typeof(object)) { MixinKind = MixinKind.Extending };
+      var attribute2 = new MixAttribute(typeof(string), typeof(object)) { MixinKind = MixinKind.Used };
 
       Assert.That(attribute1, Is.Not.EqualTo(attribute2));
     }
@@ -298,8 +298,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Equals_False_AdditionalDependencies ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object)) { AdditionalDependencies = new[] {typeof (int)} };
-      var attribute2 = new MixAttribute(typeof (string), typeof (object));
+      var attribute1 = new MixAttribute(typeof(string), typeof(object)) { AdditionalDependencies = new[] {typeof(int)} };
+      var attribute2 = new MixAttribute(typeof(string), typeof(object));
 
       Assert.That(attribute1, Is.Not.EqualTo(attribute2));
     }
@@ -307,8 +307,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Equals_False_IntroducedMemberVisibility ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object)) { IntroducedMemberVisibility = MemberVisibility.Private };
-      var attribute2 = new MixAttribute(typeof (string), typeof (object)) { IntroducedMemberVisibility = MemberVisibility.Public };
+      var attribute1 = new MixAttribute(typeof(string), typeof(object)) { IntroducedMemberVisibility = MemberVisibility.Private };
+      var attribute2 = new MixAttribute(typeof(string), typeof(object)) { IntroducedMemberVisibility = MemberVisibility.Public };
 
       Assert.That(attribute1, Is.Not.EqualTo(attribute2));
     }
@@ -316,8 +316,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Equals_False_SuppressedMixins ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object)) { SuppressedMixins = new[] {typeof (int)} };
-      var attribute2 = new MixAttribute(typeof (string), typeof (object));
+      var attribute1 = new MixAttribute(typeof(string), typeof(object)) { SuppressedMixins = new[] {typeof(int)} };
+      var attribute2 = new MixAttribute(typeof(string), typeof(object));
 
       Assert.That(attribute1, Is.Not.EqualTo(attribute2));
     }
@@ -326,11 +326,11 @@ namespace Remotion.Mixins.UnitTests.Core
     public void EnsureAllPropertiesAreTested ()
     {
       var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
-      var properties = from p in typeof (MixAttribute).GetProperties(bindingFlags)
+      var properties = from p in typeof(MixAttribute).GetProperties(bindingFlags)
                        where p.GetSetMethod() != null
                        select p;
-      var fields = typeof (MixAttribute).GetFields(bindingFlags);
-      var ctorArgs = from ctor in typeof (MixAttribute).GetConstructors(bindingFlags)
+      var fields = typeof(MixAttribute).GetFields(bindingFlags);
+      var ctorArgs = from ctor in typeof(MixAttribute).GetConstructors(bindingFlags)
                      from parameter in ctor.GetParameters()
                      select parameter;
 
@@ -340,20 +340,20 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetHashCode_Equal ()
     {
-      var attribute1 = new MixAttribute(typeof (string), typeof (object))
+      var attribute1 = new MixAttribute(typeof(string), typeof(object))
       {
         MixinKind = MixinKind.Used,
-        AdditionalDependencies = new[] { typeof (int), typeof (double) },
+        AdditionalDependencies = new[] { typeof(int), typeof(double) },
         IntroducedMemberVisibility = MemberVisibility.Public,
-        SuppressedMixins = new[] { typeof (float), typeof (DateTime) }
+        SuppressedMixins = new[] { typeof(float), typeof(DateTime) }
       };
 
-      var attribute2 = new MixAttribute(typeof (string), typeof (object))
+      var attribute2 = new MixAttribute(typeof(string), typeof(object))
       {
         MixinKind = MixinKind.Used,
-        AdditionalDependencies = new[] { typeof (int), typeof (double) },
+        AdditionalDependencies = new[] { typeof(int), typeof(double) },
         IntroducedMemberVisibility = MemberVisibility.Public,
-        SuppressedMixins = new[] { typeof (float), typeof (DateTime) }
+        SuppressedMixins = new[] { typeof(float), typeof(DateTime) }
       };
 
       Assert.That(attribute1.GetHashCode(), Is.EqualTo(attribute2.GetHashCode()));

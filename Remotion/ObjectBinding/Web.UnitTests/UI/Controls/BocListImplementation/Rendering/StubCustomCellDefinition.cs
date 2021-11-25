@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
   public class StubCustomCellControl : HtmlGenericControl, IControl
   {
-    public StubCustomCellControl () : base ("div")
+    public StubCustomCellControl () : base("div")
     {
       Attributes.Add("class", "mockedCustomCellControl");
     }

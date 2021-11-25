@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Logging
       var factory = _serviceLocator.GetInstance<ILogManager>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (Log4NetLogManager)));
+      Assert.That(factory, Is.TypeOf(typeof(Log4NetLogManager)));
     }
 
     [Test]

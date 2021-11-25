@@ -35,11 +35,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       ITransactionMode transactionMode = new CreateRootTransactionMode(true, new TestTransactionFactory());
       TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
 
-      Assert.That(strategy, Is.InstanceOf(typeof (RootTransactionStrategy)));
-      Assert.That(strategy.GetNativeTransaction<TestTransaction>(), Is.InstanceOf(typeof (TestTransaction)));
-      Assert.That(strategy.OuterTransactionStrategy, Is.InstanceOf(typeof (NullTransactionStrategy)));
+      Assert.That(strategy, Is.InstanceOf(typeof(RootTransactionStrategy)));
+      Assert.That(strategy.GetNativeTransaction<TestTransaction>(), Is.InstanceOf(typeof(TestTransaction)));
+      Assert.That(strategy.OuterTransactionStrategy, Is.InstanceOf(typeof(NullTransactionStrategy)));
       Assert.That(((RootTransactionStrategy) strategy).AutoCommit, Is.True);
-      Assert.That(((RootTransactionStrategy) strategy).Transaction, Is.InstanceOf(typeof (TestTransaction)));
+      Assert.That(((RootTransactionStrategy) strategy).Transaction, Is.InstanceOf(typeof(TestTransaction)));
     }
 
     [Test]
@@ -61,7 +61,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
           (WxeContext context) =>
           {
             TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
-            Assert.That(strategy, Is.InstanceOf(typeof (RootTransactionStrategy)));
+            Assert.That(strategy, Is.InstanceOf(typeof(RootTransactionStrategy)));
             Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2) parentFunction).TransactionStrategy));
           }).Verifiable();
 

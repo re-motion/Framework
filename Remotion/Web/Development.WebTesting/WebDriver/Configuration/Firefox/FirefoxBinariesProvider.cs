@@ -141,7 +141,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
           throw new WebException($"Could not fetch the latest geckodriver download URL from '{c_latestDriverReleaseUrl}': {ex.Message}", ex.Status);
         }
 
-        var serializer = new DataContractJsonSerializer(typeof (GithubResponse));
+        var serializer = new DataContractJsonSerializer(typeof(GithubResponse));
         using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(githubResponseJson)))
         {
           var githubResponse = (GithubResponse?) serializer.ReadObject(stream);

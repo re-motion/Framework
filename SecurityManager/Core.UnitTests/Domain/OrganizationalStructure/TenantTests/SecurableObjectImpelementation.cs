@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
 
       IObjectSecurityStrategy objectSecurityStrategy = tenant.GetSecurityStrategy();
       Assert.That(objectSecurityStrategy, Is.Not.Null);
-      Assert.IsInstanceOf(typeof (DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
+      Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
       DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
       Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
     }
@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     {
       ISecurableObject tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
 
-      Assert.That(tenant.GetSecurableType(), Is.SameAs(typeof (Tenant)));
+      Assert.That(tenant.GetSecurableType(), Is.SameAs(typeof(Tenant)));
     }
 
     [Test]

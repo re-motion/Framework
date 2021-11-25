@@ -44,11 +44,11 @@ namespace Remotion.Security.Configuration
 
     public SecurityConfiguration ()
     {
-      _disableAccessChecksProperty = new ConfigurationProperty("disableAccessChecks", typeof (bool), false, ConfigurationPropertyOptions.None);
+      _disableAccessChecksProperty = new ConfigurationProperty("disableAccessChecks", typeof(bool), false, ConfigurationPropertyOptions.None);
 
       _properties.Add(_disableAccessChecksProperty);
 
-      _properties.Add(new ConfigurationProperty("xmlns", typeof (string), null, ConfigurationPropertyOptions.None));
+      _properties.Add(new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None));
     }
 
     protected override ConfigurationPropertyCollection Properties

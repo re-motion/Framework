@@ -26,7 +26,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     private readonly MockRepository _mockRepository;
 
     public RhinoMocksRepositoryAdapter ()
-        : this (new MockRepository())
+        : this(new MockRepository())
     {
     }
 

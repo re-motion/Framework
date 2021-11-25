@@ -31,7 +31,7 @@ namespace Remotion.Collections
     }
 
     public MultiDictionary (IEqualityComparer<TKey> comparer)
-      : base (comparer)
+      : base(comparer)
     {
     }
 

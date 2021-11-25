@@ -265,7 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
       Assert.That(computer.Employee, Is.SameAs(employee2));
       Assert.That(employee2.Computer, Is.SameAs(newComputer));
-      Assert.That(employee2.Properties[typeof (Employee), "Computer"].GetOriginalValue<Computer>(), Is.SameAs(computer));
+      Assert.That(employee2.Properties[typeof(Employee), "Computer"].GetOriginalValue<Computer>(), Is.SameAs(computer));
       Assert.That(employee2.State.IsChanged, Is.True);
     }
 

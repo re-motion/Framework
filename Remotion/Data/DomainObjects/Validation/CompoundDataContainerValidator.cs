@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// delegates the validation to them.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IDataContainerValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundDataContainerValidator : IDataContainerValidator
   {
     private readonly IReadOnlyList<IDataContainerValidator> _validators;

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public Type PropertyType
     {
-      get { return typeof (ObjectID); }
+      get { return typeof(ObjectID); }
     }
 
     public IRdbmsStoragePropertyDefinition ValueProperty

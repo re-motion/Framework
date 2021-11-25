@@ -36,11 +36,11 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var stopwatch = new Stopwatch();
       
       var transaction = ClientTransaction.CreateRootTransaction();
-      LifetimeService.GetObjectReference(transaction, new ObjectID(typeof (Person), Guid.NewGuid()));
+      LifetimeService.GetObjectReference(transaction, new ObjectID(typeof(Person), Guid.NewGuid()));
 
       stopwatch.Start();
       for (int i = 0; i < TestRepititions; i++)
-        found &= LifetimeService.GetObjectReference(transaction, new ObjectID(typeof (Person), Guid.NewGuid())) != null;
+        found &= LifetimeService.GetObjectReference(transaction, new ObjectID(typeof(Person), Guid.NewGuid())) != null;
       stopwatch.Stop();
 
       Console.WriteLine(found);

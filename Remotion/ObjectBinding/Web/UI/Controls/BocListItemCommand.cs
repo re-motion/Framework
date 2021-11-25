@@ -32,11 +32,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   //  TODO: BocListItemCommand: Move long comment blocks to xml-file
   /// <summary> A <see cref="BocListItemCommand"/> defines an action the user can invoke on a datarow. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class BocListItemCommand : BocCommand
   {
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class ListItemHrefCommandInfo : BocHrefCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class ListItemWxeFunctionCommandInfo : BocWxeFunctionCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -125,12 +125,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private ListItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
     public BocListItemCommand ()
-        : this (CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
     public BocListItemCommand (CommandType defaultType)
-        : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         CommandType defaultType,
         [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
         [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
-        : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
+        : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
       _hrefCommand = new ListItemHrefCommandInfo();
       _wxeFunctionCommand = new ListItemWxeFunctionCommandInfo();
@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCommandEnabledColumnDefinition column,
         int listIndex,
         IBusinessObject businessObject)
-        : base (command, businessObject)
+        : base(command, businessObject)
     {
       _column = column;
       _listIndex = listIndex;

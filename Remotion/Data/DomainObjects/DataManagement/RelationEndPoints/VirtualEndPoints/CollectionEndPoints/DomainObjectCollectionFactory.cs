@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       var ctor = collectionType.GetConstructor(
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
           null, 
-          new[] { typeof (IDomainObjectCollectionData) }, 
+          new[] { typeof(IDomainObjectCollectionData) }, 
           null);
       
       if (ctor == null)
@@ -143,11 +143,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
                collectionType,
                static type =>
                {
-                 var canAscribeTo = type.CanAscribeTo(typeof (IEnumerable<>));
+                 var canAscribeTo = type.CanAscribeTo(typeof(IEnumerable<>));
                  return ValueTuple.Create(
                      canAscribeTo,
                      canAscribeTo
-                         ? type.GetAscribedGenericArguments(typeof (IEnumerable<>))[0]
+                         ? type.GetAscribedGenericArguments(typeof(IEnumerable<>))[0]
                          : null);
                })
              .ItemType;

@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       base.LoadValues(interim);
 
-      var type = typeof (AccessControlEntry);
+      var type = typeof(AccessControlEntry);
       var provider = BindableObjectProvider.GetProviderForBindableObjectType(type);
       var aceClass = provider.GetBindableObjectClass(type);
 

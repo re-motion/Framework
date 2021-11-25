@@ -23,7 +23,7 @@ namespace Remotion.Validation.Validators
   public class ExactLengthValidator : LengthValidator
   {
     public ExactLengthValidator (int length, [NotNull] ValidationMessage validationMessage)
-        : base (length, length, $"The value must have exactly {length} characters.", validationMessage)
+        : base(length, length, $"The value must have exactly {length} characters.", validationMessage)
     {
     }
 

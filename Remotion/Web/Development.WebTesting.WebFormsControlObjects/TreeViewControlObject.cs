@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     public TreeViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

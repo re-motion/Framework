@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   public abstract class DateTimePropertyBase : PropertyBase, IBusinessObjectDateTimeProperty
   {
     protected DateTimePropertyBase (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
 

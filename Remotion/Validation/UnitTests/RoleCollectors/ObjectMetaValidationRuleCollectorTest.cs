@@ -34,14 +34,14 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [SetUp]
     public void SetUp ()
     {
-      _ruleCollector = ObjectMetaValidationRuleCollector.Create<Customer>(typeof (CustomerValidationRuleCollector1));
+      _ruleCollector = ObjectMetaValidationRuleCollector.Create<Customer>(typeof(CustomerValidationRuleCollector1));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_ruleCollector.ValidatedType, Is.SameAs(TypeAdapter.Create(typeof (Customer))));
-      Assert.That(_ruleCollector.CollectorType, Is.SameAs(typeof (CustomerValidationRuleCollector1)));
+      Assert.That(_ruleCollector.ValidatedType, Is.SameAs(TypeAdapter.Create(typeof(Customer))));
+      Assert.That(_ruleCollector.CollectorType, Is.SameAs(typeof(CustomerValidationRuleCollector1)));
       Assert.That(_ruleCollector.MetaValidationRules.Any(), Is.False);
     }
 

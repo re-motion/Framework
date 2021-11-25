@@ -27,7 +27,7 @@ namespace Remotion.Validation.Implementation
   /// Implements the <see cref="IValidatorFormatter"/> as a decorator 
   /// and adds additional available metadata for <see cref="IPropertyValidator"/> implementations from the <b>FluentValidation</b> library.
   /// </summary>
-  [ImplementationFor (typeof (IValidatorFormatter), RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof(IValidatorFormatter), RegistrationType = RegistrationType.Decorator)]
   public class DiagnosticInformationValidatorFormatterDecorator : IValidatorFormatter
   {
     private readonly IValidatorFormatter _fallBackValidatorFormatter;

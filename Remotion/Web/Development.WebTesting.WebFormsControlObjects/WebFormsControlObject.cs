@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public abstract class WebFormsControlObject : ControlObject
   {
     protected WebFormsControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

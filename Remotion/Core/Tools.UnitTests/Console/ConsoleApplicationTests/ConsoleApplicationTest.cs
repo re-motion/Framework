@@ -138,7 +138,7 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
       Assert.That(PrivateInvoke.GetNonPublicField(consoleApplication, "_errorWriter"), Is.EqualTo(System.Console.Error));
       Assert.That(PrivateInvoke.GetNonPublicField(consoleApplication, "_logWriter"), Is.EqualTo(System.Console.Out));
       Assert.That(consoleApplication.BufferWidth, Is.EqualTo(80));
-      Assert.That(PrivateInvoke.GetNonPublicField(consoleApplication, "_waitAtEnd"), Is.TypeOf(typeof (ConsoleKeypressWaiter)));
+      Assert.That(PrivateInvoke.GetNonPublicField(consoleApplication, "_waitAtEnd"), Is.TypeOf(typeof(ConsoleKeypressWaiter)));
     }
 
     [Test]

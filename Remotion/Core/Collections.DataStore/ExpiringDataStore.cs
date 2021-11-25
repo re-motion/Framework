@@ -125,7 +125,7 @@ namespace Remotion.Collections.DataStore
         RemoveWithoutScanning(key);
       }
 
-      value = default (TValue)!;
+      value = default(TValue)!;
       return false;
     }
 

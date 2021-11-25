@@ -28,11 +28,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class SingleViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<SingleViewSelector, SingleViewControlObject> testAction)
     {
       testAction(Helper, e => e.SingleViews(), "singleView");

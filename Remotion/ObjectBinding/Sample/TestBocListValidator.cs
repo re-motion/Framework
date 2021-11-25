@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Sample
 
       if (! (control is TestBocList))
       {
-        throw new HttpException("Control '" + ControlToValidate + "' is not of type '" + typeof (TestBocList) + "'");
+        throw new HttpException("Control '" + ControlToValidate + "' is not of type '" + typeof(TestBocList) + "'");
       }
 
       return true;

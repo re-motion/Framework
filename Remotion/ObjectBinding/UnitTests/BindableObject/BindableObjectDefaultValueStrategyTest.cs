@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var businessObjectStub = new Mock<IBusinessObject>();
       var propertyInformationStub = new Mock<IPropertyInformation>();
-      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof (bool));
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
       propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
       var property = CreateProperty(propertyInformationStub.Object);
       var strategy = (IDefaultValueStrategy) new BindableObjectDefaultValueStrategy();

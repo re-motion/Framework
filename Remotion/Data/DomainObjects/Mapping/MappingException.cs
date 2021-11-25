@@ -30,10 +30,10 @@ public class MappingException : ConfigurationException
 
   // construction and disposing
 
-  public MappingException () : this ("A mapping exception occurred.") {}
-  public MappingException (string message) : base (message) {}
-  public MappingException (string message, Exception inner) : base (message, inner) {}
-  protected MappingException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+  public MappingException () : this("A mapping exception occurred.") {}
+  public MappingException (string message) : base(message) {}
+  public MappingException (string message, Exception inner) : base(message, inner) {}
+  protected MappingException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

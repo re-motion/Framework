@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class RequestErrorDetectionStrategyTestFunction : WxeFunction
   {
     public RequestErrorDetectionStrategyTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

@@ -29,11 +29,11 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   /// Responsible for rendering a <see cref="MenuTab"/> in quirks mode.
   /// <seealso cref="IMenuTab"/>
   /// </summary>
-  [ImplementationFor (typeof (IMenuTabRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IMenuTabRenderer), Lifetime = LifetimeKind.Singleton)]
   public class MenuTabRenderer : WebTabRenderer, IMenuTabRenderer
   {
     public MenuTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
-        : base (hotkeyFormatter, renderingFeatures)
+        : base(hotkeyFormatter, renderingFeatures)
     {
     }
 

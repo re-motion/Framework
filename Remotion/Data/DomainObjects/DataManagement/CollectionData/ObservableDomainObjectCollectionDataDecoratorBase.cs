@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     };
 
     protected ObservableDomainObjectCollectionDataDecoratorBase (IDomainObjectCollectionData wrappedData)
-        : base (wrappedData)
+        : base(wrappedData)
     {
     }
 

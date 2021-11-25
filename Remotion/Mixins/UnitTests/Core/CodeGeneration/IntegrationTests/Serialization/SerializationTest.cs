@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     [Test]
     public void GeneratedTypeHasConfigurationField ()
     {
-      Type t = TypeFactory.GetConcreteType(typeof (BaseType1));
+      Type t = TypeFactory.GetConcreteType(typeof(BaseType1));
       var classContextField = t.GetField("__classContext", BindingFlags.NonPublic | BindingFlags.Static);
       Assert.That(classContextField, Is.Not.Null);
       Assert.That(classContextField.IsStatic, Is.True);
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
       var classContextField = bt1.GetType().GetField("__classContext", BindingFlags.NonPublic | BindingFlags.Static);
       Assert.That(classContextField.GetValue(null), Is.Not.Null);
 
-      var expectedClassContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1));
+      var expectedClassContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType1));
       Assert.That(classContextField.GetValue(null), Is.EqualTo(expectedClassContext));
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     [Test]
     public void GeneratedTypeWithReferenceToMixinBaseIsDeserializable ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<OverridableBaseType>().Clear().AddMixins(typeof (MixinOverridingClassMethod)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<OverridableBaseType>().Clear().AddMixins(typeof(MixinOverridingClassMethod)).EnterScope())
       {
         var instance = ObjectFactory.Create<OverridableBaseType>(ParamList.Empty);
         Assert.That(instance.GetType().IsSerializable, Is.True);
@@ -138,7 +138,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     public void RespectsISerializable ()
     {
       ClassImplementingISerializable c = ObjectFactory.Create<ClassImplementingISerializable>(ParamList.Empty);
-      Assert.That(c.GetType(), Is.Not.EqualTo(typeof (ClassImplementingISerializable)));
+      Assert.That(c.GetType(), Is.Not.EqualTo(typeof(ClassImplementingISerializable)));
 
       c.I = 15;
       Assert.That(c.I, Is.EqualTo(15));
@@ -172,7 +172,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     public void WorksIfNoDefaultCtor ()
     {
       ClassWithoutDefaultCtor c = ObjectFactory.Create<ClassWithoutDefaultCtor>(ParamList.Create(35));
-      Assert.That(c.GetType(), Is.Not.EqualTo(typeof (ClassImplementingISerializable)));
+      Assert.That(c.GetType(), Is.Not.EqualTo(typeof(ClassImplementingISerializable)));
 
       Assert.That(c.S, Is.EqualTo("35"));
 
@@ -184,7 +184,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     [Test]
     public void OnInitializedNotCalledOnDeserialization ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (MixinWithOnInitializedAndOnDeserialized)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(MixinWithOnInitializedAndOnDeserialized)).EnterScope())
       {
         NullTarget instance = ObjectFactory.Create<NullTarget>(ParamList.Empty);
         Assert.That(Mixin.Get<MixinWithOnInitializedAndOnDeserialized>(instance).OnInitializedCalled, Is.True);
@@ -197,7 +197,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     [Test]
     public void OnDeserializedCalledOnDeserialization ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (MixinWithOnInitializedAndOnDeserialized)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(MixinWithOnInitializedAndOnDeserialized)).EnterScope())
       {
         NullTarget instance = ObjectFactory.Create<NullTarget>(ParamList.Empty);
         Assert.That(Mixin.Get<MixinWithOnInitializedAndOnDeserialized>(instance).OnDeserializedCalled, Is.False);
@@ -211,7 +211,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     public void MixinConfigurationCanDifferAtDeserializationTime ()
     {
       byte[] serializedData;
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (NullMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(NullMixin)).EnterScope())
       {
         NullTarget instance = ObjectFactory.Create<NullTarget>(ParamList.Empty);
         Assert.That(Mixin.Get<NullMixin>(instance), Is.Not.Null);

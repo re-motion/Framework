@@ -38,7 +38,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
     {
       var factory = _serviceLocator.GetInstance<IGlobalizationService>();
 
-      Assert.That(factory, Is.TypeOf(typeof (CompoundGlobalizationService)));
+      Assert.That(factory, Is.TypeOf(typeof(CompoundGlobalizationService)));
       var compoundGlobalizationServices = ((CompoundGlobalizationService) factory).GlobalizationServices.ToArray();
       Assert.That(compoundGlobalizationServices[0], Is.TypeOf<MixinGlobalizationService>());
       Assert.That(compoundGlobalizationServices[1], Is.TypeOf<GlobalizationService>());

@@ -27,7 +27,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private readonly TypeReference _owner;
 
     public AutomaticMethodInvocationExpression (TypeReference owner, MethodInfo method, params Expression[] arguments)
-        : base (owner, method, arguments)
+        : base(owner, method, arguments)
     {
       _owner = owner;
     }

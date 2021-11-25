@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
       Assert.That(_dataManager.GetState(order1.ID).IsUnchanged, Is.True);
 
-      var propertyName = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      var propertyName = GetPropertyDefinition(typeof(Order), "OrderNumber");
       _dataManager.DataContainers[order1.ID].SetValue(propertyName, 100);
 
       Assert.That(_dataManager.GetState(order1.ID).IsChanged, Is.True);
@@ -142,8 +142,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       SetDomainObject(dataContainer);
 
       Assert.That(_dataManager.DataContainers[DomainObjectIDs.Order1], Is.Null);
-      var collectionEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".OrderItems");
-      var realEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
+      var collectionEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order).FullName + ".OrderItems");
+      var realEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order).FullName + ".Customer");
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(collectionEndPointID), Is.Null);
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(realEndPointID), Is.Null);
 
@@ -164,8 +164,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       SetDomainObject(dataContainer);
 
       Assert.That(_dataManager.DataContainers[DomainObjectIDs.Order1], Is.Null);
-      var collectionEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".OrderItems");
-      var realEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
+      var collectionEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order).FullName + ".OrderItems");
+      var realEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order).FullName + ".Customer");
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(collectionEndPointID), Is.Null);
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(realEndPointID), Is.Null);
 
@@ -239,7 +239,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.OrderTicket1);
       ClientTransactionTestHelper.RegisterDataContainer(_dataManager.ClientTransaction, dataContainer);
 
-      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof (OrderTicket).FullName + ".Order");
+      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof(OrderTicket).FullName + ".Order");
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(endPointID), Is.Not.Null);
 
       _dataManager.Discard(dataContainer);
@@ -287,7 +287,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.OrderTicket1);
       ClientTransactionTestHelper.RegisterDataContainer(_dataManager.ClientTransaction, dataContainer);
 
-      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof (OrderTicket).FullName + ".Order");
+      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof(OrderTicket).FullName + ".Order");
       var endPoint = (RealObjectEndPoint) _dataManager.GetRelationEndPointWithoutLoading(endPointID);
       RealObjectEndPointTestHelper.SetOppositeObjectID(endPoint, DomainObjectIDs.Order1);
       Assert.That(
@@ -418,7 +418,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       dataContainer.Delete();
 
-      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof (OrderTicket).FullName + ".Order");
+      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof(OrderTicket).FullName + ".Order");
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(endPointID), Is.Not.Null);
 
       _dataManager.Commit();
@@ -502,7 +502,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.OrderTicket1);
       ClientTransactionTestHelper.RegisterDataContainer(_dataManager.ClientTransaction, dataContainer);
 
-      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof (OrderTicket).FullName + ".Order");
+      var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof(OrderTicket).FullName + ".Order");
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(endPointID), Is.Not.Null);
 
       _dataManager.Rollback();
@@ -543,7 +543,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var command = _dataManager.CreateDeleteCommand(deletedObject);
 
-      Assert.That(command, Is.InstanceOf(typeof (DeleteCommand)));
+      Assert.That(command, Is.InstanceOf(typeof(DeleteCommand)));
       Assert.That(((DeleteCommand) command).ClientTransaction, Is.SameAs(_dataManager.ClientTransaction));
       Assert.That(((DeleteCommand) command).DeletedObject, Is.SameAs(deletedObject));
       Assert.That(((DeleteCommand) command).TransactionEventSink, Is.SameAs(_dataManager.TransactionEventSink));
@@ -567,7 +567,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(deletedObject.State.IsDeleted, Is.True);
 
       var command = _dataManager.CreateDeleteCommand(deletedObject);
-      Assert.That(command, Is.InstanceOf(typeof (NopCommand)));
+      Assert.That(command, Is.InstanceOf(typeof(NopCommand)));
     }
 
     [Test]
@@ -662,7 +662,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var loadedObject = loadedDataContainer.DomainObject;
 
-      var result = _dataManager.CreateUnloadCommand(new ObjectID(typeof (Order), Guid.NewGuid()), DomainObjectIDs.Order4);
+      var result = _dataManager.CreateUnloadCommand(new ObjectID(typeof(Order), Guid.NewGuid()), DomainObjectIDs.Order4);
 
       Assert.That(result, Is.TypeOf<UnloadCommand>());
       var unloadCommand = (UnloadCommand) result;
@@ -684,9 +684,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void CreateUnloadVirtualEndPointCommand ()
     {
-      var endPointIDOfUnloadedObject = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
-      var endPointIDOfUnchangedObject = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof (Order), "OrderItems");
-      var endPointIDOfChangedObject = RelationEndPointID.Create(DomainObjectIDs.Order4, typeof (Order), "OrderItems");
+      var endPointIDOfUnloadedObject = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
+      var endPointIDOfUnchangedObject = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "OrderItems");
+      var endPointIDOfChangedObject = RelationEndPointID.Create(DomainObjectIDs.Order4, typeof(Order), "OrderItems");
 
       PrepareLoadedDataContainer(_dataManagerWithMocks, endPointIDOfUnchangedObject.ObjectID);
 
@@ -709,9 +709,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void CreateUnloadVirtualEndPointCommand_NewAndDeletedObjects ()
     {
-      var endPointIDOfUnloadedObject = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
-      var endPointIDOfNewObject = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof (Order), "OrderItems");
-      var endPointIDOfDeletedObject = RelationEndPointID.Create(DomainObjectIDs.Order4, typeof (Order), "OrderItems");
+      var endPointIDOfUnloadedObject = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
+      var endPointIDOfNewObject = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "OrderItems");
+      var endPointIDOfDeletedObject = RelationEndPointID.Create(DomainObjectIDs.Order4, typeof(Order), "OrderItems");
 
       PrepareNewDataContainer(_dataManagerWithMocks, endPointIDOfNewObject.ObjectID);
       var dataContainerOfDeletedObject = PrepareLoadedDataContainer(_dataManagerWithMocks, endPointIDOfDeletedObject.ObjectID);
@@ -807,7 +807,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetDataContainerWithLazyLoad_NotFound ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
 
@@ -888,7 +888,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var loadedDataContainer = PrepareLoadedDataContainer(_dataManagerWithMocks);
       var nonLoadedDataContainer = PrepareNonLoadedDataContainer();
 
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
 
@@ -1130,7 +1130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetRelationEndPointWithLazyLoad ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof (Order), "OrderTicket"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof(Order), "OrderTicket"));
       var fakeEndPoint = MockRepository.GenerateStub<IRelationEndPoint>();
 
       _endPointManagerMock.Expect(mock => mock.GetRelationEndPointWithLazyLoad(endPointID)).Return(fakeEndPoint);
@@ -1145,7 +1145,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetRelationEndPointWithoutLoading ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof (Order), "OrderTicket"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof(Order), "OrderTicket"));
       var fakeEndPoint = MockRepository.GenerateStub<IRelationEndPoint>();
 
       _endPointManagerMock.Expect(mock => mock.GetRelationEndPointWithoutLoading(endPointID)).Return(fakeEndPoint);
@@ -1160,7 +1160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetOrCreateVirtualEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof (Order), "OrderTicket"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof(Order), "OrderTicket"));
       var fakeVirtualEndPoint = MockRepository.GenerateStub<IVirtualEndPoint>();
 
       _endPointManagerMock.Expect(mock => mock.GetOrCreateVirtualEndPoint(endPointID)).Return(fakeVirtualEndPoint);
@@ -1212,7 +1212,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     private DataContainer PrepareLoadedDataContainer (DataManager dataManager)
     {
-      return PrepareLoadedDataContainer(dataManager, new ObjectID(typeof (Order), Guid.NewGuid()));
+      return PrepareLoadedDataContainer(dataManager, new ObjectID(typeof(Order), Guid.NewGuid()));
     }
 
     private DataContainer PrepareLoadedDataContainer (DataManager dataManager, ObjectID objectID)

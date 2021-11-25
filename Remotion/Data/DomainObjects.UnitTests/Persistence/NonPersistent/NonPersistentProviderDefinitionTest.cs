@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       var provider = new NonPersistentProviderDefinition("Provider", _nonPersistentStorageObjectFactory);
 
       Assert.That(provider.Name, Is.EqualTo("Provider"));
-      Assert.That(provider.Factory, Is.TypeOf(typeof (NonPersistentStorageObjectFactory)));
+      Assert.That(provider.Factory, Is.TypeOf(typeof(NonPersistentStorageObjectFactory)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 
       Assert.That(provider.Name, Is.EqualTo("Provider"));
       Assert.That(provider.Description, Is.EqualTo("The Description"));
-      Assert.That(provider.Factory, Is.TypeOf(typeof (NonPersistentStorageObjectFactory)));
+      Assert.That(provider.Factory, Is.TypeOf(typeof(NonPersistentStorageObjectFactory)));
       Assert.That(config, Is.Empty);
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     {
       var config = new NameValueCollection();
       config.Add("description", "The Description");
-      config.Add("factoryType", typeof (InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
+      config.Add("factoryType", typeof(InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
 
       Assert.That(
           () => new NonPersistentProviderDefinition("Provider", config),
@@ -81,13 +81,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void IsIdentityTypeSupportedFalse ()
     {
-      Assert.That(_definition.IsIdentityTypeSupported(typeof (int)), Is.False);
+      Assert.That(_definition.IsIdentityTypeSupported(typeof(int)), Is.False);
     }
 
     [Test]
     public void IsIdentityTypeSupportedTrue ()
     {
-      Assert.That(_definition.IsIdentityTypeSupported(typeof (Guid)), Is.True);
+      Assert.That(_definition.IsIdentityTypeSupported(typeof(Guid)), Is.True);
     }
 
     [Test]
@@ -99,18 +99,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void CheckValidIdentityType ()
     {
-      _definition.CheckIdentityType(typeof (Guid));
+      _definition.CheckIdentityType(typeof(Guid));
     }
 
     [Test]
     public void CheckInvalidIdentityType ()
     {
-      var exception = Assert.Throws<IdentityTypeNotSupportedException>(() => _definition.CheckIdentityType(typeof (string)));
+      var exception = Assert.Throws<IdentityTypeNotSupportedException>(() => _definition.CheckIdentityType(typeof(string)));
 
       Assert.That(
           exception.Message,
           Is.EqualTo("The storage provider defined by 'NonPersistentProviderDefinition' does not support identity values of type 'System.String'."));
-      Assert.That(exception.InvalidIdentityType, Is.EqualTo(typeof (string)));
+      Assert.That(exception.InvalidIdentityType, Is.EqualTo(typeof(string)));
     }
   }
 }

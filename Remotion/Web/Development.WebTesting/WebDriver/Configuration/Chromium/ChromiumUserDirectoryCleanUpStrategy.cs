@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
   /// </summary>
   public class ChromiumUserDirectoryCleanUpStrategy : IBrowserSessionCleanUpStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (ChromiumUserDirectoryCleanUpStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ChromiumUserDirectoryCleanUpStrategy));
 
     private readonly string _userDirectoryRoot;
     private readonly string _userDirectory;

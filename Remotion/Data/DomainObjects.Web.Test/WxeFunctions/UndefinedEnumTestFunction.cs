@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // construction and disposing
 
     public UndefinedEnumTestFunction ()
-      : base (WxeTransactionMode.CreateRootWithAutoCommit)
+      : base(WxeTransactionMode.CreateRootWithAutoCommit)
     {
       ReturnUrl = "default.aspx";
     }

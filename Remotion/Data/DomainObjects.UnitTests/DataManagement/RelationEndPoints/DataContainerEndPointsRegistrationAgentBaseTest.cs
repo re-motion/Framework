@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _map = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
 
-      _orderTicketEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
-      _customerEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      _orderTicketEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
+      _customerEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
       _orderTicketEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
       _orderTicketEndPointMock.Stub(stub => stub.ID).Return(_orderTicketEndPointID);

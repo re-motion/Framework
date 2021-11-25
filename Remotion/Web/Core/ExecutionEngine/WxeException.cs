@@ -24,22 +24,22 @@ namespace Remotion.Web.ExecutionEngine
   public class WxeException : Exception
   {
     public WxeException ()
-        : base ("The execution engine encountered an error.")
+        : base("The execution engine encountered an error.")
     {
     }
 
     public WxeException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
     public WxeException (string message, Exception? innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
 
     public WxeException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

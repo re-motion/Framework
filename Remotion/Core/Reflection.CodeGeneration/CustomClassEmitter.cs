@@ -30,7 +30,7 @@ namespace Remotion.Reflection.CodeGeneration
   public class CustomClassEmitter : IClassEmitter
   {
     private static readonly ConstructorInfo s_generatedMethodWrapperAttributeCtor =
-        typeof (GeneratedMethodWrapperAttribute).GetConstructor(new[] { typeof (Type), typeof (string), typeof (string) })!;
+        typeof(GeneratedMethodWrapperAttribute).GetConstructor(new[] { typeof(Type), typeof(string), typeof(string) })!;
 
     public static string FlattenTypeName (string fullName)
     {
@@ -50,12 +50,12 @@ namespace Remotion.Reflection.CodeGeneration
     }
 
     public CustomClassEmitter (ModuleScope scope, string name, Type baseType)
-        : this (scope, name, baseType, Type.EmptyTypes, TypeAttributes.Class | TypeAttributes.Public, false)
+        : this(scope, name, baseType, Type.EmptyTypes, TypeAttributes.Class | TypeAttributes.Public, false)
     {
     }
 
     public CustomClassEmitter (ModuleScope scope, string name, Type baseType, Type[] interfaces, TypeAttributes flags, bool forceUnsigned)
-        : this (
+        : this(
             new ClassEmitterSupportingOpenGenericBaseType(
                 ArgumentUtility.CheckNotNull("scope", scope),
                 ArgumentUtility.CheckNotNullOrEmpty("name", name),

@@ -27,12 +27,12 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     {
       var instance1 = BuildMixedInstance<C>(
           b => b.AddMixinDependency<MixinA, IMixinB>(),
-          typeof (MixinA), typeof (MixinB));
+          typeof(MixinA), typeof(MixinB));
       Assert.That(instance1.Method1(), Is.EqualTo("MixinA.Method1 - MixinB.Method1 - C.Method1"));
 
       var instance2 = BuildMixedInstance<C>(
           b => b.AddMixinDependency<MixinB, IMixinA>(),
-          typeof (MixinA), typeof (MixinB));
+          typeof(MixinA), typeof(MixinB));
       Assert.That(instance2.Method1(), Is.EqualTo("MixinB.Method1 - MixinA.Method1 - C.Method1"));
     }
 

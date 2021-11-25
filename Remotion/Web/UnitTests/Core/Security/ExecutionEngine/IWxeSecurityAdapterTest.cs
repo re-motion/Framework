@@ -40,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       var factory = _serviceLocator.GetAllInstances<IWxeSecurityAdapter>().SingleOrDefault();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (WxeSecurityAdapter)));
+      Assert.That(factory, Is.TypeOf(typeof(WxeSecurityAdapter)));
     }
 
     [Test]

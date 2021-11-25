@@ -30,18 +30,18 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
 
-      if (!typeof (T).IsAssignableFrom(dataStrategy.RequiredItemType) && !dataStrategy.IsReadOnly)
+      if (!typeof(T).IsAssignableFrom(dataStrategy.RequiredItemType) && !dataStrategy.IsReadOnly)
       {
         var message = string.Format(
             "The given data strategy must have a required item type of '{0}' in order to be used with this collection type.",
-            typeof (T));
+            typeof(T));
         throw new ArgumentException(message, "dataStrategy");
       }
       return dataStrategy;
     }
 
     public ObjectList ()
-        : base (typeof (T))
+        : base(typeof(T))
     {
     }
 
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects
     /// </para>
     /// </remarks>
     public ObjectList (IDomainObjectCollectionData dataStrategy)
-        : base (CheckStrategy(dataStrategy))
+        : base(CheckStrategy(dataStrategy))
     {
     }
 
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="domainObjects">The domain objects to use as the initial contents of the <see cref="ObjectList{T}"/>.</param>
     public ObjectList (IEnumerable<T> domainObjects)
-        : base (domainObjects.Cast<DomainObject>(), typeof (T))
+        : base(domainObjects.Cast<DomainObject>(), typeof(T))
     {
     }
 

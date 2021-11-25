@@ -38,7 +38,7 @@ namespace Remotion.Security.UnitTests.Metadata
       var obj = _serviceLocator.GetInstance<IMemberResolver>();
 
       Assert.That(obj, Is.Not.Null);
-      Assert.That(obj, Is.TypeOf(typeof (ReflectionBasedMemberResolver)));
+      Assert.That(obj, Is.TypeOf(typeof(ReflectionBasedMemberResolver)));
     }
 
     [Test]

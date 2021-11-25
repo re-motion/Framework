@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       base.SetUp();
 
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Position");
-      _orderPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Order");
+      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
+      _orderPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Order");
 
       _parser = new SortExpressionParser(_orderItemClassDefinition);
     }
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     [Test]
     public void Parse_WithVirtualRelationEndPoint ()
     {
-      var orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Order));
+      var orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       var parser = new SortExpressionParser(orderClassDefinition);
 
       var sortExpression = "OrderTicket";
@@ -117,14 +117,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     [Test]
     public void Parse_WithDerivedProperty ()
     {
-      var partnerClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Partner));
+      var partnerClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Partner));
       var parser = new SortExpressionParser(partnerClassDefinition);
 
       var sortExpression = "Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor.NumberOfShops";
 
       var result = parser.Parse(sortExpression);
 
-      var distributorClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Distributor));
+      var distributorClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Distributor));
       var numberOfShopsPropertyDefinition = distributorClassDefinition.GetMandatoryPropertyDefinition(sortExpression);
       var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(numberOfShopsPropertyDefinition) };
       Assert.That(result.SortedProperties, Is.EqualTo(expected));

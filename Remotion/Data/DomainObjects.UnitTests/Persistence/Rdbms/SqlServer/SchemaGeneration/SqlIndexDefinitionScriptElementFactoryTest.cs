@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "CREATE NONCLUSTERED INDEX [Index1]\r\n"
           + "  ON [SchemaName].[TableName1] ([IndexColumn1] DESC)";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "CREATE NONCLUSTERED INDEX [Index2]\r\n"
           + "  ON [dbo].[TableName2] ([IndexColumn2] ASC)";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -171,7 +171,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "schema_name (so.schema_id)='SchemaName' AND si.[name] = 'Index1')\r\n"
           + "  DROP INDEX [Index1] ON [SchemaName].[TableName1]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "schema_name (so.schema_id)='dbo' AND si.[name] = 'Index2')\r\n"
           + "  DROP INDEX [Index2] ON [dbo].[TableName2]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }

@@ -25,7 +25,7 @@ namespace OBWTest
   public class ReferenceDataSourceTestFunction : WxeFunction
   {
     public ReferenceDataSourceTestFunction ()
-      : base (new NoneTransactionMode())
+      : base(new NoneTransactionMode())
  
     {
     }
@@ -38,7 +38,7 @@ namespace OBWTest
 
     private void Step1 ()
     {
-      ExceptionHandler.AppendCatchExceptionTypes(typeof (WxeUserCancelException));
+      ExceptionHandler.AppendCatchExceptionTypes(typeof(WxeUserCancelException));
       RootObject = ObjectFactory.Create<LevelOne>();
     }
 

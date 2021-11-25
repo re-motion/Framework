@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
+        : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
     
     }

@@ -24,8 +24,8 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
   public class OverrideTarget_ForTargetInterfaceWithImplicitVirtualMethodShadowingVirtualMethodOnBaseClass
   {
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase (typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase (typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateTargetType_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
       using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())

@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void RelationDefinitionWithNoTypeNotFoundClassDefinition ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (DerivedValidationDomainObjectClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
       var endPoint = new AnonymousRelationEndPointDefinition(classDefinition);
       var relationDefinition = new RelationDefinition("ID", endPoint, endPoint);
 
@@ -51,13 +51,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType(
           "Test",
-          typeof (ClassOutOfInheritanceHierarchy),
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("Property")));
+          typeof(ClassOutOfInheritanceHierarchy),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("Property")));
       var endPoint = new VirtualObjectRelationEndPointDefinition(
           classDefinition,
           "RelationProperty",
           false,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("Property")));
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("Property")));
       var relationDefinition = new RelationDefinition("ID", endPoint, endPoint);
 
       var validationResult = _validationRule.Validate(relationDefinition);

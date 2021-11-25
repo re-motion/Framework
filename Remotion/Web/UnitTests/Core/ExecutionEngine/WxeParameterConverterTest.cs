@@ -40,14 +40,14 @@ public class WxeParameterConverterTest
   [SetUp]
   public virtual void SetUp ()
   {
-    _requiredObjectInParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof (object));
-    _requiredStringInParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof (string));
-    _requiredInt32InParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof (Int32));
-    _requiredNaInt32InParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof (Int32?));
-    _requiredOutParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.Out, typeof (string));
+    _requiredObjectInParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof(object));
+    _requiredStringInParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof(string));
+    _requiredInt32InParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof(Int32));
+    _requiredNaInt32InParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.In, typeof(Int32?));
+    _requiredOutParameter = new WxeParameterDeclaration(c_param, true, WxeParameterDirection.Out, typeof(string));
 
-    _stringInParameter = new WxeParameterDeclaration(c_param, false, WxeParameterDirection.In, typeof (string));
-    _int32InParameter = new WxeParameterDeclaration(c_param, false, WxeParameterDirection.In, typeof (Int32));
+    _stringInParameter = new WxeParameterDeclaration(c_param, false, WxeParameterDirection.In, typeof(string));
+    _int32InParameter = new WxeParameterDeclaration(c_param, false, WxeParameterDirection.In, typeof(Int32));
 
     _callerParameters = new NameObjectCollection();
   }

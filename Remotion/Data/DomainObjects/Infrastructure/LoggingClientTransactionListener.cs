@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class LoggingClientTransactionListener : IClientTransactionListener
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (LoggingClientTransactionListener));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(LoggingClientTransactionListener));
 
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {

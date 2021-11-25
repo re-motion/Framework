@@ -102,8 +102,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       clientTransaction = clientTransaction ?? ClientTransaction.CreateRootTransaction();
 
       var securableDomainObject =
-          (SecurableDomainObject) LifetimeService.NewObject(clientTransaction, typeof (SecurableDomainObject), ParamList.Empty);
-      securableDomainObject.SecurableType = typeof (SecurableDomainObject);
+          (SecurableDomainObject) LifetimeService.NewObject(clientTransaction, typeof(SecurableDomainObject), ParamList.Empty);
+      securableDomainObject.SecurableType = typeof(SecurableDomainObject);
       securableDomainObject.SecurityStrategy = _objectSecurityStrategyStub;
       return securableDomainObject;
     }

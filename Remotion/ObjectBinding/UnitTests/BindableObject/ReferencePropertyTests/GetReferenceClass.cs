@@ -51,9 +51,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = new ReferenceProperty(
           new PropertyBase.Parameters(
               _bindableObjectProvider,
-              GetPropertyInfo(typeof (ClassWithReferenceType<ClassWithIdentity>), "Scalar"),
-              typeof (ClassWithIdentity),
-              new Lazy<Type>(() => TypeFactory.GetConcreteType(typeof (ClassWithIdentity))),
+              GetPropertyInfo(typeof(ClassWithReferenceType<ClassWithIdentity>), "Scalar"),
+              typeof(ClassWithIdentity),
+              new Lazy<Type>(() => TypeFactory.GetConcreteType(typeof(ClassWithIdentity))),
               null,
               true,
               false,
@@ -64,13 +64,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
               SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
               new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
 
-      Assert.That(property.ReferenceClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (ClassWithIdentity))));
+      Assert.That(property.ReferenceClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithIdentity))));
       Assert.That(
           property.BusinessObjectProvider,
-          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (ClassWithReferenceType<ClassWithIdentity>))));
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassWithReferenceType<ClassWithIdentity>))));
       Assert.That(
           property.ReferenceClass.BusinessObjectProvider,
-          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (ClassWithIdentity))));
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassWithIdentity))));
       Assert.That(property.ReferenceClass.BusinessObjectProvider, Is.Not.SameAs(property.BusinessObjectProvider));
     }
 
@@ -80,9 +80,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = new ReferenceProperty(
           new PropertyBase.Parameters(
               _bindableObjectProvider,
-              GetPropertyInfo(typeof (ClassWithReferenceToClassDerivedFromBindableObjectBase), "ScalarReference"),
-              typeof (ClassDerivedFromBindableObjectBase),
-              new Lazy<Type>(() => typeof (ClassDerivedFromBindableObjectBase)),
+              GetPropertyInfo(typeof(ClassWithReferenceToClassDerivedFromBindableObjectBase), "ScalarReference"),
+              typeof(ClassDerivedFromBindableObjectBase),
+              new Lazy<Type>(() => typeof(ClassDerivedFromBindableObjectBase)),
               null,
               true,
               false,
@@ -93,13 +93,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
               SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
               new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
 
-      Assert.That(property.ReferenceClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (ClassDerivedFromBindableObjectBase))));
+      Assert.That(property.ReferenceClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassDerivedFromBindableObjectBase))));
       Assert.That(
           property.BusinessObjectProvider,
-          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (ClassWithReferenceToClassDerivedFromBindableObjectBase))));
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassWithReferenceToClassDerivedFromBindableObjectBase))));
       Assert.That(
           property.ReferenceClass.BusinessObjectProvider,
-          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (ClassDerivedFromBindableObjectBase))));
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassDerivedFromBindableObjectBase))));
       Assert.That(property.ReferenceClass.BusinessObjectProvider, Is.SameAs(property.BusinessObjectProvider));
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
       mockService.Setup(_ => _.GetBusinessObjectClass(typeFromOtherBusinessObjectProvider)).Returns(expectedClass.Object).Verifiable();
 
-      _bindableObjectProvider.AddService(typeof (IBusinessObjectClassService), mockService.Object);
+      _bindableObjectProvider.AddService(typeof(IBusinessObjectClassService), mockService.Object);
       IBusinessObjectClass actualClass = property.ReferenceClass;
 
       mockService.Verify();
@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void UseBusinessObjectClassService_WithoutService ()
     {
-      IBusinessObjectReferenceProperty property = CreateProperty("Scalar", typeof (ClassFromOtherBusinessObjectImplementation));
+      IBusinessObjectReferenceProperty property = CreateProperty("Scalar", typeof(ClassFromOtherBusinessObjectImplementation));
       Assert.That(
           () => property.ReferenceClass,
           Throws.InvalidOperationException
@@ -137,9 +137,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void UseBusinessObjectClassService_WithServiceReturningNull ()
     {
-      IBusinessObjectReferenceProperty property = CreateProperty("Scalar", typeof (ClassFromOtherBusinessObjectImplementation));
+      IBusinessObjectReferenceProperty property = CreateProperty("Scalar", typeof(ClassFromOtherBusinessObjectImplementation));
 
-      _bindableObjectProvider.AddService(typeof (IBusinessObjectClassService), new StubBusinessObjectClassService());
+      _bindableObjectProvider.AddService(typeof(IBusinessObjectClassService), new StubBusinessObjectClassService());
       Assert.That(
           () => property.ReferenceClass,
           Throws.InvalidOperationException
@@ -153,7 +153,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       return new ReferenceProperty(
           GetPropertyParameters(
-              GetPropertyInfo(typeof (ClassWithReferenceType<>).MakeGenericType(propertyType), propertyName), _bindableObjectProvider));
+              GetPropertyInfo(typeof(ClassWithReferenceType<>).MakeGenericType(propertyType), propertyName), _bindableObjectProvider));
     }
   }
 }

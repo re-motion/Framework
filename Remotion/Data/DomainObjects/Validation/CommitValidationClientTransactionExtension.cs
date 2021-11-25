@@ -35,19 +35,19 @@ namespace Remotion.Data.DomainObjects.Validation
   {
     public static string DefaultKey
     {
-      get { return typeof (CommitValidationClientTransactionExtension).GetFullNameChecked(); }
+      get { return typeof(CommitValidationClientTransactionExtension).GetFullNameChecked(); }
     }
     
     [NonSerialized]
     private IPersistableDataValidator _validator;
 
     public CommitValidationClientTransactionExtension (IPersistableDataValidator validator)
-      : this (validator, DefaultKey)
+      : this(validator, DefaultKey)
     {
     }
 
     protected CommitValidationClientTransactionExtension (IPersistableDataValidator validator, string key)
-        : base (key)
+        : base(key)
     {
       ArgumentUtility.CheckNotNull("validator", validator);
 

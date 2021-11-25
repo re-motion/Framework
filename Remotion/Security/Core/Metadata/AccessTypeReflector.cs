@@ -36,7 +36,7 @@ namespace Remotion.Security.Metadata
     // construction and disposing
 
     public AccessTypeReflector ()
-      : this (new EnumerationReflector())
+      : this(new EnumerationReflector())
     {
     }
 
@@ -61,7 +61,7 @@ namespace Remotion.Security.Metadata
       List<EnumValueInfo> accessTypes = new List<EnumValueInfo>();
       foreach (var type in AssemblyTypeCache.GetTypes(assembly))
       {
-        if (type.IsEnum && Attribute.IsDefined(type, typeof (AccessTypeAttribute), false))
+        if (type.IsEnum && Attribute.IsDefined(type, typeof(AccessTypeAttribute), false))
         {
           Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(type, cache);
           foreach (KeyValuePair<Enum, EnumValueInfo> entry in values)
@@ -81,7 +81,7 @@ namespace Remotion.Security.Metadata
       ArgumentUtility.CheckNotNull("type", type);
       ArgumentUtility.CheckNotNull("cache", cache);
 
-      Dictionary<Enum, EnumValueInfo> accessTypes = _enumerationReflector.GetValues(typeof (GeneralAccessTypes), cache);
+      Dictionary<Enum, EnumValueInfo> accessTypes = _enumerationReflector.GetValues(typeof(GeneralAccessTypes), cache);
       foreach (KeyValuePair<Enum, EnumValueInfo> entry in accessTypes)
       {
         if (!cache.ContainsAccessType(entry.Key))
@@ -125,7 +125,7 @@ namespace Remotion.Security.Metadata
 
     private bool FindSecuredMembersFilter (MemberInfo member, object? filterCriteria)
     {
-      return Attribute.IsDefined(member, typeof (DemandPermissionAttribute), true);
+      return Attribute.IsDefined(member, typeof(DemandPermissionAttribute), true);
     }
 
     private void AddAccessTypesFromAttribute (IEnumerable<MethodInfo> methodInfos, Dictionary<Enum, EnumValueInfo> accessTypes, MetadataCache cache)

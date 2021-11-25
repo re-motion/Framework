@@ -200,7 +200,7 @@ namespace Remotion.Reflection.CodeGeneration
         IndexParameters.CopyTo(setterParameterTypes, 0);
         setterParameterTypes[IndexParameters.Length] = PropertyType;
 
-        IMethodEmitter method = _declaringType.CreateMethod(BuildAccessorMethodName(Name,"set"), flags, typeof (void), setterParameterTypes);
+        IMethodEmitter method = _declaringType.CreateMethod(BuildAccessorMethodName(Name,"set"), flags, typeof(void), setterParameterTypes);
 
         SetMethod = method;
         return method;

@@ -30,18 +30,18 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void OverrideClassMethods ()
     {
-      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof (BT1Mixin1));
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(BT1Mixin1));
 
       Assert.That(bt1.VirtualMethod(), Is.EqualTo("BT1Mixin1.VirtualMethod"));
       Assert.IsNotNull(bt1.GetType().GetMethod("VirtualMethod", Type.EmptyTypes), "overridden member is public and has the same name");
-      Assert.That(bt1.GetType().GetMethod("VirtualMethod", Type.EmptyTypes).GetBaseDefinition().DeclaringType, Is.EqualTo(typeof (BaseType1)));
+      Assert.That(bt1.GetType().GetMethod("VirtualMethod", Type.EmptyTypes).GetBaseDefinition().DeclaringType, Is.EqualTo(typeof(BaseType1)));
     }
 
     [Test]
     [Ignore ("TODO: This does not work on the build server, check why.")]
     public void OverrideClassProperties ()
     {
-      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof (BT1Mixin1));
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(BT1Mixin1));
 
       Assert.That(bt1.VirtualProperty, Is.EqualTo("BaseType1.BackingField"));
       Assert.That(Mixin.Get<BT1Mixin1>(bt1).BackingField, Is.Not.EqualTo("FooBar"));
@@ -52,7 +52,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
 
       Assert.IsNotNull(bt1.GetType().GetProperty("VirtualProperty"), "overridden member is public and has the same name");
 
-      bt1 = CreateMixedObject<BaseType1>(typeof (BT1Mixin2));
+      bt1 = CreateMixedObject<BaseType1>(typeof(BT1Mixin2));
 
       Assert.That(bt1.VirtualProperty, Is.EqualTo("Mixin2ForBT1.VirtualProperty"));
       bt1.VirtualProperty = "Foobar";
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void OverrideClassPropertiesTemp ()
     {
-      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof (BT1Mixin1));
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(BT1Mixin1));
 
       Assert.That(bt1.VirtualProperty, Is.EqualTo("BaseType1.BackingField"));
       Assert.That(Mixin.Get<BT1Mixin1>(bt1).BackingField, Is.Not.EqualTo("FooBar"));
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Assert.IsNotNull(bt1.GetType().GetProperty("VirtualProperty",
           BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly), "overridden member is public and has the same name");
 
-      bt1 = CreateMixedObject<BaseType1>(typeof (BT1Mixin2));
+      bt1 = CreateMixedObject<BaseType1>(typeof(BT1Mixin2));
 
       Assert.That(bt1.VirtualProperty, Is.EqualTo("Mixin2ForBT1.VirtualProperty"));
       bt1.VirtualProperty = "Foobar";
@@ -84,7 +84,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void OverrideClassEvents ()
     {
-      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof (BT1Mixin1));
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(BT1Mixin1));
 
       EventHandler eventHandler = delegate { };
 
@@ -102,7 +102,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void OverrideWithComposedBaseInterface ()
     {
-      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin7Base), typeof (BT3Mixin4));
+      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof(BT3Mixin7Base), typeof(BT3Mixin4));
       Assert.That(bt3.IfcMethod(), Is.EqualTo("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod-BaseType3.IfcMethod2"));
     }
 
@@ -118,7 +118,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixinWithProtectedOverrider ()
     {
-      BaseType1 obj = CreateMixedObject<BaseType1>(typeof (MixinWithProtectedOverrider));
+      BaseType1 obj = CreateMixedObject<BaseType1>(typeof(MixinWithProtectedOverrider));
       Assert.That(obj.VirtualMethod(), Is.EqualTo("MixinWithProtectedOverrider.VirtualMethod-BaseType1.VirtualMethod"));
       Assert.That(obj.VirtualProperty, Is.EqualTo("MixinWithProtectedOverrider.VirtualProperty-BaseType1.BackingField"));
 
@@ -130,7 +130,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void ValueTypeMixin ()
     {
-      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof (ValueTypeMixin));
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(ValueTypeMixin));
       Assert.That(bt1.VirtualMethod(), Is.EqualTo("ValueTypeMixin.VirtualMethod"));
     }
 
@@ -161,7 +161,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Extends (typeof (TypeWithArrayArray))]
+    [Extends (typeof(TypeWithArrayArray))]
     public class MixinMixingTypeWithArrayArray : Mixin<MixinMixingTypeWithArrayArray.IRequirements, MixinMixingTypeWithArrayArray.IRequirements>
     {
       public interface IRequirements

@@ -35,7 +35,7 @@ namespace Remotion.Security.Metadata
 
     // construction and disposing
 
-    public StatePropertyReflector () : this (new EnumerationReflector())
+    public StatePropertyReflector () : this(new EnumerationReflector())
     {
     }
 
@@ -62,10 +62,10 @@ namespace Remotion.Security.Metadata
             "property");
       }
 
-      if (!Attribute.IsDefined(property.PropertyType, typeof (SecurityStateAttribute), false))
+      if (!Attribute.IsDefined(property.PropertyType, typeof(SecurityStateAttribute), false))
       {
         throw new ArgumentException(string.Format("The type of the property '{0}' in type '{1}' does not have the {2} applied.", 
-                property.Name, property.DeclaringType!.GetFullNameSafe(), typeof (SecurityStateAttribute).GetFullNameSafe()),
+                property.Name, property.DeclaringType!.GetFullNameSafe(), typeof(SecurityStateAttribute).GetFullNameSafe()),
             "property");
       }
 
@@ -76,7 +76,7 @@ namespace Remotion.Security.Metadata
       {
         info = new StatePropertyInfo();
         info.Name = property.Name;
-        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute(property, typeof (PermanentGuidAttribute), true);
+        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute(property, typeof(PermanentGuidAttribute), true);
         if (attribute != null)
           info.ID = attribute.Value.ToString();
         info.Values = new List<EnumValueInfo>(_enumerationReflector.GetValues(property.PropertyType, cache).Values);

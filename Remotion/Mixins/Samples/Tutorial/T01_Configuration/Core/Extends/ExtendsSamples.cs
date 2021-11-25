@@ -20,7 +20,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Extends
 {
   namespace ExtendsSamples
   {
-    [Extends (typeof (MyClass))]
+    [Extends (typeof(MyClass))]
     public class MyMixin
     {
     }
@@ -41,7 +41,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Extends
     {
     }
 
-    [Extends (typeof (File))]
+    [Extends (typeof(File))]
     public class NumberedFileMixin : INumberedFile
     {
       private readonly string _id = Guid.NewGuid().ToString();

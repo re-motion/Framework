@@ -427,7 +427,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     {
       return (IBusinessObject) ObjectFactory.Create(
           false,
-          typeof (SecurableClassWithProperties),
+          typeof(SecurableClassWithProperties),
           ParamList.Create(ObjectSecurityStrategy.Create(securityContextFactoryStub, InvalidationToken.Create())));
     }
 
@@ -435,7 +435,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     {
       return (IBusinessObject) ObjectFactory.Create(
           false,
-          typeof (DerivedSecurableClassWithProperties),
+          typeof(DerivedSecurableClassWithProperties),
           ParamList.Create(ObjectSecurityStrategy.Create(securityContextFactoryStub, InvalidationToken.Create())));
     }
   }

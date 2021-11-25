@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
   {
     public TestableRelationEndPointModificationCommand (
         IRelationEndPoint modifiedEndPoint, DomainObject oldRelatedObject, DomainObject newRelatedObject, IClientTransactionEventSink transactionEventSink)
-        : base (modifiedEndPoint, oldRelatedObject, newRelatedObject, transactionEventSink)
+        : base(modifiedEndPoint, oldRelatedObject, newRelatedObject, transactionEventSink)
     {
     }
 

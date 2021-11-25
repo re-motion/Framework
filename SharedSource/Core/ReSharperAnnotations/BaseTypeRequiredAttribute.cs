@@ -77,7 +77,7 @@ namespace JetBrains.Annotations
   /// class MyComponent : IComponent { }
   /// </code></example>
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true)]
-  [BaseTypeRequired (typeof (Attribute))]
+  [BaseTypeRequired (typeof(Attribute))]
   sealed partial class BaseTypeRequiredAttribute : Attribute
   {
     public BaseTypeRequiredAttribute ([NotNull] Type baseType)

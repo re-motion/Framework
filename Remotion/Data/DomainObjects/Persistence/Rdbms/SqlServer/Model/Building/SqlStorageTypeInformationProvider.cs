@@ -49,13 +49,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       // Otherwise, special logic is needed to ensure that the ID-types are compatible when performing a LiNQ join.
       // Also, for converting from the DB type, it is only required that the DB type can be converted to the in-memory type, not the other way around.
       return new StorageTypeInformation(
-          typeof (Guid?),
+          typeof(Guid?),
           "uniqueidentifier",
           DbType.Guid,
           isStorageTypeNullable,
           null,
-          typeof (Guid?),
-          new DefaultConverter(typeof (Guid?)));
+          typeof(Guid?),
+          new DefaultConverter(typeof(Guid?)));
     }
 
     IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
@@ -66,13 +66,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     protected virtual StorageTypeInformation GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
     {
       return new StorageTypeInformation(
-          typeof (string), 
+          typeof(string), 
           "varchar (255)", 
           DbType.AnsiString, 
           isStorageTypeNullable, 
           255,
-          typeof (string), 
-          new DefaultConverter(typeof (string)));
+          typeof(string), 
+          new DefaultConverter(typeof(string)));
     }
 
     IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForClassID (bool isStorageTypeNullable)
@@ -83,13 +83,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     protected virtual StorageTypeInformation GetStorageTypeForClassID (bool isStorageTypeNullable)
     {
       return new StorageTypeInformation(
-          typeof (string),
+          typeof(string),
           "varchar (100)",
           DbType.AnsiString,
           isStorageTypeNullable,
           100,
-          typeof (string),
-          new DefaultConverter(typeof (string)));
+          typeof(string),
+          new DefaultConverter(typeof(string)));
     }
 
     IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForTimestamp (bool isStorageTypeNullable)
@@ -100,13 +100,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     protected virtual StorageTypeInformation GetStorageTypeForTimestamp (bool isStorageTypeNullable)
     {
       return new StorageTypeInformation(
-          typeof (byte[]),
+          typeof(byte[]),
           "rowversion",
           DbType.Binary,
           isStorageTypeNullable,
           null,
-          typeof (byte[]),
-          new DefaultConverter(typeof (byte[])));
+          typeof(byte[]),
+          new DefaultConverter(typeof(byte[])));
     }
 
     IStorageTypeInformation IStorageTypeInformationProvider.GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       {
         // NULL values of storage type nvarchar(max) and nvarchar (4000) seem to be compatible with columns of all other supported storage types,
         // tested by SqlProviderExecuteCollectionQueryTest.AllDataTypes.
-        return new StorageTypeInformation(typeof (object), "nvarchar (max)", DbType.String, true, StorageTypeLengthRepresentingMax, typeof (object), NullValueConverter.Instance);
+        return new StorageTypeInformation(typeof(object), "nvarchar (max)", DbType.String, true, StorageTypeLengthRepresentingMax, typeof(object), NullValueConverter.Instance);
       }
 
       return GetStorageType(value.GetType());
@@ -175,35 +175,35 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       if (ReflectionUtility.IsStringPropertyValueType(dotNetType))
       {
         string storageTypeName = GetStorageTypeStringForVarType("nvarchar", maxLength);
-        return new StorageTypeInformation(typeof (string), storageTypeName, DbType.String, isNullableInDatabase, maxLength ?? StorageTypeLengthRepresentingMax, dotNetType, new DefaultConverter(dotNetType));
+        return new StorageTypeInformation(typeof(string), storageTypeName, DbType.String, isNullableInDatabase, maxLength ?? StorageTypeLengthRepresentingMax, dotNetType, new DefaultConverter(dotNetType));
       }
 
       if (ReflectionUtility.IsBinaryPropertyValueType(dotNetType))
       {
         string storageTypeName = GetStorageTypeStringForVarType("varbinary", maxLength);
-        return new StorageTypeInformation(typeof (byte[]), storageTypeName, DbType.Binary, isNullableInDatabase, maxLength ?? StorageTypeLengthRepresentingMax, dotNetType, new DefaultConverter(dotNetType));
+        return new StorageTypeInformation(typeof(byte[]), storageTypeName, DbType.Binary, isNullableInDatabase, maxLength ?? StorageTypeLengthRepresentingMax, dotNetType, new DefaultConverter(dotNetType));
       }
 
-      if (dotNetType == typeof (Boolean))
-        return new StorageTypeInformation(typeof (Boolean), "bit", DbType.Boolean, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Byte))
-        return new StorageTypeInformation(typeof (Byte), "tinyint", DbType.Byte, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (DateTime))
-        return new StorageTypeInformation(typeof (DateTime), "datetime", DbType.DateTime, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Decimal))
-        return new StorageTypeInformation(typeof (Decimal), "decimal (38, 3)", DbType.Decimal, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Double))
-        return new StorageTypeInformation(typeof (Double), "float", DbType.Double, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Guid))
-        return new StorageTypeInformation(typeof (Guid), "uniqueidentifier", DbType.Guid, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Int16))
-        return new StorageTypeInformation(typeof (Int16), "smallint", DbType.Int16, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Int32))
-        return new StorageTypeInformation(typeof (Int32), "int", DbType.Int32, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Int64))
-        return new StorageTypeInformation(typeof (Int64), "bigint", DbType.Int64, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
-      if (dotNetType == typeof (Single))
-        return new StorageTypeInformation(typeof (Single), "real", DbType.Single, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Boolean))
+        return new StorageTypeInformation(typeof(Boolean), "bit", DbType.Boolean, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Byte))
+        return new StorageTypeInformation(typeof(Byte), "tinyint", DbType.Byte, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(DateTime))
+        return new StorageTypeInformation(typeof(DateTime), "datetime", DbType.DateTime, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Decimal))
+        return new StorageTypeInformation(typeof(Decimal), "decimal (38, 3)", DbType.Decimal, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Double))
+        return new StorageTypeInformation(typeof(Double), "float", DbType.Double, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Guid))
+        return new StorageTypeInformation(typeof(Guid), "uniqueidentifier", DbType.Guid, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Int16))
+        return new StorageTypeInformation(typeof(Int16), "smallint", DbType.Int16, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Int32))
+        return new StorageTypeInformation(typeof(Int32), "int", DbType.Int32, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Int64))
+        return new StorageTypeInformation(typeof(Int64), "bigint", DbType.Int64, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(Single))
+        return new StorageTypeInformation(typeof(Single), "real", DbType.Single, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
 
       return null;
     }
@@ -212,7 +212,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     {
       var storageTypeLength = GetColumnWidthForExtensibleEnum(extensibleEnumType);
       var storageType = GetStorageTypeStringForVarType("varchar", storageTypeLength);
-      return new StorageTypeInformation(typeof (string), storageType, DbType.AnsiString, isNullableInDatabase, storageTypeLength, extensibleEnumType, new ExtensibleEnumConverter(extensibleEnumType));
+      return new StorageTypeInformation(typeof(string), storageType, DbType.AnsiString, isNullableInDatabase, storageTypeLength, extensibleEnumType, new ExtensibleEnumConverter(extensibleEnumType));
     }
 
     [CanBeNull]
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
         return null;
 
       return new StorageTypeInformation(
-          typeof (Nullable<>).MakeGenericType(underlyingStorageInformation.StorageType),
+          typeof(Nullable<>).MakeGenericType(underlyingStorageInformation.StorageType),
           underlyingStorageInformation.StorageTypeName,
           underlyingStorageInformation.StorageDbType,
           isNullableInDatabase,

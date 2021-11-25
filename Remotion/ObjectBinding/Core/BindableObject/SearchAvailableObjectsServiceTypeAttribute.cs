@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public SearchAvailableObjectsServiceTypeAttribute (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISearchAvailableObjectsService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISearchAvailableObjectsService));
       _type = type;
     }
 

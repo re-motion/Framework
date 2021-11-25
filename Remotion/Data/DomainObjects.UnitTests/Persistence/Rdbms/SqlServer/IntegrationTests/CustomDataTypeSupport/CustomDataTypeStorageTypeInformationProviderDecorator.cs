@@ -57,14 +57,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IStorageTypeInformation GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
     {
-      if (typeof (SimpleDataType).IsAssignableFrom(propertyDefinition.PropertyType))
+      if (typeof(SimpleDataType).IsAssignableFrom(propertyDefinition.PropertyType))
         return CreateSimpleDataTypeStorageTypeInformation(propertyDefinition.IsNullable, propertyDefinition.MaxLength);
       return _innerStorageTypeInformationProvider.GetStorageType(propertyDefinition, forceNullable);
     }
 
     public IStorageTypeInformation GetStorageType (Type type)
     {
-      if (typeof (SimpleDataType).IsAssignableFrom(type))
+      if (typeof(SimpleDataType).IsAssignableFrom(type))
         return CreateSimpleDataTypeStorageTypeInformation(isStorageTypeNullable: true, maxLength: null);
       return _innerStorageTypeInformationProvider.GetStorageType(type);
     }

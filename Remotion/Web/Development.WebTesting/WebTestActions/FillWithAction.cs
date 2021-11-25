@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
         [NotNull] ElementScope scope,
         [NotNull] string value,
         [NotNull] FinishInputWithAction finishInputWithAction)
-        : base (control, scope)
+        : base(control, scope)
     {
       ArgumentUtility.CheckNotNull("value", value);
       ArgumentUtility.CheckNotNull("finishInputWithAction", finishInputWithAction);

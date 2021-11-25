@@ -69,7 +69,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       _fileName = sqlFileName;
       if (!Path.IsPathRooted(sqlFileName))
       {
-        var assemblyNameWithoutShadowCopy = typeof (DatabaseAgent).Assembly.GetName(copiedName: false);
+        var assemblyNameWithoutShadowCopy = typeof(DatabaseAgent).Assembly.GetName(copiedName: false);
         var codeBaseUri = new Uri(assemblyNameWithoutShadowCopy.EscapedCodeBase!);
         sqlFileName = Path.Combine(Path.GetDirectoryName(codeBaseUri.LocalPath)!, sqlFileName);
       }

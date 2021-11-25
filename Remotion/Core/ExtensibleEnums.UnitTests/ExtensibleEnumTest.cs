@@ -71,7 +71,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     public void Initialization_DeclaringTypeAndName ()
     {
       Assert.That(EnumWithDifferentCtors.Values.DeclaringTypeAndName().ValueName, Is.EqualTo("ValueName"));
-      Assert.That(EnumWithDifferentCtors.Values.DeclaringTypeAndName().DeclarationSpace, Is.EqualTo(typeof (EnumWithDifferentCtorsExtensions).FullName));
+      Assert.That(EnumWithDifferentCtors.Values.DeclaringTypeAndName().DeclarationSpace, Is.EqualTo(typeof(EnumWithDifferentCtorsExtensions).FullName));
       Assert.That(
           EnumWithDifferentCtors.Values.DeclaringTypeAndName().ID,
           Is.EqualTo("Remotion.ExtensibleEnums.UnitTests.TestDomain.EnumWithDifferentCtorsExtensions.ValueName"));
@@ -81,7 +81,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     public void Initialization_CurrentMethod ()
     {
       Assert.That(EnumWithDifferentCtors.Values.CurrentMethod().ValueName, Is.EqualTo("CurrentMethod"));
-      Assert.That(EnumWithDifferentCtors.Values.CurrentMethod().DeclarationSpace, Is.EqualTo(typeof (EnumWithDifferentCtorsExtensions).FullName));
+      Assert.That(EnumWithDifferentCtors.Values.CurrentMethod().DeclarationSpace, Is.EqualTo(typeof(EnumWithDifferentCtorsExtensions).FullName));
       Assert.That(
           EnumWithDifferentCtors.Values.CurrentMethod().ID,
           Is.EqualTo("Remotion.ExtensibleEnums.UnitTests.TestDomain.EnumWithDifferentCtorsExtensions.CurrentMethod"));
@@ -235,7 +235,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void Values_FromCache ()
     {
-      Assert.That(Color.Values, Is.SameAs(_extensibleEnumDefinitionCache.GetDefinition(typeof (Color))));
+      Assert.That(Color.Values, Is.SameAs(_extensibleEnumDefinitionCache.GetDefinition(typeof(Color))));
     }
 
     [Test]
@@ -275,14 +275,14 @@ namespace Remotion.ExtensibleEnums.UnitTests
     public void GetEnumType ()
     {
       var value = new Color("Red");
-      Assert.That(value.GetEnumType(), Is.SameAs(typeof (Color)));
+      Assert.That(value.GetEnumType(), Is.SameAs(typeof(Color)));
     }
 
     [Test]
     public void GetEnumType_DerivedType ()
     {
       var value = new MetallicColor("RedMetallic");
-      Assert.That(value.GetEnumType(), Is.SameAs(typeof (Color)));
+      Assert.That(value.GetEnumType(), Is.SameAs(typeof(Color)));
     }
 
     [Test]

@@ -43,14 +43,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       base.SetUp();
       _classDefinitionWithMixedProperty = 
-          ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (ClassWithMixedProperty), typeof (MixinAddingProperty));
+          ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithMixedProperty), typeof(MixinAddingProperty));
     }
 
     [Test]
     public void GetAssemblyPath ()
     {
       Assert.That(
-          ReflectionUtility.GetAssemblyDirectory(typeof (ReflectionUtilityTest).Assembly),
+          ReflectionUtility.GetAssemblyDirectory(typeof(ReflectionUtilityTest).Assembly),
           Is.EqualTo(AppContext.BaseDirectory.TrimEnd('\\')));
     }
 
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
 #if NETFRAMEWORK
       string directoryPath = Path.Combine(AppContext.BaseDirectory, "#HashTestPath");
-      string originalAssemblyPath = typeof (ReflectionUtilityTest).Assembly.Location;
+      string originalAssemblyPath = typeof(ReflectionUtilityTest).Assembly.Location;
       string newAssemblyPath = Path.Combine(directoryPath, Path.GetFileName(originalAssemblyPath));
 
       if (Directory.Exists(directoryPath))
@@ -119,9 +119,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void IsInheritanceRoot_BaseTypeIsDomainObject ()
     {
-      var type = typeof (AbstractClass);
+      var type = typeof(AbstractClass);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
-      Assertion.IsTrue(type.BaseType == typeof (DomainObject));
+      Assertion.IsTrue(type.BaseType == typeof(DomainObject));
 
       Assert.That(ReflectionUtility.IsInheritanceRoot(type), Is.True);
     }
@@ -129,10 +129,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void IsInheritanceRoot_TypeHasStorageGroupAttributeApplied_ReturnsTrue ()
     {
-      var type = typeof (ClassWithStorageGroupAttributeAndBaseClass);
+      var type = typeof(ClassWithStorageGroupAttributeAndBaseClass);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type.BaseType));
-      Assertion.IsTrue(type.BaseType.BaseType == typeof (DomainObject));
+      Assertion.IsTrue(type.BaseType.BaseType == typeof(DomainObject));
 
       Assert.That(ReflectionUtility.IsInheritanceRoot(type), Is.True);
     }
@@ -140,10 +140,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void IsInheritanceRoot_TypeHasStorageGroupAttributeAppliedAndIsIgnoredForMappingConfiguration_ReturnsTrue ()
     {
-      var type = typeof (ClassWithStorageGroupAttributeAndIgnoredForMappingConfigurationAttributeAndBaseClass);
+      var type = typeof(ClassWithStorageGroupAttributeAndIgnoredForMappingConfigurationAttributeAndBaseClass);
       Assertion.IsTrue(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type.BaseType));
-      Assertion.IsTrue(type.BaseType.BaseType == typeof (DomainObject));
+      Assertion.IsTrue(type.BaseType.BaseType == typeof(DomainObject));
 
       Assert.That(ReflectionUtility.IsInheritanceRoot(type), Is.False);
     }
@@ -151,17 +151,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void IsInheritanceRoot_TypeIsDomainObject_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsInheritanceRoot(typeof (DomainObject)), Is.False);
+      Assert.That(ReflectionUtility.IsInheritanceRoot(typeof(DomainObject)), Is.False);
     }
 
     [Test]
     public void IsInheritanceRoot_OnlyImmediateBaseTypeIsIgnoredForMappingConfiguration_ReturnsFalse ()
     {
-      var type = typeof (DerivedClassInMappingDerivedFromClassNotInMapping);
+      var type = typeof(DerivedClassInMappingDerivedFromClassNotInMapping);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
       Assertion.IsTrue(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type.BaseType));
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type.BaseType.BaseType));
-      Assertion.IsTrue(type.BaseType.BaseType.BaseType == typeof (DomainObject));
+      Assertion.IsTrue(type.BaseType.BaseType.BaseType == typeof(DomainObject));
 
       Assert.That(ReflectionUtility.IsInheritanceRoot(type), Is.False);
     }
@@ -169,61 +169,61 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void IsInheritanceRoot_TypeIsIgnoredForMappingConfiguration_ReturnsFalse ()
     {
-      var type = typeof (ClassWithIgnoreForMappingConfigurationAttribute);
+      var type = typeof(ClassWithIgnoreForMappingConfigurationAttribute);
       Assertion.IsTrue(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
-      Assertion.IsTrue(type.BaseType == typeof (DomainObject));
+      Assertion.IsTrue(type.BaseType == typeof(DomainObject));
 
-      Assert.That(ReflectionUtility.IsInheritanceRoot(typeof (ClassWithIgnoreForMappingConfigurationAttribute)), Is.False);
+      Assert.That(ReflectionUtility.IsInheritanceRoot(typeof(ClassWithIgnoreForMappingConfigurationAttribute)), Is.False);
     }
 
     [Test]
     public void IsInheritanceRoot_AllBaseTypesAreIgnoredForMappingConfiguration_ReturnsTrue ()
     {
-      var type = typeof (ClassWithAllBaseTypesWithIgnoreForMappingConfigurationAttribute);
+      var type = typeof(ClassWithAllBaseTypesWithIgnoreForMappingConfigurationAttribute);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
       Assertion.IsTrue(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type.BaseType));
       Assertion.IsTrue(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type.BaseType.BaseType));
-      Assertion.IsTrue(type.BaseType.BaseType.BaseType == typeof (DomainObject));
+      Assertion.IsTrue(type.BaseType.BaseType.BaseType == typeof(DomainObject));
 
-      Assert.That(ReflectionUtility.IsInheritanceRoot(typeof (ClassWithAllBaseTypesWithIgnoreForMappingConfigurationAttribute)), Is.True);
+      Assert.That(ReflectionUtility.IsInheritanceRoot(typeof(ClassWithAllBaseTypesWithIgnoreForMappingConfigurationAttribute)), Is.True);
     }
 
     [Test]
     public void IsRelationProperty_DomainObjectIsNotAssignableFromPropertyType ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof (string)), Is.False);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(string)), Is.False);
     }
 
     [Test]
     public void IsRelationProperty_DomainObjectIsAssignableFromPropertyType ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof (AbstractClass)), Is.True);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(AbstractClass)), Is.True);
     }
 
     [Test]
     public void GetDeclaringDomainObjectTypeForProperty_NoMixedProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (ClassWithMixedProperty).GetProperty("PublicNonMixedProperty"));
+      var property = PropertyInfoAdapter.Create(typeof(ClassWithMixedProperty).GetProperty("PublicNonMixedProperty"));
 
       var result = ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(property, _classDefinitionWithMixedProperty);
 
-      Assert.That(result, Is.SameAs(typeof (ClassWithMixedProperty)));
+      Assert.That(result, Is.SameAs(typeof(ClassWithMixedProperty)));
     }
 
     [Test]
     public void GetDeclaringDomainObjectTypeForProperty_MixedProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (MixinAddingProperty).GetProperty("MixedProperty"));
+      var property = PropertyInfoAdapter.Create(typeof(MixinAddingProperty).GetProperty("MixedProperty"));
 
       var result = ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(property, _classDefinitionWithMixedProperty);
 
-      Assert.That(result, Is.SameAs(typeof (ClassWithMixedProperty)));
+      Assert.That(result, Is.SameAs(typeof(ClassWithMixedProperty)));
     }
 
     [Test]
     public void IsMixedProperty_NoMixedProperty_ReturnsFalse ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (ClassWithMixedProperty).GetProperty("PublicNonMixedProperty"));
+      var property = PropertyInfoAdapter.Create(typeof(ClassWithMixedProperty).GetProperty("PublicNonMixedProperty"));
 
       var result = ReflectionUtility.IsMixedProperty(property, _classDefinitionWithMixedProperty);
 
@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void IsMixedProperty_MixedProperty_ReturnsTrue ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (MixinAddingProperty).GetProperty("MixedProperty"));
+      var property = PropertyInfoAdapter.Create(typeof(MixinAddingProperty).GetProperty("MixedProperty"));
 
       var result = ReflectionUtility.IsMixedProperty(property, _classDefinitionWithMixedProperty);
 
@@ -243,191 +243,191 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void IsRelationType_IObjectList_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsRelationType(typeof (IObjectList<DomainObject>)), Is.True);
+      Assert.That(ReflectionUtility.IsRelationType(typeof(IObjectList<DomainObject>)), Is.True);
     }
 
     [Test]
     public void IsRelationType_ObjectList_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsRelationType(typeof (ObjectList<DomainObject>)), Is.True);
+      Assert.That(ReflectionUtility.IsRelationType(typeof(ObjectList<DomainObject>)), Is.True);
     }
 
     [Test]
     public void IsRelationType_DomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsRelationType(typeof (DomainObject)), Is.True);
+      Assert.That(ReflectionUtility.IsRelationType(typeof(DomainObject)), Is.True);
     }
 
     [Test]
     public void IsIObjectList_IObjectListClosedWithDomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsIObjectList(typeof (IObjectList<DomainObject>)), Is.True);
+      Assert.That(ReflectionUtility.IsIObjectList(typeof(IObjectList<DomainObject>)), Is.True);
     }
 
     [Test]
     public void IsIObjectList_IObjectListClosedWithIDomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsIObjectList(typeof (IObjectList<IDomainObject>)), Is.True);
+      Assert.That(ReflectionUtility.IsIObjectList(typeof(IObjectList<IDomainObject>)), Is.True);
     }
 
     [Test]
     public void IsIObjectList_IObjectListOpen_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsIObjectList(typeof (IObjectList<>)), Is.True);
+      Assert.That(ReflectionUtility.IsIObjectList(typeof(IObjectList<>)), Is.True);
     }
 
     [Test]
     public void IsIObjectList_ObjectList_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsIObjectList(typeof (ObjectList<DomainObject>)), Is.False);
+      Assert.That(ReflectionUtility.IsIObjectList(typeof(ObjectList<DomainObject>)), Is.False);
     }
 
     [Test]
     public void IsIObjectList_DerivedFromIObjectList_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsIObjectList(typeof (IDerivedObjectList<DomainObject>)), Is.False);
+      Assert.That(ReflectionUtility.IsIObjectList(typeof(IDerivedObjectList<DomainObject>)), Is.False);
     }
 
     [Test]
     public void IsIObjectList_DomainObject_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsIObjectList(typeof (DomainObject)), Is.False);
+      Assert.That(ReflectionUtility.IsIObjectList(typeof(DomainObject)), Is.False);
     }
 
     [Test]
     public void IsObjectList_ObjectListClosedWithDomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsObjectList(typeof (ObjectList<DomainObject>)), Is.True);
+      Assert.That(ReflectionUtility.IsObjectList(typeof(ObjectList<DomainObject>)), Is.True);
     }
 
     [Test]
     public void IsObjectList_DerivedFromObjectList_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsObjectList(typeof (OrderCollection)), Is.True);
+      Assert.That(ReflectionUtility.IsObjectList(typeof(OrderCollection)), Is.True);
     }
 
     [Test]
     public void IsObjectList_ObjectListOpen_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsObjectList(typeof (ObjectList<>)), Is.True);
+      Assert.That(ReflectionUtility.IsObjectList(typeof(ObjectList<>)), Is.True);
     }
 
     [Test]
     public void IsObjectList_DomainObjectCollection_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsObjectList(typeof (DomainObjectCollection)), Is.False);
+      Assert.That(ReflectionUtility.IsObjectList(typeof(DomainObjectCollection)), Is.False);
     }
 
     [Test]
     public void IsObjectList_IObjectList_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsObjectList(typeof (IObjectList<DomainObject>)), Is.False);
+      Assert.That(ReflectionUtility.IsObjectList(typeof(IObjectList<DomainObject>)), Is.False);
     }
 
     [Test]
     public void IsObjectList_DomainObject_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsObjectList(typeof (DomainObject)), Is.False);
+      Assert.That(ReflectionUtility.IsObjectList(typeof(DomainObject)), Is.False);
     }
 
     [Test]
     public void IsDomainObject_DomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof (DomainObject)), Is.True);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(DomainObject)), Is.True);
     }
 
     [Test]
     public void IsDomainObject_DerivedFromDomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof (Order)), Is.True);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(Order)), Is.True);
     }
 
     [Test]
     public void IsDomainObject_IDomainObject_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof (IDomainObject)), Is.False);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(IDomainObject)), Is.False);
     }
 
     [Test]
     public void IsDomainObject_ObjectList_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof (ObjectList<DomainObject>)), Is.False);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(ObjectList<DomainObject>)), Is.False);
     }
 
     [Test]
     public void IsDomainObject_Object_ReturnsFalse ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof (object)), Is.False);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(object)), Is.False);
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_ObjectList_ReturnsTypeParameterValue ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof (ObjectList<Order>));
+      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(ObjectList<Order>));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof (Order)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(Order)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_IObjectList_ReturnsTypeParameterValue ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof (IObjectList<Order>));
+      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(IObjectList<Order>));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof (Order)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(Order)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_IDomainObject_ReturnsTypeParameterValue ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof (IDomainObject));
+      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(IDomainObject));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof (IDomainObject)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(IDomainObject)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_DomainObject_ReturnsTypeParameterValue ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof (DomainObject));
+      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(DomainObject));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof (DomainObject)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(DomainObject)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_Object_ReturnsTypeParameterValue ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof (object));
+      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(object));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof (object)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(object)));
     }
 
     [Test]
     public void GetObjectListTypeParameter_ObjectList_ReturnsTypeParameterValue ()
     {
-      Assert.That(ReflectionUtility.GetObjectListTypeParameter(typeof (ObjectList<Person>)), Is.EqualTo(typeof (Person)));
+      Assert.That(ReflectionUtility.GetObjectListTypeParameter(typeof(ObjectList<Person>)), Is.EqualTo(typeof(Person)));
     }
 
     [Test]
     public void GetObjectListTypeParameter_DerivedObjectList_ReturnsTypeParameterValue ()
     {
-      Assert.That(ReflectionUtility.GetObjectListTypeParameter(typeof (OrderCollection)), Is.EqualTo(typeof (Order)));
+      Assert.That(ReflectionUtility.GetObjectListTypeParameter(typeof(OrderCollection)), Is.EqualTo(typeof(Order)));
     }
 
     [Test]
     public void GetObjectListTypeParameter_OpenGeneric_ReturnsNull ()
     {
-      Assert.That(ReflectionUtility.GetObjectListTypeParameter(typeof (ObjectList<>)), Is.Null);
+      Assert.That(ReflectionUtility.GetObjectListTypeParameter(typeof(ObjectList<>)), Is.Null);
     }
 
     [Test]
     public void GetObjectListTypeParameter_IObjectList_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetObjectListTypeParameter(typeof (IObjectList<>)),
+          () => ReflectionUtility.GetObjectListTypeParameter(typeof(IObjectList<>)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
@@ -436,7 +436,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetObjectListTypeParameter_DomainObjectCollection_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetObjectListTypeParameter(typeof (DomainObjectCollection)),
+          () => ReflectionUtility.GetObjectListTypeParameter(typeof(DomainObjectCollection)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
@@ -445,7 +445,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetObjectListTypeParameter_DomainObject_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetObjectListTypeParameter(typeof (DomainObject)),
+          () => ReflectionUtility.GetObjectListTypeParameter(typeof(DomainObject)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
@@ -454,7 +454,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetObjectListTypeParameter_IListOfDomainObject_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetObjectListTypeParameter(typeof (List<DomainObject>)),
+          () => ReflectionUtility.GetObjectListTypeParameter(typeof(List<DomainObject>)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'System.Collections.Generic.List`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
@@ -462,26 +462,26 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetIObjectListTypeParameter_ObjectList_ReturnsTypeParameterValue ()
     {
-      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof (IObjectList<Person>)), Is.EqualTo(typeof (Person)));
+      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof(IObjectList<Person>)), Is.EqualTo(typeof(Person)));
     }
 
     [Test]
     public void GetIObjectListTypeParameter_DerivedObjectList_ReturnsTypeParameterValue ()
     {
-      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof (IDerivedObjectList<Order>)), Is.EqualTo(typeof (Order)));
+      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof(IDerivedObjectList<Order>)), Is.EqualTo(typeof(Order)));
     }
 
     [Test]
     public void GetIObjectListTypeParameter_OpenGeneric_ReturnsTypeParameter ()
     {
-      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof (IObjectList<>)), Is.Null);
+      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof(IObjectList<>)), Is.Null);
     }
 
     [Test]
     public void GetIObjectListTypeParameter_ObjectList_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetIObjectListTypeParameter(typeof (ObjectList<>)),
+          () => ReflectionUtility.GetIObjectListTypeParameter(typeof(ObjectList<>)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'Remotion.Data.DomainObjects.ObjectList`1[T]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
@@ -490,7 +490,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetIObjectListTypeParameter_DomainObjectCollection_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetIObjectListTypeParameter(typeof (DomainObjectCollection)),
+          () => ReflectionUtility.GetIObjectListTypeParameter(typeof(DomainObjectCollection)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
@@ -499,7 +499,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetIObjectListTypeParameter_DomainObject_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetIObjectListTypeParameter(typeof (DomainObject)),
+          () => ReflectionUtility.GetIObjectListTypeParameter(typeof(DomainObject)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
@@ -508,7 +508,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetIObjectListTypeParameter_IListOfDomainObject_ThrowsArgumentException ()
     {
       Assert.That(
-          () => ReflectionUtility.GetIObjectListTypeParameter(typeof (IList<DomainObject>)),
+          () => ReflectionUtility.GetIObjectListTypeParameter(typeof(IList<DomainObject>)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'System.Collections.Generic.IList`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }

@@ -37,25 +37,25 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void CanConvertFrom_String_ReturnsTrue ()
     {
-      Assert.That(_converter.CanConvertFrom(typeof (string)), Is.True);
+      Assert.That(_converter.CanConvertFrom(typeof(string)), Is.True);
     }
 
     [Test]
     public void CanConvertFrom_Other_ReturnsFalse ()
     {
-      Assert.That(_converter.CanConvertFrom(typeof (object)), Is.False);
+      Assert.That(_converter.CanConvertFrom(typeof(object)), Is.False);
     }
 
     [Test]
     public void CanConvertTo_String_ReturnsTrue ()
     {
-      Assert.That(_converter.CanConvertTo(typeof (string)), Is.True);
+      Assert.That(_converter.CanConvertTo(typeof(string)), Is.True);
     }
 
     [Test]
     public void CanConvertTo_Other_ReturnsFalse ()
     {
-      Assert.That(_converter.CanConvertTo(typeof (object)), Is.False);
+      Assert.That(_converter.CanConvertTo(typeof(object)), Is.False);
     }
 
     [Test]
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ConvertTo_String_ReturnsObjectIDString ()
     {
-      var result = _converter.ConvertTo(_handle, typeof (string));
+      var result = _converter.ConvertTo(_handle, typeof(string));
 
       Assert.That(result, Is.EqualTo(DomainObjectIDs.Order1.ToString()));
     }
@@ -104,14 +104,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void ConvertTo_OtherType_Fails ()
     {
       Assert.That(
-          () => _converter.ConvertTo(_handle, typeof (int)),
+          () => _converter.ConvertTo(_handle, typeof(int)),
           Throws.TypeOf<NotSupportedException>().With.Message.EqualTo("This TypeConverter cannot convert to values of type 'System.Int32'."));
     }
 
     [Test]
     public void ConvertTo_Null_ReturnsNull ()
     {
-      var result = _converter.ConvertTo(null, typeof (string));
+      var result = _converter.ConvertTo(null, typeof(string));
 
       Assert.That(result, Is.Null);
     }
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void ConvertTo_WrongSourceObject_Fails ()
     {
       Assert.That(
-          () => _converter.ConvertTo(12, typeof (string)),
+          () => _converter.ConvertTo(12, typeof(string)),
           Throws.TypeOf<NotSupportedException>().With.Message.EqualTo(
               "This TypeConverter can only convert values of type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[Remotion.Data.DomainObjects.IDomainObject]'."));
     }
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Roundtrip ()
     {
-      var result = _converter.ConvertFrom(_converter.ConvertTo(_handle, typeof (string)));
+      var result = _converter.ConvertFrom(_converter.ConvertTo(_handle, typeof(string)));
 
       Assert.That(result, Is.EqualTo(_handle));
     }

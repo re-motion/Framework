@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebFormsTestPageObject : PageObject, IWebFormsPageObject
   {
     public WebFormsTestPageObject (PageObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

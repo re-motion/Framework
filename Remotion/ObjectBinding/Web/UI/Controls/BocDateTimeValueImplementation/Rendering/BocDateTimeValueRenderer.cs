@@ -33,7 +33,7 @@ using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
-  [ImplementationFor (typeof (IBocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocDateTimeValueRenderer : BocRendererBase<IBocDateTimeValue>, IBocDateTimeValueRenderer
   {
     public enum DateTimeValuePart
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : this (
+        : this(
             resourceUrlFactory,
             globalizationService,
             renderingFeatures,
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         IValidationErrorRenderer validationErrorRenderer,
         Func<TextBox> dateTextBoxFactory,
         Func<TextBox> timeTextBoxFactory)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
@@ -96,8 +96,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleKey = typeof (BocDateTimeValueRenderer).GetFullNameChecked() + "_Style";
-      var styleFile = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocDateTimeValueRenderer), ResourceType.Html, "BocDateTimeValue.css");
+      string styleKey = typeof(BocDateTimeValueRenderer).GetFullNameChecked() + "_Style";
+      var styleFile = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocDateTimeValueRenderer), ResourceType.Html, "BocDateTimeValue.css");
       htmlHeadAppender.RegisterStylesheetLink(styleKey, styleFile, HtmlHeadAppender.Priority.Library);
     }
 

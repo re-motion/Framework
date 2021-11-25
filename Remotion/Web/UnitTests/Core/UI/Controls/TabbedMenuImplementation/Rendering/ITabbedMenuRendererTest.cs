@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
       var factory = _serviceLocator.GetInstance<ITabbedMenuRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (TabbedMenuRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(TabbedMenuRenderer)));
     }
 
     [Test]

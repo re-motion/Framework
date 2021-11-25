@@ -44,9 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _endPointProviderMock = MockRepository.GenerateStrictMock<IVirtualEndPointProvider>();
       _map = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
 
-      _realOneManyEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof (OrderItem), "Order");
-      _virtualEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
-      _unidirectionalEndPointID = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof (Location), "Client");
+      _realOneManyEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order");
+      _virtualEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
+      _unidirectionalEndPointID = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof(Location), "Client");
 
       _agent = new RelationEndPointRegistrationAgent(_endPointProviderMock);
     }

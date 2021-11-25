@@ -56,9 +56,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       base.OnInit(e);
 
       DeleteStateDefinitionButton.Icon = new IconInfo(
-          ResourceUrlFactory.CreateThemedResourceUrl(typeof (EditStateCombinationControl), ResourceType.Image, "sprite.svg#DeleteItem").GetUrl());
+          ResourceUrlFactory.CreateThemedResourceUrl(typeof(EditStateCombinationControl), ResourceType.Image, "sprite.svg#DeleteItem").GetUrl());
       DeleteStateDefinitionButton.Icon.AlternateText =
-          GetResourceManager(typeof (ResourceIdentifier)).GetString(ResourceIdentifier.DeleteStateCombinationButtonText);
+          GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.DeleteStateCombinationButtonText);
     }
 
     public override void LoadValues (bool interim)
@@ -83,7 +83,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       RequiredStateCombinationValidator.ErrorMessage =
-          GetResourceManager(typeof (ResourceIdentifier)).GetString(ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
+          GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
       
       base.OnPreRender(e);
     }

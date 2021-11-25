@@ -29,21 +29,21 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetConcreteType_NoTypeGeneratedIfNoConfig ()
     {
-      Assert.That(MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance(typeof (object)), Is.False);
-      Assert.That(TypeFactory.GetConcreteType(typeof (object)), Is.SameAs(typeof (object)));
+      Assert.That(MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance(typeof(object)), Is.False);
+      Assert.That(TypeFactory.GetConcreteType(typeof(object)), Is.SameAs(typeof(object)));
     }
 
     [Test]
     public void GetConcreteType_NoTypeGenerated_IfGeneratedTypeIsGiven ()
     {
-      Type concreteType = TypeFactory.GetConcreteType(typeof (BaseType1));
+      Type concreteType = TypeFactory.GetConcreteType(typeof(BaseType1));
       Assert.That(TypeFactory.GetConcreteType(concreteType), Is.SameAs(concreteType));
     }
 
     [Test]
     public void InitializeUnconstructedInstance_ConstructionSemantics ()
     {
-      var concreteType = TypeFactory.GetConcreteType(typeof (BaseType3));
+      var concreteType = TypeFactory.GetConcreteType(typeof(BaseType3));
       var target = (BaseType3) FormatterServices.GetSafeUninitializedObject(concreteType);
 
 // ReSharper disable SuspiciousTypeConversion.Global
@@ -58,7 +58,7 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void InitializeUnconstructedInstance_DeserializationSemantics ()
     {
-      var concreteType = TypeFactory.GetConcreteType(typeof (TargetType));
+      var concreteType = TypeFactory.GetConcreteType(typeof(TargetType));
       var target = FormatterServices.GetSafeUninitializedObject(concreteType);
       // Simulate a deserialzed instance.
       var mixins = new object[] { new DeserializationMixin() };
@@ -71,7 +71,7 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That(mixin.Target, Is.SameAs(target), "Mixin must have been initialized");
     }
 
-    [Uses (typeof (DeserializationMixin))]
+    [Uses (typeof(DeserializationMixin))]
     [Serializable]
     public class TargetType { }
 

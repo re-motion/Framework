@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (ITestConstructorInjectionWithThreeParameters))]
+  [ImplementationFor (typeof(ITestConstructorInjectionWithThreeParameters))]
   public class TestConstructorInjectionWithThreeParameters : ITestConstructorInjectionWithThreeParameters
   {
     public readonly ITestConstructorInjectionWithOneParameter Param1;

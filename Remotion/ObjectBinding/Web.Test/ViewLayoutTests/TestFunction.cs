@@ -24,7 +24,7 @@ namespace OBWTest.ViewLayoutTests
   public class TestFunction : WxeFunction
   {
     public TestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

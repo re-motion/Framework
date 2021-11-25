@@ -25,7 +25,7 @@ namespace Remotion.Web.Compilation
   /// Default implementation of the <see cref="IControlBuilderCodeProcessor"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IControlBuilderCodeProcessor), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IControlBuilderCodeProcessor), Lifetime = LifetimeKind.Singleton)]
   public class DefaultControlBuilderCodeProcessor : IControlBuilderCodeProcessor
   {
     public void ProcessGeneratedCode (

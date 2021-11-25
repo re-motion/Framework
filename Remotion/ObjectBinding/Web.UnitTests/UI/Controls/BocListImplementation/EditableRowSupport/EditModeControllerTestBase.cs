@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _newValues[0] = (IBusinessObject) TypeWithAllDataTypes.Create("F", 6);
       _newValues[1] = (IBusinessObject) TypeWithAllDataTypes.Create("G", 7);
 
-      _class = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithAllDataTypes));
+      _class = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithAllDataTypes));
 
       _stringValuePath = BusinessObjectPropertyPath.CreateStatic(_class, "String");
       _int32ValuePath = BusinessObjectPropertyPath.CreateStatic(_class, "Int32");

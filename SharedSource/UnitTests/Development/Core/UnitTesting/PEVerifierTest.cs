@@ -73,7 +73,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       Assert.Ignore("PEVerify is not supported for .NET 5 assemblies.");
 #endif
       var verifier = PEVerifier.CreateDefault();
-      verifier.VerifyPEFile(typeof (object).Assembly);
+      verifier.VerifyPEFile(typeof(object).Assembly);
     }
 
     [Test]

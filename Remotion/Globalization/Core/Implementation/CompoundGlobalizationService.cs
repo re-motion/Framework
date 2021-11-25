@@ -28,7 +28,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to it to retrieve an <see cref="IResourceManager"/> for a specified type.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(IGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundGlobalizationService : IGlobalizationService
   {
     private readonly IReadOnlyList<IGlobalizationService> _globalizationServices;

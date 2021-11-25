@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     }
 
     private DiagnosticScreenshotBuilder ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
-        : base (screenshot, locator)
+        : base(screenshot, locator)
     {
     }
 

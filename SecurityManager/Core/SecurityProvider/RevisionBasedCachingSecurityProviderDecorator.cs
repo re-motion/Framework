@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.SecurityProvider
   /// <summary>
   /// 2nd-level cache
   /// </summary>
-  [ImplementationFor (typeof (ISecurityProvider), Position = Position, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof(ISecurityProvider), Position = Position, RegistrationType = RegistrationType.Decorator)]
   public class RevisionBasedCachingSecurityProviderDecorator : ISecurityProvider
   {
     //TODO RM-5521: test

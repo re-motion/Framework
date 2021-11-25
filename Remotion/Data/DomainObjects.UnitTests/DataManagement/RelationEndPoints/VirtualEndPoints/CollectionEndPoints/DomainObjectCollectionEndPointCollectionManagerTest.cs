@@ -44,12 +44,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _domainObjectCollectionProviderMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointCollectionProvider>();
       _associatedDomainObjectCollectionDataStrategyFactoryMock = MockRepository.GenerateStrictMock<IAssociatedDomainObjectCollectionDataStrategyFactory>();
-      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
 
       _manager = new DomainObjectCollectionEndPointCollectionManager(_endPointID, _domainObjectCollectionProviderMock, _associatedDomainObjectCollectionDataStrategyFactoryMock);
       
       _associatedDataStrategyStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      _associatedDataStrategyStub.Stub(stub => stub.RequiredItemType).Return(typeof (Order));
+      _associatedDataStrategyStub.Stub(stub => stub.RequiredItemType).Return(typeof(Order));
       _associatedDataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(_endPointID);
     }
 
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _manager.AssociateCollectionWithEndPoint(newCollection);
 
       Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(newCollection), Is.SameAs(_associatedDataStrategyStub));
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(originalCollection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(originalCollection, typeof(Order));
 
       // The Rollback operation must now transform the new collection to a standalone collection and reassociate the original collection with the end-
       // point being rolled back. (In addition to making the original collection the current collection again.)
@@ -319,7 +319,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(originalCollection));
 
       Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(originalCollection), Is.SameAs(_associatedDataStrategyStub));
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(newCollection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(newCollection, typeof(Order));
     }
 
     [Test]
@@ -332,7 +332,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _manager.AssociateCollectionWithEndPoint(newCollection);
 
       Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(newCollection), Is.SameAs(_associatedDataStrategyStub));
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(originalCollection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(originalCollection, typeof(Order));
       
       // Simulate that newCollection has already been re-associated by another rollback operation.
       // The Rollback operation must leave this other strategy alone.

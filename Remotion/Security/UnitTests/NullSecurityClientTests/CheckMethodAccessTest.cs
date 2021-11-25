@@ -36,7 +36,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
-      _methodInfo = typeof (SecurableObject).GetMethod("Show");
+      _methodInfo = typeof(SecurableObject).GetMethod("Show");
       _methodInformation = new Mock<IMethodInformation>();
     }
 

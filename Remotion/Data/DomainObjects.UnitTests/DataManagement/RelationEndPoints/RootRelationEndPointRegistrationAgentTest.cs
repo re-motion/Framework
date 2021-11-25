@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void RegisterEndPoint_RealEndPoint_PointingToNonNull_Unidirectional ()
     {
       var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
-      var unidirectionalEndPointID = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof (Location), "Client");
+      var unidirectionalEndPointID = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof(Location), "Client");
       endPointMock.Stub(stub => stub.ID).Return(unidirectionalEndPointID);
       endPointMock.Stub(stub => stub.Definition).Return(unidirectionalEndPointID.Definition);
       endPointMock.Stub(stub => stub.OriginalOppositeObjectID).Return(DomainObjectIDs.Client1);
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       oppositeEndPointMock.Expect(mock => mock.RegisterOriginalOppositeEndPoint(endPointMock));
       oppositeEndPointMock.Replay();
 
-      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       _virtualEndPointProviderMock
           .Expect(mock => mock.GetOrCreateVirtualEndPoint(oppositeEndPointID))
           .Return(oppositeEndPointMock);
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       oppositeEndPointMock.Expect(mock => mock.MarkDataComplete(objectReference));
       oppositeEndPointMock.Replay();
 
-      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       _virtualEndPointProviderMock
           .Expect(mock => mock.GetOrCreateVirtualEndPoint(oppositeEndPointID))
           .Return(oppositeEndPointMock);
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       oppositeEndPointMock.Expect(mock => mock.RegisterOriginalOppositeEndPoint(endPointMock));
       oppositeEndPointMock.Replay();
 
-      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       _virtualEndPointProviderMock
           .Expect(mock => mock.GetOrCreateVirtualEndPoint(oppositeEndPointID))
           .Return(oppositeEndPointMock);

@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
 
       IObjectSecurityStrategy objectSecurityStrategy = user.GetSecurityStrategy();
       Assert.That(objectSecurityStrategy, Is.Not.Null);
-      Assert.IsInstanceOf(typeof (DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
+      Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
       DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
       Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
     }
@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     {
       ISecurableObject user = CreateUser();
 
-      Assert.That(user.GetSecurableType(), Is.SameAs(typeof (User)));
+      Assert.That(user.GetSecurableType(), Is.SameAs(typeof(User)));
     }
 
     [Test]

@@ -28,126 +28,126 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     [Test]
     public void IsOriginalDeclaration_ForPropertyOnBaseClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (ClassWithDifferentProperties), "String");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(ClassWithDifferentProperties), "String");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_ForPropertyOnDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedClassWithDifferentProperties), "OtherString");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedClassWithDifferentProperties), "OtherString");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_ForNewPropertyOnDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedClassWithDifferentProperties), "String");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedClassWithDifferentProperties), "String");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_ForOverriddenPropertyOnBaseClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (ClassWithDifferentProperties), "Int32");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(ClassWithDifferentProperties), "Int32");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_ForOverriddenPropertyOnDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedClassWithDifferentProperties), "Int32");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedClassWithDifferentProperties), "Int32");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForPropertyOnBaseClass_Open ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (GenericClassWithDifferentProperties<>), "VirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(GenericClassWithDifferentProperties<>), "VirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForPropertyOnBaseClass_Closed ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (GenericClassWithDifferentProperties<int>), "VirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(GenericClassWithDifferentProperties<int>), "VirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForPropertyOnDerivedOpenClass_Open ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedOpenGenericClassWithDifferentProperties<>), "OtherVirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedOpenGenericClassWithDifferentProperties<>), "OtherVirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForPropertyOnDerivedOpenClass_Closed ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedOpenGenericClassWithDifferentProperties<int>), "OtherVirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedOpenGenericClassWithDifferentProperties<int>), "OtherVirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForPropertyOnDerivedClosedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedClosedGenericClassWithDifferentProperties), "OtherVirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedClosedGenericClassWithDifferentProperties), "OtherVirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForNewPropertyOnDerivedOpenClass_Open ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedOpenGenericClassWithDifferentProperties<>), "VirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedOpenGenericClassWithDifferentProperties<>), "VirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForNewPropertyOnDerivedOpenClass_Closed ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedOpenGenericClassWithDifferentProperties<int>), "VirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedOpenGenericClassWithDifferentProperties<int>), "VirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForNewPropertyOnDerivedClosedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedClosedGenericClassWithDifferentProperties), "VirtualT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedClosedGenericClassWithDifferentProperties), "VirtualT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForOverriddenPropertyOnBaseClass_Open ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (GenericClassWithDifferentProperties<>), "AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(GenericClassWithDifferentProperties<>), "AbstractT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForOverriddenPropertyOnBaseClass_Closed ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (GenericClassWithDifferentProperties<int>), "AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(GenericClassWithDifferentProperties<int>), "AbstractT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForOverriddenPropertyOnDerivedOpenClass_Open ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedOpenGenericClassWithDifferentProperties<>), "AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedOpenGenericClassWithDifferentProperties<>), "AbstractT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForOverriddenPropertyOnDerivedOpenClass_Closed ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedOpenGenericClassWithDifferentProperties<int>), "AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedOpenGenericClassWithDifferentProperties<int>), "AbstractT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_Generic_ForOverriddenPropertyOnDerivedClosedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo(typeof (DerivedClosedGenericClassWithDifferentProperties), "AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedClosedGenericClassWithDifferentProperties), "AbstractT");
       Assert.That(propertyInfo.IsOriginalDeclaration(), Is.False);
     }
 

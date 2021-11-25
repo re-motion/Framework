@@ -27,48 +27,48 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     {
       var instance1 = BuildMixedInstance<C>(
           b => b.AddMixinDependency<MixinA, MixinB>(),
-          typeof (MixinA), typeof (MixinB));
+          typeof(MixinA), typeof(MixinB));
       Assert.That(instance1.Method1(), Is.EqualTo("MixinA.Method1 - MixinB.Method1 - C.Method1"));
-      CheckOrderedMixinTypes(instance1, typeof (MixinA), typeof (MixinB));
+      CheckOrderedMixinTypes(instance1, typeof(MixinA), typeof(MixinB));
 
       var instance2 = BuildMixedInstance<C>(
           b => b.AddMixinDependency<MixinB, MixinA>(),
-          typeof (MixinA), typeof (MixinB));
+          typeof(MixinA), typeof(MixinB));
       Assert.That(instance2.Method1(), Is.EqualTo("MixinB.Method1 - MixinA.Method1 - C.Method1"));
-      CheckOrderedMixinTypes(instance2, typeof (MixinB), typeof (MixinA));
+      CheckOrderedMixinTypes(instance2, typeof(MixinB), typeof(MixinA));
     }
 
     [Test]
     public void TwoOverlappingMixins_WithoutDependencies_AlphabeticOrderingAccepted ()
     {
-      var instance1 = BuildMixedInstance<C>(typeof (MixinB), typeof (MixinA));
+      var instance1 = BuildMixedInstance<C>(typeof(MixinB), typeof(MixinA));
       Assert.That(instance1.Method1(), Is.EqualTo("MixinA.Method1 - MixinB.Method1 - C.Method1"));
-      CheckOrderedMixinTypes(instance1, typeof (MixinA), typeof (MixinB));
+      CheckOrderedMixinTypes(instance1, typeof(MixinA), typeof(MixinB));
     }
 
     [Test]
     public void ThreeOverlappingMixins_WithoutDependencies_AlphabeticOrderingAccepted ()
     {
-      var instance = BuildMixedInstance<C>(typeof (MixinC), typeof (MixinA), typeof (MixinB));
+      var instance = BuildMixedInstance<C>(typeof(MixinC), typeof(MixinA), typeof(MixinB));
       Assert.That(instance.Method1(), Is.EqualTo("MixinA.Method1 - MixinB.Method1 - MixinC.Method1 - C.Method1"));
-      CheckOrderedMixinTypes(instance, typeof (MixinA), typeof (MixinB), typeof (MixinC));
+      CheckOrderedMixinTypes(instance, typeof(MixinA), typeof(MixinB), typeof(MixinC));
     }
 
     [Test]
     public void OverlappingMixins_WithoutDependencies_AlphabeticOrderingNotAccepted_ByOne ()
     {
-      var instance = BuildMixedInstance<C>(typeof (MixinB), typeof (MixinA), typeof (MixinD_NoAlphabeticOrdering));
+      var instance = BuildMixedInstance<C>(typeof(MixinB), typeof(MixinA), typeof(MixinD_NoAlphabeticOrdering));
       Assert.That(instance.Method1(), Is.EqualTo("MixinA.Method1 - MixinB.Method1 - MixinD_NoAlphabeticOrdering.Method1 - C.Method1"));
-      CheckOrderedMixinTypes(instance, typeof (MixinA), typeof (MixinB), typeof (MixinD_NoAlphabeticOrdering));
+      CheckOrderedMixinTypes(instance, typeof(MixinA), typeof(MixinB), typeof(MixinD_NoAlphabeticOrdering));
     }
 
     [Test]
     public void OverlappingMixins_WithoutDependencies_AlphabeticOrderingNotAccepted_ByTwo ()
     {
       CheckOrderingException(
-          () => BuildMixedInstance<C>(typeof (MixinB), typeof (MixinA), typeof (MixinD_NoAlphabeticOrdering), typeof (MixinE_NoAlphabeticOrdering)),
-          typeof (C),
-          Tuple.Create(new[] { typeof (MixinA), typeof (MixinB), typeof (MixinD_NoAlphabeticOrdering), typeof (MixinE_NoAlphabeticOrdering)}, "Method1"));
+          () => BuildMixedInstance<C>(typeof(MixinB), typeof(MixinA), typeof(MixinD_NoAlphabeticOrdering), typeof(MixinE_NoAlphabeticOrdering)),
+          typeof(C),
+          Tuple.Create(new[] { typeof(MixinA), typeof(MixinB), typeof(MixinD_NoAlphabeticOrdering), typeof(MixinE_NoAlphabeticOrdering)}, "Method1"));
     }
 
     public class C

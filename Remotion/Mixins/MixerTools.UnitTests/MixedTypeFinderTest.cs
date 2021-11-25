@@ -44,10 +44,10 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _configuredClassContext1 = CreateClassContext(typeof (BaseType1), typeof (NullMixin));
-      _configuredClassContext2 = CreateClassContext(typeof (NullTarget), typeof (NullMixin));
-      _genericClassContext = CreateClassContext(typeof (GenericTargetClass<>), typeof (NullMixin));
-      _interfaceClassContext = CreateClassContext(typeof (IBaseType2), typeof (NullMixin));
+      _configuredClassContext1 = CreateClassContext(typeof(BaseType1), typeof(NullMixin));
+      _configuredClassContext2 = CreateClassContext(typeof(NullTarget), typeof(NullMixin));
+      _genericClassContext = CreateClassContext(typeof(GenericTargetClass<>), typeof(NullMixin));
+      _interfaceClassContext = CreateClassContext(typeof(IBaseType2), typeof(NullMixin));
 
       var classContexts = new ClassContextCollection(_configuredClassContext1, _configuredClassContext2, _genericClassContext, _interfaceClassContext);
       _configuration = new MixinConfiguration(classContexts);
@@ -90,56 +90,56 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     [Test]
     public void FindMixedTypes_InheritedContexts ()
     {
-      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (DerivedNullTarget)));
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof(DerivedNullTarget)));
       var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That(result, Has.Member(typeof (DerivedNullTarget)));
+      Assert.That(result, Has.Member(typeof(DerivedNullTarget)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoTypesMarkedWithIgnoreAttribute ()
     {
-      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (ClassWithIgnoreAttribute)));
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof(ClassWithIgnoreAttribute)));
       var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That(result, Has.No.Member(typeof (ClassWithIgnoreAttribute)));
+      Assert.That(result, Has.No.Member(typeof(ClassWithIgnoreAttribute)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoDuplicates ()
     {
-      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (NullTarget)));
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof(NullTarget)));
       var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That(result, Has.Member(typeof (NullTarget)));
+      Assert.That(result, Has.Member(typeof(NullTarget)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoNonInherited ()
     {
-      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (object)));
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof(object)));
       var result = finder.FindMixedTypes(_configuration);
 
       Assert.That(result, Has.No.Member(null));
-      Assert.That(result, Has.No.Member(typeof (object)));
+      Assert.That(result, Has.No.Member(typeof(object)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoGenerics ()
     {
-      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (GenericDerivedNullTarget<>)));
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof(GenericDerivedNullTarget<>)));
       var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That(result, Has.No.Member(typeof (GenericDerivedNullTarget<>)));
+      Assert.That(result, Has.No.Member(typeof(GenericDerivedNullTarget<>)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoInterfaces ()
     {
-      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (IDerivedIBaseType2)));
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof(IDerivedIBaseType2)));
       var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That(result, Has.No.Member(typeof (IDerivedIBaseType2)));
+      Assert.That(result, Has.No.Member(typeof(IDerivedIBaseType2)));
     }
 
     [Test]
@@ -154,7 +154,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
                   SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
                   SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()));
 
-      var targetType = typeof (object);
+      var targetType = typeof(object);
       var classContext = new ClassContext(targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
       // Explicitly pass classContext in to the MixinParticipant; that way we generate a mixed type even if there are no mixins on the type.
       var generatedType = pipeline.ReflectionService.GetAssembledType(new AssembledTypeID(targetType, new[] { classContext }));
@@ -183,7 +183,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
                                   mixinType,
                                   MemberVisibility.Private,
                                   Enumerable.Empty<Type>(),
-                                  new MixinContextOrigin("some kind", typeof (MixedTypeFinderTest).Assembly, "some location"))
+                                  new MixinContextOrigin("some kind", typeof(MixedTypeFinderTest).Assembly, "some location"))
                           };
       var composedInterfaces = Enumerable.Empty<Type>();
       return new ClassContext(type, mixinContexts, composedInterfaces);

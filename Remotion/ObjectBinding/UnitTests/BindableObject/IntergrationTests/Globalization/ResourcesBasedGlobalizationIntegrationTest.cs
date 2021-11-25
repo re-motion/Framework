@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     [Test]
     public void PropertyDisplayName_NotInherited_NotOverridden_NotMixed ()
     {
-      var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "Property2");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "Property2");
 
       Assert.That(resourceString, Is.EqualTo("Property2 display name from TargetClassForGlobalizationViaResources"));
     }
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     [Test]
     public void PropertyDisplayName_InheritedAndOverridden_NotMixed_PropertyEvaluatedForBaseClass ()
     {
-      var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "Property1");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "Property1");
 
       Assert.That(resourceString, Is.EqualTo("Property1 display name from TargetClassForGlobalizationViaResources"));
     }
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     [Test]
     public void PropertyDisplayName_InheritedAndOverridden_NotMixed_PropertyEvaluatedForDerivedClass ()
     {
-      var resourceString = GetResourceStringForType(typeof (DerivedTargetClassForGlobalizationViaResources), "Property1");
+      var resourceString = GetResourceStringForType(typeof(DerivedTargetClassForGlobalizationViaResources), "Property1");
 
       Assert.That(resourceString, Is.EqualTo("Property1 display name from DerivedTargetClassForGlobalizationViaResources"));
     }
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "PropertyForMixinOverrideTest");
+        var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "PropertyForMixinOverrideTest");
 
         Assert.That(resourceString, Is.EqualTo("PropertyForMixinOverrideTest display name from MixinAddingResources"));
       }
@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "MixedProperty1");
+        var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "MixedProperty1");
 
         Assert.That(resourceString, Is.EqualTo("MixedProperty1 display name from TargetClassForGlobalizationViaResources"));
       }
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "MixedProperty2");
+        var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "MixedProperty2");
 
         Assert.That(resourceString, Is.EqualTo("MixedProperty2 display name from MixinAddingResources"));
       }
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     [Test]
     public void PropertyDisplayName_ImplicitInterfaceProperty ()
     {
-      var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "ImplicitImplementedProperty");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "ImplicitImplementedProperty");
 
       Assert.That(resourceString, Is.EqualTo("ImplicitImplementedProperty display name from TargetClassForGlobalizationViaResources"));
     }
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     [Test]
     public void PropertyDisplayName_ExplicitInterfaceProperty ()
     {
-      var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "ExplicitImplementedProperty");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "ExplicitImplementedProperty");
 
       Assert.That(resourceString, Is.EqualTo("ExplicitImplementedProperty display name from TargetClassForGlobalizationViaResources"));
     }
@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "MixedExplicitProperty");
+        var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "MixedExplicitProperty");
 
         Assert.That(resourceString, Is.EqualTo("MixedExplicitProperty display name from TargetClassForGlobalizationViaResources"));
       }
@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<DerivedMixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (DerivedTargetClassForGlobalizationViaResources), "MixedProperty3");
+        var resourceString = GetResourceStringForType(typeof(DerivedTargetClassForGlobalizationViaResources), "MixedProperty3");
 
         Assert.That(resourceString, Is.EqualTo("MixedProperty3 display name from DerivedMixinAddingResources"));
       }
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<DerivedMixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (DerivedTargetClassForGlobalizationViaResources), "MixedProperty2");
+        var resourceString = GetResourceStringForType(typeof(DerivedTargetClassForGlobalizationViaResources), "MixedProperty2");
 
         Assert.That(resourceString, Is.EqualTo("MixedProperty2 display name from DerivedMixinAddingResources"));
       }
@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<DerivedMixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (DerivedTargetClassForGlobalizationViaResources), "Property4");
+        var resourceString = GetResourceStringForType(typeof(DerivedTargetClassForGlobalizationViaResources), "Property4");
 
         Assert.That(resourceString, Is.EqualTo("Property4 display name from DerivedMixinAddingResources"));
       }
@@ -182,7 +182,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinOfMixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "Property1");
+        var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "Property1");
 
         Assert.That(resourceString, Is.EqualTo("Property1 display name from MixinOfMixinAddingResources"));
       }
@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinOfMixinAddingResources>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType(typeof (TargetClassForGlobalizationViaResources), "MixedProperty2");
+        var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaResources), "MixedProperty2");
 
         Assert.That(resourceString, Is.EqualTo("MixedProperty2 display name from MixinOfMixinAddingResources"));
       }

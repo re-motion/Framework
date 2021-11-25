@@ -25,7 +25,7 @@ namespace Remotion.Validation.Implementation
   /// Enables <see cref="IValidatorBuilder"/> to be serialized/deserialized.
   /// </summary>
   [Serializable]
-  [ImplementationFor (typeof (IValidatorBuilder), RegistrationType = RegistrationType.Decorator, Position = Int32.MinValue)]
+  [ImplementationFor (typeof(IValidatorBuilder), RegistrationType = RegistrationType.Decorator, Position = Int32.MinValue)]
   public class ValidatorBuilderSerializationDecorator : IValidatorBuilder, IObjectReference
   {
     [NonSerialized]

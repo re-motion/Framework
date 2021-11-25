@@ -35,19 +35,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     public override void SetUp ()
     {
       base.SetUp();
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Position");
+      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
 
-      _customerClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Customer));
-      _customerSincePropertyDefinition = _customerClassDefinition.GetMandatoryPropertyDefinition(typeof (Customer).FullName + ".CustomerSince");
+      _customerClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Customer));
+      _customerSincePropertyDefinition = _customerClassDefinition.GetMandatoryPropertyDefinition(typeof(Customer).FullName + ".CustomerSince");
     }
 
     [Test]
     public void Initialization_NoIComparableType ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (ClassWithAllDataTypes));
-      var propertyDefinition = classDefinition.GetPropertyDefinition(typeof (ClassWithAllDataTypes).FullName + ".BinaryProperty");
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithAllDataTypes));
+      var propertyDefinition = classDefinition.GetPropertyDefinition(typeof(ClassWithAllDataTypes).FullName + ".BinaryProperty");
       Assert.That(
           () => new SortedPropertySpecification(propertyDefinition, SortOrder.Ascending),
           Throws.InstanceOf<MappingException>()

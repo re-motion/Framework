@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(stub => stub.GetCurrentPageControlName()).Returns("CurrentPageControl$UniqueID"); // Keep the $-sign as long as the ScalarLoadPostDataTarget is used.
 
       List.Setup(list => list.GetResourceManager()).Returns(
-          GlobalizationService.GetResourceManager(typeof (ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
+          GlobalizationService.GetResourceManager(typeof(ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
 
       List.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string url) => url.TrimStart('~'));
     }

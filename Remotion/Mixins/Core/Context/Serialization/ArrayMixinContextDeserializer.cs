@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Context.Serialization
     protected abstract ArrayMixinContextOriginDeserializer CreateMixinContextOriginDeserializer (object[] values);
 
     protected ArrayMixinContextDeserializer (object[] values)
-        : base (values, 5)
+        : base(values, 5)
     {
     }
 

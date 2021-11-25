@@ -29,13 +29,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     private readonly Type _type;
 
     public NonInterceptableTypeException (string message, Type type)
-        : base (message)
+        : base(message)
     {
       _type = type;
     }
 
     public NonInterceptableTypeException (string message, Type type, Exception innerException)
-      : base (message, innerException)
+      : base(message, innerException)
     {
       _type = type;
     }
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     protected NonInterceptableTypeException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _type = (Type) info.GetValue("_type", typeof (Type));
+      _type = (Type) info.GetValue("_type", typeof(Type));
     }
 
     /// <summary>

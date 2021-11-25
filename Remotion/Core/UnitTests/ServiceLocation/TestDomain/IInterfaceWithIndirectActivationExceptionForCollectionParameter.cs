@@ -25,7 +25,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (IInterfaceWithIndirectActivationExceptionForCollectionParameter))]
+  [ImplementationFor (typeof(IInterfaceWithIndirectActivationExceptionForCollectionParameter))]
   public class ClassWithIndirectActivationExceptionForCollectionParameter : IInterfaceWithIndirectActivationExceptionForCollectionParameter
   {
     public ClassWithIndirectActivationExceptionForCollectionParameter (

@@ -29,13 +29,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     private string _lastExecutedStepID;
 
     public TestFunctionWithNesting ()
-      : base (new NoneTransactionMode())
+      : base(new NoneTransactionMode())
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
     public TestFunctionWithNesting (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
@@ -60,7 +60,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     class Step3: WxeFunction
     {
       public Step3 ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
       {
       }
 

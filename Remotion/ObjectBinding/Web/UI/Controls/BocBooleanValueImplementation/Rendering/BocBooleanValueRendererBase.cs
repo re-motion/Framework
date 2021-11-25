@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 

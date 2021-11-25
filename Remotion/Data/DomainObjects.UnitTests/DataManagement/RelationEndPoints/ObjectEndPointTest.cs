@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Initialize_WithNonOneEndPointID_Throws ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       Assert.That(
           () => new TestableObjectEndPoint(
           TestableClientTransaction,

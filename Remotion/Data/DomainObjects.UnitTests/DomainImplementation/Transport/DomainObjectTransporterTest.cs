@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void Load_Inexistent ()
     {
       Assert.That(
-          () => _transporter.Load(new ObjectID(typeof (Order), Guid.NewGuid())),
+          () => _transporter.Load(new ObjectID(typeof(Order), Guid.NewGuid())),
           Throws.InstanceOf<ObjectsNotFoundException>()
               .With.Message.Matches(
                   "Object 'Order|.*|System.Guid' could not be found."));
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void LoadNew ()
     {
-      var order = (Order) _transporter.LoadNew(typeof (Order), ParamList.Empty);
+      var order = (Order) _transporter.LoadNew(typeof(Order), ParamList.Empty);
       Assert.That(order, Is.Not.Null);
       Assert.That(_transporter.IsLoaded(order.ID), Is.True);
     }

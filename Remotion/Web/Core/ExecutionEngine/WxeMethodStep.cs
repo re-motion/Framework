@@ -88,7 +88,7 @@ public class WxeMethodStep: WxeStep
     ParameterInfo[] parameters = method.GetParameters();
     if (parameters.Length > 1)
       throw new WxeException("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', does not support more than one parameter.");
-    if (parameters.Length == 1 && ! typeof (WxeContext).IsAssignableFrom(parameters[0].ParameterType))
+    if (parameters.Length == 1 && ! typeof(WxeContext).IsAssignableFrom(parameters[0].ParameterType))
       throw new WxeException("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', may only have a parameter of type WxeContext.");
 
     _target = target;
@@ -97,14 +97,14 @@ public class WxeMethodStep: WxeStep
   }
 
   public WxeMethodStep (Action method)
-      : this (
+      : this(
           GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
           GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
   {
   }
 
   public WxeMethodStep (Action<WxeContext> method)
-      : this (
+      : this(
           GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
           GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
   {
@@ -131,14 +131,14 @@ public class WxeMethodStep: WxeStep
       if (_methodWithContext == null)
       {
         _methodWithContext = 
-          (WxeMethodWithContext) Delegate.CreateDelegate(typeof (WxeMethodWithContext), _target, _methodName, false);
+          (WxeMethodWithContext) Delegate.CreateDelegate(typeof(WxeMethodWithContext), _target, _methodName, false);
       }
       _methodWithContext(context);
     }
     else
     {
       if (_method == null)
-        _method = (WxeMethod) Delegate.CreateDelegate(typeof (WxeMethod), _target, _methodName, false);
+        _method = (WxeMethod) Delegate.CreateDelegate(typeof(WxeMethod), _target, _methodName, false);
       _method();
     }
   }

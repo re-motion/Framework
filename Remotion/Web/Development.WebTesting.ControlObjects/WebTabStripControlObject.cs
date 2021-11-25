@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class WebTabStripControlObject : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithTabs, IFluentControlObjectWithTabs
   {
     public WebTabStripControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

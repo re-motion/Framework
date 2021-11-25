@@ -114,27 +114,27 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _validationRuleCollectorInfo1 = new ValidationRuleCollectorInfo(
           _validationRuleCollectorStub1.Object,
-          typeof (ApiBasedValidationRuleCollectorProvider));
+          typeof(ApiBasedValidationRuleCollectorProvider));
       _validationRuleCollectorInfo2 = new ValidationRuleCollectorInfo(
           _validationRuleCollectorStub2.Object,
-          typeof (ApiBasedValidationRuleCollectorProvider));
+          typeof(ApiBasedValidationRuleCollectorProvider));
       _validationRuleCollectorInfo3 = new ValidationRuleCollectorInfo(
           _validationRuleCollectorStub3.Object,
-          typeof (ApiBasedValidationRuleCollectorProvider));
+          typeof(ApiBasedValidationRuleCollectorProvider));
 
       _addingPropertyValidationRuleCollectorStub1 = new Mock<IAddingPropertyValidationRuleCollector>();
       _addingPropertyValidationRuleCollectorStub2 = new Mock<IAddingPropertyValidationRuleCollector>();
       _addingPropertyValidationRuleCollectorStub3 = AddingPropertyValidationRuleCollector.Create(
           ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.FirstName),
-          typeof (IValidationRuleCollector));
+          typeof(IValidationRuleCollector));
       _addingPropertyValidationRuleCollectorStub4 = AddingPropertyValidationRuleCollector.Create(
           ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.LastName),
-          typeof (IValidationRuleCollector));
+          typeof(IValidationRuleCollector));
 
       _addingObjectValidationRuleCollectorStub1 = new Mock<IAddingObjectValidationRuleCollector>();
       _addingObjectValidationRuleCollectorStub2 = new Mock<IAddingObjectValidationRuleCollector>();
-      _addingObjectValidationRuleCollectorStub3 = AddingObjectValidationRuleCollector.Create<Customer>(typeof (IValidationRuleCollector));
-      _addingObjectValidationRuleCollectorStub4 = AddingObjectValidationRuleCollector.Create<Customer>(typeof (IValidationRuleCollector));
+      _addingObjectValidationRuleCollectorStub3 = AddingObjectValidationRuleCollector.Create<Customer>(typeof(IValidationRuleCollector));
+      _addingObjectValidationRuleCollectorStub4 = AddingObjectValidationRuleCollector.Create<Customer>(typeof(IValidationRuleCollector));
 
       _fakeAddingPropertyValidationRulesCollectorResult =
           new[]
@@ -211,14 +211,14 @@ namespace Remotion.Validation.UnitTests.Implementation
       _addingObjectValidationRuleCollectorStub1.Setup(_ => _.CreateValidationRule(_validationMessageFactoryStub.Object)).Returns(validationRuleStub4.Object);
       _addingObjectValidationRuleCollectorStub2.Setup(_ => _.CreateValidationRule(_validationMessageFactoryStub.Object)).Returns(validationRuleStub5.Object);
 
-      var result = _validatorBuilder.BuildValidator(typeof (SpecialCustomer1));
+      var result = _validatorBuilder.BuildValidator(typeof(SpecialCustomer1));
 
       _validationRuleCollectorProviderMock.Verify();
       _validationRuleCollectorMergerMock.Verify();
       _propertyMetaValidationRuleValidatorMock.Verify();
       _objectMetaValidationRuleValidatorMock.Verify();
       _memberInformationNameResolverMock.Verify();
-      Assert.That(result, Is.TypeOf(typeof (Validator)));
+      Assert.That(result, Is.TypeOf(typeof(Validator)));
       var validator = (Validator) result;
       var validationRules = validator.ValidationRules.ToArray();
       Assert.That(validationRules.Length, Is.EqualTo(8));
@@ -260,7 +260,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _propertyMetaValidationRuleValidatorMock.Verify();
       _objectMetaValidationRuleValidatorMock.Verify();
       _memberInformationNameResolverMock.Verify();
-      Assert.That(result, Is.TypeOf(typeof (TypedValidatorDecorator<SpecialCustomer1>)));
+      Assert.That(result, Is.TypeOf(typeof(TypedValidatorDecorator<SpecialCustomer1>)));
     }
 
     [Test]
@@ -292,7 +292,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var validationCollectorInfos = new[] { new[] { _validationRuleCollectorInfo1, _validationRuleCollectorInfo3 }, new[] { _validationRuleCollectorInfo2 } };
       _validationRuleCollectorProviderMock
-          .Setup(mock => mock.GetValidationRuleCollectors(new[] { typeof (SpecialCustomer1) }))
+          .Setup(mock => mock.GetValidationRuleCollectors(new[] { typeof(SpecialCustomer1) }))
           .Returns(validationCollectorInfos)
           .Verifiable();
 

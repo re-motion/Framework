@@ -24,7 +24,7 @@ namespace Remotion.Xml
 {
   public class XmlSchemaValidationHandler
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (XmlSchemaValidationHandler));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(XmlSchemaValidationHandler));
 
     private bool _failOnError;
 

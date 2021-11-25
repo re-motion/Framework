@@ -48,7 +48,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void SaveAssemblySigned ()
     {
       ModuleScope scope = new ModuleScope(true);
-      CustomClassEmitter emitter = new CustomClassEmitter(scope, "SignedType", typeof (object));
+      CustomClassEmitter emitter = new CustomClassEmitter(scope, "SignedType", typeof(object));
       emitter.BuildType();
 #pragma warning disable 618
       string[] paths = AssemblySaver.SaveAssemblies(scope);
@@ -63,7 +63,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void SaveAssemblyUnsigned ()
     {
       ModuleScope scope = new ModuleScope(true);
-      CustomClassEmitter emitter = new CustomClassEmitter(scope, "UnsignedType", typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
+      CustomClassEmitter emitter = new CustomClassEmitter(scope, "UnsignedType", typeof(object), Type.EmptyTypes, TypeAttributes.Public, true);
       emitter.BuildType();
 #pragma warning disable 618
       string[] paths = AssemblySaver.SaveAssemblies(scope);

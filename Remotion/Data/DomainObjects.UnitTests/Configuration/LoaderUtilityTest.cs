@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void GetTypeWithTypeUtilityNotation ()
     {
-      Assert.That(LoaderUtility.GetType("Remotion.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"), Is.EqualTo(typeof (LoaderUtility)));
+      Assert.That(LoaderUtility.GetType("Remotion.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"), Is.EqualTo(typeof(LoaderUtility)));
     }
   }
 }

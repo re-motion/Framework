@@ -43,13 +43,13 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var clientTransaction = new SecurityClientTransactionFactory().CreateRootTransaction();
       clientTransaction.To<ClientTransaction>().EnterDiscardingScope();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
       ClientTransactionScope.ResetActiveScope();
       _serviceLocatorScope.Dispose();

@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;
-      _propertyType = isObjectID ? typeof (ObjectID) : propertyInfo.PropertyType;
+      _propertyType = isObjectID ? typeof(ObjectID) : propertyInfo.PropertyType;
       _propertyName = propertyName;
       _isObjectID = isObjectID;
       _isNullablePropertyType = NullableTypeUtility.IsNullableType(propertyInfo.PropertyType);
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         if (_propertyType.IsArray)
           return Array.CreateInstance(_propertyType.GetElementType(), 0);
 
-        if (_propertyType == typeof (string))
+        if (_propertyType == typeof(string))
           return string.Empty;
 
         if (_propertyType.IsEnum)

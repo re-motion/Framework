@@ -27,7 +27,7 @@ namespace Remotion.Web.UnitTests.Core.Context
     [Test]
     public void StorageProvider_IsHttpProvider_InWebProject ()
     {
-      Assert.That(SafeContext.Instance, Is.InstanceOf(typeof (HttpContextStorageProvider)));
+      Assert.That(SafeContext.Instance, Is.InstanceOf(typeof(HttpContextStorageProvider)));
     }
   }
 }

@@ -30,13 +30,13 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     {
       Assert.That(
           ControlHelper.ViewStateFieldPrefixID,
-          Is.EqualTo(PrivateInvoke.GetNonPublicStaticField(typeof (Page), "ViewStateFieldPrefixID")));
+          Is.EqualTo(PrivateInvoke.GetNonPublicStaticField(typeof(Page), "ViewStateFieldPrefixID")));
     }
 
     [Test]
     public void GetAsyncPostBackErrorKey_AspNetConstant ()
     {
-      var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false);
+      var pageRequestManagerType = typeof(ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false);
       Assert.That(
           ControlHelper.AsyncPostBackErrorKey,
           Is.EqualTo(PrivateInvoke.GetNonPublicStaticField(pageRequestManagerType, "AsyncPostBackErrorKey")));
@@ -45,7 +45,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void GetAsyncPostBackErrorHttpCodeKey_AspNetConstant ()
     {
-      var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false);
+      var pageRequestManagerType = typeof(ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false);
       Assert.That(
           ControlHelper.AsyncPostBackErrorHttpCodeKey,
           Is.EqualTo(PrivateInvoke.GetNonPublicStaticField(pageRequestManagerType, "AsyncPostBackErrorHttpCodeKey")));
@@ -54,7 +54,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void GetAsyncPostBackErrorMessageKey_AspNetConstant ()
     {
-      var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false);
+      var pageRequestManagerType = typeof(ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false);
       Assert.That(
           ControlHelper.AsyncPostBackErrorMessageKey,
           Is.EqualTo(PrivateInvoke.GetNonPublicStaticField(pageRequestManagerType, "AsyncPostBackErrorMessageKey")));

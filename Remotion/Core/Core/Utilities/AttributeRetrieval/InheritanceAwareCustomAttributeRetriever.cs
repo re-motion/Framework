@@ -51,12 +51,12 @@ namespace Remotion.Utilities.AttributeRetrieval
                   null);
               Assertion.IsNotNull(method, "The internal method RuntimeMethodInfo.GetParentDefinition has been removed. We need to patch this implementation.");
 
-              var parameterExpression = Expression.Parameter(typeof (MethodInfo));
+              var parameterExpression = Expression.Parameter(typeof(MethodInfo));
               var lambdaExpression = Expression.Lambda(
                   Expression.Convert(
                       Expression.Call(
                           Expression.Convert(parameterExpression, runtimeMethodInfoType), method),
-                      typeof (MethodInfo)),
+                      typeof(MethodInfo)),
                   parameterExpression);
 
               return (Func<MethodInfo, MethodInfo>) lambdaExpression.Compile();

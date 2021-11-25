@@ -46,7 +46,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       resourceManagerStub.Setup(_ => _.IsNull).Returns(false);
       resourceManagerStub.Setup(_ => _.TryGetString("enumName", out outValue)).Returns(true);
 
-      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (EnumWithResources)))).Returns(resourceManagerStub.Object);
+      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(EnumWithResources)))).Returns(resourceManagerStub.Object);
       _memberInformationNameResolverStub.Setup(_ => _.GetEnumName(EnumWithResources.Value1)).Returns("enumName");
 
       string resourceValue;
@@ -62,7 +62,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       resourceManagerStub.Setup(_ => _.IsNull).Returns(false);
       resourceManagerStub.Setup(_ => _.TryGetString("enumName", out outValue)).Returns(false);
 
-      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (EnumWithResources)))).Returns(resourceManagerStub.Object);
+      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(EnumWithResources)))).Returns(resourceManagerStub.Object);
       _memberInformationNameResolverStub.Setup(_ => _.GetEnumName(EnumWithResources.Value1)).Returns("enumName");
 
       string resourceValue;
@@ -73,7 +73,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void TryGetEnumerationValueDisplayName_WithoutResourceManager_ReturnsNull ()
     {
-      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (EnumWithResources)))).Returns(NullResourceManager.Instance);
+      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(EnumWithResources)))).Returns(NullResourceManager.Instance);
 
       string resourceValue;
       Assert.That(_service.TryGetEnumerationValueDisplayName(EnumWithResources.Value1, out resourceValue), Is.False);

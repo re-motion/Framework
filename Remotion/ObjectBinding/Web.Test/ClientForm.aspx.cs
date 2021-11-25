@@ -58,14 +58,14 @@ public class ClientForm : TestWxeBasePage
         "TestTabbedPersonDetailsUserControl",
         "Person Details",
         new IconInfo(
-            resourceUrlFactory.CreateResourceUrl(typeof (Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif").GetUrl()),
+            resourceUrlFactory.CreateResourceUrl(typeof(Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif").GetUrl()),
         "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
     dataEditControl = AddPage(
         "TestTabbedPersonJobsUserControl",
         "Jobs",
-        new IconInfo(resourceUrlFactory.CreateResourceUrl(typeof (Job), ResourceType.Image, "Remotion.ObjectBinding.Sample.Job.gif").GetUrl()),
+        new IconInfo(resourceUrlFactory.CreateResourceUrl(typeof(Job), ResourceType.Image, "Remotion.ObjectBinding.Sample.Job.gif").GetUrl()),
         "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);

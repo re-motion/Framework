@@ -42,9 +42,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private static readonly Type[] s_supportedPropertyInterfaces = new[]
                                                                    {
-                                                                       typeof (IBusinessObjectNumericProperty),
-                                                                       typeof (IBusinessObjectStringProperty),
-                                                                       typeof (IBusinessObjectDateTimeProperty)
+                                                                       typeof(IBusinessObjectNumericProperty),
+                                                                       typeof(IBusinessObjectStringProperty),
+                                                                       typeof(IBusinessObjectDateTimeProperty)
                                                                    };
 
     // types
@@ -508,7 +508,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
@@ -675,19 +675,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       else if (property is IBusinessObjectNumericProperty)
       {
         IBusinessObjectNumericProperty numericProperty = (IBusinessObjectNumericProperty) property;
-        if (numericProperty.Type == typeof (byte))
+        if (numericProperty.Type == typeof(byte))
           return BocTextValueType.Byte;
-        else if (numericProperty.Type == typeof (decimal))
+        else if (numericProperty.Type == typeof(decimal))
           return BocTextValueType.Decimal;
-        else if (numericProperty.Type == typeof (double))
+        else if (numericProperty.Type == typeof(double))
           return BocTextValueType.Double;
-        else if (numericProperty.Type == typeof (short))
+        else if (numericProperty.Type == typeof(short))
           return BocTextValueType.Int16;
-        else if (numericProperty.Type == typeof (int))
+        else if (numericProperty.Type == typeof(int))
           return BocTextValueType.Int32;
-        else if (numericProperty.Type == typeof (long))
+        else if (numericProperty.Type == typeof(long))
           return BocTextValueType.Int64;
-        else if (numericProperty.Type == typeof (float))
+        else if (numericProperty.Type == typeof(float))
           return BocTextValueType.Single;
         else
           throw new NotSupportedException("BocTextValue does not support property type " + property.GetType());

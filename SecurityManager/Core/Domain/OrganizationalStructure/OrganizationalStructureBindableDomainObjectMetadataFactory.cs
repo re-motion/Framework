@@ -26,7 +26,7 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [Extends (typeof (BindableDomainObjectMetadataFactory))]
+  [Extends (typeof(BindableDomainObjectMetadataFactory))]
   public class OrganizationalStructureBindableDomainObjectMetadataFactoryMixin
       : Mixin<BindableDomainObjectMetadataFactory, OrganizationalStructureBindableDomainObjectMetadataFactoryMixin.INext>
   {
@@ -73,9 +73,9 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
 
-      if (concreteType == typeof (Position)
+      if (concreteType == typeof(Position)
           && propertyInfo.Name == "Delegable"
-          && TypeAdapter.Create(typeof (Position)).Equals(propertyInfo.GetOriginalDeclaringType()))
+          && TypeAdapter.Create(typeof(Position)).Equals(propertyInfo.GetOriginalDeclaringType()))
       {
         var delegatedPropertyInfo = propertyInfo.GetOriginalDeclaration();
         var targetPropertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(() => ((Position) null).Delegation));

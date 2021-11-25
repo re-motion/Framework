@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public void SetUp ()
     {
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
       _invalidEndPointDefinition = new TestableInvalidRelationEndPointDefinitionBase(_classDefinition, "TestProperty", typeof(string));
     }
 
@@ -48,9 +48,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       Assert.That(_invalidEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(_invalidEndPointDefinition.PropertyName, Is.EqualTo("TestProperty"));
-      Assert.That(_invalidEndPointDefinition.PropertyInfo.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof (Order))));
+      Assert.That(_invalidEndPointDefinition.PropertyInfo.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(Order))));
       Assert.That(_invalidEndPointDefinition.PropertyInfo.Name, Is.EqualTo("TestProperty"));
-      Assert.That(_invalidEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof (string)));
+      Assert.That(_invalidEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(_invalidEndPointDefinition.IsVirtual, Is.False);
       Assert.That(_invalidEndPointDefinition.IsAnonymous, Is.False);
     }

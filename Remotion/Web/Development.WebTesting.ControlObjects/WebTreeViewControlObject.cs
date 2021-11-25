@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private readonly WebTreeViewNodeControlObject _metaRootNode;
 
     public WebTreeViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       _metaRootNode = new WebTreeViewNodeControlObject(context);
     }

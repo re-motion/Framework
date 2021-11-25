@@ -33,7 +33,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       if ((page.IsReturningPostBack == false))
       {
         function = new ShowSecondUserControlFormFunction();
-        function.ExceptionHandler.SetCatchExceptionTypes(typeof (System.Exception));
+        function.ExceptionHandler.SetCatchExceptionTypes(typeof(System.Exception));
         WxeUserControl actualUserControl = (WxeUserControl) page.FindControl(userControl.PermanentUniqueID);
         Assertion.IsNotNull(actualUserControl);
         actualUserControl.ExecuteFunction(function, sender, null);
@@ -150,12 +150,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       var controlState = (Tuple<object, int, Type>) savedState;
       base.LoadControlState(controlState.Item1);
       ControlStateValue = controlState.Item2;
-      Assertion.IsTrue(controlState.Item3 == typeof (SecondControl), "Expected ControlState from 'SecondControl' but was '{0}'.", controlState.Item3.Name);
+      Assertion.IsTrue(controlState.Item3 == typeof(SecondControl), "Expected ControlState from 'SecondControl' but was '{0}'.", controlState.Item3.Name);
     }
 
     protected override object SaveControlState ()
     {
-      return new Tuple<object, int, Type>(base.SaveControlState(), ControlStateValue, typeof (SecondControl));
+      return new Tuple<object, int, Type>(base.SaveControlState(), ControlStateValue, typeof(SecondControl));
     }
 
     protected override void LoadViewState (object savedState)
@@ -165,12 +165,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       var  statePair =  (Tuple<object, Type>) savedState;
       base.LoadViewState(statePair.Item1);
 
-      Assertion.IsTrue(statePair.Item2 == typeof (SecondControl), "Expected ViewState from 'SecondControl' but was '{0}'.", statePair.Item2.Name);
+      Assertion.IsTrue(statePair.Item2 == typeof(SecondControl), "Expected ViewState from 'SecondControl' but was '{0}'.", statePair.Item2.Name);
     }
 
     protected override object SaveViewState ()
     {
-      return new Tuple<object, Type>(base.SaveViewState(), typeof (SecondControl));
+      return new Tuple<object, Type>(base.SaveViewState(), typeof(SecondControl));
     }
 
     private int ViewStateValue

@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonImplementation
       var factory = _serviceLocator.GetInstance<IWebButtonRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (WebButtonRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(WebButtonRenderer)));
     }
 
     [Test]

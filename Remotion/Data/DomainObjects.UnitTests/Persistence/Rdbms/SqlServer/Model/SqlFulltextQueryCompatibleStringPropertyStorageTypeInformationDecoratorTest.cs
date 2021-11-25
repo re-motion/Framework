@@ -42,12 +42,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     public void Initialization_DelegatesToInnerStorageTypeInformation ()
     {
       var innerStorageTypeInformation = new StorageTypeInformation(
-          typeof (bool),
+          typeof(bool),
           "test",
           BooleanObjectMother.GetRandomBoolean() ? DbType.Double : DbType.Int32,
           BooleanObjectMother.GetRandomBoolean(),
           new Random().Next(),
-          typeof (int),
+          typeof(int),
           _typeConverterStub);
 
       var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformation, 4000);

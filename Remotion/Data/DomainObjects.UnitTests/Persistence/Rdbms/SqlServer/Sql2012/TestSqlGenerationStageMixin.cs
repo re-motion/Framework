@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [OverrideTarget]
     public virtual void GenerateTextForOuterSqlStatement (ISqlCommandBuilder commandBuilder, SqlStatement sqlStatement)
     {
-      Assert.That(sqlStatement.SelectProjection, Is.TypeOf(typeof (SqlEntityDefinitionExpression)));
-      Assert.That(sqlStatement.SelectProjection.Type, Is.EqualTo(typeof (int)));
+      Assert.That(sqlStatement.SelectProjection, Is.TypeOf(typeof(SqlEntityDefinitionExpression)));
+      Assert.That(sqlStatement.SelectProjection.Type, Is.EqualTo(typeof(int)));
       Assert.That(((SqlEntityDefinitionExpression) sqlStatement.SelectProjection).TableAlias, Is.EqualTo("c"));
       Assert.That(((SqlEntityDefinitionExpression) sqlStatement.SelectProjection).Name, Is.EqualTo("CookTable"));
 

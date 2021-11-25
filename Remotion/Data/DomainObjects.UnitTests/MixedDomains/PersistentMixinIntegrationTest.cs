@@ -29,110 +29,110 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void ClassDefinitionIncludesPersistentProperties ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassForPersistentMixin));
-      Assert.That(classDefinition.GetPropertyDefinition(typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty"), Is.Not.Null);
-      Assert.That(classDefinition.GetPropertyDefinition(typeof (MixinAddingPersistentProperties).FullName + ".ExtraPersistentProperty"), Is.Not.Null);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassForPersistentMixin));
+      Assert.That(classDefinition.GetPropertyDefinition(typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty"), Is.Not.Null);
+      Assert.That(classDefinition.GetPropertyDefinition(typeof(MixinAddingPersistentProperties).FullName + ".ExtraPersistentProperty"), Is.Not.Null);
     }
 
     [Test]
     public void ClassDefinitionIncludesPersistentPropertiesFromDerivedMixin ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassForDerivedPersistentMixin));
-      Assert.That(classDefinition.GetPropertyDefinition(typeof (DerivedMixinAddingSimplePersistentProperties).FullName + ".AdditionalPersistentProperty"), Is.Not.Null);
-      Assert.That(classDefinition.GetPropertyDefinition(typeof (MixinAddingSimplePersistentProperties).FullName + ".PersistentProperty"), Is.Not.Null);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassForDerivedPersistentMixin));
+      Assert.That(classDefinition.GetPropertyDefinition(typeof(DerivedMixinAddingSimplePersistentProperties).FullName + ".AdditionalPersistentProperty"), Is.Not.Null);
+      Assert.That(classDefinition.GetPropertyDefinition(typeof(MixinAddingSimplePersistentProperties).FullName + ".PersistentProperty"), Is.Not.Null);
     }
 
     [Test]
     public void ClassDefinitionExcludesNonPersistentProperties ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassForPersistentMixin));
-      Assert.That(classDefinition.GetPropertyDefinition(typeof (MixinAddingPersistentProperties).FullName + ".NonPersistentProperty"), Is.Null);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassForPersistentMixin));
+      Assert.That(classDefinition.GetPropertyDefinition(typeof(MixinAddingPersistentProperties).FullName + ".NonPersistentProperty"), Is.Null);
     }
 
     [Test]
     public void ClassDefinition_RealSide_Unmixed ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Computer));
-      var relationProperty = classDefinition.GetPropertyDefinition(typeof (Computer).FullName + ".Employee");
-      var relation = classDefinition.GetRelationEndPointDefinition(typeof (Computer).FullName + ".Employee").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Computer));
+      var relationProperty = classDefinition.GetPropertyDefinition(typeof(Computer).FullName + ".Employee");
+      var relation = classDefinition.GetRelationEndPointDefinition(typeof(Computer).FullName + ".Employee").RelationDefinition;
       Assert.That(relationProperty, Is.Not.Null);
       Assert.That(relation, Is.Not.Null);
-      Assert.That(relation.ID, Is.EqualTo(typeof (Computer) + ":" + typeof (Computer).FullName + ".Employee->" + typeof (Employee) + ".Computer"));
+      Assert.That(relation.ID, Is.EqualTo(typeof(Computer) + ":" + typeof(Computer).FullName + ".Employee->" + typeof(Employee) + ".Computer"));
     }
 
     [Test]
     public void ClassDefinition_VirtualSide_Unmixed ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Employee));
-      var relationProperty = classDefinition.GetPropertyDefinition(typeof (Employee).FullName + ".Computer");
-      var relation = classDefinition.GetRelationEndPointDefinition(typeof (Employee).FullName + ".Computer").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Employee));
+      var relationProperty = classDefinition.GetPropertyDefinition(typeof(Employee).FullName + ".Computer");
+      var relation = classDefinition.GetRelationEndPointDefinition(typeof(Employee).FullName + ".Computer").RelationDefinition;
       Assert.That(relationProperty, Is.Null);
       Assert.That(relation, Is.Not.Null);
-      Assert.That(relation.ID, Is.EqualTo(typeof (Computer) + ":" + typeof (Computer).FullName + ".Employee->" + typeof (Employee).FullName + ".Computer"));
+      Assert.That(relation.ID, Is.EqualTo(typeof(Computer) + ":" + typeof(Computer).FullName + ".Employee->" + typeof(Employee).FullName + ".Computer"));
     }
 
     [Test]
     public void ClassDefinition_RealSide_MixedReal ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassForPersistentMixin));
-      var relationProperty = classDefinition.GetPropertyDefinition(typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty");
-      var relation = classDefinition.GetRelationEndPointDefinition(typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassForPersistentMixin));
+      var relationProperty = classDefinition.GetPropertyDefinition(typeof(MixinAddingPersistentProperties).FullName + ".RelationProperty");
+      var relation = classDefinition.GetRelationEndPointDefinition(typeof(MixinAddingPersistentProperties).FullName + ".RelationProperty").RelationDefinition;
       Assert.That(relationProperty, Is.Not.Null);
       Assert.That(relation, Is.Not.Null);
       Assert.That(relation.ID, Is.EqualTo(string.Format(
           "{0}:{1}.RelationProperty->{2}.RelationProperty1",
-          typeof (TargetClassForPersistentMixin).FullName,
-          typeof (MixinAddingPersistentProperties).FullName, 
-          typeof (RelationTargetForPersistentMixin).FullName)));
+          typeof(TargetClassForPersistentMixin).FullName,
+          typeof(MixinAddingPersistentProperties).FullName, 
+          typeof(RelationTargetForPersistentMixin).FullName)));
     }
 
     [Test]
     public void ClassDefinition_VirtualSide_MixedReal ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (RelationTargetForPersistentMixin));
-      var relationProperty = classDefinition.GetPropertyDefinition(typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty1");
-      var relation = classDefinition.GetRelationEndPointDefinition(typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty1").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(RelationTargetForPersistentMixin));
+      var relationProperty = classDefinition.GetPropertyDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty1");
+      var relation = classDefinition.GetRelationEndPointDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty1").RelationDefinition;
       Assert.That(relationProperty, Is.Null);
       Assert.That(relation, Is.Not.Null);
       Assert.That(relation.ID, Is.EqualTo(string.Format(
           "{0}:{1}.RelationProperty->{2}.RelationProperty1",
-          typeof (TargetClassForPersistentMixin).FullName,
-          typeof (MixinAddingPersistentProperties).FullName,
-          typeof (RelationTargetForPersistentMixin).FullName)));
+          typeof(TargetClassForPersistentMixin).FullName,
+          typeof(MixinAddingPersistentProperties).FullName,
+          typeof(RelationTargetForPersistentMixin).FullName)));
     }
 
     [Test]
     public void ClassDefinition_RealSide_MixedVirtual ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (RelationTargetForPersistentMixin));
-      var relationProperty = classDefinition.GetPropertyDefinition(typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2");
-      var relation = classDefinition.GetRelationEndPointDefinition(typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(RelationTargetForPersistentMixin));
+      var relationProperty = classDefinition.GetPropertyDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty2");
+      var relation = classDefinition.GetRelationEndPointDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty2").RelationDefinition;
       Assert.That(relationProperty, Is.Not.Null);
       Assert.That(relation, Is.Not.Null);
-      Assert.That(relation.ID, Is.EqualTo(typeof (RelationTargetForPersistentMixin).FullName + ":" + typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2->"
-                                            + typeof (MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty"));
+      Assert.That(relation.ID, Is.EqualTo(typeof(RelationTargetForPersistentMixin).FullName + ":" + typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty2->"
+                                            + typeof(MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty"));
     }
 
     [Test]
     public void ClassDefinition_VirtualSide_MixedVirtual ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassForPersistentMixin));
-      var relationProperty = classDefinition.GetPropertyDefinition(typeof (MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty");
-      var relation = classDefinition.GetRelationEndPointDefinition(typeof (MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassForPersistentMixin));
+      var relationProperty = classDefinition.GetPropertyDefinition(typeof(MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty");
+      var relation = classDefinition.GetRelationEndPointDefinition(typeof(MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty").RelationDefinition;
       Assert.That(relationProperty, Is.Null);
       Assert.That(relation, Is.Not.Null);
-      Assert.That(relation.ID, Is.EqualTo(typeof (RelationTargetForPersistentMixin) + ":" + typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty2->"
-                                            + typeof (MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty"));
+      Assert.That(relation.ID, Is.EqualTo(typeof(RelationTargetForPersistentMixin) + ":" + typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty2->"
+                                            + typeof(MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty"));
     }
 
     [Test]
     public void ClassDefinition_Unidirectional_OneClassTwoMixins ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassWithTwoUnidirectionalMixins));
-      var relationProperty1 = classDefinition.GetPropertyDefinition(typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
-      var relationProperty2 = classDefinition.GetPropertyDefinition(typeof (MixinAddingUnidirectionalRelation2).FullName + ".Computer");
-      var relation1 = classDefinition.GetRelationEndPointDefinition(typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer").RelationDefinition;
-      var relation2 = classDefinition.GetRelationEndPointDefinition(typeof (MixinAddingUnidirectionalRelation2).FullName + ".Computer").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassWithTwoUnidirectionalMixins));
+      var relationProperty1 = classDefinition.GetPropertyDefinition(typeof(MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      var relationProperty2 = classDefinition.GetPropertyDefinition(typeof(MixinAddingUnidirectionalRelation2).FullName + ".Computer");
+      var relation1 = classDefinition.GetRelationEndPointDefinition(typeof(MixinAddingUnidirectionalRelation1).FullName + ".Computer").RelationDefinition;
+      var relation2 = classDefinition.GetRelationEndPointDefinition(typeof(MixinAddingUnidirectionalRelation2).FullName + ".Computer").RelationDefinition;
       Assert.That(relationProperty1, Is.Not.Null);
       Assert.That(relationProperty2, Is.Not.Null);
       Assert.That(relation1, Is.Not.Null);
@@ -140,23 +140,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       Assert.That(relation2, Is.Not.SameAs(relation1));
       Assert.That(relation1.ID, Is.EqualTo(string.Format(
           "{0}:{1}.Computer",
-          typeof (TargetClassWithTwoUnidirectionalMixins).FullName,
-          typeof (MixinAddingUnidirectionalRelation1).FullName)));
+          typeof(TargetClassWithTwoUnidirectionalMixins).FullName,
+          typeof(MixinAddingUnidirectionalRelation1).FullName)));
       Assert.That(relation2.ID, Is.EqualTo(string.Format(
           "{0}:{1}.Computer",
-          typeof (TargetClassWithTwoUnidirectionalMixins).FullName,
-          typeof (MixinAddingUnidirectionalRelation2).FullName)));
+          typeof(TargetClassWithTwoUnidirectionalMixins).FullName,
+          typeof(MixinAddingUnidirectionalRelation2).FullName)));
     }
 
     [Test]
     public void ClassDefinition_Unidirectional_TwoClassesOneMixin ()
     {
-      var classDefinition1 = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassWithUnidirectionalMixin1));
-      var classDefinition2 = MappingConfiguration.Current.GetTypeDefinition(typeof (TargetClassWithUnidirectionalMixin2));
-      var relationProperty1 = classDefinition1.GetPropertyDefinition(typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
-      var relationProperty2 = classDefinition2.GetPropertyDefinition(typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer");
-      var relation1 = classDefinition1.GetRelationEndPointDefinition(typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer").RelationDefinition;
-      var relation2 = classDefinition2.GetRelationEndPointDefinition(typeof (MixinAddingUnidirectionalRelation1).FullName + ".Computer").RelationDefinition;
+      var classDefinition1 = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassWithUnidirectionalMixin1));
+      var classDefinition2 = MappingConfiguration.Current.GetTypeDefinition(typeof(TargetClassWithUnidirectionalMixin2));
+      var relationProperty1 = classDefinition1.GetPropertyDefinition(typeof(MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      var relationProperty2 = classDefinition2.GetPropertyDefinition(typeof(MixinAddingUnidirectionalRelation1).FullName + ".Computer");
+      var relation1 = classDefinition1.GetRelationEndPointDefinition(typeof(MixinAddingUnidirectionalRelation1).FullName + ".Computer").RelationDefinition;
+      var relation2 = classDefinition2.GetRelationEndPointDefinition(typeof(MixinAddingUnidirectionalRelation1).FullName + ".Computer").RelationDefinition;
       Assert.That(relationProperty1, Is.Not.Null);
       Assert.That(relationProperty2, Is.Not.Null);
       Assert.That(relation1, Is.Not.Null);
@@ -164,20 +164,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       Assert.That(relation2, Is.Not.SameAs(relation1));
       Assert.That(relation1.ID, Is.EqualTo(string.Format(
           "{0}:{1}.Computer",
-          typeof (TargetClassWithUnidirectionalMixin1).FullName,
-          typeof (MixinAddingUnidirectionalRelation1).FullName)));
+          typeof(TargetClassWithUnidirectionalMixin1).FullName,
+          typeof(MixinAddingUnidirectionalRelation1).FullName)));
       Assert.That(relation2.ID, Is.EqualTo(string.Format(
           "{0}:{1}.Computer",
-          typeof (TargetClassWithUnidirectionalMixin2).FullName,
-          typeof (MixinAddingUnidirectionalRelation1).FullName)));
+          typeof(TargetClassWithUnidirectionalMixin2).FullName,
+          typeof(MixinAddingUnidirectionalRelation1).FullName)));
     }
 
     [Test]
     public void RelationTargetClassDefinitionIncludesRelationProperty ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (RelationTargetForPersistentMixin));
-      Assert.That(classDefinition.GetPropertyDefinition(typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty"), Is.Null);
-      Assert.That(classDefinition.GetRelationEndPointDefinition(typeof (RelationTargetForPersistentMixin).FullName + ".RelationProperty1").RelationDefinition, Is.Not.Null);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(RelationTargetForPersistentMixin));
+      Assert.That(classDefinition.GetPropertyDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty"), Is.Null);
+      Assert.That(classDefinition.GetRelationEndPointDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty1").RelationDefinition, Is.Not.Null);
     }
     
     [Test]
@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (MixinConfiguration.BuildNew().EnterScope())
       {
         Assert.That(
-            () => new ObjectID(typeof (StubStorageTargetClassForPersistentMixin), 13).GetObject<StubStorageTargetClassForPersistentMixin>(),
+            () => new ObjectID(typeof(StubStorageTargetClassForPersistentMixin), 13).GetObject<StubStorageTargetClassForPersistentMixin>(),
             Throws.InstanceOf<MappingException>()
                 .With.Message.Contains(
                     "The mixin configuration for domain object type "
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     public void DynamicChangeInNonPersistentMixinConfigurationDoesntMatter ()
     {
       StubStorageTargetClassForPersistentMixin.NewObject();
-      new ObjectID(typeof (StubStorageTargetClassForPersistentMixin), 12).GetObject<StubStorageTargetClassForPersistentMixin>();
+      new ObjectID(typeof(StubStorageTargetClassForPersistentMixin), 12).GetObject<StubStorageTargetClassForPersistentMixin>();
     }
 
     [Test]

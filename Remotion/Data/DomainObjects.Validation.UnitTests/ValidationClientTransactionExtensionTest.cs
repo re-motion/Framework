@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void DefaultKey ()
     {
-      Assert.That(ValidationClientTransactionExtension.DefaultKey, Is.EqualTo(typeof (ValidationClientTransactionExtension).FullName));
+      Assert.That(ValidationClientTransactionExtension.DefaultKey, Is.EqualTo(typeof(ValidationClientTransactionExtension).FullName));
     }
 
     [Test]
@@ -95,10 +95,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
             new IRelationEndPoint[0]);
 
         _validatorProviderMock
-            .Expect(mock => mock.GetValidator(typeof (DomainObjectWithoutAnnotatedProperties)))
+            .Expect(mock => mock.GetValidator(typeof(DomainObjectWithoutAnnotatedProperties)))
             .Return(_validatorMock1);
         _validatorProviderMock
-            .Expect(mock => mock.GetValidator(typeof (TestDomainObject)))
+            .Expect(mock => mock.GetValidator(typeof(TestDomainObject)))
             .Return(_validatorMock2);
 
         _validatorMock1.Expect(mock => mock.Validate(domainObject1)).Return(new ValidationResult());
@@ -138,11 +138,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
             new IRelationEndPoint[0]);
 
         _validatorProviderMock
-            .Expect(mock => mock.GetValidator(typeof (DomainObjectWithoutAnnotatedProperties)))
+            .Expect(mock => mock.GetValidator(typeof(DomainObjectWithoutAnnotatedProperties)))
             .Return(_validatorMock1);
 
         _validatorProviderMock
-            .Expect(mock => mock.GetValidator(typeof (TestDomainObject)))
+            .Expect(mock => mock.GetValidator(typeof(TestDomainObject)))
             .Return(_validatorMock2);
 
         var propertyStub1 = MockRepository.GenerateStub<IPropertyInformation>();
@@ -224,10 +224,10 @@ Object 'TestDomainObject' with ID '.*':
         var rules = new List<IValidationRule>();
         rules.Add(propertyRule);
 
-        Validator validator = new Validator(rules, typeof (DomainObjectWithoutAnnotatedProperties));
+        Validator validator = new Validator(rules, typeof(DomainObjectWithoutAnnotatedProperties));
 
         _validatorProviderMock
-            .Expect(mock => mock.GetValidator(typeof (DomainObjectWithoutAnnotatedProperties))).Repeat.Twice()
+            .Expect(mock => mock.GetValidator(typeof(DomainObjectWithoutAnnotatedProperties))).Repeat.Twice()
             .Return(validator);
 
         using (new CultureScope(culture, uiCulture))

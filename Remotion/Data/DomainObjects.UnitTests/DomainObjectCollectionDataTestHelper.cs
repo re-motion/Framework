@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static T GetDataStrategyAndCheckType<T> (DomainObjectCollection collection) where T : IDomainObjectCollectionData
     {
       var data = GetDataStrategy(collection);
-      Assert.That(data, Is.InstanceOf(typeof (T)));
+      Assert.That(data, Is.InstanceOf(typeof(T)));
       return (T) data;
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static T GetWrappedDataAndCheckType<T> (DomainObjectCollectionDataDecoratorBase decorator) where T : IDomainObjectCollectionData
     {
       object data = GetWrappedData(decorator);
-      Assert.That(data, Is.InstanceOf(typeof (T)));
+      Assert.That(data, Is.InstanceOf(typeof(T)));
       return (T) data;
     }
 

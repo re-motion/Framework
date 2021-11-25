@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
   [TestFixture]
   public class EquatableMixinTest
   {
-    [Uses(typeof (EquatableMixin<C>))]
+    [Uses(typeof(EquatableMixin<C>))]
     public class C
     {
       public int I;

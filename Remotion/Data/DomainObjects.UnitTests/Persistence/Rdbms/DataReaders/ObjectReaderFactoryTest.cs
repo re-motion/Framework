@@ -73,9 +73,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       
       var result = _factory.CreateDataContainerReader();
 
-      Assert.That(result, Is.TypeOf(typeof (DataContainerReader)));
+      Assert.That(result, Is.TypeOf(typeof(DataContainerReader)));
       var dataContainerReader = (DataContainerReader) result;
-      Assert.That(dataContainerReader.OrdinalProvider, Is.TypeOf(typeof (NameBasedColumnOrdinalProvider)));
+      Assert.That(dataContainerReader.OrdinalProvider, Is.TypeOf(typeof(NameBasedColumnOrdinalProvider)));
       Assert.That(dataContainerReader.IDProperty, Is.SameAs(_objectIDProperty));
       Assert.That(dataContainerReader.TimestampProperty, Is.SameAs(_timestampProperty));
       Assert.That(dataContainerReader.DataContainerValidator, Is.SameAs(_dataContainerValidatorStub));
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       var result = _factory.CreateDataContainerReader(_entityDefinitionStub, new[] { _column1, _column2 });
 
-      Assert.That(result, Is.TypeOf(typeof (DataContainerReader)));
+      Assert.That(result, Is.TypeOf(typeof(DataContainerReader)));
       var dataContainerReader = (DataContainerReader) result;
       CheckOrdinalProvider(dataContainerReader.OrdinalProvider);
       Assert.That(dataContainerReader.IDProperty, Is.SameAs(_objectIDProperty));
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       var result = _factory.CreateObjectIDReader(_entityDefinitionStub, new[] { _column1, _column2 });
 
-      Assert.That(result, Is.TypeOf(typeof (ObjectIDReader)));
+      Assert.That(result, Is.TypeOf(typeof(ObjectIDReader)));
       var objectIDReader = (ObjectIDReader) result;
       CheckOrdinalProvider(objectIDReader.ColumnOrdinalProvider);
       Assert.That(objectIDReader.IDProperty, Is.SameAs(_objectIDProperty));
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       var result = _factory.CreateTimestampReader(_entityDefinitionStub, new[] { _column1, _column2 });
 
-      Assert.That(result, Is.TypeOf(typeof (TimestampReader)));
+      Assert.That(result, Is.TypeOf(typeof(TimestampReader)));
       var timestampReader = (TimestampReader) result;
       CheckOrdinalProvider(timestampReader.ColumnOrdinalProvider);
       Assert.That(timestampReader.IDProperty, Is.SameAs(_objectIDProperty));
@@ -122,14 +122,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       var result = _factory.CreateResultRowReader();
 
-      Assert.That(result, Is.TypeOf(typeof (QueryResultRowReader)));
+      Assert.That(result, Is.TypeOf(typeof(QueryResultRowReader)));
       var queryResultRowReader = (QueryResultRowReader) result;
       Assert.That(queryResultRowReader.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
     }
 
     private void CheckOrdinalProvider (IColumnOrdinalProvider ordinalProvider)
     {
-      Assert.That(ordinalProvider, Is.TypeOf(typeof (DictionaryBasedColumnOrdinalProvider)));
+      Assert.That(ordinalProvider, Is.TypeOf(typeof(DictionaryBasedColumnOrdinalProvider)));
       Assert.That(((DictionaryBasedColumnOrdinalProvider) ordinalProvider).Ordinals.Count, Is.EqualTo(2));
       Assert.That(((DictionaryBasedColumnOrdinalProvider) ordinalProvider).Ordinals[_column1.Name], Is.EqualTo(0));
       Assert.That(((DictionaryBasedColumnOrdinalProvider) ordinalProvider).Ordinals[_column2.Name], Is.EqualTo(1));

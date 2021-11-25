@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class TestableObjectEndPoint : ObjectEndPoint
   {
     public TestableObjectEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
-        : base (clientTransaction, id)
+        : base(clientTransaction, id)
     {
     }
 
     public TestableObjectEndPoint (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
     }
 

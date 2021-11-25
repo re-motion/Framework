@@ -31,10 +31,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     // construction and disposing
 
-    public AccessControlException () : this ("An access control exception occurred.") { }
-    public AccessControlException (string message) : base (message) { }
-    public AccessControlException (string message, Exception inner) : base (message, inner) { }
-    protected AccessControlException (SerializationInfo info, StreamingContext context) : base (info, context) { }
+    public AccessControlException () : this("An access control exception occurred.") { }
+    public AccessControlException (string message) : base(message) { }
+    public AccessControlException (string message, Exception inner) : base(message, inner) { }
+    protected AccessControlException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties
 

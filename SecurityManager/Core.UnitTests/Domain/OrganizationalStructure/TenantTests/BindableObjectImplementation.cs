@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
 
       IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("UniqueIdentifier");
 
-      Assert.IsInstanceOf(typeof (IBusinessObjectStringProperty), property);
+      Assert.IsInstanceOf(typeof(IBusinessObjectStringProperty), property);
       Assert.That(businessObject.GetProperty(property), Is.EqualTo("My Unique Identifier"));
     }
 
@@ -115,7 +115,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       bool isFound = false;
       foreach (PropertyBase property in properties)
       {
-        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType == TypeAdapter.Create(typeof (Tenant)))
+        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType == TypeAdapter.Create(typeof(Tenant)))
         {
           isFound = true;
           break;
@@ -131,10 +131,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (TenantPropertyTypeSearchService), searchServiceStub.Object);
-      IBusinessObjectClass tenantClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Tenant));
+          .AddService(typeof(TenantPropertyTypeSearchService), searchServiceStub.Object);
+      IBusinessObjectClass tenantClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Tenant));
       IBusinessObjectReferenceProperty parentProperty = (IBusinessObjectReferenceProperty) tenantClass.GetPropertyDefinition("Parent");
       Assert.That(parentProperty, Is.Not.Null);
 

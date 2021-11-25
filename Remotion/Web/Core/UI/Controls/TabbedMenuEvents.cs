@@ -32,7 +32,7 @@ public class MenuTabClickEventArgs: WebTabClickEventArgs
 
   /// <summary> Initializes an instance. </summary>
   public MenuTabClickEventArgs (MenuTab tab)
-    : base (tab)
+    : base(tab)
   {
   }
 

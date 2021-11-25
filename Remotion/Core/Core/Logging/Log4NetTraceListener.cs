@@ -69,7 +69,7 @@ namespace Remotion.Logging
     /// Initializes a new instance of the <see cref="Log4NetTraceListener"/> class using the specified name. 
     /// </summary>
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Constructor/param[@name="name"]' />
-    public Log4NetTraceListener (string name) : base (name)
+    public Log4NetTraceListener (string name) : base(name)
     {
     }
 

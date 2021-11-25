@@ -274,9 +274,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       switch (sortingDirection)
       {
         case SortingDirection.Ascending:
-          return ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocColumnRendererBase<>), ResourceType.Image, c_sortAscendingIcon);
+          return ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocColumnRendererBase<>), ResourceType.Image, c_sortAscendingIcon);
         case SortingDirection.Descending:
-          return ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocColumnRendererBase<>), ResourceType.Image, c_sortDescendingIcon);
+          return ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocColumnRendererBase<>), ResourceType.Image, c_sortDescendingIcon);
         case SortingDirection.None:
           return null;
         default:

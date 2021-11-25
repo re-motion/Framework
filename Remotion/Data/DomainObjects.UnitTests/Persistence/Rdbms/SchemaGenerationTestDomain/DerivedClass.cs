@@ -20,7 +20,7 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain
 {
   [Instantiable]
-  [Uses (typeof (PersistentMixin))]
+  [Uses (typeof(PersistentMixin))]
   public abstract class DerivedClass : ConcreteClass
   {
     public new static DerivedClass NewObject ()

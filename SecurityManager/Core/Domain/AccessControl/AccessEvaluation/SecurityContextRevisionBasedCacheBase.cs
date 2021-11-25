@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private static readonly ConcurrentDictionary<string, IQuery> s_queryCache = new ConcurrentDictionary<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
-        : base (revisionProvider)
+        : base(revisionProvider)
     {
     }
 

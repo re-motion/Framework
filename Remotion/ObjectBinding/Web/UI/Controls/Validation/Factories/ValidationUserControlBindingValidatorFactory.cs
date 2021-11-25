@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
   /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
   /// <seealso cref="IUserControlBindingValidatorFactory"/>
-  [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor (typeof(IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class ValidationUserControlBindingValidatorFactory : IUserControlBindingValidatorFactory
   {
     public const int Position = Web.UI.Controls.UserControlBindingValidatorFactory.Position + 1;

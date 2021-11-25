@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var serializable = ClassDerivedFromSimpleDomainObject_ImplementingISerializable.NewObject();
 
-      var info = new SerializationInfo(typeof (ClassDerivedFromSimpleDomainObject_ImplementingISerializable), new FormatterConverter());
+      var info = new SerializationInfo(typeof(ClassDerivedFromSimpleDomainObject_ImplementingISerializable), new FormatterConverter());
       var context = new StreamingContext();
 
       serializable.GetObjectData(info, context);

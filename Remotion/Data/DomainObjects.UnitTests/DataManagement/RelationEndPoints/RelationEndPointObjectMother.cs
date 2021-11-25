@@ -108,14 +108,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public static RelationEndPointID CreateRelationEndPointID (ObjectID objectID = null, string shortPropertyName = null)
     {
-      objectID = objectID ?? new ObjectID(typeof (Order), Guid.NewGuid());
+      objectID = objectID ?? new ObjectID(typeof(Order), Guid.NewGuid());
       shortPropertyName = shortPropertyName ?? "OrderItems";
       return RelationEndPointID.Create(objectID, objectID.ClassDefinition.ClassType, shortPropertyName);
     }
 
     public static RelationEndPointID CreateAnonymousEndPointID ()
     {
-      var anonymousEndPointDefinition = GetEndPointDefinition(typeof (Location), "Client").GetOppositeEndPointDefinition();
+      var anonymousEndPointDefinition = GetEndPointDefinition(typeof(Location), "Client").GetOppositeEndPointDefinition();
       var endPointID = RelationEndPointID.Create(new DomainObjectIDs(MappingConfiguration.Current).Client1, anonymousEndPointDefinition);
       Assert.That(endPointID.Definition.IsAnonymous, Is.True);
       return endPointID;

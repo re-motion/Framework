@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       public Action<IEnumerable<StorageProvider>, IDisposable> RollbackTransactionCallback { get; set; }
 
       public TestablePersistenceManager (IPersistenceExtension persistenceExtension)
-          : base (persistenceExtension)
+          : base(persistenceExtension)
       {
       }
 
@@ -100,8 +100,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       var guid1 = new Guid("11111111111111111111111111111111");
       var guid2 = new Guid("22222222222222222222222222222222");
-      _invalidOrderID1 = new ObjectID(typeof (Order), guid1);
-      _invalidOrderID2 = new ObjectID(typeof (Order), guid2);
+      _invalidOrderID1 = new ObjectID(typeof(Order), guid1);
+      _invalidOrderID2 = new ObjectID(typeof(Order), guid2);
     }
 
     public override void TearDown ()
@@ -454,8 +454,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       var dataContainers = new DataContainerCollection { orderContainer, officialContainer };
 
-      SetPropertyValue(orderContainer, typeof (Order), "OrderNumber", 42);
-      SetPropertyValue(officialContainer, typeof (Official), "Name", "Zaphod");
+      SetPropertyValue(orderContainer, typeof(Order), "OrderNumber", 42);
+      SetPropertyValue(officialContainer, typeof(Official), "Name", "Zaphod");
       Assert.That(
           () => _persistenceManager.Save(dataContainers),
           Throws.InstanceOf<PersistenceException>()
@@ -478,9 +478,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer1);
         ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer2);
 
-        SetPropertyValue(orderContainer, typeof (Order), "OrderNumber", 42);
-        SetPropertyValue(officialContainer1, typeof (Official), "Name", "Zaphod1");
-        SetPropertyValue(officialContainer2, typeof (Official), "Name", "Zaphod2");
+        SetPropertyValue(orderContainer, typeof(Order), "OrderNumber", 42);
+        SetPropertyValue(officialContainer1, typeof(Official), "Name", "Zaphod1");
+        SetPropertyValue(officialContainer2, typeof(Official), "Name", "Zaphod2");
 
         var secondStorageProvider = new[] { officialContainer1, officialContainer2 };
 
@@ -504,7 +504,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         {
           Assert.That(
               providers.Select(p => p.GetType()),
-              Is.EquivalentTo(new[] { typeof (RdbmsProvider), typeof (UnitTestStorageProviderStub) }));
+              Is.EquivalentTo(new[] { typeof(RdbmsProvider), typeof(UnitTestStorageProviderStub) }));
         };
 
         var dataContainers = new DataContainerCollection { officialContainer2, orderContainer, officialContainer1 };
@@ -529,9 +529,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, orderContainer);
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, orderViewModelContainer);
 
-      SetPropertyValue(orderContainer, typeof (Order), "OrderNumber", 42);
-      SetPropertyValue(orderViewModelContainer, typeof (OrderViewModel), "OrderSum", 42);
-      SetPropertyValue(orderViewModelContainer, typeof (OrderViewModel), "Object", orderContainer.ID);
+      SetPropertyValue(orderContainer, typeof(Order), "OrderNumber", 42);
+      SetPropertyValue(orderViewModelContainer, typeof(OrderViewModel), "OrderSum", 42);
+      SetPropertyValue(orderViewModelContainer, typeof(OrderViewModel), "Object", orderContainer.ID);
 
       var dataContainers = new DataContainerCollection { orderContainer, orderViewModelContainer };
 
@@ -555,7 +555,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
         ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer);
 
-        SetPropertyValue(officialContainer, typeof (Official), "Name", "Zaphod");
+        SetPropertyValue(officialContainer, typeof(Official), "Name", "Zaphod");
 
         var secondStorageProvider = new[] { officialContainer };
 
@@ -588,7 +588,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         {
           Assert.That(
               providers.Select(p => p.GetType()),
-              Is.EquivalentTo(new[] { typeof (UnitTestStorageProviderStub) }));
+              Is.EquivalentTo(new[] { typeof(UnitTestStorageProviderStub) }));
         };
 
         var dataContainers = new DataContainerCollection { officialContainer };
@@ -613,7 +613,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
         ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer);
 
-        SetPropertyValue(officialContainer, typeof (Official), "Name", "Zaphod");
+        SetPropertyValue(officialContainer, typeof(Official), "Name", "Zaphod");
 
         var mockRepository = new MockRepository();
 
@@ -642,7 +642,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         {
           Assert.That(
               providers.Select(p => p.GetType()),
-              Is.EquivalentTo(new[] { typeof (UnitTestStorageProviderStub) }));
+              Is.EquivalentTo(new[] { typeof(UnitTestStorageProviderStub) }));
         };
 
         var dataContainers = new DataContainerCollection { officialContainer };
@@ -675,7 +675,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void CreateNewObjectID ()
     {
-      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof (Order));
+      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       ObjectID id1 = _persistenceManager.CreateNewObjectID(orderClass);
       Assert.That(id1, Is.Not.Null);
       ObjectID id2 = _persistenceManager.CreateNewObjectID(orderClass);
@@ -686,7 +686,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void CreateNewDataContainer ()
     {
-      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof (Order));
+      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       DataContainer container = CreateDataContainer(orderClass);
 
       Assert.That(container, Is.Not.Null);

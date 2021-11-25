@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
   {
     public static ConcreteMixinTypeIdentifier Create ()
     {
-      var mixinType = typeof (string);
+      var mixinType = typeof(string);
       var overriders = new HashSet<MethodInfo>();
       var overridden = new HashSet<MethodInfo>();
       return new ConcreteMixinTypeIdentifier(mixinType, overriders, overridden);

@@ -31,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     public TestSiteLayoutConfigurationElement ()
     {
-      _rootPathProperty = new ConfigurationProperty("rootPath", typeof (string), "", ConfigurationPropertyOptions.IsRequired);
-      _resourcesProperty = new ConfigurationProperty("resources", typeof (TestSiteResourceConfigurationElementCollection));
+      _rootPathProperty = new ConfigurationProperty("rootPath", typeof(string), "", ConfigurationPropertyOptions.IsRequired);
+      _resourcesProperty = new ConfigurationProperty("resources", typeof(TestSiteResourceConfigurationElementCollection));
     }
 
     /// <summary>

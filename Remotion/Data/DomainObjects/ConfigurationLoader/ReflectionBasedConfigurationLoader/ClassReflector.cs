@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
       ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
       ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
       ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private bool IsAbstract ()
     {
       if (Type.IsAbstract)
-        return !Attribute.IsDefined(Type, typeof (InstantiableAttribute), false);
+        return !Attribute.IsDefined(Type, typeof(InstantiableAttribute), false);
 
       return false;
     }

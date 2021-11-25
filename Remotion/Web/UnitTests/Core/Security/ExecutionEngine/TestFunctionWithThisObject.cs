@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     // construction and disposing
 
     public TestFunctionWithThisObject (SecurableObject thisObject, object someObject)
-      : base (new NoneTransactionMode(), thisObject, someObject)
+      : base(new NoneTransactionMode(), thisObject, someObject)
     {
     }
 

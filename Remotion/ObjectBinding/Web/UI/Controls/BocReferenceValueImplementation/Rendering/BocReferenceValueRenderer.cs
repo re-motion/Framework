@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <para>During edit mode, the control is displayed using a <see cref="System.Web.UI.WebControls.DropDownList"/>.</para>
   /// <para>During read-only mode, the control's value is displayed using a <see cref="System.Web.UI.WebControls.Label"/>.</para>
   /// </remarks>
-  [ImplementationFor (typeof (IBocReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocReferenceValueRenderer : BocReferenceValueRendererBase<IBocReferenceValue>, IBocReferenceValueRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer, () => new DropDownList())
+        : this(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer, () => new DropDownList())
     {
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer,
         Func<DropDownList> dropDownListFactoryMethod)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
       ArgumentUtility.CheckNotNull("dropDownListFactoryMethod", dropDownListFactoryMethod);
       _dropDownListFactoryMethod = dropDownListFactoryMethod;
@@ -116,8 +116,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       base.RegisterJavaScriptFiles(htmlHeadAppender);
 
-      string scriptFileKey = typeof (BocReferenceValueRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.js");
+      string scriptFileKey = typeof(BocReferenceValueRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
     }
 
@@ -125,8 +125,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleFileKey = typeof (BocReferenceValueRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.css");
+      string styleFileKey = typeof(BocReferenceValueRenderer).GetFullNameChecked() + "_Style";
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.css");
       htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
           renderingContext.Control,
-          typeof (IBocReferenceValue),
+          typeof(IBocReferenceValue),
           key,
           script.ToString());
     }
@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected virtual IResourceManager GetResourceManager (BocReferenceValueRenderingContext renderingContext)
     {
-      return GetResourceManager(typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     protected override sealed void RenderEditModeValue (BocRenderingContext<IBocReferenceValue> renderingContext)

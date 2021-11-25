@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public virtual int Property
     {
-      get { return Properties[typeof (PersistentMixinAddedTwice), "Property"].GetValue<int>(); }
-      set { Properties[typeof (PersistentMixinAddedTwice), "Property"].SetValue(value); }
+      get { return Properties[typeof(PersistentMixinAddedTwice), "Property"].GetValue<int>(); }
+      set { Properties[typeof(PersistentMixinAddedTwice), "Property"].SetValue(value); }
     }
   }
 }

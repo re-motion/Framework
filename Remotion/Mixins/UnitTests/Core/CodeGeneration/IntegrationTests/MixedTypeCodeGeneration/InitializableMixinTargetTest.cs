@@ -34,16 +34,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void GeneratedTypeImplementsIInitializableObject ()
     {
-      Type concreteType = CreateMixedType(typeof (BaseType1), typeof (NullMixin));
+      Type concreteType = CreateMixedType(typeof(BaseType1), typeof(NullMixin));
 
-      Assert.That(typeof (IMixinTarget).IsAssignableFrom(concreteType));
-      Assert.That(typeof (IInitializableObject).IsAssignableFrom(concreteType));
+      Assert.That(typeof(IMixinTarget).IsAssignableFrom(concreteType));
+      Assert.That(typeof(IInitializableObject).IsAssignableFrom(concreteType));
     }
 
     [Test]
     public void Initialize_SetsFirstProxy ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof (NullMixin));
+      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof(NullMixin));
 
       var oldProxy = instance.FirstNextCallProxy;
       CallInitializeMixins(instance, InitializationSemantics.Construction);
@@ -55,7 +55,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void Initialize_CreatesMixins ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof (NullMixin));
+      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof(NullMixin));
 
       var oldMixins = instance.Mixins;
 
@@ -64,13 +64,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Assert.That(instance.Mixins, Is.Not.Null);
       Assert.That(instance.Mixins, Is.Not.SameAs(oldMixins));
       Assert.That(instance.Mixins.Length, Is.EqualTo(1));
-      Assert.That(instance.Mixins[0], Is.InstanceOf(typeof (NullMixin)));
+      Assert.That(instance.Mixins[0], Is.InstanceOf(typeof(NullMixin)));
     }
 
     [Test]
     public void Initialize_CreatesMixins_OnlyOnce ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof (NullMixin));
+      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof(NullMixin));
       var oldMixins = instance.Mixins;
 
       CallInitializeMixins(instance, InitializationSemantics.Construction, extensionsInitializedValue: true);
@@ -81,7 +81,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void Initialize_InitializesMixins ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof (MixinWithOnInitializedAndOnDeserialized));
+      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof(MixinWithOnInitializedAndOnDeserialized));
       ((MixinWithOnInitializedAndOnDeserialized) instance.Mixins[0]).OnInitializedCalled = false;
 
       CallInitializeMixins(instance, InitializationSemantics.Construction);
@@ -92,7 +92,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void Initialize_InitializesMixins_OnlyOnce ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof (MixinWithOnInitializedAndOnDeserialized));
+      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof(MixinWithOnInitializedAndOnDeserialized));
       ((MixinWithOnInitializedAndOnDeserialized) instance.Mixins[0]).OnInitializedCalled = false;
 
       CallInitializeMixins(instance, InitializationSemantics.Construction, extensionsInitializedValue: true);
@@ -103,7 +103,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void Initialize_InitializesMixins_AgainAfterDeserialization ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof (MixinWithOnInitializedAndOnDeserialized));
+      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof(MixinWithOnInitializedAndOnDeserialized));
 
       // Simulate a deserialized instance that got its mixin deserialized.
       var deserialized = (IMixinTarget) FormatterServices.GetUninitializedObject(instance.GetType());
@@ -135,7 +135,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void InitializeAfterDeserialization_SetsFirstProxy ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof (NullMixin));
+      var instance = (IMixinTarget) CreateMixedObject<BaseType1>(typeof(NullMixin));
 
       var oldProxy = instance.FirstNextCallProxy;
       var mixins = new object[] { new NullMixin() };
@@ -170,7 +170,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void InitializeAfterDeserialization_InitializesMixins ()
     {
-      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof (MixinWithOnInitializedAndOnDeserialized));
+      var instance = (IMixinTarget) CreateMixedObject<NullTarget>(typeof(MixinWithOnInitializedAndOnDeserialized));
       // Simulate a deserialized instance
       var deserialized = (IMixinTarget) FormatterServices.GetUninitializedObject(instance.GetType());
 

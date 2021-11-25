@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public override void TearDown ()
     {
       base.TearDown();
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -84,10 +84,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (GroupTypePropertyTypeSearchService), searchServiceStub.Object);
-      var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (GroupTypePosition));
+          .AddService(typeof(GroupTypePropertyTypeSearchService), searchServiceStub.Object);
+      var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(GroupTypePosition));
       var groupTypeProperty = (IBusinessObjectReferenceProperty) groupTypePositionClass.GetPropertyDefinition("GroupType");
       Assert.That(groupTypeProperty, Is.Not.Null);
 
@@ -109,10 +109,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (PositionPropertyTypeSearchService), searchServiceStub.Object);
-      var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (GroupTypePosition));
+          .AddService(typeof(PositionPropertyTypeSearchService), searchServiceStub.Object);
+      var groupTypePositionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(GroupTypePosition));
       var positionProperty = (IBusinessObjectReferenceProperty) groupTypePositionClass.GetPropertyDefinition("Position");
       Assert.That(positionProperty, Is.Not.Null);
 

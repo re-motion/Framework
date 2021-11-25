@@ -24,7 +24,7 @@ namespace Remotion.Web.UI.Controls
   /// <summary>
   /// Represents a small amount of information that is displayed besides its corresponding parent element.
   /// </summary>
-  [TypeConverter (typeof (BadgeConverter))]
+  [TypeConverter (typeof(BadgeConverter))]
   public class Badge
   {
     public static bool ShouldSerialize (Badge? badge)
@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls
     private string _description;
 
     public Badge ()
-        : this (string.Empty, string.Empty)
+        : this(string.Empty, string.Empty)
     {
     }
 

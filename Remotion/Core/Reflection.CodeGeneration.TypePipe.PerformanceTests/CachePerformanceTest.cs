@@ -55,10 +55,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
       var typeCache = (ITypeCache) PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_typeCache");
       var constructorCallCache = (IConstructorCallCache) PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_constructorCallCache");
       var typeAssembler = (ITypeAssembler) PrivateInvoke.GetNonPublicField(pipeline, "_typeAssembler");
-      var typeID = typeAssembler.ComputeTypeID(typeof (DomainType));
+      var typeID = typeAssembler.ComputeTypeID(typeof(DomainType));
 
       Func<Type> typeCacheFunc = () => typeCache.GetOrCreateType(typeID);
-      Func<Delegate> constructorDelegateCacheFunc = () => constructorCallCache.GetOrCreateConstructorCall(typeID, typeof (Func<object>), true);
+      Func<Delegate> constructorDelegateCacheFunc = () => constructorCallCache.GetOrCreateConstructorCall(typeID, typeof(Func<object>), true);
 
       TimeThis("TypePipe_Types", typeCacheFunc);
       TimeThis("TypePipe_ConstructorDelegates", constructorDelegateCacheFunc);
@@ -104,7 +104,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
     }
 
     [DBTable]
-    [Uses (typeof (object))]
+    [Uses (typeof(object))]
     public class DomainType : DomainObject { }
   }
 }

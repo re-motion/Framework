@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       
       var associateCommand = (SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>) result;
       Assert.That(associateCommand.ExpectedObjectID, Is.EqualTo(_objectID1));
-      Assert.That(associateCommand.InnerCommand, Is.TypeOf(typeof (SingleObjectLoadCommand<DataContainer>)));
+      Assert.That(associateCommand.InnerCommand, Is.TypeOf(typeof(SingleObjectLoadCommand<DataContainer>)));
 
       var loadCommand = ((SingleObjectLoadCommand<DataContainer>) associateCommand.InnerCommand);
       Assert.That(loadCommand.DbCommandBuilder, Is.SameAs(_dbCommandBuilder1Stub));
@@ -151,8 +151,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var result = _factory.CreateForSortedMultiIDLookup(new[] { _objectID1 });
 
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
-      Assert.That(result, Is.TypeOf(typeof (MultiDataContainerAssociateWithIDsCommand)));
-      Assert.That(((MultiDataContainerAssociateWithIDsCommand) result).Command, Is.TypeOf(typeof (MultiObjectLoadCommand<DataContainer>)));
+      Assert.That(result, Is.TypeOf(typeof(MultiDataContainerAssociateWithIDsCommand)));
+      Assert.That(((MultiDataContainerAssociateWithIDsCommand) result).Command, Is.TypeOf(typeof(MultiObjectLoadCommand<DataContainer>)));
 
       var dbCommandBuilderTuples =
           ((MultiObjectLoadCommand<DataContainer>) ((MultiDataContainerAssociateWithIDsCommand) result).Command).DbCommandBuildersAndReaders;
@@ -214,8 +214,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
       _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
-      Assert.That(result, Is.TypeOf(typeof (MultiDataContainerAssociateWithIDsCommand)));
-      Assert.That(((MultiDataContainerAssociateWithIDsCommand) result).Command, Is.TypeOf(typeof (MultiObjectLoadCommand<DataContainer>)));
+      Assert.That(result, Is.TypeOf(typeof(MultiDataContainerAssociateWithIDsCommand)));
+      Assert.That(((MultiDataContainerAssociateWithIDsCommand) result).Command, Is.TypeOf(typeof(MultiObjectLoadCommand<DataContainer>)));
 
       var dbCommandBuilderTuples =
           ((MultiObjectLoadCommand<DataContainer>) ((MultiDataContainerAssociateWithIDsCommand) result).Command).DbCommandBuildersAndReaders;
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var innerCommand =
           CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<Tuple<ObjectID, object>>, IEnumerable<ObjectLookupResult<object>>>(result);
-      Assert.That(innerCommand, Is.TypeOf(typeof (MultiObjectLoadCommand<Tuple<ObjectID, object>>)));
+      Assert.That(innerCommand, Is.TypeOf(typeof(MultiObjectLoadCommand<Tuple<ObjectID, object>>)));
 
       var commandBuildersAndReaders = ((MultiObjectLoadCommand<Tuple<ObjectID, object>>) innerCommand).DbCommandBuildersAndReaders;
       Assert.That(commandBuildersAndReaders.Length, Is.EqualTo(2));
@@ -332,7 +332,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
     private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       classDefinition.SetStorageEntity(entityDefinition);
 
       return new ObjectID(classDefinition, Guid.NewGuid());
@@ -343,7 +343,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof (DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
+          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
       return ((DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>) command).Command;
     }
   }

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         BindableObjectProvider businessObjectProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IDefaultValueStrategy defaultValueStrategy)
-        : this (propertyInfo,
+        : this(propertyInfo,
             businessObjectProvider,
             domainModelConstraintProvider,
             defaultValueStrategy,
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy,
         BindableObjectGlobalizationService bindableObjectGlobalizationService,
         IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
-        : base (
+        : base(
             propertyInfo,
             businessObjectProvider,
             defaultValueStrategy,

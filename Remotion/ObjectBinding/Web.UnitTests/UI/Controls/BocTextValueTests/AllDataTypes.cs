@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _businessObject = (IBusinessObject) TypeWithAllDataTypes.Create();
 
       _dataSource = new BindableObjectDataSourceControl();
-      _dataSource.Type = typeof (TypeWithAllDataTypes);
+      _dataSource.Type = typeof(TypeWithAllDataTypes);
       _dataSource.BusinessObject = _businessObject;
 
       _cultureScope = new CultureScope("");

@@ -32,16 +32,16 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public static string DefaultKey
     {
-      get { return typeof (ValidationClientTransactionExtension).GetFullNameChecked(); }
+      get { return typeof(ValidationClientTransactionExtension).GetFullNameChecked(); }
     }
 
     public ValidationClientTransactionExtension (IValidatorProvider validatorProvider)
-        : this (DefaultKey, validatorProvider)
+        : this(DefaultKey, validatorProvider)
     {
     }
 
     public ValidationClientTransactionExtension (string key, IValidatorProvider validatorProvider)
-        : base (key)
+        : base(key)
     {
       ArgumentUtility.CheckNotNull("validatorProvider", validatorProvider);
 

@@ -65,16 +65,16 @@ namespace Remotion.Validation.UnitTests.Providers
           });
 
       var validationRuleCollector = new Mock<IValidationRuleCollector>();
-      _validationRuleCollectorInfo1 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo2 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo3 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo4 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo5 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo6 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo7 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo8 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo9 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
-      _validationRuleCollectorInfo10 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof (AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo1 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo2 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo3 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo4 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo5 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo6 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo7 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo8 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo9 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo10 = new ValidationRuleCollectorInfo(validationRuleCollector.Object, typeof(AggregatingValidationRuleCollectorProvider));
     }
 
     [Test]
@@ -93,11 +93,11 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void GetValidationRuleCollectors ()
     {
-      var typeGroup1 = new[] { typeof (IPerson), typeof(ICollection) };
-      var typeGroup2 = new[] { typeof (Person) };
-      var typeGroup3 = new[] { typeof (Customer) };
+      var typeGroup1 = new[] { typeof(IPerson), typeof(ICollection) };
+      var typeGroup2 = new[] { typeof(Person) };
+      var typeGroup3 = new[] { typeof(Customer) };
       _involvedTypeProviderStub.Setup(
-          stub => stub.GetTypes(typeof (Customer)))
+          stub => stub.GetTypes(typeof(Customer)))
           .Returns(new[] { typeGroup1, typeGroup2, typeGroup3 });
 
       var sequence = new MockSequence();
@@ -158,7 +158,7 @@ namespace Remotion.Validation.UnitTests.Providers
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup3)).Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
             .Verifiable();
 
-      var result = _validationRuleCollectorProvider.GetValidationRuleCollectors(new[] { typeof (Customer) }).SelectMany(g => g).ToArray();
+      var result = _validationRuleCollectorProvider.GetValidationRuleCollectors(new[] { typeof(Customer) }).SelectMany(g => g).ToArray();
 
       _validationRuleCollectorProviderMock1.Verify();
       _validationRuleCollectorProviderMock2.Verify();

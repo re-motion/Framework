@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.BindableObject
         Type concreteType,
         BindableObjectProvider businessObjectProvider,
         IEnumerable<PropertyBase> properties)
-        : this (concreteType, businessObjectProvider, SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(), properties)
+        : this(concreteType, businessObjectProvider, SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(), properties)
     {
     }
 

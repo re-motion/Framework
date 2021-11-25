@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var factories = ((CompoundValidatorFactory<IBocReferenceValue>) instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
-          Is.EqualTo(new[] { typeof (BocReferenceValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+          Is.EqualTo(new[] { typeof(BocReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]

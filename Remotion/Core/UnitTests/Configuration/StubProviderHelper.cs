@@ -36,7 +36,7 @@ namespace Remotion.UnitTests.Configuration
         string defaultProviderName,
         string defaultProviderID,
         string providerCollectionName)
-        : base (configurationSection)
+        : base(configurationSection)
     {
       _wellKnownProviderID = wellKnownProviderID;
       _defaultProviderName = defaultProviderName;

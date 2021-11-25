@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _cachingListener = new DomainObjectStateCache(_transaction);
 
       _existingOrder = (Order) LifetimeService.GetObject(_transaction, DomainObjectIDs.Order1, false);
-      _newOrder = (Order) LifetimeService.NewObject(_transaction, typeof (Order), ParamList.Empty);
+      _newOrder = (Order) LifetimeService.NewObject(_transaction, typeof(Order), ParamList.Empty);
       _notYetLoadedOrder = (Order) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order3);
     }
 

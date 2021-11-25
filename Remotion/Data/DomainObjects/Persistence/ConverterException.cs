@@ -30,10 +30,10 @@ public class ConverterException : PersistenceException
 
   // construction and disposing
 
-  public ConverterException () : this ("A converter exception occurred.") {}
-  public ConverterException (string message) : base (message) {}
-  public ConverterException (string message, Exception inner) : base (message, inner) {}
-  protected ConverterException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+  public ConverterException () : this("A converter exception occurred.") {}
+  public ConverterException (string message) : base(message) {}
+  public ConverterException (string message, Exception inner) : base(message, inner) {}
+  protected ConverterException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private readonly string _stacktrace;
 
     public ServerErrorException ([NotNull] string message, [NotNull] string stacktrace)
-        : base (message)
+        : base(message)
     {
       ArgumentUtility.CheckNotNull("message", message);
       ArgumentUtility.CheckNotNull("stacktrace", stacktrace);

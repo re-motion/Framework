@@ -59,9 +59,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private const string c_styleFileUrl = "SmartPage.css";
     private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
 
-    private static readonly string s_scriptFileKey = typeof (SmartPageInfo).GetFullNameChecked() + "_Script";
-    private static readonly string s_styleFileKey = typeof (SmartPageInfo).GetFullNameChecked() + "_Style";
-    private static readonly string s_smartNavigationScriptKey = typeof (SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
+    private static readonly string s_scriptFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Script";
+    private static readonly string s_styleFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Style";
+    private static readonly string s_smartNavigationScriptKey = typeof(SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
 
     private readonly ISmartPage _page;
 
@@ -219,7 +219,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this control info. </summary>
@@ -266,10 +266,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
 
-      var smartNavigationUrl = resourceUrlFactory.CreateResourceUrl(typeof (SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
+      var smartNavigationUrl = resourceUrlFactory.CreateResourceUrl(typeof(SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_smartNavigationScriptKey, smartNavigationUrl);
 
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
 
       HtmlHeadAppender.Current.RegisterCommonStyleSheet();
@@ -388,12 +388,12 @@ namespace Remotion.Web.UI.SmartPageImplementation
       initScript.AppendLine("SmartPage_Initialize ();");
       initScript.AppendLine();
 
-      _page.ClientScript.RegisterClientScriptBlock(_page, typeof (SmartPageInfo), "smartPageInitialize", initScript.ToString());
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(SmartPageInfo), "smartPageInitialize", initScript.ToString());
 
       string isAsynchronous = "false";
       if (IsInAsyncPostBack)
         isAsynchronous = "true";
-      _page.ClientScript.RegisterStartupScriptBlock(_page, typeof (SmartPageInfo), "smartPageStartUp", "SmartPage_Context.Instance.OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
+      _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(SmartPageInfo), "smartPageStartUp", "SmartPage_Context.Instance.OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
 
       // Ensure the __doPostBack function and the __EventTarget and __EventArgument hidden fields on the rendered page
       _page.ClientScript.GetPostBackEventReference(new PostBackOptions(_page.WrappedInstance) { ClientSubmit = true }, false);

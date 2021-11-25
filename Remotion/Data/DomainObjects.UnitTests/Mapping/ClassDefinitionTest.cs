@@ -63,13 +63,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       _domainBaseClass.SetDerivedClasses(new[] { _personClass, _organizationalUnitClass });
 
-      _orderClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
-      _distributorClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Distributor)];
+      _orderClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Order)];
+      _distributorClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Distributor)];
 
       _targetClassForPersistentMixinClass =
-          FakeMappingConfiguration.Current.TypeDefinitions[typeof (TargetClassForPersistentMixin)];
+          FakeMappingConfiguration.Current.TypeDefinitions[typeof(TargetClassForPersistentMixin)];
       _derivedTargetClassForPersistentMixinClass =
-          FakeMappingConfiguration.Current.TypeDefinitions[typeof (DerivedTargetClassForPersistentMixin)];
+          FakeMappingConfiguration.Current.TypeDefinitions[typeof(DerivedTargetClassForPersistentMixin)];
     }
 
     [Test]
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var actual = new ClassDefinition(
               "Order",
-              typeof (Order),
+              typeof(Order),
               false,
               null,
               null,
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(actual.ID, Is.EqualTo("Order"));
       Assert.That(actual.StorageEntityDefinition, Is.Null);
-      Assert.That(actual.ClassType, Is.SameAs(typeof (Order)));
+      Assert.That(actual.ClassType, Is.SameAs(typeof(Order)));
       Assert.That(actual.BaseClass, Is.Null);
       Assert.That(actual.DefaultStorageClass, Is.EqualTo(DefaultStorageClass.Transaction));
       //Assert.That (actual.DerivedClasses.AreResolvedTypesRequired, Is.True);
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classDefinition = new ClassDefinition(
               "Order",
-              typeof (Order),
+              typeof(Order),
               false,
               null,
               null,
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classDefinition = new ClassDefinition(
               "Order",
-              typeof (string),
+              typeof(string),
               false,
               null,
               null,
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void InitializeWithNullStorageGroupType ()
     {
-      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (TIDomainBase), storageGroupType: null);
+      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(TIDomainBase), storageGroupType: null);
       
       Assert.That(classDefinition.StorageGroupType, Is.Null);
     }
@@ -159,10 +159,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void InitializeWithStorageGroupType ()
     {
-      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (TIDomainBase), storageGroupType: typeof (DBStorageGroupAttribute));
+      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(TIDomainBase), storageGroupType: typeof(DBStorageGroupAttribute));
 
       Assert.That(classDefinition.StorageGroupType, Is.Not.Null);
-      Assert.That(classDefinition.StorageGroupType, Is.SameAs(typeof (DBStorageGroupAttribute)));
+      Assert.That(classDefinition.StorageGroupType, Is.SameAs(typeof(DBStorageGroupAttribute)));
     }
 
     [Test]
@@ -353,9 +353,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetToString ()
     {
-      ClassDefinition actual = ClassDefinitionObjectMother.CreateClassDefinition("OrderID", typeof (Order));
+      ClassDefinition actual = ClassDefinitionObjectMother.CreateClassDefinition("OrderID", typeof(Order));
 
-      Assert.That(actual.ToString(), Is.EqualTo(typeof (ClassDefinition).FullName + ": OrderID"));
+      Assert.That(actual.ToString(), Is.EqualTo(typeof(ClassDefinition).FullName + ": OrderID"));
     }
 
     [Test]
@@ -599,7 +599,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
               () => new ClassDefinition(
                       "id",
-                      typeof (Company),
+                      typeof(Company),
                       false,
                       null,
                       null,
@@ -736,7 +736,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetDerivedClassesWithInheritance ()
     {
-      ClassDefinition companyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Company));
+      ClassDefinition companyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Company));
 
       Assert.That(companyDefinition.DerivedClasses, Is.Not.Null);
       Assert.That(companyDefinition.DerivedClasses.Count, Is.EqualTo(2));
@@ -748,7 +748,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void IsPartOfInheritanceHierarchy ()
     {
-      ClassDefinition companyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Company));
+      ClassDefinition companyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Company));
 
       Assert.That(companyDefinition.IsPartOfInheritanceHierarchy, Is.True);
       Assert.That(_distributorClass.IsPartOfInheritanceHierarchy, Is.True);
@@ -758,8 +758,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void IsRelationEndPointWithAnonymousRelationEndPointDefinition ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Client));
-      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof (Client).FullName + ".ParentClient").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client));
+      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(Client).FullName + ".ParentClient").RelationDefinition;
       var anonymousEndPointDefinition = (AnonymousRelationEndPointDefinition) relationDefinition.GetEndPointDefinition("Client", null);
 
       Assert.That(classDefinition.IsRelationEndPoint(anonymousEndPointDefinition), Is.False);
@@ -768,7 +768,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void MyPropertyDefinitions ()
     {
-      var clientDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Client));
+      var clientDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client));
 
       var propertyDefinitions = clientDefinition.MyPropertyDefinitions.ToArray();
 
@@ -792,7 +792,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void MyRelationEndPointDefinitions ()
     {
-      var clientDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Client));
+      var clientDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client));
 
       IRelationEndPointDefinition[] endPointDefinitions = clientDefinition.MyRelationEndPointDefinitions.ToArray();
 
@@ -817,7 +817,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void MyRelationEndPointDefinitionsCompositeBaseClass ()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (FileSystemItem));
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(FileSystemItem));
 
       IRelationEndPointDefinition[] endPointDefinitions = fileSystemItemDefinition.MyRelationEndPointDefinitions.ToArray();
 
@@ -832,7 +832,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void IsMyRelationEndPoint ()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Folder));
+      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Folder));
 
       IRelationEndPointDefinition folderEndPoint =
           folderDefinition.GetRelationEndPointDefinition(
@@ -848,7 +848,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void MyRelationEndPointDefinitionsCompositeDerivedClass ()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Folder));
+      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Folder));
 
       IRelationEndPointDefinition[] endPointDefinitions = folderDefinition.MyRelationEndPointDefinitions.ToArray();
 
@@ -862,7 +862,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetRelationEndPointDefinitionsCompositeBaseClass ()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (FileSystemItem));
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(FileSystemItem));
 
       var endPointDefinitions = fileSystemItemDefinition.GetRelationEndPointDefinitions();
 
@@ -877,7 +877,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetRelationEndPointDefinitionsCompositeDerivedClass ()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Folder));
+      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Folder));
 
       var endPointDefinitions = folderDefinition.GetRelationEndPointDefinitions();
 
@@ -896,7 +896,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetRelationEndPointDefinitionCompositeBaseClass ()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (FileSystemItem));
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(FileSystemItem));
 
       Assert.That(
           fileSystemItemDefinition.GetRelationEndPointDefinition(
@@ -911,7 +911,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetRelationEndPointDefinitionCompositeDerivedClass ()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Folder));
+      ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Folder));
 
       Assert.That(
           folderDefinition.GetRelationEndPointDefinition(
@@ -959,22 +959,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetInheritanceRootClass ()
     {
-      ClassDefinition expected = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];
+      ClassDefinition expected = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Company)];
       Assert.That(_distributorClass.GetInheritanceRootClass(), Is.SameAs(expected));
     }
 
     [Test]
     public void GetAllDerivedClasses ()
     {
-      ClassDefinition companyClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];
+      ClassDefinition companyClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Company)];
       var allDerivedClasses = companyClass.GetAllDerivedClasses();
       Assert.That(allDerivedClasses, Is.Not.Null);
       Assert.That(allDerivedClasses.Length, Is.EqualTo(4));
 
-      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof (Customer)), Is.True);
-      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof (Partner)), Is.True);
-      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof (Supplier)), Is.True);
-      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof (Distributor)), Is.True);
+      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof(Customer)), Is.True);
+      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof(Partner)), Is.True);
+      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof(Supplier)), Is.True);
+      Assert.That(allDerivedClasses.Any(cd => cd.ClassType == typeof(Distributor)), Is.True);
     }
 
     [Test]
@@ -992,7 +992,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void IsSameOrBaseClassOfTrueWithBaseClass ()
     {
-      ClassDefinition companyClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];
+      ClassDefinition companyClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Company)];
 
       Assert.That(companyClass.IsSameOrBaseClassOf(_distributorClass), Is.True);
     }
@@ -1005,7 +1005,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void PropertyInfoWithSimpleProperty ()
     {
-      PropertyInfo property = typeof (Order).GetProperty("OrderNumber");
+      PropertyInfo property = typeof(Order).GetProperty("OrderNumber");
       var propertyDefinition = _orderClass.GetPropertyDefinition(property.DeclaringType.FullName + "." + property.Name);
       Assert.That(propertyDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(property)));
     }
@@ -1019,7 +1019,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void PersistentMixinFinder ()
     {
-      var mixinFinder = new PersistentMixinFinderStub(typeof (Order));
+      var mixinFinder = new PersistentMixinFinderStub(typeof(Order));
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(persistentMixinFinder: mixinFinder);
       Assert.That(classDefinition.PersistentMixinFinder, Is.SameAs(mixinFinder));
     }
@@ -1028,33 +1028,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void PersistentMixins_Empty ()
     {
       var mixins = new Type[0];
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order), mixins);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order), mixins);
       Assert.That(classDefinition.PersistentMixins, Is.EqualTo(mixins));
     }
 
     [Test]
     public void PersistentMixins_NonEmpty ()
     {
-      var mixins = new[] { typeof (MixinA), typeof (MixinB) };
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order), mixins);
+      var mixins = new[] { typeof(MixinA), typeof(MixinB) };
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order), mixins);
       Assert.That(classDefinition.PersistentMixins, Is.EqualTo(mixins));
     }
     
     [Test]
     public void ResolveProperty ()
     {
-      var property = typeof (Order).GetProperty("OrderNumber");
+      var property = typeof(Order).GetProperty("OrderNumber");
 
       var result = _orderClass.ResolveProperty(PropertyInfoAdapter.Create(property));
 
-      var expected = _orderClass.GetPropertyDefinition(typeof (Order).FullName + ".OrderNumber");
+      var expected = _orderClass.GetPropertyDefinition(typeof(Order).FullName + ".OrderNumber");
       Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
     public void ResolveProperty_Twice_ReturnsSamePropertyDefinition ()
     {
-      var property = typeof (Order).GetProperty("OrderNumber");
+      var property = typeof(Order).GetProperty("OrderNumber");
 
       var result1 = _orderClass.ResolveProperty(PropertyInfoAdapter.Create(property));
       var result2 = _orderClass.ResolveProperty(PropertyInfoAdapter.Create(property));
@@ -1065,7 +1065,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveProperty_StorageClassNoneProperty ()
     {
-      var property = typeof (Order).GetProperty("RedirectedOrderNumber");
+      var property = typeof(Order).GetProperty("RedirectedOrderNumber");
 
       var result = _orderClass.ResolveProperty(PropertyInfoAdapter.Create(property));
 
@@ -1075,53 +1075,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveProperty_MixinProperty ()
     {
-      var property = typeof (IMixinAddingPersistentProperties).GetProperty("PersistentProperty");
+      var property = typeof(IMixinAddingPersistentProperties).GetProperty("PersistentProperty");
 
       var result = _targetClassForPersistentMixinClass.ResolveProperty(PropertyInfoAdapter.Create(property));
 
       var expected = _targetClassForPersistentMixinClass.GetPropertyDefinition(
-          typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty");
+          typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty");
       Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
     public void ResolveProperty_MixinPropertyOnBaseClass ()
     {
-      var property = typeof (IMixinAddingPersistentProperties).GetProperty("PersistentProperty");
+      var property = typeof(IMixinAddingPersistentProperties).GetProperty("PersistentProperty");
 
       var result = _derivedTargetClassForPersistentMixinClass.ResolveProperty(PropertyInfoAdapter.Create(property));
 
       var expected = _targetClassForPersistentMixinClass.GetPropertyDefinition(
-          typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty");
+          typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty");
       Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
     public void ResolveRelationEndPoint_OneToOne ()
     {
-      var property = typeof (Order).GetProperty("OrderTicket");
+      var property = typeof(Order).GetProperty("OrderTicket");
 
       var result = _orderClass.ResolveRelationEndPoint(PropertyInfoAdapter.Create(property));
 
-      var expected = _orderClass.GetRelationEndPointDefinition(typeof (Order).FullName + ".OrderTicket");
+      var expected = _orderClass.GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
       Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
     public void ResolveRelationEndPoint_OneToMany ()
     {
-      var property = typeof (Order).GetProperty("OrderItems");
+      var property = typeof(Order).GetProperty("OrderItems");
 
       var result = _orderClass.ResolveRelationEndPoint(PropertyInfoAdapter.Create(property));
 
-      var expected = _orderClass.GetRelationEndPointDefinition(typeof (Order).FullName + ".OrderItems");
+      var expected = _orderClass.GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
       Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
     public void ResolveRelationEndPoint_NonEndPointProperty ()
     {
-      var property = typeof (Order).GetProperty("OrderNumber");
+      var property = typeof(Order).GetProperty("OrderNumber");
 
       var result = _orderClass.ResolveRelationEndPoint(PropertyInfoAdapter.Create(property));
 
@@ -1131,7 +1131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveRelationEndPoint_Twice_ReturnsSameRelationDefinition ()
     {
-      var property = typeof (Order).GetProperty("OrderItems");
+      var property = typeof(Order).GetProperty("OrderItems");
 
       var result1 = _orderClass.ResolveRelationEndPoint(PropertyInfoAdapter.Create(property));
       var result2 = _orderClass.ResolveRelationEndPoint(PropertyInfoAdapter.Create(property));
@@ -1142,32 +1142,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveRelationEndPoint_MixinRelationProperty_VirtualEndPoint ()
     {
-      var property = typeof (IMixinAddingPersistentProperties).GetProperty("VirtualRelationProperty");
+      var property = typeof(IMixinAddingPersistentProperties).GetProperty("VirtualRelationProperty");
 
       var result = _targetClassForPersistentMixinClass.ResolveRelationEndPoint(PropertyInfoAdapter.Create(property));
 
       var expected = _targetClassForPersistentMixinClass.GetRelationEndPointDefinition(
-          typeof (MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty");
+          typeof(MixinAddingPersistentProperties).FullName + ".VirtualRelationProperty");
       Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
     public void ResolveRelationEndPoint_MixinRelationProperty_DefinedOnBaseClass ()
     {
-      var property = typeof (IMixinAddingPersistentProperties).GetProperty("RelationProperty");
+      var property = typeof(IMixinAddingPersistentProperties).GetProperty("RelationProperty");
 
       var result = _derivedTargetClassForPersistentMixinClass.ResolveRelationEndPoint(PropertyInfoAdapter.Create(property));
 
       var expected = _targetClassForPersistentMixinClass.GetRelationEndPointDefinition(
-          typeof (MixinAddingPersistentProperties).FullName + ".RelationProperty");
+          typeof(MixinAddingPersistentProperties).FullName + ".RelationProperty");
       Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
     public void ValidateCurrentMixinConfiguration_OkWhenNoChanges ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order), typeof (MixinA));
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (Order)).Clear().AddMixins(typeof (MixinA)).EnterScope())
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order), typeof(MixinA));
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(Order)).Clear().AddMixins(typeof(MixinA)).EnterScope())
       {
         classDefinition.ValidateCurrentMixinConfiguration(); // ok, no changes
       }
@@ -1177,13 +1177,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ValidateCurrentMixinConfiguration_OkOnInheritanceRootInheritingMixin ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(
-          typeof (InheritanceRootInheritingPersistentMixin),
-          typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot));
+          typeof(InheritanceRootInheritingPersistentMixin),
+          typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot));
 
       using (MixinConfiguration
           .BuildNew()
-          .ForClass(typeof (TargetClassAboveInheritanceRoot))
-          .AddMixins(typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot))
+          .ForClass(typeof(TargetClassAboveInheritanceRoot))
+          .AddMixins(typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot))
           .EnterScope())
       {
         // ok, no changes, even though the mixins stem from a base class
@@ -1194,12 +1194,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenAnyChanges_EvenToNonPersistentMixins ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order), typeof (MixinA));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order), typeof(MixinA));
 
       using (MixinConfiguration.BuildFromActive()
-          .ForClass(typeof (Order))
+          .ForClass(typeof(Order))
               .Clear()
-              .AddMixins(typeof (NonDomainObjectMixin), typeof (MixinA))
+              .AddMixins(typeof(NonDomainObjectMixin), typeof(MixinA))
           .EnterScope())
       {
         Assert.That(
@@ -1223,7 +1223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixinMissing ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order), typeof (MixinA));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order), typeof(MixinA));
       using (MixinConfiguration.BuildFromActive().ForClass<Order>().Clear().EnterScope())
       {
         Assert.That(
@@ -1238,10 +1238,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixinsAdded ()
     {
-      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order), typeof (MixinA));
+      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order), typeof(MixinA));
       using (
-          MixinConfiguration.BuildFromActive().ForClass(typeof (Order)).Clear().AddMixins(
-              typeof (NonDomainObjectMixin), typeof (MixinA), typeof (MixinB), typeof (MixinC)).EnterScope())
+          MixinConfiguration.BuildFromActive().ForClass(typeof(Order)).Clear().AddMixins(
+              typeof(NonDomainObjectMixin), typeof(MixinA), typeof(MixinB), typeof(MixinC)).EnterScope())
       {
         Assert.That(
             () => classDefinition.ValidateCurrentMixinConfiguration(),
@@ -1255,11 +1255,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ValidateCurrentMixinConfiguration_ThrowsWhenPersistentMixinsChangeOnParentClass ()
     {
-      ClassDefinition baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Company), typeof (MixinA));
-      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Customer), baseClass: baseClassDefinition);
+      ClassDefinition baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Company), typeof(MixinA));
+      ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer), baseClass: baseClassDefinition);
       using (
-          MixinConfiguration.BuildFromActive().ForClass(typeof (Company)).Clear().AddMixins(
-              typeof (NonDomainObjectMixin), typeof (MixinA), typeof (MixinB), typeof (MixinC)).EnterScope())
+          MixinConfiguration.BuildFromActive().ForClass(typeof(Company)).Clear().AddMixins(
+              typeof(NonDomainObjectMixin), typeof(MixinA), typeof(MixinB), typeof(MixinC)).EnterScope())
       {
         Assert.That(
             () => classDefinition.ValidateCurrentMixinConfiguration(),

@@ -63,37 +63,37 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     private WebTestConfigurationSection ()
     {
-      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None);
       _browserProperty = new ConfigurationProperty(
           "browser",
-          typeof (string),
+          typeof(string),
           null,
           null,
           new RegexStringValidator("(InternetExplorer|Chrome|Edge|Firefox)"),
           ConfigurationPropertyOptions.IsRequired);
-      _searchTimeoutProperty = new ConfigurationProperty("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
-      _commandTimeoutProperty = new ConfigurationProperty("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes(1));
-      _asyncJavaScriptTimeoutProperty = new ConfigurationProperty("asyncJavaScriptTimeout", typeof (TimeSpan), TimeSpan.FromSeconds(10));
-      _downloadStartedTimeoutProperty = new ConfigurationProperty("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds(10));
-      _downloadUpdatedTimeoutProperty = new ConfigurationProperty("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds(10));
-      _verifyWebApplicationStartedTimeoutProperty = new ConfigurationProperty("verifyWebApplicationStartedTimeout", typeof (TimeSpan), TimeSpan.FromMinutes(1));
-      _retryIntervalProperty = new ConfigurationProperty("retryInterval", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
+      _searchTimeoutProperty = new ConfigurationProperty("searchTimeout", typeof(TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
+      _commandTimeoutProperty = new ConfigurationProperty("commandTimeout", typeof(TimeSpan), TimeSpan.FromMinutes(1));
+      _asyncJavaScriptTimeoutProperty = new ConfigurationProperty("asyncJavaScriptTimeout", typeof(TimeSpan), TimeSpan.FromSeconds(10));
+      _downloadStartedTimeoutProperty = new ConfigurationProperty("downloadStartedTimeout", typeof(TimeSpan), TimeSpan.FromSeconds(10));
+      _downloadUpdatedTimeoutProperty = new ConfigurationProperty("downloadUpdatedTimeout", typeof(TimeSpan), TimeSpan.FromSeconds(10));
+      _verifyWebApplicationStartedTimeoutProperty = new ConfigurationProperty("verifyWebApplicationStartedTimeout", typeof(TimeSpan), TimeSpan.FromMinutes(1));
+      _retryIntervalProperty = new ConfigurationProperty("retryInterval", typeof(TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
       _webApplicationRootProperty = new ConfigurationProperty(
           "webApplicationRoot",
-          typeof (string),
+          typeof(string),
           null,
           null,
           new StringValidator(minLength: 1),
           ConfigurationPropertyOptions.IsRequired);
-      _screenshotDirectoryProperty = new ConfigurationProperty("screenshotDirectory", typeof (string));
-      _logsDirectoryProperty = new ConfigurationProperty("logsDirectory", typeof (string), ".");
-      _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty("closeBrowserWindowsOnSetUpAndTearDown", typeof (bool), false);
-      _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty("cleanUpUnmatchedDownloadedFiles", typeof (bool), false);
-      _requestErrorDetectionStrategyProperty = new ConfigurationProperty("requestErrorDetectionStrategy", typeof (string), "None");
-      _hostingProperty = new ConfigurationProperty("hosting", typeof (ProviderSettings));
-      _testSiteLayoutProperty = new ConfigurationProperty("testSiteLayout", typeof (TestSiteLayoutConfigurationElement));
-      _chrome = new ConfigurationProperty("chrome", typeof (ChromiumConfigurationElement));
-      _edge = new ConfigurationProperty("edge", typeof (ChromiumConfigurationElement));
+      _screenshotDirectoryProperty = new ConfigurationProperty("screenshotDirectory", typeof(string));
+      _logsDirectoryProperty = new ConfigurationProperty("logsDirectory", typeof(string), ".");
+      _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty("closeBrowserWindowsOnSetUpAndTearDown", typeof(bool), false);
+      _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty("cleanUpUnmatchedDownloadedFiles", typeof(bool), false);
+      _requestErrorDetectionStrategyProperty = new ConfigurationProperty("requestErrorDetectionStrategy", typeof(string), "None");
+      _hostingProperty = new ConfigurationProperty("hosting", typeof(ProviderSettings));
+      _testSiteLayoutProperty = new ConfigurationProperty("testSiteLayout", typeof(TestSiteLayoutConfigurationElement));
+      _chrome = new ConfigurationProperty("chrome", typeof(ChromiumConfigurationElement));
+      _edge = new ConfigurationProperty("edge", typeof(ChromiumConfigurationElement));
 
       _properties = new ConfigurationPropertyCollection
                     {

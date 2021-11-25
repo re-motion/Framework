@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     // standard constructor for collections
     public OrderCollection (IEnumerable<Order> contents)
-      : base (contents)
+      : base(contents)
     {
     }
 

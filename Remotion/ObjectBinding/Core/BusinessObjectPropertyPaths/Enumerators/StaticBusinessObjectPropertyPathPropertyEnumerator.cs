@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
   public sealed class StaticBusinessObjectPropertyPathPropertyEnumerator : BusinessObjectPropertyPathPropertyEnumeratorBase
   {
     public StaticBusinessObjectPropertyPathPropertyEnumerator (string propertyPathIdentifier)
-        : base (propertyPathIdentifier)
+        : base(propertyPathIdentifier)
     {
     }
 

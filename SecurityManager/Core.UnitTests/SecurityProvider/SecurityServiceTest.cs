@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.UnitTests
       _mockAccessResolver = new Mock<IAccessResolver>(MockBehavior.Strict);
 
       _service = new SecurityService(_mockAclFinder.Object, _mockTokenBuilder.Object, _mockAccessResolver.Object);
-      _context = SecurityContext.Create(typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", new Dictionary<string, Enum>(), new Enum[0]);
+      _context = SecurityContext.Create(typeof(Order), "Owner", "UID: OwnerGroup", "OwnerTenant", new Dictionary<string, Enum>(), new Enum[0]);
 
       _clientTransaction = ClientTransaction.CreateRootTransaction();
       using (_clientTransaction.EnterNonDiscardingScope())
@@ -239,7 +239,7 @@ namespace Remotion.SecurityManager.UnitTests
 
     private IDomainObjectHandle<AccessControlList> CreateAccessControlListHandle ()
     {
-      return new DomainObjectHandle<StatefulAccessControlList>(new ObjectID(typeof (StatefulAccessControlList), Guid.NewGuid()));
+      return new DomainObjectHandle<StatefulAccessControlList>(new ObjectID(typeof(StatefulAccessControlList), Guid.NewGuid()));
     }
   }
 }

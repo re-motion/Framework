@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinRequiringAllMembersTargetCall))]
+  [Uses (typeof(MixinRequiringAllMembersTargetCall))]
   public class ClassFulfillingAllMemberRequirementsExplicitly : IMixinRequiringAllMembersRequirements
   {
     void IMixinRequiringAllMembersRequirements.Method ()

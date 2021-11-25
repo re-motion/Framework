@@ -35,8 +35,8 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
     {
       var assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(
           Path.Combine(TestContext.CurrentContext.TestDirectory, c_testAssemblySourceDirectoryRoot, assemblyName),
-          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof (MultiLingualNameAttribute).Module.Name),
-          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof (IExtensibleEnum).Module.Name));
+          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof(MultiLingualNameAttribute).Module.Name),
+          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof(IExtensibleEnum).Module.Name));
       assemblyCompiler.Compile();
       return assemblyCompiler.CompiledAssembly;
     }

@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     public override void TearDown ()
     {
       base.TearDown();
-      PrivateInvoke.InvokeNonPublicStaticMethod(typeof (SecurityManagerConfiguration), "SetCurrent", null);
+      PrivateInvoke.InvokeNonPublicStaticMethod(typeof(SecurityManagerConfiguration), "SetCurrent", null);
     }
 
     [Test]

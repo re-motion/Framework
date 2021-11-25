@@ -39,15 +39,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void GetMetadata_AddNewPropertyTypeFromMixin ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar");
 
-      using (MixinConfiguration.BuildNew().ForClass(typeof (PropertyReflector)).AddMixin<SimpleReferenceTypePropertyReflectorMixin>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(PropertyReflector)).AddMixin<SimpleReferenceTypePropertyReflectorMixin>().EnterScope())
       {
         PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
         IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-        Assert.That(businessObjectProperty, Is.TypeOf(typeof (SimpleReferenceTypeProperty)));
+        Assert.That(businessObjectProperty, Is.TypeOf(typeof(SimpleReferenceTypeProperty)));
         Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Scalar"));
       }
     }
@@ -55,15 +55,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void GetMetadata_SupportsPredifinedPropertyTypes ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof (ClassWithAllDataTypes), "Int32");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithAllDataTypes), "Int32");
 
-      using (MixinConfiguration.BuildNew().ForClass(typeof (PropertyReflector)).AddMixin<SimpleReferenceTypePropertyReflectorMixin>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(PropertyReflector)).AddMixin<SimpleReferenceTypePropertyReflectorMixin>().EnterScope())
       {
         PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
         IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-        Assert.That(businessObjectProperty, Is.TypeOf(typeof (Int32Property)));
+        Assert.That(businessObjectProperty, Is.TypeOf(typeof(Int32Property)));
         Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Int32"));
       }
     }
@@ -71,15 +71,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void GetMetadata_DefaultsToBaseImplementation ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof (ClassWithValueType<SimpleValueType>), "Scalar");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "Scalar");
 
-      using (MixinConfiguration.BuildNew().ForClass(typeof (PropertyReflector)).AddMixin<SimpleReferenceTypePropertyReflectorMixin>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(PropertyReflector)).AddMixin<SimpleReferenceTypePropertyReflectorMixin>().EnterScope())
       {
         PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
         IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-        Assert.That(businessObjectProperty, Is.TypeOf(typeof (NotSupportedProperty)));
+        Assert.That(businessObjectProperty, Is.TypeOf(typeof(NotSupportedProperty)));
         Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Scalar"));
       }
     }

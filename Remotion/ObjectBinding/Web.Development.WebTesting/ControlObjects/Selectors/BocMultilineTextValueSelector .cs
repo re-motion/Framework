@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocMultilineTextValueSelector : BocControlSelectorBase<BocMultilineTextValueControlObject>
   {
     public BocMultilineTextValueSelector ()
-        : base ("BocMultilineTextValue")
+        : base("BocMultilineTextValue")
     {
     }
 

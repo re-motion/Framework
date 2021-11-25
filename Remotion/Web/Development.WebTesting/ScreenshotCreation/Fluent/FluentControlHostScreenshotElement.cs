@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       where T : IControlHost
   {
     public FluentControlHostScreenshotElement (IFluentScreenshotElement<T> fluentElement)
-        : base (fluentElement.Target, fluentElement.Resolver, fluentElement.MinimumElementVisibility)
+        : base(fluentElement.Target, fluentElement.Resolver, fluentElement.MinimumElementVisibility)
     {
     }
 
@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] T target,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
-        : base (target, resolver, minimumElementVisibility)
+        : base(target, resolver, minimumElementVisibility)
     {
     }
 

@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
                                  };
       JobList_Empty_VariableColumns.AvailableViews.AddRange(variableColumnsViews);
 
-      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof (BocListUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
+      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(BocListUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
     }
 
     protected override void OnPreRender (EventArgs e)

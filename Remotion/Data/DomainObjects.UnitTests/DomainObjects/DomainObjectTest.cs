@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject();
       Assert.That(
-          () => SetPropertyValue(classWithAllDataTypes.InternalDataContainer, typeof (ClassWithAllDataTypes), "BooleanProperty", null),
+          () => SetPropertyValue(classWithAllDataTypes.InternalDataContainer, typeof(ClassWithAllDataTypes), "BooleanProperty", null),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "Property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty' does not allow null values."));
     }
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Company company = DomainObjectIDs.Partner2.GetObject<Company>();
       Assert.That(company, Is.Not.Null);
 
-      Assert.That(company, Is.InstanceOf(typeof (Partner)));
+      Assert.That(company, Is.InstanceOf(typeof(Partner)));
       var partner = (Partner) company;
 
       Assert.That(partner.ID, Is.EqualTo(DomainObjectIDs.Partner2), "ID");
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Company company = DomainObjectIDs.Supplier1.GetObject<Company>();
       Assert.That(company, Is.Not.Null);
 
-      Assert.That(company, Is.InstanceOf(typeof (Supplier)));
+      Assert.That(company, Is.InstanceOf(typeof(Supplier)));
       var supplier = (Supplier) company;
 
       Assert.That(supplier.ID, Is.EqualTo(DomainObjectIDs.Supplier1));
@@ -271,13 +271,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       DomainObjectCollection collection = industrialSector.Companies;
 
       Assert.That(collection.Count, Is.EqualTo(7));
-      Assert.That(collection[DomainObjectIDs.Company1].GetPublicDomainObjectType(), Is.EqualTo(typeof (Company)));
-      Assert.That(collection[DomainObjectIDs.Company2].GetPublicDomainObjectType(), Is.EqualTo(typeof (Company)));
-      Assert.That(collection[DomainObjectIDs.Customer2].GetPublicDomainObjectType(), Is.EqualTo(typeof (Customer)));
-      Assert.That(collection[DomainObjectIDs.Customer3].GetPublicDomainObjectType(), Is.EqualTo(typeof (Customer)));
-      Assert.That(collection[DomainObjectIDs.Partner2].GetPublicDomainObjectType(), Is.EqualTo(typeof (Partner)));
-      Assert.That(collection[DomainObjectIDs.Supplier2].GetPublicDomainObjectType(), Is.EqualTo(typeof (Supplier)));
-      Assert.That(collection[DomainObjectIDs.Distributor1].GetPublicDomainObjectType(), Is.EqualTo(typeof (Distributor)));
+      Assert.That(collection[DomainObjectIDs.Company1].GetPublicDomainObjectType(), Is.EqualTo(typeof(Company)));
+      Assert.That(collection[DomainObjectIDs.Company2].GetPublicDomainObjectType(), Is.EqualTo(typeof(Company)));
+      Assert.That(collection[DomainObjectIDs.Customer2].GetPublicDomainObjectType(), Is.EqualTo(typeof(Customer)));
+      Assert.That(collection[DomainObjectIDs.Customer3].GetPublicDomainObjectType(), Is.EqualTo(typeof(Customer)));
+      Assert.That(collection[DomainObjectIDs.Partner2].GetPublicDomainObjectType(), Is.EqualTo(typeof(Partner)));
+      Assert.That(collection[DomainObjectIDs.Supplier2].GetPublicDomainObjectType(), Is.EqualTo(typeof(Supplier)));
+      Assert.That(collection[DomainObjectIDs.Distributor1].GetPublicDomainObjectType(), Is.EqualTo(typeof(Distributor)));
     }
 
     [Test]
@@ -661,7 +661,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void MultiplePropertiesWithSameShortName ()
     {
-      var derivedClass = (DerivedClassWithDifferentProperties) LifetimeService.NewObject(TestableClientTransaction, typeof (DerivedClassWithDifferentProperties), ParamList.Empty);
+      var derivedClass = (DerivedClassWithDifferentProperties) LifetimeService.NewObject(TestableClientTransaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
       ClassWithDifferentProperties baseClass = derivedClass;
 
       derivedClass.String = "Derived";

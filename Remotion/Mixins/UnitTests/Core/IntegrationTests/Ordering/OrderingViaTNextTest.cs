@@ -25,14 +25,14 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void NextDependency ()
     {
-      var instance = BuildMixedInstance<C>(typeof (MixinA), typeof (MixinB_WithInterfaceDependency));
+      var instance = BuildMixedInstance<C>(typeof(MixinA), typeof(MixinB_WithInterfaceDependency));
       Assert.That(instance.Method1(), Is.EqualTo("MixinB_WithInterfaceDependency.Method1 - MixinA.Method1 - C.Method1"));
     }
 
     [Test]
     public void GenericNextDependency ()
     {
-      var instance = BuildMixedInstance<C>(typeof (MixinA), typeof (MixinB_WithGenericDependency<>));
+      var instance = BuildMixedInstance<C>(typeof(MixinA), typeof(MixinB_WithGenericDependency<>));
       Assert.That(instance.Method1(), Is.EqualTo("MixinB_WithGenericDependency.Method1 - MixinA.Method1 - C.Method1"));
     }
 

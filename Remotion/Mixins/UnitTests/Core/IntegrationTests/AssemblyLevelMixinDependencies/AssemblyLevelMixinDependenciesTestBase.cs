@@ -52,7 +52,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
     private Assembly CreateAssemblyWithAdditionalAttributeDeclarations (params AdditionalMixinDependencyAttribute[] attributes)
     {
-      var ctor = typeof (AdditionalMixinDependencyAttribute).GetConstructor(new[] { typeof (Type), typeof (Type), typeof (Type) });
+      var ctor = typeof(AdditionalMixinDependencyAttribute).GetConstructor(new[] { typeof(Type), typeof(Type), typeof(Type) });
       Assert.That(ctor, Is.Not.Null, "AdditionalMixinDependencyAttribute ctor not found.");
 
       var assemblyName = "TestAssembly_" + GetType().Name;
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
       // Required due to RM-5136
       var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyBuilder + ".dll");
-      moduleBuilder.DefineType("Dummy", TypeAttributes.Public, typeof (object)).CreateType();
+      moduleBuilder.DefineType("Dummy", TypeAttributes.Public, typeof(object)).CreateType();
 
       return assemblyBuilder;
     }

@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
       var log = new DefaultValidationLog();
       var rule = new DelegateValidationRule<TargetClassDefinition>(DummyRule);
 
-      var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (object));
+      var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(object));
       log.ValidationStartsFor(definition);
       log.Succeed(rule);
       log.ValidationEndsFor(definition);

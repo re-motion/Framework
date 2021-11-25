@@ -29,7 +29,7 @@ namespace Remotion.Utilities
     private readonly bool _isNullable;
 
     public AdvancedEnumConverter (Type enumType)
-        : base (Nullable.GetUnderlyingType(ArgumentUtility.CheckNotNull("enumType", enumType)) ?? enumType)
+        : base(Nullable.GetUnderlyingType(ArgumentUtility.CheckNotNull("enumType", enumType)) ?? enumType)
     {
       _enumType = enumType;
       _underlyingType = Enum.GetUnderlyingType(UnderlyingEnumType);
@@ -148,7 +148,7 @@ namespace Remotion.Utilities
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
       // ReSharper disable HeuristicUnreachableCode
       if (_isNullable && value == null)
-        return (destinationType == typeof (string)) ? string.Empty : null;
+        return (destinationType == typeof(string)) ? string.Empty : null;
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
       

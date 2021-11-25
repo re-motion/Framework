@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 #if DEBUG
       if (value is Type)
           // ReSharper disable once PossibleMistakenCallToGetType.2
-        throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", typeof (Type).GetType().GetFullNameSafe()), "value");
+        throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", typeof(Type).GetType().GetFullNameSafe()), "value");
 
       if (value is Delegate)
-        throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", typeof (Delegate).GetFullNameSafe()), "value");
+        throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", typeof(Delegate).GetFullNameSafe()), "value");
 
       if (value is not null && !value.GetType().IsSerializable)
         throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", value.GetType().GetFullNameSafe()), "value");

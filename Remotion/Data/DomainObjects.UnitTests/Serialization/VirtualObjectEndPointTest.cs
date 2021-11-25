@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       base.SetUp();
 
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Employee3, ReflectionMappingHelper.GetPropertyName(typeof (Employee), "Computer"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Employee3, ReflectionMappingHelper.GetPropertyName(typeof(Employee), "Computer"));
       _endPoint = (VirtualObjectEndPoint) 
           ((StateUpdateRaisingVirtualObjectEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(endPointID))
           .InnerEndPoint;

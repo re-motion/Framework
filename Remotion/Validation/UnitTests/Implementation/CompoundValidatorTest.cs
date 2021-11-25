@@ -57,7 +57,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorStub1 = new Mock<IValidator<Customer>>();
       _validatorStub2 = new Mock<IValidator<Customer>>();
 
-      _compoundValidator = new CompoundValidator(new[] { _validatorStub1.Object, _validatorStub2.Object }, typeof (Customer));
+      _compoundValidator = new CompoundValidator(new[] { _validatorStub1.Object, _validatorStub2.Object }, typeof(Customer));
 
       _validationFailure1 = new ObjectValidationFailure(_validatedObject, "Error1", "ValidationMessage1");
       _validationFailure2 = new PropertyValidationFailure(_validatedObject, propertyStub2.Object, "value2", "Error2", "ValidationMessage2");
@@ -96,9 +96,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void CreateDescriptor ()
     {
-      var validator1 = new Validator(new[] { _validationRuleStub1.Object }, typeof (Customer));
-      var validator2 = new Validator(new[] { _validationRuleStub2.Object }, typeof (Customer));
-      var compositeValidator = new CompoundValidator(new[] { validator1, validator2 }, typeof (Customer));
+      var validator1 = new Validator(new[] { _validationRuleStub1.Object }, typeof(Customer));
+      var validator2 = new Validator(new[] { _validationRuleStub2.Object }, typeof(Customer));
+      var compositeValidator = new CompoundValidator(new[] { validator1, validator2 }, typeof(Customer));
 
       var result = compositeValidator.CreateDescriptor();
 
@@ -108,16 +108,16 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void CanValidateInstancesOfType_Customer_True ()
     {
-      _validatorStub1.Setup(stub => stub.CanValidateInstancesOfType(typeof (Customer))).Returns(true);
-      _validatorStub2.Setup(stub => stub.CanValidateInstancesOfType(typeof (Customer))).Returns(true);
+      _validatorStub1.Setup(stub => stub.CanValidateInstancesOfType(typeof(Customer))).Returns(true);
+      _validatorStub2.Setup(stub => stub.CanValidateInstancesOfType(typeof(Customer))).Returns(true);
 
-      Assert.That(_compoundValidator.CanValidateInstancesOfType(typeof (Customer)), Is.True);
+      Assert.That(_compoundValidator.CanValidateInstancesOfType(typeof(Customer)), Is.True);
     }
 
     [Test]
     public void CanValidateInstancesOfType_NoCustomer_False ()
     {
-      Assert.That(_compoundValidator.CanValidateInstancesOfType(typeof (Address)), Is.False);
+      Assert.That(_compoundValidator.CanValidateInstancesOfType(typeof(Address)), Is.False);
     }
   }
 }

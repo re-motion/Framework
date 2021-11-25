@@ -22,7 +22,7 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Security.ExecutionEngine
 {
-  [ImplementationFor (typeof (IWxeSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(IWxeSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class WxeSecurityAdapter : IWxeSecurityAdapter
   {
     // types
@@ -110,7 +110,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public bool HasStatelessAccess (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof (WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof(WxeFunction));
 
       if (SecurityFreeSection.IsActive)
         return true;
@@ -143,7 +143,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     private WxeDemandTargetPermissionAttribute? GetPermissionAttribute (Type functionType)
     {
-      return (WxeDemandTargetPermissionAttribute?) Attribute.GetCustomAttribute(functionType, typeof (WxeDemandTargetPermissionAttribute), true);
+      return (WxeDemandTargetPermissionAttribute?) Attribute.GetCustomAttribute(functionType, typeof(WxeDemandTargetPermissionAttribute), true);
     }
   }
 }

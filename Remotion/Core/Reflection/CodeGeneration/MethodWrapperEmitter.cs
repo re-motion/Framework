@@ -189,7 +189,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     private void EmitReturnStatement ()
     {
-      if (_wrapperReturnType == typeof (void))
+      if (_wrapperReturnType == typeof(void))
         _ilGenerator.Emit(OpCodes.Nop);
       else if (_wrapperReturnType == _wrappedMethod.ReturnType)
         _ilGenerator.Emit(OpCodes.Nop);

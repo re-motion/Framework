@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
   /// </summary>
   public class DockerCommandLineClient : IDockerClient
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (DockerCommandLineClient));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(DockerCommandLineClient));
 
     private readonly string _dockerExeFullPath;
     private readonly TimeSpan _pullTimeout;

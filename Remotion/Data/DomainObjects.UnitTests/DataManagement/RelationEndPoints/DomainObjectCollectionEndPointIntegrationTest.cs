@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingDomainObjectCollectionEndPointDecorator) 
           TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
             RelationEndPointID.Create(DomainObjectIDs.Customer1, 
-            typeof (Customer), 
+            typeof(Customer), 
             "Orders"));
       _customerEndPoint = (DomainObjectCollectionEndPoint) stateUpdateRaisingEndPointDecorator.InnerEndPoint;
     }
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       SetCollectionAndNotify(_customerEndPoint, newOpposites);
 
       // old collection got a stand-alone strategy...
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(oldOpposites, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(oldOpposites, typeof(Order));
 
       var dataStrategyOfOldOpposites = DomainObjectCollectionDataTestHelper.GetDataStrategy(oldOpposites);
       // with the data it had before!
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       SetCollectionAndNotify(_customerEndPoint, newOpposites);
 
       // New collection now has a delegating data store...
-      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(newOpposites, typeof (Order), _customerEndPoint.ID);
+      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(newOpposites, typeof(Order), _customerEndPoint.ID);
 
       // ... and the end-point now has data newOpposites had before!
       Assert.That(_customerEndPoint.GetData(), Is.EqualTo(new[] { _order2 }));
@@ -300,8 +300,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var oldCollection = _customerEndPoint.Collection;
       var newCollection = new OrderCollection { _order3 };
-      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(oldCollection, typeof (Order), _customerEndPoint.ID);
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(newCollection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(oldCollection, typeof(Order), _customerEndPoint.ID);
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(newCollection, typeof(Order));
 
       SetCollectionAndNotify(_customerEndPoint, newCollection);
 
@@ -311,8 +311,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _customerEndPoint.Rollback();
 
-      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(oldCollection, typeof (Order), _customerEndPoint.ID);
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(newCollection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(oldCollection, typeof(Order), _customerEndPoint.ID);
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(newCollection, typeof(Order));
     }
 
     [Test]
@@ -395,8 +395,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _customerEndPoint.Commit();
 
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(oldCollection, typeof (Order));
-      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(newCollection, typeof (Order), _customerEndPoint.ID);
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(oldCollection, typeof(Order));
+      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(newCollection, typeof(Order), _customerEndPoint.ID);
     }
 
     [Test]

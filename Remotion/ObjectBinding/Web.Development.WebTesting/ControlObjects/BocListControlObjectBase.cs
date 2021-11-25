@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly bool _hasFakeTableHead;
 
     protected BocListControlObjectBase ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       _log = LogManager.GetLogger(GetType());
       _accessor = new BocListRowControlObjectHostAccessor(this);

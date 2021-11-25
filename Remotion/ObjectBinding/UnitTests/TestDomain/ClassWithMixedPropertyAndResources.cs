@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObject]
   [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.ClassWithMixedPropertyAndResources")]
-  [Uses (typeof (MixinAddingProperty))]
+  [Uses (typeof(MixinAddingProperty))]
   public class ClassWithMixedPropertyAndResources
   {
     private string _value1;

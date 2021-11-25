@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </summary>
   public class TestExecutionScreenshotRecorder
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (TestExecutionScreenshotRecorder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(TestExecutionScreenshotRecorder));
 
     private readonly string _outputDirectory;
 

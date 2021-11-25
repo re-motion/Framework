@@ -38,22 +38,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public SequenceEventReceiver (DomainObjectCollection collection)
-        : this (new DomainObject[0], new[] { collection })
+        : this(new DomainObject[0], new[] { collection })
     {
     }
 
     public SequenceEventReceiver (DomainObject domainObject)
-        : this (new[] { domainObject }, new DomainObjectCollection[0])
+        : this(new[] { domainObject }, new DomainObjectCollection[0])
     {
     }
 
     public SequenceEventReceiver (DomainObject[] domainObjects, DomainObjectCollection[] collections)
-        : this (domainObjects, collections, 0)
+        : this(domainObjects, collections, 0)
     {
     }
 
     public SequenceEventReceiver (DomainObjectCollection collection, int cancelEventNumber)
-        : this (new DomainObject[0], new[] { collection }, cancelEventNumber)
+        : this(new DomainObject[0], new[] { collection }, cancelEventNumber)
     {
     }
 

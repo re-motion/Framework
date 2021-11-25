@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       var factory = _serviceLocator.GetInstance<IListMenuRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (ListMenuRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(ListMenuRenderer)));
     }
 
     [Test]

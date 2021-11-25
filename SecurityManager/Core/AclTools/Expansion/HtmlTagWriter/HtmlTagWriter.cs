@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
 
 
     public HtmlTagWriter (TextWriter textWriter, bool indentXml)
-        : this (CreateXmlWriter(textWriter, indentXml))
+        : this(CreateXmlWriter(textWriter, indentXml))
     {}
 
     public HtmlTagWriter (XmlWriter xmlWriter)

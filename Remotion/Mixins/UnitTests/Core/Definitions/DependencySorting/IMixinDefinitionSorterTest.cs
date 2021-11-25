@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
       var factory = _serviceLocator.GetInstance<IMixinDefinitionSorter>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (MixinDefinitionSorter)));
+      Assert.That(factory, Is.TypeOf(typeof(MixinDefinitionSorter)));
     }
 
     [Test]

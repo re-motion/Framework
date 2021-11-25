@@ -120,13 +120,13 @@ namespace Remotion.Configuration
     protected ConfigurationProperty CreateDefaultProviderNameProperty (string name, string? defaultValue)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      return new ConfigurationProperty(name, typeof (string), defaultValue, null, new StringValidator(1), ConfigurationPropertyOptions.None);
+      return new ConfigurationProperty(name, typeof(string), defaultValue, null, new StringValidator(1), ConfigurationPropertyOptions.None);
     }
 
     protected ConfigurationProperty CreateProviderSettingsProperty (string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      return new ConfigurationProperty(name, typeof (ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
+      return new ConfigurationProperty(name, typeof(ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
     }
 
     protected virtual void EnsureWellKownProviders (ProviderCollection collection)
@@ -223,7 +223,7 @@ namespace Remotion.Configuration
     protected ExtendedProviderBase InstantiateProvider (ProviderSettings providerSettings, Type providerType, params Type[] providerInterfaces)
     {
       ArgumentUtility.CheckNotNull("providerSettings", providerSettings);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("providerType", providerType, typeof (ExtendedProviderBase));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("providerType", providerType, typeof(ExtendedProviderBase));
       ArgumentUtility.CheckNotNullOrItemsNull("providerInterfaces", providerInterfaces);
 
       try
@@ -301,7 +301,7 @@ namespace Remotion.Configuration
     {
       ProviderCollection<TProvider> collection = new ProviderCollection<TProvider>();
       EnsureWellKownProviders(collection);
-      InstantiateProviders(ProviderSettings, collection, typeof (ExtendedProviderBase), typeof (TProvider));
+      InstantiateProviders(ProviderSettings, collection, typeof(ExtendedProviderBase), typeof(TProvider));
       collection.SetReadOnly();
       
       return collection;

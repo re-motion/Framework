@@ -92,17 +92,17 @@ namespace Remotion.Validation.UnitTests.Merging
       _addingPropertyValidationRuleCollector4.SetRemovable();
       _addingPropertyValidationRuleCollector4.RegisterValidator(_ => _notNullValidator);
 
-      _removingPropertyValidationRuleCollector1 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector1.RegisterValidator(typeof (NotEmptyValidator), null, null);
+      _removingPropertyValidationRuleCollector1 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof(CustomerValidationRuleCollector1));
+      _removingPropertyValidationRuleCollector1.RegisterValidator(typeof(NotEmptyValidator), null, null);
 
-      _removingPropertyValidationRuleCollector2 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector2.RegisterValidator(typeof (NotNullValidator), _validationRuleCollectorStub1.Object.GetType(), null);
+      _removingPropertyValidationRuleCollector2 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof(CustomerValidationRuleCollector1));
+      _removingPropertyValidationRuleCollector2.RegisterValidator(typeof(NotNullValidator), _validationRuleCollectorStub1.Object.GetType(), null);
 
-      _removingPropertyValidationRuleCollector3 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector3.RegisterValidator(typeof (NotNullValidator), typeof (string), null); //Unknown collector type!
+      _removingPropertyValidationRuleCollector3 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof(CustomerValidationRuleCollector1));
+      _removingPropertyValidationRuleCollector3.RegisterValidator(typeof(NotNullValidator), typeof(string), null); //Unknown collector type!
 
-      _removingPropertyValidationRuleCollector4 = RemovingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof (CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector4.RegisterValidator(typeof (MaximumLengthValidator), null, null);
+      _removingPropertyValidationRuleCollector4 = RemovingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof(CustomerValidationRuleCollector1));
+      _removingPropertyValidationRuleCollector4.RegisterValidator(typeof(MaximumLengthValidator), null, null);
 
       _propertyValidatorExtractorFactoryMock = new Mock<IPropertyValidatorExtractorFactory>(MockBehavior.Strict);
       _propertyValidatorExtractorMock = new Mock<IPropertyValidatorExtractor>(MockBehavior.Strict);
@@ -133,7 +133,7 @@ namespace Remotion.Validation.UnitTests.Merging
               mock =>
                   mock.Create(
                       It.Is<IEnumerable<RemovingPropertyValidatorRegistration>>(
-                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof (NotEmptyValidator)),
+                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof(NotEmptyValidator)),
                       It.IsNotNull<ILogContext>()))
           .Returns(_propertyValidatorExtractorMock.Object)
           .Verifiable();
@@ -147,8 +147,8 @@ namespace Remotion.Validation.UnitTests.Merging
           _merger.Merge(
               new[]
               {
-                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof (ApiBasedValidationRuleCollectorProvider)) },
-                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof (ApiBasedValidationRuleCollectorProvider)) }
+                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof(ApiBasedValidationRuleCollectorProvider)) },
+                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof(ApiBasedValidationRuleCollectorProvider)) }
               }).CollectedPropertyValidationRules.ToArray();
 
       _propertyValidatorExtractorFactoryMock.Verify();
@@ -179,7 +179,7 @@ namespace Remotion.Validation.UnitTests.Merging
               mock =>
                   mock.Create(
                       It.Is<IEnumerable<RemovingPropertyValidatorRegistration>>(
-                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof (NotNullValidator)),
+                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof(NotNullValidator)),
                       It.IsNotNull<ILogContext>()))
           .Returns(_propertyValidatorExtractorMock.Object)
           .Verifiable();
@@ -193,8 +193,8 @@ namespace Remotion.Validation.UnitTests.Merging
           _merger.Merge(
               new[]
               {
-                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof (ApiBasedValidationRuleCollectorProvider)) },
-                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof (ApiBasedValidationRuleCollectorProvider)) }
+                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof(ApiBasedValidationRuleCollectorProvider)) },
+                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof(ApiBasedValidationRuleCollectorProvider)) }
               }).CollectedPropertyValidationRules.ToArray();
 
       _propertyValidatorExtractorFactoryMock.Verify();
@@ -240,11 +240,11 @@ namespace Remotion.Validation.UnitTests.Merging
           _merger.Merge(
               new[]
               {
-                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof (ApiBasedValidationRuleCollectorProvider)) },
+                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof(ApiBasedValidationRuleCollectorProvider)) },
                   new[]
                   {
-                      new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof (ApiBasedValidationRuleCollectorProvider)),
-                      new ValidationRuleCollectorInfo(_validationRuleCollectorStub3.Object, typeof (ApiBasedValidationRuleCollectorProvider))
+                      new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof(ApiBasedValidationRuleCollectorProvider)),
+                      new ValidationRuleCollectorInfo(_validationRuleCollectorStub3.Object, typeof(ApiBasedValidationRuleCollectorProvider))
                   }
               }).CollectedPropertyValidationRules.ToArray();
 
@@ -286,8 +286,8 @@ namespace Remotion.Validation.UnitTests.Merging
           _merger.Merge(
               new[]
               {
-                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof (ApiBasedValidationRuleCollectorProvider)) },
-                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof (ApiBasedValidationRuleCollectorProvider)) }
+                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub1.Object, typeof(ApiBasedValidationRuleCollectorProvider)) },
+                  new[] { new ValidationRuleCollectorInfo(_validationRuleCollectorStub2.Object, typeof(ApiBasedValidationRuleCollectorProvider)) }
               }).CollectedPropertyValidationRules.ToArray();
 
       _propertyValidatorExtractorFactoryMock.Verify();

@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string FoundControlID { get; private set; }
 
     public TextContentGenericTestPageParameter ()
-        : base (TestConstants.TextContentSelectorID, c_parameterCount)
+        : base(TestConstants.TextContentSelectorID, c_parameterCount)
     {
     }
 

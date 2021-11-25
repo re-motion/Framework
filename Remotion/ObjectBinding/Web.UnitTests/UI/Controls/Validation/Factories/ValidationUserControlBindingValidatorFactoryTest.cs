@@ -29,9 +29,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
 
       var factories = ((CompoundValidatorFactory<UserControlBinding>) instance).VlidatorFactories.Select(f => f.GetType()).ToList();
-      Assert.That(factories, Has.Member(typeof (ValidationUserControlBindingValidatorFactory)));
-      Assert.That(factories, Has.Member(typeof (Web.UI.Controls.UserControlBindingValidatorFactory)));
-      Assert.That(factories.IndexOf(typeof (Web.UI.Controls.UserControlBindingValidatorFactory)), Is.LessThan(factories.IndexOf(typeof (ValidationUserControlBindingValidatorFactory))));
+      Assert.That(factories, Has.Member(typeof(ValidationUserControlBindingValidatorFactory)));
+      Assert.That(factories, Has.Member(typeof(Web.UI.Controls.UserControlBindingValidatorFactory)));
+      Assert.That(factories.IndexOf(typeof(Web.UI.Controls.UserControlBindingValidatorFactory)), Is.LessThan(factories.IndexOf(typeof(ValidationUserControlBindingValidatorFactory))));
       Assert.That(factories.Count, Is.EqualTo(2));
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       {
         Assert.That(
             validators.Select(v => v.GetType()),
-            Is.EquivalentTo(new[] { typeof (UserControlBindingValidationResultDispatchingValidator) }));
+            Is.EquivalentTo(new[] { typeof(UserControlBindingValidationResultDispatchingValidator) }));
         Assert.That(validators, Has.All.Property("EnableViewState").False);
       }
     }

@@ -34,8 +34,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     [SetUp]
     public void SetUp ()
     {
-      _simpleMethod = typeof (BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
-      _genericMethod = typeof (BaseType7).GetMethod("One");
+      _simpleMethod = typeof(BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
+      _genericMethod = typeof(BaseType7).GetMethod("One");
 
       _serializer = new AttributeConcreteMixinTypeIdentifierSerializer();
     }
@@ -43,8 +43,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     [Test]
     public void AddMixinType ()
     {
-      _serializer.AddMixinType(typeof (BT1Mixin1));
-      Assert.That(_serializer.Values[0], Is.SameAs(typeof (BT1Mixin1)));
+      _serializer.AddMixinType(typeof(BT1Mixin1));
+      Assert.That(_serializer.Values[0], Is.SameAs(typeof(BT1Mixin1)));
     }
 
     [Test]
@@ -52,10 +52,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     {
       _serializer.AddOverriders(new HashSet<MethodInfo> { _simpleMethod });
 
-      Assert.That(_serializer.Values[1].GetType(), Is.EqualTo(typeof (object[])));
+      Assert.That(_serializer.Values[1].GetType(), Is.EqualTo(typeof(object[])));
       Assert.That(((object[]) _serializer.Values[1]).Length, Is.EqualTo(1));
       Assert.That(((object[]) ((object[]) _serializer.Values[1])[0]).Length, Is.EqualTo(3));
-      Assert.That(((object[]) ((object[]) _serializer.Values[1])[0])[0], Is.SameAs(typeof (BaseType1)));
+      Assert.That(((object[]) ((object[]) _serializer.Values[1])[0])[0], Is.SameAs(typeof(BaseType1)));
       Assert.That(((object[]) ((object[]) _serializer.Values[1])[0])[1], Is.EqualTo("VirtualMethod"));
       Assert.That(((object[]) ((object[]) _serializer.Values[1])[0])[2], Is.EqualTo("System.String VirtualMethod()"));
     }
@@ -64,7 +64,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     public void AddOverriders_ClosedGeneric ()
     {
       Assert.That(
-          () => _serializer.AddOverriders(new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod(typeof (int)) }),
+          () => _serializer.AddOverriders(new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod(typeof(int)) }),
           Throws.InstanceOf<NotSupportedException>());
     }
 
@@ -73,10 +73,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     {
       _serializer.AddOverridden(new HashSet<MethodInfo> { _simpleMethod });
 
-      Assert.That(_serializer.Values[2].GetType(), Is.EqualTo(typeof (object[])));
+      Assert.That(_serializer.Values[2].GetType(), Is.EqualTo(typeof(object[])));
       Assert.That(((object[]) _serializer.Values[2]).Length, Is.EqualTo(1));
       Assert.That(((object[]) ((object[]) _serializer.Values[2])[0]).Length, Is.EqualTo(3));
-      Assert.That(((object[]) ((object[]) _serializer.Values[2])[0])[0], Is.SameAs(typeof (BaseType1)));
+      Assert.That(((object[]) ((object[]) _serializer.Values[2])[0])[0], Is.SameAs(typeof(BaseType1)));
       Assert.That(((object[]) ((object[]) _serializer.Values[2])[0])[1], Is.EqualTo("VirtualMethod"));
       Assert.That(((object[]) ((object[]) _serializer.Values[2])[0])[2], Is.EqualTo("System.String VirtualMethod()"));
     }
@@ -85,7 +85,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     public void AddOverridden_ClosedGeneric ()
     {
       Assert.That(
-          () => _serializer.AddOverridden(new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod(typeof (int)) }),
+          () => _serializer.AddOverridden(new HashSet<MethodInfo> { _genericMethod.MakeGenericMethod(typeof(int)) }),
           Throws.InstanceOf<NotSupportedException>());
     }
   }

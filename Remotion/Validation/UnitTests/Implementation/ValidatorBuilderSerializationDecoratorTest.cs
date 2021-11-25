@@ -23,13 +23,13 @@ namespace Remotion.Validation.UnitTests.Implementation
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.Register(
           new ServiceConfigurationEntry(
-              typeof (IValidatorBuilder),
+              typeof(IValidatorBuilder),
               new ServiceImplementationInfo(
-                  typeof (NonSerializableValidatorBuilder),
+                  typeof(NonSerializableValidatorBuilder),
                   LifetimeKind.Singleton,
                   RegistrationType.Single),
               new ServiceImplementationInfo(
-                  typeof (ValidatorBuilderSerializationDecorator),
+                  typeof(ValidatorBuilderSerializationDecorator),
                   LifetimeKind.InstancePerDependency,
                   RegistrationType.Decorator)));
 

@@ -22,18 +22,18 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
       1,
       "1",
       null,
-      typeof (object),
+      typeof(object),
       new int[] { 2, 3 },
       new string[] { "2", "3" },
-      new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+      new object[] { null, "foo", typeof(object) }, new Type[] { typeof(string), typeof(int), typeof(double) },
       INamed = 5,
       SNamed = "P5",
       ONamed = "Pbla",
-      TNamed = typeof (float),
+      TNamed = typeof(float),
       INamedArray = new int[] { 1, 2, 3 },
       SNamedArray = new string[] { "P1", null, "P2" },
       ONamedArray = new object[] { 1, 2, null },
-      TNamedArray = new Type[] { typeof (Random), null }
+      TNamedArray = new Type[] { typeof(Random), null }
       )]
   public class TestAttributeApplicationWithCtorArgumentsAndNamedProperties
   {

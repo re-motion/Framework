@@ -18,9 +18,9 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [IgnoresMixin (typeof (DerivedNullMixin))]
-  [IgnoresMixin (typeof (GenericMixinWithVirtualMethod<>))]
-  [IgnoresMixin (typeof (GenericMixinWithVirtualMethod2<>))]
+  [IgnoresMixin (typeof(DerivedNullMixin))]
+  [IgnoresMixin (typeof(GenericMixinWithVirtualMethod<>))]
+  [IgnoresMixin (typeof(GenericMixinWithVirtualMethod2<>))]
   public class DerivedClassIgnoringMixin : BaseClassForDerivedClassIgnoringMixin
   {
   }

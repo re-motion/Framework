@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     {
       var serviceLocator = DefaultServiceLocator.Create();
       var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
-      Assert.That(participants.Select(p => p.GetType()), Has.Member(typeof (DomainObjectParticipant)));
+      Assert.That(participants.Select(p => p.GetType()), Has.Member(typeof(DomainObjectParticipant)));
     }
 
     [Test]
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     {
       var serviceLocator = DefaultServiceLocator.Create();
       var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
-      Assert.That(participants.Select(p => p.GetType()), Is.EqualTo(new[] { typeof (MixinParticipant), typeof (DomainObjectParticipant) }));
+      Assert.That(participants.Select(p => p.GetType()), Is.EqualTo(new[] { typeof(MixinParticipant), typeof(DomainObjectParticipant) }));
     }
 
     [Test]
@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     {
       var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
       var services = discoveryService.GetDefaultConfiguration();
-      var participantService = services.SingleOrDefault(s => s.ServiceType == typeof (IParticipant));
+      var participantService = services.SingleOrDefault(s => s.ServiceType == typeof(IParticipant));
 
       Assert.That(participantService, Is.Not.Null);
-      Assert.That(participantService.ImplementationInfos.Select(i => i.ImplementationType), Has.Member(typeof (DomainObjectParticipant)));
+      Assert.That(participantService.ImplementationInfos.Select(i => i.ImplementationType), Has.Member(typeof(DomainObjectParticipant)));
     }
 
     [Test]
@@ -60,12 +60,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     {
       var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
       var services = discoveryService.GetDefaultConfiguration();
-      var participantService = services.SingleOrDefault(s => s.ServiceType == typeof (IParticipant));
+      var participantService = services.SingleOrDefault(s => s.ServiceType == typeof(IParticipant));
 
       Assert.That(participantService, Is.Not.Null);
       Assert.That(
           participantService.ImplementationInfos.Select(i => i.ImplementationType),
-          Is.EqualTo(new[] { typeof (MixinParticipant), typeof (DomainObjectParticipant) }));
+          Is.EqualTo(new[] { typeof(MixinParticipant), typeof(DomainObjectParticipant) }));
     }
   }
 }

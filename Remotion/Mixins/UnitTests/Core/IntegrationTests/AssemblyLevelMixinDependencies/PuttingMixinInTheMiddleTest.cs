@@ -26,8 +26,8 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     public void AssemblyLevelAttribute_CanBeUsedToPutAMixinInTheMiddle ()
     {
       PrepareMixinConfigurationWithAttributeDeclarations(
-          new AdditionalMixinDependencyAttribute(typeof (C), typeof (M1), typeof (M3)),
-          new AdditionalMixinDependencyAttribute(typeof (C), typeof (M3), typeof (M2)));
+          new AdditionalMixinDependencyAttribute(typeof(C), typeof(M1), typeof(M3)),
+          new AdditionalMixinDependencyAttribute(typeof(C), typeof(M3), typeof(M2)));
 
       var instance = ObjectFactory.Create<C>();
 
@@ -49,7 +49,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C), AdditionalDependencies = new[] { typeof (M2) })]
+    [Extends (typeof(C), AdditionalDependencies = new[] { typeof(M2) })]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof (C))]
+    [Extends (typeof(C))]
     public class M2 : Mixin<C, IC>
     {
       [OverrideTarget]
@@ -69,7 +69,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof (C))]
+    [Extends (typeof(C))]
     public class M3 : Mixin<C, IC>
     {
       [OverrideTarget]

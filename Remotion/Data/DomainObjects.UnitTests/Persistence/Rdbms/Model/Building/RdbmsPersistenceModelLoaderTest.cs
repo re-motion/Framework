@@ -110,12 +110,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           (PersistenceMappingValidator) _rdbmsPersistenceModelLoader.CreatePersistenceMappingValidator(_testModel.BaseBaseClassDefinition);
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(6));
-      Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof (OnlyOneTablePerHierarchyValidationRule)));
-      Assert.That(validator.ValidationRules[1], Is.TypeOf(typeof (TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule)));
-      Assert.That(validator.ValidationRules[2], Is.TypeOf(typeof (ClassAboveTableIsAbstractValidationRule)));
-      Assert.That(validator.ValidationRules[3], Is.TypeOf(typeof (ColumnNamesAreUniqueWithinInheritanceTreeValidationRule)));
-      Assert.That(validator.ValidationRules[4], Is.TypeOf(typeof (PropertyTypeIsSupportedByStorageProviderValidationRule)));
-      Assert.That(validator.ValidationRules[5], Is.TypeOf(typeof (RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule)));
+      Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(OnlyOneTablePerHierarchyValidationRule)));
+      Assert.That(validator.ValidationRules[1], Is.TypeOf(typeof(TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule)));
+      Assert.That(validator.ValidationRules[2], Is.TypeOf(typeof(ClassAboveTableIsAbstractValidationRule)));
+      Assert.That(validator.ValidationRules[3], Is.TypeOf(typeof(ColumnNamesAreUniqueWithinInheritanceTreeValidationRule)));
+      Assert.That(validator.ValidationRules[4], Is.TypeOf(typeof(PropertyTypeIsSupportedByStorageProviderValidationRule)));
+      Assert.That(validator.ValidationRules[5], Is.TypeOf(typeof(RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule)));
     }
 
     [Test]
@@ -217,8 +217,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_CreatesEmptyView_ForAbstractClass_WithAbstractDerivedClass_WithoutConcreteDerivations ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (AbstractClassWithoutDerivations), baseClass: null);
-      var derivedClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Distributor), baseClass: classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(AbstractClassWithoutDerivations), baseClass: null);
+      var derivedClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Distributor), baseClass: classDefinition);
 
       derivedClass.SetStorageEntity(EmptyViewDefinitionObjectMother.Create(_storageProviderDefinition));
       classDefinition.SetDerivedClasses(new[] { derivedClass });

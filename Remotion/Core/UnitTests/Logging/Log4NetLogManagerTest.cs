@@ -54,7 +54,7 @@ namespace Remotion.UnitTests.Logging
     {
       var log = _logManager.GetLogger("The Name");
 
-      Assert.IsInstanceOf(typeof (Log4NetLog), log);
+      Assert.IsInstanceOf(typeof(Log4NetLog), log);
       var log4NetLog = (Log4NetLog) log;
       Assert.That(log4NetLog.Logger.Name, Is.EqualTo("The Name"));
     }
@@ -70,9 +70,9 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void GetLogger_WithNameFromType ()
     {
-      var log = _logManager.GetLogger(typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
 
-      Assert.IsInstanceOf(typeof (Log4NetLog), log);
+      Assert.IsInstanceOf(typeof(Log4NetLog), log);
      
       var log4NetLog = (Log4NetLog) log;
       Assert.That(log4NetLog.Logger.Name, Is.EqualTo("Remotion.UnitTests.Logging.SampleType"));
@@ -81,15 +81,15 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void GetLogger_WithNameFromType_ReturnsSameLoggerTwice ()
     {
-      var log = _logManager.GetLogger(typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
 
-      Assert.That(_logManager.GetLogger(typeof (SampleType)), Is.SameAs(log));
+      Assert.That(_logManager.GetLogger(typeof(SampleType)), Is.SameAs(log));
     }
 
     [Test]
     public void InitializeConsole_CausesLogsToBeWrittenToConsole ()
     {
-      var log = _logManager.GetLogger(typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
 
       log.Log(LogLevel.Debug, "Test before InitializeConsole");
       CheckConsoleOutput();
@@ -105,7 +105,7 @@ namespace Remotion.UnitTests.Logging
     {
       _logManager.InitializeConsole();
 
-      var log = _logManager.GetLogger(typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
       log.Log(LogLevel.Debug, "Test Debug");
       log.Log(LogLevel.Info, "Test Info");
       log.Log(LogLevel.Warn, "Test Warn");
@@ -125,7 +125,7 @@ namespace Remotion.UnitTests.Logging
     {
       _logManager.InitializeConsole(LogLevel.Warn);
       
-      var log = _logManager.GetLogger(typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
       log.Log(LogLevel.Debug, "Test Debug");
       log.Log(LogLevel.Info, "Test Info");
       log.Log(LogLevel.Warn, "Test Warn");
@@ -141,7 +141,7 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void InitializeConsole_WithSpecificThresholds_SetsDefaultThreshold_AndSpecificThresholds ()
     {
-      var log1 = _logManager.GetLogger(typeof (SampleType));
+      var log1 = _logManager.GetLogger(typeof(SampleType));
       var log2 = _logManager.GetLogger("other");
 
       _logManager.InitializeConsole(LogLevel.Warn, new LogThreshold(log2, LogLevel.Info));

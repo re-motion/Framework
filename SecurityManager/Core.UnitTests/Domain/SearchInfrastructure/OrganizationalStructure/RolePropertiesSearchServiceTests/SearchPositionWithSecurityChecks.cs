@@ -82,7 +82,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
       _searchService = new RolePropertiesSearchService();
 
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Role));
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
       _positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Position");
       Assert.That(_positionProperty, Is.Not.Null);
     }
@@ -164,7 +164,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
     private void SetupResultSecurityProviderGetAccessForPosition (Delegation delegation, ISecurityPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
-      Type classType = typeof (Position);
+      Type classType = typeof(Position);
       string owner = string.Empty;
       string owningGroup = string.Empty;
       string owningTenant = string.Empty;

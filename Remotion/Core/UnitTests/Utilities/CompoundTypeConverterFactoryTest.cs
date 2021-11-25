@@ -44,14 +44,14 @@ namespace Remotion.UnitTests.Utilities
       var doubleTypeConverter = new TypeConverter();
 
       var factories = new[] { new Mock<ITypeConverterFactory>(), new Mock<ITypeConverterFactory>() };
-      factories[0].Setup(_ => _.CreateTypeConverterOrDefault(typeof (int))).Returns(intTypeConverter);
-      factories[1].Setup(_ => _.CreateTypeConverterOrDefault(typeof (double))).Returns(doubleTypeConverter);
+      factories[0].Setup(_ => _.CreateTypeConverterOrDefault(typeof(int))).Returns(intTypeConverter);
+      factories[1].Setup(_ => _.CreateTypeConverterOrDefault(typeof(double))).Returns(doubleTypeConverter);
 
       var compoundFactory = new CompoundTypeConverterFactory(factories.Select(_ => _.Object));
 
-      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof (int)), Is.SameAs(intTypeConverter));
-      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof (double)), Is.SameAs(doubleTypeConverter));
-      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof (object)), Is.Null);
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(int)), Is.SameAs(intTypeConverter));
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(double)), Is.SameAs(doubleTypeConverter));
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(object)), Is.Null);
     }
   }
 }

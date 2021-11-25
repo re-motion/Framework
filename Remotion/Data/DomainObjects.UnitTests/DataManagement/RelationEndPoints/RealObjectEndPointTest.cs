@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPoint = new RealObjectEndPoint(TestableClientTransaction, _endPointID, _foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub);
 
       var syncState = RealObjectEndPointTestHelper.GetSyncState(endPoint);
-      Assert.That(syncState, Is.TypeOf(typeof (UnknownRealObjectEndPointSyncState)));
+      Assert.That(syncState, Is.TypeOf(typeof(UnknownRealObjectEndPointSyncState)));
       Assert.That(((UnknownRealObjectEndPointSyncState) syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
     }
 
@@ -232,7 +232,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOppositeObject_NotFound ()
     {
-      var objectID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var objectID = new ObjectID(typeof(Order), Guid.NewGuid());
       RealObjectEndPointTestHelper.SetOppositeObjectID(_endPoint, objectID);
 
       var oppositeObject = _endPoint.GetOppositeObject();
@@ -311,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPoint.MarkSynchronized();
 
-      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.TypeOf(typeof (SynchronizedRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.TypeOf(typeof(SynchronizedRealObjectEndPointSyncState)));
       Assert.That(_endPoint.EndPointProvider, Is.SameAs(_endPointProviderStub));
       Assert.That(_endPoint.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
     }
@@ -322,7 +322,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.SameAs(_syncStateMock));
 
       _endPoint.MarkUnsynchronized();
-      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.TypeOf(typeof (UnsynchronizedRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.TypeOf(typeof(UnsynchronizedRealObjectEndPointSyncState)));
     }
 
     [Test]
@@ -333,7 +333,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _endPoint.ResetSyncState();
 
       var syncState = RealObjectEndPointTestHelper.GetSyncState(_endPoint);
-      Assert.That(syncState, Is.TypeOf(typeof (UnknownRealObjectEndPointSyncState)));
+      Assert.That(syncState, Is.TypeOf(typeof(UnknownRealObjectEndPointSyncState)));
       Assert.That(((UnknownRealObjectEndPointSyncState) syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
     }
 

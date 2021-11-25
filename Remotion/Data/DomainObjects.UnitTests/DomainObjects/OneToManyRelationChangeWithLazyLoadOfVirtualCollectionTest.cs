@@ -62,37 +62,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                  {
                                      new RelationChangeState(
                                          _productReview1,
-                                         typeof (ProductReview).FullName + ".Reviewer",
+                                         typeof(ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
                                          _newReviewer,
                                          "1. Changing event of reviews from old to new reviewer"),
                                      new RelationChangeState(
                                          _newReviewer,
-                                         typeof (Person).FullName + ".Reviews",
+                                         typeof(Person).FullName + ".Reviews",
                                          null,
                                          _productReview1,
                                          "2. Changing event of new reviewer"),
                                      new RelationChangeState(
                                          _oldReviewer,
-                                         typeof (Person).FullName + ".Reviews",
+                                         typeof(Person).FullName + ".Reviews",
                                          _productReview1,
                                          null,
                                          "3. Changing event of old reviewer"),
                                      new RelationChangeState(
                                          _oldReviewer,
-                                         typeof (Person).FullName + ".Reviews",
+                                         typeof(Person).FullName + ".Reviews",
                                          null,
                                          null,
                                          "4. Changed event of old reviewer"),
                                      new RelationChangeState(
                                          _newReviewer,
-                                         typeof (Person).FullName + ".Reviews",
+                                         typeof(Person).FullName + ".Reviews",
                                          null,
                                          null,
                                          "5. Changed event of new reviewer"),
                                      new RelationChangeState(
                                          _productReview1,
-                                         typeof (ProductReview).FullName + ".Reviewer",
+                                         typeof(ProductReview).FullName + ".Reviewer",
                                          null,
                                          null,
                                          "6. Changed event of reviews from old to new reviewer"),
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                  {
                                      new RelationChangeState(
                                          _productReview1,
-                                         typeof (ProductReview).FullName + ".Reviewer",
+                                         typeof(ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
                                          _newReviewer,
                                          "1. Changing event of reviews from old to new reviewer")
@@ -158,13 +158,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                  {
                                      new RelationChangeState(
                                          _productReview1,
-                                         typeof (ProductReview).FullName + ".Reviewer",
+                                         typeof(ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
                                          _newReviewer,
                                          "1. Changing event of reviews from old to new reviewer"),
                                      new RelationChangeState(
                                          _newReviewer,
-                                         typeof (Person).FullName + ".Reviews",
+                                         typeof(Person).FullName + ".Reviews",
                                          null,
                                          _productReview1,
                                          "2. Changing event of new reviewer")
@@ -197,19 +197,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                  {
                                      new RelationChangeState(
                                          _productReview1,
-                                         typeof (ProductReview).FullName + ".Reviewer",
+                                         typeof(ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
                                          _newReviewer,
                                          "1. Changing event of reviews from old to new reviewer"),
                                      new RelationChangeState(
                                          _newReviewer,
-                                         typeof (Person).FullName + ".Reviews",
+                                         typeof(Person).FullName + ".Reviews",
                                          null,
                                          _productReview1,
                                          "2. Changing event of new reviewer"),
                                      new RelationChangeState(
                                          _oldReviewer,
-                                         typeof (Person).FullName + ".Reviews",
+                                         typeof(Person).FullName + ".Reviews",
                                          _productReview1,
                                          null,
                                          "3. Changing event of old reviewer")
@@ -286,9 +286,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           delegate { _productReview1.Reviewer = _newReviewer; },
           _productReview1,
           "Reviewer",
-          RelationEndPointID.Create(_productReview1.ID, typeof (ProductReview).FullName + ".Reviewer"),
-          RelationEndPointID.Create(_newReviewer.ID, typeof (Person).FullName + ".Reviews"),
-          RelationEndPointID.Create(_oldReviewer.ID, typeof (Person).FullName + ".Reviews"));
+          RelationEndPointID.Create(_productReview1.ID, typeof(ProductReview).FullName + ".Reviewer"),
+          RelationEndPointID.Create(_newReviewer.ID, typeof(Person).FullName + ".Reviews"),
+          RelationEndPointID.Create(_oldReviewer.ID, typeof(Person).FullName + ".Reviews"));
     }
 
     [Test]
@@ -298,8 +298,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           delegate { _productReview1.Reviewer = _productReview1.Reviewer; },
           _productReview1,
           "Reviewer",
-          RelationEndPointID.Create(_productReview1.ID, typeof (ProductReview).FullName + ".Reviewer"),
-          RelationEndPointID.Create(_oldReviewer.ID, typeof (Person).FullName + ".Reviews"));
+          RelationEndPointID.Create(_productReview1.ID, typeof(ProductReview).FullName + ".Reviewer"),
+          RelationEndPointID.Create(_oldReviewer.ID, typeof(Person).FullName + ".Reviews"));
     }
 
     [Test]
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _productReview1.Reviewer = _newReviewer;
 
       Assert.That(_productReview1.Reviewer, Is.SameAs(_newReviewer));
-      Assert.That(_productReview1.GetOriginalRelatedObject(typeof (ProductReview).FullName + ".Reviewer"), Is.SameAs(_oldReviewer));
+      Assert.That(_productReview1.GetOriginalRelatedObject(typeof(ProductReview).FullName + ".Reviewer"), Is.SameAs(_oldReviewer));
     }
 
     [Test]
@@ -318,7 +318,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       _productReview1.Reviewer = _newReviewer;
 
-      var oldOrders = _newReviewer.GetOriginalRelatedObjectsAsVirtualCollection(typeof (Person).FullName + ".Reviews");
+      var oldOrders = _newReviewer.GetOriginalRelatedObjectsAsVirtualCollection(typeof(Person).FullName + ".Reviews");
       Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.SameAs(_productReview1));
       Assert.That(oldOrders.Contains(_productReview1), Is.False);
     }
@@ -327,7 +327,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
       var reviewer = DomainObjectIDs.Person1.GetObject<Person>();
-      var productReviews = reviewer.GetOriginalRelatedObjectsAsVirtualCollection(typeof (Person).FullName + ".Reviews");
+      var productReviews = reviewer.GetOriginalRelatedObjectsAsVirtualCollection(typeof(Person).FullName + ".Reviews");
 
       Assert.That(productReviews.Count, Is.EqualTo(2));
     }
@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void SetRelatedObjectWithInvalidObjectClass ()
     {
       Assert.That(
-          () => _productReview1.SetRelatedObject(typeof (ProductReview).FullName + ".Reviewer", DomainObjectIDs.Company1.GetObject<Company>()),
+          () => _productReview1.SetRelatedObject(typeof(ProductReview).FullName + ".Reviewer", DomainObjectIDs.Company1.GetObject<Company>()),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "DomainObject 'Company|c4954da8-8870-45c1-b7a3-c7e5e6ad641a|System.Guid' cannot be assigned "

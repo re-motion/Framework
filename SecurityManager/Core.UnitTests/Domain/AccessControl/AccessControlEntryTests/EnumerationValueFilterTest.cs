@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
       Assert.That(
           property.GetEnabledValues(ace).Select(value => value.Value).ToArray(),
-          Is.EquivalentTo(Enum.GetValues(typeof (UserCondition))));
+          Is.EquivalentTo(Enum.GetValues(typeof(UserCondition))));
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
       Assert.That(
           property.GetEnabledValues(ace).Select(value => value.Value).ToArray(), 
-          Is.EquivalentTo(Enum.GetValues(typeof (GroupCondition))));
+          Is.EquivalentTo(Enum.GetValues(typeof(GroupCondition))));
     }
 
     [Test]
@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
       Assert.That(
           property.GetEnabledValues(ace).Select(value => value.Value).ToArray(), 
-          Is.EquivalentTo(Enum.GetValues(typeof (TenantCondition))));
+          Is.EquivalentTo(Enum.GetValues(typeof(TenantCondition))));
     }
 
     [Test]

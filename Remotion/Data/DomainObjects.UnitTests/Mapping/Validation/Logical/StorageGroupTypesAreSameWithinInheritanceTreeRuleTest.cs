@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void ClassWithoutBaseClass ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseOfBaseValidationDomainObjectClass), storageGroupType: typeof (DBStorageGroupAttribute));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), storageGroupType: typeof(DBStorageGroupAttribute));
       var validationResult = _validationRule.Validate(classDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void ClassWithBaseClass_ClassesWithoutStorageGroupAttribute ()
     {
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseOfBaseValidationDomainObjectClass), storageGroupType: null);
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseOfBaseValidationDomainObjectClass), baseClass: baseClassDefinition, storageGroupType: null);
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), storageGroupType: null);
+      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), baseClass: baseClassDefinition, storageGroupType: null);
 
       var validationResult = _validationRule.Validate(derivedClassDefinition);
 
@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void ClassWithBaseClass_ClassesWithSameStorageGroupAttribute ()
     {
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseOfBaseValidationDomainObjectClass), storageGroupType: typeof(DBStorageGroupAttribute));
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseOfBaseValidationDomainObjectClass), baseClass: baseClassDefinition, storageGroupType: typeof(DBStorageGroupAttribute));
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), storageGroupType: typeof(DBStorageGroupAttribute));
+      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), baseClass: baseClassDefinition, storageGroupType: typeof(DBStorageGroupAttribute));
 
       var validationResult = _validationRule.Validate(derivedClassDefinition);
 
@@ -67,8 +67,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void ClassWithBaseClass_ClassesWithDifferentStorageGroupAttribute ()
     {
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseOfBaseValidationDomainObjectClass), storageGroupType: typeof (DBStorageGroupAttribute));
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseValidationDomainObjectClass), baseClass: baseClassDefinition, storageGroupType: typeof (StubStorageGroup1Attribute));
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), storageGroupType: typeof(DBStorageGroupAttribute));
+      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseValidationDomainObjectClass), baseClass: baseClassDefinition, storageGroupType: typeof(StubStorageGroup1Attribute));
 
       var validationResult = _validationRule.Validate(derivedClassDefinition);
 

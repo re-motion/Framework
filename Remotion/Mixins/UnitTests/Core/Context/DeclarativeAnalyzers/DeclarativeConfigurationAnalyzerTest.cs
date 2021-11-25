@@ -47,15 +47,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
     [Test]
     public void Analyze ()
     {
-      var types = new[] { typeof (object), typeof (string), typeof (DeclarativeConfigurationAnalyzerTest) };
+      var types = new[] { typeof(object), typeof(string), typeof(DeclarativeConfigurationAnalyzerTest) };
 
       using (_mockRepository.Ordered())
       {
-        _typeAnalyzerMock.Expect(mock => mock.Analyze(typeof (object), _fakeConfigurationBuilder));
-        _assemblyAnalyzerMock.Expect(mock => mock.Analyze(typeof (object).Assembly, _fakeConfigurationBuilder));
-        _typeAnalyzerMock.Expect(mock => mock.Analyze(typeof (string), _fakeConfigurationBuilder));
-        _typeAnalyzerMock.Expect(mock => mock.Analyze(typeof (DeclarativeConfigurationAnalyzerTest), _fakeConfigurationBuilder));
-        _assemblyAnalyzerMock.Expect(mock => mock.Analyze(typeof (DeclarativeConfigurationAnalyzerTest).Assembly, _fakeConfigurationBuilder));
+        _typeAnalyzerMock.Expect(mock => mock.Analyze(typeof(object), _fakeConfigurationBuilder));
+        _assemblyAnalyzerMock.Expect(mock => mock.Analyze(typeof(object).Assembly, _fakeConfigurationBuilder));
+        _typeAnalyzerMock.Expect(mock => mock.Analyze(typeof(string), _fakeConfigurationBuilder));
+        _typeAnalyzerMock.Expect(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest), _fakeConfigurationBuilder));
+        _assemblyAnalyzerMock.Expect(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest).Assembly, _fakeConfigurationBuilder));
       }
 
       _mockRepository.ReplayAll();

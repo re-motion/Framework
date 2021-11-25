@@ -53,11 +53,11 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void ApplicationAssemblyConsidering ()
     {
       ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
-      Assert.That(filter.ShouldConsiderAssembly(typeof (AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.True);
-      Assert.That(filter.ShouldConsiderAssembly(typeof (TestFixtureAttribute).Assembly.GetName()), Is.True);
-      Assert.That(filter.ShouldConsiderAssembly(typeof (ApplicationAssemblyLoaderFilter).Assembly.GetName()), Is.True);
+      Assert.That(filter.ShouldConsiderAssembly(typeof(AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.True);
+      Assert.That(filter.ShouldConsiderAssembly(typeof(TestFixtureAttribute).Assembly.GetName()), Is.True);
+      Assert.That(filter.ShouldConsiderAssembly(typeof(ApplicationAssemblyLoaderFilter).Assembly.GetName()), Is.True);
 
-      Assert.That(filter.ShouldConsiderAssembly(typeof (object).Assembly.GetName()), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(typeof(object).Assembly.GetName()), Is.False);
       Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("System")), Is.False);
       Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("Microsoft.Something.Whatever")), Is.False);
       Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("Moq")), Is.False);
@@ -75,9 +75,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void AddIgnoredAssembly ()
     {
       ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
-      Assert.That(filter.ShouldConsiderAssembly(typeof (ApplicationAssemblyLoaderFilter).Assembly.GetName()), Is.True);
-      filter.AddIgnoredAssembly(typeof (ApplicationAssemblyLoaderFilter).Assembly.GetName().Name);
-      Assert.That(filter.ShouldConsiderAssembly(typeof (ApplicationAssemblyLoaderFilter).Assembly.GetName()), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(typeof(ApplicationAssemblyLoaderFilter).Assembly.GetName()), Is.True);
+      filter.AddIgnoredAssembly(typeof(ApplicationAssemblyLoaderFilter).Assembly.GetName().Name);
+      Assert.That(filter.ShouldConsiderAssembly(typeof(ApplicationAssemblyLoaderFilter).Assembly.GetName()), Is.False);
     }
 
     [Test]
@@ -95,14 +95,14 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
               var path = (string) args[0];
 
               ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
-              Assert.That(filter.ShouldIncludeAssembly(typeof (AttributeAssemblyLoaderFilterTest).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof (TestFixtureAttribute).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof (ApplicationAssemblyLoaderFilter).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof (object).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof (Uri).Assembly), Is.True);
+              Assert.That(filter.ShouldIncludeAssembly(typeof(AttributeAssemblyLoaderFilterTest).Assembly), Is.True);
+              Assert.That(filter.ShouldIncludeAssembly(typeof(TestFixtureAttribute).Assembly), Is.True);
+              Assert.That(filter.ShouldIncludeAssembly(typeof(ApplicationAssemblyLoaderFilter).Assembly), Is.True);
+              Assert.That(filter.ShouldIncludeAssembly(typeof(object).Assembly), Is.True);
+              Assert.That(filter.ShouldIncludeAssembly(typeof(Uri).Assembly), Is.True);
 
               var assemblyCompiler = new AssemblyCompiler(@"Reflection\TypeDiscovery\TestAssemblies\NonApplicationMarkedAssembly", path,
-                                                           typeof (NonApplicationAssemblyAttribute).Assembly.Location);
+                                                           typeof(NonApplicationAssemblyAttribute).Assembly.Location);
               assemblyCompiler.Compile();
               Assert.That(filter.ShouldIncludeAssembly(assemblyCompiler.CompiledAssembly), Is.False);
             }, compiledAssemblyPath);

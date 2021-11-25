@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     // construction and disposing
 
-    public EventReceiverCancelException () : this ("An EventReceiver cancelled the operation.") { }
-    public EventReceiverCancelException (string message) : base (message) { }
-    public EventReceiverCancelException (string message, Exception inner) : base (message, inner) { }
-    protected EventReceiverCancelException (SerializationInfo info, StreamingContext context) : base (info, context) { }
+    public EventReceiverCancelException () : this("An EventReceiver cancelled the operation.") { }
+    public EventReceiverCancelException (string message) : base(message) { }
+    public EventReceiverCancelException (string message, Exception inner) : base(message, inner) { }
+    protected EventReceiverCancelException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties
 

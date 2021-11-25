@@ -29,13 +29,13 @@ namespace Remotion.SecurityManager.PerformanceTests
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
       defaultServiceLocator.Register(
-          typeof (Remotion.Data.DomainObjects.IClientTransactionExtensionFactory),
-          typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
+          typeof(Remotion.Data.DomainObjects.IClientTransactionExtensionFactory),
+          typeof(Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
           LifetimeKind.Singleton,
           RegistrationType.Single);
       defaultServiceLocator.Register(
-          typeof (Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory),
-          typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
+          typeof(Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory),
+          typeof(Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
           LifetimeKind.Singleton,
           RegistrationType.Single);
 
@@ -128,7 +128,7 @@ namespace Remotion.SecurityManager.PerformanceTests
     private static void LoadObjectBinding ()
     {
       using (StopwatchScope.CreateScope("Loading object binding took {elapsed:ms} ms."))
-        BindableObjectProvider.GetProviderForBindableObjectType(typeof (Tenant)).GetBindableObjectClass(typeof (Tenant));
+        BindableObjectProvider.GetProviderForBindableObjectType(typeof(Tenant)).GetBindableObjectClass(typeof(Tenant));
     }
 
     private static void CreateFirstDomainObject ()

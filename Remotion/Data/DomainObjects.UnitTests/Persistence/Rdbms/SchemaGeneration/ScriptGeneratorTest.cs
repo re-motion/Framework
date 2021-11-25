@@ -54,10 +54,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       base.SetUp();
 
-      _classDefinitionForFirstStorageProvider1 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order));
-      _classDefinitionForFirstStorageProvider2 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (OrderItem));
-      _classDefinitionForSecondStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Order));
-      _classDefinitionForThirdStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (Customer));
+      _classDefinitionForFirstStorageProvider1 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
+      _classDefinitionForFirstStorageProvider2 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(OrderItem));
+      _classDefinitionForSecondStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
+      _classDefinitionForThirdStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Customer));
 
       _firstProviderStorageEntityDefinitionStub = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
       _firstProviderStorageEntityDefinitionStub.Stub(stub => stub.StorageProviderDefinition).Return(SchemaGenerationFirstStorageProviderDefinition);

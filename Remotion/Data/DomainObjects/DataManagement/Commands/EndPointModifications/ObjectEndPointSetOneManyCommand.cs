@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         Action<DomainObject> oppositeObjectSetter,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
-        : base (
+        : base(
             modifiedEndPoint,
             newRelatedObject,
             oppositeObjectSetter,

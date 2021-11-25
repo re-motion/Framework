@@ -27,14 +27,14 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     [Test]
     public void WithXmlTypeAttribute ()
     {
-      Assert.That(XmlSerializationUtility.GetNamespace(typeof (SampleTypeWithXmlType)), Is.EqualTo("http://type-namespace"));
+      Assert.That(XmlSerializationUtility.GetNamespace(typeof(SampleTypeWithXmlType)), Is.EqualTo("http://type-namespace"));
     }
 
     [Test]
     public void WithXmlTypeAttributeWithoutNamespace ()
     {
       Assert.That(
-          () => XmlSerializationUtility.GetNamespace(typeof (SampleTypeWithXmlTypeWithoutNamespace)),
+          () => XmlSerializationUtility.GetNamespace(typeof(SampleTypeWithXmlTypeWithoutNamespace)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Cannot determine the xml namespace of type 'Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain.SampleTypeWithXmlTypeWithoutNamespace' "
@@ -44,14 +44,14 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     [Test]
     public void WithXmlRootAttribute ()
     {
-      Assert.That(XmlSerializationUtility.GetNamespace(typeof (SampleTypeWithXmlRoot)), Is.EqualTo("http://root-namespace"));
+      Assert.That(XmlSerializationUtility.GetNamespace(typeof(SampleTypeWithXmlRoot)), Is.EqualTo("http://root-namespace"));
     }
 
     [Test]
     public void WithXmlRootAttributeWithoutNamespace ()
     {
       Assert.That(
-          () => XmlSerializationUtility.GetNamespace(typeof (SampleTypeWithXmlRootWithoutNamespace)),
+          () => XmlSerializationUtility.GetNamespace(typeof(SampleTypeWithXmlRootWithoutNamespace)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Cannot determine the xml namespace of type 'Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain.SampleTypeWithXmlRootWithoutNamespace' "
@@ -61,14 +61,14 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     [Test]
     public void WithXmlRootAttributeWithTypeAlsoHavingAnXmlTypeAttribute ()
     {
-      Assert.That(XmlSerializationUtility.GetNamespace(typeof (SampleTypeWithXmlRootAndXmlType)), Is.EqualTo("http://root-namespace"));
+      Assert.That(XmlSerializationUtility.GetNamespace(typeof(SampleTypeWithXmlRootAndXmlType)), Is.EqualTo("http://root-namespace"));
     }
 
     [Test]
     public void WithoutXmlRootAttributeAndWithoutXmlTypeAttribute ()
     {
       Assert.That(
-          () => XmlSerializationUtility.GetNamespace(typeof (SampleTypeWithoutXmlAttributes)),
+          () => XmlSerializationUtility.GetNamespace(typeof(SampleTypeWithoutXmlAttributes)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Cannot determine the xml namespace of type 'Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain.SampleTypeWithoutXmlAttributes' "

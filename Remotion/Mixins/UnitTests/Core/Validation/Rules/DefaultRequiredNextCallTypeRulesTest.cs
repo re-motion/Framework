@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfRequiredBaseTypeNotVisible ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType1), typeof (MixinWithInvisibleNextCallDependency));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType1), typeof(MixinWithInvisibleNextCallDependency));
       var log = Validator.Validate(definition);
 
       Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultRequiredNextCallTypeRules.RequiredNextCallTypeMustBePublic", log), Is.True);

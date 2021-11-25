@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NoGenericType ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (NonGenericTypeDomainObject));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonGenericTypeDomainObject));
       
       var validationResult = _validationRule.Validate(classDefinition);
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void IsGenericType_IsNotDomainObjectBase ()
     {
-      var type = typeof (GenericTypeDomainObject<string>);
+      var type = typeof(GenericTypeDomainObject<string>);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
      
       var validationResult = _validationRule.Validate(classDefinition);

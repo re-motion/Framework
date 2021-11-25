@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       TestableClientTransaction.Commit();
 
       DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
-      Assert.That(originalOrders.GetType(), Is.EqualTo(typeof (OrderCollection)));
+      Assert.That(originalOrders.GetType(), Is.EqualTo(typeof(OrderCollection)));
       Assert.That(originalOrders.IsReadOnly, Is.True);
 
       Assert.That(originalOrders.RequiredItemType, Is.Null);
@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       TestableClientTransaction.Commit();
 
       IReadOnlyList<DomainObject> originalProductReviews = product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
-      Assert.That(originalProductReviews.GetType(), Is.EqualTo(typeof (VirtualObjectList<ProductReview>)));
+      Assert.That(originalProductReviews.GetType(), Is.EqualTo(typeof(VirtualObjectList<ProductReview>)));
     }
 
     [Test]
@@ -318,7 +318,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ApplicationData ()
     {
       Assert.That(ClientTransactionScope.CurrentTransaction.ApplicationData, Is.Not.Null);
-      Assert.IsAssignableFrom(typeof (Dictionary<Enum, object>), ClientTransactionScope.CurrentTransaction.ApplicationData);
+      Assert.IsAssignableFrom(typeof(Dictionary<Enum, object>), ClientTransactionScope.CurrentTransaction.ApplicationData);
 
       Assert.That(ClientTransactionScope.CurrentTransaction.ApplicationData.ContainsKey(ApplicationDataKey.Key1), Is.False);
       ClientTransactionScope.CurrentTransaction.ApplicationData[ApplicationDataKey.Key1] = "TestData";

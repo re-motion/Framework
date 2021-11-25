@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       var result = _factory.CreateQueryable<Order>(queryParserStub, executorStub);
 
-      Assert.That(result, Is.TypeOf(typeof (DomainObjectQueryable<Order>)));
+      Assert.That(result, Is.TypeOf(typeof(DomainObjectQueryable<Order>)));
       Assert.That(((DomainObjectQueryable<Order>) result).Provider.Executor, Is.SameAs(executorStub));
       Assert.That(((DomainObjectQueryable<Order>) result).Provider.QueryParser, Is.SameAs(queryParserStub));
     }
@@ -67,11 +67,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var selectMethod = SelectExpressionNode.GetSupportedMethods().First();
       var queryParser = (QueryParser) _factory.CreateQueryParser();
 
-      Assert.That(queryParser.NodeTypeProvider, Is.TypeOf(typeof (CompoundNodeTypeProvider)));
-      Assert.That(((CompoundNodeTypeProvider) queryParser.NodeTypeProvider).InnerProviders[1], Is.TypeOf(typeof (MethodInfoBasedNodeTypeRegistry)));
-      Assert.That(((CompoundNodeTypeProvider) queryParser.NodeTypeProvider).InnerProviders[2], Is.TypeOf(typeof (MethodNameBasedNodeTypeRegistry)));
+      Assert.That(queryParser.NodeTypeProvider, Is.TypeOf(typeof(CompoundNodeTypeProvider)));
+      Assert.That(((CompoundNodeTypeProvider) queryParser.NodeTypeProvider).InnerProviders[1], Is.TypeOf(typeof(MethodInfoBasedNodeTypeRegistry)));
+      Assert.That(((CompoundNodeTypeProvider) queryParser.NodeTypeProvider).InnerProviders[2], Is.TypeOf(typeof(MethodNameBasedNodeTypeRegistry)));
 
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(selectMethod), Is.SameAs(typeof (SelectExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(selectMethod), Is.SameAs(typeof(SelectExpressionNode)));
       var processingSteps = ((CompoundExpressionTreeProcessor) queryParser.Processor).InnerProcessors;
       Assert.That(processingSteps.Count, 
           Is.EqualTo(ExpressionTreeParser.CreateDefaultProcessor(ExpressionTransformerRegistry.CreateDefault()).InnerProcessors.Count));
@@ -80,44 +80,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryParser_RegistersDomainObjectCollectionContainsObject ()
     {
-      var containsObjectMethod = typeof (DomainObjectCollection).GetMethod("ContainsObject");
+      var containsObjectMethod = typeof(DomainObjectCollection).GetMethod("ContainsObject");
       var queryParser = (QueryParser) _factory.CreateQueryParser();
 
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(containsObjectMethod), Is.SameAs(typeof (ContainsExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(containsObjectMethod), Is.SameAs(typeof(ContainsExpressionNode)));
     }
 
     [Test]
     public void CreateQueryParser_RegistersDomainObjectCollectionCount ()
     {
-      var countMethod = typeof (DomainObjectCollection).GetMethod("get_Count");
+      var countMethod = typeof(DomainObjectCollection).GetMethod("get_Count");
       var queryParser = (QueryParser) _factory.CreateQueryParser();
 
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(countMethod), Is.SameAs(typeof (CountExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(countMethod), Is.SameAs(typeof(CountExpressionNode)));
     }
 
     [Test]
     public void CreateQueryParser_RegistersIObjectListCount ()
     {
-      var countMethod = typeof (IObjectList<>).GetMethod("get_Count");
+      var countMethod = typeof(IObjectList<>).GetMethod("get_Count");
       var queryParser = (QueryParser) _factory.CreateQueryParser();
 
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(countMethod), Is.SameAs(typeof (CountExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(countMethod), Is.SameAs(typeof(CountExpressionNode)));
     }
 
     [Test]
     public void CreateQueryParser_RegistersFetchObject ()
     {
-      var fetchOneMethod = typeof (EagerFetchingExtensionMethods).GetMethod("FetchOne");
-      var fetchManyMethod = typeof (EagerFetchingExtensionMethods).GetMethod("FetchMany");
-      var thenFetchOneMethod = typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchOne");
-      var thenFetchManyMethod = typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchMany");
+      var fetchOneMethod = typeof(EagerFetchingExtensionMethods).GetMethod("FetchOne");
+      var fetchManyMethod = typeof(EagerFetchingExtensionMethods).GetMethod("FetchMany");
+      var thenFetchOneMethod = typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchOne");
+      var thenFetchManyMethod = typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchMany");
 
       var queryParser = (QueryParser) _factory.CreateQueryParser();
 
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(fetchOneMethod), Is.SameAs(typeof (FetchOneExpressionNode)));
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(fetchManyMethod), Is.SameAs(typeof (FetchManyExpressionNode)));
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(thenFetchOneMethod), Is.SameAs(typeof (ThenFetchOneExpressionNode)));
-      Assert.That(queryParser.NodeTypeProvider.GetNodeType(thenFetchManyMethod), Is.SameAs(typeof (ThenFetchManyExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(fetchOneMethod), Is.SameAs(typeof(FetchOneExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(fetchManyMethod), Is.SameAs(typeof(FetchManyExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(thenFetchOneMethod), Is.SameAs(typeof(ThenFetchOneExpressionNode)));
+      Assert.That(queryParser.NodeTypeProvider.GetNodeType(thenFetchManyMethod), Is.SameAs(typeof(ThenFetchManyExpressionNode)));
     }
 
     [Test]
@@ -144,11 +144,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       
       Assert.That(provider.Providers.Length, Is.EqualTo(2));
 
-      Assert.That(provider.Providers[0], Is.TypeOf(typeof (MethodInfoBasedMethodCallTransformerRegistry)));
-      Assert.That(provider.Providers[1], Is.TypeOf(typeof (NameBasedMethodCallTransformerRegistry)));
+      Assert.That(provider.Providers[0], Is.TypeOf(typeof(MethodInfoBasedMethodCallTransformerRegistry)));
+      Assert.That(provider.Providers[1], Is.TypeOf(typeof(NameBasedMethodCallTransformerRegistry)));
 
       Assert.That(((MethodInfoBasedMethodCallTransformerRegistry) provider.Providers[0]).GetItem(toStringMethod),
-          Is.TypeOf(typeof (ToStringMethodCallTransformer)));
+          Is.TypeOf(typeof(ToStringMethodCallTransformer)));
     }
 
     [Test]
@@ -157,10 +157,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition);
       var nodeTypeRegistry = GetResultOperatorHandlerRegistryFromExecutor(executor);
 
-      Assert.That(nodeTypeRegistry.GetItem(typeof (CountResultOperator)), Is.TypeOf(typeof (CountResultOperatorHandler)));
+      Assert.That(nodeTypeRegistry.GetItem(typeof(CountResultOperator)), Is.TypeOf(typeof(CountResultOperatorHandler)));
 
-      Assert.That(nodeTypeRegistry.GetItem(typeof (FetchOneRequest)), Is.TypeOf(typeof (FetchResultOperatorHandler)));
-      Assert.That(nodeTypeRegistry.GetItem(typeof (FetchManyRequest)), Is.TypeOf(typeof (FetchResultOperatorHandler)));
+      Assert.That(nodeTypeRegistry.GetItem(typeof(FetchOneRequest)), Is.TypeOf(typeof(FetchResultOperatorHandler)));
+      Assert.That(nodeTypeRegistry.GetItem(typeof(FetchManyRequest)), Is.TypeOf(typeof(FetchResultOperatorHandler)));
     }
 
     private CompoundMethodCallTransformerProvider GetMethodCallTransformerProviderFromExecutor (IQueryExecutor executor)

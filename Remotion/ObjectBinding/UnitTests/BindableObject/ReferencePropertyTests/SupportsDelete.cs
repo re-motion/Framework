@@ -109,8 +109,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing("NoDeleteObjectService");
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
-      businessObjectProviderMock.Setup(_ => _.GetService(typeof (IDeleteObjectService))).Returns(deleteObjectServiceMock.Object).Verifiable();
-      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof (ClassFromOtherBusinessObjectImplementation)))
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns(deleteObjectServiceMock.Object).Verifiable();
+      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();
       deleteObjectServiceMock.Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
@@ -145,8 +145,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing("NoDeleteObjectService");
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
-      businessObjectProviderMock.Setup(_ => _.GetService(typeof (IDeleteObjectService))).Returns((IBusinessObjectService) null).Verifiable();
-      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof (ClassFromOtherBusinessObjectImplementation)))
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns((IBusinessObjectService) null).Verifiable();
+      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();
       
@@ -176,7 +176,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
     private PropertyBase.Parameters GetPropertyParameters (string propertyName)
     {
-      return GetPropertyParameters(GetPropertyInfo(typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
+      return GetPropertyParameters(GetPropertyInfo(typeof(ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
     }
   }
 #pragma warning restore 612,618

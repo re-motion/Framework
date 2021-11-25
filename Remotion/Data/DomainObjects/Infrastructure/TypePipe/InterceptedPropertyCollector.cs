@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   {
     public static bool IsAutomaticPropertyAccessor (MethodInfo accessorMethod)
     {
-      return accessorMethod != null && (accessorMethod.IsAbstract || accessorMethod.IsDefined(typeof (CompilerGeneratedAttribute), false));
+      return accessorMethod != null && (accessorMethod.IsAbstract || accessorMethod.IsDefined(typeof(CompilerGeneratedAttribute), false));
     }
 
     public static bool IsOverridable (MethodInfo method)
@@ -99,10 +99,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     private void AnalyzeAndValidateProperty (IPropertyInformation propertyInformation, string propertyIdentifier)
     {
-      if (!_typeConversionProvider.CanConvert(propertyInformation.GetType(), typeof (PropertyInfo)))
+      if (!_typeConversionProvider.CanConvert(propertyInformation.GetType(), typeof(PropertyInfo)))
         return;
 
-      var property = (PropertyInfo) _typeConversionProvider.Convert(propertyInformation.GetType(), typeof (PropertyInfo), propertyInformation);
+      var property = (PropertyInfo) _typeConversionProvider.Convert(propertyInformation.GetType(), typeof(PropertyInfo), propertyInformation);
       var isMixinProperty = !property.DeclaringType.IsAssignableFrom(_baseType);
 
       var getMethod = property.GetGetMethod(true);

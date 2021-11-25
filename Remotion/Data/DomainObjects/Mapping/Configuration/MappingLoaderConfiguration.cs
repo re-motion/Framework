@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
     {
       _mappingLoaderProperty = new ConfigurationProperty(
           "loader",
-          typeof (TypeElement<IMappingLoader, MappingReflector>),
+          typeof(TypeElement<IMappingLoader, MappingReflector>),
           null,
           ConfigurationPropertyOptions.None);
 

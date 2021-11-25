@@ -60,7 +60,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     }
 
     public SutGenerator (Page sutPage)
-      : this (sutPage, GetServerDelayUrlParameter(sutPage))
+      : this(sutPage, GetServerDelayUrlParameter(sutPage))
     {
     }
 

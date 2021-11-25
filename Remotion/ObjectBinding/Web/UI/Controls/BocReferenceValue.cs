@@ -105,12 +105,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and disposing
 
     public BocReferenceValue ()
-        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
     }
 
     protected BocReferenceValue ([NotNull] IWebServiceFactory webServiceFactory)
-        : base (webServiceFactory)
+        : base(webServiceFactory)
     {
       _listItems = new ListItemCollection();
       _dropDownListStyle = new DropDownListStyle();
@@ -400,7 +400,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     protected override sealed string GetNullItemErrorMessage ()
@@ -445,7 +445,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void SetBusinessObjectList (IList businessObjects)
     {
       ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
-      ArgumentUtility.CheckItemsNotNullAndType("businessObjects", businessObjects, typeof (IBusinessObjectWithIdentity));
+      ArgumentUtility.CheckItemsNotNullAndType("businessObjects", businessObjects, typeof(IBusinessObjectWithIdentity));
       RefreshBusinessObjectList(businessObjects);
     }
 
@@ -629,7 +629,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [Description ("The flag that determines whether to evaluate the Select statement. Undefined is interpreted as true.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? EnableSelectStatement
     {
       get { return _enableSelectStatement; }

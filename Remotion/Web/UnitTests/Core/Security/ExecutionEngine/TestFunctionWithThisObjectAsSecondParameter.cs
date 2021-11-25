@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     // construction and disposing
 
     public TestFunctionWithThisObjectAsSecondParameter (object someObject, SecurableObject thisObject)
-      : base (new NoneTransactionMode(), someObject, thisObject)
+      : base(new NoneTransactionMode(), someObject, thisObject)
     {
     }
 

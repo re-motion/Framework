@@ -169,7 +169,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       var declaringEntity = attribute.DeclaringDefinition.CustomAttributeProvider;
       var suppressAttributesAttributes =
-          from suppressAttribute in targetClassDefinition.ReceivedAttributes[typeof (SuppressAttributesAttribute)]
+          from suppressAttribute in targetClassDefinition.ReceivedAttributes[typeof(SuppressAttributesAttribute)]
           let suppressAttributeInstance = (SuppressAttributesAttribute) suppressAttribute.Attribute.Data.CreateInstance()
           let suppressingEntity = suppressAttribute.Attribute.DeclaringDefinition.CustomAttributeProvider
           where suppressAttributeInstance.IsSuppressed(attribute.AttributeType, declaringEntity, suppressingEntity)

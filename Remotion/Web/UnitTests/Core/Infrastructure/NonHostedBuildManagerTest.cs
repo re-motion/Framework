@@ -36,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
     {
       Assert.That(
           _buildManager.GetType("Remotion.Web.Infrastructure.IBuildManager, Remotion.Web", true, false),
-          Is.EqualTo(typeof (IBuildManager)));
+          Is.EqualTo(typeof(IBuildManager)));
     }
 
     [Test]
@@ -44,7 +44,7 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
     {
       Assert.That(
           _buildManager.GetType("Remotion.Web.Infrastructure.ibuildmanager, Remotion.Web", true, ignoreCase: true),
-          Is.EqualTo(typeof (IBuildManager)));
+          Is.EqualTo(typeof(IBuildManager)));
     }
 
     [Test]

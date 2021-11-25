@@ -35,20 +35,20 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   public static class ReflectionUtility
   {
-    private static readonly Type s_stringPropertyValueType = typeof (string);
-    private static readonly Type s_binaryPropertyValueType = typeof (byte[]);
-    private static readonly Type s_typePropertyValueType = typeof (Type);
-    private static readonly Type s_objectIDPropertyValueType = typeof (ObjectID);
+    private static readonly Type s_stringPropertyValueType = typeof(string);
+    private static readonly Type s_binaryPropertyValueType = typeof(byte[]);
+    private static readonly Type s_typePropertyValueType = typeof(Type);
+    private static readonly Type s_objectIDPropertyValueType = typeof(ObjectID);
     private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type ItemType)> s_objectListTypeCache = new();
 
     private static readonly Func<Type, ValueTuple<bool, Type>> s_objectListTypeCacheValueFactory =
         static t =>
         {
-          var canAscribeTo = typeof (IReadOnlyList<DomainObject>).IsAssignableFrom(t) && t.CanAscribeTo(typeof (ObjectList<>));
+          var canAscribeTo = typeof(IReadOnlyList<DomainObject>).IsAssignableFrom(t) && t.CanAscribeTo(typeof(ObjectList<>));
           return ValueTuple.Create(
               canAscribeTo,
               canAscribeTo
-                  ? t.GetAscribedGenericArguments(typeof (ObjectList<>))[0]
+                  ? t.GetAscribedGenericArguments(typeof(ObjectList<>))[0]
                   : null);
         };
 
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The path of the current executing assembly</returns>
     public static string GetConfigFileDirectory ()
     {
-      return GetAssemblyDirectory(typeof (DomainObject).Assembly);
+      return GetAssemblyDirectory(typeof(DomainObject).Assembly);
     }
 
     /// <summary>
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      if (type == typeof (IObjectList<>))
+      if (type == typeof(IObjectList<>))
         return true;
 
       if (!type.IsInterface)
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects
         return false;
 
       var genericTypeDefinition = type.GetGenericTypeDefinition();
-      return genericTypeDefinition == typeof (IObjectList<>);
+      return genericTypeDefinition == typeof(IObjectList<>);
     }
 
     /// <summary>
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      return (typeof (DomainObject).IsAssignableFrom(type));
+      return (typeof(DomainObject).IsAssignableFrom(type));
     }
 
     /// <summary>
@@ -244,7 +244,7 @@ namespace Remotion.Data.DomainObjects
     internal static bool IsStructuralEquatablePropertyValueType (Type propertyType)
     {
       ArgumentUtility.CheckNotNull("propertyType", propertyType);
-      return typeof (IStructuralEquatable).IsAssignableFrom(propertyType);
+      return typeof(IStructuralEquatable).IsAssignableFrom(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
@@ -279,7 +279,7 @@ namespace Remotion.Data.DomainObjects
       var typeParameter = s_objectListTypeCache.GetOrAdd(type, s_objectListTypeCacheValueFactory).ItemType;
 
       if (typeParameter is null)
-        throw ArgumentUtility.CreateArgumentTypeException("type", type, typeof (ObjectList<>));
+        throw ArgumentUtility.CreateArgumentTypeException("type", type, typeof(ObjectList<>));
 
       if (typeParameter.IsGenericParameter)
         return null;
@@ -302,7 +302,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      var typeParameters = type.GetAscribedGenericArguments(typeof (IObjectList<>));
+      var typeParameters = type.GetAscribedGenericArguments(typeof(IObjectList<>));
       var typeParameter = typeParameters[0];
       if (typeParameter.IsGenericParameter)
         return null;
@@ -372,7 +372,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given type is the inheritance root.</returns>
     public static bool IsInheritanceRoot (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
 
       if (IsTypeIgnoredForMappingConfiguration(type))
         return false;
@@ -385,7 +385,7 @@ namespace Remotion.Data.DomainObjects
 
     public static bool IsTypeIgnoredForMappingConfiguration (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
 
       return AttributeUtility.IsDefined<IgnoreForMappingConfigurationAttribute>(type, false);
     }

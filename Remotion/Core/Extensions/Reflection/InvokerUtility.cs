@@ -45,7 +45,7 @@ namespace Remotion.Reflection
       for (int i = 0; i < values.Length; ++i)
       {
         object? value = values[i];
-        valueTypes[i] = (value != null) ? value.GetType() : typeof (object);
+        valueTypes[i] = (value != null) ? value.GetType() : typeof(object);
       }
 
       return valueTypes;

@@ -56,7 +56,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof (IAbstractRoleReflector), _abstractRoleReflector);
+      Assert.IsInstanceOf(typeof(IAbstractRoleReflector), _abstractRoleReflector);
       Assert.That(_abstractRoleReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflectorMock.Object));
     }
 
@@ -70,10 +70,10 @@ namespace Remotion.Security.UnitTests.Metadata
       Dictionary<Enum, EnumValueInfo> specialAbstractRoles = new Dictionary<Enum, EnumValueInfo>();
       specialAbstractRoles.Add(SpecialAbstractRoles.Administrator, AbstractRoles.Administrator);
 
-      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof (DomainAbstractRoles), _cache)).Returns(domainAbstractRoles).Verifiable();
-      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof (SpecialAbstractRoles), _cache)).Returns(specialAbstractRoles).Verifiable();
+      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof(DomainAbstractRoles), _cache)).Returns(domainAbstractRoles).Verifiable();
+      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof(SpecialAbstractRoles), _cache)).Returns(specialAbstractRoles).Verifiable();
 
-      List<EnumValueInfo> values = _abstractRoleReflector.GetAbstractRoles(typeof (File).Assembly, _cache);
+      List<EnumValueInfo> values = _abstractRoleReflector.GetAbstractRoles(typeof(File).Assembly, _cache);
 
       _enumeratedTypeReflectorMock.Verify();
 
@@ -88,7 +88,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetAbstractRolesFromCache ()
     {
       AbstractRoleReflector reflector = new AbstractRoleReflector();
-      List<EnumValueInfo> expectedAbstractRoles = reflector.GetAbstractRoles(typeof (File).Assembly, _cache);
+      List<EnumValueInfo> expectedAbstractRoles = reflector.GetAbstractRoles(typeof(File).Assembly, _cache);
       List<EnumValueInfo> actualAbstractRoles = _cache.GetAbstractRoles();
 
       Assert.That(expectedAbstractRoles.Count, Is.EqualTo(3));

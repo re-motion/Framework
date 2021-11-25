@@ -30,10 +30,10 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("Show");
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           attribute);
 
-      Assert.That(helper.FunctionType, Is.SameAs(typeof (TestFunctionWithThisObject)));
+      Assert.That(helper.FunctionType, Is.SameAs(typeof(TestFunctionWithThisObject)));
       Assert.That(helper.MethodType, Is.EqualTo(MethodType.Instance));
       Assert.That(helper.SecurableClass, Is.Null);
       Assert.That(helper.MethodName, Is.EqualTo("Show"));
@@ -42,15 +42,15 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void InitializeWithMethodTypeInstanceAndSecurableClass ()
     {
-      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("ShowSpecial", typeof (DerivedSecurableObject));
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("ShowSpecial", typeof(DerivedSecurableObject));
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           attribute);
 
-      Assert.That(helper.FunctionType, Is.SameAs(typeof (TestFunctionWithThisObject)));
+      Assert.That(helper.FunctionType, Is.SameAs(typeof(TestFunctionWithThisObject)));
       Assert.That(helper.MethodType, Is.EqualTo(MethodType.Instance));
-      Assert.That(helper.SecurableClass, Is.SameAs(typeof (DerivedSecurableObject)));
+      Assert.That(helper.SecurableClass, Is.SameAs(typeof(DerivedSecurableObject)));
       Assert.That(helper.MethodName, Is.EqualTo("ShowSpecial"));
     }
 
@@ -60,12 +60,12 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute(SecurableObject.Method.Show);
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           attribute);
 
-      Assert.That(helper.FunctionType, Is.SameAs(typeof (TestFunctionWithThisObject)));
+      Assert.That(helper.FunctionType, Is.SameAs(typeof(TestFunctionWithThisObject)));
       Assert.That(helper.MethodType, Is.EqualTo(MethodType.Instance));
-      Assert.That(helper.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(helper.SecurableClass, Is.SameAs(typeof(SecurableObject)));
       Assert.That(helper.MethodName, Is.EqualTo("Show"));
     }
 
@@ -73,15 +73,15 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void InitializeWithMethodTypeStatic ()
     {
-      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute("Search", typeof (SecurableObject));
+      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute("Search", typeof(SecurableObject));
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           attribute);
 
-      Assert.That(helper.FunctionType, Is.SameAs(typeof (TestFunctionWithThisObject)));
+      Assert.That(helper.FunctionType, Is.SameAs(typeof(TestFunctionWithThisObject)));
       Assert.That(helper.MethodType, Is.EqualTo(MethodType.Static));
-      Assert.That(helper.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(helper.SecurableClass, Is.SameAs(typeof(SecurableObject)));
       Assert.That(helper.MethodName, Is.EqualTo("Search"));
     }
 
@@ -91,12 +91,12 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Search);
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           attribute);
 
-      Assert.That(helper.FunctionType, Is.SameAs(typeof (TestFunctionWithThisObject)));
+      Assert.That(helper.FunctionType, Is.SameAs(typeof(TestFunctionWithThisObject)));
       Assert.That(helper.MethodType, Is.EqualTo(MethodType.Static));
-      Assert.That(helper.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(helper.SecurableClass, Is.SameAs(typeof(SecurableObject)));
       Assert.That(helper.MethodName, Is.EqualTo("Search"));
     }
 
@@ -104,15 +104,15 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     public void InitializeWithMethodTypeStaticAndMethodEnumFromBaseClass ()
     {
       WxeDemandTargetStaticMethodPermissionAttribute attribute = 
-          new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Search, typeof (DerivedSecurableObject));
+          new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Search, typeof(DerivedSecurableObject));
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           attribute);
 
-      Assert.That(helper.FunctionType, Is.SameAs(typeof (TestFunctionWithThisObject)));
+      Assert.That(helper.FunctionType, Is.SameAs(typeof(TestFunctionWithThisObject)));
       Assert.That(helper.MethodType, Is.EqualTo(MethodType.Static));
-      Assert.That(helper.SecurableClass, Is.SameAs(typeof (DerivedSecurableObject)));
+      Assert.That(helper.SecurableClass, Is.SameAs(typeof(DerivedSecurableObject)));
       Assert.That(helper.MethodName, Is.EqualTo("Search"));
     }
 
@@ -120,15 +120,15 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void InitializeWithMethodTypeConstructor ()
     {
-      WxeDemandTargetPermissionAttribute attribute = new WxeDemandCreatePermissionAttribute(typeof (SecurableObject));
+      WxeDemandTargetPermissionAttribute attribute = new WxeDemandCreatePermissionAttribute(typeof(SecurableObject));
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           attribute);
 
-      Assert.That(helper.FunctionType, Is.SameAs(typeof (TestFunctionWithThisObject)));
+      Assert.That(helper.FunctionType, Is.SameAs(typeof(TestFunctionWithThisObject)));
       Assert.That(helper.MethodType, Is.EqualTo(MethodType.Constructor));
-      Assert.That(helper.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(helper.SecurableClass, Is.SameAs(typeof(SecurableObject)));
       Assert.That(helper.MethodName, Is.Null);
     }
   }

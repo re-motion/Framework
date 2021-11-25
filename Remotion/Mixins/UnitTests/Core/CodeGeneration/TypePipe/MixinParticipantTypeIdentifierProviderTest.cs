@@ -36,11 +36,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       var mixinContext = new MixinContext(
           MixinKind.Extending,
-          typeof (int),
+          typeof(int),
           MemberVisibility.Private,
           new Type[0],
           new MixinContextOrigin("some kind", GetType().Assembly, "some location"));
-      _classContext = ClassContextObjectMother.Create(typeof (string), mixinContext);
+      _classContext = ClassContextObjectMother.Create(typeof(string), mixinContext);
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       using (new MixinConfiguration(new ClassContextCollection(_classContext)).EnterScope())
       {
-        var result = _provider.GetID(typeof (string));
+        var result = _provider.GetID(typeof(string));
 
         Assert.That(result, Is.SameAs(_classContext));
       }
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        var result = _provider.GetID(typeof (string));
+        var result = _provider.GetID(typeof(string));
 
         Assert.That(result, Is.Null);
       }

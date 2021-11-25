@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class TestableClientTransactionExtensionBase : ClientTransactionExtensionBase
   {
     public TestableClientTransactionExtensionBase (string key)
-        : base (key)
+        : base(key)
     {
     }
 

@@ -30,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// applied to the respective <see cref="Enum"/> value.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor (typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class MultiLingualNameBasedEnumerationGlobalizationService : IEnumerationGlobalizationService
   {

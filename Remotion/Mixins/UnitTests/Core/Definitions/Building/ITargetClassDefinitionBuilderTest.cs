@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       var factory = _serviceLocator.GetInstance<ITargetClassDefinitionBuilder>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (TargetClassDefinitionBuilder)));
+      Assert.That(factory, Is.TypeOf(typeof(TargetClassDefinitionBuilder)));
     }
 
     [Test]

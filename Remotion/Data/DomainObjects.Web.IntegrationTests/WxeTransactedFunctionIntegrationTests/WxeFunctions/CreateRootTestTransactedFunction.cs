@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public CreateRootTestTransactedFunction (ClientTransactionScope previousClientTransactionScope)
-        : base (WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, previousClientTransactionScope)
+        : base(WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, previousClientTransactionScope)
     {
     }
 

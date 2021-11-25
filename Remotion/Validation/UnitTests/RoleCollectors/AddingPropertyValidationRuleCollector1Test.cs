@@ -48,7 +48,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [SetUp]
     public void SetUp ()
     {
-      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName"));
+      _property = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("UserName"));
 
       _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
       _lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.LastName);
@@ -59,7 +59,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
 
       _propertyValidatorExtractorMock = new Mock<IPropertyValidatorExtractor>(MockBehavior.Strict);
 
-      _addingPropertyValidationRuleCollector = AddingPropertyValidationRuleCollector.Create(_userNameExpression, typeof (CustomerValidationRuleCollector1));
+      _addingPropertyValidationRuleCollector = AddingPropertyValidationRuleCollector.Create(_userNameExpression, typeof(CustomerValidationRuleCollector1));
     }
 
     [Test]
@@ -68,9 +68,9 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       var propertyInfo = ((PropertyInfoAdapter) _addingPropertyValidationRuleCollector.Property).PropertyInfo;
       Assert.That(_addingPropertyValidationRuleCollector.Property.Equals(_property), Is.True);
       Assert.That(_addingPropertyValidationRuleCollector.Property, Is.EqualTo(_property));
-      Assert.That(propertyInfo.DeclaringType, Is.EqualTo(typeof (Customer)));
-      Assert.That(propertyInfo.ReflectedType, Is.EqualTo(typeof (Customer)));
-      Assert.That(_addingPropertyValidationRuleCollector.CollectorType, Is.EqualTo(typeof (CustomerValidationRuleCollector1)));
+      Assert.That(propertyInfo.DeclaringType, Is.EqualTo(typeof(Customer)));
+      Assert.That(propertyInfo.ReflectedType, Is.EqualTo(typeof(Customer)));
+      Assert.That(_addingPropertyValidationRuleCollector.CollectorType, Is.EqualTo(typeof(CustomerValidationRuleCollector1)));
       Assert.That(_addingPropertyValidationRuleCollector.Validators.Any(), Is.False);
       Assert.That(_addingPropertyValidationRuleCollector.IsRemovable, Is.False);
     }
@@ -87,21 +87,21 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.Dummy());
 
       Assert.That(
-          () => AddingPropertyValidationRuleCollector.Create(dummyExpression, typeof (CustomerValidationRuleCollector1)),
+          () => AddingPropertyValidationRuleCollector.Create(dummyExpression, typeof(CustomerValidationRuleCollector1)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Must be a MemberExpression.", "expression"));
     }
 
     [Test]
     public void Create_PropertyDeclaredInBaseClass ()
     {
-      var componentPropertyRule = AddingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof (CustomerValidationRuleCollector1));
+      var componentPropertyRule = AddingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof(CustomerValidationRuleCollector1));
       var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
 
       //TODO-5906 simplify assertion with PropertyInfoAdapter compare
       Assert.That(
-          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals(propertyInfo, typeof (Customer).GetMember("LastName")[0]),
+          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals(propertyInfo, typeof(Customer).GetMember("LastName")[0]),
           Is.True);
-      Assert.That(propertyInfo.DeclaringType, Is.EqualTo(typeof (Person)));
+      Assert.That(propertyInfo.DeclaringType, Is.EqualTo(typeof(Person)));
     }
 
     [Test]

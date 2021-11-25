@@ -184,12 +184,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override Type[] SupportedPropertyInterfaces
     {
-      get { return new Type[] { typeof (IBusinessObjectReferenceProperty) }; }
+      get { return new Type[] { typeof(IBusinessObjectReferenceProperty) }; }
     }
 
     public IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (UserControlBinding));
+      return GetResourceManager(typeof(UserControlBinding));
     }
   }
 }

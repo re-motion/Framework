@@ -54,17 +54,17 @@ internal abstract class FormatArgument
 public abstract class CommandLineArgumentException: Exception
 {
   protected CommandLineArgumentException (string message)
-    : base (message)
+    : base(message)
   {
   }
 
   protected CommandLineArgumentException (string message, Exception innerException)
-    : base (message, innerException)
+    : base(message, innerException)
   {
   }
 
   protected CommandLineArgumentException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }
@@ -78,22 +78,22 @@ public class InvalidCommandLineArgumentValueException: CommandLineArgumentExcept
   private const string c_message = "Invalid argument value";
 
   public InvalidCommandLineArgumentValueException (CommandLineArgument argument)
-    : this (argument, c_message)
+    : this(argument, c_message)
   {
   }
 
   public InvalidCommandLineArgumentValueException (CommandLineArgument argument, string message)
-    : this (FormatArgument.Format(argument) + ": " + message)
+    : this(FormatArgument.Format(argument) + ": " + message)
   {
   }
 
   public InvalidCommandLineArgumentValueException (string message)
-    : base (message)
+    : base(message)
   {
   }
 
   protected InvalidCommandLineArgumentValueException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }
@@ -113,12 +113,12 @@ public class InvalidCommandLineArgumentNameException: CommandLineArgumentExcepti
   internal const string MessageAmbiguous = "Argument /{0}: ambiguous argument name.";
  
   public InvalidCommandLineArgumentNameException (string name, string message)
-    : base (string.Format(message, name))
+    : base(string.Format(message, name))
   {
   }
 
   protected InvalidCommandLineArgumentNameException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }
@@ -132,12 +132,12 @@ public class InvalidNumberOfCommandLineArgumentsException: CommandLineArgumentEx
   private const string c_message = "Argument /{0}: unexpected argument. Only {1} unnamed arguments are allowed.";
  
   public InvalidNumberOfCommandLineArgumentsException (string argument, int number)
-    : base (string.Format(c_message, argument, number))
+    : base(string.Format(c_message, argument, number))
   {
   }
 
   protected InvalidNumberOfCommandLineArgumentsException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }
@@ -151,12 +151,12 @@ public class MissingRequiredCommandLineParameterException: CommandLineArgumentEx
   private const string c_message = ": Required Argument not specified.";
  
   public MissingRequiredCommandLineParameterException (CommandLineArgument argument)
-    : base (FormatArgument.Format(argument) + c_message)
+    : base(FormatArgument.Format(argument) + c_message)
   {
   }
 
   protected MissingRequiredCommandLineParameterException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }
@@ -170,12 +170,12 @@ public class ConflictCommandLineParameterException: CommandLineArgumentException
   private const string c_message = "Conflicting Arguments: {0} and {1} cannot be used together.";
  
   public ConflictCommandLineParameterException (CommandLineArgument argument1, CommandLineArgument argument2)
-    : base (string.Format(c_message, FormatArgument.Format(argument1), FormatArgument.Format(argument2)))
+    : base(string.Format(c_message, FormatArgument.Format(argument1), FormatArgument.Format(argument2)))
   {
   }
 
   protected ConflictCommandLineParameterException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }
@@ -191,17 +191,17 @@ public class ConflictCommandLineParameterException: CommandLineArgumentException
 public class CommandLineArgumentApplicationException: CommandLineArgumentException
 {
   public CommandLineArgumentApplicationException (string message)
-    : base (message)
+    : base(message)
   {
   }
 
   public CommandLineArgumentApplicationException (string message, Exception innerException)
-    : base (message, innerException)
+    : base(message, innerException)
   {
   }
 
   protected CommandLineArgumentApplicationException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }

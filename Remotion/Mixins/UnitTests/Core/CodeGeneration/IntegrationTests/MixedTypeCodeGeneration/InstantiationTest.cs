@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void GeneratedTypeCanBeInstantiatedViaCtorCall ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
       var bt3 = (BaseType3) Activator.CreateInstance(generatedType);
       Assert.That(bt3, Is.Not.Null);
       Assert.That(Mixin.Get<BT3Mixin1>(bt3), Is.Not.Null);
@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void GeneratedTypeCanBeInstantiatedViaCtorCallEvenWhenDerived ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
 
       AssemblyBuilder builder =
           AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("Foo"), AssemblyBuilderAccess.Run);
@@ -67,7 +67,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void CtorsRespectMixedTypeInstantiationScope ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
       var suppliedMixinInstance = new BT3Mixin1();
 
       using (new MixedObjectInstantiationScope(suppliedMixinInstance))
@@ -83,7 +83,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void ThrowsIfWrongMixinInstancesInScope ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType1));
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType1));
       var suppliedMixinInstance = new BT3Mixin1();
 
       using (new MixedObjectInstantiationScope(suppliedMixinInstance))
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void OverriddenMethodCalledFromCtor ()
     {
-      var instance = CreateMixedObject<TargetClassCallingOverriddenMethodFromCtor>(typeof (MixinOverridingMethodCalledFromCtor));
+      var instance = CreateMixedObject<TargetClassCallingOverriddenMethodFromCtor>(typeof(MixinOverridingMethodCalledFromCtor));
       var mixin = Mixin.Get<MixinOverridingMethodCalledFromCtor>(instance);
       Assert.That(instance.Result, Is.SameAs(mixin));
       Assert.That(mixin.MyThis, Is.SameAs(instance));
@@ -111,7 +111,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void IntroducedMethodCalledFromCtor ()
     {
-      var instance = CreateMixedObject<TargetClassCallingIntroducedMethodFromCtor>(typeof (MixinIntroducingMethodCalledFromCtor));
+      var instance = CreateMixedObject<TargetClassCallingIntroducedMethodFromCtor>(typeof(MixinIntroducingMethodCalledFromCtor));
       
       var mixin = Mixin.Get<MixinIntroducingMethodCalledFromCtor>(instance);
       Assert.That(instance.Result, Is.SameAs(mixin));
@@ -122,7 +122,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixinGet_CalledFromCtor ()
     {
-      var instance = CreateMixedObject<TargetClassGettingMixinFromCtor>(typeof (NullMixin));
+      var instance = CreateMixedObject<TargetClassGettingMixinFromCtor>(typeof(NullMixin));
 
       var mixin = Mixin.Get<NullMixin>(instance);
       Assert.That(instance.MixinInstance, Is.SameAs(mixin));
@@ -131,7 +131,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixinTarget_FirstCallProxy_AccessedFromCtor ()
     {
-      var instance = CreateMixedObject<TargetClassAccessingFirstCallProxyFromCtor>(typeof (NullMixin));
+      var instance = CreateMixedObject<TargetClassAccessingFirstCallProxyFromCtor>(typeof(NullMixin));
 
       Assert.That(instance.FirstNextCallProxy, Is.Not.Null);
 
@@ -141,7 +141,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixinTarget_ClassContext_AccessedFromCtor ()
     {
-      var instance = CreateMixedObject<TargetClassAccessingClassContextFromCtor>(typeof (NullMixin));
+      var instance = CreateMixedObject<TargetClassAccessingClassContextFromCtor>(typeof(NullMixin));
 
       Assert.That(instance.ClassContext, Is.Not.Null);
 
@@ -151,7 +151,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixinTarget_Mixins_AccessedFromCtor ()
     {
-      var instance = CreateMixedObject<TargetClassAccessingMixinsFromCtor>(typeof (NullMixin));
+      var instance = CreateMixedObject<TargetClassAccessingMixinsFromCtor>(typeof(NullMixin));
 
       Assert.That(instance.Mixins, Is.Not.Null);
 

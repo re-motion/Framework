@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IRealObjectEndPoint realObjectEndPoint,
         IVirtualEndPoint oldRelatedEndPoint,
         IVirtualEndPoint newRelatedEndPoint)
-      : base (decoratedCommand)
+      : base(decoratedCommand)
     {
       ArgumentUtility.CheckNotNull("realObjectEndPoint", realObjectEndPoint);
       ArgumentUtility.CheckNotNull("oldRelatedEndPoint", oldRelatedEndPoint);

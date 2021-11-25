@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.UnitTests
     {
       Assert.That(
           // looks for a ctor with five string arguments
-          () => (TheClass) Activator.CreateInstance(typeof (TheClass), new[] { "my", "home", "is", "my", "castle" }),
+          () => (TheClass) Activator.CreateInstance(typeof(TheClass), new[] { "my", "home", "is", "my", "castle" }),
           Throws.InstanceOf<MissingMethodException>());
     }
 
@@ -39,7 +39,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.UnitTests
     {
       Assert.That(
           // looks for a default ctor
-          () => (TheClass) Activator.CreateInstance(typeof (TheClass), null),
+          () => (TheClass) Activator.CreateInstance(typeof(TheClass), null),
           Throws.InstanceOf<MissingMethodException>());
     }
 
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.UnitTests
     public void Activator_BrokenCalls_AmbiguousNullPassed ()
     {
       Assert.That(
-          () => (TheClass) Activator.CreateInstance(typeof (TheClass), new object[] { null }),
+          () => (TheClass) Activator.CreateInstance(typeof(TheClass), new object[] { null }),
           Throws.InstanceOf<AmbiguousMatchException>());
     }
 

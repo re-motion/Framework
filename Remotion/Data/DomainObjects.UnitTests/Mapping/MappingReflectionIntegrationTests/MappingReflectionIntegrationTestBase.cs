@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
   public abstract class MappingReflectionIntegrationTestBase
   {
     private static readonly IEnumerable<Type> s_domainObjectTypes =
-        typeof (MappingReflectionTestBase).Assembly.GetTypes().Where(t => typeof (DomainObject).IsAssignableFrom(t)).ToArray();
+        typeof(MappingReflectionTestBase).Assembly.GetTypes().Where(t => typeof(DomainObject).IsAssignableFrom(t)).ToArray();
 
     private IDictionary<Type, ClassDefinition> _typeDefinitions;
 
@@ -98,9 +98,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     protected PropertyInfoAdapter GetPropertyInformation<T, TR> (Expression<Func<T, TR>> propertyAccessExpression)
     {
       var memberInfo = NormalizingMemberInfoFromExpressionUtility.GetProperty(propertyAccessExpression);
-      if (memberInfo.DeclaringType != typeof (T))
+      if (memberInfo.DeclaringType != typeof(T))
       {
-        var message = string.Format("Property must be declared on type '{0}', but it is declared on '{1}'.", typeof (T), memberInfo.DeclaringType);
+        var message = string.Format("Property must be declared on type '{0}', but it is declared on '{1}'.", typeof(T), memberInfo.DeclaringType);
         throw new InvalidOperationException(message);
       }
       return PropertyInfoAdapter.Create(memberInfo);

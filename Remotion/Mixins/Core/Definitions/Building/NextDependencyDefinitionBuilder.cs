@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      Assertion.IsTrue(type != typeof (object), "This method will not be called for typeof (object).");
+      Assertion.IsTrue(type != typeof(object), "This method will not be called for typeof (object).");
 
       if (!type.IsInterface)
       {

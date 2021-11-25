@@ -22,7 +22,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests.SampleAssembly
   {
   }
 
-  [Extends (typeof (BaseType))]
+  [Extends (typeof(BaseType))]
   public class Mixin
   {
   }

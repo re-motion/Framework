@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void DependencyOnInterface_ViaAssemblyLevelAttribute_IsResolvedToImplementingMixin ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof (C), typeof (M1), typeof (IM2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(C), typeof(M1), typeof(IM2)));
       
       var instance = ObjectFactory.Create<C>();
 
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C))]
+    [Extends (typeof(C))]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]
@@ -57,7 +57,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof (C))]
+    [Extends (typeof(C))]
     public class M2 : Mixin<C, IC>, IM2
     {
       [OverrideTarget]

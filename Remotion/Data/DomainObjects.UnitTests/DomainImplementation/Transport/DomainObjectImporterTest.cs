@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       byte[] binaryData = GetBinaryDataForChangedObject(
           DomainObjectIDs.ClassWithAllDataTypes1,
-          ReflectionMappingHelper.GetPropertyName(typeof (ClassWithAllDataTypes), "Int32Property"),
+          ReflectionMappingHelper.GetPropertyName(typeof(ClassWithAllDataTypes), "Int32Property"),
           12);
       ModifyDatabase(() => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>().Delete());
 
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void NonExistingObjects_NewInSource ()
     {
       var transporter = new DomainObjectTransporter();
-      var outerComputer = (Computer) transporter.LoadNew(typeof (Computer), ParamList.Empty);
+      var outerComputer = (Computer) transporter.LoadNew(typeof(Computer), ParamList.Empty);
       byte[] binaryData = DomainObjectTransporterTestHelper.GetBinaryDataFor(transporter);
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       byte[] binaryData = GetBinaryDataForChangedObject(
           DomainObjectIDs.ClassWithAllDataTypes1,
-          ReflectionMappingHelper.GetPropertyName(typeof (ClassWithAllDataTypes), "Int32Property"),
+          ReflectionMappingHelper.GetPropertyName(typeof(ClassWithAllDataTypes), "Int32Property"),
           12);
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
@@ -174,9 +174,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       ModifyDatabase(delegate { DomainObjectIDs.Order1.GetObject<Order>().OrderNumber = 13; });
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
-      Assert.That(((Order) imported[0]).Properties[typeof (Order), "OrderNumber"].HasChanged, Is.True);
+      Assert.That(((Order) imported[0]).Properties[typeof(Order), "OrderNumber"].HasChanged, Is.True);
       Assert.That(((Order) imported[0]).OrderNumber, Is.EqualTo(1));
-      Assert.That(((Order) imported[0]).Properties[typeof (Order), "DeliveryDate"].HasChanged, Is.False);
+      Assert.That(((Order) imported[0]).Properties[typeof(Order), "DeliveryDate"].HasChanged, Is.False);
     }
 
     [Test]
@@ -195,9 +195,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       var loadedObject2 = (Computer) imported[1];
       var loadedObject3 = (Computer) imported[2];
 
-      Assert.That(loadedObject1.Properties[typeof (Computer), "Employee"].HasChanged, Is.True);
-      Assert.That(loadedObject2.Properties[typeof (Computer), "Employee"].HasChanged, Is.True);
-      Assert.That(loadedObject3.Properties[typeof (Computer), "Employee"].HasChanged, Is.False);
+      Assert.That(loadedObject1.Properties[typeof(Computer), "Employee"].HasChanged, Is.True);
+      Assert.That(loadedObject2.Properties[typeof(Computer), "Employee"].HasChanged, Is.True);
+      Assert.That(loadedObject3.Properties[typeof(Computer), "Employee"].HasChanged, Is.False);
 
       Assert.That(loadedObject1.Employee, Is.EqualTo(DomainObjectIDs.Employee3.GetObject<Employee>(loadedObject1.RootTransaction)));
       Assert.That(loadedObject2.Employee, Is.EqualTo(DomainObjectIDs.Employee4.GetObject<Employee>(loadedObject1.RootTransaction)));
@@ -218,7 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
       var loadedObject1 = (Computer) imported[0];
 
-      Assert.That(loadedObject1.Properties[typeof (Computer), "Employee"].HasChanged, Is.True);
+      Assert.That(loadedObject1.Properties[typeof(Computer), "Employee"].HasChanged, Is.True);
       Assert.That(loadedObject1.Employee, Is.Null);
     }
 
@@ -258,8 +258,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       var loadedObject1 = (OrderItem) imported[0];
       var loadedObject2 = (OrderItem) imported[1];
 
-      Assert.That(loadedObject1.Properties[typeof (OrderItem), "Order"].HasChanged, Is.True);
-      Assert.That(loadedObject2.Properties[typeof (OrderItem), "Order"].HasChanged, Is.False);
+      Assert.That(loadedObject1.Properties[typeof(OrderItem), "Order"].HasChanged, Is.True);
+      Assert.That(loadedObject2.Properties[typeof(OrderItem), "Order"].HasChanged, Is.False);
 
       Assert.That(loadedObject1.Order, Is.EqualTo(DomainObjectIDs.Order1.GetObject<Order>(loadedObject1.RootTransaction)));
       Assert.That(loadedObject2.Order, Is.EqualTo(DomainObjectIDs.Order1.GetObject<Order>(loadedObject1.RootTransaction)));
@@ -276,14 +276,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
 
-      Assert.That(((Order) imported[0]).Properties[typeof (Order), "OrderItems"].HasChanged, Is.False);
+      Assert.That(((Order) imported[0]).Properties[typeof(Order), "OrderItems"].HasChanged, Is.False);
     }
 
     [Test]
     public void ChangedBySource_PropertyValue ()
     {
       byte[] binaryData = GetBinaryDataForChangedObject(
-          DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof (Order), "OrderNumber"), 2);
+          DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderNumber"), 2);
 
       var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
 
@@ -331,8 +331,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void ChangedBySource_RelatedObjectToNew ()
     {
       var transporter = new DomainObjectTransporter();
-      var computer = (Computer) transporter.LoadNew(typeof (Computer), ParamList.Empty);
-      var employee = (Employee) transporter.LoadNew(typeof (Employee), ParamList.Empty);
+      var computer = (Computer) transporter.LoadNew(typeof(Computer), ParamList.Empty);
+      var employee = (Employee) transporter.LoadNew(typeof(Employee), ParamList.Empty);
 
       computer.Employee = employee;
 
@@ -374,7 +374,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void OnObjectImportedCallback ()
     {
       var transporter = new DomainObjectTransporter();
-      var instance = (DomainObjectWithImportCallback) transporter.LoadNew(typeof (DomainObjectWithImportCallback), ParamList.Empty);
+      var instance = (DomainObjectWithImportCallback) transporter.LoadNew(typeof(DomainObjectWithImportCallback), ParamList.Empty);
       instance.Property = 17;
 
       byte[] binaryData = DomainObjectTransporterTestHelper.GetBinaryDataFor(transporter);

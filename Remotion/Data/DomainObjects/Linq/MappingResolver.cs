@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.Linq
         var allClassDefinitions = EnumerableUtility.Singleton(classDefinition).Concat(classDefinition.GetAllDerivedClasses().Select(cd => cd));
         var allClassIDExpressions = allClassDefinitions.Select(cd => new SqlLiteralExpression(cd.ID));
 
-        return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof (string[]), allClassIDExpressions.Cast<Expression>()));
+        return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof(string[]), allClassIDExpressions.Cast<Expression>()));
       }
       else
       {
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("entityRefMemberExpression", entityRefMemberExpression);
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
-      if (memberInfo.DeclaringType != typeof (DomainObject) || memberInfo.Name != "ID")
+      if (memberInfo.DeclaringType != typeof(DomainObject) || memberInfo.Name != "ID")
         return null;
 
       var endPointDefinition = GetEndPointDefinition(entityRefMemberExpression.OriginatingEntity, entityRefMemberExpression.MemberInfo);

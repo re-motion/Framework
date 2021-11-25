@@ -38,39 +38,39 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetAffectedType_NoBaseTypesAndNoInterfacesAndMixins ()
     {
-      var result = _involvedTypeProvider.GetTypes(typeof (TypeWithoutBaseType)).SelectMany(t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes(typeof(TypeWithoutBaseType)).SelectMany(t => t).ToList();
 
-      Assert.That(result, Is.EqualTo(new[] { typeof (TypeWithoutBaseType) }));
+      Assert.That(result, Is.EqualTo(new[] { typeof(TypeWithoutBaseType) }));
     }
 
     [Test]
     public void GetAffectedType_WithBaseTypesAndNoInterfacesAndMixins ()
     {
-      var result = _involvedTypeProvider.GetTypes(typeof (TypeWithSeveralBaseTypes)).SelectMany(t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes(typeof(TypeWithSeveralBaseTypes)).SelectMany(t => t).ToList();
 
-      Assert.That(result, Is.EqualTo(new[] { typeof (BaseType2), typeof (BaseType1), typeof (TypeWithSeveralBaseTypes) }));
+      Assert.That(result, Is.EqualTo(new[] { typeof(BaseType2), typeof(BaseType1), typeof(TypeWithSeveralBaseTypes) }));
     }
 
     [Test]
     public void GetAffectedType_WithOneInterfacesAndNoBaseTypesAndMixins ()
     {
-      var result = _involvedTypeProvider.GetTypes(typeof (TypeWithOneInterface)).SelectMany(t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes(typeof(TypeWithOneInterface)).SelectMany(t => t).ToList();
 
-      Assert.That(result, Is.EqualTo(new[] { typeof (ITypeWithOneInterface), typeof (TypeWithOneInterface) }));
+      Assert.That(result, Is.EqualTo(new[] { typeof(ITypeWithOneInterface), typeof(TypeWithOneInterface) }));
     }
 
     [Test]
     public void GetAffectedType_WithSeveralInterfacesAndNoBaseTypesAndMixins ()
     {
-      var result = _involvedTypeProvider.GetTypes(typeof (TypeWithSeveralInterfaces)).SelectMany(t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes(typeof(TypeWithSeveralInterfaces)).SelectMany(t => t).ToList();
 
       Assert.That(
           result,
           Is.EqualTo(
               new[]
               {
-                  typeof (ITypeWithServeralInterfaces1), typeof (ITypeWithSeveralInterfaces2), typeof (ITypeWithSeveralInterfaces3),
-                  typeof (TypeWithSeveralInterfaces)
+                  typeof(ITypeWithServeralInterfaces1), typeof(ITypeWithSeveralInterfaces2), typeof(ITypeWithSeveralInterfaces3),
+                  typeof(TypeWithSeveralInterfaces)
               }));
     }
 
@@ -78,7 +78,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetAffectedType_WithSeveralInterfacesHavingBaseInterfacesAndNoBaseTypesAndMixins ()
     {
       var result =
-          _involvedTypeProvider.GetTypes(typeof (TypeWithSeveralInterfacesImplementingInterface)).SelectMany(t => t)
+          _involvedTypeProvider.GetTypes(typeof(TypeWithSeveralInterfacesImplementingInterface)).SelectMany(t => t)
               .ToList();
 
       Assert.That(
@@ -86,9 +86,9 @@ namespace Remotion.Validation.UnitTests.Implementation
           Is.EqualTo(
               new[]
               {
-                  typeof (IBaseBaseInterface1), typeof (IBaseInterface1), typeof (IBaseInterface2), typeof (IBaseInterface3),
-                  typeof (ITypeWithSeveralInterfacesImplementingInterface1), typeof (ITypeWithSeveralInterfacesImplementingInterface2),
-                  typeof (ITypeWithSeveralInterfacesImplementingInterface3), typeof (TypeWithSeveralInterfacesImplementingInterface)
+                  typeof(IBaseBaseInterface1), typeof(IBaseInterface1), typeof(IBaseInterface2), typeof(IBaseInterface3),
+                  typeof(ITypeWithSeveralInterfacesImplementingInterface1), typeof(ITypeWithSeveralInterfacesImplementingInterface2),
+                  typeof(ITypeWithSeveralInterfacesImplementingInterface3), typeof(TypeWithSeveralInterfacesImplementingInterface)
               }));
     }
 
@@ -96,7 +96,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetAffectedType_WithTwoInterfacesHavingCommonBaseInterface ()
     {
       var result =
-          _involvedTypeProvider.GetTypes(typeof (TypeWithTwoInterfacesHavingCommingBaseInterface)).SelectMany(t => t)
+          _involvedTypeProvider.GetTypes(typeof(TypeWithTwoInterfacesHavingCommingBaseInterface)).SelectMany(t => t)
               .ToList();
 
       Assert.That(
@@ -104,8 +104,8 @@ namespace Remotion.Validation.UnitTests.Implementation
           Is.EqualTo(
               new[]
               {
-                  typeof (ICommonBaseBaseInterface), typeof (ITypeWithTwoInterfacesBaseInterface1),
-                  typeof (ITypeWithTwoInterfacesBaseInterface2), typeof (TypeWithTwoInterfacesHavingCommingBaseInterface)
+                  typeof(ICommonBaseBaseInterface), typeof(ITypeWithTwoInterfacesBaseInterface1),
+                  typeof(ITypeWithTwoInterfacesBaseInterface2), typeof(TypeWithTwoInterfacesHavingCommingBaseInterface)
               }));
     }
 
@@ -113,17 +113,17 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetAffectedType_WithBaseTypeAndSeveralInterfacesAndNoMixins ()
     {
       var result =
-          _involvedTypeProvider.GetTypes(typeof (TypeWithSeveralInterfacesAndBaseType)).SelectMany(t => t).ToList();
+          _involvedTypeProvider.GetTypes(typeof(TypeWithSeveralInterfacesAndBaseType)).SelectMany(t => t).ToList();
 
       Assert.That(
           result,
           Is.EqualTo(
               new[]
               {
-                  typeof (ITypeWithServeralInterfaces1), typeof (ITypeWithSeveralInterfaces2), typeof (ITypeWithSeveralInterfaces3),
-                  typeof (TypeWithSeveralInterfaces), typeof (ITypeWithSeveralInterfacesAndBaseTypes1),
-                  typeof (ITypeWithSeveralInterfacesAndBaseTypes2),
-                  typeof (ITypeWithSeveralInterfacesAndBaseTypes3), typeof (TypeWithSeveralInterfacesAndBaseType)
+                  typeof(ITypeWithServeralInterfaces1), typeof(ITypeWithSeveralInterfaces2), typeof(ITypeWithSeveralInterfaces3),
+                  typeof(TypeWithSeveralInterfaces), typeof(ITypeWithSeveralInterfacesAndBaseTypes1),
+                  typeof(ITypeWithSeveralInterfacesAndBaseTypes2),
+                  typeof(ITypeWithSeveralInterfacesAndBaseTypes3), typeof(TypeWithSeveralInterfacesAndBaseType)
               }));
     }
 
@@ -133,17 +133,17 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result =
           _involvedTypeProvider.GetTypes(
-              typeof (TypeWithSeveralInterfacesAndBaseTypeReImplementingInterface)).SelectMany(t => t).ToList();
+              typeof(TypeWithSeveralInterfacesAndBaseTypeReImplementingInterface)).SelectMany(t => t).ToList();
 
       Assert.That(
           result,
           Is.EqualTo(
               new[]
               {
-                  typeof (ITypeWithServeralInterfaces1), typeof (ITypeWithSeveralInterfaces2), typeof (ITypeWithSeveralInterfaces3),
-                  typeof (TypeWithSeveralInterfaces), typeof (ITypeWithServeralInterfaces1), typeof (ITypeWithSeveralInterfacesAndBaseTypes1),
-                  typeof (ITypeWithSeveralInterfacesAndBaseTypes2), typeof (ITypeWithSeveralInterfacesAndBaseTypes3),
-                  typeof (TypeWithSeveralInterfacesAndBaseTypeReImplementingInterface)
+                  typeof(ITypeWithServeralInterfaces1), typeof(ITypeWithSeveralInterfaces2), typeof(ITypeWithSeveralInterfaces3),
+                  typeof(TypeWithSeveralInterfaces), typeof(ITypeWithServeralInterfaces1), typeof(ITypeWithSeveralInterfacesAndBaseTypes1),
+                  typeof(ITypeWithSeveralInterfacesAndBaseTypes2), typeof(ITypeWithSeveralInterfacesAndBaseTypes3),
+                  typeof(TypeWithSeveralInterfacesAndBaseTypeReImplementingInterface)
               }));
     }
 
@@ -155,9 +155,9 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       var involvedTypeProvider = new InvolvedTypeProvider(validationTypeFilterStub.Object);
 
-      var result = involvedTypeProvider.GetTypes(typeof (TypeWithOneInterface)).SelectMany(t => t).ToList();
+      var result = involvedTypeProvider.GetTypes(typeof(TypeWithOneInterface)).SelectMany(t => t).ToList();
 
-      Assert.That(result, Is.EqualTo(new[] { typeof(object), typeof (ITypeWithOneInterface), typeof (TypeWithOneInterface) }));
+      Assert.That(result, Is.EqualTo(new[] { typeof(object), typeof(ITypeWithOneInterface), typeof(TypeWithOneInterface) }));
     }
   }
 }

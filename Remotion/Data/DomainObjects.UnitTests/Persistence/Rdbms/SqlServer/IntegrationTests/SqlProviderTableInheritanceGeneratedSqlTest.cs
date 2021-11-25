@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.OrganizationalUnit.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof (TIDomainBase), "Client");
+      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(TIDomainBase), "Client");
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, DomainObjectIDs.Client).ToArray();
 
       _testHelper.VerifyAllExpectations();
@@ -89,12 +89,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.OrganizationalUnit.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof (TIDomainBase), "Client");
+      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(TIDomainBase), "Client");
       var sortExpression = new SortExpressionDefinition(
           new[]
           {
-              new SortedPropertySpecification(GetPropertyDefinition(typeof (TIDomainBase), "CreatedAt"), SortOrder.Descending),
-              new SortedPropertySpecification(GetPropertyDefinition(typeof (TIPerson), "LastName"), SortOrder.Ascending)
+              new SortedPropertySpecification(GetPropertyDefinition(typeof(TIDomainBase), "CreatedAt"), SortOrder.Descending),
+              new SortedPropertySpecification(GetPropertyDefinition(typeof(TIPerson), "LastName"), SortOrder.Ascending)
           });
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpression, DomainObjectIDs.Client).ToArray();
 
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_WithEmptyResult ()
     {
-      var newObjectID = _testHelper.Provider.CreateNewObjectID(Configuration.GetTypeDefinition(typeof (TIClient)));
+      var newObjectID = _testHelper.Provider.CreateNewObjectID(Configuration.GetTypeDefinition(typeof(TIClient)));
 
       _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@ClientID", DbType.Guid, newObjectID.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof (TIDomainBase), "Client");
+      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(TIDomainBase), "Client");
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, newObjectID).ToArray();
 
       _testHelper.VerifyAllExpectations();

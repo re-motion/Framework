@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         CoordinateSystem? coordinateSystem = null,
         Rectangle? elementBounds = null,
         Rectangle? unresolvedBounds = null,
-        OptionalParameter<Rectangle?> parentBounds = default (OptionalParameter<Rectangle?>),
+        OptionalParameter<Rectangle?> parentBounds = default(OptionalParameter<Rectangle?>),
         ElementVisibility? elementVisibility = null)
     {
       return new ResolvedScreenshotElement(

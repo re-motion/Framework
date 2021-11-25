@@ -42,22 +42,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (LabelTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(LabelTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(ValidationErrorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
       testAction(Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
     }
 
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(DomainPropertyControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource (typeof(DisplayNameControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
       testAction(Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
@@ -565,7 +565,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private class DerivedBocAutoCompleteReferenceValueControlObject : BocAutoCompleteReferenceValueControlObject
     {
       public DerivedBocAutoCompleteReferenceValueControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -574,7 +574,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       public DerivedScreenshotBocAutoCompleteReferenceValueInformationPopup (
           IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentControl)
-          : base (fluentControl)
+          : base(fluentControl)
       {
       }
     }
@@ -583,7 +583,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       public DerivedScreenshotBocAutoCompleteReferenceValueSelectList (
           IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
-          : base (fluentAutoComplete)
+          : base(fluentAutoComplete)
       {
       }
     }

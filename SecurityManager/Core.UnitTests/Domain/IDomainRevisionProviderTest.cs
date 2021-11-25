@@ -22,7 +22,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       var factory = _serviceLocator.GetInstance<IDomainRevisionProvider>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (RevisionProvider)));
+      Assert.That(factory, Is.TypeOf(typeof(RevisionProvider)));
     }
 
     [Test]

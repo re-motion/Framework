@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
   public class UncheckAction : WebTestAction
   {
     public UncheckAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
-        : base (control, scope)
+        : base(control, scope)
     {
     }
 

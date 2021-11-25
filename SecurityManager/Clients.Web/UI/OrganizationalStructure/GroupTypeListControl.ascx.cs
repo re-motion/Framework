@@ -58,12 +58,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       GroupTypeList.LoadUnboundValue(GetValues(), false);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-      NewGroupTypeButton.Visible = securityClient.HasConstructorAccess(typeof (GroupType));
+      NewGroupTypeButton.Visible = securityClient.HasConstructorAccess(typeof(GroupType));
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       GroupTypeListLabel.Text = resourceManager.GetString(ResourceIdentifier.GroupTypeListLabelText);
       NewGroupTypeButton.Text = resourceManager.GetString(ResourceIdentifier.NewGroupTypeButtonText);
 

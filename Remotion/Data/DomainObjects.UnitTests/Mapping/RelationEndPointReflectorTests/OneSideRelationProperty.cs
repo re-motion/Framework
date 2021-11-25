@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     {
       base.SetUp();
 
-      _classType = typeof (ClassWithVirtualRelationEndPoints);
+      _classType = typeof(ClassWithVirtualRelationEndPoints);
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: _classType);
     }
 
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof (DomainObjectCollectionRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NoAttributeForDomainObjectCollection"));
       Assert.That(actual.IsMandatory, Is.False);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof (VirtualCollectionRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NoAttributeForVirtualCollection"));
       Assert.That(actual.IsMandatory, Is.False);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof (DomainObjectCollectionRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NotNullableForDomainObjectCollection"));
       Assert.That(actual.IsMandatory, Is.True);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof (VirtualCollectionRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NotNullableForVirtualCollection"));
       Assert.That(actual.IsMandatory, Is.True);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
@@ -114,11 +114,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof (VirtualObjectRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf(typeof(VirtualObjectRelationEndPointDefinition), actual);
       VirtualObjectRelationEndPointDefinition relationEndPointDefinition = (VirtualObjectRelationEndPointDefinition) actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToOne"));
-      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof (ClassWithRealRelationEndPoints)));
+      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ClassWithRealRelationEndPoints)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.One));
       Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
@@ -137,15 +137,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof (DomainObjectCollectionRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition) actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForDomainObjectCollection"));
-      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof (ObjectList<ClassWithRealRelationEndPoints>)));
+      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
       Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
 
-      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassWithRealRelationEndPoints));
+      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
       var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
       oppositeEndPointDefinition.Stub(stub => stub.ClassDefinition).Return(oppositeClassDefinition);
       var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition);
@@ -177,15 +177,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof (VirtualCollectionRelationEndPointDefinition), actual);
+      Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
       VirtualCollectionRelationEndPointDefinition relationEndPointDefinition = (VirtualCollectionRelationEndPointDefinition) actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForVirtualCollection"));
-      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof (IObjectList<ClassWithRealRelationEndPoints>)));
+      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(IObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
       Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
 
-      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassWithRealRelationEndPoints));
+      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
       var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
       oppositeEndPointDefinition.Stub(stub => stub.ClassDefinition).Return(oppositeClassDefinition);
       var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition);

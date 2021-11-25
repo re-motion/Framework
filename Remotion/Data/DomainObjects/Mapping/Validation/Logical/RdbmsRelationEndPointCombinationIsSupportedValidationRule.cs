@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
               endPointDefinition1.ClassDefinition.ClassType.Name,
               property2.Name,
               endPointDefinition2.ClassDefinition.ClassType.Name,
-              typeof (DBBidirectionalRelationAttribute).Name);
+              typeof(DBBidirectionalRelationAttribute).Name);
         }
         else
         {
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             endPointDefinition1.ClassDefinition.ClassType.Name,
             endPointDefinition2.PropertyInfo.Name,
             endPointDefinition2.ClassDefinition.ClassType.Name,
-            typeof (DBBidirectionalRelationAttribute).Name);
+            typeof(DBBidirectionalRelationAttribute).Name);
       }
 
       return MappingValidationResult.CreateValidResult();

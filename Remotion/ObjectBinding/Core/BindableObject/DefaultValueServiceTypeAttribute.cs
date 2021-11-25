@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public DefaultValueServiceTypeAttribute (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (IDefaultValueService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(IDefaultValueService));
       _type = type;
     }
 

@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
       where T : class
   {
     private T _explicitInterfaceScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
 
     protected string NonPublicProperty { get; set; }
 

@@ -39,10 +39,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     [SetUp]
     public void SetUp ()
     {
-      _simpleMethod = typeof (BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
-      _genericMethod = typeof (BaseType7).GetMethod("One");
-      _methodOnGenericClosedWithReferenceType = typeof (GenericClassWithAllKindsOfMembers<string>).GetMethod("Method");
-      _methodOnGenericClosedWithValueType = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
+      _simpleMethod = typeof(BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
+      _genericMethod = typeof(BaseType7).GetMethod("One");
+      _methodOnGenericClosedWithReferenceType = typeof(GenericClassWithAllKindsOfMembers<string>).GetMethod("Method");
+      _methodOnGenericClosedWithValueType = typeof(GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
 
       _serializer = new AttributeConcreteMixinTypeIdentifierSerializer();
       _deserializer = new AttributeConcreteMixinTypeIdentifierDeserializer(_serializer.Values);
@@ -51,8 +51,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
     [Test]
     public void GetMixinType ()
     {
-      _serializer.AddMixinType(typeof (BT1Mixin1));
-      Assert.That(_deserializer.GetMixinType(), Is.SameAs(typeof (BT1Mixin1)));
+      _serializer.AddMixinType(typeof(BT1Mixin1));
+      Assert.That(_deserializer.GetMixinType(), Is.SameAs(typeof(BT1Mixin1)));
     }
 
     [Test]

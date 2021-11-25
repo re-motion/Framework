@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public SerializationTestTransactedFunction ()
-        : base (WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit)
+        : base(WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit)
     {
     }
 

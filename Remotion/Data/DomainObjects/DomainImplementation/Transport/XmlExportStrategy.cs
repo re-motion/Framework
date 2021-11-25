@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("outputStream", outputStream);
       ArgumentUtility.CheckNotNull("transportedObjects", transportedObjects);
 
-      var formatter = new XmlSerializer(typeof (XmlTransportItem[]));
+      var formatter = new XmlSerializer(typeof(XmlTransportItem[]));
       PerformSerialization(XmlTransportItem.Wrap(transportedObjects), outputStream, formatter);
     }
 

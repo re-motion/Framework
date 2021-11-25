@@ -30,21 +30,21 @@ namespace Remotion.Data.DomainObjects.Validation
     private readonly string _propertyName;
 
     public PropertyValueNotSetException (DomainObject domainObject, string propertyName, string message)
-        : this (domainObject, propertyName, message, null)
+        : this(domainObject, propertyName, message, null)
     {
     }
 
     public PropertyValueNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner)
-        : base (message, inner)
+        : base(message, inner)
     {
       _domainObject = domainObject;
       _propertyName = propertyName;
     }
 
     protected PropertyValueNotSetException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _domainObject = (DomainObject) info.GetValue("_domainObject", typeof (DomainObject));
+      _domainObject = (DomainObject) info.GetValue("_domainObject", typeof(DomainObject));
       _propertyName = info.GetString("_propertyName");
     }
 

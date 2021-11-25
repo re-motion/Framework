@@ -55,7 +55,7 @@ namespace Remotion.Utilities
     /// <param name="cultureName">Culture name string. <see langword="null" /> to not switch culture.</param>
     /// <param name="uiCultureName">User interface culture name string. <see langword="null" /> to not switch UI-culture.</param>
     public CultureScope (string? cultureName, string? uiCultureName)
-      : this (
+      : this(
       cultureName == null ? null : CultureInfo.GetCultureInfo(cultureName),
       uiCultureName == null ? null : CultureInfo.GetCultureInfo(uiCultureName))
     {
@@ -66,7 +66,7 @@ namespace Remotion.Utilities
     /// Intialize both the culture and UI-culture with the same culture-name
     /// </summary>
     /// <param name="cultureAndUiCultureName">Culture and User interface culture name string.</param>
-    public CultureScope (string? cultureAndUiCultureName) : this (cultureAndUiCultureName, cultureAndUiCultureName) { }
+    public CultureScope (string? cultureAndUiCultureName) : this(cultureAndUiCultureName, cultureAndUiCultureName) { }
 
 
     /// <summary>

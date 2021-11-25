@@ -34,7 +34,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
   /// <threadsafety static="true" instance="true" />
   public class AssemblyFinder : IAssemblyFinder
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof (AssemblyFinder)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(AssemblyFinder)));
 
     private readonly IRootAssemblyFinder _rootAssemblyFinder;
     private readonly IAssemblyLoader _assemblyLoader;

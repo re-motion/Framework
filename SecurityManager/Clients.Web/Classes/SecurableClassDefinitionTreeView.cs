@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     protected override string GetText (IBusinessObjectWithIdentity businessObject)

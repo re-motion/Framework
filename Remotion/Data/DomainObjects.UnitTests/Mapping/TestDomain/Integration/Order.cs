@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [StorageClassNone]
     public int RedirectedOrderNumber
     {
-      [LinqPropertyRedirection (typeof (Order), "OrderNumber")]
+      [LinqPropertyRedirection (typeof(Order), "OrderNumber")]
       get { return OrderNumber; }
     }
 
     [StorageClassNone]
     public int RedirectedRedirectedOrderNumber
     {
-      [LinqPropertyRedirection (typeof (Order), "RedirectedOrderNumber")]
+      [LinqPropertyRedirection (typeof(Order), "RedirectedOrderNumber")]
       get { return RedirectedOrderNumber; }
     }
     
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [StorageClassNone]
     public OrderTicket RedirectedOrderTicket
     {
-      [LinqPropertyRedirection (typeof (Order), "OrderTicket")]
+      [LinqPropertyRedirection (typeof(Order), "OrderTicket")]
       get { return OrderTicket; }
     }
 
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [StorageClassNone]
     public ObjectList<OrderItem> RedirectedOrderItems
     {
-      [LinqPropertyRedirection (typeof (Order), "OrderItems")]
+      [LinqPropertyRedirection (typeof(Order), "OrderItems")]
       get { return OrderItems; }
     }
 
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [StorageClassNone]
     public Customer OriginalCustomer
     {
-      get { return Properties[typeof (Order), "Customer"].GetOriginalValue<Customer>(); }
+      get { return Properties[typeof(Order), "Customer"].GetOriginalValue<Customer>(); }
     }
 
     [StorageClassNone]

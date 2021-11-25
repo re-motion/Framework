@@ -136,7 +136,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       var service = _webServiceFactory.CreateScriptService<IValidScriptService>("~/VirtualServicePath");
 
@@ -146,7 +146,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_InterfaceNotImplemented ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateScriptService<IInvalidInterface>("~/VirtualServicePath"),
@@ -158,7 +158,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_BaseTypeNotImplemented ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateScriptService<InvalidBaseType>("~/VirtualServicePath"),
@@ -170,7 +170,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_FactoryChecksScriptServiceDeclaration ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateScriptService<IInvalidScriptServiceWithMissingScriptMethodAttribute>("~/VirtualServicePath"),
@@ -191,7 +191,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_DerivedInterfaceWithMethodsOnBaseType ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       var service = _webServiceFactory.CreateScriptService<IValidInheritedScriptServiceWithMethodsOnBase>("~/VirtualServicePath");
 
@@ -201,7 +201,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_DerivedInterfaceWithMethodsOnBaseType_ThrowsWhenMemberDoesNotHaveAScriptMethodAttribute ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateScriptService<IInvalidInheritedScriptServiceWithMethodsOnBase>("~/VirtualServicePath"),
@@ -212,7 +212,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_DerivedInterfaceWithMethodsOnBaseTypeAndDerivedType ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       var service = _webServiceFactory.CreateScriptService<IValidInheritedScriptServiceWithMethodsOnBaseAndDerived>("~/VirtualServicePath");
 
@@ -222,7 +222,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_DerivedInterfaceWithMethodsOnBaseTypeAndDerivedType_ThrowsWhenMemberDoesNotHaveAScriptMethodAttribute ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateScriptService<IInvalidInheritedScriptServiceWithMethodsOnBaseAndDerived>("~/VirtualServicePath"),
@@ -233,7 +233,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_DerivedInterfaceWithMethodsOnMultipleBaseTypes ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       var service = _webServiceFactory.CreateScriptService<IValidInheritedScriptServiceWithMethodsOnMultipleBases>("~/VirtualServicePath");
 
@@ -243,7 +243,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_DerivedInterfaceWithMethodsOnMultipleBaseTypes_ThrowsWhenMemberDoesNotHaveAScriptMethodAttribute ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateScriptService<IInvalidInheritedScriptServiceWithMethodsOnMultipleBases>("~/VirtualServicePath"),

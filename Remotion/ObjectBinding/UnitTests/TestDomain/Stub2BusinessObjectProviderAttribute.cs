@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class Stub2BusinessObjectProviderAttribute : BusinessObjectProviderAttribute
   {
     public Stub2BusinessObjectProviderAttribute ()
-        : base (typeof (StubBusinessObjectProvider))
+        : base(typeof(StubBusinessObjectProvider))
     {
     }
   }

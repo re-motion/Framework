@@ -38,11 +38,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetMetadataForMixedType_Wrapper ()
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
-      var expectedResult = ClassContextObjectMother.Create(typeof (object));
-      importerMock.Expect(mock => mock.GetMetadataForMixedType(typeof (object))).Return(expectedResult);
+      var expectedResult = ClassContextObjectMother.Create(typeof(object));
+      importerMock.Expect(mock => mock.GetMetadataForMixedType(typeof(object))).Return(expectedResult);
 
       importerMock.Replay();
-      var result = importerMock.GetMetadataForMixedType(typeof (object));
+      var result = importerMock.GetMetadataForMixedType(typeof(object));
 
       Assert.That(result, Is.SameAs(expectedResult));
       importerMock.VerifyAllExpectations();
@@ -52,12 +52,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetMetadataForMixinType_Identifier ()
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
-      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
 
       SetupImporterMock(importerMock, expectedIdentifier, new Dictionary<MethodInfo, MethodInfo>(), new Dictionary<MethodInfo, MethodInfo>());
       importerMock.Replay();
       
-      var result = importerMock.GetMetadataForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers));
+      var result = importerMock.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
 
       Assert.That(result.Identifier, Is.SameAs(expectedIdentifier));
       
@@ -68,14 +68,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetMetadataForMixinType_GeneratedType ()
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
-      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
       
       SetupImporterMock(importerMock, expectedIdentifier, new Dictionary<MethodInfo, MethodInfo>(), new Dictionary<MethodInfo, MethodInfo>());
       importerMock.Replay();
 
-      var result = importerMock.GetMetadataForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers));
+      var result = importerMock.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
 
-      Assert.That(result.GeneratedType, Is.SameAs(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers)));
+      Assert.That(result.GeneratedType, Is.SameAs(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers)));
 
       importerMock.VerifyAllExpectations();
     }
@@ -84,14 +84,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetMetadataForMixinType_GeneratedOverrideInterface ()
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
-      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
 
       SetupImporterMock(importerMock, expectedIdentifier, new Dictionary<MethodInfo, MethodInfo>(), new Dictionary<MethodInfo, MethodInfo>());
       importerMock.Replay();
 
-      var result = importerMock.GetMetadataForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers));
+      var result = importerMock.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
 
-      Assert.That(result.GeneratedOverrideInterface, Is.SameAs(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers.IOverriddenMethods)));
+      Assert.That(result.GeneratedOverrideInterface, Is.SameAs(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers.IOverriddenMethods)));
 
       importerMock.VerifyAllExpectations();
     }
@@ -100,12 +100,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetMetadataForMixinType_NoOverrideInterface ()
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
-      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
 
-      importerMock.Expect(mock => mock.GetIdentifierForMixinType(typeof (object))).Return(expectedIdentifier);
+      importerMock.Expect(mock => mock.GetIdentifierForMixinType(typeof(object))).Return(expectedIdentifier);
       importerMock.Replay();
       Assert.That(
-          () => importerMock.GetMetadataForMixinType(typeof (object)),
+          () => importerMock.GetMetadataForMixinType(typeof(object)),
           Throws.InstanceOf<TypeImportException>()
               .With.Message.EqualTo(
                   "The given type 'System.Object' has a concrete mixin type identifier, but no "
@@ -116,12 +116,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetMetadataForMixinType_Wrappers ()
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
-      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
 
       var method1 = ReflectionObjectMother.GetSomeNonPublicMethod();
-      var method2 = typeof (DateTime).GetMethod("get_InternalTicks", BindingFlags.NonPublic | BindingFlags.Instance);
-      var wrapper1 = typeof (DateTime).GetMethod("get_Month");
-      var wrapper2 = typeof (DateTime).GetMethod("get_Year");
+      var method2 = typeof(DateTime).GetMethod("get_InternalTicks", BindingFlags.NonPublic | BindingFlags.Instance);
+      var wrapper1 = typeof(DateTime).GetMethod("get_Month");
+      var wrapper2 = typeof(DateTime).GetMethod("get_Year");
 
       SetupImporterMock(
           importerMock, 
@@ -130,7 +130,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
           new Dictionary<MethodInfo, MethodInfo> { { method1, wrapper1 }, { method2, wrapper2} });
       importerMock.Replay();
 
-      var result = importerMock.GetMetadataForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers));
+      var result = importerMock.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
       Assert.That(result.GetPubliclyCallableMixinMethod(method1), Is.EqualTo(wrapper1));
       Assert.That(result.GetPubliclyCallableMixinMethod(method2), Is.EqualTo(wrapper2));
 
@@ -141,12 +141,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetMetadataForMixinType_OverrideInterfaceMethods ()
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
-      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
 
-      var mixinMethod1 = typeof (DateTime).GetMethod("get_Now");
-      var mixinMethod2 = typeof (DateTime).GetMethod("get_Day");
-      var ifcMethod1 = typeof (DateTime).GetMethod("get_Month");
-      var ifcMethod2 = typeof (DateTime).GetMethod("get_Year");
+      var mixinMethod1 = typeof(DateTime).GetMethod("get_Now");
+      var mixinMethod2 = typeof(DateTime).GetMethod("get_Day");
+      var ifcMethod1 = typeof(DateTime).GetMethod("get_Month");
+      var ifcMethod2 = typeof(DateTime).GetMethod("get_Year");
 
       SetupImporterMock(
           importerMock,
@@ -155,7 +155,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
           new Dictionary<MethodInfo, MethodInfo>());
       importerMock.Replay();
 
-      var result = importerMock.GetMetadataForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers));
+      var result = importerMock.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
       Assert.That(result.GetOverrideInterfaceMethod(mixinMethod1), Is.SameAs(ifcMethod1));
       Assert.That(result.GetOverrideInterfaceMethod(mixinMethod2), Is.SameAs(ifcMethod2));
 
@@ -167,10 +167,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
 
-      importerMock.Expect(mock => mock.GetIdentifierForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers))).Return(null);
+      importerMock.Expect(mock => mock.GetIdentifierForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers))).Return(null);
       importerMock.Replay();
 
-      var result = importerMock.GetMetadataForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers));
+      var result = importerMock.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
       Assert.That(result, Is.Null);
 
       importerMock.VerifyAllExpectations();
@@ -179,8 +179,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetMetadataForMixedType ()
     {
-      var classContext1 = ClassContextObjectMother.Create(typeof (object));
-      var type = typeof (ClassWithConcreteMixedTypeAttribute);
+      var classContext1 = ClassContextObjectMother.Create(typeof(object));
+      var type = typeof(ClassWithConcreteMixedTypeAttribute);
       var importer = new AttributeBasedMetadataImporter();
 
       var result = importer.GetMetadataForMixedType(type);
@@ -191,7 +191,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetMetadataForMixedType_WithAttributeOnBaseType ()
     {
-      var type = typeof (DerivedClassWithConcreteMixedTypeAttributeOnBaseClass);
+      var type = typeof(DerivedClassWithConcreteMixedTypeAttributeOnBaseClass);
       var importer = new AttributeBasedMetadataImporter();
 
       var result = importer.GetMetadataForMixedType(type);
@@ -202,7 +202,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetMetadataForMixedType_NoAttribute ()
     {
-      var type = typeof (ClassWithNoAttributes);
+      var type = typeof(ClassWithNoAttributes);
       var importer = new AttributeBasedMetadataImporter();
 
       var result = importer.GetMetadataForMixedType(type);
@@ -213,8 +213,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetIdentifierForMixinType ()
     {
-      var identifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
-      var type = typeof (ClassWithConcreteMixinTypeAttribute);
+      var identifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var type = typeof(ClassWithConcreteMixinTypeAttribute);
       var importer = new AttributeBasedMetadataImporter();
 
       var result = importer.GetIdentifierForMixinType(type);
@@ -225,7 +225,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetIdentifierForMixinType_WithAttributeOnBaseType ()
     {
-      var type = typeof (DerivedClassWithConcreteMixinTypeAttributeOnBaseClass);
+      var type = typeof(DerivedClassWithConcreteMixinTypeAttributeOnBaseClass);
       var importer = new AttributeBasedMetadataImporter();
 
       var result = importer.GetIdentifierForMixinType(type);
@@ -236,7 +236,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetIdentifierForMixinType_NoAttribute ()
     {
-      var type = typeof (ClassWithNoAttributes);
+      var type = typeof(ClassWithNoAttributes);
       var importer = new AttributeBasedMetadataImporter();
 
       var result = importer.GetIdentifierForMixinType(type);
@@ -256,8 +256,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var nonWrapperMethod2 = builtType.GetMethod("NonWrapper2");
       
       // fake wrapped methods
-      var wrappedMethod1 = typeof (DateTime).GetMethod("get_Now");
-      var wrappedMethod2 = typeof (DateTime).GetMethod("get_Day");
+      var wrappedMethod1 = typeof(DateTime).GetMethod("get_Now");
+      var wrappedMethod2 = typeof(DateTime).GetMethod("get_Day");
 
       // fake attributes simulating the relationship between wrapper methods and wrapped methods
       var attribute1 = new GeneratedMethodWrapperAttribute(wrappedMethod1.DeclaringType, wrappedMethod1.Name, wrappedMethod1.ToString());
@@ -280,9 +280,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetOverrideInterfaceMethodsByMixinMethod ()
     {
       var importer = new AttributeBasedMetadataImporter();
-      var identifier = new ConcreteMixinTypeIdentifier(typeof (MixinWithAbstractMembers), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var identifier = new ConcreteMixinTypeIdentifier(typeof(MixinWithAbstractMembers), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
       
-      var interfaceType = typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers.IOverriddenMethods);
+      var interfaceType = typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers.IOverriddenMethods);
       var result = importer.GetOverrideInterfaceMethodsByMixinMethod(interfaceType, identifier);
 
       var ifcMethod1 = interfaceType.GetMethod("AbstractMethod");
@@ -315,7 +315,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var attribute = (GeneratedMethodWrapperAttribute) PrivateInvoke.InvokeNonPublicMethod(importer, "GetWrapperAttribute", method);
 
       Assert.That(attribute, Is.Not.Null);
-      Assert.That(attribute.DeclaringType, Is.EqualTo(typeof (DateTime)));
+      Assert.That(attribute.DeclaringType, Is.EqualTo(typeof(DateTime)));
       Assert.That(attribute.MethodName, Is.EqualTo("get_Now"));
       Assert.That(attribute.MethodSignature, Is.EqualTo("System.DateTime get_Now()"));
     }
@@ -337,20 +337,20 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         Dictionary<MethodInfo, MethodInfo> methodWrappers)
     {
       importerMock
-          .Expect(mock => mock.GetIdentifierForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers)))
+          .Expect(mock => mock.GetIdentifierForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers)))
           .Return(expectedIdentifier);
       importerMock
           .Expect(mock => mock.GetOverrideInterfaceMethodsByMixinMethod(
-                               typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers.IOverriddenMethods),
+                               typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers.IOverriddenMethods),
                                expectedIdentifier))
           .Return(overrideInterfaceMethods);
       importerMock
-          .Expect(mock => mock.GetMethodWrappersForMixinType(typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers)))
+          .Expect(mock => mock.GetMethodWrappersForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers)))
           .Return(methodWrappers);
     }
 
 
-    [GeneratedMethodWrapper (typeof (DateTime), "get_Now", "System.DateTime get_Now()")]
+    [GeneratedMethodWrapper (typeof(DateTime), "get_Now", "System.DateTime get_Now()")]
     public void FakeWrapperMethod ()
     {
     }
@@ -375,12 +375,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
     }
 
-    [ConcreteMixedType (new object[] { typeof (object), new object[0], new Type[0] }, new Type[0])]
+    [ConcreteMixedType (new object[] { typeof(object), new object[0], new Type[0] }, new Type[0])]
     private class ClassWithConcreteMixedTypeAttribute
     {
     }
 
-    [ConcreteMixinType (new object[] { typeof (object), new object[0], new object[0] })]
+    [ConcreteMixinType (new object[] { typeof(object), new object[0], new object[0] })]
     private class ClassWithConcreteMixinTypeAttribute
     {
     }

@@ -42,7 +42,7 @@ namespace Remotion.Development.Web.ResourceHosting
   
     static ResourceVirtualPathProvider ()
     {
-      var staticFileHandlerType = typeof (HttpApplication).Assembly.GetType("System.Web.StaticFileHandler", true)!;
+      var staticFileHandlerType = typeof(HttpApplication).Assembly.GetType("System.Web.StaticFileHandler", true)!;
       s_staticFileHandler = (IHttpHandler) Activator.CreateInstance(staticFileHandlerType, true)!;
     }
     

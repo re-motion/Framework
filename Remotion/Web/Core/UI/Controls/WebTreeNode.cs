@@ -25,7 +25,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A node for the <see cref="WebTreeView"/>. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class WebTreeNode : IControlItem
   {
     /// <summary> The control to which this object belongs. </summary>
@@ -61,19 +61,19 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string text, IconInfo icon)
-        : this (itemID, text, string.Empty, icon)
+        : this(itemID, text, string.Empty, icon)
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string text, string iconUrl)
-        : this (itemID, text, new IconInfo(iconUrl, Unit.Empty, Unit.Empty))
+        : this(itemID, text, new IconInfo(iconUrl, Unit.Empty, Unit.Empty))
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string text)
-        : this (itemID, text, string.Empty)
+        : this(itemID, text, string.Empty)
     {
     }
 

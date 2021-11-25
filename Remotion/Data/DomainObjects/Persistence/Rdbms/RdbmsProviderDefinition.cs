@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly string _connectionString;
 
     public RdbmsProviderDefinition (string name, IStorageObjectFactory factory, string connectionString)
-        : base (name, factory)
+        : base(name, factory)
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
       ArgumentUtility.CheckNotNullAndType<IRdbmsStorageObjectFactory>("factory", factory);
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     }
 
     public RdbmsProviderDefinition (string name, NameValueCollection config)
-        : base (name, config)
+        : base(name, config)
     {
       ArgumentUtility.CheckNotNull("config", config);
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       ArgumentUtility.CheckNotNull("identityType", identityType);
 
-      return (identityType == typeof (Guid));
+      return (identityType == typeof(Guid));
     }
   }
 }

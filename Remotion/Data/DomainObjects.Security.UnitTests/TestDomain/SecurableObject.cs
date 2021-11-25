@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 {
   [Instantiable]
   [DBTable]
-  [Uses (typeof (SecurableObjectMixin))]
+  [Uses (typeof(SecurableObjectMixin))]
   public abstract class SecurableObject : DomainObject, ISecurableObject, ISecurityContextFactory
   {
     private static Action<SecurableObject> _ctorHandler;

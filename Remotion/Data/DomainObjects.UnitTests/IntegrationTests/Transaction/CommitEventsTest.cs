@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var customerEventReceiver = new DomainObjectEventReceiver(_customer);
       var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
-      _customer.Committing += (sender, e) => { _customer.Name = _customer.Properties[typeof (Company), "Name"].GetOriginalValue<string>(); };
+      _customer.Committing += (sender, e) => { _customer.Name = _customer.Properties[typeof(Company), "Name"].GetOriginalValue<string>(); };
 
       TestableClientTransaction.Commit();
 

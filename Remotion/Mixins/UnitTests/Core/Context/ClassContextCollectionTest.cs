@@ -39,12 +39,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [SetUp]
     public void SetUp ()
     {
-      _ccObjectWithMixin = ClassContextObjectMother.Create(typeof (object), typeof (NullMixin2));
-      _ccString = ClassContextObjectMother.Create(typeof (string));
+      _ccObjectWithMixin = ClassContextObjectMother.Create(typeof(object), typeof(NullMixin2));
+      _ccString = ClassContextObjectMother.Create(typeof(string));
       _collectionWithObjectAndString = new ClassContextCollection(_ccObjectWithMixin, _ccString);
 
-      _ccListOfT = ClassContextObjectMother.Create(typeof (List<>));
-      _ccListOfString = ClassContextObjectMother.Create(typeof (List<string>));
+      _ccListOfT = ClassContextObjectMother.Create(typeof(List<>));
+      _ccListOfString = ClassContextObjectMother.Create(typeof(List<string>));
 
       _emptyCollection = new ClassContextCollection();
     }
@@ -68,12 +68,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var collection = new ClassContextCollection(_ccObjectWithMixin, _ccString, _ccListOfT, _ccListOfString);
 
-      Assert.That(collection.GetExact(typeof (object)), Is.SameAs(_ccObjectWithMixin));
-      Assert.That(collection.GetExact(typeof (string)), Is.SameAs(_ccString));
-      Assert.That(collection.GetExact(typeof (int)), Is.Null);
-      Assert.That(collection.GetExact(typeof (List<>)), Is.SameAs(_ccListOfT));
-      Assert.That(collection.GetExact(typeof (List<int>)), Is.Null);
-      Assert.That(collection.GetExact(typeof (List<string>)), Is.SameAs(_ccListOfString));
+      Assert.That(collection.GetExact(typeof(object)), Is.SameAs(_ccObjectWithMixin));
+      Assert.That(collection.GetExact(typeof(string)), Is.SameAs(_ccString));
+      Assert.That(collection.GetExact(typeof(int)), Is.Null);
+      Assert.That(collection.GetExact(typeof(List<>)), Is.SameAs(_ccListOfT));
+      Assert.That(collection.GetExact(typeof(List<int>)), Is.Null);
+      Assert.That(collection.GetExact(typeof(List<string>)), Is.SameAs(_ccListOfString));
     }
 
     [Test]
@@ -81,102 +81,102 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var collection = new ClassContextCollection(_ccObjectWithMixin, _ccString, _ccListOfT, _ccListOfString);
 
-      Assert.That(collection.GetWithInheritance(typeof (object)), Is.SameAs(_ccObjectWithMixin));
-      Assert.That(collection.GetWithInheritance(typeof (string)), Is.SameAs(_ccString));
-      Assert.That(collection.GetWithInheritance(typeof (List<>)), Is.SameAs(_ccListOfT));
-      Assert.That(collection.GetWithInheritance(typeof (List<string>)), Is.SameAs(_ccListOfString));
+      Assert.That(collection.GetWithInheritance(typeof(object)), Is.SameAs(_ccObjectWithMixin));
+      Assert.That(collection.GetWithInheritance(typeof(string)), Is.SameAs(_ccString));
+      Assert.That(collection.GetWithInheritance(typeof(List<>)), Is.SameAs(_ccListOfT));
+      Assert.That(collection.GetWithInheritance(typeof(List<string>)), Is.SameAs(_ccListOfString));
     }
 
     [Test]
     public void GetWithInheritance_Null ()
     {
-      Assert.That(_emptyCollection.GetWithInheritance(typeof (int)), Is.Null);
+      Assert.That(_emptyCollection.GetWithInheritance(typeof(int)), Is.Null);
     }
 
     [Test]
     public void GetWithInheritance_Inheritance_FromBaseType ()
     {
-      ClassContext inherited1 = _collectionWithObjectAndString.GetWithInheritance(typeof (ClassContextCollectionTest));
+      ClassContext inherited1 = _collectionWithObjectAndString.GetWithInheritance(typeof(ClassContextCollectionTest));
       Assert.That(inherited1, Is.Not.Null);
-      Assert.That(inherited1.Type, Is.EqualTo(typeof (ClassContextCollectionTest)));
-      Assert.That(inherited1.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(inherited1.Type, Is.EqualTo(typeof(ClassContextCollectionTest)));
+      Assert.That(inherited1.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
 
-      ClassContext inherited2 = _collectionWithObjectAndString.GetWithInheritance(typeof (ClassContextCollectionTest));
+      ClassContext inherited2 = _collectionWithObjectAndString.GetWithInheritance(typeof(ClassContextCollectionTest));
       Assert.That(inherited2, Is.EqualTo(inherited1));
 
-      ClassContext inherited3 = _collectionWithObjectAndString.GetWithInheritance(typeof (int));
+      ClassContext inherited3 = _collectionWithObjectAndString.GetWithInheritance(typeof(int));
       Assert.That(inherited3, Is.Not.Null);
-      Assert.That(inherited3.Type, Is.EqualTo(typeof (int)));
-      Assert.That(inherited3.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(inherited3.Type, Is.EqualTo(typeof(int)));
+      Assert.That(inherited3.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
     }
 
     [Test]
     public void GetWithInheritance_Inheritance_FromInterface ()
     {
-      var classContext = ClassContextObjectMother.Create(typeof (IMixedInterface), typeof (NullMixin), typeof (NullMixin2));
+      var classContext = ClassContextObjectMother.Create(typeof(IMixedInterface), typeof(NullMixin), typeof(NullMixin2));
       var collection = new ClassContextCollection(classContext);
 
-      ClassContext inherited = collection.GetWithInheritance(typeof (ClassWithMixedInterface));
+      ClassContext inherited = collection.GetWithInheritance(typeof(ClassWithMixedInterface));
       Assert.That(inherited, Is.Not.Null);
-      Assert.That(inherited.Type, Is.EqualTo(typeof (ClassWithMixedInterface)));
-      Assert.That(inherited.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
-      Assert.That(inherited.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(inherited.Type, Is.EqualTo(typeof(ClassWithMixedInterface)));
+      Assert.That(inherited.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
+      Assert.That(inherited.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
     }
 
     [Test]
     public void GetWithInheritance_Inheritance_FromInterfaceAndBase ()
     {
-      var classContext1 = ClassContextObjectMother.Create(typeof (IMixedInterface), typeof (NullMixin), typeof (NullMixin2));
-      var classContext2 = ClassContextObjectMother.Create(typeof (object), typeof (NullMixin3));
+      var classContext1 = ClassContextObjectMother.Create(typeof(IMixedInterface), typeof(NullMixin), typeof(NullMixin2));
+      var classContext2 = ClassContextObjectMother.Create(typeof(object), typeof(NullMixin3));
 
       var collection = new ClassContextCollection(classContext1, classContext2);
 
-      ClassContext inherited = collection.GetWithInheritance(typeof (ClassWithMixedInterface));
+      ClassContext inherited = collection.GetWithInheritance(typeof(ClassWithMixedInterface));
       Assert.That(inherited, Is.Not.Null);
-      Assert.That(inherited.Type, Is.EqualTo(typeof (ClassWithMixedInterface)));
-      Assert.That(inherited.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
-      Assert.That(inherited.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
-      Assert.That(inherited.Mixins.ContainsKey(typeof (NullMixin3)), Is.True);
+      Assert.That(inherited.Type, Is.EqualTo(typeof(ClassWithMixedInterface)));
+      Assert.That(inherited.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
+      Assert.That(inherited.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
+      Assert.That(inherited.Mixins.ContainsKey(typeof(NullMixin3)), Is.True);
     }
 
     [Test]
     public void GetWithInheritance_Inheritance_FromGenericTypeDefinition ()
     {
-      var classContext1 = ClassContextObjectMother.Create(typeof (List<>), typeof (NullMixin3));
-      var classContext2 = ClassContextObjectMother.Create(typeof (List<string>), typeof (NullMixin4));
+      var classContext1 = ClassContextObjectMother.Create(typeof(List<>), typeof(NullMixin3));
+      var classContext2 = ClassContextObjectMother.Create(typeof(List<string>), typeof(NullMixin4));
 
       var collection = new ClassContextCollection(classContext1, classContext2);
 
-      ClassContext inherited4 = collection.GetWithInheritance(typeof (List<int>));
+      ClassContext inherited4 = collection.GetWithInheritance(typeof(List<int>));
       Assert.That(inherited4, Is.Not.Null);
-      Assert.That(inherited4.Type, Is.EqualTo(typeof (List<int>)));
-      Assert.That(inherited4.Mixins.ContainsKey(typeof (NullMixin3)), Is.True);
-      Assert.That(inherited4.Mixins.ContainsKey(typeof (NullMixin4)), Is.False);
+      Assert.That(inherited4.Type, Is.EqualTo(typeof(List<int>)));
+      Assert.That(inherited4.Mixins.ContainsKey(typeof(NullMixin3)), Is.True);
+      Assert.That(inherited4.Mixins.ContainsKey(typeof(NullMixin4)), Is.False);
     }
 
     [Test]
     public void GetWithInheritance_Inheritance_FromGenericTypeDefinitionAndBase ()
     {
-      var classContext1 = ClassContextObjectMother.Create(typeof (List<>), typeof (NullMixin3));
-      var classContext2 = ClassContextObjectMother.Create(typeof (List<string>), typeof (NullMixin4));
-      var classContext3 = ClassContextObjectMother.Create(typeof (object), typeof (NullMixin2));
+      var classContext1 = ClassContextObjectMother.Create(typeof(List<>), typeof(NullMixin3));
+      var classContext2 = ClassContextObjectMother.Create(typeof(List<string>), typeof(NullMixin4));
+      var classContext3 = ClassContextObjectMother.Create(typeof(object), typeof(NullMixin2));
 
       var collection = new ClassContextCollection(classContext1, classContext2, classContext3);
 
-      ClassContext inherited4 = collection.GetWithInheritance(typeof (List<int>));
+      ClassContext inherited4 = collection.GetWithInheritance(typeof(List<int>));
       Assert.That(inherited4, Is.Not.Null);
-      Assert.That(inherited4.Type, Is.EqualTo(typeof (List<int>)));
-      Assert.That(inherited4.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
-      Assert.That(inherited4.Mixins.ContainsKey(typeof (NullMixin3)), Is.True);
+      Assert.That(inherited4.Type, Is.EqualTo(typeof(List<int>)));
+      Assert.That(inherited4.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
+      Assert.That(inherited4.Mixins.ContainsKey(typeof(NullMixin3)), Is.True);
     }
 
     [Test]
     public void GetWithInheritance_Cached ()
     {
-      Assert.That(_collectionWithObjectAndString.ContainsExact(typeof (ClassContextInheritanceTest)), Is.False);
+      Assert.That(_collectionWithObjectAndString.ContainsExact(typeof(ClassContextInheritanceTest)), Is.False);
       
-      var inheritedContext1 = _collectionWithObjectAndString.GetWithInheritance(typeof (ClassContextCollectionTest));
-      var inheritedContext2 = _collectionWithObjectAndString.GetWithInheritance(typeof (ClassContextCollectionTest));
+      var inheritedContext1 = _collectionWithObjectAndString.GetWithInheritance(typeof(ClassContextCollectionTest));
+      var inheritedContext2 = _collectionWithObjectAndString.GetWithInheritance(typeof(ClassContextCollectionTest));
 
       Assert.That(inheritedContext1, Is.SameAs(inheritedContext2));
     }
@@ -186,12 +186,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var collection = new ClassContextCollection(_ccObjectWithMixin, _ccString, _ccListOfT, _ccListOfString);
 
-      Assert.That(collection.ContainsExact(typeof (object)), Is.True);
-      Assert.That(collection.ContainsExact(typeof (string)), Is.True);
-      Assert.That(collection.ContainsExact(typeof (int)), Is.False);
-      Assert.That(collection.ContainsExact(typeof (List<>)), Is.True);
-      Assert.That(collection.ContainsExact(typeof (List<int>)), Is.False);
-      Assert.That(collection.ContainsExact(typeof (List<string>)), Is.True);
+      Assert.That(collection.ContainsExact(typeof(object)), Is.True);
+      Assert.That(collection.ContainsExact(typeof(string)), Is.True);
+      Assert.That(collection.ContainsExact(typeof(int)), Is.False);
+      Assert.That(collection.ContainsExact(typeof(List<>)), Is.True);
+      Assert.That(collection.ContainsExact(typeof(List<int>)), Is.False);
+      Assert.That(collection.ContainsExact(typeof(List<string>)), Is.True);
     }
 
     [Test]
@@ -199,15 +199,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var collection = new ClassContextCollection(_ccObjectWithMixin, _ccString, _ccListOfT, _ccListOfString);
 
-      Assert.That(collection.ContainsWithInheritance(typeof (object)), Is.True);
-      Assert.That(collection.ContainsWithInheritance(typeof (string)), Is.True);
-      Assert.That(collection.ContainsWithInheritance(typeof (ClassContextCollectionTest)), Is.True);
-      Assert.That(collection.ContainsWithInheritance(typeof (int)), Is.True);
-      Assert.That(collection.ContainsWithInheritance(typeof (List<>)), Is.True);
-      Assert.That(collection.ContainsWithInheritance(typeof (List<int>)), Is.True);
-      Assert.That(collection.ContainsWithInheritance(typeof (List<string>)), Is.True);
+      Assert.That(collection.ContainsWithInheritance(typeof(object)), Is.True);
+      Assert.That(collection.ContainsWithInheritance(typeof(string)), Is.True);
+      Assert.That(collection.ContainsWithInheritance(typeof(ClassContextCollectionTest)), Is.True);
+      Assert.That(collection.ContainsWithInheritance(typeof(int)), Is.True);
+      Assert.That(collection.ContainsWithInheritance(typeof(List<>)), Is.True);
+      Assert.That(collection.ContainsWithInheritance(typeof(List<int>)), Is.True);
+      Assert.That(collection.ContainsWithInheritance(typeof(List<string>)), Is.True);
 
-      Assert.That(_emptyCollection.ContainsWithInheritance(typeof (int)), Is.False);
+      Assert.That(_emptyCollection.ContainsWithInheritance(typeof(int)), Is.False);
     }
 
     [Test]
@@ -265,8 +265,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void Contains ()
     {
-      var cc3 = ClassContextObjectMother.Create(typeof (int));
-      var cc4 = ClassContextObjectMother.Create(typeof (object), typeof (NullMixin));
+      var cc3 = ClassContextObjectMother.Create(typeof(int));
+      var cc4 = ClassContextObjectMother.Create(typeof(object), typeof(NullMixin));
 
       Assert.That(_collectionWithObjectAndString.Contains(_ccObjectWithMixin), Is.True);
       Assert.That(_collectionWithObjectAndString.Contains(_ccString), Is.True);

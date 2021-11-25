@@ -43,22 +43,22 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public virtual Type GetTenantType ()
     {
-      return typeof (Tenant);
+      return typeof(Tenant);
     }
 
     public virtual Type GetGroupType ()
     {
-      return typeof (Group);
+      return typeof(Group);
     }
 
     public virtual Type GetUserType ()
     {
-      return typeof (User);
+      return typeof(User);
     }
 
     public virtual Type GetPositionType ()
     {
-      return typeof (Position);
+      return typeof(Position);
     }
   }
 }

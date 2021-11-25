@@ -80,9 +80,9 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     public void Validate ()
     {
       var filteredTypeStub = new Mock<ITypeInformation>();
-      var objectRule1 = AddingObjectValidationRuleCollector.Create<Customer>(typeof (CustomerValidationRuleCollector1));
-      var objectRule2 = AddingObjectValidationRuleCollector.Create<Person>(typeof (CustomerValidationRuleCollector1));
-      var objectRule3 = AddingObjectValidationRuleCollector.Create<Person>(typeof (CustomerValidationRuleCollector2));
+      var objectRule1 = AddingObjectValidationRuleCollector.Create<Customer>(typeof(CustomerValidationRuleCollector1));
+      var objectRule2 = AddingObjectValidationRuleCollector.Create<Person>(typeof(CustomerValidationRuleCollector1));
+      var objectRule3 = AddingObjectValidationRuleCollector.Create<Person>(typeof(CustomerValidationRuleCollector2));
       var filteredObjectRule = new Mock<IAddingObjectValidationRuleCollector>();
       filteredObjectRule.Setup(_ => _.ValidatedType).Returns(filteredTypeStub.Object);
       filteredObjectRule.Setup(_ => _.Validators).Returns(new[] { new Mock<IObjectValidator>().Object });
@@ -98,17 +98,17 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var metaValidationRuleMock3 = new Mock<IObjectMetaValidationRule>(MockBehavior.Strict);
       var metaValidationRuleMock4 = new Mock<IObjectMetaValidationRule>(MockBehavior.Strict);
 
-      _objectMetaValidationRuleCollectorStub1.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof (Customer)));
+      _objectMetaValidationRuleCollectorStub1.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Customer)));
       _objectMetaValidationRuleCollectorStub1.Setup(stub => stub.MetaValidationRules)
           .Returns(new[] { metaValidationRuleMock1.Object, metaValidationRuleMock2.Object });
 
-      _objectMetaValidationRuleCollectorStub2.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof (Person)));
+      _objectMetaValidationRuleCollectorStub2.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Person)));
       _objectMetaValidationRuleCollectorStub2.Setup(stub => stub.MetaValidationRules).Returns(new[] { metaValidationRuleMock3.Object });
 
-      _objectMetaValidationRuleCollectorStub3.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof (Person)));
+      _objectMetaValidationRuleCollectorStub3.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Person)));
       _objectMetaValidationRuleCollectorStub3.Setup(stub => stub.MetaValidationRules).Returns(new IObjectMetaValidationRule[0]);
 
-      _objectMetaValidationRuleCollectorStub4.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof (Employee)));
+      _objectMetaValidationRuleCollectorStub4.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Employee)));
       _objectMetaValidationRuleCollectorStub4.Setup(stub => stub.MetaValidationRules).Returns(new[] { metaValidationRuleMock4.Object });
 
       var resultItem1 = MetaValidationRuleValidationResult.CreateValidResult();

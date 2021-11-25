@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       _bindableObjectGlobalizationService = SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>();
       ClassReflector classReflector = new ClassReflector(
-          typeof (ClassWithValueType<bool>),
+          typeof(ClassWithValueType<bool>),
           _businessObjectProvider,
           BindableObjectMetadataFactory.Create(),
           _bindableObjectGlobalizationService);
@@ -72,10 +72,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectBooleanProperty property = new BooleanProperty(
           CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo(typeof (ClassWithValueType<bool>), "Array"),
-              typeof (bool),
-              typeof (bool),
-              new ListInfo(typeof (bool[]), typeof (bool)),
+              GetPropertyInfo(typeof(ClassWithValueType<bool>), "Array"),
+              typeof(bool),
+              typeof(bool),
+              new ListInfo(typeof(bool[]), typeof(bool)),
               true,
               false,
               false));
@@ -89,10 +89,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectBooleanProperty property = new BooleanProperty(
           CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo(typeof (ClassWithValueType<bool>), "NullableArray"),
-              typeof (bool),
-              typeof (bool),
-              new ListInfo(typeof (bool?[]), typeof (bool?)),
+              GetPropertyInfo(typeof(ClassWithValueType<bool>), "NullableArray"),
+              typeof(bool),
+              typeof(bool),
+              new ListInfo(typeof(bool?[]), typeof(bool?)),
               false,
               false,
               false));
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               new Mock<IExtensibleEnumGlobalizationService>().Object));
 
       var mockResourceManager = new Mock<IResourceManager>(MockBehavior.Strict);
-      mockglobalizationService.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (BindableObjectGlobalizationService.ResourceIdentifier))))
+      mockglobalizationService.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(BindableObjectGlobalizationService.ResourceIdentifier))))
           .Returns(mockResourceManager.Object)
           .Verifiable();
 
@@ -230,7 +230,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       return new BooleanProperty(
           GetPropertyParameters(
-              GetPropertyInfo(typeof (ClassWithValueType<bool>), propertyName),
+              GetPropertyInfo(typeof(ClassWithValueType<bool>), propertyName),
               provider ?? _businessObjectProvider,
               bindableObjectGlobalizationService: bindableObjectGlobalizationService));
     }

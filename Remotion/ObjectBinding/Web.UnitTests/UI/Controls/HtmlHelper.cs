@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   public class HtmlHelper : HtmlHelperBase
   {
     public HtmlHelper ()
-        : base (Assert.AreEqual, Assert.Greater, Assert.IsNotNull, Assert.IsNull, Assert.IsTrue)
+        : base(Assert.AreEqual, Assert.Greater, Assert.IsNotNull, Assert.IsNull, Assert.IsTrue)
     {
     }
 

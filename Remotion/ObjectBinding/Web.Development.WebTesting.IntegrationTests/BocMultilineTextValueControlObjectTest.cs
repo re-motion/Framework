@@ -38,23 +38,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocMultilineTextValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (LabelTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(DisabledTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(ReadOnlyTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(LabelTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(ValidationErrorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction(Helper, e => e.MultilineTextValues(), "multilineText");
     }
 
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(DomainPropertyControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
+    [TestCaseSource (typeof(DisplayNameControlSelectorTestCaseFactory<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> testAction)
     {
       testAction(Helper, e => e.MultilineTextValues(), "multilineText");

@@ -20,7 +20,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public interface IBT7Mixin9 { }
 
-  [Extends (typeof (BaseType7))]
+  [Extends (typeof(BaseType7))]
   public class BT7Mixin9 : Mixin<object, IBaseType7>, IBT7Mixin9
   {
     [OverrideTarget]

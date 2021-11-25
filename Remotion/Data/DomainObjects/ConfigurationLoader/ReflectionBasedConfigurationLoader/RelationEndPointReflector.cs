@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
-        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
       ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);

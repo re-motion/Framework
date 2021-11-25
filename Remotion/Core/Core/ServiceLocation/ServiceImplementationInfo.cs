@@ -34,7 +34,7 @@ namespace Remotion.ServiceLocation
         where T : class
     {
       ArgumentUtility.CheckNotNull("factory", factory);
-      return new ServiceImplementationInfo(typeof (T), lifetime, RegistrationType.Single, factory);
+      return new ServiceImplementationInfo(typeof(T), lifetime, RegistrationType.Single, factory);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace Remotion.ServiceLocation
     /// <param name="lifetime">The <see cref="LifetimeKind"/> of the instances of <paramref name="implementationType"/>. Defaults to <see cref="LifetimeKind.InstancePerDependency"/>.</param>
     /// <param name="registrationType">The <see cref="RegistrationType"/> of the <paramref name="implementationType"/>. Defaults to <see cref="T:RegistrationType.Single"/>.</param>
     public ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
-        : this (ArgumentUtility.CheckNotNull("implementationType", implementationType), lifetime, registrationType, null)
+        : this(ArgumentUtility.CheckNotNull("implementationType", implementationType), lifetime, registrationType, null)
     {
     }
 

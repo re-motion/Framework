@@ -27,14 +27,14 @@ namespace Remotion.Web.UI.Controls
     private MenuTab? _activeTab;
 
     public MainMenuTab (string itemID, string text, IconInfo? icon)
-        : base (itemID, text, icon)
+        : base(itemID, text, icon)
     {
       _subMenuTabs = new SubMenuTabCollection(OwnerControl);
       _subMenuTabs.SetParent(this);
     }
 
     public MainMenuTab (string itemID, string text)
-        : this (itemID, text, null)
+        : this(itemID, text, null)
     {
     }
 

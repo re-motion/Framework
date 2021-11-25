@@ -179,7 +179,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeView ()
-        : this (null)
+        : this(null)
     {
     }
 
@@ -589,7 +589,7 @@ namespace Remotion.Web.UI.Controls
 
       ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock(
           this,
-          typeof (WebTreeView),
+          typeof(WebTreeView),
           Guid.NewGuid().ToString(),
           string.Format("WebTreeView.Initialize ('#{0}');", ClientID));
 
@@ -894,7 +894,7 @@ namespace Remotion.Web.UI.Controls
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier));
+      IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier));
       IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
       _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 
@@ -1382,7 +1382,7 @@ namespace Remotion.Web.UI.Controls
 );",
                 ClientID,
                 anyNodeContextMenu.GetBindOpenEventScript("el", "menuID", true));
-        ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock(this, typeof (WebTreeView), key, script);
+        ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock(this, typeof(WebTreeView), key, script);
       }
 
       List<WebTreeNode> unreachableNodes = new List<WebTreeNode>();

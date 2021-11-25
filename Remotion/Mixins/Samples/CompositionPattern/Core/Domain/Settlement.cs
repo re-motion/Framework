@@ -28,9 +28,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain
   /// are also present on <see cref="ISettlement"/>. External components can also extend <see cref="Settlement"/> with external concerns. Members
   /// added by such concerns are not present in the composed interface; they are provided via extension methods.
   /// </summary>
-  [Uses (typeof (DocumentMixin))] // introduces IDocument
-  [Uses (typeof (TenantBoundMixin))] // introduces ITenantBoundObject
-  [Uses (typeof (SerialNumberMixin))] // overrides ToString
+  [Uses (typeof(DocumentMixin))] // introduces IDocument
+  [Uses (typeof(TenantBoundMixin))] // introduces ITenantBoundObject
+  [Uses (typeof(SerialNumberMixin))] // overrides ToString
   public class Settlement : ComposedDomainObject<ISettlement>, ISettlementImplementation
   {
     /// <summary>

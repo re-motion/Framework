@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
           return MappingValidationResult.CreateInvalidResultForProperty(
               propertyDefinition.PropertyInfo,
               "StorageClass.Persistent is not supported for properties of classes that belong to the '{0}'.",
-              typeof (NonPersistentProviderDefinition).Name);
+              typeof(NonPersistentProviderDefinition).Name);
         }
       }
       return MappingValidationResult.CreateValidResult();

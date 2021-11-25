@@ -32,14 +32,14 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
   /// Responsible for rendering a <see cref="DatePickerButton"/> control in standard mode.
   /// <seealso cref="IDatePickerButton"/>
   /// </summary>
-  [ImplementationFor (typeof (IDatePickerButtonRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IDatePickerButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerButtonRenderer : RendererBase<IDatePickerButton>, IDatePickerButtonRenderer
   {
     public DatePickerButtonRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -49,14 +49,14 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptFileKey = typeof (DatePickerButtonRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.js");
+      string scriptFileKey = typeof(DatePickerButtonRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(DatePickerButtonRenderer), ResourceType.Html, "DatePicker.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleFileKey = typeof (DatePickerButtonRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.css");
+      string styleFileKey = typeof(DatePickerButtonRenderer).GetFullNameChecked() + "_Style";
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(DatePickerButtonRenderer), ResourceType.Html, "DatePicker.css");
       htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
@@ -112,12 +112,12 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
           CultureInfo.CurrentCulture.Name,
           DatePickerPage.UICultureParameterName,
           CultureInfo.CurrentUICulture.Name);
-      return ResourceUrlFactory.CreateThemedResourceUrl(typeof (DatePickerPageRenderer), ResourceType.UI, datePickerUrl);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof(DatePickerPageRenderer), ResourceType.UI, datePickerUrl);
     }
 
     public IResourceUrl GetResolvedImageUrl ()
     {
-      return ResourceUrlFactory.CreateThemedResourceUrl(typeof (DatePickerButtonRenderer), ResourceType.Image, c_datePickerIcon);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof(DatePickerButtonRenderer), ResourceType.Image, c_datePickerIcon);
     }
 
     private string GetClickScript (DatePickerButtonRenderingContext renderingContext, bool hasClientScript)

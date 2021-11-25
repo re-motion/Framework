@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <exception cref="UnexpectedQueryResultException">The query contains <see langword="null"/> values or duplicates.</exception>
     public DomainObjectCollection ToCustomCollection ()
     {
-      var collectionType = Query.CollectionType ?? typeof (DomainObjectCollection);
+      var collectionType = Query.CollectionType ?? typeof(DomainObjectCollection);
       try
       {
         return DomainObjectCollectionFactory.Instance.CreateCollection(collectionType, _queryResult);

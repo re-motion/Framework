@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
           .WhenCalled(mi => { mi.ReturnValue = new ObjectID((ClassDefinition) mi.Arguments[0], Guid.NewGuid()); });
 
       IClientTransactionComponentFactory componentFactory = new ComponentFactoryWithSpecificPersistenceStrategy(_persistenceStrategyStub);
-      return (T) PrivateInvoke.CreateInstanceNonPublicCtor(typeof (T), componentFactory);
+      return (T) PrivateInvoke.CreateInstanceNonPublicCtor(typeof(T), componentFactory);
     }
 
     public void StubQueryResult (string queryID, ILoadedObjectData[] fakeResult)
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public ILoadedObjectData CreateFakeResultData (ClientTransaction clientTransaction)
     {
       var existingDataContainer = DataContainer.CreateForExisting(
-          new ObjectID(typeof (OppositeBidirectionalBindableDomainObject), Guid.NewGuid()),
+          new ObjectID(typeof(OppositeBidirectionalBindableDomainObject), Guid.NewGuid()),
           null,
           pd => pd.DefaultValue);
       existingDataContainer.SetDomainObject(LifetimeService.GetObjectReference(clientTransaction, existingDataContainer.ID));

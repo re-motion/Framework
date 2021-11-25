@@ -84,7 +84,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _functionStateWithChildFunction = new WxeFunctionStateMock(childFunction, 10, true, c_functionTokenForFunctionStateWithChildFunction);
       WxeFunctionStateManager.Current.Add(_functionStateWithChildFunction);
 
-      _functionType = typeof (TestFunction);
+      _functionType = typeof(TestFunction);
       _functionTypeName = _functionType.AssemblyQualifiedName;
       _invalidFunctionTypeName = "Remotion.Web.UnitTests::ExecutionEngine.InvalidFunction";
 
@@ -103,7 +103,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       WxeFunctionStateManager.Current.Abort(_functionStateWithChildFunction);
 
       UrlMappingConfiguration.SetCurrent(null);
-      SafeContext.Instance.FreeData(typeof (WxeFunctionStateManager).AssemblyQualifiedName);
+      SafeContext.Instance.FreeData(typeof(WxeFunctionStateManager).AssemblyQualifiedName);
       base.TearDown();
     }
 
@@ -285,7 +285,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       queryString.Add(WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
       HttpContextHelper.SetQueryString(context, queryString);
 
-      UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(typeof (TestFunction), "~/Test.wxe"));
+      UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(typeof(TestFunction), "~/Test.wxe"));
 
       _wxeHandler.ResumeExistingFunctionState(context, c_functionTokenForMissingFunctionState);
 
@@ -301,7 +301,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       form.Add(WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
       HttpContextHelper.SetForm(context, form);
 
-      UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(typeof (TestFunction), "~/Test.wxe"));
+      UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(typeof(TestFunction), "~/Test.wxe"));
       Assert.That(
           () => _wxeHandler.ResumeExistingFunctionState(context, c_functionTokenForMissingFunctionState),
           Throws.InstanceOf<WxeTimeoutException>());
@@ -319,7 +319,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       WxeFunctionState functionState = _wxeHandler.ResumeExistingFunctionState(context, c_functionTokenForMissingFunctionState);
       Assert.That(functionState, Is.Not.Null);
-      Assert.That(functionState.Function.GetType(), Is.EqualTo(typeof (TestFunction)));
+      Assert.That(functionState.Function.GetType(), Is.EqualTo(typeof(TestFunction)));
     }
 
     [Test]
@@ -572,7 +572,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       Type[] catchExceptionTypes = function.ExceptionHandler.GetCatchExceptionTypes();
       Assert.That(catchExceptionTypes.Length, Is.EqualTo(1));
-      Assert.That(catchExceptionTypes[0], Is.SameAs(typeof (WxeUserCancelException)));
+      Assert.That(catchExceptionTypes[0], Is.SameAs(typeof(WxeUserCancelException)));
 
       Assert.That(function.LastExecutedStepID, Is.EqualTo("4"));
     }

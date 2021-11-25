@@ -42,16 +42,16 @@ namespace Remotion.ObjectBinding.BindableObject
     private static readonly Func<Type, (bool CanAscribeTo, Type? ItemType)> s_readOnlyListTypeCacheValueFactory =
         static t =>
         {
-          var canAscribeTo = typeof (IEnumerable).IsAssignableFrom(t) && t.CanAscribeTo(typeof (IReadOnlyList<>));
+          var canAscribeTo = typeof(IEnumerable).IsAssignableFrom(t) && t.CanAscribeTo(typeof(IReadOnlyList<>));
           return (
               CanAscribeTo: canAscribeTo,
               ItemType: canAscribeTo
-                  ? t.GetAscribedGenericArguments(typeof (IReadOnlyList<>))[0]
+                  ? t.GetAscribedGenericArguments(typeof(IReadOnlyList<>))[0]
                   : null);
         };
 
     private static readonly Func<Type, bool> s_readOnlyCollectionTypeCacheValueFactory =
-        static t => typeof (IEnumerable).IsAssignableFrom(t) && t.CanAscribeTo(typeof (ReadOnlyCollection<>));
+        static t => typeof(IEnumerable).IsAssignableFrom(t) && t.CanAscribeTo(typeof(ReadOnlyCollection<>));
 
     public static PropertyReflector Create (IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.BindableObject
     protected PropertyReflector (
         IPropertyInformation propertyInfo,
         BindableObjectProvider businessObjectProvider)
-        : this (
+        : this(
             propertyInfo,
             businessObjectProvider,
             new BindableObjectDefaultValueStrategy(),
@@ -121,33 +121,33 @@ namespace Remotion.ObjectBinding.BindableObject
       Type underlyingType = GetUnderlyingType();
       PropertyBase.Parameters parameters = CreateParameters(underlyingType);
 
-      if (underlyingType == typeof (Boolean))
+      if (underlyingType == typeof(Boolean))
         return new BooleanProperty(parameters);
-      else if (underlyingType == typeof (Byte))
+      else if (underlyingType == typeof(Byte))
         return new ByteProperty(parameters);
-      else if (underlyingType == typeof (DateTime) && GetDateTimeType() == DateTimeType.Date)
+      else if (underlyingType == typeof(DateTime) && GetDateTimeType() == DateTimeType.Date)
         return new DateProperty(parameters);
-      else if (underlyingType == typeof (DateTime))
+      else if (underlyingType == typeof(DateTime))
         return new DateTimeProperty(parameters);
-      else if (underlyingType == typeof (Decimal))
+      else if (underlyingType == typeof(Decimal))
         return new DecimalProperty(parameters);
-      else if (underlyingType == typeof (Double))
+      else if (underlyingType == typeof(Double))
         return new DoubleProperty(parameters);
       else if (underlyingType.IsEnum && !AttributeUtility.IsDefined<FlagsAttribute>(underlyingType, false))
         return new EnumerationProperty(parameters);
       else if (ExtensibleEnumUtility.IsExtensibleEnumType(underlyingType))
         return new ExtensibleEnumerationProperty(parameters);
-      else if (underlyingType == typeof (Guid))
+      else if (underlyingType == typeof(Guid))
         return new GuidProperty(parameters);
-      else if (underlyingType == typeof (Int16))
+      else if (underlyingType == typeof(Int16))
         return new Int16Property(parameters);
-      else if (underlyingType == typeof (Int32))
+      else if (underlyingType == typeof(Int32))
         return new Int32Property(parameters);
-      else if (underlyingType == typeof (Int64))
+      else if (underlyingType == typeof(Int64))
         return new Int64Property(parameters);
-      else if (underlyingType == typeof (Single))
+      else if (underlyingType == typeof(Single))
         return new SingleProperty(parameters);
-      else if (underlyingType == typeof (String))
+      else if (underlyingType == typeof(String))
         return new StringProperty(parameters, GetMaxLength());
         // IBusinessObject check should be after all regular checks to prevent unnecessary checks for Single and String in the code generation.
       else if (IsReferenceProperty(parameters))
@@ -158,8 +158,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     private bool IsReferenceProperty (PropertyBase.Parameters parameters)
     {
-      return typeof (IBusinessObject).IsAssignableFrom(parameters.UnderlyingType)
-             || typeof (IBusinessObject).IsAssignableFrom(parameters.ConcreteType.Value);
+      return typeof(IBusinessObject).IsAssignableFrom(parameters.UnderlyingType)
+             || typeof(IBusinessObject).IsAssignableFrom(parameters.ConcreteType.Value);
     }
 
     protected virtual PropertyBase GetMetadata (PropertyBase.Parameters parameters)
@@ -186,10 +186,10 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       // Statement order based on performance and syntax requirements.
 
-      if (!typeof (IEnumerable).IsAssignableFrom(_propertyInfo.PropertyType))
+      if (!typeof(IEnumerable).IsAssignableFrom(_propertyInfo.PropertyType))
         return _propertyInfo.PropertyType;
 
-      if (typeof (IReadOnlyList<object>).IsAssignableFrom(_propertyInfo.PropertyType))
+      if (typeof(IReadOnlyList<object>).IsAssignableFrom(_propertyInfo.PropertyType))
       {
         var cachedObjectPropertyType = s_readOnlyListTypeCache.GetOrAdd(_propertyInfo.PropertyType, s_readOnlyListTypeCacheValueFactory);
         Assertion.DebugIsNotNull(cachedObjectPropertyType.ItemType, "cachedObjectPropertyType.ItemType != null when cachedObjectPropertyType.CanAscribeTo == true");
@@ -199,7 +199,7 @@ namespace Remotion.ObjectBinding.BindableObject
       if (_propertyInfo.PropertyType.IsArray)
         return _propertyInfo.PropertyType.GetElementType()!;
 
-      Assertion.DebugAssert(typeof (IEnumerable).IsAssignableFrom(_propertyInfo.PropertyType), "typeof (IEnumerable).IsAssignableFrom (_propertyInfo.PropertyType)");
+      Assertion.DebugAssert(typeof(IEnumerable).IsAssignableFrom(_propertyInfo.PropertyType), "typeof (IEnumerable).IsAssignableFrom (_propertyInfo.PropertyType)");
 
       // Cover IReadOnlyList<T> for value types. Realistically, after testing for IList, there should not be many cases left that support IEnumerable but not IList.
       var cachedPropertyType = s_readOnlyListTypeCache.GetOrAdd(_propertyInfo.PropertyType, s_readOnlyListTypeCacheValueFactory);
@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.BindableObject
         return cachedPropertyType.ItemType;
       }
 
-      if (typeof (IList).IsAssignableFrom(_propertyInfo.PropertyType))
+      if (typeof(IList).IsAssignableFrom(_propertyInfo.PropertyType))
         return GetItemTypeFromAttribute();
 
       // Covers remaining types that implement IEnumerable but not IList or IReadOnlyList<T>
@@ -276,10 +276,10 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       // Statement order based on performance, first type assignments, then generics.
 
-      if (typeof (IReadOnlyList<object>).IsAssignableFrom(_propertyInfo.PropertyType))
+      if (typeof(IReadOnlyList<object>).IsAssignableFrom(_propertyInfo.PropertyType))
         return true;
 
-      if (typeof (IList).IsAssignableFrom(_propertyInfo.PropertyType))
+      if (typeof(IList).IsAssignableFrom(_propertyInfo.PropertyType))
         return true;
 
       Assertion.DebugAssert(_propertyInfo.PropertyType.IsArray == false, "_propertyInfo.PropertyType.IsArray == false");

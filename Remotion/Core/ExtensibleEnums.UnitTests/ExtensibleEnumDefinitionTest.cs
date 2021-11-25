@@ -40,14 +40,14 @@ namespace Remotion.ExtensibleEnums.UnitTests
       _red = new Color("Red");
       _green = new Color("Green");
       _blue = new Color("Blue");
-      _fakeMethod = typeof (ColorExtensions).GetMethod("Red");
+      _fakeMethod = typeof(ColorExtensions).GetMethod("Red");
     }
 
     [Test]
     public void GetEnumType ()
     {
       var definition = CreateDefinition(_red, _green);
-      Assert.That(definition.GetEnumType(), Is.SameAs(typeof (Color)));
+      Assert.That(definition.GetEnumType(), Is.SameAs(typeof(Color)));
     }
 
     [Test]
@@ -243,25 +243,25 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void GetCustomAttributes_NonGeneric ()
     {
-      var customAttributes = Color.Values.GetCustomAttributes(typeof (SampleAttribute));
+      var customAttributes = Color.Values.GetCustomAttributes(typeof(SampleAttribute));
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false)
-          .Concat(typeof (LightColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false))
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
           .ToArray();
       Assert.That(customAttributes, Is.EquivalentTo(expected));
-      Assert.That(customAttributes, Is.TypeOf(typeof (SampleAttribute[])));
+      Assert.That(customAttributes, Is.TypeOf(typeof(SampleAttribute[])));
     }
 
     [Test]
     public void GetCustomAttributes_NonGeneric_Interface ()
     {
-      var customAttributes = Color.Values.GetCustomAttributes(typeof (ISampleAttribute));
+      var customAttributes = Color.Values.GetCustomAttributes(typeof(ISampleAttribute));
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false)
-          .Concat(typeof (LightColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false))
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
           .ToArray();
       Assert.That(customAttributes, Is.EquivalentTo(expected));
-      Assert.That(customAttributes, Is.TypeOf(typeof (ISampleAttribute[])));
+      Assert.That(customAttributes, Is.TypeOf(typeof(ISampleAttribute[])));
     }
 
     [Test]
@@ -269,8 +269,8 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var customAttributes = Color.Values.GetCustomAttributes<SampleAttribute>();
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false)
-          .Concat(typeof (LightColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false))
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
           .ToArray();
        Assert.That(customAttributes, Is.EquivalentTo(expected));
     }
@@ -280,8 +280,8 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var customAttributes = Color.Values.GetCustomAttributes<ISampleAttribute>();
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false)
-          .Concat(typeof (LightColorExtensions).GetCustomAttributes(typeof (SampleAttribute), false))
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
           .ToArray();
       Assert.That(customAttributes, Is.EquivalentTo(expected));
     }

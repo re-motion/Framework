@@ -105,7 +105,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         Action<MethodBuilder> action = null,
         bool saveOnError = false)
     {
-      var returnType = typeof (T);
+      var returnType = typeof(T);
       var parameterTypes = Type.EmptyTypes;
 
       var tuple = CreateMethod(typeName, methodName, methodAttributes, returnType, parameterTypes, action);

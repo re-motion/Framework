@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
     private string _accessibleProperty = string.Empty;
 
     public DerivedBindableSecurableObject (IObjectSecurityStrategy securityStrategy)
-        : base (securityStrategy)
+        : base(securityStrategy)
     {
     }
 

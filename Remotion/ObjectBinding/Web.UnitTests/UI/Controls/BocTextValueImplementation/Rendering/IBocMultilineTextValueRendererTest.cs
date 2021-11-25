@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       var factory = _serviceLocator.GetInstance<IBocMultilineTextValueRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocMultilineTextValueRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocMultilineTextValueRenderer)));
     }
 
     [Test]

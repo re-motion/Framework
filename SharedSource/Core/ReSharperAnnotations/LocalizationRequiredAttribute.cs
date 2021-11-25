@@ -78,7 +78,7 @@ namespace JetBrains.Annotations
   sealed partial class LocalizationRequiredAttribute : Attribute
   {
     public LocalizationRequiredAttribute ()
-        : this (true)
+        : this(true)
     {
     }
 

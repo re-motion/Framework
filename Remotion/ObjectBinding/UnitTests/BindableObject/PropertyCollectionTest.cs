@@ -68,9 +68,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           CreateParameters(
               new BindableObjectProvider(
                   new Mock<IMetadataFactory>().Object, new Mock<IBusinessObjectServiceFactory>().Object),
-              GetPropertyInfo(typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              typeof (SimpleReferenceType),
-              typeof (SimpleReferenceType),
+              GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
+              typeof(SimpleReferenceType),
+              typeof(SimpleReferenceType),
               null,
               true,
               false,

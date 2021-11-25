@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public override void SetUp ()
     {
       base.SetUp();
-      _definition = MappingConfiguration.Current.GetTypeDefinition(typeof (Product))
-          .GetRelationEndPointDefinition(typeof (Product).FullName + ".Reviews");
+      _definition = MappingConfiguration.Current.GetTypeDefinition(typeof(Product))
+          .GetRelationEndPointDefinition(typeof(Product).FullName + ".Reviews");
       _nullEndPoint = new NullVirtualCollectionEndPoint(TestableClientTransaction, _definition);
       _relatedObject = ProductReview.NewObject();
       _relatedEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
@@ -173,19 +173,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateAddCommand ()
     {
-      Assert.That(_nullEndPoint.CreateAddCommand(_relatedObject), Is.InstanceOf(typeof (NullEndPointModificationCommand)));
+      Assert.That(_nullEndPoint.CreateAddCommand(_relatedObject), Is.InstanceOf(typeof(NullEndPointModificationCommand)));
     }
 
     [Test]
     public void CreateRemoveCommand ()
     {
-      Assert.That(_nullEndPoint.CreateRemoveCommand(_relatedObject), Is.InstanceOf(typeof (NullEndPointModificationCommand)));
+      Assert.That(_nullEndPoint.CreateRemoveCommand(_relatedObject), Is.InstanceOf(typeof(NullEndPointModificationCommand)));
     }
 
     [Test]
     public void CreateDeleteCommand ()
     {
-      Assert.That(_nullEndPoint.CreateDeleteCommand(), Is.InstanceOf(typeof (NullEndPointModificationCommand)));
+      Assert.That(_nullEndPoint.CreateDeleteCommand(), Is.InstanceOf(typeof(NullEndPointModificationCommand)));
     }
 
     [Test]

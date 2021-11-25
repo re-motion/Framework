@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void SetUp ()
     {
       _validationRule = new CheckForInvalidRelationEndPointsValidationRule();
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (DerivedValidationDomainObjectClass));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void RelationDefinitionWithPropertyNotFoundRelationEndPointDefinition ()
     {
-      var endPoint = new PropertyNotFoundRelationEndPointDefinition(_classDefinition, "TestProperty", typeof (object));
+      var endPoint = new PropertyNotFoundRelationEndPointDefinition(_classDefinition, "TestProperty", typeof(object));
       var relationDefinition = new RelationDefinition("Test", endPoint, endPoint);
 
       var validationResult = _validationRule.Validate(relationDefinition);
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void RelationDefinitionWithTypeNotObjectIDRelationEndPointDefinition ()
     {
-      var endPoint = new TypeNotObjectIDRelationEndPointDefinition(_classDefinition, "TestProperty", typeof (string));
+      var endPoint = new TypeNotObjectIDRelationEndPointDefinition(_classDefinition, "TestProperty", typeof(string));
       var relationDefinition = new RelationDefinition("Test", endPoint, endPoint);
 
       var validationResult = _validationRule.Validate(relationDefinition);
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void RelationDefinitionWithTypeNotCompatibleWithVirtualRelationEndPointDefinition ()
     {
-      var endPoint = new TypeNotCompatibleWithVirtualRelationEndPointDefinition(_classDefinition, "TestProperty", typeof (string));
+      var endPoint = new TypeNotCompatibleWithVirtualRelationEndPointDefinition(_classDefinition, "TestProperty", typeof(string));
       var relationDefinition = new RelationDefinition("Test", endPoint, endPoint);
 
       var validationResult = _validationRule.Validate(relationDefinition);

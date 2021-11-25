@@ -37,8 +37,8 @@ namespace Remotion.Mixins.Utilities
       Type currentType = mixinType;
 
       while (currentType != null
-          && !ReflectionUtility.IsEqualOrInstantiationOf(currentType, typeof (Mixin<>))
-          && !ReflectionUtility.IsEqualOrInstantiationOf(currentType, typeof (Mixin<,>)))
+          && !ReflectionUtility.IsEqualOrInstantiationOf(currentType, typeof(Mixin<>))
+          && !ReflectionUtility.IsEqualOrInstantiationOf(currentType, typeof(Mixin<,>)))
       {
         currentType = currentType.BaseType!;
       }

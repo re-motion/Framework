@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Definitions.Building
 
       foreach (Type type in dependencyTypes)
       {
-        if (!type.Equals(typeof (object))) // dependencies to System.Object are always fulfilled and not explicitly added to the configuration
+        if (!type.Equals(typeof(object))) // dependencies to System.Object are always fulfilled and not explicitly added to the configuration
         {
           DependencyDefinitionBase dependency = BuildDependency(type, null);
           AddDependency(dependency);

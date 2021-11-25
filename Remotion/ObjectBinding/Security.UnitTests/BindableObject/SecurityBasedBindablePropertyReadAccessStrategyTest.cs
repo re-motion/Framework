@@ -113,7 +113,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       ExpectHasAccessOnObjectSecurityStrategy(expectedResult, GeneralAccessTypes.Read);
 
       var bindableProperty = new StubPropertyBase(
-          GetPropertyParameters(PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<string>).GetProperty("PropertyWithNoGetter"))));
+          GetPropertyParameters(PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<string>).GetProperty("PropertyWithNoGetter"))));
 
       var actualResult = _strategy.CanRead(_securableObject, bindableProperty);
 
@@ -206,8 +206,8 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       return new PropertyBase.Parameters(
           CreateBindableObjectProviderWithStubBusinessObjectServiceFactory(),
           propertyInformation,
-          typeof (IBusinessObject),
-          new Lazy<Type>(() => typeof (IBusinessObject)),
+          typeof(IBusinessObject),
+          new Lazy<Type>(() => typeof(IBusinessObject)),
           null,
           true,
           false,

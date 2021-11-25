@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     public void SetUp ()
     {
       _provider = new ReflectionBasedStorageNameProvider();
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Company", classType: typeof (Company), baseClass: null);
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Company", classType: typeof(Company), baseClass: null);
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetTableName_ClassHasDBTableAttributeWithtName_ReturnsAttributeName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassHavingStorageSpecificIdentifierAttribute), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassHavingStorageSpecificIdentifierAttribute), baseClass: null);
 
       var result = _provider.GetTableName(classDefinition).EntityName;
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetTableName_ClassHasNoDBTableAttribute_ReturnsNull ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Folder), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Folder), baseClass: null);
 
       var result = _provider.GetTableName(classDefinition);
 
@@ -96,9 +96,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     public void GetColumnName_PropertyWithIStorageSpecificIdentifierAttribute_ReturnsNameFromAttribute ()
     {
       var classWithAllDataTypesDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassWithAllDataTypes), baseClass: null);
+          ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithAllDataTypes), baseClass: null);
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
-          classWithAllDataTypesDefinition, typeof (ClassWithAllDataTypes), "BooleanProperty");
+          classWithAllDataTypesDefinition, typeof(ClassWithAllDataTypes), "BooleanProperty");
 
       var result = _provider.GetColumnName(propertyDefinition);
 
@@ -108,9 +108,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetColumnName_PropertyWithoutIStorageSpecificIdentifierAttribute_ReturnsPropertyName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Distributor), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Distributor), baseClass: null);
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (Distributor), "NumberOfShops");
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof(Distributor), "NumberOfShops");
 
       var result = _provider.GetColumnName(propertyDefinition);
 
@@ -120,8 +120,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetRelationColumnName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (FileSystemItem), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (FileSystemItem), "ParentFolder");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(FileSystemItem), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof(FileSystemItem), "ParentFolder");
       var relationDefinition = new RelationEndPointDefinition(propertyDefinition, true);
 
       var result = _provider.GetRelationColumnName(relationDefinition);
@@ -133,8 +133,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     public void GetRelationColumnName_PropertyWithIStorageSpecificIdentifierAttribute_ReturnsNameFromAttribute ()
     {
       var classDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (FileSystemItem), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (FileSystemItem), "ParentFolder2");
+          ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(FileSystemItem), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof(FileSystemItem), "ParentFolder2");
       var relationDefinition = new RelationEndPointDefinition(propertyDefinition, true);
 
       var result = _provider.GetRelationColumnName(relationDefinition);
@@ -145,8 +145,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetRelationClassIDColumnName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (FileSystemItem), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (FileSystemItem), "ParentFolder");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(FileSystemItem), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof(FileSystemItem), "ParentFolder");
       var relationDefinition = new RelationEndPointDefinition(propertyDefinition, true);
 
       var result = _provider.GetRelationClassIDColumnName(relationDefinition);

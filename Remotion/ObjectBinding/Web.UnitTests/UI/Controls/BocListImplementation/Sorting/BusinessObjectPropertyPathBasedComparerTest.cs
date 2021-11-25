@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueNull = TypeWithAllDataTypes.Create();
       valueNull.String = null;
 
-      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithAllDataTypes));
+      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithAllDataTypes));
 
       var propertyPath = BusinessObjectPropertyPath.CreateStatic(bindableObjectClass, "String");
       var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPath);
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueNull = TypeWithReference.Create();
       valueNull.ReferenceValue = null;
 
-      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithReference));
+      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithReference));
 
       var propertyPath = BusinessObjectPropertyPath.CreateStatic(bindableObjectClass, "ReferenceValue");
       var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPath);
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueEmpty = TypeWithString.Create();
       valueEmpty.StringArray = new string[0];
 
-      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
+      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
 
       var propertyPath = BusinessObjectPropertyPath.CreateStatic(bindableObjectClass, "StringArray");
       var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPath);

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _orderOrderTicketEndPointDefinition = GetRelationEndPointDefinition(typeof (Order), "OrderTicket");
+      _orderOrderTicketEndPointDefinition = GetRelationEndPointDefinition(typeof(Order), "OrderTicket");
       
       _endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
       _endPointStub.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);

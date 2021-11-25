@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       return new Query(
           new QueryDefinition(
               StubStorageProvider.GetSecurableObjectsQueryID,
-              MappingConfiguration.Current.GetTypeDefinition(typeof (SecurableObject)).StorageEntityDefinition.StorageProviderDefinition,
+              MappingConfiguration.Current.GetTypeDefinition(typeof(SecurableObject)).StorageEntityDefinition.StorageProviderDefinition,
               "SELECT 1",
               QueryType.Collection),
           new QueryParameterCollection());
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       Expect.Call(
           _mockPermissionReflector.GetRequiredMethodPermissions(
-              Arg.Is(typeof (SecurableObject)),
+              Arg.Is(typeof(SecurableObject)),
               Arg<IMethodInformation>.Matches(mi => mi.Equals(methodInformation))))
           .Return(returnedAccessTypes).Repeat.Once();
     }

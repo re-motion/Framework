@@ -24,7 +24,7 @@ using Remotion.Web.UI;
 
 namespace Remotion.Web.Security.UI
 {
-  [ImplementationFor (typeof (IWebSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(IWebSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class WebSecurityAdapter : IWebSecurityAdapter
   {
     // types
@@ -99,7 +99,7 @@ namespace Remotion.Web.Security.UI
       {
         DemandTargetPermissionAttribute? attribute = (DemandTargetPermissionAttribute?) Attribute.GetCustomAttribute(
             handler.Method,
-            typeof (DemandTargetPermissionAttribute),
+            typeof(DemandTargetPermissionAttribute),
             false);
 
         if (attribute != null)

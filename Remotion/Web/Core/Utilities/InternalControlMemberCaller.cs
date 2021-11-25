@@ -31,19 +31,19 @@ namespace Remotion.Web.Utilities
   /// <summary>
   /// Default implementation of the <seealso cref="IInternalControlMemberCaller"/> interface.
   /// </summary>
-  [ImplementationFor (typeof (IInternalControlMemberCaller), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IInternalControlMemberCaller), Lifetime = LifetimeKind.Singleton)]
   public class InternalControlMemberCaller : IInternalControlMemberCaller
   {
     private const BindingFlags c_bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
-    public static readonly Type InternalControlStateType = typeof (Control).Assembly.GetType("System.Web.UI.ControlState", true, false)!;
+    public static readonly Type InternalControlStateType = typeof(Control).Assembly.GetType("System.Web.UI.ControlState", true, false)!;
 
     //  private System.Web.UI.UpdatePanel._rendered
-    private static readonly FieldInfo s_updatePanelRenderedFieldInfo = typeof (UpdatePanel).GetField("_rendered", c_bindingFlags)!;
+    private static readonly FieldInfo s_updatePanelRenderedFieldInfo = typeof(UpdatePanel).GetField("_rendered", c_bindingFlags)!;
 
     private static readonly Lazy<Action<Control, object>> s_set_ControlState = new Lazy<Action<Control, object>>(
         () =>
         {
-          var methodInfo = typeof (Control).GetMethod(
+          var methodInfo = typeof(Control).GetMethod(
               "set_ControlState",
               c_bindingFlags,
               null,
@@ -144,7 +144,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull("control", control);
 
       //  private ControlSet System.Web.UI.Page._registeredControlsRequiringControlState
-      var registeredControlsRequiringControlStateFieldInfo = typeof (Page).GetField("_registeredControlsRequiringControlState", c_bindingFlags)!; // TODO RM-8118: not null assertion
+      var registeredControlsRequiringControlStateFieldInfo = typeof(Page).GetField("_registeredControlsRequiringControlState", c_bindingFlags)!; // TODO RM-8118: not null assertion
       var registeredControlsRequiringControlState = (ICollection?) registeredControlsRequiringControlStateFieldInfo.GetValue(control.Page);
 
       //LosFormatter only supports Hashtable and HybridDictionary without using native serialization
@@ -275,7 +275,7 @@ namespace Remotion.Web.Utilities
       return new Lazy<T>(
           () =>
           {
-            var invokeMethod = typeof (T).GetMethod("Invoke")!; // TODO RM-8118: not null assertion
+            var invokeMethod = typeof(T).GetMethod("Invoke")!; // TODO RM-8118: not null assertion
             var targetType = invokeMethod.GetParameters().First().ParameterType;
             var parameterTypes = invokeMethod.GetParameters().Skip(1).Select(p => p.ParameterType).ToArray();
 
@@ -287,7 +287,7 @@ namespace Remotion.Web.Utilities
                 name,
                 string.Join<Type>(",", parameterTypes));
 
-            return (T) (object) methodInfo.CreateDelegate(typeof (T));
+            return (T) (object) methodInfo.CreateDelegate(typeof(T));
           });
     }
   }

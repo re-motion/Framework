@@ -45,9 +45,9 @@ namespace Remotion.Validation.Globalization.UnitTests
           Is.EqualTo(
               new[]
               {
-                  typeof (TypeBasedValidationMessageFactory),
-                  typeof (LocalizedValidationMessageFactory),
-                  typeof (FallbackValidationMessageFactory)
+                  typeof(TypeBasedValidationMessageFactory),
+                  typeof(LocalizedValidationMessageFactory),
+                  typeof(FallbackValidationMessageFactory)
               }));
     }
 

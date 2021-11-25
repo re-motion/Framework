@@ -52,10 +52,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void InvalidMixinConfiguration ()
     {
-      using (MixinConfiguration.BuildNew().ForClass(typeof (ClassWithAllDataTypes)).AddMixins(typeof (MixinWithAccessToDomainObjectProperties<Official>)).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(ClassWithAllDataTypes)).AddMixins(typeof(MixinWithAccessToDomainObjectProperties<Official>)).EnterScope())
       {
         Assert.That(
-            () => TypeFactory.GetConcreteType(typeof (ClassWithAllDataTypes)),
+            () => TypeFactory.GetConcreteType(typeof(ClassWithAllDataTypes)),
             Throws.InstanceOf<ValidationException>());
       }
     }
@@ -98,10 +98,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     public void Properties ()
     {
       Assert.That(
-          _loadedClassWithAllDataTypesMixin.Properties[typeof (ClassWithAllDataTypes), "StringProperty"].GetValue<string>(),
+          _loadedClassWithAllDataTypesMixin.Properties[typeof(ClassWithAllDataTypes), "StringProperty"].GetValue<string>(),
           Is.EqualTo(_loadedClassWithAllDataTypes.StringProperty));
       Assert.That(
-          _newClassWithAllDataTypes.Properties[typeof (ClassWithAllDataTypes), "StringProperty"].GetValue<string>(),
+          _newClassWithAllDataTypes.Properties[typeof(ClassWithAllDataTypes), "StringProperty"].GetValue<string>(),
           Is.EqualTo(_newClassWithAllDataTypes.StringProperty));
     }
 

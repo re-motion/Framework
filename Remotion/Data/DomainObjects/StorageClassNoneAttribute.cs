@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects
   public sealed class StorageClassNoneAttribute : StorageClassAttribute
   {
     public StorageClassNoneAttribute ()
-        : base (Mapping.StorageClass.None)
+        : base(Mapping.StorageClass.None)
     {
     }
   }

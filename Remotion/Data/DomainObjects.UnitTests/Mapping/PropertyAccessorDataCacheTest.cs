@@ -38,29 +38,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public override void SetUp ()
     {
       base.SetUp();
-      _orderCache = CreatePropertyAccessorDataCache(typeof (Order));
-      _distributorCache = CreatePropertyAccessorDataCache(typeof (Distributor));
-      _closedGenericClassCache = CreatePropertyAccessorDataCache(typeof (ClosedGenericClassWithManySideRelationProperties));
-      _derivedClassWithMixedPropertiesCache = CreatePropertyAccessorDataCache(typeof (DerivedClassWithDifferentProperties));
+      _orderCache = CreatePropertyAccessorDataCache(typeof(Order));
+      _distributorCache = CreatePropertyAccessorDataCache(typeof(Distributor));
+      _closedGenericClassCache = CreatePropertyAccessorDataCache(typeof(ClosedGenericClassWithManySideRelationProperties));
+      _derivedClassWithMixedPropertiesCache = CreatePropertyAccessorDataCache(typeof(DerivedClassWithDifferentProperties));
     }
 
     [Test]
     public void GetPropertyAccessorData_ValueProperty ()
     {
-      var data = _orderCache.GetPropertyAccessorData(typeof (Order) + ".OrderNumber");
+      var data = _orderCache.GetPropertyAccessorData(typeof(Order) + ".OrderNumber");
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof (Order) + ".OrderNumber"));
+      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof(Order) + ".OrderNumber"));
       Assert.That(data.Kind, Is.EqualTo(PropertyKind.PropertyValue));
     }
 
     [Test]
     public void GetPropertyAccessorData_RelatedObjectProperty_RealSide ()
     {
-      var data = _orderCache.GetPropertyAccessorData(typeof (Order) + ".Customer");
+      var data = _orderCache.GetPropertyAccessorData(typeof(Order) + ".Customer");
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof (Order) + ".Customer"));
+      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof(Order) + ".Customer"));
       Assert.That(data.Kind, Is.EqualTo(PropertyKind.RelatedObject));
       Assert.That(data.RelationEndPointDefinition.IsVirtual, Is.False);
     }
@@ -68,10 +68,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetPropertyAccessorData_RelatedObjectProperty_VirtualSide ()
     {
-      var data = _orderCache.GetPropertyAccessorData(typeof (Order) + ".OrderTicket");
+      var data = _orderCache.GetPropertyAccessorData(typeof(Order) + ".OrderTicket");
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof (Order) + ".OrderTicket"));
+      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof(Order) + ".OrderTicket"));
       Assert.That(data.Kind, Is.EqualTo(PropertyKind.RelatedObject));
       Assert.That(data.RelationEndPointDefinition.IsVirtual, Is.True);
     }
@@ -79,10 +79,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetPropertyAccessorData_RelatedCollectionProperty ()
     {
-      var data = _orderCache.GetPropertyAccessorData(typeof (Order) + ".OrderItems");
+      var data = _orderCache.GetPropertyAccessorData(typeof(Order) + ".OrderItems");
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof (Order) + ".OrderItems"));
+      Assert.That(data.PropertyIdentifier, Is.EqualTo(typeof(Order) + ".OrderItems"));
       Assert.That(data.Kind, Is.EqualTo(PropertyKind.RelatedObjectCollection));
       Assert.That(data.RelationEndPointDefinition.IsVirtual, Is.True);
     }
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetPropertyAccessorData_Unknown ()
     {
-      var data = _orderCache.GetPropertyAccessorData(typeof (Order) + ".OrderSmell");
+      var data = _orderCache.GetPropertyAccessorData(typeof(Order) + ".OrderSmell");
 
       Assert.That(data, Is.Null);
     }
@@ -98,8 +98,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetPropertyAccessorData_ItemsAreCached ()
     {
-      var data1 = _orderCache.GetPropertyAccessorData(typeof (Order) + ".OrderNumber");
-      var data2 = _orderCache.GetPropertyAccessorData(typeof (Order) + ".OrderNumber");
+      var data1 = _orderCache.GetPropertyAccessorData(typeof(Order) + ".OrderNumber");
+      var data2 = _orderCache.GetPropertyAccessorData(typeof(Order) + ".OrderNumber");
 
       Assert.That(data1, Is.Not.Null);
       Assert.That(data1, Is.SameAs(data2));
@@ -108,16 +108,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetPropertyAccessorData_TypeAndShortName ()
     {
-      var data = _orderCache.GetPropertyAccessorData(typeof (Order), "OrderNumber");
+      var data = _orderCache.GetPropertyAccessorData(typeof(Order), "OrderNumber");
       
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
     public void GetPropertyAccessorData_TypeAndShortName_Unknown ()
     {
-      var data = _orderCache.GetPropertyAccessorData(typeof (Order), "OrderSmell");
+      var data = _orderCache.GetPropertyAccessorData(typeof(Order), "OrderSmell");
 
       Assert.That(data, Is.Null);
     }
@@ -125,49 +125,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolvePropertyAccessorData_PropertyInformation ()
     {
-      var propertyinformation = PropertyInfoAdapter.Create(typeof (Order).GetProperty("OrderNumber"));
+      var propertyinformation = PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderNumber"));
       var data = _orderCache.ResolvePropertyAccessorData(propertyinformation);
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
     public void ResolvePropertyAccessorData_PropertyInformation_Mixin_ViaInterface ()
     {
-      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof (TargetClassForPersistentMixin)));
-      var propertyinformation = PropertyInfoAdapter.Create(typeof (IMixinAddingPersistentProperties).GetProperty("PersistentProperty"));
+      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
+      var propertyinformation = PropertyInfoAdapter.Create(typeof(IMixinAddingPersistentProperties).GetProperty("PersistentProperty"));
       var data = cacheWithMixins.ResolvePropertyAccessorData(propertyinformation);
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
+      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
     }
 
     [Test]
     public void ResolvePropertyAccessorData_PropertyInformation_Mixin_ViaMixin ()
     {
-      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof (TargetClassForPersistentMixin)));
-      var propertyinformation = PropertyInfoAdapter.Create(typeof (MixinAddingPersistentProperties).GetProperty("PersistentProperty"));
+      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
+      var propertyinformation = PropertyInfoAdapter.Create(typeof(MixinAddingPersistentProperties).GetProperty("PersistentProperty"));
       var data = cacheWithMixins.ResolvePropertyAccessorData(propertyinformation);
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
+      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
     }
 
     [Test]
     public void ResolvePropertyAccessorData_PropertyInformation_Interface ()
     {
-      var propertyinformation = PropertyInfoAdapter.Create(typeof (IOrder).GetProperty("OrderNumber"));
+      var propertyinformation = PropertyInfoAdapter.Create(typeof(IOrder).GetProperty("OrderNumber"));
       var data = _orderCache.ResolvePropertyAccessorData(propertyinformation);
       
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
     public void ResolvePropertyAccessorData_PropertyInformation_UnknownOnThisObject ()
     {
-      var propertyinformation = PropertyInfoAdapter.Create(typeof (OrderItem).GetProperty("Product"));
+      var propertyinformation = PropertyInfoAdapter.Create(typeof(OrderItem).GetProperty("Product"));
       var data = _orderCache.ResolvePropertyAccessorData(propertyinformation);
       
       Assert.That(data, Is.Null);
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolvePropertyAccessorData_PropertyInformation_Unknown ()
     {
-      var propertyinformation = PropertyInfoAdapter.Create(typeof (Order).GetProperty("NotInMapping"));
+      var propertyinformation = PropertyInfoAdapter.Create(typeof(Order).GetProperty("NotInMapping"));
       var data = _orderCache.ResolvePropertyAccessorData(propertyinformation);
       
       Assert.That(data, Is.Null);
@@ -188,29 +188,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var data = _orderCache.ResolvePropertyAccessorData((Order o) => o.OrderNumber);
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
     public void ResolvePropertyAccessorData_Expression_Mixin_ViaInterface ()
     {
-      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof (TargetClassForPersistentMixin)));
+      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
 // ReSharper disable SuspiciousTypeConversion.Global
       var data = cacheWithMixins.ResolvePropertyAccessorData((TargetClassForPersistentMixin t) => ((IMixinAddingPersistentProperties) t).PersistentProperty);
 // ReSharper restore SuspiciousTypeConversion.Global
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
+      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
     }
 
     [Test]
     public void ResolvePropertyAccessorData_Expression_Mixin_ViaMixin ()
     {
-      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof (TargetClassForPersistentMixin)));
+      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
       var data = cacheWithMixins.ResolvePropertyAccessorData((TargetClassForPersistentMixin t) => (Mixin.Get<MixinAddingPersistentProperties>(t).PersistentProperty));
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
+      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
     }
 
     [Test]
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var data = _orderCache.ResolvePropertyAccessorData((Order o) => ((IOrder) o).OrderNumber);
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
@@ -257,17 +257,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMandatoryPropertyAccessorData_FullPropertyName ()
     {
-      var data = _orderCache.GetMandatoryPropertyAccessorData(typeof (Order).FullName + ".OrderNumber");
+      var data = _orderCache.GetMandatoryPropertyAccessorData(typeof(Order).FullName + ".OrderNumber");
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
     public void GetMandatoryPropertyAccessorData_FullPropertyName_Unknown ()
     {
       Assert.That(
-          () => _orderCache.GetMandatoryPropertyAccessorData(typeof (Order).FullName + ".OrderSmell"),
+          () => _orderCache.GetMandatoryPropertyAccessorData(typeof(Order).FullName + ".OrderSmell"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
@@ -277,17 +277,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMandatoryPropertyAccessorData_TypeAndShortName ()
     {
-      var data = _orderCache.GetMandatoryPropertyAccessorData(typeof (Order), "OrderNumber");
+      var data = _orderCache.GetMandatoryPropertyAccessorData(typeof(Order), "OrderNumber");
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
     public void GetMandatoryPropertyAccessorData_TypeAndShortName_Unknown ()
     {
       Assert.That(
-          () => _orderCache.GetMandatoryPropertyAccessorData(typeof (Order), "OrderSmell"),
+          () => _orderCache.GetMandatoryPropertyAccessorData(typeof(Order), "OrderSmell"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
@@ -300,29 +300,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var data = _orderCache.ResolveMandatoryPropertyAccessorData((Order o) => o.OrderNumber);
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
     public void ResolveMandatoryPropertyAccessorData_Expression_Mixin_ViaInterface ()
     {
-      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof (TargetClassForPersistentMixin)));
+      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
       // ReSharper disable SuspiciousTypeConversion.Global
       var data = cacheWithMixins.ResolveMandatoryPropertyAccessorData((TargetClassForPersistentMixin t) => ((IMixinAddingPersistentProperties) t).PersistentProperty);
       // ReSharper restore SuspiciousTypeConversion.Global
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
+      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
     }
 
     [Test]
     public void ResolveMandatoryPropertyAccessorData_Expression_Mixin_ViaMixin ()
     {
-      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof (TargetClassForPersistentMixin)));
+      var cacheWithMixins = new PropertyAccessorDataCache(GetTypeDefinition(typeof(TargetClassForPersistentMixin)));
       var data = cacheWithMixins.ResolveMandatoryPropertyAccessorData((TargetClassForPersistentMixin t) => (Mixin.Get<MixinAddingPersistentProperties>(t).PersistentProperty));
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof (MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
+      Assert.That(data, Is.EqualTo(cacheWithMixins.GetPropertyAccessorData(typeof(MixinAddingPersistentProperties).FullName + ".PersistentProperty")));
     }
 
     [Test]
@@ -331,7 +331,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var data = _orderCache.ResolveMandatoryPropertyAccessorData((Order o) => ((IOrder) o).OrderNumber);
 
       Assert.That(data, Is.Not.Null);
-      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof (Order).FullName + ".OrderNumber")));
+      Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
 
     [Test]
@@ -365,29 +365,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void FindPropertyAccessorData_Property ()
     {
-      var result = _orderCache.FindPropertyAccessorData(typeof (Order), "OrderNumber");
+      var result = _orderCache.FindPropertyAccessorData(typeof(Order), "OrderNumber");
 
-      var expected = _orderCache.GetMandatoryPropertyAccessorData(typeof (Order), "OrderNumber");
+      var expected = _orderCache.GetMandatoryPropertyAccessorData(typeof(Order), "OrderNumber");
       Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
     public void FindPropertyAccessorData_VirtualRelationEndPoint ()
     {
-      var result = _orderCache.FindPropertyAccessorData(typeof (Order), "OrderItems");
+      var result = _orderCache.FindPropertyAccessorData(typeof(Order), "OrderItems");
 
-      var expected = _orderCache.GetMandatoryPropertyAccessorData(typeof (Order), "OrderItems");
+      var expected = _orderCache.GetMandatoryPropertyAccessorData(typeof(Order), "OrderItems");
       Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
     public void FindPropertyAccessorData_FromDerivedType ()
     {
-      Assert.That(_distributorCache.GetPropertyAccessorData(typeof (Distributor), "ContactPerson"), Is.Null);
+      Assert.That(_distributorCache.GetPropertyAccessorData(typeof(Distributor), "ContactPerson"), Is.Null);
 
-      var result = _distributorCache.FindPropertyAccessorData(typeof (Distributor), "ContactPerson");
+      var result = _distributorCache.FindPropertyAccessorData(typeof(Distributor), "ContactPerson");
 
-      var expected = _distributorCache.GetMandatoryPropertyAccessorData(typeof (Partner), "ContactPerson");
+      var expected = _distributorCache.GetMandatoryPropertyAccessorData(typeof(Partner), "ContactPerson");
       Assert.That(result, Is.EqualTo(expected));
     }
 
@@ -395,13 +395,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void FindPropertyAccessorData_FromGenericType ()
     {
       Assert.That(
-          _closedGenericClassCache.GetPropertyAccessorData(typeof (ClosedGenericClassWithManySideRelationProperties), "BaseUnidirectional"),
+          _closedGenericClassCache.GetPropertyAccessorData(typeof(ClosedGenericClassWithManySideRelationProperties), "BaseUnidirectional"),
           Is.Null);
 
-      var result = _closedGenericClassCache.FindPropertyAccessorData(typeof (ClosedGenericClassWithManySideRelationProperties), "BaseUnidirectional");
+      var result = _closedGenericClassCache.FindPropertyAccessorData(typeof(ClosedGenericClassWithManySideRelationProperties), "BaseUnidirectional");
 
       var expected = _closedGenericClassCache.GetMandatoryPropertyAccessorData(
-          typeof (GenericClassWithManySideRelationPropertiesNotInMapping<>),
+          typeof(GenericClassWithManySideRelationPropertiesNotInMapping<>),
           "BaseUnidirectional");
       Assert.That(result, Is.EqualTo(expected));
     }
@@ -409,20 +409,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void FindPropertyAccessorData_WithShadowedProperty ()
     {
-      var shadowingResult = _derivedClassWithMixedPropertiesCache.FindPropertyAccessorData(typeof (DerivedClassWithDifferentProperties), "String");
+      var shadowingResult = _derivedClassWithMixedPropertiesCache.FindPropertyAccessorData(typeof(DerivedClassWithDifferentProperties), "String");
       var shadowingExpected =
-          _derivedClassWithMixedPropertiesCache.GetMandatoryPropertyAccessorData(typeof (DerivedClassWithDifferentProperties), "String");
+          _derivedClassWithMixedPropertiesCache.GetMandatoryPropertyAccessorData(typeof(DerivedClassWithDifferentProperties), "String");
       Assert.That(shadowingResult, Is.EqualTo(shadowingExpected));
 
-      var shadowedResult = _derivedClassWithMixedPropertiesCache.FindPropertyAccessorData(typeof (ClassWithDifferentProperties), "String");
-      var shadowedExpected = _derivedClassWithMixedPropertiesCache.GetMandatoryPropertyAccessorData(typeof (ClassWithDifferentProperties), "String");
+      var shadowedResult = _derivedClassWithMixedPropertiesCache.FindPropertyAccessorData(typeof(ClassWithDifferentProperties), "String");
+      var shadowedExpected = _derivedClassWithMixedPropertiesCache.GetMandatoryPropertyAccessorData(typeof(ClassWithDifferentProperties), "String");
       Assert.That(shadowedResult, Is.EqualTo(shadowedExpected));
     }
 
     [Test]
     public void FindPropertyAccessorData_NonExistingProperty ()
     {
-      var result = _distributorCache.FindPropertyAccessorData(typeof (Distributor), "Frobbers");
+      var result = _distributorCache.FindPropertyAccessorData(typeof(Distributor), "Frobbers");
       Assert.That(result, Is.Null);
     }
 

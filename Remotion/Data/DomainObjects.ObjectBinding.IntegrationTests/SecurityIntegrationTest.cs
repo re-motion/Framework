@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     {
       base.SetUp();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
       _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
       _principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       ClientTransactionScope.ResetActiveScope();
       _serviceLocatorScope.Dispose();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
       base.TearDown();
     }

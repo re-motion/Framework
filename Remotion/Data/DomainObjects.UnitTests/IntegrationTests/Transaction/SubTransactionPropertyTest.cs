@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         Assert.That(newOrder.State.IsChanged, Is.True);
         Assert.That(
-            newOrder.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int>(),
+            newOrder.Properties[typeof(Order) + ".OrderNumber"].GetOriginalValue<int>(),
             Is.Not.EqualTo(
-                newOrder.Properties[typeof (Order) + ".OrderNumber"].GetValue<int>()));
+                newOrder.Properties[typeof(Order) + ".OrderNumber"].GetValue<int>()));
       }
     }
 

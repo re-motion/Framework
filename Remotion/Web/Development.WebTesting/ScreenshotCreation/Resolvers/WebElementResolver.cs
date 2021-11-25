@@ -80,8 +80,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
       private static string RefreshScript ()
       {
-        var resourceName = typeof (WebElementResolver).FullName + "Script.js";
-        using (var stream = typeof (WebElementResolver).Assembly.GetManifestResourceStream(resourceName))
+        var resourceName = typeof(WebElementResolver).FullName + "Script.js";
+        using (var stream = typeof(WebElementResolver).Assembly.GetManifestResourceStream(resourceName))
         {
           if (stream == null)
             throw new InvalidOperationException("Could not find the WebElementResolver script.");

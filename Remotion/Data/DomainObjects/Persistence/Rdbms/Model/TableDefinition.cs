@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IEnumerable<ITableConstraintDefinition> constraints,
         IEnumerable<IIndexDefinition> indexes,
         IEnumerable<EntityNameDefinition> synonyms)
-        : base (
+        : base(
             storageProviderDefinition,
             viewName,
             objectIDProperty,

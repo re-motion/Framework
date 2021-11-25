@@ -37,7 +37,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     }
 
     public InitObjectExpression (IMethodEmitter method, Type type)
-        : this (ArgumentUtility.CheckNotNull("method", method).DeclareLocal(type), type)
+        : this(ArgumentUtility.CheckNotNull("method", method).DeclareLocal(type), type)
     {
     }
 

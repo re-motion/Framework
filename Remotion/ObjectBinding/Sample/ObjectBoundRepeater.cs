@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Sample
     {
       private static readonly Type[] s_supportedPropertyInterfaces = new Type[]
                                                                      {
-                                                                         typeof (IBusinessObjectReferenceProperty)
+                                                                         typeof(IBusinessObjectReferenceProperty)
                                                                      };
 
 
@@ -328,7 +328,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
     [Description ("Explicitly specifies whether the control is required.")]
     [Category ("Data")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? Required
     {
       get { return _repeaterInternal.Required; }
@@ -338,7 +338,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <summary> Gets or sets a flag that specifies whether the control should be displayed in read-only mode. </summary>
     [Description ("Explicitly specifies whether the control should be displayed in read-only mode.")]
     [Category ("Data")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? ReadOnly
     {
       get { return _repeaterInternal.ReadOnly; }
@@ -361,7 +361,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <remarks> Set this property to <see langword="null"/> in order to use the default value (see <see cref="AreOptionalValidatorsEnabled"/>). </remarks>
     [Description ("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? EnableOptionalValidators
     {
       get { return _repeaterInternal.EnableOptionalValidators; }

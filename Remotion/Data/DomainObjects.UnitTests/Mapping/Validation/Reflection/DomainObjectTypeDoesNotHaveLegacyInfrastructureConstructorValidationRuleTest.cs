@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NonAbstractType_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (NonAbstractClassWithoutLegacyConstructor));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithoutLegacyConstructor));
       
       var validationResult = _validationRule.Validate(classDefinition);
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NonAbstractType_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (NonAbstractClassWithLegacyConstructor));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithLegacyConstructor));
       
       var validationResult = _validationRule.Validate(classDefinition);
 
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithoutInstantiableAttribute_And_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (AbstractClassWithoutAttributeAndLegacyCtor));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndLegacyCtor));
       
       var validationResult = _validationRule.Validate(classDefinition);
 
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithoutInstantiableAttribute_And_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (AbstractClassWithoutAttributeAndWithLegacyCtor));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndWithLegacyCtor));
       
       var validationResult = _validationRule.Validate(classDefinition);
 
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithInstantiableAttribute_And_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (AbstractClassWithAttributeAndWithoutLegacyCtor));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithoutLegacyCtor));
       
       var validationResult = _validationRule.Validate(classDefinition);
 
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithInstantiableAttribute_And_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (AbstractClassWithAttributeAndWithLegacyCtor));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithLegacyCtor));
       
       var validationResult = _validationRule.Validate(classDefinition);
 

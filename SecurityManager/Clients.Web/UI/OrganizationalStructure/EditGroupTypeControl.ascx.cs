@@ -74,7 +74,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      GroupTypeLabel.Text = GetResourceManager(typeof (ResourceIdentifier)).GetString(ResourceIdentifier.GroupTypeLabelText);
+      GroupTypeLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.GroupTypeLabelText);
 
       base.OnPreRender(e);
     }

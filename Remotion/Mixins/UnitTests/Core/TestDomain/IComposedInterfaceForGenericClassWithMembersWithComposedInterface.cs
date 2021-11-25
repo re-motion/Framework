@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [ComposedInterface (typeof (GenericClassWithMembersWithComposedInterface<>))]
+  [ComposedInterface (typeof(GenericClassWithMembersWithComposedInterface<>))]
   public interface IComposedInterfaceForGenericClassWithMembersWithComposedInterface<T> : IGenericInterfaceWithMembers<T>
   {
     string M1 (T parameter);

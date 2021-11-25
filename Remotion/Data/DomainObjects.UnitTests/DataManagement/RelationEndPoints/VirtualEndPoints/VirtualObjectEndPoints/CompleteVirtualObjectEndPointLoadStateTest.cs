@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _definition = Configuration.GetTypeDefinition(typeof (Order)).GetRelationEndPointDefinition(typeof (Order).FullName + ".OrderTicket");
+      _definition = Configuration.GetTypeDefinition(typeof(Order)).GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
 
       _virtualObjectEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
       _dataManagerMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPointDataManager>();
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _relatedObject2 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2);
 
       _relatedEndPointStub2 = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      _relatedEndPointStub2.Stub(stub => stub.ID).Return(RelationEndPointID.Create(_relatedObject2.ID, typeof (OrderTicket), "Order"));
+      _relatedEndPointStub2.Stub(stub => stub.ID).Return(RelationEndPointID.Create(_relatedObject2.ID, typeof(OrderTicket), "Order"));
       _relatedEndPointStub2.Stub(stub => stub.GetDomainObjectReference()).Return(_relatedObject2);
       _relatedEndPointStub2.Stub(stub => stub.ObjectID).Return(_relatedObject2.ID);
 
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand(_virtualObjectEndPointMock, _relatedObject);
 
-      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command, Is.TypeOf(typeof(ObjectEndPointSetSameCommand)));
       Assert.That(command.DomainObject, Is.SameAs(_owningObject));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
       Assert.That(command.OldRelatedObject, Is.SameAs(_relatedObject));
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand(_virtualObjectEndPointMock, null);
 
-      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command, Is.TypeOf(typeof(ObjectEndPointSetSameCommand)));
       Assert.That(command.DomainObject, Is.SameAs(_owningObject));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
       Assert.That(command.OldRelatedObject, Is.Null);
@@ -249,7 +249,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand(_virtualObjectEndPointMock, newRelatedObject);
 
-      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetOneOneCommand)));
+      Assert.That(command, Is.TypeOf(typeof(ObjectEndPointSetOneOneCommand)));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
       Assert.That(command.NewRelatedObject, Is.SameAs(newRelatedObject));
       Assert.That(command.OldRelatedObject, Is.SameAs(_relatedObject));
@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _loadState.CreateDeleteCommand(_virtualObjectEndPointMock);
 
-      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointDeleteCommand)));
+      Assert.That(command, Is.TypeOf(typeof(ObjectEndPointDeleteCommand)));
       Assert.That(command.DomainObject, Is.SameAs(_owningObject));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
       Assert.That(command.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));

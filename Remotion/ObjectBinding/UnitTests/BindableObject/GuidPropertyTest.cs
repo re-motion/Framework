@@ -42,9 +42,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectStringProperty property = new GuidProperty(
           CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo(typeof (ClassWithAllDataTypes), "Guid"),
-              typeof (Guid),
-              typeof (Guid),
+              GetPropertyInfo(typeof(ClassWithAllDataTypes), "Guid"),
+              typeof(Guid),
+              typeof(Guid),
               null,
               false,
               true,
@@ -123,9 +123,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       return new GuidProperty(
           CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo(typeof (ClassWithValueType<Guid>), "Scalar"),
-              typeof (Guid),
-              typeof (Guid),
+              GetPropertyInfo(typeof(ClassWithValueType<Guid>), "Scalar"),
+              typeof(Guid),
+              typeof(Guid),
               null,
               false,
               true,
@@ -137,10 +137,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       return new GuidProperty(
           CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo(typeof (ClassWithValueType<Guid>), "Array"),
-              typeof (Guid),
-              typeof (Guid),
-              new ListInfo(typeof (Guid[]), typeof (Guid)),
+              GetPropertyInfo(typeof(ClassWithValueType<Guid>), "Array"),
+              typeof(Guid),
+              typeof(Guid),
+              new ListInfo(typeof(Guid[]), typeof(Guid)),
               false,
               false,
               false));
@@ -151,10 +151,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       return new GuidProperty(
           CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo(typeof (ClassWithValueType<Guid>), "NullableArray"),
-              typeof (Guid),
-              typeof (Guid),
-              new ListInfo(typeof (Guid?[]), typeof (Guid?)),
+              GetPropertyInfo(typeof(ClassWithValueType<Guid>), "NullableArray"),
+              typeof(Guid),
+              typeof(Guid),
+              new ListInfo(typeof(Guid?[]), typeof(Guid?)),
               true,
               false,
               false));

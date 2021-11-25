@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof (ProductLicenseMixin))]
+  [Uses (typeof(ProductLicenseMixin))]
   public abstract class DevelopmentPartner : Partner
   {
     public new static DevelopmentPartner NewObject ()

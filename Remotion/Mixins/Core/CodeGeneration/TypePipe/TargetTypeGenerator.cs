@@ -102,7 +102,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull (nameof(_extensionsField))]
     public void AddExtensionsField ()
     {
-      _extensionsFieldInfo = _concreteTarget.AddField("__extensions", FieldAttributes.Private, typeof (object[]));
+      _extensionsFieldInfo = _concreteTarget.AddField("__extensions", FieldAttributes.Private, typeof(object[]));
       new AttributeGenerator().AddDebuggerBrowsableAttribute(_extensionsFieldInfo, DebuggerBrowsableState.Never);
 
       _extensionsField = GetFieldExpression(_extensionsFieldInfo);
@@ -130,11 +130,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // Not serialized so that initialization is triggered again after deserialization. Default is false. Set immediately _before_ mixins are
       // serialized (to avoid reentrancy).
       _extensionsInitializedField = AddDebuggerInvisibleField(
-          "__extensionsInitialized", typeof (bool), FieldAttributes.Private | FieldAttributes.NotSerialized);
+          "__extensionsInitialized", typeof(bool), FieldAttributes.Private | FieldAttributes.NotSerialized);
 
       var privateStatic = FieldAttributes.Private | FieldAttributes.Static;
-      _classContextField = AddDebuggerInvisibleField("__classContext", typeof (ClassContext), privateStatic);
-      _mixinArrayInitializerField = AddDebuggerInvisibleField("__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
+      _classContextField = AddDebuggerInvisibleField("__classContext", typeof(ClassContext), privateStatic);
+      _mixinArrayInitializerField = AddDebuggerInvisibleField("__mixinArrayInitializer", typeof(MixinArrayInitializer), privateStatic);
       _firstField = AddDebuggerInvisibleField("__first", _nextCallProxy.Type, FieldAttributes.Private | FieldAttributes.NotSerialized);
     }
 
@@ -147,7 +147,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       _concreteTarget.AddTypeInitialization(
           Expression.Block(
-              typeof (void),
+              typeof(void),
               InitializeClassContextField(classContext),
               InitializeMixinArrayInitializerField(classContext.Type, mixinTypes)));
     }
@@ -166,7 +166,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _initializationMethod = _concreteTarget.AddMethod(
           "__InitializeMixins",
           MethodAttributes.Private,
-          parameters: new[] { new ParameterDeclaration(typeof (bool), "isDeserialization") },
+          parameters: new[] { new ParameterDeclaration(typeof(bool), "isDeserialization") },
           bodyProvider: ctx => ImplementMixinInitalizationMethod(ctx, mixinTypes));
 
       _concreteTarget.AddInitialization(
@@ -256,8 +256,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
 
-      if (!targetClassDefinition.ReceivedAttributes.ContainsKey(typeof (DebuggerDisplayAttribute))
-          && !targetClassDefinition.CustomAttributes.ContainsKey(typeof (DebuggerDisplayAttribute)))
+      if (!targetClassDefinition.ReceivedAttributes.ContainsKey(typeof(DebuggerDisplayAttribute))
+          && !targetClassDefinition.CustomAttributes.ContainsKey(typeof(DebuggerDisplayAttribute)))
       {
         var debuggerDisplayString = "{ToString(),nq} (mixed)";
         _attributeGenerator.AddDebuggerDisplayAttribute(_concreteTarget, debuggerDisplayString, debuggerDisplayNameStringOrNull: null);
@@ -388,14 +388,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       for (int i = 0; i < expectedMixinTypes.Count; i++)
       {
-        if (typeof (IInitializableMixin).IsTypePipeAssignableFrom(expectedMixinTypes[i]))
+        if (typeof(IInitializableMixin).IsTypePipeAssignableFrom(expectedMixinTypes[i]))
         {
           // ((IInitializableMixin) __extensions[i]).Initialize (mixinTargetInstance, <NewNextCallProxy (i + 1)>, isDeserialization);
 
           var initExpression = Expression.Call(
               Expression.Convert(
                   Expression.ArrayAccess(_extensionsField, Expression.Constant(i)),
-                  typeof (IInitializableMixin)),
+                  typeof(IInitializableMixin)),
               s_initializeMixinMethod,
               @this,
               NewNextCallProxy(@this, i + 1),

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void NewObject_InvalidType ()
     {
       Assert.That(
-          () => LifetimeService.NewObject(TestableClientTransaction, typeof (object), ParamList.Empty),
+          () => LifetimeService.NewObject(TestableClientTransaction, typeof(object), ParamList.Empty),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo("Mapping does not contain class 'System.Object'."));
     }
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void NewObject_NoCtorArgs ()
     {
-      var instance = (Order) LifetimeService.NewObject(TestableClientTransaction, typeof (Order), ParamList.Empty);
+      var instance = (Order) LifetimeService.NewObject(TestableClientTransaction, typeof(Order), ParamList.Empty);
       Assert.That(instance, Is.Not.Null);
       Assert.That(instance.CtorCalled, Is.True);
     }
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void NewObject_WithCtorArgs ()
     {
       var order = Order.NewObject();
-      var instance = (OrderItem) LifetimeService.NewObject(TestableClientTransaction, typeof (OrderItem), ParamList.Create(order));
+      var instance = (OrderItem) LifetimeService.NewObject(TestableClientTransaction, typeof(OrderItem), ParamList.Create(order));
       Assert.That(instance, Is.Not.Null);
       Assert.That(instance.Order, Is.SameAs(order));
     }
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void NewObject_WrongCtorArgs ()
     {
       Assert.That(
-          () => LifetimeService.NewObject(TestableClientTransaction, typeof (OrderItem), ParamList.Create(0m)),
+          () => LifetimeService.NewObject(TestableClientTransaction, typeof(OrderItem), ParamList.Create(0m)),
           Throws.InstanceOf<MissingMethodException>()
               .With.Message.EqualTo(
                   "Type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem' does not contain a constructor with the following signature: (Decimal)."));
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void NewObject_InitializesMixins ()
     {
-      var domainObject = LifetimeService.NewObject(TestableClientTransaction, typeof (ClassWithAllDataTypes), ParamList.Empty);
+      var domainObject = LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithAllDataTypes), ParamList.Empty);
       var mixin = Mixin.Get<MixinWithAccessToDomainObjectProperties<ClassWithAllDataTypes>>(domainObject);
       Assert.That(mixin, Is.Not.Null);
       Assert.That(mixin.OnDomainObjectCreatedCalled, Is.True);
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void TryGetObject_NotFound ()
     {
-      var id = new ObjectID(typeof (Order), Guid.NewGuid());
+      var id = new ObjectID(typeof(Order), Guid.NewGuid());
       Assert.That(TestableClientTransaction.IsInvalid(id), Is.False);
       
       var result = LifetimeService.TryGetObject(TestableClientTransaction, id);
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var result = LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1);
 
-      Assert.That(result, Is.InstanceOf(typeof (Order)));
+      Assert.That(result, Is.InstanceOf(typeof(Order)));
       Assert.That(result.ID, Is.EqualTo(DomainObjectIDs.Order1));
       Assert.That(result.State.IsNotLoadedYet, Is.True);
     }
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void TryGetObjects ()
     {
-      var notFoundObjectID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var notFoundObjectID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       var deletedObjectID = DomainObjectIDs.Order4;
       var deletedObject = deletedObjectID.GetObject<Order>();

@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     public override void TearDown ()
     {
       base.TearDown();
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -41,10 +41,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(
-          typeof (UserPropertyTypeSearchService), searchServiceStub.Object);
-      var substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Substitution));
+          typeof(UserPropertyTypeSearchService), searchServiceStub.Object);
+      var substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Substitution));
       var substitutingUserProperty = (IBusinessObjectReferenceProperty) substitutionClass.GetPropertyDefinition("SubstitutingUser");
       Assert.That(substitutingUserProperty, Is.Not.Null);
 
@@ -66,10 +66,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(
-          typeof (SubstitutionPropertiesSearchService), searchServiceStub.Object);
-      var substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Substitution));
+          typeof(SubstitutionPropertiesSearchService), searchServiceStub.Object);
+      var substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Substitution));
       var substitutedRoleProperty = (IBusinessObjectReferenceProperty) substitutionClass.GetPropertyDefinition("SubstitutedRole");
       Assert.That(substitutedRoleProperty, Is.Not.Null);
 

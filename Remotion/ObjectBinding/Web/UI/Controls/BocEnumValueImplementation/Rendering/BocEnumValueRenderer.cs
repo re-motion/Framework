@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   /// Responsible for rendering <see cref="BocEnumValue"/> controls.
   /// <seealso cref="IBocEnumValue"/>
   /// </summary>
-  [ImplementationFor (typeof (IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocEnumValueRenderer : BocRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
     private readonly IInternalControlMemberCaller _internalControlMemberCaller;
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         IInternalControlMemberCaller internalControlMemberCaller,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("internalControlMemberCaller", internalControlMemberCaller);
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
@@ -75,8 +75,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string key = typeof (BocEnumValueRenderer).GetFullNameChecked() + "_Style";
-      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocEnumValueRenderer), ResourceType.Html, "BocEnumValue.css");
+      string key = typeof(BocEnumValueRenderer).GetFullNameChecked() + "_Style";
+      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocEnumValueRenderer), ResourceType.Html, "BocEnumValue.css");
       htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Library);
     }
 

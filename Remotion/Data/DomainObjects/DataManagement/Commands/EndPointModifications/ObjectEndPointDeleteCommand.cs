@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public ObjectEndPointDeleteCommand (
         IObjectEndPoint modifiedEndPoint, Action oppositeObjectNullSetter, IClientTransactionEventSink transactionEventSink)
-        : base (
+        : base(
             ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             null,
             null,

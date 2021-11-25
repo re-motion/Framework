@@ -29,14 +29,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     {
       QueryDefinition definition = new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Collection);
 
-      Assert.That(definition.CollectionType, Is.EqualTo(typeof (DomainObjectCollection)));
+      Assert.That(definition.CollectionType, Is.EqualTo(typeof(DomainObjectCollection)));
     }
 
     [Test]
     public void InitializeScalarQueryWithCollectionType ()
     {
       Assert.That(
-          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Scalar, typeof (DomainObjectCollection)),
+          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Scalar, typeof(DomainObjectCollection)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The scalar query 'QueryID' must not specify a collectionType.", "collectionType"));
     }
@@ -56,9 +56,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void InitializeWithDomainObjectCollectionType ()
     {
       QueryDefinition definition = 
-          new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Collection, typeof (DomainObjectCollection));
+          new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Collection, typeof(DomainObjectCollection));
 
-      Assert.That(definition.CollectionType, Is.EqualTo(typeof (DomainObjectCollection)));
+      Assert.That(definition.CollectionType, Is.EqualTo(typeof(DomainObjectCollection)));
     }
   }
 }

@@ -35,9 +35,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetEnumerationValueFilter_FromFilterTypeCtor ()
     {
-      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(typeof (StubEnumerationValueFilter));
+      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(typeof(StubEnumerationValueFilter));
 
-      Assert.That(attribute.GetEnumerationValueFilter(), Is.TypeOf(typeof (StubEnumerationValueFilter)));
+      Assert.That(attribute.GetEnumerationValueFilter(), Is.TypeOf(typeof(StubEnumerationValueFilter)));
     }
 
     [Test]
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private void CheckConstantEnumerationValueFilter (IEnumerationValueFilter filter, params Enum[] expectedDisabledEnumValues)
     {
-      Assert.That(filter, Is.TypeOf(typeof (ConstantEnumerationValueFilter)));
+      Assert.That(filter, Is.TypeOf(typeof(ConstantEnumerationValueFilter)));
       Assert.That(((ConstantEnumerationValueFilter) filter).DisabledEnumValues, Is.EqualTo(expectedDisabledEnumValues));
     }
   }

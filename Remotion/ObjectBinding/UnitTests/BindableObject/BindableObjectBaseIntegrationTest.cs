@@ -37,11 +37,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void BusinessObjectClass ()
     {
-      Assert.That(_instance.BusinessObjectClass, Is.InstanceOf(typeof (BindableObjectClass)));
+      Assert.That(_instance.BusinessObjectClass, Is.InstanceOf(typeof(BindableObjectClass)));
       var bindableObjectClass = (BindableObjectClass) _instance.BusinessObjectClass;
-      Assert.That(bindableObjectClass.BusinessObjectProvider, Is.InstanceOf(typeof (BindableObjectProvider)));
-      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof (ClassDerivedFromBindableObjectBase)));
-      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof (ClassDerivedFromBindableObjectBase)));
+      Assert.That(bindableObjectClass.BusinessObjectProvider, Is.InstanceOf(typeof(BindableObjectProvider)));
+      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof(ClassDerivedFromBindableObjectBase)));
+      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof(ClassDerivedFromBindableObjectBase)));
     }
 
     [Test]
@@ -117,10 +117,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetProvider ()
     {
       Assert.That(
-          BindableObjectProvider.GetProviderForBindableObjectType(typeof (ClassDerivedFromBindableObjectBase)),
+          BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassDerivedFromBindableObjectBase)),
           Is.SameAs(BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>()));
       Assert.That(
-          BindableObjectProvider.GetProviderForBindableObjectType(typeof (ClassDerivedFromBindableObjectBase)),
+          BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassDerivedFromBindableObjectBase)),
           Is.Not.SameAs(BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()));
     }
 
@@ -128,13 +128,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void ClassDerivedFromBindableObjectBaseOverridingMixinMethod ()
     {
       var instance = new ClassDerivedFromBindableObjectBaseOverridingMixinMethod();
-      Assert.That(instance.BusinessObjectClass, Is.InstanceOf(typeof (BindableObjectClass)));
+      Assert.That(instance.BusinessObjectClass, Is.InstanceOf(typeof(BindableObjectClass)));
       Assert.That(
           ((BindableObjectClass) instance.BusinessObjectClass).TargetType,
-          Is.SameAs(typeof (ClassDerivedFromBindableObjectBaseOverridingMixinMethod)));
+          Is.SameAs(typeof(ClassDerivedFromBindableObjectBaseOverridingMixinMethod)));
       Assert.That(
           ((BindableObjectClass) instance.BusinessObjectClass).ConcreteType,
-          Is.SameAs(TypeFactory.GetConcreteType(typeof (ClassDerivedFromBindableObjectBaseOverridingMixinMethod))));
+          Is.SameAs(TypeFactory.GetConcreteType(typeof(ClassDerivedFromBindableObjectBaseOverridingMixinMethod))));
     }
   }
 }

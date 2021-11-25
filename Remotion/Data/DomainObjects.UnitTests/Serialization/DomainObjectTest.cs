@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     public void DomainObject_CallingWrongCtorDuringDeserialization ()
     {
       var domainObject = LifetimeService.NewObject(
-          TestableClientTransaction, typeof (SerializableClassCallingWrongBaseCtor), ParamList.Empty);
+          TestableClientTransaction, typeof(SerializableClassCallingWrongBaseCtor), ParamList.Empty);
 
       Assert.That(
           () => UnwrapTargetInvocationExceptions(() => Serializer.SerializeAndDeserialize(domainObject)),
@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
     private void AssertEventRegistered (DomainObject domainObject, string eventName, object receiver, MethodInfo receiverMethod)
     {
-      var eventDelegate = (Delegate) PrivateInvoke.GetNonPublicField(domainObject, typeof (DomainObject), eventName);
+      var eventDelegate = (Delegate) PrivateInvoke.GetNonPublicField(domainObject, typeof(DomainObject), eventName);
       Assert.That(eventDelegate, Is.Not.Null);
       Assert.That(eventDelegate.Target, Is.SameAs(receiver));
       Assert.That(eventDelegate.Method, Is.EqualTo(receiverMethod));
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
     private MethodInfo GetEventHandlerMethod (DomainObject instance, string eventName)
     {
-      var eventDelegate = (Delegate) PrivateInvoke.GetNonPublicField(instance, typeof (DomainObject), eventName);
+      var eventDelegate = (Delegate) PrivateInvoke.GetNonPublicField(instance, typeof(DomainObject), eventName);
       return eventDelegate.Method;
     }
 

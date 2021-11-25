@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
 
       Assert.That(
           () => analyzer.Analyze(),
-          Throws.TypeOf(typeof (InvalidOperationException)).With.Message.EqualTo("Could not obtain accessibility analysis result."));
+          Throws.TypeOf(typeof(InvalidOperationException)).With.Message.EqualTo("Could not obtain accessibility analysis result."));
     }
 
     [Test]
@@ -192,7 +192,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
           IAxeSourceProvider sourceProvider,
           IAccessibilityResultMapper mapper,
           ILog logger)
-          : base (webDriver, jsExecutor, resultParser, configuration, sourceProvider, mapper, logger)
+          : base(webDriver, jsExecutor, resultParser, configuration, sourceProvider, mapper, logger)
       {
       }
     }

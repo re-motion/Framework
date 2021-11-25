@@ -50,9 +50,9 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void RegisterValidator ()
     {
-      _removingPropertyValidationRuleCollectorMock.Setup(mock => mock.RegisterValidator(typeof (StubPropertyValidator), null, null)).Verifiable();
+      _removingPropertyValidationRuleCollectorMock.Setup(mock => mock.RegisterValidator(typeof(StubPropertyValidator), null, null)).Verifiable();
 
-      _addingPropertyValidationBuilder.Validator(typeof (StubPropertyValidator), null, null);
+      _addingPropertyValidationBuilder.Validator(typeof(StubPropertyValidator), null, null);
 
       _removingPropertyValidationRuleCollectorMock.Verify();
     }
@@ -60,7 +60,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void RegisterValidator_WithGenericValidatorType ()
     {
-      _removingPropertyValidationRuleCollectorMock.Setup(mock => mock.RegisterValidator(typeof (StubPropertyValidator), null, null)).Verifiable();
+      _removingPropertyValidationRuleCollectorMock.Setup(mock => mock.RegisterValidator(typeof(StubPropertyValidator), null, null)).Verifiable();
 
       _addingPropertyValidationBuilder.Validator<StubPropertyValidator>(null);
 
@@ -83,7 +83,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       _removingPropertyValidationRuleCollectorMock
           .Setup(
               mock => mock.RegisterValidator(
-                  typeof (StubPropertyValidator),
+                  typeof(StubPropertyValidator),
                   null,
                   It.IsNotNull<Func<IPropertyValidator, bool>>()))
           .Callback((Type validatorType, Type collectorTypeToRemoveFrom, Func<IPropertyValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
@@ -106,7 +106,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       _removingPropertyValidationRuleCollectorMock
           .Setup(
               mock => mock.RegisterValidator(
-                  typeof (StubPropertyValidator),
+                  typeof(StubPropertyValidator),
                   null,
                   It.IsNotNull<Func<IPropertyValidator, bool>>()))
           .Callback((Type validatorType, Type collectorTypeToRemoveFrom, Func<IPropertyValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
@@ -123,10 +123,10 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     public void RegisterValidator_WithCollectorType ()
     {
       _removingPropertyValidationRuleCollectorMock.Setup(
-          mock => mock.RegisterValidator(typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1), null))
+          mock => mock.RegisterValidator(typeof(StubPropertyValidator), typeof(CustomerValidationRuleCollector1), null))
           .Verifiable();
 
-      _addingPropertyValidationBuilder.Validator(typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1), null);
+      _addingPropertyValidationBuilder.Validator(typeof(StubPropertyValidator), typeof(CustomerValidationRuleCollector1), null);
 
       _removingPropertyValidationRuleCollectorMock.Verify();
     }
@@ -137,10 +137,10 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       Func<IPropertyValidator, bool> predicate = _ => false;
 
       _removingPropertyValidationRuleCollectorMock.Setup(
-          mock => mock.RegisterValidator(typeof (StubPropertyValidator), null, predicate))
+          mock => mock.RegisterValidator(typeof(StubPropertyValidator), null, predicate))
           .Verifiable();
 
-      _addingPropertyValidationBuilder.Validator(typeof (StubPropertyValidator), null, predicate);
+      _addingPropertyValidationBuilder.Validator(typeof(StubPropertyValidator), null, predicate);
 
       _removingPropertyValidationRuleCollectorMock.Verify();
     }
@@ -149,7 +149,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     public void RegisterValidator_WithGenericCollectorType ()
     {
       _removingPropertyValidationRuleCollectorMock.Setup(
-          mock => mock.RegisterValidator(typeof (StubPropertyValidator), typeof (CustomerValidationRuleCollector1), null))
+          mock => mock.RegisterValidator(typeof(StubPropertyValidator), typeof(CustomerValidationRuleCollector1), null))
           .Verifiable();
 
       _addingPropertyValidationBuilder.Validator<StubPropertyValidator, CustomerValidationRuleCollector1>(null);
@@ -173,8 +173,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       _removingPropertyValidationRuleCollectorMock
           .Setup(
               mock => mock.RegisterValidator(
-                  typeof (StubPropertyValidator),
-                  typeof (CustomerValidationRuleCollector1),
+                  typeof(StubPropertyValidator),
+                  typeof(CustomerValidationRuleCollector1),
                   It.IsNotNull<Func<IPropertyValidator, bool>>()))
           .Callback((Type validatorType, Type collectorTypeToRemoveFrom, Func<IPropertyValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
 
@@ -196,8 +196,8 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       _removingPropertyValidationRuleCollectorMock
           .Setup(
               mock => mock.RegisterValidator(
-                  typeof (StubPropertyValidator),
-                  typeof (CustomerValidationRuleCollector1),
+                  typeof(StubPropertyValidator),
+                  typeof(CustomerValidationRuleCollector1),
                   It.IsNotNull<Func<IPropertyValidator, bool>>()))
           .Callback((Type validatorType, Type collectorTypeToRemoveFrom, Func<IPropertyValidator, bool> validatorPredicate) => actualPredicate = validatorPredicate);
 

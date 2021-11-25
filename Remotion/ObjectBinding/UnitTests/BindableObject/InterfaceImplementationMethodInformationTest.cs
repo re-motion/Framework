@@ -95,10 +95,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void FindInterfaceImplementation ()
     {
-      var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod("ToString"));
-      _implementationMethodInformationStub.Setup(stub => stub.FindInterfaceImplementation(typeof (bool))).Returns(methodInfoAdapter);
+      var methodInfoAdapter = MethodInfoAdapter.Create(typeof(object).GetMethod("ToString"));
+      _implementationMethodInformationStub.Setup(stub => stub.FindInterfaceImplementation(typeof(bool))).Returns(methodInfoAdapter);
 
-      Assert.That(_interfaceImplementationMethodInformation.FindInterfaceImplementation(typeof (bool)), Is.SameAs(methodInfoAdapter));
+      Assert.That(_interfaceImplementationMethodInformation.FindInterfaceImplementation(typeof(bool)), Is.SameAs(methodInfoAdapter));
     }
 
     [Test]
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetFastInvoker ()
     {
       var objToReturn = (Func<string>) (() => "Test");
-      _declarationMethodInformationStub.Setup(stub => stub.GetFastInvoker(typeof (Func<string>))).Returns(objToReturn);
+      _declarationMethodInformationStub.Setup(stub => stub.GetFastInvoker(typeof(Func<string>))).Returns(objToReturn);
 
       var invoker = _interfaceImplementationMethodInformation.GetFastInvoker<Func<string>>();
 
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetOriginalDeclaration ()
     {
-      var objToReturn = MethodInfoAdapter.Create(typeof (string).GetMethod("get_Length"));
+      var objToReturn = MethodInfoAdapter.Create(typeof(string).GetMethod("get_Length"));
       _implementationMethodInformationStub.Setup(stub => stub.GetOriginalDeclaration()).Returns(objToReturn);
 
       Assert.That(_interfaceImplementationMethodInformation.GetOriginalDeclaration(), Is.SameAs(objToReturn));
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void FindDeclaringProperty ()
     {
-      var objToReturn = PropertyInfoAdapter.Create(typeof (string).GetProperty("Length"));
+      var objToReturn = PropertyInfoAdapter.Create(typeof(string).GetProperty("Length"));
       _implementationMethodInformationStub.Setup(stub => stub.FindDeclaringProperty()).Returns(objToReturn);
 
       Assert.That(_interfaceImplementationMethodInformation.FindDeclaringProperty(), Is.SameAs(objToReturn));
@@ -148,9 +148,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ReturnsType ()
     {
-      _implementationMethodInformationStub.Setup(stub => stub.ReturnType).Returns(typeof (bool));
+      _implementationMethodInformationStub.Setup(stub => stub.ReturnType).Returns(typeof(bool));
 
-      Assert.That(_interfaceImplementationMethodInformation.ReturnType, Is.SameAs(typeof (bool)));
+      Assert.That(_interfaceImplementationMethodInformation.ReturnType, Is.SameAs(typeof(bool)));
     }
 
     [Test]

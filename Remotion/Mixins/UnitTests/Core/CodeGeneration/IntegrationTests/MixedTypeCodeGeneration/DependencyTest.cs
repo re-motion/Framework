@@ -28,7 +28,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void CircularTargetCallDependenciesWork ()
     {
       using (MixinConfiguration.BuildFromActive()
-          .ForClass<NullTarget>().Clear().AddMixins(typeof (MixinWithCircularTargetCallDependency1), typeof (MixinWithCircularTargetCallDependency2))
+          .ForClass<NullTarget>().Clear().AddMixins(typeof(MixinWithCircularTargetCallDependency1), typeof(MixinWithCircularTargetCallDependency2))
           .EnterScope())
       {
         object o = ObjectFactory.Create<NullTarget>(ParamList.Empty);

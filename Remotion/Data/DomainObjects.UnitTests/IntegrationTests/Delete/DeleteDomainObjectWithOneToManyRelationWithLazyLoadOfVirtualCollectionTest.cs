@@ -107,8 +107,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Assert.That(_product.Reviews.Count, Is.EqualTo(0));
       Assert.That(_productReview1.Product, Is.Null);
       Assert.That(_productReview2.Product, Is.Null);
-      Assert.That(_productReview1.Properties[typeof (ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
-      Assert.That(_productReview2.Properties[typeof (ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_productReview1.Properties[typeof(ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_productReview2.Properties[typeof(ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
       Assert.That(_productReview1.InternalDataContainer.State.IsChanged, Is.True);
       Assert.That(_productReview2.InternalDataContainer.State.IsChanged, Is.True);
     }

@@ -39,10 +39,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddMixinType ()
     {
-      _serializer.AddMixinType(typeof (DateTime));
+      _serializer.AddMixinType(typeof(DateTime));
 
       var deserializer = new AttributeMixinContextDeserializer(_serializer.Values);
-      Assert.That(deserializer.GetMixinType(), Is.EqualTo(typeof (DateTime)));
+      Assert.That(deserializer.GetMixinType(), Is.EqualTo(typeof(DateTime)));
     }
 
     [Test]
@@ -66,10 +66,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddExplicitDependencies ()
     {
-      _serializer.AddExplicitDependencies(new[] { typeof (int), typeof (string) });
+      _serializer.AddExplicitDependencies(new[] { typeof(int), typeof(string) });
 
       var deserializer = new AttributeMixinContextDeserializer(_serializer.Values);
-      Assert.That(deserializer.GetExplicitDependencies(), Is.EqualTo(new[] { typeof (int), typeof (string) }));
+      Assert.That(deserializer.GetExplicitDependencies(), Is.EqualTo(new[] { typeof(int), typeof(string) }));
     }
 
     [Test]

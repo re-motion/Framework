@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
       IObjectSecurityStrategy objectSecurityStrategy = group.GetSecurityStrategy();
       Assert.That(objectSecurityStrategy, Is.Not.Null);
-      Assert.IsInstanceOf(typeof (DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
+      Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
       DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
       Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
     }
@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     {
       ISecurableObject group = CreateGroup();
 
-      Assert.That(@group.GetSecurableType(), Is.SameAs(typeof (Group)));
+      Assert.That(@group.GetSecurableType(), Is.SameAs(typeof(Group)));
     }
 
     [Test]

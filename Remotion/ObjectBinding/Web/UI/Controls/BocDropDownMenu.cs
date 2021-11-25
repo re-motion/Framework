@@ -43,7 +43,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   
   // static members
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
-      typeof (IBusinessObjectReferenceProperty) };
+      typeof(IBusinessObjectReferenceProperty) };
   private static readonly object s_menuItemClickEvent = new object();
 
   // member fields
@@ -60,7 +60,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected IWebServiceFactory WebServiceFactory { get; }
 
   public BocDropDownMenu ()
-      : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+      : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
   {
   }
 

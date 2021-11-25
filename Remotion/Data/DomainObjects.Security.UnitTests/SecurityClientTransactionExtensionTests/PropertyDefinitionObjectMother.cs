@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public static PropertyDefinition CreatePropertyDefinition (PropertyInfo propertyInfo, Type classType = null)
     {
       return new PropertyDefinition(
-          MappingConfiguration.Current.GetTypeDefinition(classType ?? typeof (SecurableObject)),
+          MappingConfiguration.Current.GetTypeDefinition(classType ?? typeof(SecurableObject)),
           PropertyInfoAdapter.Create(propertyInfo),
           "Test",
           false,

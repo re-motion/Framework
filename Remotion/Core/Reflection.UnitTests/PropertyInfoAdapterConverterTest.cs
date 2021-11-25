@@ -30,7 +30,7 @@ namespace Remotion.Reflection.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _propertyInfo = typeof (string).GetProperty("Length");
+      _propertyInfo = typeof(string).GetProperty("Length");
       _propertyInfoAdapter = PropertyInfoAdapter.Create(_propertyInfo);
 
       _converter = new PropertyInfoAdapterConverter();
@@ -39,27 +39,27 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void CanConvertFrom_PropertyInfo_IsTrue ()
     {
-      Assert.That(_converter.CanConvertFrom(null, typeof (PropertyInfo)), Is.True);
+      Assert.That(_converter.CanConvertFrom(null, typeof(PropertyInfo)), Is.True);
     }
 
     [Test]
     public void CanConvertFrom_OtherTypes_IsFalse ()
     {
-      Assert.That(_converter.CanConvertFrom(null, typeof (object)), Is.False);
-      Assert.That(_converter.CanConvertFrom(null, typeof (string)), Is.False);
+      Assert.That(_converter.CanConvertFrom(null, typeof(object)), Is.False);
+      Assert.That(_converter.CanConvertFrom(null, typeof(string)), Is.False);
     }
 
     [Test]
     public void CanConvertTo_PropertyInfo_IsTrue ()
     {
-      Assert.That(_converter.CanConvertTo(null, typeof (PropertyInfo)), Is.True);
+      Assert.That(_converter.CanConvertTo(null, typeof(PropertyInfo)), Is.True);
     }
 
     [Test]
     public void CanConvertTo_OtherTypes_IsFalse ()
     {
-      Assert.That(_converter.CanConvertTo(null, typeof (object)), Is.False);
-      Assert.That(_converter.CanConvertTo(null, typeof (string)), Is.False);
+      Assert.That(_converter.CanConvertTo(null, typeof(object)), Is.False);
+      Assert.That(_converter.CanConvertTo(null, typeof(string)), Is.False);
     }
 
     [Test]
@@ -88,14 +88,14 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void ConvertTo_Null ()
     {
-      var value = _converter.ConvertTo(null, null, null, typeof (PropertyInfo));
+      var value = _converter.ConvertTo(null, null, null, typeof(PropertyInfo));
       Assert.That(value, Is.Null);
     }
 
     [Test]
     public void ConvertTo_PropertyInfo ()
     {
-      var value = _converter.ConvertTo(null, null, _propertyInfoAdapter, typeof (PropertyInfo));
+      var value = _converter.ConvertTo(null, null, _propertyInfoAdapter, typeof(PropertyInfo));
       Assert.That(value, Is.EqualTo(_propertyInfo));
     }
 
@@ -103,7 +103,7 @@ namespace Remotion.Reflection.UnitTests
     public void ConvertTo_InvalidType ()
     {
       Assert.That(
-          () => _converter.ConvertTo(null, null, null, typeof (string)),
+          () => _converter.ConvertTo(null, null, null, typeof(string)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Cannot convert values to type 'System.String'. This converter only supports converting to type 'System.Reflection.PropertyInfo'."));
@@ -113,7 +113,7 @@ namespace Remotion.Reflection.UnitTests
     public void ConvertTo_InvalidValue ()
     {
       Assert.That(
-          () => _converter.ConvertTo(null, null, "string", typeof (PropertyInfo)),
+          () => _converter.ConvertTo(null, null, "string", typeof(PropertyInfo)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Cannot convert values of type 'System.String' to type 'System.Reflection.PropertyInfo'. "

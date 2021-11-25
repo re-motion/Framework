@@ -30,8 +30,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private static readonly Dictionary<string, Type> s_wellKnownRequestErrorDetectionStrategyTypes =
         new Dictionary<string, Type>
         {
-            { "AspNet", typeof (AspNetRequestErrorDetectionStrategy) },
-            { "None", typeof (NullRequestErrorDetectionStrategy) }
+            { "AspNet", typeof(AspNetRequestErrorDetectionStrategy) },
+            { "None", typeof(NullRequestErrorDetectionStrategy) }
         };
 
     private readonly string _webApplicationRoot;

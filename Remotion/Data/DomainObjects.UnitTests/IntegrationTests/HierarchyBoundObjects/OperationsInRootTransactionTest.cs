@@ -70,12 +70,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     [Test]
     public void PropertyIndexer_AffectsAssociatedRootTransaction ()
     {
-      Assert.That(_order1LoadedInRootTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(1));
+      Assert.That(_order1LoadedInRootTransaction.Properties[typeof(Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(1));
       Assert.That(GetStateFromTransaction(_order1LoadedInRootTransaction, _rootTransaction).IsUnchanged, Is.True);
 
-      _order1LoadedInRootTransaction.Properties[typeof (Order), "OrderNumber"].SetValue(2);
+      _order1LoadedInRootTransaction.Properties[typeof(Order), "OrderNumber"].SetValue(2);
 
-      Assert.That(_order1LoadedInRootTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(2));
+      Assert.That(_order1LoadedInRootTransaction.Properties[typeof(Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(2));
       Assert.That(GetStateFromTransaction(_order1LoadedInRootTransaction, _rootTransaction).IsChanged, Is.True);
     }
 
@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     [Test]
     public void IsInvalid_AffectsAssociatedRootTransaction ()
     {
-      var order = (Order) LifetimeService.NewObject(_rootTransaction, typeof (Order), ParamList.Empty);
+      var order = (Order) LifetimeService.NewObject(_rootTransaction, typeof(Order), ParamList.Empty);
       
       Assert.That(GetStateFromTransaction(order, _rootTransaction).IsNew, Is.True);
       Assert.That(order.State.IsInvalid, Is.False);

@@ -505,7 +505,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void TryUnloadData_FailureWithNewObject ()
     {
-      var orderNew = LifetimeService.NewObject(TestableClientTransaction, typeof (Order), ParamList.Empty);
+      var orderNew = LifetimeService.NewObject(TestableClientTransaction, typeof(Order), ParamList.Empty);
       Assert.That(TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
       var result = UnloadService.TryUnloadData(TestableClientTransaction, orderNew.ID);
@@ -563,7 +563,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void TryUnloadData_FailureBecauseOfNewObject_InHigherTransaction ()
     {
-      var orderNew = LifetimeService.NewObject(TestableClientTransaction, typeof (Order), ParamList.Empty);
+      var orderNew = LifetimeService.NewObject(TestableClientTransaction, typeof(Order), ParamList.Empty);
       Assert.That(TestableClientTransaction.DataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
       var subTransaction = TestableClientTransaction.CreateSubTransaction();
@@ -594,7 +594,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var subDataManager = ClientTransactionTestHelper.GetDataManager(subTransaction);
       var parentDataManager = TestableClientTransaction.DataManager;
 
-      var orderNew = (Order) LifetimeService.NewObject(subTransaction, typeof (Order), ParamList.Empty);
+      var orderNew = (Order) LifetimeService.NewObject(subTransaction, typeof(Order), ParamList.Empty);
       Assert.That(subDataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
 
@@ -694,7 +694,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void UnloadVirtualEndPointAndItemData_AnonymousEndPoint ()
     {
-      var anonymousEndPointDefinition = GetEndPointDefinition(typeof (Location), "Client").GetOppositeEndPointDefinition();
+      var anonymousEndPointDefinition = GetEndPointDefinition(typeof(Location), "Client").GetOppositeEndPointDefinition();
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Client1, anonymousEndPointDefinition);
       Assert.That(
           () => UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, endPointID),

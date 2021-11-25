@@ -248,7 +248,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
       Image image = new Image();
       image.ID = CreateID(prefix, "Inner");
       image.AlternateText = text;
-      image.ImageUrl = _resourceUrlFactory.CreateResourceUrl(typeof (TestControlGenerator), ResourceType.Image, "Image.gif").GetUrl();
+      image.ImageUrl = _resourceUrlFactory.CreateResourceUrl(typeof(TestControlGenerator), ResourceType.Image, "Image.gif").GetUrl();
       image.Style.Add(HtmlTextWriterStyle.BorderStyle, "none");
 
       return image;

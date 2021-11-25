@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   public class ClassIDsInAllForeignKeysBehaviorTest : CustomStorageObjectFactoryTestBase
   {
     public ClassIDsInAllForeignKeysBehaviorTest ()
-        : base (CreateEmptyTestDataFileName)
+        : base(CreateEmptyTestDataFileName)
     {
     }
 

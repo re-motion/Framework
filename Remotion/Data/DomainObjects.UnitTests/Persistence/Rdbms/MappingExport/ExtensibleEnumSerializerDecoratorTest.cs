@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       var enumSerializer = new ExtensibleEnumSerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>());
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
-      Assert.That(enumSerializer.EnumTypes, Contains.Item(typeof (Color)));
+      Assert.That(enumSerializer.EnumTypes, Contains.Item(typeof(Color)));
     }
 
     [Test]

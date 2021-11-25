@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 
     private ClassDefinition CreateClassDefinition<T> ()
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (T), defaultStorageClass: DefaultStorageClass.Transaction);
+      return ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(T), defaultStorageClass: DefaultStorageClass.Transaction);
     }
 
     [Test]

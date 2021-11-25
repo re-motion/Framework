@@ -25,11 +25,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// </summary>
   /// <seealso cref="IBocAutoCompleteReferenceValueValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
-  [ImplementationFor (typeof (IBocAutoCompleteReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(IBocAutoCompleteReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocAutoCompleteReferenceValueValidatorFactory : CompoundValidatorFactory<IBocAutoCompleteReferenceValue>, IBocAutoCompleteReferenceValueValidatorFactory
   {
     public CompoundBocAutoCompleteReferenceValueValidatorFactory (IEnumerable<IBocAutoCompleteReferenceValueValidatorFactory> innerFactories)
-        : base (innerFactories)
+        : base(innerFactories)
     { }
   }
 }

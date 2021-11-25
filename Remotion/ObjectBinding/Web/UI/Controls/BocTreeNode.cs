@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 public abstract class BocTreeNode: WebTreeNode
 {
   public BocTreeNode (string itemID, string? text, string? toolTip, IconInfo? icon)
-    : base (itemID, text, toolTip, icon ?? new IconInfo(string.Empty))
+    : base(itemID, text, toolTip, icon ?? new IconInfo(string.Empty))
   {
   }
 
@@ -57,7 +57,7 @@ public class BusinessObjectTreeNode: BocTreeNode
       IconInfo? icon,
       IBusinessObjectReferenceProperty? property,
       IBusinessObjectWithIdentity? businessObject)
-    : base (itemID, text, toolTip, icon ?? new IconInfo(string.Empty))
+    : base(itemID, text, toolTip, icon ?? new IconInfo(string.Empty))
   {
     Property = property;
     if (_property != null)
@@ -70,7 +70,7 @@ public class BusinessObjectTreeNode: BocTreeNode
       string text, 
       IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity businessObject)
-    : this (itemID, text, null, null, property, businessObject)
+    : this(itemID, text, null, null, property, businessObject)
   {
   }
 
@@ -211,7 +211,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
       string? toolTip,
       IconInfo? icon,
       IBusinessObjectReferenceProperty? property)
-    : base (itemID, text, toolTip, icon)
+    : base(itemID, text, toolTip, icon)
   {
     Property = property;
   }
@@ -220,7 +220,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
       string itemID, 
       string text, 
       IBusinessObjectReferenceProperty property)
-    : this (itemID, text, null, null, property)
+    : this(itemID, text, null, null, property)
   {
   }
 

@@ -25,7 +25,7 @@ namespace OBWTest.Design
 public class DesignTestFunction: WxeFunction
 {
   public DesignTestFunction ()
-    : base (new NoneTransactionMode())
+    : base(new NoneTransactionMode())
   {
     ReturnUrl = "StartForm.aspx";
   }

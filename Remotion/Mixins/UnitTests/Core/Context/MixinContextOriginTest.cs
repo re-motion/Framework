@@ -40,17 +40,17 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void CreateForCustomAttribute_OnMemberInfo ()
     {
-      var origin = MixinContextOrigin.CreateForCustomAttribute(new UsesAttribute(typeof (NullMixin)), typeof (MixinContextOriginTest));
+      var origin = MixinContextOrigin.CreateForCustomAttribute(new UsesAttribute(typeof(NullMixin)), typeof(MixinContextOriginTest));
 
       Assert.That(origin.Kind, Is.EqualTo("UsesAttribute"));
-      Assert.That(origin.Assembly, Is.EqualTo(typeof (MixinContextOriginTest).Assembly));
+      Assert.That(origin.Assembly, Is.EqualTo(typeof(MixinContextOriginTest).Assembly));
       Assert.That(origin.Location, Is.EqualTo("Remotion.Mixins.UnitTests.Core.Context.MixinContextOriginTest"));
     }
 
     [Test]
     public void CreateForCustomAttribute_OnAssembly ()
     {
-      var origin = MixinContextOrigin.CreateForCustomAttribute(new MixAttribute(typeof (object), typeof (NullMixin)), _someAssembly);
+      var origin = MixinContextOrigin.CreateForCustomAttribute(new MixAttribute(typeof(object), typeof(NullMixin)), _someAssembly);
 
       Assert.That(origin.Kind, Is.EqualTo("MixAttribute"));
       Assert.That(origin.Assembly, Is.EqualTo(_someAssembly));
@@ -136,7 +136,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var origin = new MixinContextOrigin("some kind", GetType().Assembly, "some location");
       var originWithDifferentKind = new MixinContextOrigin("some other kind", GetType().Assembly, "some location");
-      var originWithDifferentAssembly = new MixinContextOrigin("some kind", typeof (object).Assembly, "some location");
+      var originWithDifferentAssembly = new MixinContextOrigin("some kind", typeof(object).Assembly, "some location");
       var originWithDifferentLocation = new MixinContextOrigin("some kind", GetType().Assembly, "some other location");
 
       Assert.That(origin.Equals(originWithDifferentKind), Is.False);

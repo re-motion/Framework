@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
     [Test]
     [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof (RequiredFieldValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase (true, false, new[] { typeof(RequiredFieldValidator) }, Description = "Required/Not ReadOnly")]
     [TestCase (false, true, new Type[0], Description = "Not Required/ReadOnly")]
     [TestCase (false, false, new Type[0], Description = "Not Required/Not ReadOnly")]
     public void CreateValidators_WithOptionalValidatorsEnabled (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
     [Test]
     [TestCase (true, true, true, true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, true, true, true, new[] { typeof (RequiredFieldValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase (true, false, true, true, true, new[] { typeof(RequiredFieldValidator) }, Description = "Required/Not ReadOnly")]
     [TestCase (false, true, true, true, true, new Type[0], Description = "Not Required/ReadOnly")]
     [TestCase (false, false, true, true, true, new Type[0], Description = "Not Required/Not ReadOnly")]
     [TestCase (true, false, false, false, true, new Type[0], Description = "Required/Not ReadOnly/No DataSource")]

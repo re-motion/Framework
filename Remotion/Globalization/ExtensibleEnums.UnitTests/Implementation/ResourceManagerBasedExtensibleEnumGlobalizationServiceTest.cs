@@ -44,7 +44,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
       var resourceManagerStub = new Mock<IResourceManager>();
       resourceManagerStub.Setup(_ => _.IsNull).Returns(false);
       _globalizationServiceStub
-          .Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (ColorExtensions))))
+          .Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(ColorExtensions))))
           .Returns(resourceManagerStub.Object);
       resourceManagerStub
           .Setup(

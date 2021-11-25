@@ -46,7 +46,7 @@ namespace Remotion.Mixins.Context
     }
 
     public ClassContextCollection (params ClassContext[] classContexts)
-        : this ((IEnumerable<ClassContext>) classContexts)
+        : this((IEnumerable<ClassContext>) classContexts)
     {
     }
 

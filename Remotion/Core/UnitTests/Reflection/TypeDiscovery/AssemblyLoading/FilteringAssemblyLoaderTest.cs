@@ -48,7 +48,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
       _memoryAppender = new MemoryAppender();
       BasicConfigurator.Configure(_memoryAppender);
-      Assert.That(LogManager.GetLogger(typeof (FilteringAssemblyLoader)).IsDebugEnabled, Is.True);
+      Assert.That(LogManager.GetLogger(typeof(FilteringAssemblyLoader)).IsDebugEnabled, Is.True);
     }
 
     [TearDown]
@@ -57,7 +57,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       _memoryAppender.Clear();
       LogManager.ResetConfiguration();
 
-      Assert.That(LogManager.GetLogger(typeof (FilteringAssemblyLoader)).IsDebugEnabled, Is.False);
+      Assert.That(LogManager.GetLogger(typeof(FilteringAssemblyLoader)).IsDebugEnabled, Is.False);
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     {
       SetupFilterTrue();
 
-      Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
+      Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
       Assembly loadedAssembly = _loader.TryLoadAssembly(path);
       Assert.That(loadedAssembly, Is.SameAs(referenceAssembly));
@@ -74,7 +74,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     [Test]
     public void TryLoadAssembly_FilterConsiderTrue_IncludeTrue ()
     {
-      Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
+      Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
       _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
@@ -92,7 +92,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     [Test]
     public void TryLoadAssembly_FilterConsiderTrue_IncludeFalse ()
     {
-      Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
+      Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
       _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
@@ -110,7 +110,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     [Test]
     public void TryLoadAssembly_FilterConsiderFalse ()
     {
-      Assembly referenceAssembly = typeof (FilteringAssemblyLoaderTest).Assembly;
+      Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
       _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
@@ -245,7 +245,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     [Test]
     public void TryLoadAssembly_WithExceptionInShouldConsiderAssembly ()
     {
-      var name = typeof (FilteringAssemblyLoaderTest).Assembly.GetName();
+      var name = typeof(FilteringAssemblyLoaderTest).Assembly.GetName();
 
       _filterMock.Setup(mock => mock.ShouldConsiderAssembly(name)).Throws(new Exception("Fatal error")).Verifiable();
 
@@ -257,10 +257,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     [Test]
     public void TryLoadAssembly_WithExceptionInShouldIncludeAssembly ()
     {
-      var name = typeof (FilteringAssemblyLoaderTest).Assembly.GetName();
+      var name = typeof(FilteringAssemblyLoaderTest).Assembly.GetName();
 
       _filterMock.Setup(mock => mock.ShouldConsiderAssembly(name)).Returns(true).Verifiable();
-      _filterMock.Setup(mock => mock.ShouldIncludeAssembly(typeof (FilteringAssemblyLoaderTest).Assembly)).Throws(new Exception("Fatal error")).Verifiable();
+      _filterMock.Setup(mock => mock.ShouldIncludeAssembly(typeof(FilteringAssemblyLoaderTest).Assembly)).Throws(new Exception("Fatal error")).Verifiable();
 
       Assert.That(
           () => _loader.TryLoadAssembly(name, "my context"),
@@ -367,14 +367,14 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     private string Compile (string sourceDirectory, string outputAssemblyName, bool generateExecutable, string compilerOptions)
     {
       Assertion.IsTrue(
-          Path.GetDirectoryName(typeof (FilteringAssemblyLoader).Assembly.Location) == Path.GetDirectoryName(typeof (Remotion.Logging.LogManager).Assembly.Location));
-      var targetDirectory = Path.GetDirectoryName(typeof (FilteringAssemblyLoader).Assembly.Location);
+          Path.GetDirectoryName(typeof(FilteringAssemblyLoader).Assembly.Location) == Path.GetDirectoryName(typeof(Remotion.Logging.LogManager).Assembly.Location));
+      var targetDirectory = Path.GetDirectoryName(typeof(FilteringAssemblyLoader).Assembly.Location);
 
       var compiler = new AssemblyCompiler(
           sourceDirectory,
           Path.Combine(targetDirectory, outputAssemblyName),
-          typeof (FilteringAssemblyLoader).Assembly.Location,
-          typeof (Remotion.Logging.LogManager).Assembly.Location);
+          typeof(FilteringAssemblyLoader).Assembly.Location,
+          typeof(Remotion.Logging.LogManager).Assembly.Location);
 
       compiler.CompilerParameters.GenerateExecutable = generateExecutable;
       compiler.CompilerParameters.CompilerOptions = compilerOptions;

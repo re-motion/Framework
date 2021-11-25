@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.BindableObject
     //       the BusinessObjectClass for the interface must be used instead.)
     private IPropertyInformation GetPropertyInformation (PropertyInfo propertyInfo)
     {
-      var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof (IntroducedMemberAttribute), true);
+      var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), true);
       if (introducedMemberAttributes.Length > 0)
       {
         var introducedMemberAttribute = (IntroducedMemberAttribute) introducedMemberAttributes[0];
@@ -151,9 +151,9 @@ namespace Remotion.ObjectBinding.BindableObject
     protected virtual bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)
     {
       Assertion.IsNotNull(accessorDeclaration.DeclaringType, "Could not get the declaring type of '{0}'.", accessorDeclaration.Name);
-      return accessorDeclaration.DeclaringType.Assembly == typeof (IBusinessObject).Assembly
-          || accessorDeclaration.DeclaringType.Assembly == typeof (BindableObjectClass).Assembly
-          || accessorDeclaration.DeclaringType.Assembly == typeof (IMixinTarget).Assembly;
+      return accessorDeclaration.DeclaringType.Assembly == typeof(IBusinessObject).Assembly
+          || accessorDeclaration.DeclaringType.Assembly == typeof(BindableObjectClass).Assembly
+          || accessorDeclaration.DeclaringType.Assembly == typeof(IMixinTarget).Assembly;
     }
   }
 }

@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var factory = _serviceLocator.GetInstance<IBocReferenceValueRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocReferenceValueRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocReferenceValueRenderer)));
     }
 
     [Test]

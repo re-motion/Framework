@@ -25,27 +25,27 @@ namespace Remotion.Utilities
   {
     private static readonly Type[] s_types = new Type[]
                                              {
-                                                 typeof (Action),
-                                                 typeof (Action<>),
-                                                 typeof (Action<,>),
-                                                 typeof (Action<,,>),
-                                                 typeof (Action<,,,>),
-                                                 typeof (Action<,,,,>),
-                                                 typeof (Action<,,,,,>),
-                                                 typeof (Action<,,,,,,>),
-                                                 typeof (Action<,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,,,,,,,>),
-                                                 typeof (Action<,,,,,,,,,,,,,,,,,,,>)
+                                                 typeof(Action),
+                                                 typeof(Action<>),
+                                                 typeof(Action<,>),
+                                                 typeof(Action<,,>),
+                                                 typeof(Action<,,,>),
+                                                 typeof(Action<,,,,>),
+                                                 typeof(Action<,,,,,>),
+                                                 typeof(Action<,,,,,,>),
+                                                 typeof(Action<,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,,,,,,,>),
+                                                 typeof(Action<,,,,,,,,,,,,,,,,,,,>)
                                              };
 
     public static int MaxArguments
@@ -68,7 +68,7 @@ namespace Remotion.Utilities
         throw new ArgumentOutOfRangeException("argumentTypes");
 
       if (argumentTypes.Length == 0)
-        return typeof (Action);
+        return typeof(Action);
 
       return GetOpenType(argumentTypes.Length).MakeGenericType(argumentTypes);
     }

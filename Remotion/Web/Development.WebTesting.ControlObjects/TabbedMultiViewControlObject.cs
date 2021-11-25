@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       : WebFormsControlObjectWithDiagnosticMetadata, IControlHost, IControlObjectWithTabs, IFluentControlObjectWithTabs
   {
     public TabbedMultiViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

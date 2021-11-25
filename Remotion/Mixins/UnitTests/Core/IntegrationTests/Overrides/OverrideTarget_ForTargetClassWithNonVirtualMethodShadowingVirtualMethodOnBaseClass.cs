@@ -25,9 +25,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
   public class OverrideTarget_ForTargetClassWithNonVirtualMethodShadowingVirtualMethodOnBaseClass
   {
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
-    [TestCase (typeof (MixinWithoutTargetSpecification), "TheMixin.M")]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase (typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase (typeof(MixinWithoutTargetSpecification), "TheMixin.M")]
+    [TestCase (typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateTargetType_ShouldThrowValidationException (Type mixinType, string expectedMethodOutput)
     {
       using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
@@ -44,9 +44,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     }
 
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
-    [TestCase (typeof (MixinWithoutTargetSpecification), "TheMixin.M")]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase (typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase (typeof(MixinWithoutTargetSpecification), "TheMixin.M")]
+    [TestCase (typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateDerivedTypeWithoutOverride_ShouldThrowValidationException (Type mixinType, string expectedMethodOutput)
     {
       using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())

@@ -57,7 +57,7 @@ namespace Remotion.Validation.UnitTests.Providers
                   It.IsNotNull<IPropertyInformation>()))
           .Returns(validationMessageStub.Object);
 
-      var collectors = _provider.GetValidationRuleCollectors(new[] { typeof (Customer) });
+      var collectors = _provider.GetValidationRuleCollectors(new[] { typeof(Customer) });
       Assert.That(collectors, Is.Not.Empty);
 
       var addingComponentPropertyRules = collectors.SelectMany(c => c.ToArray()).SelectMany(c => c.Collector.AddedPropertyRules).ToArray();
@@ -77,12 +77,12 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void CreatePropertyRuleReflector ()
     {
-      var result = _provider.CreatePropertyRuleReflectors(new [] { typeof (Customer) });
+      var result = _provider.CreatePropertyRuleReflectors(new [] { typeof(Customer) });
 
       Assert.That(result, Is.Not.Null);
-      var propertyReflectors = result[typeof (Customer)].ToArray();
+      var propertyReflectors = result[typeof(Customer)].ToArray();
       Assert.That(propertyReflectors.Count(), Is.EqualTo(6));
-      CollectionAssert.AllItemsAreInstancesOfType(propertyReflectors, typeof (ValidationAttributesBasedPropertyRuleReflector));
+      CollectionAssert.AllItemsAreInstancesOfType(propertyReflectors, typeof(ValidationAttributesBasedPropertyRuleReflector));
     }
   }
 }

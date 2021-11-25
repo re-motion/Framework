@@ -585,7 +585,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     private FreshlyLoadedObjectData GetFreshlyLoadedObject (ObjectID id = null)
     {
-      id = id ?? new ObjectID(typeof (Order), Guid.NewGuid());
+      id = id ?? new ObjectID(typeof(Order), Guid.NewGuid());
       var dataContainer = DataContainer.CreateForExisting(id, null, pd => pd.DefaultValue);
       return new FreshlyLoadedObjectData(dataContainer);
     }
@@ -623,7 +623,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     private NotFoundLoadedObjectData GetNotFoundLoadedObject ()
     {
-      return new NotFoundLoadedObjectData(new ObjectID(typeof (Order), Guid.NewGuid()));
+      return new NotFoundLoadedObjectData(new ObjectID(typeof(Order), Guid.NewGuid()));
     }
 
     private void CheckHasEnlistedDomainObject (DataContainer dataContainer)

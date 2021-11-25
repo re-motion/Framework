@@ -29,7 +29,7 @@ namespace Remotion.Development.UnitTesting.Resources
     /// </summary>
     /// <param name="message">The error message string. </param>
     public ResourceNotFoundException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
@@ -40,7 +40,7 @@ namespace Remotion.Development.UnitTesting.Resources
     /// <param name="message">The error message string. </param>
     /// <param name="innerException">The inner exception reference. </param>
     public ResourceNotFoundException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
   }

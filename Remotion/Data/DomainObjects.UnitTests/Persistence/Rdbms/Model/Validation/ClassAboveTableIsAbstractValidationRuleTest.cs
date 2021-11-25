@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void SetUp ()
     {
       _validationRule = new ClassAboveTableIsAbstractValidationRule();
-      _abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (DerivedValidationDomainObjectClass), isAbstract: true);
-      _concreteClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (DerivedValidationDomainObjectClass), isAbstract: false);
+      _abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass), isAbstract: true);
+      _concreteClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass), isAbstract: false);
       var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("DefaultStorageProvider");
       _tableDefinition = TableDefinitionObjectMother.Create(storageProviderDefinition, new EntityNameDefinition(null, "TableName"));
       _unionViewDefinition = UnionViewDefinitionObjectMother.Create(storageProviderDefinition);
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     {
       var classDefinition = new ClassDefinitionWithUnresolvedClassType(
           "NonAbstractClassHasEntityNameDomainObject",
-          typeof (DerivedValidationDomainObjectClass),
+          typeof(DerivedValidationDomainObjectClass),
           false,
           null,
           MockRepository.GenerateStub<IPersistentMixinFinder>(),

@@ -32,7 +32,7 @@ using Remotion.Web.Compilation;
 
 namespace Remotion.SecurityManager.Clients.Web.UI
 {
-  [FileLevelControlBuilder (typeof (CodeProcessingUserControlBuilder))]
+  [FileLevelControlBuilder (typeof(CodeProcessingUserControlBuilder))]
   public partial class SecurityManagerUserContextControl : UserControl
   {
     [ResourceIdentifiers]
@@ -44,9 +44,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       CurrentTenantLabelText
     }
 
-    private static readonly string s_isTenantSelectionEnabledKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_IsTenantSelectionEnabled";
-    private static readonly string s_enableAbstractTenantsKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_EnableAbstractTenants";
-    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof (SecurityManagerUserContextControl).GetFullNameChecked() + "_IsSubstitutionSelectionEnabled";
+    private static readonly string s_isTenantSelectionEnabledKey = typeof(SecurityManagerUserContextControl).GetFullNameChecked() + "_IsTenantSelectionEnabled";
+    private static readonly string s_enableAbstractTenantsKey = typeof(SecurityManagerUserContextControl).GetFullNameChecked() + "_EnableAbstractTenants";
+    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof(SecurityManagerUserContextControl).GetFullNameChecked() + "_IsSubstitutionSelectionEnabled";
 
 
     [DefaultValue (true)]
@@ -142,7 +142,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
 
       CurrentUserLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentUserLabelText);
       CurrentSubstitutionLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentSubstitutionLabelText);
@@ -171,7 +171,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     protected IResourceManager GetResourceManager (Type resourceEnumType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("resourceEnumType", resourceEnumType, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("resourceEnumType", resourceEnumType, typeof(Enum));
 
       return ResourceManagerSet.Create(GlobalizationService.GetResourceManager(TypeAdapter.Create(resourceEnumType)), GetResourceManager());
     }

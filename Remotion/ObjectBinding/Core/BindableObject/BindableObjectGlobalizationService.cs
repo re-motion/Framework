@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// using the <see cref="BusinessObjectProvider.AddService"/> method or indirectly by providing a custom implementation of the 
   /// <see cref="IBusinessObjectServiceFactory"/>.
   /// </remarks>
-  [ImplementationFor (typeof (BindableObjectGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(BindableObjectGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public sealed class BindableObjectGlobalizationService
   {
     [ResourceIdentifiers]
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.BindableObject
       ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
 
       _resourceManager = new Lazy<IResourceManager>(
-          () => globalizationServices.GetResourceManager(typeof (ResourceIdentifier)),
+          () => globalizationServices.GetResourceManager(typeof(ResourceIdentifier)),
           LazyThreadSafetyMode.ExecutionAndPublication);
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
       _enumerationGlobalizationService = enumerationGlobalizationService;

@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
       private readonly ICache<ISecurityContext, AccessType[]> _items;
 
       internal Data (GuidRevisionValue revision)
-          : base (revision)
+          : base(revision)
       {
         _items = CacheFactory.CreateWithSynchronization<ISecurityContext, AccessType[]>();
       }
@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
     private readonly UserRevisionKey _revisionKey;
 
     public AccessTypeCache (IRevisionProvider<UserRevisionKey, GuidRevisionValue> revisionProvider, string userName)
-        : base (revisionProvider)
+        : base(revisionProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
         

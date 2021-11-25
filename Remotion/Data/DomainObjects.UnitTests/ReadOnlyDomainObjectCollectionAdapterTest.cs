@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      _wrappedData = new DomainObjectCollection(typeof (Order));
+      _wrappedData = new DomainObjectCollection(typeof(Order));
       _readOnlyAdapter = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(_wrappedData);
       _readOnlyAdapterAsIList = _readOnlyAdapter;
 
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void RequiredItemType ()
     {
-      Assert.That(_readOnlyAdapter.RequiredItemType, Is.SameAs(typeof (Order)));
+      Assert.That(_readOnlyAdapter.RequiredItemType, Is.SameAs(typeof(Order)));
     }
 
     [Test]

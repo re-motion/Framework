@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects
   public class DBStorageGroupAttribute : StorageGroupAttribute
   {
     public DBStorageGroupAttribute ()
-        : base (DefaultStorageClass.Persistent)
+        : base(DefaultStorageClass.Persistent)
     {
     }
   }

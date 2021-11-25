@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
-  [Uses (typeof (MixinDerivedFromMixinWithPersistentProperty))]
+  [Uses (typeof(MixinDerivedFromMixinWithPersistentProperty))]
   public class ClassWithDerivedMixinDerivedFromClassWithMixinWithPersistentProperty : ClassWithMixinWithPersistentProperty
   {
     

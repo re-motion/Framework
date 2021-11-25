@@ -131,7 +131,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     public WebTreeViewNodeControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

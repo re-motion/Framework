@@ -22,7 +22,7 @@ namespace Remotion.Mixins.Definitions
   public class RequiredMixinTypeDefinition : RequirementDefinitionBase
   {
     public RequiredMixinTypeDefinition (TargetClassDefinition targetClass, Type type)
-      : base (targetClass, type)
+      : base(targetClass, type)
     {
     }
 

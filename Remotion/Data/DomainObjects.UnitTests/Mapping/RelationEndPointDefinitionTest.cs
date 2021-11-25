@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialization_PropertyOfWrongType ()
     {
-      var companyDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];
+      var companyDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Company)];
       var propertyDefinition = companyDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name"];
       Assert.That(
           () => new RelationEndPointDefinition(propertyDefinition, false),
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialize ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order));
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition);
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection { propertyDefinition });
       var endPoint = new RelationEndPointDefinition(propertyDefinition, true);
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void RelationDefinitionNull ()
     {
-      var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (OrderTicket)];
+      var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(OrderTicket)];
       var propertyDefinition = classDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"];
 
       var definition = new RelationEndPointDefinition(propertyDefinition, true);

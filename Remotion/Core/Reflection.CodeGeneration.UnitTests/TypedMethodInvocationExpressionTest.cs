@@ -48,23 +48,23 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TypedMethodInvocationMethodProperty ()
     {
-      var method = GetUnsavedMethodEmitter(false, typeof (string), new Type[0]);
-      Expression newObject = new NewInstanceExpression(typeof (ReferenceType), Type.EmptyTypes);
-      ExpressionReference newObjectReference = new ExpressionReference(typeof (ReferenceType), newObject, method);
+      var method = GetUnsavedMethodEmitter(false, typeof(string), new Type[0]);
+      Expression newObject = new NewInstanceExpression(typeof(ReferenceType), Type.EmptyTypes);
+      ExpressionReference newObjectReference = new ExpressionReference(typeof(ReferenceType), newObject, method);
 
       TypedMethodInvocationExpression expression =
-          new TypedMethodInvocationExpression(newObjectReference, typeof (ReferenceType).GetMethod("Method"));
-      Assert.That(expression.Method, Is.EqualTo(typeof (ReferenceType).GetMethod("Method")));
+          new TypedMethodInvocationExpression(newObjectReference, typeof(ReferenceType).GetMethod("Method"));
+      Assert.That(expression.Method, Is.EqualTo(typeof(ReferenceType).GetMethod("Method")));
     }
 
     [Test]
     public void TypedMethodInvocationOnReferenceType ()
     {
-      var method = GetMethodEmitter(false, typeof (string), new Type[0]);
-      Expression newObject = new NewInstanceExpression(typeof (ReferenceType), Type.EmptyTypes);
-      ExpressionReference newObjectReference = new ExpressionReference(typeof (ReferenceType), newObject, method);
+      var method = GetMethodEmitter(false, typeof(string), new Type[0]);
+      Expression newObject = new NewInstanceExpression(typeof(ReferenceType), Type.EmptyTypes);
+      ExpressionReference newObjectReference = new ExpressionReference(typeof(ReferenceType), newObject, method);
       method.ImplementByReturning(new TypedMethodInvocationExpression(newObjectReference,
-          typeof (ReferenceType).GetMethod("Method")));
+          typeof(ReferenceType).GetMethod("Method")));
 
       Assert.That(InvokeMethod(), Is.EqualTo("ReferenceTypeMethod"));
     }
@@ -72,11 +72,11 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TypedMethodInvocationOnValueType ()
     {
-      var method = GetMethodEmitter(false, typeof (string), new Type[0]);
-      Expression newObject = new InitObjectExpression(method, typeof (ValueType));
-      ExpressionReference newObjectReference = new ExpressionReference(typeof (ValueType), newObject, method);
+      var method = GetMethodEmitter(false, typeof(string), new Type[0]);
+      Expression newObject = new InitObjectExpression(method, typeof(ValueType));
+      ExpressionReference newObjectReference = new ExpressionReference(typeof(ValueType), newObject, method);
       method.ImplementByReturning(new TypedMethodInvocationExpression(newObjectReference,
-          typeof (ValueType).GetMethod("Method")));
+          typeof(ValueType).GetMethod("Method")));
 
       Assert.That(InvokeMethod(), Is.EqualTo("ValueTypeMethod"));
     }
@@ -84,14 +84,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TypedMethodInvocationWithComplexOwner ()
     {
-      FieldReference fieldReference = ClassEmitter.CreateField("CallTarget", typeof (ReferenceType));
+      FieldReference fieldReference = ClassEmitter.CreateField("CallTarget", typeof(ReferenceType));
       FieldInfoReference fieldInfoReference = new FieldInfoReference(SelfReference.Self, fieldReference.Reference);
 
-      var method = GetMethodEmitter(false, typeof (string), new Type[0]);
+      var method = GetMethodEmitter(false, typeof(string), new Type[0]);
 
-      method.AddStatement(new AssignStatement(fieldReference, new NewInstanceExpression(typeof (ReferenceType), Type.EmptyTypes)));
+      method.AddStatement(new AssignStatement(fieldReference, new NewInstanceExpression(typeof(ReferenceType), Type.EmptyTypes)));
 
-      method.ImplementByReturning(new TypedMethodInvocationExpression(fieldInfoReference, typeof (ReferenceType).GetMethod("Method")));
+      method.ImplementByReturning(new TypedMethodInvocationExpression(fieldInfoReference, typeof(ReferenceType).GetMethod("Method")));
 
       Assert.That(InvokeMethod(), Is.EqualTo("ReferenceTypeMethod"));
     }
@@ -99,14 +99,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TypedMethodInvocationWithArguments ()
     {
-      FieldReference fieldReference = ClassEmitter.CreateField("CallTarget", typeof (ReferenceType));
+      FieldReference fieldReference = ClassEmitter.CreateField("CallTarget", typeof(ReferenceType));
       FieldInfoReference fieldInfoReference = new FieldInfoReference(SelfReference.Self, fieldReference.Reference);
 
-      var method = GetMethodEmitter(false, typeof (Tuple<int, string>), new Type[0]);
+      var method = GetMethodEmitter(false, typeof(Tuple<int, string>), new Type[0]);
 
-      method.AddStatement(new AssignStatement(fieldReference, new NewInstanceExpression(typeof (ReferenceType), Type.EmptyTypes)));
+      method.AddStatement(new AssignStatement(fieldReference, new NewInstanceExpression(typeof(ReferenceType), Type.EmptyTypes)));
 
-      method.ImplementByReturning(new TypedMethodInvocationExpression(fieldInfoReference, typeof (ReferenceType).GetMethod("MethodWithArgs"),
+      method.ImplementByReturning(new TypedMethodInvocationExpression(fieldInfoReference, typeof(ReferenceType).GetMethod("MethodWithArgs"),
         new ConstReference(1).ToExpression(), new ConstReference("2").ToExpression()));
 
       Assert.That(InvokeMethod(), Is.EqualTo(new Tuple<int, string>(1, "2")));

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
               RelationEndPointID.Create(
                   DomainObjectIDs.Product1,
-                  typeof (Product),
+                  typeof(Product),
                   "Reviews"));
       _productEndPoint = (VirtualCollectionEndPoint) stateUpdateRaisingEndPointDecorator.InnerEndPoint;
     }

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends (typeof (BaseType7))]
+  [Extends (typeof(BaseType7))]
   public class BT7Mixin5 : Mixin<object, IBaseType7>
   {
   }

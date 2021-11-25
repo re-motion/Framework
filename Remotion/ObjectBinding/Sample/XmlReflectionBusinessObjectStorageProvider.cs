@@ -120,12 +120,12 @@ namespace Remotion.ObjectBinding.Sample
 
     public T CreateObject<T> () where T: BindableXmlObject
     {
-      return (T) CreateObject(typeof (T), Guid.NewGuid());
+      return (T) CreateObject(typeof(T), Guid.NewGuid());
     }
 
     public T CreateObject<T> (Guid id) where T: BindableXmlObject
     {
-      return (T) CreateObject(typeof (T), id);
+      return (T) CreateObject(typeof(T), id);
     }
 
     public BindableXmlObject CreateObject (Type concreteType)

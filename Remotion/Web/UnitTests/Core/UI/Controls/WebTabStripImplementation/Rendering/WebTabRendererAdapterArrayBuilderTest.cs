@@ -70,17 +70,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       webTabMock3.Verify();
       Assert.That(result.Length, Is.EqualTo(3));
       
-      Assert.That(result[0], Is.TypeOf(typeof (WebTabRendererAdapter)));
+      Assert.That(result[0], Is.TypeOf(typeof(WebTabRendererAdapter)));
       Assert.That(result[0].IsLast, Is.False);
       Assert.That(result[0].WebTab, Is.SameAs(webTabMock1.Object));
       Assert.That(PrivateInvoke.GetNonPublicField(result[0], "_webTabRenderer"), Is.SameAs(fakeWebTabRenderer));
 
-      Assert.That(result[1], Is.TypeOf(typeof (WebTabRendererAdapter)));
+      Assert.That(result[1], Is.TypeOf(typeof(WebTabRendererAdapter)));
       Assert.That(result[1].IsLast, Is.False);
       Assert.That(result[1].WebTab, Is.SameAs(webTabMock2.Object));
       Assert.That(PrivateInvoke.GetNonPublicField(result[1], "_webTabRenderer"), Is.SameAs(fakeWebTabRenderer));
 
-      Assert.That(result[2], Is.TypeOf(typeof (WebTabRendererAdapter)));
+      Assert.That(result[2], Is.TypeOf(typeof(WebTabRendererAdapter)));
       Assert.That(result[2].IsLast, Is.True);
       Assert.That(result[2].WebTab, Is.SameAs(webTabMock3.Object));
       Assert.That(PrivateInvoke.GetNonPublicField(result[2], "_webTabRenderer"), Is.SameAs(fakeWebTabRenderer));

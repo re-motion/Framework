@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends (typeof (TargetClassWithAdditionalDependencies))]
+  [Extends (typeof(TargetClassWithAdditionalDependencies))]
   public class MixinWithNoAdditionalDependency : Mixin<object, ITargetClassWithAdditionalDependencies>
   {
     [OverrideTarget]

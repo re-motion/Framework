@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
           TestDomainStorageProviderDefinition,
           "select Order.* from Order inner join Customer where Customer.ID = @customerID order by OrderNo asc;",
           QueryType.Collection,
-          typeof (OrderCollection));
+          typeof(OrderCollection));
     }
 
     [Test]

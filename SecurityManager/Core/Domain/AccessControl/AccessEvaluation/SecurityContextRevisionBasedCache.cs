@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           IReadOnlyDictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles,
           IReadOnlyDictionary<string, SecurableClassDefinitionData> classes,
           IReadOnlyDictionary<IDomainObjectHandle<StatePropertyDefinition>, IReadOnlyCollection<string>> statePropertyValues)
-          : base (revision)
+          : base(revision)
       {
         Tenants = tenants;
         Groups = groups;
@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private static readonly RevisionKey s_revisionKey = new RevisionKey();
 
     public SecurityContextRevisionBasedCache (IDomainRevisionProvider revisionProvider)
-        : base (revisionProvider)
+        : base(revisionProvider)
     {
     }
 

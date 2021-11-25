@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void Initialize_DateProperty ()
     {
       IBusinessObjectDateTimeProperty property = new DateProperty(
-          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithAllDataTypes), "Date"), _businessObjectProvider));
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), "Date"), _businessObjectProvider));
 
       Assert.That(property.Type, Is.EqualTo(DateTimeType.Date));
     }
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void Initialize_DateTimeProperty ()
     {
       IBusinessObjectDateTimeProperty property = new DateTimeProperty(
-          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithAllDataTypes), "DateTime"), _businessObjectProvider));
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), "DateTime"), _businessObjectProvider));
 
       Assert.That(property.Type, Is.EqualTo(DateTimeType.DateTime));
     }

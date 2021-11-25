@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
-                 Driver = typeof (CustomSeleniumWebDriver)
+                 Driver = typeof(CustomSeleniumWebDriver)
              };
     }
   }

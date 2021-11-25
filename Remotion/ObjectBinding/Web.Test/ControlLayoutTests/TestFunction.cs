@@ -28,7 +28,7 @@ namespace OBWTest.ControlLayoutTests
     private Person _person;
 
     public TestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

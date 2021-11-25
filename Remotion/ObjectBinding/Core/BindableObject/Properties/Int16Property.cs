@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   public class Int16Property : NumericPropertyBase
   {
     public Int16Property (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
 
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <summary>Gets the numeric type associated with this <see cref="IBusinessObjectNumericProperty"/>.</summary>
     public override Type Type
     {
-      get { return typeof (Int16); }
+      get { return typeof(Int16); }
     }
   }
 }

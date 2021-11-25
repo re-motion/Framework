@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var factory = _serviceLocator.GetInstance<IObjectFactoryImplementation>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (ObjectFactoryImplementation)));
+      Assert.That(factory, Is.TypeOf(typeof(ObjectFactoryImplementation)));
     }
 
     [Test]

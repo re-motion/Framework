@@ -35,11 +35,11 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void GetSignature ()
     {
-      var delegateType = typeof (Func<int, string, IDisposable>);
+      var delegateType = typeof(Func<int, string, IDisposable>);
 
       var result = _factory.GetSignature(delegateType);
 
-      Assert.That(result.Item1, Is.EqualTo(new[] { typeof (int), typeof (string) }));
+      Assert.That(result.Item1, Is.EqualTo(new[] { typeof(int), typeof(string) }));
       Assert.That(result.Item2, Is.EqualTo(typeof(IDisposable)));
     }
 
@@ -50,7 +50,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
 
       var result =
           (Func<string, int, DomainType>)
-          _factory.CreateConstructorCall(constructor, typeof (Func<string, int, DomainType>));
+          _factory.CreateConstructorCall(constructor, typeof(Func<string, int, DomainType>));
 
       var instance = result("abc", 7);
       Assert.That(instance.String, Is.EqualTo("abc"));
@@ -64,7 +64,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
 
       var result =
           (Func<string, int, DomainValueType>)
-          _factory.CreateConstructorCall(constructor, typeof (Func<string, int, DomainValueType>));
+          _factory.CreateConstructorCall(constructor, typeof(Func<string, int, DomainValueType>));
 
       var instance = result("abc", 7);
       Assert.That(instance.String, Is.EqualTo("abc"));
@@ -76,7 +76,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     {
       var constructor = MemberInfoFromExpressionUtility.GetConstructor(() => new DomainValueType("", 7));
 
-      var result = (Func<string, int, object>) _factory.CreateConstructorCall(constructor, typeof (Func<string, int, object>));
+      var result = (Func<string, int, object>) _factory.CreateConstructorCall(constructor, typeof(Func<string, int, object>));
 
       var instance = (DomainValueType) result("abc", 7);
       Assert.That(instance.String, Is.EqualTo("abc"));
@@ -86,7 +86,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void CreateDefaultConstructorCall ()
     {
-      var result = (Func<DomainType>) _factory.CreateDefaultConstructorCall(typeof (DomainType), typeof (Func<DomainType>));
+      var result = (Func<DomainType>) _factory.CreateDefaultConstructorCall(typeof(DomainType), typeof(Func<DomainType>));
 
       var instance = result();
       Assert.That(instance.String, Is.EqualTo("defaultCtor"));
@@ -95,7 +95,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void CreateDefaultConstructorCall_ValueType ()
     {
-      var result = (Func<DomainValueType>) _factory.CreateDefaultConstructorCall(typeof (DomainValueType), typeof (Func<DomainValueType>));
+      var result = (Func<DomainValueType>) _factory.CreateDefaultConstructorCall(typeof(DomainValueType), typeof(Func<DomainValueType>));
 
       Assert.That(() => result(), Throws.Nothing);
     }
@@ -103,7 +103,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void CreateDefaultConstructorCall_ValueType_Boxing ()
     {
-      var result = (Func<object>) _factory.CreateDefaultConstructorCall(typeof (DomainValueType), typeof (Func<object>));
+      var result = (Func<object>) _factory.CreateDefaultConstructorCall(typeof(DomainValueType), typeof(Func<object>));
 
       var instance = result();
       Assert.That(instance, Is.Not.Null);

@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var factory = _serviceLocator.GetInstance<IBocCheckBoxRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocCheckBoxRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocCheckBoxRenderer)));
     }
 
     [Test]

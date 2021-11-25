@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class NoRdbmsUnitTestStorageProviderStubDefinition : StorageProviderDefinition
   {
     public NoRdbmsUnitTestStorageProviderStubDefinition (string storageProviderID)
-        : base (storageProviderID, new UnitTestStorageObjectFactoryStub())
+        : base(storageProviderID, new UnitTestStorageObjectFactoryStub())
     {
     }
 

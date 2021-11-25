@@ -56,12 +56,12 @@ namespace Remotion.Web.UI.Controls
     }
 
     public DropDownMenu (IControl? ownerControl)
-        : this (ownerControl, new[] { typeof (WebMenuItem) })
+        : this(ownerControl, new[] { typeof(WebMenuItem) })
     {
     }
 
     public DropDownMenu ()
-        : this (null, new[] { typeof (WebMenuItem) })
+        : this(null, new[] { typeof(WebMenuItem) })
     {
     }
 

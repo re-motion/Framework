@@ -73,36 +73,36 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     protected ServiceConfigurationEntry CreateInstanceService ()
     {
       return new ServiceConfigurationEntry(
-          typeof (InstanceService),
-          new ServiceImplementationInfo(typeof (InstanceService), LifetimeKind.InstancePerDependency, RegistrationType.Single));
+          typeof(InstanceService),
+          new ServiceImplementationInfo(typeof(InstanceService), LifetimeKind.InstancePerDependency, RegistrationType.Single));
     }
 
     protected ServiceConfigurationEntry CreateSingletonService ()
     {
       return new ServiceConfigurationEntry(
-          typeof (SingletonService),
-          new ServiceImplementationInfo(typeof (SingletonService), LifetimeKind.Singleton, RegistrationType.Single));
+          typeof(SingletonService),
+          new ServiceImplementationInfo(typeof(SingletonService), LifetimeKind.Singleton, RegistrationType.Single));
     }
 
     protected ServiceConfigurationEntry CreateSingleService ()
     {
       return new ServiceConfigurationEntry(
-          typeof (SingleService),
-          new ServiceImplementationInfo(typeof (SingleService), LifetimeKind.Singleton, RegistrationType.Single));
+          typeof(SingleService),
+          new ServiceImplementationInfo(typeof(SingleService), LifetimeKind.Singleton, RegistrationType.Single));
     }
 
     protected ServiceConfigurationEntry CreateMultipleService ()
     {
       return new ServiceConfigurationEntry(
-          typeof (MultipleService),
-          new ServiceImplementationInfo(typeof (MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple));
+          typeof(MultipleService),
+          new ServiceImplementationInfo(typeof(MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple));
     }
 
     protected ServiceConfigurationEntry CreateParameterizedService ()
     {
       return new ServiceConfigurationEntry(
-          typeof (ParameterizedService),
-          new ServiceImplementationInfo(typeof (ParameterizedService), LifetimeKind.InstancePerDependency, RegistrationType.Single));
+          typeof(ParameterizedService),
+          new ServiceImplementationInfo(typeof(ParameterizedService), LifetimeKind.InstancePerDependency, RegistrationType.Single));
     }
   }
 }

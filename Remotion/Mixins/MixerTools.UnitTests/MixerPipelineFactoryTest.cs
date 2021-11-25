@@ -113,14 +113,14 @@ namespace Remotion.Mixins.MixerTools.UnitTests
 
     private void CheckRemotionPipelineFactoryWasUsedForCreation (IPipeline pipeline)
     {
-      var targetType = typeof (TargetClassForGlobalMix);
+      var targetType = typeof(TargetClassForGlobalMix);
       var assembledType = pipeline.ReflectionService.GetAssembledType(targetType);
       var assembly = assembledType.Assembly;
 
       Assert.That(assembledType, Is.Not.EqualTo(targetType));
 
       // RemotionPipelineFactory will add the [NonApplicationAssemblyAttribute] to the generated assembly.
-      Assert.That(assembly.IsDefined(typeof (NonApplicationAssemblyAttribute), inherit: false), Is.True);
+      Assert.That(assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), inherit: false), Is.True);
     }
   }
 }

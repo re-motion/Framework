@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _domainObjectCreatorMock = MockRepository.GenerateStrictMock<IDomainObjectCreator>();
       _typeDefinitionWithCreatorMock = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(
           TestDomainStorageProviderDefinition,
-          classType: typeof (OrderItem),
+          classType: typeof(OrderItem),
           instanceCreator: _domainObjectCreatorMock);
 
       _objectIDWithCreatorMock = new ObjectID(_typeDefinitionWithCreatorMock, Guid.NewGuid());
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void NewObject_AbstractClass ()
     {
-      var typeDefinition = GetTypeDefinition(typeof (AbstractClass));
+      var typeDefinition = GetTypeDefinition(typeof(AbstractClass));
       Assert.That(
           () => _agent.NewObject(typeDefinition, ParamList.Empty), 
           Throws.InvalidOperationException.With.Message.EqualTo(

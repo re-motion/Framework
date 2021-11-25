@@ -24,7 +24,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
-  [ImplementationFor (typeof (IMemberResolver), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IMemberResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberResolver : IMemberResolver
   {
     private class CacheKey : IEquatable<CacheKey>
@@ -147,7 +147,7 @@ namespace Remotion.Security.Metadata
     private static bool IsSecuredMethod (MemberInfo memberInfo, object? filterCriteria)
     {
       var memberName = (string) filterCriteria!;
-      return memberInfo.Name == memberName && memberInfo.IsDefined(typeof (DemandPermissionAttribute), false);
+      return memberInfo.Name == memberName && memberInfo.IsDefined(typeof(DemandPermissionAttribute), false);
     }
 
     public bool IsNull

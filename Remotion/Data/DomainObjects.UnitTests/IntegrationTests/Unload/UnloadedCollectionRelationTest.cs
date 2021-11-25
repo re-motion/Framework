@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
-      var originalOrderItems = _orderWithUnloadedCollection.Properties[typeof (Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>();
+      var originalOrderItems = _orderWithUnloadedCollection.Properties[typeof(Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>();
 
       Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
       Assert.That(originalOrderItems.Count, Is.GreaterThan(0));

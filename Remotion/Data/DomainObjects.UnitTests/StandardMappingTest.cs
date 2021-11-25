@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public const string CreateTestDataFileName = "Database\\DataDomainObjects_CreateTestData.sql";
 
     protected StandardMappingTest ()
-        : base (new StandardMappingDatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)
+        : base(new StandardMappingDatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)
     {
     }
 
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected IRelationEndPointDefinition GetSomeEndPointDefinition ()
     {
-      return GetEndPointDefinition(typeof (Order), "OrderItems");
+      return GetEndPointDefinition(typeof(Order), "OrderItems");
     }
 
     protected IRelationEndPointDefinition GetEndPointDefinition (Type classType, string shortPropertyName)

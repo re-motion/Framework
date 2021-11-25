@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   /// This class inherits a mixin from its base class that introduces an interface, and it itself has a mixin derived from that base class mixin.
   /// The mixin implicitly introduces the same interface. This can create name clashes.
   /// </summary>
-  [Uses (typeof (DerivedMixinAddingPersistentProperties))]
+  [Uses (typeof(DerivedMixinAddingPersistentProperties))]
   public class DerivedTargetClassWithDerivedMixinWithInterface : TargetClassForPersistentMixin
   {
   }

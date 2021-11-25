@@ -62,13 +62,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       { // Base
-        var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+        var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
         DeleteAccessControlListButton.Text = resourceManager.GetString(ResourceIdentifier.DeleteAccessControlListButtonText);
         NewAccessControlEntryButton.Text = resourceManager.GetString(ResourceIdentifier.NewAccessControlEntryButtonText);
       }
 
       {// This
-        var resourceManager = GetResourceManager(typeof (StatefulAccessResourceIdentifier));
+        var resourceManager = GetResourceManager(typeof(StatefulAccessResourceIdentifier));
         MissingStateCombinationsValidator.ErrorMessage =
             resourceManager.GetString(StatefulAccessResourceIdentifier.MissingStateCombinationsValidatorErrorMessage);
         NewStateCombinationButton.Text = resourceManager.GetString(StatefulAccessResourceIdentifier.NewStateCombinationButtonText);

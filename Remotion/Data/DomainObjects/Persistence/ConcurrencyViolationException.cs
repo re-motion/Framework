@@ -37,26 +37,26 @@ namespace Remotion.Data.DomainObjects.Persistence
     private readonly ObjectID[] _ids;
 
     public ConcurrencyViolationException (IEnumerable<ObjectID> ids)
-        : this (ids, null)
+        : this(ids, null)
     {
     }
 
     public ConcurrencyViolationException (IEnumerable<ObjectID> ids, Exception inner)
-        : this (BuildMessage(ArgumentUtility.CheckNotNull("ids", ids)), ids, inner)
+        : this(BuildMessage(ArgumentUtility.CheckNotNull("ids", ids)), ids, inner)
     {
     }
 
     public ConcurrencyViolationException (string message, IEnumerable<ObjectID> ids, Exception inner)
-        : base (message, inner)
+        : base(message, inner)
     {
       ArgumentUtility.CheckNotNull("ids", ids);
       _ids = ids.ToArray();
     }
 
     protected ConcurrencyViolationException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _ids = (ObjectID[]) info.GetValue("_ids", typeof (ObjectID[]));
+      _ids = (ObjectID[]) info.GetValue("_ids", typeof(ObjectID[]));
     }
 
     public ReadOnlyCollection<ObjectID> IDs

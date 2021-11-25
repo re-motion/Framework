@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       Assert.That(_orderTicket.Order, Is.Null);
       Assert.That(_order.OrderTicket, Is.Null);
-      Assert.That(_orderTicket.Properties[typeof (OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_orderTicket.Properties[typeof(OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
       Assert.That(_order.State.IsChanged, Is.True);
       Assert.That(_order.InternalDataContainer.State.IsUnchanged, Is.True);
     }
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       Assert.That(_orderTicket.Order, Is.Null);
       Assert.That(_order.OrderTicket, Is.Null);
-      Assert.That(_orderTicket.Properties[typeof (OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_orderTicket.Properties[typeof(OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
       Assert.That(_orderTicket.InternalDataContainer.State.IsChanged, Is.True);
     }
 

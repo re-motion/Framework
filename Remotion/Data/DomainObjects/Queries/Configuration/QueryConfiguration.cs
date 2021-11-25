@@ -40,15 +40,15 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     private readonly IAppContextProvider _contextProvider;
 
-    public QueryConfiguration () : this (new AppContextProvider(), new string[0])
+    public QueryConfiguration () : this(new AppContextProvider(), new string[0])
     {
     }
 
-    public QueryConfiguration (IAppContextProvider provider) : this (provider, new string[0])
+    public QueryConfiguration (IAppContextProvider provider) : this(provider, new string[0])
     {
     }
 
-    public QueryConfiguration (params string[] configurationFiles) : this (new AppContextProvider(), configurationFiles)
+    public QueryConfiguration (params string[] configurationFiles) : this(new AppContextProvider(), configurationFiles)
     {
     }
 
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
       _queryFilesProperty = new ConfigurationProperty(
           "queryFiles",
-          typeof (ConfigurationElementCollection<QueryFileElement>),
+          typeof(ConfigurationElementCollection<QueryFileElement>),
           null,
           ConfigurationPropertyOptions.None);
 

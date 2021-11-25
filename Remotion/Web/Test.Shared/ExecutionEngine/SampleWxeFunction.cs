@@ -26,9 +26,9 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   public class SampleWxeFunction : WxeFunction, ISampleFunctionVariables
   {
     public SampleWxeFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
-      ReturnUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof (Start), TestResourceType.Root, "Start.aspx").GetUrl();
+      ReturnUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(Start), TestResourceType.Root, "Start.aspx").GetUrl();
     }
 
     // parameters and local variables
@@ -53,26 +53,26 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       Var2 = "Var2 - Step1";
     }
 
-    private WxeStep Step2 = new WxeResourcePageStep(typeof (WebForm1), "ExecutionEngine/WebForm1.aspx");
+    private WxeStep Step2 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
     private WxeStep Step3 = new SampleWxeSubFunction(varref("Var2"), "constant for Var2");
-    private WxeStep Step4 = new WxeResourcePageStep(typeof (WebForm1), "ExecutionEngine/WebForm1.aspx");
+    private WxeStep Step4 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
   }
 
   [Serializable]
   public class SampleWxeSubFunction : WxeFunction, ISampleFunctionVariables
   {
     public SampleWxeSubFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     public SampleWxeSubFunction (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
     }
 
     public SampleWxeSubFunction (string var1, string var2)
-        : base (new NoneTransactionMode(), var1, var2)
+        : base(new NoneTransactionMode(), var1, var2)
     {
     }
 
@@ -110,14 +110,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
           // Var1 = "SampleWxeSubFunction Step1";
         }
 
-        private WxeStep Step2 = new WxeResourcePageStep(typeof (WebForm1), "ExecutionEngine/WebForm1.aspx");
+        private WxeStep Step2 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
 
         private void Step3 (WxeContext context)
         {
           Function.Var1 = "SampleWxeSubFunction Step3";
         }
 
-        private WxeStep Step4 = new WxeResourcePageStep(typeof (WebForm1), "ExecutionEngine/WebForm1.aspx");
+        private WxeStep Step4 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
 
         private void Step5 ()
         {
@@ -126,7 +126,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
 
       [Serializable]
-      [WxeException (typeof (ApplicationException))]
+      [WxeException (typeof(ApplicationException))]
       private class Catch1 : WxeCatchBlock
       {
         private SampleWxeSubFunction Function
@@ -160,7 +160,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
               Function.Var1 = CurrentException.Message;
             }
 
-            private WxeStep Step2 = new WxeResourcePageStep(typeof (WebForm1), "ExecutionEngine/WebForm1.aspx");
+            private WxeStep Step2 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
           }
         }
 
@@ -169,7 +169,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
           Function.Var1 = "Exception caught.";
         }
 
-        private WxeStep Step3 = new WxeResourcePageStep(typeof (WebForm1), "ExecutionEngine/WebForm1.aspx");
+        private WxeStep Step3 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
       }
 
       [Serializable]
@@ -185,7 +185,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
           Function.Var2 = "finally";
         }
 
-        private WxeStep Step2 = new WxeResourcePageStep(typeof (WebForm1), "ExecutionEngine/WebForm1.aspx");
+        private WxeStep Step2 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
       }
     }
   }

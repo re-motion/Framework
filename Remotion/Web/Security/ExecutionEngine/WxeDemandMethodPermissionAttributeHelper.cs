@@ -90,11 +90,11 @@ namespace Remotion.Web.Security.ExecutionEngine
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration(parameterDeclarations);
 
       var actualParameterType = GetActualParameterType(parameterDeclaration.Type);
-      if (!typeof (ISecurableObject).IsAssignableFrom(actualParameterType))
+      if (!typeof(ISecurableObject).IsAssignableFrom(actualParameterType))
       {
         throw new WxeException(string.Format(
             "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' does not implement interface '{3}'.",
-            _attribute.GetType().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe(), typeof (ISecurableObject).GetFullNameSafe()));
+            _attribute.GetType().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe(), typeof(ISecurableObject).GetFullNameSafe()));
       }
 
       if (SecurableClass == null)
@@ -126,7 +126,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       {
         throw new WxeException(string.Format(
             "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' does not implement interface '{3}'.",
-            _attribute.GetType().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe(), typeof (ISecurableObject).GetFullNameSafe()));
+            _attribute.GetType().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe(), typeof(ISecurableObject).GetFullNameSafe()));
       }
 
       if (SecurableClass != null)
@@ -174,7 +174,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       {
         throw new WxeException(string.Format(
             "The {0} applied to WxeFunction '{1}' does not specify a type implementing interface '{2}'.",
-            _attribute.GetType().Name, functionType.GetFullNameSafe(), typeof (ISecurableObject).GetFullNameSafe()));
+            _attribute.GetType().Name, functionType.GetFullNameSafe(), typeof(ISecurableObject).GetFullNameSafe()));
       }
     }
 
@@ -216,7 +216,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     private static IHandleAttribute? GetHandleAttribute (Type declaredParameterType)
     {
-      return ((IHandleAttribute[]) declaredParameterType.GetCustomAttributes(typeof (IHandleAttribute), true)).FirstOrDefault();
+      return ((IHandleAttribute[]) declaredParameterType.GetCustomAttributes(typeof(IHandleAttribute), true)).FirstOrDefault();
     }
   }
 }

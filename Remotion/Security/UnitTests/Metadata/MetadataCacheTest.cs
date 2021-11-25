@@ -52,8 +52,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void CacheSecurableClassInfos ()
     {
-      Type fileType = typeof (File);
-      Type paperFileType = typeof (PaperFile);
+      Type fileType = typeof(File);
+      Type paperFileType = typeof(PaperFile);
 
       SecurableClassInfo fileTypeInfo = new SecurableClassInfo();
       SecurableClassInfo paperFileTypeInfo = new SecurableClassInfo();
@@ -74,13 +74,13 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void CacheStatePropertyInfos ()
     {
-      PropertyInfo fileConfidentialityProperty = typeof (File).GetProperty("Confidentiality");
+      PropertyInfo fileConfidentialityProperty = typeof(File).GetProperty("Confidentiality");
       Assert.That(fileConfidentialityProperty, Is.Not.Null);
 
-      PropertyInfo paperFileConfidentialityProperty = typeof (PaperFile).GetProperty("Confidentiality");
+      PropertyInfo paperFileConfidentialityProperty = typeof(PaperFile).GetProperty("Confidentiality");
       Assert.That(paperFileConfidentialityProperty, Is.Not.Null);
 
-      PropertyInfo paperFileStateProperty = typeof (PaperFile).GetProperty("State");
+      PropertyInfo paperFileStateProperty = typeof(PaperFile).GetProperty("State");
       Assert.That(paperFileStateProperty, Is.Not.Null);
 
       StatePropertyInfo confidentialityPropertyInfo = new StatePropertyInfo();
@@ -154,8 +154,8 @@ namespace Remotion.Security.UnitTests.Metadata
       SecurableClassInfo fileTypeInfo = new SecurableClassInfo();
       SecurableClassInfo paperFileTypeInfo = new SecurableClassInfo();
 
-      _cache.AddSecurableClassInfo(typeof (File), fileTypeInfo);
-      _cache.AddSecurableClassInfo(typeof (PaperFile), paperFileTypeInfo);
+      _cache.AddSecurableClassInfo(typeof(File), fileTypeInfo);
+      _cache.AddSecurableClassInfo(typeof(PaperFile), paperFileTypeInfo);
 
       List<SecurableClassInfo> infos = _cache.GetSecurableClassInfos();
 
@@ -168,10 +168,10 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetCachedPropertyInfos ()
     {
-      PropertyInfo confidentialityProperty = typeof (PaperFile).GetProperty("Confidentiality");
+      PropertyInfo confidentialityProperty = typeof(PaperFile).GetProperty("Confidentiality");
       Assert.That(confidentialityProperty, Is.Not.Null);
 
-      PropertyInfo stateProperty = typeof (PaperFile).GetProperty("State");
+      PropertyInfo stateProperty = typeof(PaperFile).GetProperty("State");
       Assert.That(stateProperty, Is.Not.Null);
 
       StatePropertyInfo confidentialityPropertyInfo = new StatePropertyInfo();

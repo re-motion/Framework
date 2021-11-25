@@ -33,7 +33,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      _classEmitter = new CustomClassEmitter(Scope, UniqueName, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true); // force unsigned because we use SimpleAttribute below
+      _classEmitter = new CustomClassEmitter(Scope, UniqueName, typeof(object), Type.EmptyTypes, TypeAttributes.Public, true); // force unsigned because we use SimpleAttribute below
     }
 
     public override void TearDown ()
@@ -47,10 +47,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SimpleInstanceProperty ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("SimpleProperty", PropertyKind.Instance, typeof (int));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("SimpleProperty", PropertyKind.Instance, typeof(int));
 
       Assert.That(property.Name, Is.EqualTo("SimpleProperty"));
-      Assert.That(property.PropertyType, Is.EqualTo(typeof (int)));
+      Assert.That(property.PropertyType, Is.EqualTo(typeof(int)));
       Assert.That(property.PropertyKind, Is.EqualTo(PropertyKind.Instance));
       Assert.That(property.IndexParameters, Is.Empty);
 
@@ -72,10 +72,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void StaticProperty ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("StaticProperty", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("StaticProperty", PropertyKind.Static, typeof(string));
 
       Assert.That(property.Name, Is.EqualTo("StaticProperty"));
-      Assert.That(property.PropertyType, Is.EqualTo(typeof (string)));
+      Assert.That(property.PropertyType, Is.EqualTo(typeof(string)));
       Assert.That(property.PropertyKind, Is.EqualTo(PropertyKind.Static));
       Assert.That(property.IndexParameters, Is.Empty);
 
@@ -97,9 +97,9 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       CustomPropertyEmitter property =
           _classEmitter.CreateProperty(
-              "StaticProperty", PropertyKind.Static, typeof (string), new Type[] {typeof (int), typeof (double)}, PropertyAttributes.None);
+              "StaticProperty", PropertyKind.Static, typeof(string), new Type[] {typeof(int), typeof(double)}, PropertyAttributes.None);
 
-      Assert.That(property.IndexParameters, Is.EqualTo(new Type[] { typeof (int), typeof (double) }));
+      Assert.That(property.IndexParameters, Is.EqualTo(new Type[] { typeof(int), typeof(double) }));
 
       property.CreateGetMethod();
       property.CreateSetMethod();
@@ -115,7 +115,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void NoGetMethod ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("NoGetMethod", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("NoGetMethod", PropertyKind.Static, typeof(string));
       Assert.That(property.GetMethod, Is.Null);
       Type type = _classEmitter.BuildType();
       Assert.That(GetProperty(type, property).GetGetMethod(), Is.Null);
@@ -124,7 +124,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void NoSetMethod ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("NoSetMethod", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("NoSetMethod", PropertyKind.Static, typeof(string));
       Assert.That(property.SetMethod, Is.Null);
       Type type = _classEmitter.BuildType();
       Assert.That(GetProperty(type, property).GetSetMethod(), Is.Null);
@@ -133,7 +133,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SpecificGetMethod ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("SpecificGetMethod", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("SpecificGetMethod", PropertyKind.Static, typeof(string));
       property.CreateGetMethod().ImplementByReturning(new ConstReference("You are my shunsine").ToExpression());
       Type type = _classEmitter.BuildType();
       Assert.That(GetPropertyValue(type, property), Is.EqualTo("You are my shunsine"));
@@ -142,8 +142,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SpecificSetMethod ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("SpecificSetMethod", PropertyKind.Static, typeof (string));
-      property.CreateSetMethod().ImplementByThrowing(typeof (Exception), "My only shunsine");
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("SpecificSetMethod", PropertyKind.Static, typeof(string));
+      property.CreateSetMethod().ImplementByThrowing(typeof(Exception), "My only shunsine");
       Type type = _classEmitter.BuildType();
       try
       {
@@ -151,7 +151,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       }
       catch (TargetInvocationException ex)
       {
-        Assert.That(ex.InnerException.GetType() == typeof (Exception), Is.True);
+        Assert.That(ex.InnerException.GetType() == typeof(Exception), Is.True);
         Assert.That(ex.InnerException.Message, Is.EqualTo("My only shunsine"));
       }
     }
@@ -159,7 +159,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void GetMethodCannotBeSetToNull ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("GetMethodCannotBeSetToNull", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("GetMethodCannotBeSetToNull", PropertyKind.Static, typeof(string));
       property.CreateGetMethod();
       Assert.That(
           () => property.GetMethod = null,
@@ -170,7 +170,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SetMethodCannotBeSetToNull ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("SetMethodCannotBeSetToNull", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("SetMethodCannotBeSetToNull", PropertyKind.Static, typeof(string));
       property.CreateSetMethod();
       Assert.That(
           () => property.SetMethod = null,
@@ -181,7 +181,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void ImplementWithBackingFieldStatic ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty( "StaticProperty", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty( "StaticProperty", PropertyKind.Static, typeof(string));
 
       property.CreateGetMethod();
       property.CreateSetMethod();
@@ -204,7 +204,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void ImplementWithBackingFieldInstance ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("InstanceProperty", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("InstanceProperty", PropertyKind.Instance, typeof(string));
 
       property.CreateGetMethod();
       property.CreateSetMethod();
@@ -228,7 +228,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void ImplementWithBackingFieldWithoutMethods ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("PropertyWithoutAccessors", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("PropertyWithoutAccessors", PropertyKind.Instance, typeof(string));
 
       Assert.That(property.GetMethod, Is.Null);
       Assert.That(property.SetMethod, Is.Null);
@@ -244,13 +244,13 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       CustomPropertyEmitter property =
           _classEmitter.CreateProperty(
-              "CreateGetMethodStatic", PropertyKind.Static, typeof (string), new Type[] {typeof (int)}, PropertyAttributes.None);
+              "CreateGetMethodStatic", PropertyKind.Static, typeof(string), new Type[] {typeof(int)}, PropertyAttributes.None);
 
       Assert.That(property.GetMethod, Is.Null);
       var method = property.CreateGetMethod();
       Assert.That(method.MethodBuilder.IsStatic, Is.True);
-      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof (int) }));
-      Assert.That(method.ReturnType, Is.EqualTo(typeof (string)));
+      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof(int) }));
+      Assert.That(method.ReturnType, Is.EqualTo(typeof(string)));
     }
 
     [Test]
@@ -258,20 +258,20 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       CustomPropertyEmitter property =
           _classEmitter.CreateProperty(
-              "CreateGetMethodStatic", PropertyKind.Instance, typeof (string), new Type[] { typeof (int) }, PropertyAttributes.None);
+              "CreateGetMethodStatic", PropertyKind.Instance, typeof(string), new Type[] { typeof(int) }, PropertyAttributes.None);
 
       Assert.That(property.GetMethod, Is.Null);
       var method = property.CreateGetMethod();
       Assert.That(method.MethodBuilder.IsStatic, Is.False);
-      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof (int) }));
-      Assert.That(method.ReturnType, Is.EqualTo(typeof (string)));
+      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof(int) }));
+      Assert.That(method.ReturnType, Is.EqualTo(typeof(string)));
     }
 
     [Test]
     public void CreateGetMethodThrowsOnDuplicateMethod ()
     {
       CustomPropertyEmitter property = _classEmitter.CreateProperty("CreateGetMethodThrowsOnDuplicateGetMethod", PropertyKind.Instance,
-          typeof (string));
+          typeof(string));
 
       property.CreateGetMethod();
       Assert.That(
@@ -286,13 +286,13 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       CustomPropertyEmitter property =
           _classEmitter.CreateProperty(
-              "CreateSetMethodStatic", PropertyKind.Static, typeof (string), new Type[] { typeof (int) }, PropertyAttributes.None);
+              "CreateSetMethodStatic", PropertyKind.Static, typeof(string), new Type[] { typeof(int) }, PropertyAttributes.None);
 
       Assert.That(property.SetMethod, Is.Null);
       var method = property.CreateSetMethod();
       Assert.That(method.MethodBuilder.IsStatic, Is.True);
-      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof (int), typeof (string) }));
-      Assert.That(method.ReturnType, Is.EqualTo(typeof (void)));
+      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof(int), typeof(string) }));
+      Assert.That(method.ReturnType, Is.EqualTo(typeof(void)));
     }
 
     [Test]
@@ -300,20 +300,20 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       CustomPropertyEmitter property =
           _classEmitter.CreateProperty(
-              "CreateSetMethodStatic", PropertyKind.Instance, typeof (string), new Type[] { typeof (int) }, PropertyAttributes.None);
+              "CreateSetMethodStatic", PropertyKind.Instance, typeof(string), new Type[] { typeof(int) }, PropertyAttributes.None);
 
       Assert.That(property.SetMethod, Is.Null);
       var method = property.CreateSetMethod();
       Assert.That(method.MethodBuilder.IsStatic, Is.False);
-      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof (int), typeof (string) }));
-      Assert.That(method.ReturnType, Is.EqualTo(typeof (void)));
+      Assert.That(method.ParameterTypes, Is.EqualTo(new Type[] { typeof(int), typeof(string) }));
+      Assert.That(method.ReturnType, Is.EqualTo(typeof(void)));
     }
 
     [Test]
     public void CreateSetMethodThrowsOnDuplicateMethod ()
     {
       CustomPropertyEmitter property = _classEmitter.CreateProperty("CreateSetMethodThrowsOnDuplicateMethod", PropertyKind.Instance,
-          typeof (string));
+          typeof(string));
 
       property.CreateSetMethod();
       Assert.That(
@@ -326,11 +326,11 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void AddCustomAttribute ()
     {
-      CustomPropertyEmitter property = _classEmitter.CreateProperty("AddCustomAttribute", PropertyKind.Static, typeof (string));
-      property.AddCustomAttribute(new CustomAttributeBuilder(typeof (SimpleAttribute).GetConstructor(Type.EmptyTypes), new object[0]));
+      CustomPropertyEmitter property = _classEmitter.CreateProperty("AddCustomAttribute", PropertyKind.Static, typeof(string));
+      property.AddCustomAttribute(new CustomAttributeBuilder(typeof(SimpleAttribute).GetConstructor(Type.EmptyTypes), new object[0]));
 
       Type type = _classEmitter.BuildType();
-      Assert.That(GetProperty(type, property).IsDefined(typeof (SimpleAttribute), false), Is.True);
+      Assert.That(GetProperty(type, property).IsDefined(typeof(SimpleAttribute), false), Is.True);
       Assert.That(GetProperty(type, property).GetCustomAttributes(false).Length, Is.EqualTo(1));
       Assert.That(GetProperty(type, property).GetCustomAttributes(false)[0], Is.EqualTo(new SimpleAttribute()));
     }

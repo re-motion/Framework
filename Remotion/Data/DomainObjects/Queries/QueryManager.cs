@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.Queries
         var message = string.Format(
             "The query returned an object of type '{0}', but a query result of type '{1}' was expected.",
             domainObject.GetPublicDomainObjectType(),
-            typeof (T));
+            typeof(T));
         throw new UnexpectedQueryResultException(message);
       }
     }

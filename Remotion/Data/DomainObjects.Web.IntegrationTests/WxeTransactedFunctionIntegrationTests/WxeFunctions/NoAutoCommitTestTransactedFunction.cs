@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public NoAutoCommitTestTransactedFunction (ITransactionMode transactionMode, ObjectID objectWithAllDataTypes)
-        : base (transactionMode, objectWithAllDataTypes)
+        : base(transactionMode, objectWithAllDataTypes)
     {
       Assertion.IsFalse(TransactionMode.AutoCommit);
     }

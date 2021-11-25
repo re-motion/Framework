@@ -35,7 +35,7 @@ namespace Remotion.Reflection.UnitTests
     {
       Assert.That(_nullPropertyInformation.Name, Is.Null);
       Assert.That(_nullPropertyInformation.DeclaringType, Is.Null);
-      Assert.That(_nullPropertyInformation.PropertyType, Is.EqualTo(typeof (INullObject)));
+      Assert.That(_nullPropertyInformation.PropertyType, Is.EqualTo(typeof(INullObject)));
       Assert.That(_nullPropertyInformation.CanBeSetFromOutside, Is.False);
     }
 
@@ -85,7 +85,7 @@ namespace Remotion.Reflection.UnitTests
       var result = _nullPropertyInformation.GetGetMethod(false);
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result, Is.TypeOf(typeof (NullMethodInformation)));
+      Assert.That(result, Is.TypeOf(typeof(NullMethodInformation)));
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Remotion.Reflection.UnitTests
       var result = _nullPropertyInformation.GetSetMethod(false);
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result, Is.TypeOf(typeof (NullMethodInformation)));
+      Assert.That(result, Is.TypeOf(typeof(NullMethodInformation)));
     }
 
     [Test]
@@ -113,7 +113,7 @@ namespace Remotion.Reflection.UnitTests
     public void FindInterfaceImplementation ()
     {
       Assert.That(
-          () => _nullPropertyInformation.FindInterfaceImplementation(typeof (object)),
+          () => _nullPropertyInformation.FindInterfaceImplementation(typeof(object)),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "FindInterfaceImplementation can only be called on inteface properties."));

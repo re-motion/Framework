@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   public class MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface
       : DomainObjectMixin<MixinTarget_AnnotatedPropertiesPartOfInterface>, IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface
   {
-    private static readonly Type s_type = typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface);
+    private static readonly Type s_type = typeof(MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface);
 
     public virtual string PropertyWithoutAttribute
     {

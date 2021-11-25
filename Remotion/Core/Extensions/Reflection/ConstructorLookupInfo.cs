@@ -29,18 +29,18 @@ namespace Remotion.Reflection
     private readonly Type _definingType;
 
     public ConstructorLookupInfo (Type definingType, BindingFlags bindingFlags)
-        : this (definingType, bindingFlags, null, CallingConventions.Any, null)
+        : this(definingType, bindingFlags, null, CallingConventions.Any, null)
     {
     }
 
     public ConstructorLookupInfo (Type definingType)
-        : this (definingType, BindingFlags.Public | BindingFlags.Instance, null, CallingConventions.Any, null)
+        : this(definingType, BindingFlags.Public | BindingFlags.Instance, null, CallingConventions.Any, null)
     {
     }
 
     public ConstructorLookupInfo (
         Type definingType, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
-        : base (".ctor", bindingFlags, binder, callingConvention, parameterModifiers)
+        : base(".ctor", bindingFlags, binder, callingConvention, parameterModifiers)
     {
       ArgumentUtility.CheckNotNull("definingType", definingType);
 
@@ -54,7 +54,7 @@ namespace Remotion.Reflection
 
     public virtual Delegate GetDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
       CheckNotAbstract();
 
@@ -91,14 +91,14 @@ namespace Remotion.Reflection
 
     protected virtual object GetCacheKey (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
       return new Tuple<Type, Type>(_definingType, delegateType);
     }
 
     protected virtual Delegate CreateDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
       var delegateSignature = GetSignature(delegateType);
       var parameterTypes = delegateSignature.Item1;

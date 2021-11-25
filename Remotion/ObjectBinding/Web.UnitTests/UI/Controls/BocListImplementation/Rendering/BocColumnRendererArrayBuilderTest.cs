@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
       Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
-      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof (StubColumnRenderer)));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(StubColumnRenderer)));
       Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(_stubColumnDefinition));
       Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
     }

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       base.SetUp();
 
       _provider = new RdbmsPersistenceModelProvider();
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", typeof (Order));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", typeof(Order));
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void GetEntityDefinition_EmptyViewDefinition ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", classType: typeof (Order), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", classType: typeof(Order), baseClass: null);
       Assert.That(classDefinition.StorageEntityDefinition, Is.Null);
       Assert.That(
           () => _provider.GetEntityDefinition(classDefinition),
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void GetEntityDefinition_WrongEntityDefinition ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", typeof (Order));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", typeof(Order));
       classDefinition.SetStorageEntity(new FakeStorageEntityDefinition(TestDomainStorageProviderDefinition, "Test"));
       Assert.That(
           () => _provider.GetEntityDefinition(classDefinition),

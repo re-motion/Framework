@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     public void Initialize ()
     {
       Assert.That(_serviceMixin, Is.Not.Null);
-      Assert.That(_serviceMixin, Is.InstanceOf(typeof (IBusinessObjectServiceFactory)));
+      Assert.That(_serviceMixin, Is.InstanceOf(typeof(IBusinessObjectServiceFactory)));
       Assert.That(Mixin.Get<BindableDomainObjectServiceFactoryMixin>(_serviceFactory), Is.Not.Null);
     }
 
@@ -63,79 +63,79 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     public void GetService_FromSubstitutionPropertiesSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (SubstitutionPropertiesSearchService)),
-          Is.InstanceOf(typeof (SubstitutionPropertiesSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(SubstitutionPropertiesSearchService)),
+          Is.InstanceOf(typeof(SubstitutionPropertiesSearchService)));
     }
 
     [Test]
     public void GetService_FromRolePropertiesSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (RolePropertiesSearchService)),
-          Is.InstanceOf(typeof (RolePropertiesSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(RolePropertiesSearchService)),
+          Is.InstanceOf(typeof(RolePropertiesSearchService)));
     }
 
     [Test]
     public void GetService_FromTenantPropertyTypeSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (TenantPropertyTypeSearchService)),
-          Is.InstanceOf(typeof (TenantPropertyTypeSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(TenantPropertyTypeSearchService)),
+          Is.InstanceOf(typeof(TenantPropertyTypeSearchService)));
     }
 
     [Test]
     public void GetService_FromGroupPropertyTypeSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (GroupPropertyTypeSearchService)),
-          Is.InstanceOf(typeof (GroupPropertyTypeSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(GroupPropertyTypeSearchService)),
+          Is.InstanceOf(typeof(GroupPropertyTypeSearchService)));
     }
 
     [Test]
     public void GetService_FromUserPropertyTypeSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (UserPropertyTypeSearchService)),
-          Is.InstanceOf(typeof (UserPropertyTypeSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(UserPropertyTypeSearchService)),
+          Is.InstanceOf(typeof(UserPropertyTypeSearchService)));
     }
 
     [Test]
     public void GetService_FromPositionPropertyTypeSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (PositionPropertyTypeSearchService)),
-          Is.InstanceOf(typeof (PositionPropertyTypeSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(PositionPropertyTypeSearchService)),
+          Is.InstanceOf(typeof(PositionPropertyTypeSearchService)));
     }
 
     [Test]
     public void GetService_FromGroupTypePropertyTypeSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (GroupTypePropertyTypeSearchService)),
-          Is.InstanceOf(typeof (GroupTypePropertyTypeSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(GroupTypePropertyTypeSearchService)),
+          Is.InstanceOf(typeof(GroupTypePropertyTypeSearchService)));
     }
 
     [Test]
     public void GetService_FromAbstractRoleDefinitionPropertyTypeSearchService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (AbstractRoleDefinitionPropertyTypeSearchService)),
-          Is.InstanceOf(typeof (AbstractRoleDefinitionPropertyTypeSearchService)));
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(AbstractRoleDefinitionPropertyTypeSearchService)),
+          Is.InstanceOf(typeof(AbstractRoleDefinitionPropertyTypeSearchService)));
     }
 
     [Test]
     public void GetService_FromIGetObjectService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableDomainObjectProvider.Object, typeof (IGetObjectService)),
-          Is.InstanceOf(typeof (BindableDomainObjectGetObjectService)));
+          _serviceFactory.CreateService(_bindableDomainObjectProvider.Object, typeof(IGetObjectService)),
+          Is.InstanceOf(typeof(BindableDomainObjectGetObjectService)));
     }
 
     [Test]
     public void GetService_FromUnknownService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof (IStubService)),
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(IStubService)),
           Is.Null);
     }
   }

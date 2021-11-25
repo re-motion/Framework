@@ -55,7 +55,7 @@ namespace Remotion.Validation.UnitTests.Merging
       var logger = hierarchy.GetLogger("The Name");
       var log = new Log4NetLog(logger);
       var logManagerStub = new Mock<ILogManager>();
-      logManagerStub.Setup(stub => stub.GetLogger(typeof (DiagnosticOutputValidationRuleMergeDecorator))).Returns(log);
+      logManagerStub.Setup(stub => stub.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator))).Returns(log);
 
       _logContextStub = new Mock<ILogContext>();
       _wrappedMergerStub = new Mock<IValidationRuleCollectorMerger>();
@@ -94,9 +94,9 @@ namespace Remotion.Validation.UnitTests.Merging
                                          {
                                              new ValidationRuleCollectorInfo(
                                                  collector1,
-                                                 typeof (ValidationAttributesBasedValidationRuleCollectorProvider))
+                                                 typeof(ValidationAttributesBasedValidationRuleCollectorProvider))
                                          },
-                                         new[] { new ValidationRuleCollectorInfo(collector2, typeof (ApiBasedValidationRuleCollectorProvider)) }
+                                         new[] { new ValidationRuleCollectorInfo(collector2, typeof(ApiBasedValidationRuleCollectorProvider)) }
                                      };
 
       var userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
@@ -107,51 +107,51 @@ namespace Remotion.Validation.UnitTests.Merging
       var stubValidator4 = new StubPropertyValidator();
 
       _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof (NotNullValidator)), It.IsAny<Func<Type, string>>()))
+          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotNullValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("Remotion.Validation.Validators.NotNullValidator");
       _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof (LengthValidator)), It.IsAny<Func<Type, string>>()))
+          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(LengthValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("Remotion.Validation.Validators.LengthValidator");
       _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof (NotEmptyValidator)), It.IsAny<Func<Type, string>>()))
+          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEmptyValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("Remotion.Validation.Validators.NotEmptyValidator");
       _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof (NotEqualValidator)), It.IsAny<Func<Type, string>>()))
+          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEqualValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("Remotion.Validation.Validators.NotEqualValidator");
       _validatorFormatterStub.Setup(
           stub =>
-              stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof (StubPropertyValidator)), It.IsAny<Func<Type, string>>()))
+              stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(StubPropertyValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("Remotion.Validation.UnitTests.TestHelpers.StubPropertyValidator");
 
-      var userNamePropertyRule = AddingPropertyValidationRuleCollector.Create(userNameExpression, typeof (IValidationRuleCollector<>));
+      var userNamePropertyRule = AddingPropertyValidationRuleCollector.Create(userNameExpression, typeof(IValidationRuleCollector<>));
       userNamePropertyRule.RegisterValidator(_ => stubValidator1);
       userNamePropertyRule.RegisterValidator(_ => stubValidator1);
       userNamePropertyRule.RegisterValidator(_ => stubValidator2);
-      var lastNamePropertyRule = AddingPropertyValidationRuleCollector.Create(lastNameExpression, typeof (IValidationRuleCollector<>));
+      var lastNamePropertyRule = AddingPropertyValidationRuleCollector.Create(lastNameExpression, typeof(IValidationRuleCollector<>));
       lastNamePropertyRule.RegisterValidator(_ => stubValidator3);
 
       var noPropertyRuleStub = new AddingPropertyValidationRuleCollectorStub();
       noPropertyRuleStub.RegisterValidator(_ => stubValidator4);
 
       var removingPropertyRuleStub1 = new Mock<IRemovingPropertyValidationRuleCollector>();
-      removingPropertyRuleStub1.Setup(stub => stub.CollectorType).Returns(typeof (CustomerValidationRuleCollector1));
+      removingPropertyRuleStub1.Setup(stub => stub.CollectorType).Returns(typeof(CustomerValidationRuleCollector1));
       var removingPropertyRuleStub2 = new Mock<IRemovingPropertyValidationRuleCollector>();
-      removingPropertyRuleStub2.Setup(stub => stub.CollectorType).Returns(typeof (CustomerValidationRuleCollector2));
+      removingPropertyRuleStub2.Setup(stub => stub.CollectorType).Returns(typeof(CustomerValidationRuleCollector2));
 
       var logContextInfo1 = new PropertyValidatorLogContextInfo(
           stubValidator2,
           new[]
           {
-              new RemovingPropertyValidatorRegistration(typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
-              new RemovingPropertyValidatorRegistration(typeof (NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
-              new RemovingPropertyValidatorRegistration(typeof (NotEmptyValidator), null, null, removingPropertyRuleStub2.Object)
+              new RemovingPropertyValidatorRegistration(typeof(NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
+              new RemovingPropertyValidatorRegistration(typeof(NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
+              new RemovingPropertyValidatorRegistration(typeof(NotEmptyValidator), null, null, removingPropertyRuleStub2.Object)
           });
       var logContextInfo2 = new PropertyValidatorLogContextInfo(
           stubValidator1,
-          new[] { new RemovingPropertyValidatorRegistration(typeof (NotNullValidator), null, null, removingPropertyRuleStub2.Object) });
+          new[] { new RemovingPropertyValidatorRegistration(typeof(NotNullValidator), null, null, removingPropertyRuleStub2.Object) });
       var logContextInfo3 = new PropertyValidatorLogContextInfo(
           stubValidator3,
-          new[] { new RemovingPropertyValidatorRegistration(typeof (NotEqualValidator), null, null, removingPropertyRuleStub1.Object) });
+          new[] { new RemovingPropertyValidatorRegistration(typeof(NotEqualValidator), null, null, removingPropertyRuleStub1.Object) });
 
       _logContextStub.Setup(stub => stub.GetLogContextInfos(userNamePropertyRule)).Returns(new[] { logContextInfo1, logContextInfo2 });
       _logContextStub.Setup(stub => stub.GetLogContextInfos(lastNamePropertyRule)).Returns(new[] { logContextInfo3 });

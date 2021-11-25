@@ -31,22 +31,22 @@ namespace Remotion.Web.ExecutionEngine
     private readonly bool? _usesEventTarget;
 
     public WxeCallOptionsNoRepost ()
-        : this (null, WxePermaUrlOptions.Null)
+        : this(null, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsNoRepost (bool? usesEventTarget)
-        : this (usesEventTarget, WxePermaUrlOptions.Null)
+        : this(usesEventTarget, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsNoRepost (WxePermaUrlOptions permaUrlOptions)
-        : this (null, permaUrlOptions)
+        : this(null, permaUrlOptions)
     {
     }
 
     public WxeCallOptionsNoRepost (bool? usesEventTarget, WxePermaUrlOptions permaUrlOptions)
-        : base (permaUrlOptions)
+        : base(permaUrlOptions)
     {
       _usesEventTarget = usesEventTarget;
     }

@@ -76,7 +76,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull("httpContext", httpContext);
       ArgumentUtility.CheckNotNull("functionType", functionType);
-      if (!typeof (WxeFunction).IsAssignableFrom(functionType))
+      if (!typeof(WxeFunction).IsAssignableFrom(functionType))
         throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
       ArgumentUtility.CheckNotNull("urlParameters", urlParameters);
 
@@ -184,7 +184,7 @@ namespace Remotion.Web.ExecutionEngine
         openScript = string.Format("window.open('{0}', '{1}', '{2}');\r\n", href, target, features);
       else
         openScript = string.Format("window.open('{0}', '{1}');\r\n", href, target);
-      ScriptManager.RegisterStartupScript(page, typeof (WxeContext), "WxeExecuteFunction", openScript, true);
+      ScriptManager.RegisterStartupScript(page, typeof(WxeContext), "WxeExecuteFunction", openScript, true);
 
       function.SetExecutionCompletedScript("window.close();");
     }

@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
       JobList_AlwaysInvalid.RegisterValidator(AlwaysInvalidValidator);
 
-      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof (BocListAsGridUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
+      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(BocListAsGridUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
     }
 
     protected override void OnLoad (EventArgs e)

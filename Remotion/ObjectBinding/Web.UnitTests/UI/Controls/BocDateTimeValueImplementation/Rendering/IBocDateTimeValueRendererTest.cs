@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       var factory = _serviceLocator.GetInstance<IBocDateTimeValueRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocDateTimeValueRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocDateTimeValueRenderer)));
     }
 
     [Test]

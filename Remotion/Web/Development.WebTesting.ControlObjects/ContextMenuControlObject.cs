@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class ContextMenuControlObject : DropDownMenuControlObjectBase
   {
     public ContextMenuControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

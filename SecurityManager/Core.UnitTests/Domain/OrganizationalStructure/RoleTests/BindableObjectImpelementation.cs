@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
     {
       base.TearDown();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -42,10 +42,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (GroupPropertyTypeSearchService), searchServiceStub.Object);
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Role));
+          .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
       IBusinessObjectReferenceProperty groupProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Group");
       Assert.That(groupProperty, Is.Not.Null);
 
@@ -67,10 +67,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (UserPropertyTypeSearchService), searchServiceStub.Object);
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Role));
+          .AddService(typeof(UserPropertyTypeSearchService), searchServiceStub.Object);
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
       IBusinessObjectReferenceProperty userProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("User");
       Assert.That(userProperty, Is.Not.Null);
 
@@ -92,10 +92,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (RolePropertiesSearchService), searchServiceStub.Object);
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Role));
+          .AddService(typeof(RolePropertiesSearchService), searchServiceStub.Object);
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
       IBusinessObjectReferenceProperty positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Position");
       Assert.That(positionProperty, Is.Not.Null);
 

@@ -143,7 +143,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     public bool ShouldIncludeAssembly (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull("assembly", assembly);
-      return !assembly.IsDefined(typeof (NonApplicationAssemblyAttribute), false);
+      return !assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false);
     }
 
     private RegexAssemblyLoaderFilter GetAssemblyNameFilter ()

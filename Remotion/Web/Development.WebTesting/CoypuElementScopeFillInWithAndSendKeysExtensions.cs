@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public static class CoypuElementScopeFillInWithAndSendKeysExtensions
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (CoypuElementScopeFillInWithAndSendKeysExtensions));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(CoypuElementScopeFillInWithAndSendKeysExtensions));
 
     /// <summary>
     /// ASP.NET WebForms-ready &amp; IE-compatible version for Coypu's <see cref="ElementScope.SendKeys"/> method.

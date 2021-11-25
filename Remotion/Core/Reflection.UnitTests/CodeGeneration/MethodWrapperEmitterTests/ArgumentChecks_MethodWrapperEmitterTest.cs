@@ -33,17 +33,17 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public override void SetUp ()
     {
       base.SetUp();
-      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject(typeof (ILGenerator));
+      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject(typeof(ILGenerator));
     }
 
     [Test]
     public void EmitMethodBody_ReturnTypesDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeReturnValue", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (string);
-      Type[] parameterTypes = new[] { typeof (object) };
+      Type returnType = typeof(string);
+      Type[] parameterTypes = new[] { typeof(object) };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
@@ -55,11 +55,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ParameterTypesDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (object);
-      Type[] parameterTypes = new[] { typeof (object), typeof (string) };
+      Type returnType = typeof(object);
+      Type[] parameterTypes = new[] { typeof(object), typeof(string) };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
@@ -71,11 +71,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_InstanceTypesDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (object);
-      Type[] parameterTypes = new[] { typeof (string), typeof (object) };
+      Type returnType = typeof(object);
+      Type[] parameterTypes = new[] { typeof(string), typeof(object) };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
@@ -87,11 +87,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ParameterCountsDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithMultipleParameters", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (object);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object), typeof (object) };
+      Type returnType = typeof(object);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object), typeof(object) };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException

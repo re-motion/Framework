@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       Assert.That(
           ObjectFactory.Create<ClassWithIdentity>(ParamList.Create("TheUniqueIdentifier")),
-          Is.InstanceOf(typeof (IBusinessObjectWithIdentity)));
+          Is.InstanceOf(typeof(IBusinessObjectWithIdentity)));
     }
 
     [Test]
@@ -78,10 +78,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetProvider ()
     {
       Assert.That(
-          BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass)),
+          BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass)),
           Is.SameAs(BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>()));
       Assert.That(
-          BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass)),
+          BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass)),
           Is.Not.SameAs(BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()));
     }
 
@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       ClassWithIdentity value = ObjectFactory.Create<ClassWithIdentity>(ParamList.Empty);
       byte[] serialized = Serializer.Serialize(value);
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectWithIdentityProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
       ClassWithIdentity deserialized = (ClassWithIdentity) Serializer.Deserialize(serialized);
 
       Assert.That(((IBusinessObject) deserialized).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject) value).BusinessObjectClass));
@@ -110,9 +110,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void HasMixin ()
     {
-      Assert.That(MixinTypeUtility.HasMixin(typeof (ClassWithIdentity), typeof (BindableObjectWithIdentityMixin)), Is.True);
-      Assert.That(MixinTypeUtility.HasMixin(typeof (ClassWithAllDataTypes), typeof (BindableObjectWithIdentityMixin)), Is.False);
-      Assert.That(MixinTypeUtility.HasMixin(typeof (object), typeof (BindableObjectWithIdentityMixin)), Is.False);
+      Assert.That(MixinTypeUtility.HasMixin(typeof(ClassWithIdentity), typeof(BindableObjectWithIdentityMixin)), Is.True);
+      Assert.That(MixinTypeUtility.HasMixin(typeof(ClassWithAllDataTypes), typeof(BindableObjectWithIdentityMixin)), Is.False);
+      Assert.That(MixinTypeUtility.HasMixin(typeof(object), typeof(BindableObjectWithIdentityMixin)), Is.False);
     }
   }
 }

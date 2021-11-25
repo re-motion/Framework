@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   /// <summary>
   /// Implementation of the <see cref="IBindablePropertyWriteAccessStrategy"/> interface for <see cref="DomainObject"/>.
   /// </summary>
-  [ImplementationFor (typeof (IBindablePropertyWriteAccessStrategy),
+  [ImplementationFor (typeof(IBindablePropertyWriteAccessStrategy),
       Lifetime = LifetimeKind.Singleton,
       RegistrationType = RegistrationType.Multiple,
       Position = Position)]

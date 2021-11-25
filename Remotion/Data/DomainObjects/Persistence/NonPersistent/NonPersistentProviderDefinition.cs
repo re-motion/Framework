@@ -25,13 +25,13 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
   public class NonPersistentProviderDefinition: StorageProviderDefinition
   {
     public NonPersistentProviderDefinition (string name, INonPersistentStorageObjectFactory factory)
-        : base (name, factory)
+        : base(name, factory)
     {
       ArgumentUtility.CheckNotNull("factory", factory);
     }
 
     public NonPersistentProviderDefinition (string name, NameValueCollection config)
-        : base (name, config)
+        : base(name, config)
     {
       ArgumentUtility.CheckNotNull("config", config);
 
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     {
       ArgumentUtility.CheckNotNull("identityType", identityType);
 
-      return (identityType == typeof (Guid));
+      return (identityType == typeof(Guid));
     }
   }
 }

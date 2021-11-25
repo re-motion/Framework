@@ -27,11 +27,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithReferenceTypeParameter_PublicParameterTypeIsBaseType ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var value = new SimpleReferenceType();
@@ -44,11 +44,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithReferenceTypeParameter_PublicParameterTypeIsBaseType_WithNull ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var obj = new ClassWithMethods();
@@ -61,11 +61,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithReferenceTypeParameter_ParameterTypesMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (SimpleReferenceType) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(SimpleReferenceType) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var value = new SimpleReferenceType();
@@ -78,11 +78,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithValueTypeParameter_PublicParameterTypeIsBaseType ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithValueTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var value = 100;
@@ -95,11 +95,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithValueTypeParameter_ParameterTypesMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithValueTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (int) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(int) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var value = 100;
@@ -112,11 +112,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithNullableValueTypeParameter_PublicParameterTypeIsBaseType ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithNullableValueTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       int? value = 100;
@@ -129,11 +129,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithNullableValueTypeParameter_PublicParameterTypeIsBaseType_WithNull ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithNullableValueTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       int? value = null;
@@ -146,11 +146,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithNullableValueTypeParameter_ParameterTypesMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithNullableValueTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (int?) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(int?) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       int? value = 100;
@@ -163,11 +163,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForInstanceMethodWithMultipleParameters ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithMultipleParameters", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object), typeof (object), typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object), typeof(object), typeof(object), typeof(object) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var instanceReferenceTypeValue = new SimpleReferenceType();
@@ -187,11 +187,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ForStaticMethodWithReferenceTypeParameter ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("StaticMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Static);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       var method = GetWrapperMethodFromEmitter(MethodInfo.GetCurrentMethod(), parameterTypes, returnType, methodInfo);
 
       var value = new SimpleReferenceType();

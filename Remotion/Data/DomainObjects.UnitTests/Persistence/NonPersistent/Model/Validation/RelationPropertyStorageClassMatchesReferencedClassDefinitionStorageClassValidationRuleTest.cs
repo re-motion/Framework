@@ -48,15 +48,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
 
       _persistentClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
           "Order",
-          typeof (Order),
-          storageGroupType: typeof (TestDomainAttribute));
+          typeof(Order),
+          storageGroupType: typeof(TestDomainAttribute));
       _persistentStorageEntityDefinition = MockRepository.GenerateStub<IStorageEntityDefinition>();
       _persistentClassDefinition.SetStorageEntity(_persistentStorageEntityDefinition);
 
       _nonPersistentClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
           "OrderViewModel",
-          typeof (OrderViewModel),
-          storageGroupType: typeof (NonPersistentTestDomainAttribute));
+          typeof(OrderViewModel),
+          storageGroupType: typeof(NonPersistentTestDomainAttribute));
       _nonPersistentStorageEntityDefinition =
           new NonPersistentStorageEntity(new NonPersistentProviderDefinition("NonPersistent", new NonPersistentStorageObjectFactory()));
       _nonPersistentClassDefinition.SetStorageEntity(_nonPersistentStorageEntityDefinition);
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "PersistentProperty1",
           isObjectID: true,
-          typeof (OrderViewModel),
+          typeof(OrderViewModel),
           true,
           null,
           StorageClass.Persistent);
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "TransactionPropertyPersistentClassDefinition",
           isObjectID: true,
-          typeof (OrderViewModel),
+          typeof(OrderViewModel),
           true,
           null,
           StorageClass.Transaction);
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _nonPersistentClassDefinition,
           "TransactionPropertyOnNonPersistentClassDefinition",
           isObjectID: true,
-          typeof (OrderViewModel),
+          typeof(OrderViewModel),
           true,
           null,
           StorageClass.Transaction);
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "Right",
           false,
-          typeof (DomainObject));
+          typeof(DomainObject));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "Right",
           false,
-          typeof (ObjectList<DomainObject>));
+          typeof(ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "Right",
           false,
-          typeof (IObjectList<DomainObject>));
+          typeof(IObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _nonPersistentClassDefinition,
           "Right",
           false,
-          typeof (DomainObject));
+          typeof(DomainObject));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _nonPersistentClassDefinition,
           "Right",
           false,
-          typeof (ObjectList<DomainObject>));
+          typeof(ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _nonPersistentClassDefinition,
           "Right",
           false,
-          typeof (IObjectList<DomainObject>));
+          typeof(IObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "Right",
           false,
-          typeof (DomainObject));
+          typeof(DomainObject));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -311,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "Right",
           false,
-          typeof (ObjectList<DomainObject>));
+          typeof(ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -333,7 +333,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _persistentClassDefinition,
           "Right",
           false,
-          typeof (IObjectList<DomainObject>));
+          typeof(IObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -381,7 +381,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _nonPersistentClassDefinition,
           "Right",
           false,
-          typeof (DomainObject));
+          typeof(DomainObject));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _nonPersistentClassDefinition,
           "Right",
           false,
-          typeof (ObjectList<DomainObject>));
+          typeof(ObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);
@@ -441,7 +441,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           _nonPersistentClassDefinition,
           "Right",
           false,
-          typeof (IObjectList<DomainObject>));
+          typeof(IObjectList<DomainObject>));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       leftEndPointDefinition.SetRelationDefinition(relationDefinition);
       rightEndPointDefinition.SetRelationDefinition(relationDefinition);

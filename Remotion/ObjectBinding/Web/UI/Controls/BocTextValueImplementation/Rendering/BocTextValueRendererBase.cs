@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);

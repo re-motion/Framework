@@ -41,8 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _clientClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Client)];
-      _locationClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Location)];
+      _clientClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Client)];
+      _locationClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Location)];
 
       RelationDefinition relation = FakeMappingConfiguration.Current.RelationDefinitions[
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location:Remotion.Data.DomainObjects.UnitTests.Mapping."

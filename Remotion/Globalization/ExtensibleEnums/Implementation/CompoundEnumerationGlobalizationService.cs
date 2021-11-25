@@ -30,7 +30,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
   /// delegates to them to retrieve localized name for a specified <see cref="IExtensibleEnum"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundExtensibleEnumGlobalizationService : IExtensibleEnumGlobalizationService
   {
     private readonly IReadOnlyCollection<IExtensibleEnumGlobalizationService> _extensibleEnumGlobalizationServices;

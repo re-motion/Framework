@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionEndPoint modifiedEndPoint, 
         DomainObject selfReplacedObject, 
         IClientTransactionEventSink transactionEventSink)
-        : base (
+        : base(
             ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             ArgumentUtility.CheckNotNull("selfReplacedObject", selfReplacedObject),
             ArgumentUtility.CheckNotNull("selfReplacedObject", selfReplacedObject),

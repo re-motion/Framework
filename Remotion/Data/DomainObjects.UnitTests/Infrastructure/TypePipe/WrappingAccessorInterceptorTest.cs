@@ -60,13 +60,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       var expectedBody =
           Expression.Block(
-              Expression.Call(typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant(_propertyName)),
+              Expression.Call(typeof(CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant(_propertyName)),
               Expression.TryFinally(
                   Expression.Call(
                       new ThisExpression(_proxyType),
                       NonVirtualCallMethodInfoAdapter.Adapt(_interceptedMethod),
-                      Expression.Parameter(typeof (object), "obj")),
-                  Expression.Call(typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
+                      Expression.Parameter(typeof(object), "obj")),
+                  Expression.Call(typeof(CurrentPropertyManager), "PropertyAccessFinished", null)));
       ExpressionTreeComparer.CheckAreEqualTrees(expectedBody, method.Body);
     }
   }

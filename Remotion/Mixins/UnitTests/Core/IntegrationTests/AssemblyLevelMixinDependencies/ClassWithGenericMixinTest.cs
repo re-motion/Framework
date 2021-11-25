@@ -28,9 +28,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       // Configuration and attribute match, so the dependency is valid
       PrepareMixinConfigurationWithAttributeDeclarations(
           new AdditionalMixinDependencyAttribute(
-              typeof (ClassWithOpenMixin_WithDependencyForOpenMixin),
-              typeof (M1<>),
-              typeof (M2)));
+              typeof(ClassWithOpenMixin_WithDependencyForOpenMixin),
+              typeof(M1<>),
+              typeof(M2)));
 
       var instance = ObjectFactory.Create<ClassWithOpenMixin_WithDependencyForOpenMixin>();
 
@@ -46,9 +46,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       Assert.That(
           () => PrepareMixinConfigurationWithAttributeDeclarations(
               new AdditionalMixinDependencyAttribute(
-                  typeof (ClassWithOpenMixin_WithDependencyForClosedMixin),
-                  typeof (M1<ClassWithOpenMixin_WithDependencyForClosedMixin>),
-                  typeof (M2))),
+                  typeof(ClassWithOpenMixin_WithDependencyForClosedMixin),
+                  typeof(M1<ClassWithOpenMixin_WithDependencyForClosedMixin>),
+                  typeof(M2))),
           Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(
               "The mixin dependencies configured for type 'Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDependencies."
               + "ClassWithGenericMixinTest+ClassWithOpenMixin_WithDependencyForClosedMixin' could not be processed: The mixin "
@@ -65,9 +65,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       // Configuration and attribute don't match, but it's obvious which mixin is meant, so the dependency is valid
       PrepareMixinConfigurationWithAttributeDeclarations(
           new AdditionalMixinDependencyAttribute(
-              typeof (ClassWithClosedMixin_WithDependencyForOpenMixin),
-              typeof (M1<>),
-              typeof (M2)));
+              typeof(ClassWithClosedMixin_WithDependencyForOpenMixin),
+              typeof(M1<>),
+              typeof(M2)));
 
       var instance = ObjectFactory.Create<ClassWithClosedMixin_WithDependencyForOpenMixin>();
 
@@ -82,9 +82,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       // Configuration and attribute match, so the dependency is valid
       PrepareMixinConfigurationWithAttributeDeclarations(
           new AdditionalMixinDependencyAttribute(
-              typeof (ClassWithClosedMixin_WithDependencyForClosedMixin),
-              typeof (M1<int>),
-              typeof (M2)));
+              typeof(ClassWithClosedMixin_WithDependencyForClosedMixin),
+              typeof(M1<int>),
+              typeof(M2)));
 
       var instance = ObjectFactory.Create<ClassWithClosedMixin_WithDependencyForClosedMixin>();
 
@@ -130,23 +130,23 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (ClassWithOpenMixin_WithDependencyForOpenMixin))]
-    [Extends (typeof (ClassWithOpenMixin_WithDependencyForClosedMixin))]
-    [Extends (typeof (ClassWithClosedMixin_WithDependencyForOpenMixin), MixinTypeArguments = new[] { typeof (int) })]
-    [Extends (typeof (ClassWithClosedMixin_WithDependencyForClosedMixin), MixinTypeArguments = new[] { typeof (int) })]
+    [Extends (typeof(ClassWithOpenMixin_WithDependencyForOpenMixin))]
+    [Extends (typeof(ClassWithOpenMixin_WithDependencyForClosedMixin))]
+    [Extends (typeof(ClassWithClosedMixin_WithDependencyForOpenMixin), MixinTypeArguments = new[] { typeof(int) })]
+    [Extends (typeof(ClassWithClosedMixin_WithDependencyForClosedMixin), MixinTypeArguments = new[] { typeof(int) })]
     public class M1<[BindToTargetType] T> : Mixin<object, IC>
     {
       [OverrideTarget]
       public string M ()
       {
-        return "M1<" + typeof (T).Name + "> " + Next.M();
+        return "M1<" + typeof(T).Name + "> " + Next.M();
       }
     }
 
-    [Extends (typeof (ClassWithOpenMixin_WithDependencyForOpenMixin))]
-    [Extends (typeof (ClassWithOpenMixin_WithDependencyForClosedMixin))]
-    [Extends (typeof (ClassWithClosedMixin_WithDependencyForOpenMixin))]
-    [Extends (typeof (ClassWithClosedMixin_WithDependencyForClosedMixin))]
+    [Extends (typeof(ClassWithOpenMixin_WithDependencyForOpenMixin))]
+    [Extends (typeof(ClassWithOpenMixin_WithDependencyForClosedMixin))]
+    [Extends (typeof(ClassWithClosedMixin_WithDependencyForOpenMixin))]
+    [Extends (typeof(ClassWithClosedMixin_WithDependencyForClosedMixin))]
     public class M2 : Mixin<object, IC>
     {
       [OverrideTarget]

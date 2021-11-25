@@ -97,7 +97,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var states = new Dictionary<string, Enum>();
       states.Add("State", Delivery.Post);
       states.Add("Payment", PaymentState.None);
-      var context = SecurityContext.Create(typeof (Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      var context = SecurityContext.Create(typeof(Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
 
       var aclFinder = CreateAccessControlListFinder();
       Assert.That(
@@ -116,7 +116,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
       var states = new Dictionary<string, Enum>();
       states.Add("Unknown", Delivery.Post);
-      var context = SecurityContext.Create(typeof (Customer), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      var context = SecurityContext.Create(typeof(Customer), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
 
       var aclFinder = CreateAccessControlListFinder();
       var foundAcl = aclFinder.Find(context);
@@ -231,7 +231,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     private SecurityContext CreateContextForCustomer ()
     {
       return SecurityContext.Create(
-          typeof (Customer),
+          typeof(Customer),
           "owner",
           "ownerGroup",
           "ownerTenant",
@@ -245,7 +245,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       states.Add("State", orderState);
       states.Add("Payment", paymentState);
 
-      return SecurityContext.Create(typeof (Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      return SecurityContext.Create(typeof(Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
     }
 
     private SecurityContext CreateContextForSpecialOrder (OrderState orderState, PaymentState paymentState)
@@ -254,7 +254,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       states.Add("State", orderState);
       states.Add("Payment", paymentState);
 
-      return SecurityContext.Create(typeof (SpecialOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      return SecurityContext.Create(typeof(SpecialOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
     }
 
     private SecurityContext CreateContextForPremiumOrder (OrderState orderState, PaymentState paymentState, Delivery delivery)
@@ -264,7 +264,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       states.Add("Payment", paymentState);
       states.Add("Delivery", delivery);
 
-      return SecurityContext.Create(typeof (PremiumOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      return SecurityContext.Create(typeof(PremiumOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
     }
   }
 }

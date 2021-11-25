@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
   public class SimpleClickAction : WebTestAction
   {
     public SimpleClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
-        : base (control, scope)
+        : base(control, scope)
     {
     }
 

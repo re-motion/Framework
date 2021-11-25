@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
           ISupportsDisabledState
   {
     public DropDownListControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

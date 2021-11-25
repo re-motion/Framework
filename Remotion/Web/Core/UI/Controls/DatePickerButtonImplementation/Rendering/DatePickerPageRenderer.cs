@@ -21,7 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 {
-  [ImplementationFor (typeof (IDatePickerPageRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IDatePickerPageRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerPageRenderer : IDatePickerPageRenderer
   {
     private readonly IResourceUrlFactory _resourceUrlFactory;
@@ -37,8 +37,8 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (DatePickerPageRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (DatePickerPageRenderer), ResourceType.Html, "DatePicker.js");
+      string key = typeof(DatePickerPageRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(DatePickerPageRenderer), ResourceType.Html, "DatePicker.js");
       htmlHeadAppender.RegisterJavaScriptInclude(key, scriptUrl);
 
       htmlHeadAppender.RegisterPageStylesheetLink();

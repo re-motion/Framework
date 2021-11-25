@@ -49,13 +49,13 @@ public class BocListView: BusinessObjectControlItem
 
   /// <summary> Initialize a new instance. </summary>
   public BocListView (object title, BocColumnDefinition[] columnDefinitions)
-    : this (null, title, columnDefinitions)
+    : this(null, title, columnDefinitions)
   {
   }
 
   /// <summary> Initialize a new instance. </summary>
   public BocListView ()
-    : this (null, string.Empty, null)
+    : this(null, string.Empty, null)
   {
   }
 

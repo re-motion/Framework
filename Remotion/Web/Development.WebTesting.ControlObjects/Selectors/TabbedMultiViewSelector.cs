@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class TabbedMultiViewSelector : TypedControlSelectorBase<TabbedMultiViewControlObject>
   {
     public TabbedMultiViewSelector ()
-        : base ("TabbedMultiView")
+        : base("TabbedMultiView")
     {
     }
 

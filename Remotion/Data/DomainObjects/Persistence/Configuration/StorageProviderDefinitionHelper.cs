@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
 
     public StorageProviderDefinitionHelper (ExtendedConfigurationSection configurationSection)
-        : base (configurationSection)
+        : base(configurationSection)
     {
     }
 

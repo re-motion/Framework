@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _value01 = (IBusinessObject) TypeWithAllDataTypes.Create("A", 1);
 
-      _typeWithAllDataTypesClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithAllDataTypes));
+      _typeWithAllDataTypesClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithAllDataTypes));
 
       _typeWithAllDataTypesStringValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithAllDataTypesClass, "String");
       _typeWithAllDataTypesInt32ValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithAllDataTypesClass, "Int32");
@@ -293,8 +293,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           Is.EqualTo(
               new[]
               {
-                  typeof (ControlCharactersCharactersValidator),
-                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+                  typeof(ControlCharactersCharactersValidator),
+                  typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
 
       ControlCollection validators6 = _editableRow.GetValidators(6);
@@ -303,9 +303,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           Is.EqualTo(
               new[]
               {
-                  typeof (RequiredFieldValidator),
-                  typeof (NumericValidator),
-                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+                  typeof(RequiredFieldValidator),
+                  typeof(NumericValidator),
+                  typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
     }
 
@@ -349,16 +349,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(validators0, Is.Not.Null);
       Assert.That(
           validators0.Cast<BaseValidator>().Select(v => v.GetType()),
-          Is.EqualTo(new[] { typeof (ControlCharactersCharactersValidator), typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) }));
+          Is.EqualTo(new[] { typeof(ControlCharactersCharactersValidator), typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) }));
 
       ControlCollection validators6 = _editableRow.GetValidators(6);
       Assert.That(validators6.Cast<BaseValidator>().Select(v => v.GetType()),
           Is.EqualTo(
               new[]
               {
-                  typeof (RequiredFieldValidator),
-                  typeof (NumericValidator),
-                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+                  typeof(RequiredFieldValidator),
+                  typeof(NumericValidator),
+                  typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
     }
 
@@ -700,9 +700,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           Is.EqualTo(
               new[]
               {
-                  typeof (RequiredFieldValidator),
-                  typeof (NumericValidator),
-                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+                  typeof(RequiredFieldValidator),
+                  typeof(NumericValidator),
+                  typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
 
       Assert.That(_editableRow.GetValidators(1), Is.Null);
@@ -734,9 +734,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           Is.EqualTo(
               new[]
               {
-                  typeof (RequiredFieldValidator),
-                  typeof (NumericValidator),
-                  typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+                  typeof(RequiredFieldValidator),
+                  typeof(NumericValidator),
+                  typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
 
       Assert.That(_editableRow.GetValidators(1), Is.Null);

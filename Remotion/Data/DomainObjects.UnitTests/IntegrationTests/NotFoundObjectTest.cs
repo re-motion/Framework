@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       base.SetUp();
 
-      _nonExistingObjectID = new ObjectID(typeof (Order), Guid.NewGuid());
+      _nonExistingObjectID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       var classWithAllDataTypes = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       classWithAllDataTypes.Delete();
@@ -340,7 +340,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       SetDatabaseModifyable();
 
       // Need to disable the foreign key constraints so that the property is allowed to point to an invalid ID in the database
-      var clientTable = (TableDefinition) GetTypeDefinition(typeof (Client)).StorageEntityDefinition;
+      var clientTable = (TableDefinition) GetTypeDefinition(typeof(Client)).StorageEntityDefinition;
       DisableConstraints(clientTable);
 
       ObjectID clientID = null;
@@ -387,7 +387,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void BidirectionalForeignKeyRelationProperty_ShouldReturnNotLoadedObject ()
     {
-      var id = new ObjectID(typeof (ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
+      var id = new ObjectID(typeof(ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
       var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
 
       DomainObject instance = null;
@@ -408,7 +408,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       DomainObject instance = null;
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var id = new ObjectID(typeof (ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
+        var id = new ObjectID(typeof(ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
 
         var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
 

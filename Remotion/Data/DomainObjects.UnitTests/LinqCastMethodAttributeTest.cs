@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var attribute = new LinqCastMethodAttribute();
       var transformer = attribute.GetExpressionTransformer(null);
 
-      Assert.That(transformer, Is.TypeOf(typeof (LinqCastMethodAttribute.MethodCallTransformer)));
+      Assert.That(transformer, Is.TypeOf(typeof(LinqCastMethodAttribute.MethodCallTransformer)));
     }
 
     [Test]
@@ -45,21 +45,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void MethodCallTransformer_Transform_InstanceMethod ()
     {
-      var instance = Expression.Constant(null, typeof (TargetClassForPersistentMixin));
-      var call = Expression.Call(instance, typeof (TargetClassForPersistentMixin).GetProperty("MixedMembers").GetGetMethod());
+      var instance = Expression.Constant(null, typeof(TargetClassForPersistentMixin));
+      var call = Expression.Call(instance, typeof(TargetClassForPersistentMixin).GetProperty("MixedMembers").GetGetMethod());
       var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
 
       var result = transformer.Transform(call);
 
-      var expected = Expression.Convert(instance, typeof (IMixinAddingPersistentProperties));
+      var expected = Expression.Convert(instance, typeof(IMixinAddingPersistentProperties));
       SqlExpressionTreeComparer.CheckAreEqualTrees(expected, result);
     }
 
     [Test]
     public void MethodCallTransformer_Transform_InstanceMethod_WrongParameterCount ()
     {
-      var instance = Expression.Constant(null, typeof (LinqCastMethodAttributeTest));
-      var call = Expression.Call(instance, typeof (LinqCastMethodAttributeTest).GetMethod("InvalidInstanceCastMethod"), Expression.Constant(0));
+      var instance = Expression.Constant(null, typeof(LinqCastMethodAttributeTest));
+      var call = Expression.Call(instance, typeof(LinqCastMethodAttributeTest).GetMethod("InvalidInstanceCastMethod"), Expression.Constant(0));
       var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
       Assert.That(
           () => transformer.Transform(call),
@@ -70,20 +70,20 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void MethodCallTransformer_Transform_StaticMethod ()
     {
-      var instance = Expression.Constant(null, typeof (TargetClassForPersistentMixin));
-      var call = Expression.Call(typeof (TargetClassForPersistentMixinExtensions).GetMethod("GetMixedMembers"), instance);
+      var instance = Expression.Constant(null, typeof(TargetClassForPersistentMixin));
+      var call = Expression.Call(typeof(TargetClassForPersistentMixinExtensions).GetMethod("GetMixedMembers"), instance);
       var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
 
       var result = transformer.Transform(call);
 
-      var expected = Expression.Convert(instance, typeof (IMixinAddingPersistentProperties));
+      var expected = Expression.Convert(instance, typeof(IMixinAddingPersistentProperties));
       SqlExpressionTreeComparer.CheckAreEqualTrees(expected, result);
     }
 
     [Test]
     public void MethodCallTransformer_Transform_StaticMethod_WrongParameterCount ()
     {
-      var call = Expression.Call(typeof (LinqCastMethodAttributeTest).GetMethod("InvalidStaticCastMethod"));
+      var call = Expression.Call(typeof(LinqCastMethodAttributeTest).GetMethod("InvalidStaticCastMethod"));
       var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
       Assert.That(
           () => transformer.Transform(call),

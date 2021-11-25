@@ -22,7 +22,7 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
       where T: class
   {
     private T _explicitInterfaceScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
 
     public ClassWithReferenceType ()
     {

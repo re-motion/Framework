@@ -23,7 +23,7 @@ namespace Remotion.Diagnostics
     private readonly long _bytes;
 
     public ByteValue (long bytes)
-        : this ()
+        : this()
     {
       _bytes = bytes;
     }

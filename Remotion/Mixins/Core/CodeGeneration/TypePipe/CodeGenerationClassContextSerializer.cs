@@ -31,7 +31,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class CodeGenerationClassContextSerializer : IClassContextSerializer
   {
     private static readonly ConstructorInfo s_constructor =
-        typeof (ClassContext).GetConstructor(new[] { typeof (Type), typeof (IEnumerable<MixinContext>), typeof (IEnumerable<Type>) })!;
+        typeof(ClassContext).GetConstructor(new[] { typeof(Type), typeof(IEnumerable<MixinContext>), typeof(IEnumerable<Type>) })!;
 
     private readonly Expression[] _constructorArguments = new Expression[3];
 
@@ -53,7 +53,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
 
       _constructorArguments[1] = Expression.NewArrayInit(
-          typeof (MixinContext),
+          typeof(MixinContext),
           mixinContexts.Select(
               mc =>
               {
@@ -67,7 +67,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
 
-      _constructorArguments[2] = Expression.NewArrayInit(typeof (Type), composedInterfaces.Select(ci => (Expression) Expression.Constant(ci)));
+      _constructorArguments[2] = Expression.NewArrayInit(typeof(Type), composedInterfaces.Select(ci => (Expression) Expression.Constant(ci)));
     }
   }
 }

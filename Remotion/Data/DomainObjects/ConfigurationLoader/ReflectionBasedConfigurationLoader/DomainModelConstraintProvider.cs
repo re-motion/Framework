@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// It uses the mapping attributes to resolve the constraints.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IDomainModelConstraintProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(IDomainModelConstraintProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class DomainModelConstraintProvider : IDomainModelConstraintProvider
   {
     public DomainModelConstraintProvider ()

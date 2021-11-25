@@ -26,7 +26,7 @@ namespace Remotion.Web.UnitTests
     private readonly Pair _expected;
 
     public PairConstraint (Pair expected)
-        : base (expected)
+        : base(expected)
     {
       _expected = expected;
     }

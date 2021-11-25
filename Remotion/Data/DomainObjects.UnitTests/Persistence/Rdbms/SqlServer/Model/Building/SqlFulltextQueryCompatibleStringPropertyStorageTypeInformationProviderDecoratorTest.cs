@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           storageTypeLength: storageTypeLength);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var type = typeof (object);
+      var type = typeof(object);
       innerStub.Stub(_ => _.GetStorageType(type)).Return(expectedValue);
 
       var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var type = typeof (object);
+      var type = typeof(object);
       innerStub.Stub(_ => _.GetStorageType(type)).Return(expectedValue);
 
       var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           classDefinition,
           "Name",
           false,
-          typeof (object),
+          typeof(object),
           true,
           null,
           StorageClass.Persistent);

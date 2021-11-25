@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public TTransaction To<TTransaction> ()
     {
 // ReSharper disable NotResolvedInText - We use the generic parameter on purpose.
-      ArgumentUtility.CheckTypeIsAssignableFrom("TTransaction", typeof (TTransaction), typeof (ClientTransaction));
+      ArgumentUtility.CheckTypeIsAssignableFrom("TTransaction", typeof(TTransaction), typeof(ClientTransaction));
 // ReSharper restore NotResolvedInText
       return (TTransaction) (object) _wrappedInstance;
     }
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         var message = string.Format(
             "The following objects are incompatible with the target transaction: {0}. Objects of type '{1}' could be used instead.",
             string.Join(", ", incompatibleObjects.Select(obj => obj.ID.ToString())),
-            typeof (IDomainObjectHandle<>));
+            typeof(IDomainObjectHandle<>));
         throw new InvalidOperationException(message);
       }
     }

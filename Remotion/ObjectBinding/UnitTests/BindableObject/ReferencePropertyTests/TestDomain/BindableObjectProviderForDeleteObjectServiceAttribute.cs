@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
   public class BindableObjectProviderForDeleteObjectServiceAttribute : BusinessObjectProviderAttribute
   {
     public BindableObjectProviderForDeleteObjectServiceAttribute ()
-        : base (typeof (BindableObjectProvider))
+        : base(typeof(BindableObjectProvider))
     {
     }
   }

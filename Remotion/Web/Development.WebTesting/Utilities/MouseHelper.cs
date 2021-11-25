@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private const uint c_rightDown = 0x8;
     private const uint c_rightUp = 0x10;
 
-    private static readonly int s_dtoStructureSize = Marshal.SizeOf(typeof (SendInputDto));
+    private static readonly int s_dtoStructureSize = Marshal.SizeOf(typeof(SendInputDto));
     private static readonly uint[] s_doubleLeftClickData = { c_leftDown, c_leftUp, c_leftDown, c_leftUp };
     private static readonly uint[] s_fakeMoveData = { c_moveRelative };
     private static readonly uint[] s_leftClickData = { c_leftDown, c_leftUp };

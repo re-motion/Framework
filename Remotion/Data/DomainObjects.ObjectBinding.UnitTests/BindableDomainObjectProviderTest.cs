@@ -31,19 +31,19 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void Instantiate_WithDefaultValues ()
     {
       BindableDomainObjectProvider provider = new BindableDomainObjectProvider();
-      Assert.IsInstanceOf(typeof (BindableDomainObjectMetadataFactory), provider.MetadataFactory);
-      Assert.IsInstanceOf(typeof (BindableObjectServiceFactory), provider.ServiceFactory);
+      Assert.IsInstanceOf(typeof(BindableDomainObjectMetadataFactory), provider.MetadataFactory);
+      Assert.IsInstanceOf(typeof(BindableObjectServiceFactory), provider.ServiceFactory);
     }
 
     [Test]
     public void Instantiate_WithMixin ()
     {
-      using (MixinConfiguration.BuildNew().ForClass(typeof (BindableDomainObjectMetadataFactory)).AddMixin<MixinStub>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(BindableDomainObjectMetadataFactory)).AddMixin<MixinStub>().EnterScope())
       {
         BindableDomainObjectProvider provider = new BindableDomainObjectProvider();
-        Assert.That(provider.MetadataFactory, Is.InstanceOf(typeof (BindableDomainObjectMetadataFactory)));
-        Assert.That(provider.MetadataFactory, Is.InstanceOf(typeof (IMixinTarget)));
-        Assert.That(provider.ServiceFactory, Is.InstanceOf(typeof (BindableObjectServiceFactory)));
+        Assert.That(provider.MetadataFactory, Is.InstanceOf(typeof(BindableDomainObjectMetadataFactory)));
+        Assert.That(provider.MetadataFactory, Is.InstanceOf(typeof(IMixinTarget)));
+        Assert.That(provider.ServiceFactory, Is.InstanceOf(typeof(BindableObjectServiceFactory)));
       }
     }
 

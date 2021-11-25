@@ -48,7 +48,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       get
       {
         if (_classEmitter == null)
-          _classEmitter = new CustomClassEmitter(Scope, GetType().Name + s_typeCount++, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
+          _classEmitter = new CustomClassEmitter(Scope, GetType().Name + s_typeCount++, typeof(object), Type.EmptyTypes, TypeAttributes.Public, true);
         return _classEmitter;
       }
     }
@@ -57,7 +57,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       get { 
         if (_unsavedClassEmitter == null)
-          _unsavedClassEmitter = new CustomClassEmitter(UnsavedScope, GetType().Name + "Unsaved" + s_typeCount++, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
+          _unsavedClassEmitter = new CustomClassEmitter(UnsavedScope, GetType().Name + "Unsaved" + s_typeCount++, typeof(object), Type.EmptyTypes, TypeAttributes.Public, true);
         return _unsavedClassEmitter; }
     }
 

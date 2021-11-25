@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), "value");
+      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), "value");
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);
     }
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), new string('x', 100));
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), new string('x', 100));
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);
     }
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), null);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), null);
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);
     }
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), new string('x', 100));
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), new string('x', 100));
       var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
       dataContainer.SetEventListener(eventListenerStub);
 
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), new string('x', 101));
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), new string('x', 101));
 
       Assert.That(
           () => _validator.Validate(dataContainer),
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), new string('x', 101));
+      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "TransactionOnlyStringProperty"), new string('x', 101));
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);
     }
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
 
       var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject);
-      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), new string('x', 101));
+      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "TransactionOnlyStringProperty"), new string('x', 101));
 
       Assert.That(
           () => _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem),
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetDeleted().Value, domainObject);
-      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), new string('x', 101));
+      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), new string('x', 101));
 
       Assert.That(() => _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem), Throws.Nothing);
     }

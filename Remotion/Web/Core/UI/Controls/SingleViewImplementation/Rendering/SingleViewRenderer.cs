@@ -30,14 +30,14 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
   /// Implements <see cref="ISingleViewRenderer"/> for standard mode rendering of <see cref="SingleView"/> controls.
   /// <seealso cref="ISingleView"/>
   /// </summary>
-  [ImplementationFor (typeof (ISingleViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(ISingleViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class SingleViewRenderer : RendererBase<ISingleView>, ISingleViewRenderer
   {
     public SingleViewRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -50,9 +50,9 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string keyStyle = typeof (SingleViewRenderer).GetFullNameChecked() + "_Style";
+      string keyStyle = typeof(SingleViewRenderer).GetFullNameChecked() + "_Style";
 
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (SingleViewRenderer), ResourceType.Html, "SingleView.css");
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(SingleViewRenderer), ResourceType.Html, "SingleView.css");
       htmlHeadAppender.RegisterStylesheetLink(keyStyle, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
       ScriptUtility.Instance.RegisterJavaScriptInclude(control, htmlHeadAppender);

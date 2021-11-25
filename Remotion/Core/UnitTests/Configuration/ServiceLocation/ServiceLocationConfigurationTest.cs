@@ -34,14 +34,14 @@ namespace Remotion.UnitTests.Configuration.ServiceLocation
     public void Deserialization_Default ()
     {
       var section = Deserialize(_xmlFragmentDefault);
-      Assert.That(section.ServiceLocatorProvider.Type, Is.SameAs(typeof (DefaultServiceLocatorProvider)));
+      Assert.That(section.ServiceLocatorProvider.Type, Is.SameAs(typeof(DefaultServiceLocatorProvider)));
     }
 
     [Test]
     public void Deserialization_SpecificProvider ()
     {
       var section = Deserialize(_xmlFragmentWithServiceLocatorProvider);
-      Assert.That(section.ServiceLocatorProvider.Type, Is.SameAs(typeof (FakeServiceLocatorProvider)));
+      Assert.That(section.ServiceLocatorProvider.Type, Is.SameAs(typeof(FakeServiceLocatorProvider)));
     }
 
     [Test]

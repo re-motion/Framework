@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       var factory = _serviceLocator.GetInstance<IBocEnumValueRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocEnumValueRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocEnumValueRenderer)));
     }
 
     [Test]

@@ -29,13 +29,13 @@ namespace Remotion.Validation.UnitTests.Attributes
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new ApplyWithClassAttribute(typeof (Customer));
+      _attribute = new ApplyWithClassAttribute(typeof(Customer));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_attribute.ClassType, Is.EqualTo(typeof (Customer)));
+      Assert.That(_attribute.ClassType, Is.EqualTo(typeof(Customer)));
     }
   }
 }

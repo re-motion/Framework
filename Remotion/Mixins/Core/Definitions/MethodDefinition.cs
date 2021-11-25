@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Definitions
     private MethodDefinition? _base;
 
     public MethodDefinition (MethodInfo memberInfo, ClassDefinitionBase declaringClass)
-        : base (memberInfo, declaringClass)
+        : base(memberInfo, declaringClass)
     {
     }
 

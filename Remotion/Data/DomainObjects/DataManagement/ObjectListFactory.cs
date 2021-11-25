@@ -49,12 +49,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
           domainObjectType,
           type =>
           {
-            var collectionType = typeof (VirtualObjectList<>).MakeGenericType(type);
+            var collectionType = typeof(VirtualObjectList<>).MakeGenericType(type);
 
             var ctor = collectionType.GetConstructor(
                 BindingFlags.Public | BindingFlags.Instance,
                 null,
-                new[] { typeof (IVirtualCollectionData) },
+                new[] { typeof(IVirtualCollectionData) },
                 null);
 
             Assertion.IsNotNull(ctor, "Constructor for type '{0}' not found.", collectionType);

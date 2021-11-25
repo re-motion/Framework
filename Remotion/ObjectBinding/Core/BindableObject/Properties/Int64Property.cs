@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   public class Int64Property : NumericPropertyBase
   {
     public Int64Property (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
 
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <summary>Gets the numeric type associated with this <see cref="IBusinessObjectNumericProperty"/>.</summary>
     public override Type Type
     {
-      get { return typeof (Int64); }
+      get { return typeof(Int64); }
     }
   }
 }

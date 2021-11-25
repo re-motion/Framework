@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       _client1 = LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Client1);
       _order1 = LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
-      _orderNumberPropertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
-      _orderTicketEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
+      _orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
+      _orderTicketEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
     }
 
     [Test]
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       ClientTransactionTestHelper.SetIsWriteable(_transaction, false);
 
-      CheckForbiddenOperationWithLoadMode(() => _listener.NewObjectCreating(_transaction, typeof (Order)), "An object of type 'Order' cannot be created.");
+      CheckForbiddenOperationWithLoadMode(() => _listener.NewObjectCreating(_transaction, typeof(Order)), "An object of type 'Order' cannot be created.");
     }
 
     [Test]
@@ -110,13 +110,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       ClientTransactionTestHelper.SetIsWriteable(_transaction, false);
       
-      Assert.That(() => _listener.NewObjectCreating(_transaction, typeof (Order)), Throws.TypeOf<ClientTransactionReadOnlyException>());
+      Assert.That(() => _listener.NewObjectCreating(_transaction, typeof(Order)), Throws.TypeOf<ClientTransactionReadOnlyException>());
     }
 
     [Test]
     public void NewObjectCreating_AllowedForActiveTransaction_NotInLoadMode ()
     {
-      Assert.That(() => _listener.NewObjectCreating(_transaction, typeof (Order)), Throws.Nothing);
+      Assert.That(() => _listener.NewObjectCreating(_transaction, typeof(Order)), Throws.Nothing);
     }
 
     [Test]

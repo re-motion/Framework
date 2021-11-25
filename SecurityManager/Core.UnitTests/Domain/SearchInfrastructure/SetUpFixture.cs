@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
     {
       try
       {
-        BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+        BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
         
         _dbFixtures = new DatabaseFixtures();
         _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
     [OneTimeTearDown]
     public void OneTimeTearDown ()
     {
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
   }
 }

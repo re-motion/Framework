@@ -122,13 +122,13 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public abstract Tenant Tenant { get; set; }
 
     [DBBidirectionalRelation ("Children")]
-    [SearchAvailableObjectsServiceType (typeof (GroupPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(GroupPropertyTypeSearchService))]
     public abstract Group Parent { get; set; }
 
     [DBBidirectionalRelation ("Parent")]
     public abstract ObjectList<Group> Children { get; }
 
-    [SearchAvailableObjectsServiceType (typeof (GroupTypePropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(GroupTypePropertyTypeSearchService))]
     public abstract GroupType GroupType { get; set; }
 
 
@@ -258,7 +258,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     private void CheckParentHierarchy ()
     {
-      if (!Properties[typeof (Group), "Parent"].HasChanged)
+      if (!Properties[typeof(Group), "Parent"].HasChanged)
         return;
 
       var parents = GetParentObjectReference().CreateSequenceWithCycleCheck(
@@ -272,7 +272,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     private Group GetParentObjectReference ()
     {
-      var parentID = Properties[typeof (Group), "Parent"].GetRelatedObjectID();
+      var parentID = Properties[typeof(Group), "Parent"].GetRelatedObjectID();
       if (parentID == null)
         return null;
 

@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   public class BocAutoCompleteReferenceValueMock : BocAutoCompleteReferenceValue
   {
     public BocAutoCompleteReferenceValueMock (IWebServiceFactory webServiceFactory)
-        : base (webServiceFactory)
+        : base(webServiceFactory)
     {
     }
 

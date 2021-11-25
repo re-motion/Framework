@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsIdAttribute ()
     {
       var classSerializer = new ClassSerializer(MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (ClassWithAllDataTypes));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithAllDataTypes));
       var actual = classSerializer.Serialize(classDefinition);
 
       Assert.That(actual.Name.LocalName, Is.EqualTo("class"));
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsBaseClassAttribute ()
     {
       var classSerializer = new ClassSerializer(MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (DerivedAbstractClass));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(DerivedAbstractClass));
       var actual = classSerializer.Serialize(classDefinition);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("baseClass"));
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_ClassHasNoBaseClass_DoesNotAddAttribute ()
     {
       var classSerializer = new ClassSerializer(MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Ceo));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Ceo));
       var actual = classSerializer.Serialize(classDefinition);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName).Contains("baseClass"), Is.False);
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsAbstractAttribute ()
     {
       var classSerializer = new ClassSerializer(MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Ceo));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Ceo));
       var actual = classSerializer.Serialize(classDefinition);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("isAbstract"));
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsAbstractAttribute_AbstractClass ()
     {
       var classSerializer = new ClassSerializer(MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (DerivedAbstractClass));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(DerivedAbstractClass));
       var actual = classSerializer.Serialize(classDefinition);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("isAbstract"));
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var tableSerializerStub = MockRepository.GenerateStub<ITableSerializer>();
       var classSerializer = new ClassSerializer(tableSerializerStub);
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (AbstractWithoutConcreteClass));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(AbstractWithoutConcreteClass));
       classSerializer.Serialize(classDefinition);
 
       tableSerializerStub.AssertWasNotCalled(_ => _.Serialize(classDefinition));
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_AddsTableElements ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Ceo));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Ceo));
       var tableSerializerMock = MockRepository.GenerateMock<ITableSerializer>();
       var expected1 = new XElement("property1");
 

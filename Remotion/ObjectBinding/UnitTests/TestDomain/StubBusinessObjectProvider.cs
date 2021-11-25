@@ -27,12 +27,12 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 
 
     public StubBusinessObjectProvider ()
-        : this (new Mock<IBusinessObjectServiceFactory>().Object)
+        : this(new Mock<IBusinessObjectServiceFactory>().Object)
     {
     }
 
     public StubBusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
-        : base (serviceFactory)
+        : base(serviceFactory)
     {
     }
 

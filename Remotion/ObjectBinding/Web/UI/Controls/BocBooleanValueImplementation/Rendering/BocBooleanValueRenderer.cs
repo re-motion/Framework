@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// Responsible for rendering <see cref="BocBooleanValue"/> controls.
   /// <seealso cref="IBocBooleanValue"/>
   /// </summary>
-  [ImplementationFor (typeof (IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueRenderer : BocBooleanValueRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private const string c_nullString = "null";
 
-    private static readonly string s_startUpScriptKeyPrefix = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Startup_";
+    private static readonly string s_startUpScriptKeyPrefix = typeof(BocBooleanValueRenderer).GetFullNameChecked() + "_Startup_";
 
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IBocBooleanValueResourceSetFactory resourceSetFactory,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("resourceSetFactory", resourceSetFactory);
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
@@ -86,14 +86,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptFileKey = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.js");
+      string scriptFileKey = typeof(BocBooleanValueRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleFileKey = typeof (BocBooleanValueRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.css");
+      string styleFileKey = typeof(BocBooleanValueRenderer).GetFullNameChecked() + "_Style";
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.css");
       htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
@@ -215,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void RegisterStarupScriptIfNeeded (BocBooleanValueRenderingContext renderingContext, BocBooleanValueResourceSet resourceSet)
     {
       string startUpScriptKey = s_startUpScriptKeyPrefix + resourceSet.ResourceKey;
-      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof (BocBooleanValueRenderer), startUpScriptKey))
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(BocBooleanValueRenderer), startUpScriptKey))
       {
         string trueValue = true.ToString();
         string falseValue = false.ToString();
@@ -235,7 +235,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
             resourceSet.NullIconUrl);
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
             renderingContext.Control,
-            typeof (BocBooleanValueRenderer),
+            typeof(BocBooleanValueRenderer),
             startUpScriptKey,
             startupScript);
       }
@@ -343,7 +343,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     protected virtual IResourceManager GetResourceManager (BocBooleanValueRenderingContext renderingContext)
     {
-      return GetResourceManager(typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
   }
 }

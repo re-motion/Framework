@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void ConstructorThrows_OnWrongIdentifier ()
     {
       Assert.That(
-          () => CreateAccessorData(typeof (IndustrialSector), "FooBarFredBaz"),
+          () => CreateAccessorData(typeof(IndustrialSector), "FooBarFredBaz"),
           Throws.ArgumentException
               .With.Message.Contains("does not have a mapping property named"));
     }
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyObjects_StringProperty ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector));
       var propertyIdentifier = GetPropertyIdentifier(classDefinition, "Name");
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyObjects_CollectionProperty ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector));
       var propertyIdentifier = GetPropertyIdentifier(classDefinition, "Companies");
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyObjects_CollectionProperty_BackReference ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Company));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Company));
       var propertyIdentifier = GetPropertyIdentifier(classDefinition, "IndustrialSector");
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyObjects_OneOne_VirtualSide ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Employee));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Employee));
       var propertyIdentifier = GetPropertyIdentifier(classDefinition, "Computer");
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyObjects_OneOne_RealSide ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Computer));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Computer));
       var propertyIdentifier = GetPropertyIdentifier(classDefinition, "Employee");
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Assert.That(
           () => PropertyAccessorData.GetPropertyDefinitionObjects(
-          MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector)),
+          MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
           "Bla"),
           Throws.ArgumentException
               .With.Message.Contains("does not have a mapping property named"));
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Assert.That(
           () => PropertyAccessorData.GetPropertyDefinitionObjects(
-          MappingConfiguration.Current.GetTypeDefinition(typeof (Company)),
+          MappingConfiguration.Current.GetTypeDefinition(typeof(Company)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
           Throws.ArgumentException
               .With.Message.Contains("does not have a mapping property named"));
@@ -120,23 +120,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void InstancePropertyObjects_CollectionProperty ()
     {
-      PropertyAccessorData accessor = CreateAccessorData(typeof (IndustrialSector), "Companies");
+      PropertyAccessorData accessor = CreateAccessorData(typeof(IndustrialSector), "Companies");
 
-      Assert.That(accessor.ClassDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector))));
+      Assert.That(accessor.ClassDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))));
       Assert.That(accessor.PropertyIdentifier, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"));
       Assert.That(accessor.PropertyDefinition, Is.Null);
       Assert.That(accessor.RelationEndPointDefinition, Is.Not.Null);
-      Assert.That(accessor.RelationEndPointDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector))
+      Assert.That(accessor.RelationEndPointDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
                                                                                        .GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies")));
     }
 
     [Test]
     public void InstancePropertyObjects_StringProperty ()
     {
-      PropertyAccessorData accessor = CreateAccessorData(typeof (IndustrialSector), "Name");
+      PropertyAccessorData accessor = CreateAccessorData(typeof(IndustrialSector), "Name");
 
       Assert.That(accessor.PropertyDefinition, Is.Not.Null);
-      Assert.That(accessor.PropertyDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector))
+      Assert.That(accessor.PropertyDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
                                                                                .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name")));
       Assert.That(accessor.RelationEndPointDefinition, Is.Null);
     }
@@ -144,14 +144,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void InstancePropertyObjects_OneOneProperty_RealSide ()
     {
-      PropertyAccessorData accessor = CreateAccessorData(typeof (Computer), "Employee");
+      PropertyAccessorData accessor = CreateAccessorData(typeof(Computer), "Employee");
 
       Assert.That(accessor.PropertyDefinition, Is.Not.Null);
-      Assert.That(accessor.PropertyDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof (Computer))
+      Assert.That(accessor.PropertyDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer))
                                                                                .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee")));
 
       Assert.That(accessor.RelationEndPointDefinition, Is.Not.Null);
-      Assert.That(accessor.RelationEndPointDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof (Computer))
+      Assert.That(accessor.RelationEndPointDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer))
                                                                                        .GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee")));
     }
 
@@ -159,32 +159,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetPropertyKind ()
     {
       Assert.AreEqual(PropertyKind.PropertyValue,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector)),
+          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
           "Property value type");
 
       Assert.AreEqual(PropertyKind.RelatedObjectCollection,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector)),
+          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof (Company)),
+          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Company)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
           "Related object type - bidirectional relation 1:n, n side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof (Employee)),
+          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Employee)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"),
           "Related object type - bidirectional relation 1:1, referenced side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof (Computer)),
+          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"),
           "Related object type - bidirectional relation 1:1, foreign key side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof (Client)),
+          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Client)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"),
           "Related object type - unidirectional relation 1:n, 1 side");
     }
@@ -193,54 +193,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Kind ()
     {
       Assert.AreEqual(PropertyKind.PropertyValue,
-          CreateAccessorData(typeof (IndustrialSector), "Name").Kind, "Property value type");
+          CreateAccessorData(typeof(IndustrialSector), "Name").Kind, "Property value type");
 
       Assert.AreEqual(PropertyKind.RelatedObjectCollection,
-          CreateAccessorData(typeof (IndustrialSector), "Companies").Kind, "Related object collection type - bidirectional relation 1:n, 1 side");
+          CreateAccessorData(typeof(IndustrialSector), "Companies").Kind, "Related object collection type - bidirectional relation 1:n, 1 side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof (Company), "IndustrialSector").Kind, "Related object type - bidirectional relation 1:n, n side");
+          CreateAccessorData(typeof(Company), "IndustrialSector").Kind, "Related object type - bidirectional relation 1:n, n side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof (Employee), "Computer").Kind, "Related object type - bidirectional relation 1:1, referenced side");
+          CreateAccessorData(typeof(Employee), "Computer").Kind, "Related object type - bidirectional relation 1:1, referenced side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof (Computer), "Employee").Kind, "Related object type - bidirectional relation 1:1, foreign key side");
+          CreateAccessorData(typeof(Computer), "Employee").Kind, "Related object type - bidirectional relation 1:1, foreign key side");
 
       Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof (Client), "ParentClient").Kind, "Related object type - unidirectional relation 1:n, 1 side");
+          CreateAccessorData(typeof(Client), "ParentClient").Kind, "Related object type - unidirectional relation 1:n, 1 side");
     }
 
     [Test]
     public void GetPropertyType ()
     {
-      Assert.AreEqual(typeof (string),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector)),
+      Assert.AreEqual(typeof(string),
+          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
           "Property value type");
 
-      Assert.AreEqual(typeof (ObjectList<Company>),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector)),
+      Assert.AreEqual(typeof(ObjectList<Company>),
+          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
-      Assert.AreEqual(typeof (IndustrialSector),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof (Company)),
+      Assert.AreEqual(typeof(IndustrialSector),
+          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Company)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
           "Related object type - bidirectional relation 1:n, n side");
 
-      Assert.AreEqual(typeof (Computer),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof (Employee)),
+      Assert.AreEqual(typeof(Computer),
+          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Employee)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"),
           "Related object type - bidirectional relation 1:1, referenced side");
 
-      Assert.AreEqual(typeof (Employee),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof (Computer)),
+      Assert.AreEqual(typeof(Employee),
+          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"),
           "Related object type - bidirectional relation 1:1, foreign key side");
 
-      Assert.AreEqual(typeof (Client),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof (Client)),
+      Assert.AreEqual(typeof(Client),
+          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Client)),
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"),
           "Related object type - unidirectional relation 1:n, 1 side");
     }
@@ -248,30 +248,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyType ()
     {
-      Assert.AreEqual(typeof (string), CreateAccessorData(typeof (IndustrialSector), "Name").PropertyType, 
+      Assert.AreEqual(typeof(string), CreateAccessorData(typeof(IndustrialSector), "Name").PropertyType, 
           "Property value type");
 
-      Assert.AreEqual(typeof (ObjectList<Company>), CreateAccessorData(typeof (IndustrialSector), "Companies").PropertyType,
+      Assert.AreEqual(typeof(ObjectList<Company>), CreateAccessorData(typeof(IndustrialSector), "Companies").PropertyType,
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
-      Assert.AreEqual(typeof (IndustrialSector), CreateAccessorData(typeof (Company), "IndustrialSector").PropertyType,
+      Assert.AreEqual(typeof(IndustrialSector), CreateAccessorData(typeof(Company), "IndustrialSector").PropertyType,
           "Related object type - bidirectional relation 1:n, n side");
 
-      Assert.AreEqual(typeof (Computer), CreateAccessorData(typeof (Employee), "Computer").PropertyType,
+      Assert.AreEqual(typeof(Computer), CreateAccessorData(typeof(Employee), "Computer").PropertyType,
           "Related object type - bidirectional relation 1:1, referenced side");
 
-      Assert.AreEqual(typeof (Employee), CreateAccessorData(typeof (Computer), "Employee").PropertyType,
+      Assert.AreEqual(typeof(Employee), CreateAccessorData(typeof(Computer), "Employee").PropertyType,
           "Related object type - bidirectional relation 1:1, foreign key side");
 
-      Assert.AreEqual(typeof (Client), CreateAccessorData(typeof (Client), "ParentClient").PropertyType,
+      Assert.AreEqual(typeof(Client), CreateAccessorData(typeof(Client), "ParentClient").PropertyType,
           "Related object type - unidirectional relation 1:n, 1 side");
     }
 
     [Test]
     public void Equals_True ()
     {
-      var data1 = CreateAccessorData(typeof (IndustrialSector), "Name");
-      var data2 = CreateAccessorData(typeof (IndustrialSector), "Name");
+      var data1 = CreateAccessorData(typeof(IndustrialSector), "Name");
+      var data2 = CreateAccessorData(typeof(IndustrialSector), "Name");
 
       Assert.That(data1, Is.EqualTo(data2));
     }
@@ -279,8 +279,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Equals_False_ClassDefinition ()
     {
-      var data1 = CreateAccessorData(typeof (IndustrialSector), "Name");
-      var data2 = CreateAccessorData(typeof (Company), "Name");
+      var data1 = CreateAccessorData(typeof(IndustrialSector), "Name");
+      var data2 = CreateAccessorData(typeof(Company), "Name");
 
       Assert.That(data1, Is.Not.EqualTo(data2));
     }
@@ -288,8 +288,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Equals_False_PropertyIfentifier ()
     {
-      var data1 = CreateAccessorData(typeof (IndustrialSector), "Name");
-      var data2 = CreateAccessorData(typeof (IndustrialSector), "Companies");
+      var data1 = CreateAccessorData(typeof(IndustrialSector), "Name");
+      var data2 = CreateAccessorData(typeof(IndustrialSector), "Companies");
 
       Assert.That(data1, Is.Not.EqualTo(data2));
     }
@@ -297,8 +297,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetHashCode_Equal ()
     {
-      var data1 = CreateAccessorData(typeof (IndustrialSector), "Name");
-      var data2 = CreateAccessorData(typeof (IndustrialSector), "Name");
+      var data1 = CreateAccessorData(typeof(IndustrialSector), "Name");
+      var data2 = CreateAccessorData(typeof(IndustrialSector), "Name");
 
       Assert.That(data1.GetHashCode(), Is.EqualTo(data2.GetHashCode()));
     }

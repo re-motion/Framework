@@ -36,10 +36,10 @@ namespace Remotion.UnitTests.Utilities
     [SetUp]
     public void SetUp ()
     {
-      _converterForString = new DefaultConverter(typeof (string));
-      _converterForObject = new DefaultConverter(typeof (object));
-      _converterForInt = new DefaultConverter(typeof (int));
-      _converterForNullableInt = new DefaultConverter(typeof (int?));
+      _converterForString = new DefaultConverter(typeof(string));
+      _converterForObject = new DefaultConverter(typeof(object));
+      _converterForInt = new DefaultConverter(typeof(int));
+      _converterForNullableInt = new DefaultConverter(typeof(int?));
 
       _typeDescriptorContext = new Mock<ITypeDescriptorContext>();
     }
@@ -47,21 +47,21 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Initialization_ReferenceType ()
     {
-      Assert.That(_converterForString.Type, Is.SameAs(typeof (string)));
+      Assert.That(_converterForString.Type, Is.SameAs(typeof(string)));
       Assert.That(_converterForString.IsNullableType, Is.True);
     }
 
     [Test]
     public void Initialization_NonNullableValueType ()
     {
-      Assert.That(_converterForInt.Type, Is.SameAs(typeof (int)));
+      Assert.That(_converterForInt.Type, Is.SameAs(typeof(int)));
       Assert.That(_converterForInt.IsNullableType, Is.False);
     }
 
     [Test]
     public void Initialization_NullableValueType ()
     {
-      Assert.That(_converterForNullableInt.Type, Is.SameAs(typeof (int?)));
+      Assert.That(_converterForNullableInt.Type, Is.SameAs(typeof(int?)));
       Assert.That(_converterForNullableInt.IsNullableType, Is.True);
     }
 
@@ -69,44 +69,44 @@ namespace Remotion.UnitTests.Utilities
     public void CanConvertFrom_True ()
     {
       // same type
-      Assert.That(_converterForString.CanConvertFrom(_typeDescriptorContext.Object, typeof (string)), Is.True);
+      Assert.That(_converterForString.CanConvertFrom(_typeDescriptorContext.Object, typeof(string)), Is.True);
       // from non-nullable to nullable
-      Assert.That(_converterForNullableInt.CanConvertFrom(_typeDescriptorContext.Object, typeof (int)), Is.True);
+      Assert.That(_converterForNullableInt.CanConvertFrom(_typeDescriptorContext.Object, typeof(int)), Is.True);
     }
 
     [Test]
     public void CanConvertFrom_False ()
     {
       // completely unrelated
-      Assert.That(_converterForString.CanConvertFrom(_typeDescriptorContext.Object, typeof (int)), Is.False);
+      Assert.That(_converterForString.CanConvertFrom(_typeDescriptorContext.Object, typeof(int)), Is.False);
       // from base to derived type
-      Assert.That(_converterForString.CanConvertFrom(_typeDescriptorContext.Object, typeof (object)), Is.False);
+      Assert.That(_converterForString.CanConvertFrom(_typeDescriptorContext.Object, typeof(object)), Is.False);
       // from derived to base type
-      Assert.That(_converterForObject.CanConvertFrom(_typeDescriptorContext.Object, typeof (string)), Is.False);
+      Assert.That(_converterForObject.CanConvertFrom(_typeDescriptorContext.Object, typeof(string)), Is.False);
       // from nullable to non-nullable
-      Assert.That(_converterForInt.CanConvertFrom(_typeDescriptorContext.Object, typeof (int?)), Is.False);
+      Assert.That(_converterForInt.CanConvertFrom(_typeDescriptorContext.Object, typeof(int?)), Is.False);
     }
 
     [Test]
     public void CanConvertTo_True ()
     {
       // same type
-      Assert.That(_converterForString.CanConvertTo(_typeDescriptorContext.Object, typeof (string)), Is.True);
+      Assert.That(_converterForString.CanConvertTo(_typeDescriptorContext.Object, typeof(string)), Is.True);
       // from non-nullable to nullable
-      Assert.That(_converterForInt.CanConvertTo(_typeDescriptorContext.Object, typeof (int?)), Is.True);
+      Assert.That(_converterForInt.CanConvertTo(_typeDescriptorContext.Object, typeof(int?)), Is.True);
     }
 
     [Test]
     public void CanConvertTo_False ()
     {
       // completely unrelated
-      Assert.That(_converterForString.CanConvertTo(_typeDescriptorContext.Object, typeof (int)), Is.False);
+      Assert.That(_converterForString.CanConvertTo(_typeDescriptorContext.Object, typeof(int)), Is.False);
       // from base to derived type
-      Assert.That(_converterForObject.CanConvertTo(_typeDescriptorContext.Object, typeof (string)), Is.False);
+      Assert.That(_converterForObject.CanConvertTo(_typeDescriptorContext.Object, typeof(string)), Is.False);
       // from derived to base type
-      Assert.That(_converterForString.CanConvertTo(_typeDescriptorContext.Object, typeof (object)), Is.False);
+      Assert.That(_converterForString.CanConvertTo(_typeDescriptorContext.Object, typeof(object)), Is.False);
       // from nullable to non-nullable
-      Assert.That(_converterForNullableInt.CanConvertTo(_typeDescriptorContext.Object, typeof (int)), Is.False);
+      Assert.That(_converterForNullableInt.CanConvertTo(_typeDescriptorContext.Object, typeof(int)), Is.False);
     }
 
     [Test]
@@ -165,7 +165,7 @@ namespace Remotion.UnitTests.Utilities
     public void ConvertTo_ValueIsNullAndNotValid ()
     {
       Assert.That(
-          () => _converterForInt.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, null, typeof (int)),
+          () => _converterForInt.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, null, typeof(int)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo("The given value '' cannot be converted by this TypeConverter for type 'System.Int32'."));
     }
@@ -181,7 +181,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void ConvertTo_ValueIsNullAndNullableValueType ()
     {
-      var result = _converterForNullableInt.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, null, typeof (int?));
+      var result = _converterForNullableInt.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, null, typeof(int?));
 
       Assert.That(result, Is.Null);
     }
@@ -190,7 +190,7 @@ namespace Remotion.UnitTests.Utilities
     public void ConvertTo_ValueIsNotNullAndNotValid ()
     {
       Assert.That(
-          () => _converterForString.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, 5, typeof (string)),
+          () => _converterForString.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, 5, typeof(string)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo("The given value '5' cannot be converted by this TypeConverter for type 'System.String'."));
     }
@@ -199,7 +199,7 @@ namespace Remotion.UnitTests.Utilities
     public void ConvertTo_ValueIsNotNullAndCannotConvertToDestinationType ()
     {
       Assert.That(
-          () => _converterForString.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, "test", typeof (object)),
+          () => _converterForString.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, "test", typeof(object)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "This TypeConverter cannot convert to type 'System.Object'."));
@@ -208,7 +208,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void ConvertTo_ValueIsNotNullAndCanConvertToDestinationType ()
     {
-      var result = _converterForString.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, "test", typeof (string));
+      var result = _converterForString.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, "test", typeof(string));
 
       Assert.That(result, Is.EqualTo("test"));
     }
@@ -216,7 +216,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void ConvertTo_DestinationTypeIsNullableValueType ()
     {
-      var result = _converterForInt.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, 17, typeof (int?));
+      var result = _converterForInt.ConvertTo(_typeDescriptorContext.Object, CultureInfo.CurrentCulture, 17, typeof(int?));
 
       Assert.That(result, Is.EqualTo(17));
     }

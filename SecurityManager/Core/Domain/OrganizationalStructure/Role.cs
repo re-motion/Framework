@@ -44,16 +44,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     [DBBidirectionalRelation ("Roles")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (GroupPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(GroupPropertyTypeSearchService))]
     public abstract Group Group { get; set; }
 
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (RolePropertiesSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(RolePropertiesSearchService))]
     public abstract Position Position { get; set; }
 
     [DBBidirectionalRelation ("Roles")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (UserPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(UserPropertyTypeSearchService))]
     public abstract User User { get; set; }
 
     [DBBidirectionalRelation ("SubstitutedRole")]
@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnCommitting(args);
 
-      var userProperty = Properties[typeof (Role), "User"];
+      var userProperty = Properties[typeof(Role), "User"];
       if (userProperty.GetValue<User>() != null)
         userProperty.GetValue<User>().RegisterForCommit();
       else if (userProperty.GetOriginalValue<User>() != null)

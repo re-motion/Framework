@@ -22,29 +22,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
   public static class SimpleStoragePropertyDefinitionObjectMother
   {
     public static readonly SimpleStoragePropertyDefinition IDProperty = 
-        new SimpleStoragePropertyDefinition(typeof (object), ColumnDefinitionObjectMother.IDColumn);
+        new SimpleStoragePropertyDefinition(typeof(object), ColumnDefinitionObjectMother.IDColumn);
 
     public static readonly SimpleStoragePropertyDefinition ClassIDProperty =
-        new SimpleStoragePropertyDefinition(typeof (string), ColumnDefinitionObjectMother.ClassIDColumn);
+        new SimpleStoragePropertyDefinition(typeof(string), ColumnDefinitionObjectMother.ClassIDColumn);
 
     public static readonly SimpleStoragePropertyDefinition TimestampProperty =
-        new SimpleStoragePropertyDefinition(typeof (object), ColumnDefinitionObjectMother.TimestampColumn);
+        new SimpleStoragePropertyDefinition(typeof(object), ColumnDefinitionObjectMother.TimestampColumn);
 
     public static SimpleStoragePropertyDefinition CreateStorageProperty (
         string columnName = null, IStorageTypeInformation storageTypeInformation = null, bool isPartOfPrimaryKey = false)
     {
       return new SimpleStoragePropertyDefinition(
-          typeof (object), ColumnDefinitionObjectMother.CreateColumn(columnName, storageTypeInformation, isPartOfPrimaryKey));
+          typeof(object), ColumnDefinitionObjectMother.CreateColumn(columnName, storageTypeInformation, isPartOfPrimaryKey));
     }
 
     public static SimpleStoragePropertyDefinition CreateStringStorageProperty (string columnName)
     {
-      return new SimpleStoragePropertyDefinition(typeof (object), ColumnDefinitionObjectMother.CreateStringColumn(columnName));
+      return new SimpleStoragePropertyDefinition(typeof(object), ColumnDefinitionObjectMother.CreateStringColumn(columnName));
     }
 
     public static SimpleStoragePropertyDefinition CreateGuidStorageProperty (string columnName)
     {
-      return new SimpleStoragePropertyDefinition(typeof (object), ColumnDefinitionObjectMother.CreateGuidColumn(columnName));
+      return new SimpleStoragePropertyDefinition(typeof(object), ColumnDefinitionObjectMother.CreateGuidColumn(columnName));
     }
   }
 }

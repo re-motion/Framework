@@ -38,7 +38,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var factory = _serviceLocator.GetInstance<IInvolvedTypeProvider>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (InvolvedTypeProvider)));
+      Assert.That(factory, Is.TypeOf(typeof(InvolvedTypeProvider)));
     }
   }
 }

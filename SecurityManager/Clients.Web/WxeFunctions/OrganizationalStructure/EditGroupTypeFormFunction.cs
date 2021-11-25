@@ -32,12 +32,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     }
 
     protected EditGroupTypeFormFunction (ITransactionMode transactionMode, params object[] args)
-        : base (transactionMode, args)
+        : base(transactionMode, args)
     {
     }
 
     public EditGroupTypeFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<GroupType> currentObjectHandle)
-        : base (transactionMode, currentObjectHandle)
+        : base(transactionMode, currentObjectHandle)
     {
     }
 
@@ -47,6 +47,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
         CurrentObject = GroupType.NewObject();
     }
 
-    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof (EditGroupTypeForm), "UI/OrganizationalStructure/EditGroupTypeForm.aspx");
+    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(EditGroupTypeForm), "UI/OrganizationalStructure/EditGroupTypeForm.aspx");
   }
 }

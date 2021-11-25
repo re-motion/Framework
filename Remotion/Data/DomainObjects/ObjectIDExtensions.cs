@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects
       }
       catch (ArgumentException ex)
       {
-        var message = string.Format("The ObjectID '{0}' is not compatible with type '{1}'.", id, typeof (T));
+        var message = string.Format("The ObjectID '{0}' is not compatible with type '{1}'.", id, typeof(T));
         throw new ArgumentException(message, "id", ex);
       }
     }

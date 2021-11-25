@@ -30,8 +30,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void GetIdentifier_ReturnsIdentifier ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (TypeOne));
-      var typeOneClass = provider.GetBindableObjectClass(typeof (TypeOne));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(TypeOne));
+      var typeOneClass = provider.GetBindableObjectClass(typeof(TypeOne));
       IBusinessObjectPropertyPath path = StaticBusinessObjectPropertyPath.Parse("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue", typeOneClass);
 
       Assert.That(path.Identifier, Is.EqualTo("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue"));
@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void GetIsDynamic_ReturnsFalse ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (TypeOne));
-      var typeOneClass = provider.GetBindableObjectClass(typeof (TypeOne));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(TypeOne));
+      var typeOneClass = provider.GetBindableObjectClass(typeof(TypeOne));
       IBusinessObjectPropertyPath path = StaticBusinessObjectPropertyPath.Parse("TypeTwoValue", typeOneClass);
 
       Assert.That(path.IsDynamic, Is.False);
@@ -50,15 +50,15 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void GetProperties_ThrowsNotSupportedException ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (TypeOne));
-      var typeOneClass = provider.GetBindableObjectClass(typeof (TypeOne));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(TypeOne));
+      var typeOneClass = provider.GetBindableObjectClass(typeof(TypeOne));
 
       var expectedProperties = new[]
                                {
                                    typeOneClass.GetPropertyDefinition("TypeTwoValue"),
-                                   provider.GetBindableObjectClass(typeof (TypeTwo)).GetPropertyDefinition("TypeThreeValue"),
-                                   provider.GetBindableObjectClass(typeof (TypeThree)).GetPropertyDefinition("TypeFourValue"),
-                                   provider.GetBindableObjectClass(typeof (TypeFour)).GetPropertyDefinition("IntValue"),
+                                   provider.GetBindableObjectClass(typeof(TypeTwo)).GetPropertyDefinition("TypeThreeValue"),
+                                   provider.GetBindableObjectClass(typeof(TypeThree)).GetPropertyDefinition("TypeFourValue"),
+                                   provider.GetBindableObjectClass(typeof(TypeFour)).GetPropertyDefinition("IntValue"),
                                };
       IBusinessObjectPropertyPath path = StaticBusinessObjectPropertyPath.Parse("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue", typeOneClass);
 
@@ -126,14 +126,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void Create_FromProperties ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (TypeOne));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(TypeOne));
 
       var properties = new[]
                        {
-                           provider.GetBindableObjectClass(typeof (TypeOne)).GetPropertyDefinition("TypeTwoValue"),
-                           provider.GetBindableObjectClass(typeof (TypeTwo)).GetPropertyDefinition("TypeThreeValue"),
-                           provider.GetBindableObjectClass(typeof (TypeThree)).GetPropertyDefinition("TypeFourValue"),
-                           provider.GetBindableObjectClass(typeof (TypeFour)).GetPropertyDefinition("IntValue"),
+                           provider.GetBindableObjectClass(typeof(TypeOne)).GetPropertyDefinition("TypeTwoValue"),
+                           provider.GetBindableObjectClass(typeof(TypeTwo)).GetPropertyDefinition("TypeThreeValue"),
+                           provider.GetBindableObjectClass(typeof(TypeThree)).GetPropertyDefinition("TypeFourValue"),
+                           provider.GetBindableObjectClass(typeof(TypeFour)).GetPropertyDefinition("IntValue"),
                        };
 
       var path = StaticBusinessObjectPropertyPath.Create(properties);
@@ -145,9 +145,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void Create_FromSingleProperty ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (TypeOne));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(TypeOne));
 
-      var properties = new[] { provider.GetBindableObjectClass(typeof (TypeOne)).GetPropertyDefinition("TypeTwoValue") };
+      var properties = new[] { provider.GetBindableObjectClass(typeof(TypeOne)).GetPropertyDefinition("TypeTwoValue") };
 
       var path = StaticBusinessObjectPropertyPath.Create(properties);
 
@@ -158,14 +158,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void Create_ContainsNonReferenceProperty_ThrowsArgumentException ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (TypeOne));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(TypeOne));
 
       var properties = new[]
                        {
-                           provider.GetBindableObjectClass(typeof (TypeOne)).GetPropertyDefinition("TypeTwoValue"),
-                           provider.GetBindableObjectClass(typeof (TypeTwo)).GetPropertyDefinition("IntValue"),
-                           provider.GetBindableObjectClass(typeof (TypeThree)).GetPropertyDefinition("TypeFourValue"),
-                           provider.GetBindableObjectClass(typeof (TypeFour)).GetPropertyDefinition("IntValue"),
+                           provider.GetBindableObjectClass(typeof(TypeOne)).GetPropertyDefinition("TypeTwoValue"),
+                           provider.GetBindableObjectClass(typeof(TypeTwo)).GetPropertyDefinition("IntValue"),
+                           provider.GetBindableObjectClass(typeof(TypeThree)).GetPropertyDefinition("TypeFourValue"),
+                           provider.GetBindableObjectClass(typeof(TypeFour)).GetPropertyDefinition("IntValue"),
                        };
 
       Assert.That(
@@ -177,13 +177,13 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void Create_NextPropertyNotPartOfClass_ThrowsArgumentException ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (TypeOne));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(TypeOne));
 
       var properties = new[]
                        {
-                           provider.GetBindableObjectClass(typeof (TypeOne)).GetPropertyDefinition("TypeTwoValue"),
-                           provider.GetBindableObjectClass(typeof (TypeThree)).GetPropertyDefinition("TypeFourValue"),
-                           provider.GetBindableObjectClass(typeof (TypeFour)).GetPropertyDefinition("IntValue"),
+                           provider.GetBindableObjectClass(typeof(TypeOne)).GetPropertyDefinition("TypeTwoValue"),
+                           provider.GetBindableObjectClass(typeof(TypeThree)).GetPropertyDefinition("TypeFourValue"),
+                           provider.GetBindableObjectClass(typeof(TypeFour)).GetPropertyDefinition("IntValue"),
                        };
 
       Assert.That(

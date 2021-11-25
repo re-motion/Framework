@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void DefaultKey ()
     {
-      Assert.That(CommitValidationClientTransactionExtension.DefaultKey, Is.EqualTo(typeof (CommitValidationClientTransactionExtension).FullName));
+      Assert.That(CommitValidationClientTransactionExtension.DefaultKey, Is.EqualTo(typeof(CommitValidationClientTransactionExtension).FullName));
     }
 
     [Test]

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _virtualEndPointProviderMock = _mockRepository.StrictMock<IVirtualEndPointProvider>();
       _state = new UnknownRealObjectEndPointSyncState(_virtualEndPointProviderMock);
 
-      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
       _endPointMock = _mockRepository.StrictMock<IRealObjectEndPoint>();
       _endPointMock.Stub(stub => stub.ID).Return(_endPointID);
       _endPointMock.Stub(stub => stub.Definition).Return(_endPointID.Definition);

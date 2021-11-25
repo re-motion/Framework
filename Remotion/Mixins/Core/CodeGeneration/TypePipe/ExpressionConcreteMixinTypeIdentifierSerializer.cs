@@ -60,8 +60,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Expression.New(
           s_constructor,
           Expression.Constant(MixinType),
-          Expression.New(s_hashSetConstructor, Expression.NewArrayInit(typeof (MethodInfo), Overriders!.Select(GetResolveMethodExpression))), // TODO RM-7691 Change serializer properties to non-nullable return values
-          Expression.New(s_hashSetConstructor, Expression.NewArrayInit(typeof (MethodInfo), Overridden!.Select(GetResolveMethodExpression)))); // TODO RM-7691 Change serializer properties to non-nullable return values
+          Expression.New(s_hashSetConstructor, Expression.NewArrayInit(typeof(MethodInfo), Overriders!.Select(GetResolveMethodExpression))), // TODO RM-7691 Change serializer properties to non-nullable return values
+          Expression.New(s_hashSetConstructor, Expression.NewArrayInit(typeof(MethodInfo), Overridden!.Select(GetResolveMethodExpression)))); // TODO RM-7691 Change serializer properties to non-nullable return values
     }
 
     private Expression GetResolveMethodExpression (MethodInfo methodInfo)

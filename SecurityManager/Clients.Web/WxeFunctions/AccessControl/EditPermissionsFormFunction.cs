@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
   public class EditPermissionsFormFunction : FormFunction<SecurableClassDefinition>
   {
     public EditPermissionsFormFunction (ITransactionMode transactionMode, [NotNull] IDomainObjectHandle<SecurableClassDefinition> currentObjectHandle)
-        : base (transactionMode, ArgumentUtility.CheckNotNull("currentObjectHandle", currentObjectHandle))
+        : base(transactionMode, ArgumentUtility.CheckNotNull("currentObjectHandle", currentObjectHandle))
     {
     }
 
@@ -43,6 +43,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
                   .ToArray();
     }
 
-    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof (EditPermissionsForm), "UI/AccessControl/EditPermissionsForm.aspx");
+    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(EditPermissionsForm), "UI/AccessControl/EditPermissionsForm.aspx");
   }
 }

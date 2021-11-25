@@ -23,22 +23,22 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   public class EnumWithDifferentCtors : ExtensibleEnum<EnumWithDifferentCtors>
   {
     public EnumWithDifferentCtors (string id)
-        : base (id)
+        : base(id)
     {
     }
 
     public EnumWithDifferentCtors (string declarationSpace, string valueName)
-        : base (declarationSpace, valueName)
+        : base(declarationSpace, valueName)
     {
     }
 
     public EnumWithDifferentCtors (Type declaringType, string valueName)
-        : base (declaringType, valueName)
+        : base(declaringType, valueName)
     {
     }
 
     public EnumWithDifferentCtors (MethodBase currentMethod)
-        : base (currentMethod)
+        : base(currentMethod)
     {
     }
   }

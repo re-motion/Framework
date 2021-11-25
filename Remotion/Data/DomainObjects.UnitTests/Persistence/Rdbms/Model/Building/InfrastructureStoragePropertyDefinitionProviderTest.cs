@@ -72,14 +72,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var result = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
 
       Assert.That(result.ValueProperty, Is.TypeOf<SimpleStoragePropertyDefinition>());
-      Assert.That(result.ValueProperty.PropertyType, Is.SameAs(typeof (object)));
+      Assert.That(result.ValueProperty.PropertyType, Is.SameAs(typeof(object)));
       var idColumn = StoragePropertyDefinitionTestHelper.GetSingleColumn(result.ValueProperty);
       Assert.That(idColumn.Name, Is.EqualTo("ID"));
       Assert.That(idColumn.IsPartOfPrimaryKey, Is.True);
       Assert.That(idColumn.StorageTypeInfo, Is.SameAs(_idStorageTypeInformation));
 
       Assert.That(result.ClassIDProperty, Is.TypeOf<SimpleStoragePropertyDefinition>());
-      Assert.That(result.ClassIDProperty.PropertyType, Is.SameAs(typeof (string)));
+      Assert.That(result.ClassIDProperty.PropertyType, Is.SameAs(typeof(string)));
       var classIDColumn = StoragePropertyDefinitionTestHelper.GetSingleColumn(result.ClassIDProperty);
       Assert.That(classIDColumn.Name, Is.EqualTo("ClassID"));
       Assert.That(classIDColumn.StorageTypeInfo, Is.SameAs(_classIDStorageTypeInformation));
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var result = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
 
       Assert.That(result, Is.TypeOf<SimpleStoragePropertyDefinition>());
-      Assert.That(result.PropertyType, Is.SameAs(typeof (object)));
+      Assert.That(result.PropertyType, Is.SameAs(typeof(object)));
       var column = ((SimpleStoragePropertyDefinition) result).ColumnDefinition;
       Assert.That(column.Name, Is.EqualTo("Timestamp"));
       Assert.That(column.StorageTypeInfo, Is.SameAs(_timestampStorageTypeInformation));

@@ -20,8 +20,8 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
 {
   [DBTable]
-  [Uses (typeof (DiamondLeft))]
-  [Uses (typeof (DiamondRight))]
+  [Uses (typeof(DiamondLeft))]
+  [Uses (typeof(DiamondRight))]
   public class DiamondTarget : DomainObject
   {
   }

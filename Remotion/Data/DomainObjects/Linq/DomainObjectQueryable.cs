@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// </para>
     /// </remarks>
     public DomainObjectQueryable (IQueryParser queryParser, IQueryExecutor executor)
-      : base (queryParser, executor)
+      : base(queryParser, executor)
     {
     }
 
@@ -55,13 +55,13 @@ namespace Remotion.Data.DomainObjects.Linq
     /// This constructor is used by the standard query methods defined in <see cref="Queryable"/> when a LINQ query is constructed.
     /// </remarks>
     public DomainObjectQueryable (QueryProviderBase provider, Expression expression)
-        : base (provider, expression)
+        : base(provider, expression)
     {
     }
 
     public override string ToString ()
     {
-      return "DomainObjectQueryable<" + typeof (T).Name + ">";
+      return "DomainObjectQueryable<" + typeof(T).Name + ">";
     }
 
     public DomainObjectQueryExecutor GetExecutor ()

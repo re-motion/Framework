@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       var companyID = CreateCompanyAndSetIndustrialSectorInOtherTransaction(DomainObjectIDs.IndustrialSector1);
       var company = companyID.GetObject<Company>();
 
-      Assert.That(company.Properties[typeof (Company), "IndustrialSector"].GetRelatedObjectID(), Is.EqualTo(DomainObjectIDs.IndustrialSector1));
+      Assert.That(company.Properties[typeof(Company), "IndustrialSector"].GetRelatedObjectID(), Is.EqualTo(DomainObjectIDs.IndustrialSector1));
 
       SetIndustrialSectorInOtherTransaction(company.ID, DomainObjectIDs.IndustrialSector2);
 

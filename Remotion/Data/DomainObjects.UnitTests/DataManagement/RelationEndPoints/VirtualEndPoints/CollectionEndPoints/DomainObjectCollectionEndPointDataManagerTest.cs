@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var dataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, _changeDetectionStrategyMock);
 
-      Assert.That(dataManager.CollectionData, Is.TypeOf(typeof (ChangeCachingDomainObjectCollectionDataDecorator)));
+      Assert.That(dataManager.CollectionData, Is.TypeOf(typeof(ChangeCachingDomainObjectCollectionDataDecorator)));
       Assert.That(dataManager.CollectionData.ToArray(), Is.Empty);
       Assert.That(dataManager.OriginalOppositeEndPoints, Is.Empty);
    }

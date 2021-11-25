@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     public void Localization ()
     {
       var globalizationService = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
-      foreach (SecurityManagerAccessTypes enumValue in Enum.GetValues(typeof (SecurityManagerAccessTypes)))
+      foreach (SecurityManagerAccessTypes enumValue in Enum.GetValues(typeof(SecurityManagerAccessTypes)))
       {
         var localizations = globalizationService.GetAvailableEnumDisplayNames(enumValue);
         Assert.That(localizations.Count, Is.EqualTo(5), enumValue.ToString()); // invariant, EN, DE, FR, IT

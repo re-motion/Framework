@@ -33,18 +33,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TextBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource (typeof(DisabledTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     public void GenericTests (GenericSelectorTestAction<TextBoxSelector, TextBoxControlObject> testAction)
     {
       testAction(Helper, e => e.TextBoxes(), "textBox");
     }
 
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<TextBoxSelector, TextBoxControlObject> testAction)
     {
       testAction(Helper, e => e.TextBoxes(), "textBox");

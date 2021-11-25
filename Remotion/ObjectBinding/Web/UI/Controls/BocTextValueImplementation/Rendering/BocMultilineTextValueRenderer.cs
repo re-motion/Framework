@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
   /// Provides a label for rendering a <see cref="BocMultilineTextValue"/> control in read-only mode. 
   /// Rendering is done by the parent class.
   /// </summary>
-  [ImplementationFor (typeof (IBocMultilineTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocMultilineTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocMultilineTextValueRenderer : BocTextValueRendererBase<IBocMultilineTextValue>, IBocMultilineTextValueRenderer
   {
     public BocMultilineTextValueRenderer (
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
     }
 
@@ -58,8 +58,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string key = typeof (BocMultilineTextValueRenderer).GetFullNameChecked() + "_Style";
-      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocMultilineTextValueRenderer), ResourceType.Html, "BocMultilineTextValue.css");
+      string key = typeof(BocMultilineTextValueRenderer).GetFullNameChecked() + "_Style";
+      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocMultilineTextValueRenderer), ResourceType.Html, "BocMultilineTextValue.css");
       htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Library);
     }
 

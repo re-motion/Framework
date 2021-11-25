@@ -30,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to them to retrieve localized name for a specified member.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundMemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IReadOnlyCollection<IMemberInformationGlobalizationService> _memberInformationGlobalizationServices;

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static T CreateObjectInTransaction<T> (ClientTransaction transaction) where T : DomainObject
     {
-      return (T) LifetimeService.NewObject(transaction, typeof (T), ParamList.Empty);
+      return (T) LifetimeService.NewObject(transaction, typeof(T), ParamList.Empty);
     }
 
     public static T CreateObjectInOtherTransaction<T> () where T : DomainObject
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static DomainObject CreateFakeObject (ObjectID id = null)
     {
-      return LifetimeService.GetObjectReference(ClientTransaction.CreateRootTransaction(), id ?? new ObjectID(typeof (Order), Guid.NewGuid()));
+      return LifetimeService.GetObjectReference(ClientTransaction.CreateRootTransaction(), id ?? new ObjectID(typeof(Order), Guid.NewGuid()));
     }
 
     public static T GetObjectReference<T> (ClientTransaction clientTransaction, ObjectID objectID) where T : DomainObject
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static DomainObject GetInvalidObject (ClientTransaction transaction)
     {
-      var invalidInstance = LifetimeService.NewObject(transaction, typeof (Order), ParamList.Empty);
+      var invalidInstance = LifetimeService.NewObject(transaction, typeof(Order), ParamList.Empty);
       LifetimeService.DeleteObject(transaction, invalidInstance);
       Assert.That(invalidInstance.TransactionContext[transaction].State.IsInvalid, Is.True);
       return invalidInstance;

@@ -52,7 +52,7 @@ namespace Remotion.Mixins.Definitions
 
     public bool IsSuppressAttribute
     {
-      get { return typeof (SuppressAttributesAttribute).IsAssignableFrom(AttributeType); }
+      get { return typeof(SuppressAttributesAttribute).IsAssignableFrom(AttributeType); }
     }
 
     public void Accept (IDefinitionVisitor visitor)

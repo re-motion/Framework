@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       _domainObject = DomainObjectMother.CreateObjectInTransaction<Client>(_clientTransaction);
       _dataContainer = _domainObject.GetInternalDataContainerForTransaction(_clientTransaction);
-      _propertyDefinition = GetPropertyDefinition(typeof (Client), "ParentClient");
+      _propertyDefinition = GetPropertyDefinition(typeof(Client), "ParentClient");
 
       _domainObject2 = DomainObjectMother.CreateObjectInTransaction<Client>(_clientTransaction);
       _domainObject3 = DomainObjectMother.CreateObjectInTransaction<Client>(_clientTransaction);
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _memoryAppender.Clear();
       LogManager.ResetConfiguration();
 
-      Assert.That(LogManager.GetLogger(typeof (LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
+      Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
 
       base.TearDown();
     }
@@ -121,8 +121,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void NewObjectCreating ()
     {
       CheckLoggingMethod(
-          () => _listener.NewObjectCreating(_clientTransaction, typeof (string)),
-          string.Format("{0} NewObjectCreating: {1}", _clientTransaction.ID, typeof (string).FullName));
+          () => _listener.NewObjectCreating(_clientTransaction, typeof(string)),
+          string.Format("{0} NewObjectCreating: {1}", _clientTransaction.ID, typeof(string).FullName));
     }
 
     [Test]
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       var values = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(
           new DomainObjectCollection(
-              Enumerable.Range(0, 100).Select(i => LifetimeService.NewObject(_clientTransaction, typeof (Client), ParamList.Empty)),
+              Enumerable.Range(0, 100).Select(i => LifetimeService.NewObject(_clientTransaction, typeof(Client), ParamList.Empty)),
               null));
       CheckLoggingMethod(
           () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition, values, ValueAccess.Current),

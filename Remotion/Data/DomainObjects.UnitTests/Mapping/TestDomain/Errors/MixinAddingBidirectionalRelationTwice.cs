@@ -25,10 +25,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     {
       get
       {
-        return Properties[typeof (MixinAddingBidirectionalRelationTwice), "RealSide"]
+        return Properties[typeof(MixinAddingBidirectionalRelationTwice), "RealSide"]
             .GetValue<RelationTargetForMixinAddingBidirectionalRelationTwice>();
       }
-      set { Properties[typeof (MixinAddingBidirectionalRelationTwice), "RealSide"].SetValue(value); }
+      set { Properties[typeof(MixinAddingBidirectionalRelationTwice), "RealSide"].SetValue(value); }
     }
   }
 }

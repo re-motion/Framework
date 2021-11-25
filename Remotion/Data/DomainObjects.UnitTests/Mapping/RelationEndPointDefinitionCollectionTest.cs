@@ -75,10 +75,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateForAllRelationEndPoints_ClassDefinitionWithBaseClassDefinition ()
     {
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Company));
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Company));
       var basedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(baseClassDefinition, "Property1");
       baseClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { basedPropertyDefinition }, true));
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Partner), baseClass: baseClassDefinition);
+      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Partner), baseClass: baseClassDefinition);
       var derivedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(derivedClassDefinition, "Property2");
       derivedClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { derivedPropertyDefinition }, true));
 

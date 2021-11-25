@@ -62,11 +62,11 @@ namespace Remotion.SecurityManager.Persistence
       _userNamesRevisionProvider = userNamesRevisionProvider;
       _storageProviderCommandFactory = storageProviderCommandFactory;
 
-      _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (User))
-          .GetPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof (User), "UserName"));
+      _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(User))
+          .GetPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(User), "UserName"));
 
-      _substitutionUserPropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Substitution))
-          .GetPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof (Substitution), "SubstitutingUser"));
+      _substitutionUserPropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Substitution))
+          .GetPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(Substitution), "SubstitutingUser"));
     }
 
     public virtual void Saved (IRdbmsProviderCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.Persistence
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       var securityManagerDataContainers =
-          dataContainers.Where(dataContainer => typeof (BaseSecurityManagerObject).IsAssignableFrom(dataContainer.DomainObjectType));
+          dataContainers.Where(dataContainer => typeof(BaseSecurityManagerObject).IsAssignableFrom(dataContainer.DomainObjectType));
 
       bool isDomainRevisionInvalidated = false;
       bool isUserNamesRevisionInvalidated = false;
@@ -107,7 +107,7 @@ namespace Remotion.SecurityManager.Persistence
             usersToInvalidate.Add(user);
         }
 
-        if (typeof (User).IsAssignableFrom(dataContainer.DomainObjectType))
+        if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
           loadedUsers.Add(dataContainer.ID.GetHandle<User>(), dataContainer);
       }
 
@@ -167,19 +167,19 @@ namespace Remotion.SecurityManager.Persistence
 
     private bool IsDomainRevisionRelevant (DataContainer dataContainer)
     {
-      if (typeof (MetadataObject).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(MetadataObject).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
-      if (typeof (Position).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(Position).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
-      if (typeof (GroupType).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(GroupType).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
-      if (typeof (Group).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(Group).IsAssignableFrom(dataContainer.DomainObjectType))
         return true; // Group.Parent, Group.GroupType, Group.UniqueIdentifier
 
-      if (typeof (Tenant).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(Tenant).IsAssignableFrom(dataContainer.DomainObjectType))
         return true; //Tenant.UniqueIdentifier, Tenant.Parent
 
       return false;
@@ -187,7 +187,7 @@ namespace Remotion.SecurityManager.Persistence
 
     private bool IsUserNamesRevisionRelevant (DataContainer dataContainer)
     {
-      if (typeof (User).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
         return dataContainer.HasValueChanged(_userNamePropertyDefinition);
 
       return false;
@@ -195,10 +195,10 @@ namespace Remotion.SecurityManager.Persistence
 
     private bool IsUserRevisionRelevant (DataContainer dataContainer)
     {
-      if (typeof (User).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
         return true; //user.Username, user.Roles
 
-      if (typeof (Substitution).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(Substitution).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
       return false;
@@ -206,10 +206,10 @@ namespace Remotion.SecurityManager.Persistence
 
     private IDomainObjectHandle<User> GetUserForInvalidation (DataContainer dataContainer)
     {
-      if (typeof (User).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
         return dataContainer.ID.GetHandle<User>();
 
-      if (typeof (Substitution).IsAssignableFrom(dataContainer.DomainObjectType))
+      if (typeof(Substitution).IsAssignableFrom(dataContainer.DomainObjectType))
       {
         var objectID = GetValue<ObjectID>(dataContainer, _substitutionUserPropertyDefinition);
         if (objectID != null)

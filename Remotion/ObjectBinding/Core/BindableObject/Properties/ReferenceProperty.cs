@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     private readonly Lazy<Tuple<ServiceProvider, Type>> _deleteObjectServiceDefinition;
 
     public ReferenceProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
       ArgumentUtility.CheckNotNull("parameters", parameters);
 
@@ -417,7 +417,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           () =>
           {
             var actualConcreteType = concreteType.Value;
-            if (!typeof (IBusinessObject).IsAssignableFrom(actualConcreteType))
+            if (!typeof(IBusinessObject).IsAssignableFrom(actualConcreteType))
             {
               throw new InvalidOperationException(
                   string.Format("The concrete type must implement the IBusinessObject interface.\r\nConcrete type: {0}", actualConcreteType.GetFullNameSafe()));
@@ -455,7 +455,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
                 "The GetBusinessObjectClass method of '{0}', registered with the '{1}', failed to return an '{2}' for type '{3}'.",
                 service.GetType().GetFullNameSafe(),
                 BusinessObjectProvider.GetType().GetFullNameSafe(),
-                typeof (IBusinessObjectClass).GetFullNameSafe(),
+                typeof(IBusinessObjectClass).GetFullNameSafe(),
                 UnderlyingType.GetFullNameSafe()));
       }
 
@@ -472,10 +472,10 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
             string.Format(
                 "The '{0}' type does not use the '{1}' implementation of '{2}' and there is no '{3}' registered with the '{4}' associated with this type.",
                 UnderlyingType.GetFullNameSafe(),
-                typeof (BindableObjectMixin).GetNamespaceSafe(),
-                typeof (IBusinessObject).GetFullNameSafe(),
-                typeof (IBusinessObjectClassService).GetFullNameSafe(),
-                typeof (BusinessObjectProvider).GetFullNameSafe()));
+                typeof(BindableObjectMixin).GetNamespaceSafe(),
+                typeof(IBusinessObject).GetFullNameSafe(),
+                typeof(IBusinessObjectClassService).GetFullNameSafe(),
+                typeof(BusinessObjectProvider).GetFullNameSafe()));
       }
       return service;
     }
@@ -525,7 +525,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
             if (attributeFromPropertyType != null)
               return new Tuple<ServiceProvider, Type>(ServiceProvider.PropertyType, attributeFromPropertyType.Type);
 
-            return new Tuple<ServiceProvider, Type>(ServiceProvider.DeclaringType, typeof (TService));
+            return new Tuple<ServiceProvider, Type>(ServiceProvider.DeclaringType, typeof(TService));
           });
     }
   }

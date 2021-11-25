@@ -39,14 +39,14 @@ namespace Remotion.Globalization.UnitTests
       var service = _serviceLocator.GetInstance<IEnumerationGlobalizationService>();
 
       Assert.That(service, Is.Not.Null);
-      Assert.That(service, Is.TypeOf(typeof (CompoundEnumerationGlobalizationService)));
+      Assert.That(service, Is.TypeOf(typeof(CompoundEnumerationGlobalizationService)));
       Assert.That(
           ((CompoundEnumerationGlobalizationService) service).EnumerationGlobalizationServices.Select(s => s.GetType()),
           Is.EqualTo(
               new[]
               {
-                  typeof (ResourceManagerBasedEnumerationGlobalizationService),
-                  typeof (MultiLingualNameBasedEnumerationGlobalizationService)
+                  typeof(ResourceManagerBasedEnumerationGlobalizationService),
+                  typeof(MultiLingualNameBasedEnumerationGlobalizationService)
               }));
     }
 

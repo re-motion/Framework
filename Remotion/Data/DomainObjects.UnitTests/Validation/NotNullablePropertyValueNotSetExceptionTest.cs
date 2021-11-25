@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       Assert.That(deserializedException.Message, Is.EqualTo("Msg"));
 
       Assert.That(deserializedException.InnerException, Is.Not.Null);
-      Assert.That(deserializedException.InnerException, Is.TypeOf(typeof (InvalidOperationException)));
+      Assert.That(deserializedException.InnerException, Is.TypeOf(typeof(InvalidOperationException)));
     }
   }
 }

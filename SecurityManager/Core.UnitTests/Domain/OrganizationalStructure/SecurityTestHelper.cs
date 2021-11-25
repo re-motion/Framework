@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       var principalStub = CreatePrincipalStub();
 
       return new SecurityClient(
-          CreateSecurityProviderStub(typeof (T), principalStub, accessTypes),
+          CreateSecurityProviderStub(typeof(T), principalStub, accessTypes),
           new PermissionReflector(),
           CreateUserProviderStub(principalStub),
           new Mock<IFunctionalSecurityStrategy>().Object,

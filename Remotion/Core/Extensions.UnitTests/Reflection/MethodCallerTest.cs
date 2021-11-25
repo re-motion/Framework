@@ -72,7 +72,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     private class B : A
     {
       public B (string name)
-          : base (name)
+          : base(name)
       {
       }
 
@@ -85,7 +85,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     private class C : B
     {
       public C (string name)
-          : base (name)
+          : base(name)
       {
       }
 

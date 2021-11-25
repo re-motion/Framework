@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public abstract class BocControlObject : WebFormsControlObjectWithDiagnosticMetadata
   {
     protected BocControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

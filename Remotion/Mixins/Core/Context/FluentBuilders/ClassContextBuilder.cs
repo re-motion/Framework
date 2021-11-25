@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     private readonly MultiDictionary<Type, Type> _mixinDependencies = new MultiDictionary<Type, Type>();
     private bool _suppressInheritance = false;
 
-    public ClassContextBuilder (Type targetType) : this (new MixinConfigurationBuilder(null), targetType)
+    public ClassContextBuilder (Type targetType) : this(new MixinConfigurationBuilder(null), targetType)
     {
     }
 
@@ -179,7 +179,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual MixinContextBuilder AddMixin<TMixin> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull("origin", origin);
-      return AddMixin(typeof (TMixin), origin);
+      return AddMixin(typeof(TMixin), origin);
     }
 
     /// <summary>
@@ -235,7 +235,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     {
       ArgumentUtility.CheckNotNull("origin", origin);
 
-      return AddMixins(origin, typeof (TMixin1), typeof (TMixin2));
+      return AddMixins(origin, typeof(TMixin1), typeof(TMixin2));
     }
 
     /// <summary>
@@ -262,7 +262,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder AddMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull("origin", origin);
-      return AddMixins(origin, typeof (TMixin1), typeof (TMixin2), typeof (TMixin3));
+      return AddMixins(origin, typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
     /// <summary>
@@ -328,7 +328,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull("origin", origin);
-      return AddOrderedMixins(origin, typeof (TMixin1), typeof (TMixin2));
+      return AddOrderedMixins(origin, typeof(TMixin1), typeof(TMixin2));
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull("origin", origin);
-      return AddOrderedMixins(origin, typeof (TMixin1), typeof (TMixin2), typeof (TMixin3));
+      return AddOrderedMixins(origin, typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
     /// <summary>
@@ -421,7 +421,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual MixinContextBuilder EnsureMixin<TMixin> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull("origin", origin);
-      return EnsureMixin(typeof (TMixin), origin);
+      return EnsureMixin(typeof(TMixin), origin);
     }
 
     /// <summary>
@@ -486,7 +486,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull("origin", origin);
-      return EnsureMixins(origin, typeof (TMixin1), typeof (TMixin2));
+      return EnsureMixins(origin, typeof(TMixin1), typeof(TMixin2));
     }
 
     /// <summary>
@@ -518,7 +518,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull("origin", origin);
-      return EnsureMixins(origin, typeof (TMixin1), typeof (TMixin2), typeof (TMixin3));
+      return EnsureMixins(origin, typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
     /// <summary>
@@ -565,7 +565,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterface<TInterface> ()
     {
-      return AddComposedInterface(typeof (TInterface));
+      return AddComposedInterface(typeof(TInterface));
     }
 
     /// <summary>
@@ -591,7 +591,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterfaces<TInterface1, TInterface2> ()
     {
-      return AddComposedInterfaces(typeof (TInterface1), typeof (TInterface2));
+      return AddComposedInterfaces(typeof(TInterface1), typeof(TInterface2));
     }
 
     /// <summary>
@@ -604,7 +604,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterfaces<TInterface1, TInterface2, TInterface3> ()
     {
-      return AddComposedInterfaces(typeof (TInterface1), typeof (TInterface2), typeof (TInterface3));
+      return AddComposedInterfaces(typeof(TInterface1), typeof(TInterface2), typeof(TInterface3));
     }
 
     /// <summary>
@@ -643,7 +643,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixin<TMixinType> ()
     {
-      return SuppressMixin(typeof (TMixinType));
+      return SuppressMixin(typeof(TMixinType));
     }
 
     /// <summary>
@@ -671,7 +671,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixins<TMixinType1, TMixinType2> ()
     {
-      return SuppressMixins(typeof (TMixinType1), typeof (TMixinType2));
+      return SuppressMixins(typeof(TMixinType1), typeof(TMixinType2));
     }
 
     /// <summary>
@@ -685,7 +685,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixins<TMixinType1, TMixinType2, TMixinType3> ()
     {
-      return SuppressMixins(typeof (TMixinType1), typeof (TMixinType2), typeof (TMixinType3));
+      return SuppressMixins(typeof(TMixinType1), typeof(TMixinType2), typeof(TMixinType3));
     }
 
     /// <summary>
@@ -715,7 +715,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixinDependency<TDependentMixin, TRequiredMixin> ()
     {
-      return AddMixinDependency(typeof (TDependentMixin), typeof (TRequiredMixin));
+      return AddMixinDependency(typeof(TDependentMixin), typeof(TRequiredMixin));
     }
 
     /// <summary>

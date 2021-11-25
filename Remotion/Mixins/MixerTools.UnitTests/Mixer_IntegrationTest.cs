@@ -55,8 +55,8 @@ namespace Remotion.Mixins.MixerTools.UnitTests
           delegate
           {
             using (MixinConfiguration.BuildNew()
-                .ForClass<BaseType1>().AddMixins(typeof (BT1Mixin1))
-                .ForClass<Page>().AddMixin(typeof (NullMixin))
+                .ForClass<BaseType1>().AddMixins(typeof(BT1Mixin1))
+                .ForClass<Page>().AddMixin(typeof(NullMixin))
                 .EnterScope())
             {
               Mixer mixer = Mixer.Create("Assembly", _assemblyOutputDirectory, 1);
@@ -66,24 +66,24 @@ namespace Remotion.Mixins.MixerTools.UnitTests
               Assembly theAssembly = Assembly.LoadFile(mixer.MixerPipelineFactory.GetModulePaths(_assemblyOutputDirectory).Single());
               var types = theAssembly.GetTypes();
 
-              var concreteType = types.SingleOrDefault(t => t.BaseType == typeof (BaseType1));
+              var concreteType = types.SingleOrDefault(t => t.BaseType == typeof(BaseType1));
               Assert.NotNull(concreteType);
               Assert.That(
                   MixinTypeUtility.GetClassContextForConcreteType(concreteType),
-                  Is.EqualTo(MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1))));
+                  Is.EqualTo(MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType1))));
 
               object instance = Activator.CreateInstance(concreteType);
               Assert.That(Mixin.Get<BT1Mixin1>(instance), Is.Not.Null);
 
-              var concreteTypeFromSystemAssembly = types.SingleOrDefault(t => t.BaseType == typeof (Page));
+              var concreteTypeFromSystemAssembly = types.SingleOrDefault(t => t.BaseType == typeof(Page));
               Assert.That(concreteTypeFromSystemAssembly, Is.Not.Null);
 
               SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline.CodeManager.LoadFlushedCode(theAssembly);
 
-              Type concreteTypeFromFactory = TypeFactory.GetConcreteType(typeof (BaseType1));
+              Type concreteTypeFromFactory = TypeFactory.GetConcreteType(typeof(BaseType1));
               Assert.That(concreteTypeFromFactory, Is.SameAs(concreteType));
 
-              Assert.That(theAssembly.IsDefined(typeof (NonApplicationAssemblyAttribute), false), Is.True);
+              Assert.That(theAssembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false), Is.True);
             }
           });
     }

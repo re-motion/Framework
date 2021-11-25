@@ -107,19 +107,19 @@ namespace Remotion.Web.UI.Controls
 
       /// <summary> Initalizes a new instance. </summary>
       public MultiViewTab (string itemID, string text, IconInfo icon)
-          : base (itemID, text, icon)
+          : base(itemID, text, icon)
       {
       }
 
       /// <summary> Initalizes a new instance. </summary>
       public MultiViewTab (string itemID, string text, string iconUrl)
-          : this (itemID, text, new IconInfo(iconUrl))
+          : this(itemID, text, new IconInfo(iconUrl))
       {
       }
 
       /// <summary> Initalizes a new instance. </summary>
       public MultiViewTab (string itemID, string text)
-          : this (itemID, text, string.Empty)
+          : this(itemID, text, string.Empty)
       {
       }
 

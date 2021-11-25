@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
       try
       {
-        var formatter = new XmlSerializer(typeof (XmlTransportItem[]));
+        var formatter = new XmlSerializer(typeof(XmlTransportItem[]));
         return XmlTransportItem.Unwrap(PerformDeserialization(inputStream, formatter));
       }
       catch (Exception ex)

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (DuckBaseMixin))]
+  [Uses (typeof(DuckBaseMixin))]
   public class BaseTypeWithDuckBaseMixin
   {
     public virtual string MethodImplementedOnBase ()

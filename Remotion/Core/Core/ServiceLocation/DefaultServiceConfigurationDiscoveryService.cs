@@ -51,7 +51,7 @@ namespace Remotion.ServiceLocation
     private readonly ConcurrentDictionary<Type, IReadOnlyCollection<ImplementationForAttribute>> _implementationForAttributesCache =
         new ConcurrentDictionary<Type, IReadOnlyCollection<ImplementationForAttribute>>();
 
-    private readonly bool _excludeGlobalTypesForDefaultConfiguration = !AssemblyTypeCache.IsGacAssembly(typeof (ImplementationForAttribute).Assembly);
+    private readonly bool _excludeGlobalTypesForDefaultConfiguration = !AssemblyTypeCache.IsGacAssembly(typeof(ImplementationForAttribute).Assembly);
 
     public static DefaultServiceConfigurationDiscoveryService Create ()
     {
@@ -191,7 +191,7 @@ namespace Remotion.ServiceLocation
       {
         if (visitedValues.Contains(value))
         {
-          var message = string.Format("Ambiguous {0}: {1} must be unique.", typeof (ImplementationForAttribute).Name, propertyDescription);
+          var message = string.Format("Ambiguous {0}: {1} must be unique.", typeof(ImplementationForAttribute).Name, propertyDescription);
           throw new InvalidOperationException(message);
         }
         visitedValues.Add(value);

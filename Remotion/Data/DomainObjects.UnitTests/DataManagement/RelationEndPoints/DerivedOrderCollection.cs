@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     public DerivedOrderCollection (IDomainObjectCollectionData dataStrategy)
-        : base (dataStrategy)
+        : base(dataStrategy)
     {
     }
   }

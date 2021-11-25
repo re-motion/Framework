@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
     {
       var orderViewModel = OrderViewModel.NewObject();
 
-      var property = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.OrderSum)];
+      var property = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.OrderSum)];
 
       Assert.That(property.HasChanged, Is.False);
       Assert.That(property.GetValue<int>(), Is.EqualTo(0));
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        var property = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.OrderSum)];
+        var property = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.OrderSum)];
         orderViewModel.EnsureDataAvailable();
 
         Assert.That(property.HasChanged, Is.False);
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
     public void GetScalarProperty_WithExistingObject_GetsCurrentValue ()
     {
       var orderViewModel = OrderViewModel.NewObject();
-      var property = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.OrderSum)];
+      var property = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.OrderSum)];
       property.SetValue(42);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var orderViewModel = OrderViewModel.NewObject();
 
-      var property = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.Object)];
+      var property = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.Object)];
 
       Assert.That(property.HasChanged, Is.False);
       Assert.That(property.GetValue<Order>(), Is.Null);
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        var property = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.Object)];
+        var property = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.Object)];
         orderViewModel.EnsureDataAvailable();
 
         Assert.That(property.HasChanged, Is.False);
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
     {
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var orderViewModel = OrderViewModel.NewObject();
-      var property = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.Object)];
+      var property = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.Object)];
 
       property.SetValue(order);
 
@@ -200,8 +200,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
       orderViewModel.OrderSum = 42;
       orderViewModel.Object = order;
 
-      var propertyOrderSum = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.OrderSum)];
-      var propertyObject = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.Object)];
+      var propertyOrderSum = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.OrderSum)];
+      var propertyObject = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.Object)];
 
       ClientTransaction.Current.Commit();
 
@@ -235,9 +235,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
           Assert.That(order.State.IsUnchanged, Is.True);
         }
 
-        var propertyOrderSum = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.OrderSum)];
-        var propertyObject = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.Object)];
-        var propertyOrderNumber = order.Properties[typeof (Order), nameof(Order.OrderNumber)];
+        var propertyOrderSum = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.OrderSum)];
+        var propertyObject = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.Object)];
+        var propertyOrderNumber = order.Properties[typeof(Order), nameof(Order.OrderNumber)];
 
         Assert.That(propertyOrderSum.HasChanged, Is.True);
         Assert.That(propertyOrderSum.GetValue<int>(), Is.EqualTo(42));
@@ -271,9 +271,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
 
       ClientTransaction.Current.Commit();
 
-      var propertyOrderSum = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.OrderSum)];
-      var propertyObject = orderViewModel.Properties[typeof (OrderViewModel), nameof(OrderViewModel.Object)];
-      var propertyOrderNumber = order.Properties[typeof (Order), nameof(Order.OrderNumber)];
+      var propertyOrderSum = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.OrderSum)];
+      var propertyObject = orderViewModel.Properties[typeof(OrderViewModel), nameof(OrderViewModel.Object)];
+      var propertyOrderNumber = order.Properties[typeof(Order), nameof(Order.OrderNumber)];
 
       Assert.That(propertyOrderSum.HasChanged, Is.False);
       Assert.That(propertyOrderSum.GetValue<int>(), Is.EqualTo(42));

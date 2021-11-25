@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   public class SchemaGenerationTestBase : DatabaseTest
   {
     public SchemaGenerationTestBase ()
-        : base (new DatabaseAgent(SchemaGenerationConnectionString1), "Dummy.sql")
+        : base(new DatabaseAgent(SchemaGenerationConnectionString1), "Dummy.sql")
     {
     }
 
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         where TSourceObject : DomainObject
     {
       var propertyInfo = MemberInfoFromExpressionUtility.GetProperty(expression);
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TSourceObject));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TSourceObject));
       return classDefinition.ResolveProperty(PropertyInfoAdapter.Create(propertyInfo));
     }}
 }

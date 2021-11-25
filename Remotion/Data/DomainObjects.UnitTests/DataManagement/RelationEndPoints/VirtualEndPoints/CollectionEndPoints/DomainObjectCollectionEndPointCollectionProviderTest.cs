@@ -47,10 +47,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _provider = new DomainObjectCollectionEndPointCollectionProvider(_associatedDomainObjectCollectionDataStrategyFactoryMock);
 
-      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
 
       _dataStrategyStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      _dataStrategyStub.Stub(stub => stub.RequiredItemType).Return(typeof (Order));
+      _dataStrategyStub.Stub(stub => stub.RequiredItemType).Return(typeof(Order));
     }
 
     [Test]
@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetCollection_CollectionWithWrongCtor ()
     {
-      var classDefinition = GetTypeDefinition(typeof (DomainObjectWithCollectionMissingCtor));
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (DomainObjectWithCollectionMissingCtor), "OppositeObjects");
+      var classDefinition = GetTypeDefinition(typeof(DomainObjectWithCollectionMissingCtor));
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(DomainObjectWithCollectionMissingCtor), "OppositeObjects");
       var endPointID = RelationEndPointID.Create(new ObjectID(classDefinition, Guid.NewGuid()), relationEndPointDefinition);
 
       _associatedDomainObjectCollectionDataStrategyFactoryMock
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterCollection_CollectionAssociatedToDifferentEndPoint ()
     {
-      _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(RelationEndPointID.Create(DomainObjectIDs.Customer2, typeof (Customer), "Orders"));
+      _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(RelationEndPointID.Create(DomainObjectIDs.Customer2, typeof(Customer), "Orders"));
       var collection = new DomainObjectCollection(_dataStrategyStub);
 
       Assert.That(

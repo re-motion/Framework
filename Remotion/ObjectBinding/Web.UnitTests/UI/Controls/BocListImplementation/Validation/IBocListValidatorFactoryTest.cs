@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var factories = ((CompoundValidatorFactory<IBocList>) instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
-          Is.EqualTo(new[] { typeof (BocListValidatorFactory), typeof (ValidationBocListValidatorFactory) }));
+          Is.EqualTo(new[] { typeof(BocListValidatorFactory), typeof(ValidationBocListValidatorFactory) }));
     }
 
     [Test]

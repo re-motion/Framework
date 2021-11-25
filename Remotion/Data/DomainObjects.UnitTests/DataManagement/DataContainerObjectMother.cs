@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     public static DataContainer CreateNew (ObjectID objectID = null)
     {
-      var dataContainer = DataContainer.CreateNew(objectID ?? new ObjectID(typeof (Order), Guid.NewGuid()));
+      var dataContainer = DataContainer.CreateNew(objectID ?? new ObjectID(typeof(Order), Guid.NewGuid()));
       return dataContainer;
     }
 
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     public static DataContainer CreateExisting (ObjectID objectID = null)
     {
-      var dataContainer = DataContainer.CreateForExisting(objectID ?? new ObjectID(typeof (Order), Guid.NewGuid()), 4711, pd => pd.DefaultValue);
+      var dataContainer = DataContainer.CreateForExisting(objectID ?? new ObjectID(typeof(Order), Guid.NewGuid()), 4711, pd => pd.DefaultValue);
       return dataContainer;
     }
 

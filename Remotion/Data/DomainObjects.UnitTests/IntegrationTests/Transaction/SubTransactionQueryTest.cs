@@ -300,7 +300,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           + "WHERE [Computer].[ID] IN (@1, @2, @3) "
           + "ORDER BY [Computer].[ID] asc",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
 
       query.Parameters.Add("@1", DomainObjectIDs.Computer5); // no employee
       query.Parameters.Add("@3", DomainObjectIDs.Computer4); // no employee

@@ -45,7 +45,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _validationFailure = new ObjectValidationFailure(_validatedObject, "Error", "ValidationMessage");
 
-      _validator = new Validator(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof (Customer));
+      _validator = new Validator(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof(Customer));
       _validatorDecorator = new TypedValidatorDecorator<Customer>(_validator);
     }
 
@@ -102,13 +102,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void CanValidateInstancesOfType_Customer_True ()
     {
-      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof (Customer)), Is.True);
+      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof(Customer)), Is.True);
     }
 
     [Test]
     public void CanValidateInstancesOfType_NoCustomer_False ()
     {
-      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof (Address)), Is.False);
+      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof(Address)), Is.False);
     }
   }
 }

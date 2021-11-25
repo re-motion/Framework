@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinRequiringAllMembersTargetCall))]
-  [Uses (typeof (MixinRequiringAllMembersNextCall))]
+  [Uses (typeof(MixinRequiringAllMembersTargetCall))]
+  [Uses (typeof(MixinRequiringAllMembersNextCall))]
   public class ClassFulfillingAllMemberRequirementsDuck
   {
     public void Method ()

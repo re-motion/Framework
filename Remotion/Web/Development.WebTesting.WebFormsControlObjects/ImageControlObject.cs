@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class ImageControlObject : WebFormsControlObject
   {
     public ImageControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

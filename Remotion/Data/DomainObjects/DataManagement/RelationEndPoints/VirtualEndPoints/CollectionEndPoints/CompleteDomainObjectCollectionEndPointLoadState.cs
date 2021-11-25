@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDomainObjectCollectionEndPointDataManager dataManager,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
-        : base (dataManager, endPointProvider, transactionEventSink)
+        : base(dataManager, endPointProvider, transactionEventSink)
     {
     }
 

@@ -61,7 +61,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
           .Callback(
               (CustomAttributeDeclaration customAttributeDeclaration) =>
               {
-                Assert.That(customAttributeDeclaration.Type, Is.SameAs(typeof (NonApplicationAssemblyAttribute)));
+                Assert.That(customAttributeDeclaration.Type, Is.SameAs(typeof(NonApplicationAssemblyAttribute)));
                 Assert.That(customAttributeDeclaration.ConstructorArguments, Is.Empty);
               })
           .Verifiable();

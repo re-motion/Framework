@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
     private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       classDefinition.SetStorageEntity(entityDefinition);
 
       return new ObjectID(classDefinition, Guid.NewGuid());

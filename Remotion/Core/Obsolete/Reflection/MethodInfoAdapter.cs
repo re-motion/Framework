@@ -22,7 +22,7 @@ using System.Reflection;
 namespace Remotion.Reflection
 {
   [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
-  [TypeConverter (typeof (MethodInfoAdapterConverter))]
+  [TypeConverter (typeof(MethodInfoAdapterConverter))]
   internal sealed class MethodInfoAdapter : IMethodInformation
   {
     public static MethodInfoAdapter Create (MethodInfo methodInfo)

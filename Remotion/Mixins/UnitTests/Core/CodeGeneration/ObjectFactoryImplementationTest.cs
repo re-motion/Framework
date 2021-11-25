@@ -50,10 +50,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var allowNonPublicConstructors = BooleanObjectMother.GetRandomBoolean();
       var fakeInstance = new object();
       _defaultPipelineMock
-          .Expect(mock => mock.Create(typeof (BaseType1), ParamList.Empty, allowNonPublicConstructors))
+          .Expect(mock => mock.Create(typeof(BaseType1), ParamList.Empty, allowNonPublicConstructors))
           .Return(fakeInstance);
 
-      var instance = _implementation.CreateInstance(allowNonPublicConstructors, typeof (BaseType1), ParamList.Empty);
+      var instance = _implementation.CreateInstance(allowNonPublicConstructors, typeof(BaseType1), ParamList.Empty);
 
       _defaultPipelineMock.VerifyAllExpectations();
       Assert.That(instance, Is.SameAs(fakeInstance));
@@ -64,13 +64,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       object[] actualSuppliedInstances = null;
       _defaultPipelineMock
-          .Expect(mock => mock.Create(typeof (BaseType1), ParamList.Empty, allowNonPublicConstructor: false))
+          .Expect(mock => mock.Create(typeof(BaseType1), ParamList.Empty, allowNonPublicConstructor: false))
           .Return(new object())
           .WhenCalled(mi => actualSuppliedInstances = MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
 
       using (new MixedObjectInstantiationScope(new object()))
       {
-        _implementation.CreateInstance(false, typeof (BaseType1), ParamList.Empty);
+        _implementation.CreateInstance(false, typeof(BaseType1), ParamList.Empty);
       }
 
       _defaultPipelineMock.VerifyAllExpectations();
@@ -86,13 +86,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       object[] actualSuppliedInstances = null;
 
       _defaultPipelineMock
-          .Expect(mock => mock.Create(typeof (BaseType1), ParamList.Empty, allowNonPublicConstructor: false))
+          .Expect(mock => mock.Create(typeof(BaseType1), ParamList.Empty, allowNonPublicConstructor: false))
           .Return(new object())
           .WhenCalled(mi => actualSuppliedInstances = MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
 
       using (new MixedObjectInstantiationScope(new object()))
       {
-        _implementation.CreateInstance(false, typeof (BaseType1), ParamList.Empty, preparedMixin1, preparedMixin2);
+        _implementation.CreateInstance(false, typeof(BaseType1), ParamList.Empty, preparedMixin1, preparedMixin2);
       }
 
       _defaultPipelineMock.VerifyAllExpectations();
@@ -105,10 +105,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var allowNonPublicConstructors = BooleanObjectMother.GetRandomBoolean();
       var fakeInstance = new object();
       _defaultPipelineMock
-          .Expect(mock => mock.Create(typeof (object), ParamList.Empty, allowNonPublicConstructors))
+          .Expect(mock => mock.Create(typeof(object), ParamList.Empty, allowNonPublicConstructors))
           .Return(fakeInstance);
 
-      var instance = _implementation.CreateInstance(allowNonPublicConstructors, typeof (object), ParamList.Empty);
+      var instance = _implementation.CreateInstance(allowNonPublicConstructors, typeof(object), ParamList.Empty);
 
       _defaultPipelineMock.VerifyAllExpectations();
       Assert.That(instance, Is.SameAs(fakeInstance));
@@ -118,7 +118,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void CreateInstance_WithUnmixedType_AndPreparedMixinInstances_Throws ()
     {
       Assert.That(
-          () => _implementation.CreateInstance(BooleanObjectMother.GetRandomBoolean(), typeof (object), ParamList.Empty, new object()),
+          () => _implementation.CreateInstance(BooleanObjectMother.GetRandomBoolean(), typeof(object), ParamList.Empty, new object()),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "There is no mixin configuration for type System.Object, so no mixin instances must be specified.", "preparedMixins"));
@@ -128,7 +128,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void CreateInstance_WithInterface ()
     {
       Assert.That(
-          () => _implementation.CreateInstance(false, typeof (IServiceProvider), ParamList.Empty, false),
+          () => _implementation.CreateInstance(false, typeof(IServiceProvider), ParamList.Empty, false),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("Cannot instantiate type 'System.IServiceProvider', it's an interface.", "targetOrConcreteType"));
     }
@@ -137,7 +137,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void CreateInstance_WithConcreteType ()
     {
       var allowNonPublicCtor = BooleanObjectMother.GetRandomBoolean();
-      var concreteType = TypeFactory.GetConcreteType(typeof (BaseType1));
+      var concreteType = TypeFactory.GetConcreteType(typeof(BaseType1));
       var paramList = ParamList.Create("blub");
       var fakeInstance = new object();
 

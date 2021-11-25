@@ -97,7 +97,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // implementation of the method rather than coming via the next call interface. Therefore, we need to override that base method and point it
       // towards our next call above.
       Assertion.IsTrue(
-          _type.BaseType == typeof (object),
+          _type.BaseType == typeof(object),
           "This code assumes that only non-generic methods could match on the base type, which holds for object.");
       // Since object has no generic methods, we can use the exact parameter types to find the equivalent method.
       var equivalentMethodOnProxyBase = _type.BaseType.GetMethod(

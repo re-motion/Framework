@@ -108,8 +108,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = CreatePropertyWithoutMixing("NoSearchService");
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
-      businessObjectProviderMock.Setup(_ => _.GetService(typeof (ISearchAvailableObjectsService))).Returns(searchAvailableObjectsServiceMock.Object).Verifiable();
-      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof (ClassFromOtherBusinessObjectImplementation)))
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(ISearchAvailableObjectsService))).Returns(searchAvailableObjectsServiceMock.Object).Verifiable();
+      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();
       searchAvailableObjectsServiceMock.Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
@@ -143,8 +143,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = CreatePropertyWithoutMixing("NoSearchService");
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
-      businessObjectProviderMock.Setup(_ => _.GetService(typeof (ISearchAvailableObjectsService))).Returns((IBusinessObjectService) null).Verifiable();
-      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof (ClassFromOtherBusinessObjectImplementation)))
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(ISearchAvailableObjectsService))).Returns((IBusinessObjectService) null).Verifiable();
+      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();
       
@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
     private PropertyBase.Parameters GetPropertyParameters (string propertyName)
     {
-      return GetPropertyParameters(GetPropertyInfo(typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
+      return GetPropertyParameters(GetPropertyInfo(typeof(ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
     }
   }
 }

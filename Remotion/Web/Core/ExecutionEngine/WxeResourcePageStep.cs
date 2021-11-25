@@ -35,7 +35,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the calling assemby's resource directory.
     /// </summary>
     public WxeResourcePageStep (string pageName)
-        : this (Assembly.GetCallingAssembly(), pageName)
+        : this(Assembly.GetCallingAssembly(), pageName)
     {
     }
 
@@ -43,7 +43,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the calling assemby's resource directory.
     /// </summary>
     public WxeResourcePageStep (WxeVariableReference page)
-        : this (Assembly.GetCallingAssembly(), page)
+        : this(Assembly.GetCallingAssembly(), page)
     {
     }
 
@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the resource directory of the assembly's type.
     /// </summary>
     public WxeResourcePageStep (Type resourceType, string pageName)
-        : this (resourceType.Assembly, pageName)
+        : this(resourceType.Assembly, pageName)
     {
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the resource directory of the assembly's type.
     /// </summary>
     public WxeResourcePageStep (Type resourceType, WxeVariableReference page)
-        : this (resourceType.Assembly, page)
+        : this(resourceType.Assembly, page)
     {
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the assemby's resource directory.
     /// </summary>
     public WxeResourcePageStep (Assembly resourceAssembly, string pageName)
-        : base (new ResourceObject(ResourcePathBuilder, resourceAssembly, pageName))
+        : base(new ResourceObject(ResourcePathBuilder, resourceAssembly, pageName))
     {
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the assemby's resource directory.
     /// </summary>
     public WxeResourcePageStep (Assembly resourceAssembly, WxeVariableReference page)
-        : base (new ResourceObjectWithVarRef(ResourcePathBuilder, resourceAssembly, page))
+        : base(new ResourceObjectWithVarRef(ResourcePathBuilder, resourceAssembly, page))
     {
     }
 

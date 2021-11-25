@@ -115,7 +115,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 
     public T CreateSandboxedInstance<T> (params IPermission[] permissions) where T : MarshalByRefObject, new ()
     {
-      var instance = (T) AppDomain.CreateInstanceAndUnwrap(typeof (T).Assembly.FullName, typeof (T).FullName);
+      var instance = (T) AppDomain.CreateInstanceAndUnwrap(typeof(T).Assembly.FullName, typeof(T).FullName);
       return instance;
     }
   }

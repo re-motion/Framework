@@ -29,8 +29,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void GenericMixinsAreSpecialized ()
     {
-      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin3<,>));
-      object mixin = Mixin.Get(typeof (BT3Mixin3<,>), bt3);
+      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof(BT3Mixin3<,>));
+      object mixin = Mixin.Get(typeof(BT3Mixin3<,>), bt3);
       Assert.That(mixin, Is.Not.Null);
 
       PropertyInfo targetProperty = MixinReflector.GetTargetProperty(mixin.GetType());
@@ -38,20 +38,20 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
 
       Assert.That(targetProperty.GetValue(mixin, null), Is.Not.Null);
       Assert.That(targetProperty.GetValue(mixin, null), Is.SameAs(bt3));
-      Assert.That(targetProperty.PropertyType, Is.EqualTo(typeof (BaseType3)));
+      Assert.That(targetProperty.PropertyType, Is.EqualTo(typeof(BaseType3)));
 
       PropertyInfo nextProperty = MixinReflector.GetNextProperty(mixin.GetType());
       Assert.That(nextProperty, Is.Not.Null);
 
       Assert.That(nextProperty.GetValue(mixin, null), Is.Not.Null);
       Assert.That(nextProperty.GetValue(mixin, null).GetType(), Is.SameAs(bt3.GetType().GetField("__first", BindingFlags.NonPublic | BindingFlags.Instance).FieldType));
-      Assert.That(nextProperty.PropertyType, Is.EqualTo(typeof (IBaseType33)));
+      Assert.That(nextProperty.PropertyType, Is.EqualTo(typeof(IBaseType33)));
     }
 
     [Test]
     public void MuchGenericityWithoutOverriding ()
     {
-      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (VeryGenericMixin<,>), typeof (BT3Mixin4));
+      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof(VeryGenericMixin<,>), typeof(BT3Mixin4));
       var m = bt3 as IVeryGenericMixin;
       Assert.That(m, Is.Not.Null);
       Assert.That(m.GetMessage("5"), Is.EqualTo("IVeryGenericMixin.GenericIfcMethod-5"));
@@ -60,7 +60,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MuchGenericityWithOverriding ()
     {
-      var cougs = CreateMixedObject<ClassOverridingUltraGenericStuff>(typeof (AbstractDerivedUltraGenericMixin<,>), typeof (BT3Mixin4));
+      var cougs = CreateMixedObject<ClassOverridingUltraGenericStuff>(typeof(AbstractDerivedUltraGenericMixin<,>), typeof(BT3Mixin4));
       var m = cougs as IUltraGenericMixin;
       Assert.That(m, Is.Not.Null);
       Assert.That(m.GetMessage("5"), Is.EqualTo("String-IVeryGenericMixin.GenericIfcMethod-5"));

@@ -60,7 +60,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void OneAssembly ()
     {
-      Assembly testDomainAssembly = typeof (Remotion.Security.UnitTests.TestDomain.File).Assembly;
+      Assembly testDomainAssembly = typeof(Remotion.Security.UnitTests.TestDomain.File).Assembly;
       _extractor.AddAssembly(testDomainAssembly);
 
       _extractor.Save(_xmlTempFilename);

@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// Default implementation of the <see cref="ISortExpressionDefinitionProvider"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (ISortExpressionDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(ISortExpressionDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class SortExpressionDefinitionProvider : ISortExpressionDefinitionProvider
   {
     public SortExpressionDefinitionProvider ()

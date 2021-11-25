@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new GroupTypePropertyTypeSearchService();
-      IBusinessObjectClass groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Group));
+      IBusinessObjectClass groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Group));
       _property = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition("GroupType");
       Assert.That(_property, Is.Not.Null);
     }

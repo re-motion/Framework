@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var builder = new SqlStatementBuilder
                     {
-                        DataInfo = new StreamedScalarValueInfo(typeof (string)),
+                        DataInfo = new StreamedScalarValueInfo(typeof(string)),
                         SelectProjection = Expression.Constant("Value added by preparation mixin")
                     };
       return builder.GetSqlStatement();

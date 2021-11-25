@@ -168,17 +168,17 @@ namespace Remotion.Mixins.Utilities
 
     private bool IsBoundToPositionalTargetParameter (Type genericArgument)
     {
-      return genericArgument.IsDefined(typeof (BindToGenericTargetParameterAttribute), false);
+      return genericArgument.IsDefined(typeof(BindToGenericTargetParameterAttribute), false);
     }
 
     private bool IsBoundToTargetType (Type genericArgument)
     {
-      return genericArgument.IsDefined(typeof (BindToTargetTypeAttribute), false);
+      return genericArgument.IsDefined(typeof(BindToTargetTypeAttribute), false);
     }
 
     private bool IsBoundToConstraint (Type genericArgument)
     {
-      return genericArgument.IsDefined(typeof (BindToConstraintsAttribute), false);
+      return genericArgument.IsDefined(typeof(BindToConstraintsAttribute), false);
     }
 
     private Type GetConstraintBasedInstantiation (Type mixinType, Type genericArgument)

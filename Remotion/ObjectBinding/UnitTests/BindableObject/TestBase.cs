@@ -34,15 +34,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [SetUp]
     public virtual void SetUp ()
     {
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), null);
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectWithIdentityProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), null);
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectWithIdentityProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
     }
 
     protected IPropertyInformation GetPropertyInfo (Type type, string propertyName)
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         Assert.IsNotNull(propertyInfo, "Property '{0}' (or '{1}') was not found on type '{2}'.", propertyName, explicitName, type);
       }
       
-      var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof (IntroducedMemberAttribute), true);
+      var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), true);
       if (introducedMemberAttributes.Length > 0)
       {
         var introducedMemberAttribute = introducedMemberAttributes[0] as IntroducedMemberAttribute;
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     protected Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof (PropertyReflector), "GetUnderlyingType");
+      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
 
     protected PropertyBase.Parameters GetPropertyParameters (
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod(
           reflector,
-          typeof (PropertyReflector),
+          typeof(PropertyReflector),
           "CreateParameters",
           GetUnderlyingType(reflector));
     }

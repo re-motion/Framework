@@ -26,7 +26,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.Web.Utilities
 {
   /// <summary> Utility class for client-side scripts. </summary>
-  [ImplementationFor (typeof (IScriptUtility), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IScriptUtility), Lifetime = LifetimeKind.Singleton)]
   public class ScriptUtility : IScriptUtility
   {
     private readonly IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
@@ -125,7 +125,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull("control", control);
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (ScriptUtility).GetFullNameChecked() + "_StyleUtility";
+      string key = typeof(ScriptUtility).GetFullNameChecked() + "_StyleUtility";
       if (!htmlHeadAppender.IsRegistered(key))
       {
         var url = _infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, "StyleUtility.js");
@@ -144,7 +144,7 @@ namespace Remotion.Web.Utilities
 
       string key = "BorderSpans_" + cssSelectorForBorderSpanTarget;
       string script = string.Format("StyleUtility.CreateBorderSpans ('{0}');", cssSelectorForBorderSpanTarget);
-      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof (ScriptUtility), key, script);
+      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof(ScriptUtility), key, script);
     }
 
     public void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler)
@@ -155,7 +155,7 @@ namespace Remotion.Web.Utilities
 
       string key = control.ClientID + "_ResizeEventHandler";
       string script = string.Format("PageUtility.Instance.RegisterResizeHandler({0}, {1});", cssSelector, eventHandler);
-      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof (ScriptUtility), key, script);
+      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof(ScriptUtility), key, script);
     }
   }
 }

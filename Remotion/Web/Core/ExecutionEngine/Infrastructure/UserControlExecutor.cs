@@ -36,12 +36,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private readonly WxePageStep _pageStep;
 
     public UserControlExecutor (WxePageStep parentStep, WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
-      : this ((WxeStep) parentStep, userControl, subFunction, sender, usesEventTarget)
+      : this((WxeStep) parentStep, userControl, subFunction, sender, usesEventTarget)
     {
     }
 
     public UserControlExecutor (WxeUserControlStep parentStep, WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
-      : this ((WxeStep) parentStep, userControl, subFunction, sender, usesEventTarget)
+      : this((WxeStep) parentStep, userControl, subFunction, sender, usesEventTarget)
     {
     }
 

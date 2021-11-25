@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       _fetchQueryStub1 = MockRepository.GenerateStub<IQuery>();
       _fetchQueryStub2 = MockRepository.GenerateStub<IQuery>();
 
-      _orderTicketEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
-      _customerEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
-      _industrialSectorEndPointDefinition = GetEndPointDefinition(typeof (Company), "IndustrialSector");
+      _orderTicketEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
+      _customerEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
+      _industrialSectorEndPointDefinition = GetEndPointDefinition(typeof(Company), "IndustrialSector");
 
       _originatingOrder1 = DomainObjectMother.CreateFakeObject<Order>();
       _originatingOrder2 = DomainObjectMother.CreateFakeObject<Order>();

@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _strictListenerMock.Expect(
             mock => mock.NewObjectCreating(
                 Arg.Is(TestableClientTransaction), 
-                Arg.Is(typeof (ClassWithAllDataTypes))));
+                Arg.Is(typeof(ClassWithAllDataTypes))));
         _strictListenerMock.Expect(mock => mock.DataContainerMapRegistering(Arg.Is(TestableClientTransaction), Arg<DataContainer>.Is.Anything));
       }
 
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       int orderNumber = order.OrderNumber;
 
       TestableClientTransaction.AddListener(_strictListenerMock);
-      var orderNumberPropertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      var orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
       using (_mockRepository.Ordered())
       {
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       int orderNumber = order.OrderNumber;
 
       TestableClientTransaction.AddListener(_strictListenerMock);
-      var orderNumberPropertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      var orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
       using (_mockRepository.Ordered())
       {
@@ -251,8 +251,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       TestableClientTransaction.AddListener(_strictListenerMock);
 
-      IRelationEndPointDefinition customerEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
-      IRelationEndPointDefinition orderItemsEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderItems");
+      IRelationEndPointDefinition customerEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
+      IRelationEndPointDefinition orderItemsEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
       using (_mockRepository.Ordered())
       {
@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var oldCustomerEndPointID = oldCustomer.Orders.AssociatedEndPointID;
       var newCustomerEndPointID = newCustomer.Orders.AssociatedEndPointID;
 
-      IRelationEndPointDefinition customerEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
+      IRelationEndPointDefinition customerEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
       
       TestableClientTransaction.AddListener(_strictListenerMock);
       
@@ -467,12 +467,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             mock => mock.RelationEndPointMapRegistering(
                 Arg.Is(TestableClientTransaction), 
                 Arg<IRelationEndPoint>.Matches(
-                    rep => rep.Definition.PropertyName == typeof (Company).FullName + ".IndustrialSector" && rep.ObjectID == DomainObjectIDs.Customer1)));
+                    rep => rep.Definition.PropertyName == typeof(Company).FullName + ".IndustrialSector" && rep.ObjectID == DomainObjectIDs.Customer1)));
         _strictListenerMock.Expect(
             mock => mock.RelationEndPointMapRegistering(
                 Arg.Is(TestableClientTransaction),
                 Arg<IRelationEndPoint>.Matches(
-                    rep => rep.Definition.PropertyName == typeof (IndustrialSector).FullName + ".Companies" && rep.ObjectID == DomainObjectIDs.IndustrialSector1)));
+                    rep => rep.Definition.PropertyName == typeof(IndustrialSector).FullName + ".Companies" && rep.ObjectID == DomainObjectIDs.IndustrialSector1)));
 
         _strictListenerMock.Expect(mock => mock.ObjectsLoaded(
             Arg.Is(TestableClientTransaction), 

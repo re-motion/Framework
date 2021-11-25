@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.BooleanProperty"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (bool)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(bool)));
     }
   }
 }

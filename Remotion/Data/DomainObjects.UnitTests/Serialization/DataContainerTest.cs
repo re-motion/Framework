@@ -74,8 +74,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That(deserializedDataContainer.DomainObject, Is.Not.Null);
       Assert.That(deserializedDataContainer.DomainObject.ID, Is.EqualTo(dataContainer.DomainObject.ID));
       Assert.That(deserializedDataContainer.State.IsChanged, Is.True);
-      Assert.That(GetPropertyValue(deserializedDataContainer, typeof (Computer), "SerialNumber"), Is.EqualTo("abc"));
-      Assert.That(GetPropertyValue(deserializedDataContainer, typeof (Computer), "Employee"), Is.EqualTo(employee.ID));
+      Assert.That(GetPropertyValue(deserializedDataContainer, typeof(Computer), "SerialNumber"), Is.EqualTo("abc"));
+      Assert.That(GetPropertyValue(deserializedDataContainer, typeof(Computer), "Employee"), Is.EqualTo(employee.ID));
     }
 
     [Test]
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataContainer_WithoutProperties_Contents ()
     {
-      var objectID = new ObjectID(typeof (ClassWithoutProperties), Guid.NewGuid());
+      var objectID = new ObjectID(typeof(ClassWithoutProperties), Guid.NewGuid());
       DataContainer dataContainer = DataContainer.CreateNew(objectID);
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 

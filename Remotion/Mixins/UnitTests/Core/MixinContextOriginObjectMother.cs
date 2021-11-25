@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core
   {
     public static MixinContextOrigin Create (string kind = "some kind", Assembly assembly = null, string location = "some location")
     {
-      return new MixinContextOrigin(kind, assembly ?? typeof (MixinContextOriginObjectMother).Assembly, location);
+      return new MixinContextOrigin(kind, assembly ?? typeof(MixinContextOriginObjectMother).Assembly, location);
     }
   }
 }

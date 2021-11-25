@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
             "The opposite end point '{0}' is of type '{1}', not of type '{2}'.", 
             oppositeEndPoint.ID, 
             oppositeEndPoint.GetType(), 
-            typeof (T));
+            typeof(T));
         throw new InvalidOperationException(message);
       }
 

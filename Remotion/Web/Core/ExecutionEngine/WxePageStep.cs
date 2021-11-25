@@ -59,14 +59,14 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
     public WxePageStep (string page)
-      : this (new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("page", page)))
+      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("page", page)))
     {
     }
 
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
     public WxePageStep (WxeVariableReference pageref)
-        : this (new ResourceObjectWithVarRef(pageref))
+        : this(new ResourceObjectWithVarRef(pageref))
     {
     }
 

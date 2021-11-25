@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 
       ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
 
-      Assert.That(_configuration.DefaultStorageProviderDefinition, Is.InstanceOf(typeof (RdbmsProviderDefinition)));
+      Assert.That(_configuration.DefaultStorageProviderDefinition, Is.InstanceOf(typeof(RdbmsProviderDefinition)));
       Assert.That(_configuration.StorageProviderDefinitions.Count, Is.EqualTo(1));
       Assert.That(_configuration.StorageProviderDefinitions["Rdbms"], Is.SameAs(_configuration.DefaultStorageProviderDefinition));
       Assert.That(((RdbmsProviderDefinition) _configuration.DefaultStorageProviderDefinition).ConnectionString, Is.EqualTo("ConnectionString"));
@@ -168,9 +168,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
 
       Assert.That(_configuration.StorageGroups.Count, Is.EqualTo(2));
-      Assert.That(_configuration.StorageGroups[0].StorageGroup, Is.InstanceOf(typeof (StubStorageGroup1Attribute)));
+      Assert.That(_configuration.StorageGroups[0].StorageGroup, Is.InstanceOf(typeof(StubStorageGroup1Attribute)));
       Assert.That(_configuration.StorageGroups[0].StorageProviderName, Is.EqualTo("Rdbms"));
-      Assert.That(_configuration.StorageGroups[1].StorageGroup, Is.InstanceOf(typeof (StubStorageGroup2Attribute)));
+      Assert.That(_configuration.StorageGroups[1].StorageGroup, Is.InstanceOf(typeof(StubStorageGroup2Attribute)));
       Assert.That(_configuration.StorageGroups[1].StorageProviderName, Is.EqualTo("Rdbms"));
     }
 

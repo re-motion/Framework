@@ -50,14 +50,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DomainObjectCollection_StandAlone_Contents ()
     {
-      var collection = new DomainObjectCollection(typeof (Order));
+      var collection = new DomainObjectCollection(typeof(Order));
       collection.Add(DomainObjectIDs.Order1.GetObject<Order>());
 
       DomainObjectCollection deserializedCollection = SerializeAndDeserialize(collection);
       Assert.That(deserializedCollection.Count, Is.EqualTo(1));
       Assert.That(deserializedCollection.Contains(DomainObjectIDs.Order1), Is.True);
       Assert.That(deserializedCollection[0].ID, Is.EqualTo(DomainObjectIDs.Order1));
-      Assert.That(deserializedCollection.RequiredItemType, Is.EqualTo(typeof (Order)));
+      Assert.That(deserializedCollection.RequiredItemType, Is.EqualTo(typeof(Order)));
       Assert.That(deserializedCollection.IsReadOnly, Is.False);
       Assert.That(DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(deserializedCollection), Is.Null);
     }
@@ -65,12 +65,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DomainObjectCollection_StandAlone_Data ()
     {
-      var collection = new DomainObjectCollection(typeof (Order));
+      var collection = new DomainObjectCollection(typeof(Order));
       collection.Add(DomainObjectIDs.Order1.GetObject<Order>());
 
       DomainObjectCollection deserializedCollection = SerializeAndDeserialize(collection);
 
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(deserializedCollection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(deserializedCollection, typeof(Order));
       Assert.That(deserializedCollection.Count, Is.EqualTo(1));
       Assert.That(deserializedCollection[0].ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DomainObjectCollection_Events_Contents ()
     {
-      var collection = new DomainObjectCollection(typeof (Order)) {DomainObjectIDs.Order1.GetObject<Order>()};
+      var collection = new DomainObjectCollection(typeof(Order)) {DomainObjectIDs.Order1.GetObject<Order>()};
 
       var eventReceiver = new DomainObjectCollectionEventReceiver(collection);
 
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DomainObjectCollection_ReadOnlyContents ()
     {
-      var collection = new DomainObjectCollection(typeof (Order));
+      var collection = new DomainObjectCollection(typeof(Order));
       collection = collection.Clone(true);
 
       var deserializedCollection = SerializeAndDeserialize(collection);

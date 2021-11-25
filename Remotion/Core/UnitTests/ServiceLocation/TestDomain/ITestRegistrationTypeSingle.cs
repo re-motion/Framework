@@ -23,12 +23,12 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (ITestRegistrationTypeSingle), Position = 1, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(ITestRegistrationTypeSingle), Position = 1, RegistrationType = RegistrationType.Single)]
   public class TestRegistrationTypeSingle1 : ITestRegistrationTypeSingle
   {
   }
 
-  [ImplementationFor (typeof (ITestRegistrationTypeSingle), Position = 2, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(ITestRegistrationTypeSingle), Position = 2, RegistrationType = RegistrationType.Single)]
   public class TestRegistrationTypeSingle2 : ITestRegistrationTypeSingle
   {
   }

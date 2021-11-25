@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string ReadOnlyControlHtmlId { get; private set; }
 
     public ValidationErrorTestPageParameters ()
-        : base (TestConstants.ValidationErrorTestsID, c_parameterCount)
+        : base(TestConstants.ValidationErrorTestsID, c_parameterCount)
     {
     }
 

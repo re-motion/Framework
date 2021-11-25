@@ -50,7 +50,7 @@ public class WebTreeNodeClickEventArgs: WebTreeNodeEventArgs
 
   /// <summary> Initializes an instance. </summary>
   public WebTreeNodeClickEventArgs (WebTreeNode? node, string[] path)
-    : base (node)
+    : base(node)
   {
     _path = path;
   }

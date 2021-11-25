@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Persistence
         IPersistenceExtension persistenceExtension,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory,
         Func<IDbConnection> connectionFactory)
-        : base (
+        : base(
             definition,
             persistenceExtension,
             commandFactory,

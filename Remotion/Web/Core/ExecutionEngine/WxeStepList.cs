@@ -175,7 +175,7 @@ namespace Remotion.Web.ExecutionEngine
         else if (member is Type)
         {
           Type subtype = (Type) member;
-          if (typeof (WxeStep).IsAssignableFrom(subtype))
+          if (typeof(WxeStep).IsAssignableFrom(subtype))
             Add((WxeStep) Activator.CreateInstance(subtype)!);
         }
       }

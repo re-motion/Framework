@@ -31,7 +31,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     private class TestEnum : ExtensibleEnum<TestEnum>
     {
       public TestEnum (string declarationSpace, string valueName)
-          : base (declarationSpace, valueName)
+          : base(declarationSpace, valueName)
       {
       }
     }
@@ -444,7 +444,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
 
     private MethodInfo GetMethod (string name)
     {
-      var methodInfo = typeof (TestEnumExtensions).GetMethod(name);
+      var methodInfo = typeof(TestEnumExtensions).GetMethod(name);
       Assert.That(methodInfo, Is.Not.Null);
       return methodInfo;
     }

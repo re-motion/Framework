@@ -347,7 +347,7 @@ namespace Remotion.Utilities
     {
       Type elementType = value.GetType().GetElementType()!;
       string? format = null;
-      if (elementType == typeof (float) || elementType == typeof (double))
+      if (elementType == typeof(float) || elementType == typeof(double))
         format = "R";
 #pragma warning disable 618
       return ConcatWithSeparator((IList) value, ",", format, formatProvider);
@@ -390,17 +390,17 @@ namespace Remotion.Utilities
       Type underlyingType = Nullable.GetUnderlyingType(type) ?? type;
       bool isNullableType = underlyingType != type;
 
-      if (underlyingType == typeof (string))
+      if (underlyingType == typeof(string))
         return value;
       if (underlyingType.IsArray)
         return ParseArrayValue(type, value!, formatProvider);
-      if (underlyingType == typeof (DBNull))
+      if (underlyingType == typeof(DBNull))
         return DBNull.Value;
       if (isNullableType && string.IsNullOrEmpty(value))
         return null;
       if (underlyingType.IsEnum)
         return ParseEnumValue(underlyingType, value!);
-      if (underlyingType == typeof (Guid))
+      if (underlyingType == typeof(Guid))
         return new Guid(value!);
       else
         return ParseScalarValue(underlyingType, value, formatProvider);
@@ -467,11 +467,11 @@ namespace Remotion.Utilities
 
       type = Nullable.GetUnderlyingType(type) ?? type;
 
-      if (type == typeof (string))
+      if (type == typeof(string))
         return true;
-      if (type == typeof (DBNull))
+      if (type == typeof(DBNull))
         return true;
-      if (type == typeof (Guid))
+      if (type == typeof(Guid))
         return true;
       if (type.IsEnum)
         return true;
@@ -503,7 +503,7 @@ namespace Remotion.Utilities
           "Parse",
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,
           null,
-          new Type[] { typeof (string), typeof (IFormatProvider) },
+          new Type[] { typeof(string), typeof(IFormatProvider) },
           null)!;
 
       if (parseMethod != null && type.IsAssignableFrom(parseMethod.ReturnType))
@@ -519,7 +519,7 @@ namespace Remotion.Utilities
           "Parse",
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,
           null,
-          new Type[] { typeof (string) },
+          new Type[] { typeof(string) },
           null)!;
 
       if (parseMethod != null && type.IsAssignableFrom(parseMethod.ReturnType))
@@ -533,17 +533,17 @@ namespace Remotion.Utilities
   public class ParseException : Exception
   {
     public ParseException (string message)
-        : base (message, null)
+        : base(message, null)
     {
     }
 
     public ParseException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
 
     public ParseException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

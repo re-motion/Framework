@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _mockRepository.ReplayAll();
 
       var result = Activator.CreateInstance(
-          typeof (ClientTransaction),
+          typeof(ClientTransaction),
           BindingFlags.NonPublic | BindingFlags.Instance,
           null,
           new[] { componentFactoryMock },
@@ -468,14 +468,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void NewObject ()
     {
-      var typeDefinition = GetTypeDefinition(typeof (Order));
+      var typeDefinition = GetTypeDefinition(typeof(Order));
       var constructorParameters = ParamList.Create(_fakeDomainObject1);
       _objectLifetimeAgentMock
           .Expect(mock => mock.NewObject(typeDefinition, constructorParameters))
           .Return(_fakeDomainObject1);
       _objectLifetimeAgentMock.Replay();
 
-      var result = ClientTransactionTestHelper.CallNewObject(_transactionWithMocks, typeof (Order), constructorParameters);
+      var result = ClientTransactionTestHelper.CallNewObject(_transactionWithMocks, typeof(Order), constructorParameters);
 
       _objectLifetimeAgentMock.VerifyAllExpectations();
       Assert.That(result, Is.SameAs(_fakeDomainObject1));
@@ -649,7 +649,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(_transaction.IsWriteable, Is.True);
       
       var subTransaction = _transaction.CreateSubTransaction();
-      Assert.That(subTransaction, Is.TypeOf(typeof (ClientTransaction)));
+      Assert.That(subTransaction, Is.TypeOf(typeof(ClientTransaction)));
       Assert.That(subTransaction.ParentTransaction, Is.SameAs(_transaction));
       Assert.That(_transaction.IsWriteable, Is.False);
       Assert.That(_transaction.SubTransaction, Is.SameAs(subTransaction));
@@ -661,9 +661,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(enlistedObjectManager, Is.SameAs(ClientTransactionTestHelper.GetEnlistedDomainObjectManager(_transaction)));
 
       var invalidDomainObjectManager = ClientTransactionTestHelper.GetInvalidDomainObjectManager(subTransaction);
-      Assert.That(invalidDomainObjectManager, Is.TypeOf(typeof (InvalidDomainObjectManager)));
+      Assert.That(invalidDomainObjectManager, Is.TypeOf(typeof(InvalidDomainObjectManager)));
       var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(subTransaction);
-      Assert.That(persistenceStrategy, Is.TypeOf(typeof (SubPersistenceStrategy)));
+      Assert.That(persistenceStrategy, Is.TypeOf(typeof(SubPersistenceStrategy)));
     }
 
     [Test]

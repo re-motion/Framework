@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     private string GetTypeName (Type propertyType)
     {
-      if (propertyType.Assembly == typeof (int).Assembly)
+      if (propertyType.Assembly == typeof(int).Assembly)
         return propertyType.GetFullNameChecked();
 
       return TypeUtility.GetPartialAssemblyQualifiedName(propertyType);

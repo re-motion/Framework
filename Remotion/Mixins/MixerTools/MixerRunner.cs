@@ -56,7 +56,7 @@ namespace Remotion.Mixins.MixerTools
     private readonly MixerParameters _parameters;
 
     public MixerRunner (MixerParameters parameters)
-        : base (CreateAppDomainSetup(ArgumentUtility.CheckNotNull("parameters", parameters)))
+        : base(CreateAppDomainSetup(ArgumentUtility.CheckNotNull("parameters", parameters)))
     {
       _parameters = parameters;
     }
@@ -89,8 +89,8 @@ namespace Remotion.Mixins.MixerTools
       }
       else
       {
-        var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof (Mixer).Assembly)
-                           where t.Namespace == typeof (Mixer).GetNamespaceChecked()
+        var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
+                           where t.Namespace == typeof(Mixer).GetNamespaceChecked()
                            select LogManager.GetLogger(t);
         var logThresholds = from l in mixerLoggers
                             select new LogThreshold(l, LogLevel.Info);

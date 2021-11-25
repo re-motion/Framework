@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_labelID = "Label";
     private const string c_validationErrors = "ValidationError";
 
-    private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
+    private readonly string _startUpScriptKey = typeof(BocCheckBox).FullName + "_Startup";
 
     private Mock<IBocCheckBox> _checkbox;
     private string _startupScript;
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
           _checkbox.Object.DefaultTrueDescription,
           _checkbox.Object.DefaultFalseDescription);
-      clientScriptManagerMock.Setup(mock => mock.RegisterStartupScriptBlock(_checkbox.Object, typeof (BocCheckBoxRenderer), _startUpScriptKey, _startupScript)).Verifiable();
+      clientScriptManagerMock.Setup(mock => mock.RegisterStartupScriptBlock(_checkbox.Object, typeof(BocCheckBoxRenderer), _startUpScriptKey, _startupScript)).Verifiable();
       clientScriptManagerMock.Setup(mock => mock.IsStartupScriptRegistered(It.IsNotNull<Type>(), It.IsNotNull<string>())).Returns(false);
       clientScriptManagerMock.Setup(mock => mock.GetPostBackEventReference(_checkbox.Object, string.Empty)).Returns(c_postbackEventReference);
 

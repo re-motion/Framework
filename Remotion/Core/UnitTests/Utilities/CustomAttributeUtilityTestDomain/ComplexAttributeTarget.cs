@@ -30,12 +30,12 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
     {
     }
 
-    [Complex (T = typeof (object))]
+    [Complex (T = typeof(object))]
     public void DefaultCtorWithField ()
     {
     }
 
-    [Complex (typeof (void), S = "string")]
+    [Complex (typeof(void), S = "string")]
     public void CtorWithTypeAndProperty ()
     {
     }
@@ -45,7 +45,7 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
     {
     }
 
-    [Complex (typeof (double), typeof (int), typeof (string))]
+    [Complex (typeof(double), typeof(int), typeof(string))]
     public void CtorWithStringAndTypeParamsArray ()
     {
     }

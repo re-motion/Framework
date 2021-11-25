@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
-                 Driver = typeof (CustomSeleniumWebDriver)
+                 Driver = typeof(CustomSeleniumWebDriver)
              };
     }
 

@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   public class PreparingRedirectToSubFunctionState : ExecutionStateBase<PreparingRedirectToSubFunctionStateParameters>
   {
     public PreparingRedirectToSubFunctionState (IExecutionStateContext executionStateContext, PreparingRedirectToSubFunctionStateParameters parameters)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
       if (!Parameters.PermaUrlOptions.UsePermaUrl)
       {

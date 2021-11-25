@@ -25,7 +25,7 @@ namespace Remotion.Validation.Results
         [NotNull] object validatedObject,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
-        :base (validatedObject, errorMessage, localizedValidationMessage)
+        :base(validatedObject, errorMessage, localizedValidationMessage)
     {
     }
   }

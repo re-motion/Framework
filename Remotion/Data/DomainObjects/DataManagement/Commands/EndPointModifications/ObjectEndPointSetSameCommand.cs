@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   public class ObjectEndPointSetSameCommand : RelationEndPointModificationCommand
   {
     public ObjectEndPointSetSameCommand (IObjectEndPoint modifiedEndPoint, IClientTransactionEventSink transactionEventSink)
-        : base (
+        : base(
             ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             modifiedEndPoint.GetOppositeObject(),
             modifiedEndPoint.GetOppositeObject(),

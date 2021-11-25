@@ -107,7 +107,7 @@ namespace Remotion.Logging
 
     private LoggingEvent CreateLoggingEvent (Level level, int? eventID, object? message, Exception? exceptionObject)
     {
-      LoggingEvent loggingEvent = new LoggingEvent(typeof (Log4NetLog), null, _logger.Name, level, message, exceptionObject);
+      LoggingEvent loggingEvent = new LoggingEvent(typeof(Log4NetLog), null, _logger.Name, level, message, exceptionObject);
 
       if (eventID.HasValue)
       {

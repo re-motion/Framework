@@ -62,7 +62,7 @@ public class WebConfiguration: IConfigurationSectionHandler
     return (WebConfiguration) XmlSerializationUtility.DeserializeUsingSchema(
         new XmlNodeReader(section),
         // "web.config/configuration/" + ElementName,  // TODO: context is no longer supported, verify that node has correct BaseURI
-        typeof (WebConfiguration),
+        typeof(WebConfiguration),
         SchemaUri,
         schema.LoadSchemaSet());
   }

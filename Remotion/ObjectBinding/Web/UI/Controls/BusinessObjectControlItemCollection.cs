@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public abstract class BusinessObjectControlItemCollection : ControlItemCollection
   {
     protected BusinessObjectControlItemCollection (IBusinessObjectBoundWebControl? ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
     }
 

@@ -157,7 +157,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       test(diagnosticScreenshotBuilder, value);
 
-      var typeName = typeof (TTarget).FullName;
+      var typeName = typeof(TTarget).FullName;
       var testAssembly = test.Method.DeclaringType.Assembly;
       var testAssemblyName = testAssembly.GetName().Name;
       var embeddedResources = new HashSet<string>(testAssembly.GetManifestResourceNames());

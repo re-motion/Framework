@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public CreateChildIfParentTestTransactedFunction ()
-        : base (WxeTransactionMode<ClientTransactionFactory>.CreateChildIfParentWithAutoCommit)
+        : base(WxeTransactionMode<ClientTransactionFactory>.CreateChildIfParentWithAutoCommit)
     {
     }
 

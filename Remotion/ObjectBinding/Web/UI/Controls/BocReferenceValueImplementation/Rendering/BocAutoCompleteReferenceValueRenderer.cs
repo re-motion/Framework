@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <para>During edit mode, the control is displayed using a <see cref="System.Web.UI.WebControls.TextBox"/> and a pop-up element.</para>
   /// <para>During read-only mode, the control's value is displayed using a <see cref="System.Web.UI.WebControls.Label"/>.</para>
   /// </remarks>
-  [ImplementationFor (typeof (IBocAutoCompleteReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocAutoCompleteReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocAutoCompleteReferenceValueRenderer : BocReferenceValueRendererBase<IBocAutoCompleteReferenceValue>, IBocAutoCompleteReferenceValueRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : this (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer, () => new RenderOnlyTextBox())
+        : this(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer, () => new RenderOnlyTextBox())
     {
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer,
         Func<TextBox> textBoxFactory)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
       ArgumentUtility.CheckNotNull("textBoxFactory", textBoxFactory);
       _textBoxFactory = textBoxFactory;
@@ -128,38 +128,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string autocompleteScriptKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_AutoCompleteScript";
+      string autocompleteScriptKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_AutoCompleteScript";
       htmlHeadAppender.RegisterJavaScriptInclude(
           autocompleteScriptKey,
           ResourceUrlFactory.CreateResourceUrl(
-              typeof (BocAutoCompleteReferenceValueRenderer),
+              typeof(BocAutoCompleteReferenceValueRenderer),
               ResourceType.Html,
               "BocAutoCompleteReferenceValue.UI.js"));
 
-      string scriptKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Script";
+      string scriptKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Script";
       htmlHeadAppender.RegisterJavaScriptInclude(
           scriptKey,
-          ResourceUrlFactory.CreateResourceUrl(typeof (BocAutoCompleteReferenceValueRenderer), ResourceType.Html, "BocAutoCompleteReferenceValue.js"));
+          ResourceUrlFactory.CreateResourceUrl(typeof(BocAutoCompleteReferenceValueRenderer), ResourceType.Html, "BocAutoCompleteReferenceValue.js"));
     }
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)
     {
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Style";
+      string styleKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Style";
       htmlHeadAppender.RegisterStylesheetLink(
           styleKey,
           ResourceUrlFactory.CreateThemedResourceUrl(
-              typeof (BocAutoCompleteReferenceValueRenderer),
+              typeof(BocAutoCompleteReferenceValueRenderer),
               ResourceType.Html,
               "BocAutoCompleteReferenceValue.css"),
           HtmlHeadAppender.Priority.Library);
 
-      string autocompleteStyleKey = typeof (BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_AutoCompleteStyle";
+      string autocompleteStyleKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_AutoCompleteStyle";
       htmlHeadAppender.RegisterStylesheetLink(
           autocompleteStyleKey,
           ResourceUrlFactory.CreateThemedResourceUrl(
-              typeof (BocAutoCompleteReferenceValueRenderer),
+              typeof(BocAutoCompleteReferenceValueRenderer),
               ResourceType.Html,
               "BocAutoCompleteReferenceValue.UI.css"),
           HtmlHeadAppender.Priority.Library);
@@ -223,7 +223,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append(");");
 
       renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
-          renderingContext.Control, typeof (IBocAutoCompleteReferenceValue), key, script.ToString());
+          renderingContext.Control, typeof(IBocAutoCompleteReferenceValue), key, script.ToString());
     }
 
     private  string GetDropDownButtonName (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected virtual IResourceManager GetResourceManager (BocAutoCompleteReferenceValueRenderingContext renderingContext)
     {
-      return GetResourceManager(typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     protected override sealed void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)

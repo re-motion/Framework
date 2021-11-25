@@ -44,20 +44,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void BindableObjectProviderAttribute ()
     {
-      Assert.That(typeof (BindableObjectWithIdentityBase).IsDefined(typeof (BindableObjectWithIdentityProviderAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectWithIdentityBase).IsDefined(typeof(BindableObjectWithIdentityProviderAttribute), false), Is.True);
     }
 
     [Test]
     public void BindableObjectBaseClassAttribute ()
     {
-      Assert.That(typeof (BindableObjectWithIdentityBase).IsDefined(typeof (BindableObjectBaseClassAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectWithIdentityBase).IsDefined(typeof(BindableObjectBaseClassAttribute), false), Is.True);
     }
 
     [Test]
     public void CreateImplementation ()
     {
       var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
-      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof (BindableObjectWithIdentityBaseImplementation)));
+      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof(BindableObjectWithIdentityBaseImplementation)));
     }
 
     [Test]

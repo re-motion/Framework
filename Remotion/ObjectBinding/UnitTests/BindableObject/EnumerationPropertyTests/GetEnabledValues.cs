@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void DisableFromProperty ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithDisabledEnumValue), "DisabledFromProperty");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithDisabledEnumValue), "DisabledFromProperty");
       EnumerationValueInfo[] expected = new[]
           {
               new EnumerationValueInfo(TestEnum.Value2, "Value2", "Value2", true),
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void DisableFromPropertyType ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithDisabledEnumValue), "DisabledFromPropertyType");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithDisabledEnumValue), "DisabledFromPropertyType");
       EnumerationValueInfo[] expected = new[]
           {
               new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void DisableWithBusinessObject ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithDisabledEnumValue), "DisabledWithObject");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithDisabledEnumValue), "DisabledWithObject");
       EnumerationValueInfo[] expected = new[]
           {
               new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),

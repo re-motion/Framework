@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       internal IntPtr InheritedFromUniqueProcessID;
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (ProcessUtils));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ProcessUtils));
 
     /// <summary>
     /// Retrieves information about the specified process. See https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280.aspx .

@@ -51,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public void HasAccess_WithAccessGranted ()
     {
       Command command = _testHelper.CreateWxeFunctionCommand(_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
-      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess(typeof (TestFunction), true);
+      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess(typeof(TestFunction), true);
 
       bool hasAccess = command.HasAccess(null);
 
@@ -63,7 +63,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public void HasAccess_WithAccessDenied ()
     {
       Command command = _testHelper.CreateWxeFunctionCommand(_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
-      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess(typeof (TestFunction), false);
+      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess(typeof(TestFunction), false);
 
       bool hasAccess = command.HasAccess(null);
 

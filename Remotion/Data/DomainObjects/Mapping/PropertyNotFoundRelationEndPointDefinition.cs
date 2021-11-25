@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class PropertyNotFoundRelationEndPointDefinition : InvalidRelationEndPointDefinitionBase
   {
     public PropertyNotFoundRelationEndPointDefinition (ClassDefinition classDefinition, string propertyName, Type propertyType)
-        : base (classDefinition, propertyName, propertyType)
+        : base(classDefinition, propertyName, propertyType)
     {
     }
   }

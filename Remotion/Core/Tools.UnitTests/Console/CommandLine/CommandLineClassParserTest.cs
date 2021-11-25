@@ -44,7 +44,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [Test] 
     public void TestParser ()
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (Arguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
       Arguments arguments = (Arguments) parser.Parse("sdir ddir /b- /rep:y", true);
       Assert.That(arguments.SourceDirectory, Is.EqualTo("sdir"));
       Assert.That(arguments.DestinationDirectory, Is.EqualTo("ddir"));
@@ -55,7 +55,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [Test] 
     public void TestModeArgDefault ()
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (Arguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
       Arguments arguments = (Arguments) parser.Parse("", true);
       Assert.That(arguments.Mode, Is.EqualTo(TestMode.Mode1));
     }
@@ -63,7 +63,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [Test] 
     public void TestModeArgMode2 ()
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (Arguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
       Arguments arguments = (Arguments) parser.Parse("/m2", true);
       Assert.That(arguments.Mode, Is.EqualTo(TestMode.Mode2));
     }
@@ -71,7 +71,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [Test] 
     public void TestModeArgConfict ()
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (Arguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
       Assert.That(
           () => (Arguments) parser.Parse("/m1 /m2", true),
           Throws.InstanceOf<ConflictCommandLineParameterException>());
@@ -80,7 +80,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [Test] 
     public void TestModeArgInvalidValue ()
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (Arguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
       Assert.That(
           () => (Arguments) parser.Parse("/m1+", true),
           Throws.InstanceOf<InvalidCommandLineArgumentValueException>());
@@ -89,7 +89,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [Test]
     public void TestFlagArgInvalidValue ()
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (Arguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
       Assert.That(
           () => (Arguments) parser.Parse("/b~", true),
           Throws.InstanceOf<InvalidCommandLineArgumentNameException>());
@@ -98,7 +98,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [Test] 
     public void TestOptional ()
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (Arguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
       Arguments arguments = (Arguments) parser.Parse("", true);
       Assert.That(arguments.SourceDirectory, Is.EqualTo(null));
       Assert.That(arguments.DestinationDirectory, Is.EqualTo(null));

@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <remarks>
   ///   May only be added to an <see cref="IBusinessObjectBoundWebControl"/>.
   /// </remarks>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class BocMenuItem : WebMenuItem
   {
     public BocMenuItem (
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         RequiredSelection requiredSelection,
         bool isDisabled,
         BocMenuItemCommand command)
-        : this (id, category, text, icon, disabledIcon, WebMenuItemStyle.IconAndText, requiredSelection, isDisabled, command)
+        : this(id, category, text, icon, disabledIcon, WebMenuItemStyle.IconAndText, requiredSelection, isDisabled, command)
     {
     }
 
@@ -59,12 +59,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         RequiredSelection requiredSelection,
         bool isDisabled,
         BocMenuItemCommand command)
-        : base (id, category, text, icon, disabledIcon, style, requiredSelection, isDisabled, command)
+        : base(id, category, text, icon, disabledIcon, style, requiredSelection, isDisabled, command)
     {
     }
 
     public BocMenuItem ()
-        : this (
+        : this(
             null,
             null,
             null,

@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
         Assertion.IsFalse(DesignMode);
         Assertion.IsTrue(Page?.IsPostBack ?? false);
 
-        var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false)!;
+        var pageRequestManagerType = typeof(ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false)!;
         var isAsyncPostBackRequest = (bool) PrivateInvoke.InvokeNonPublicStaticMethod(
             pageRequestManagerType,
             "IsAsyncPostBackRequest",

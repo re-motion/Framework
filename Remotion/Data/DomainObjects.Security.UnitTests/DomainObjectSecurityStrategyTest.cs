@@ -246,9 +246,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       Assert.That(deserializedStrategy, Is.Not.SameAs(strategy));
       Assert.That(deserializedStrategy.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.NewAndDeleted));
       Assert.That(deserializedStrategy.SecurityContextFactory, Is.Not.SameAs(factory));
-      Assert.IsInstanceOf(typeof (SerializableFactory), deserializedStrategy.SecurityContextFactory);
+      Assert.IsInstanceOf(typeof(SerializableFactory), deserializedStrategy.SecurityContextFactory);
       Assert.That(deserializedStrategy.InnerStrategy, Is.Not.SameAs(objectSecurityStrategy));
-      Assert.IsInstanceOf(typeof (SerializableObjectSecurityStrategy), deserializedStrategy.InnerStrategy);
+      Assert.IsInstanceOf(typeof(SerializableObjectSecurityStrategy), deserializedStrategy.InnerStrategy);
     }
   }
 }

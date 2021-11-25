@@ -59,7 +59,7 @@ namespace Remotion.Xml.UnitTests
       catch (ApplicationException ex)
       {
         string expectedMessage = string.Format(
-            "Error loading schema resource 'invalidSchemaFileName.xsd' from assembly '{0}'.", typeof (SchemaLoaderBaseMock).Assembly.FullName);
+            "Error loading schema resource 'invalidSchemaFileName.xsd' from assembly '{0}'.", typeof(SchemaLoaderBaseMock).Assembly.FullName);
 
         Assert.That(ex.Message, Is.EqualTo(expectedMessage));
       }

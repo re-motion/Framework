@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private ServiceLocatorScope _serviceLocatorScope;
 
     public CustomDataTypeTest ()
-        : base (CreateEmptyTestDataFileName)
+        : base(CreateEmptyTestDataFileName)
     {
     }
 

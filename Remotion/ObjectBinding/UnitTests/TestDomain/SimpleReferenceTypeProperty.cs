@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class SimpleReferenceTypeProperty : PropertyBase
   {
     public SimpleReferenceTypeProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
   }

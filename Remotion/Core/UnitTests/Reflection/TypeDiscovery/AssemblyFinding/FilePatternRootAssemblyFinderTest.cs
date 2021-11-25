@@ -40,9 +40,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       _searchServiceStub = new Mock<IFileSearchService>();
       _loaderMock = new Mock<IAssemblyLoader>();
-      _assembly1 = typeof (object).Assembly;
-      _assembly2 = typeof (FilePatternRootAssemblyFinder).Assembly;
-      _assembly3 = typeof (FilePatternRootAssemblyFinderTest).Assembly;
+      _assembly1 = typeof(object).Assembly;
+      _assembly2 = typeof(FilePatternRootAssemblyFinder).Assembly;
+      _assembly3 = typeof(FilePatternRootAssemblyFinderTest).Assembly;
     }
 
     [Test]

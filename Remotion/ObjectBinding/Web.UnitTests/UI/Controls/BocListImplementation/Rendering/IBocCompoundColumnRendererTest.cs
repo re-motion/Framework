@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var factory = _serviceLocator.GetInstance<IBocCompoundColumnRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocCompoundColumnRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocCompoundColumnRenderer)));
     }
 
     [Test]

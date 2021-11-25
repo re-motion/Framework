@@ -27,62 +27,62 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
   {
     protected override MemberInfo BaseMemberWithSingleAttribute
     {
-      get { return typeof (SampleClass).GetProperty("PropertyWithSingleAttribute"); }
+      get { return typeof(SampleClass).GetProperty("PropertyWithSingleAttribute"); }
     }
 
     protected override MemberInfo BaseMemberWithNonInheritedAttribute
     {
-      get { return typeof (SampleClass).GetProperty("PropertyWithNotInheritedAttribute"); }
+      get { return typeof(SampleClass).GetProperty("PropertyWithNotInheritedAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberWithSingleAttribute
     {
-      get { return typeof (DerivedSampleClass).GetProperty("PropertyWithSingleAttribute"); }
+      get { return typeof(DerivedSampleClass).GetProperty("PropertyWithSingleAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberWithMultipleAttribute
     {
-      get { return typeof (DerivedSampleClass).GetProperty("PropertyWithMultipleAttribute"); }
+      get { return typeof(DerivedSampleClass).GetProperty("PropertyWithMultipleAttribute"); }
     }
 
     protected override MemberInfo DerivedProtectedMember
     {
       get
       {
-        return typeof (DerivedSampleClass).GetProperty("ProtectedPropertyWithAttribute", BindingFlags.NonPublic | BindingFlags.Instance);
+        return typeof(DerivedSampleClass).GetProperty("ProtectedPropertyWithAttribute", BindingFlags.NonPublic | BindingFlags.Instance);
       }
     }
 
     protected override MemberInfo DerivedMemberNotInheritingAttribute
     {
-      get { return typeof (DerivedSampleClass).GetProperty("PropertyWithNotInheritedAttribute"); }
+      get { return typeof(DerivedSampleClass).GetProperty("PropertyWithNotInheritedAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberHidingAttribute
     {
-      get { return typeof (DerivedSampleClass).GetProperty("PropertyWithInheritedNotMultipleAttribute"); }
+      get { return typeof(DerivedSampleClass).GetProperty("PropertyWithInheritedNotMultipleAttribute"); }
     }
 
     [Test]
     public void Test_FromOverrideWithBaseOverloads ()
     {
-      var propertyInfo = typeof (DerivedSampleClass).GetProperty("Item", new[] { typeof (int) });
-      object[] attributes = AttributeUtility.GetCustomAttributes(propertyInfo, typeof (InheritedAttribute), true);
+      var propertyInfo = typeof(DerivedSampleClass).GetProperty("Item", new[] { typeof(int) });
+      object[] attributes = AttributeUtility.GetCustomAttributes(propertyInfo, typeof(InheritedAttribute), true);
 
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0], Is.Not.Null);
-      Assert.IsInstanceOf(typeof (InheritedAttribute), attributes[0]);
+      Assert.IsInstanceOf(typeof(InheritedAttribute), attributes[0]);
     }
 
     [Test]
     public void Test_NoGetter ()
     {
-      var propertyInfo = typeof (DerivedSampleClass).GetProperty("PropertyWithoutGetter");
-      object[] attributes = AttributeUtility.GetCustomAttributes(propertyInfo, typeof (InheritedAttribute), true);
+      var propertyInfo = typeof(DerivedSampleClass).GetProperty("PropertyWithoutGetter");
+      object[] attributes = AttributeUtility.GetCustomAttributes(propertyInfo, typeof(InheritedAttribute), true);
 
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0], Is.Not.Null);
-      Assert.IsInstanceOf(typeof (InheritedAttribute), attributes[0]);
+      Assert.IsInstanceOf(typeof(InheritedAttribute), attributes[0]);
     }
   }
 }

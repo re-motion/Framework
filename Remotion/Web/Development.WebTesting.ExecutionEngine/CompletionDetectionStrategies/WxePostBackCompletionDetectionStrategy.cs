@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxePostBackCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (WxePostBackCompletionDetectionStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxePostBackCompletionDetectionStrategy));
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
     private readonly TimeSpan? _timeout;
 

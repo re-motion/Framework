@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(domainObjectTypedObjectID1, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
       Assert.That(domainObjectTypedObjectID2, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
 
-      Assert.That(VariableTypeInferrer.GetVariableType(handle), Is.SameAs(typeof (IDomainObjectHandle<Order>)));
-      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID1), Is.SameAs(typeof (IDomainObjectHandle<IDomainObject>)));
-      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID2), Is.SameAs(typeof (IDomainObjectHandle<IDomainObject>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(handle), Is.SameAs(typeof(IDomainObjectHandle<Order>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID1), Is.SameAs(typeof(IDomainObjectHandle<IDomainObject>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID2), Is.SameAs(typeof(IDomainObjectHandle<IDomainObject>)));
     }
 
     [Test]
@@ -64,9 +64,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(domainObjectTypedObjectID1, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
       Assert.That(domainObjectTypedObjectID2, Is.TypeOf<DomainObjectHandle<Order>>().And.Property("ObjectID").EqualTo(domainObject.ID));
 
-      Assert.That(VariableTypeInferrer.GetVariableType(handle), Is.SameAs(typeof (IDomainObjectHandle<Order>)));
-      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID1), Is.SameAs(typeof (IDomainObjectHandle<IDomainObject>)));
-      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID2), Is.SameAs(typeof (IDomainObjectHandle<IDomainObject>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(handle), Is.SameAs(typeof(IDomainObjectHandle<Order>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID1), Is.SameAs(typeof(IDomainObjectHandle<IDomainObject>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedObjectID2), Is.SameAs(typeof(IDomainObjectHandle<IDomainObject>)));
     }
 
     [Test]
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(transaction.DataManager.DataContainers[order.ID], Is.Not.Null);
       Assert.That(transaction.DataManager.DataContainers[order.ID].DomainObject, Is.SameAs(order));
 
-      var nonExistingOrder = DomainObjectMother.GetNotLoadedObject(transaction, new ObjectID(typeof (ClassWithAllDataTypes), Guid.NewGuid()));
+      var nonExistingOrder = DomainObjectMother.GetNotLoadedObject(transaction, new ObjectID(typeof(ClassWithAllDataTypes), Guid.NewGuid()));
       Assert.That(transaction.DataManager.DataContainers[nonExistingOrder.ID], Is.Null);
 
       transaction.ExecuteInScope(() => Assert.That(() => nonExistingOrder.TryEnsureDataAvailable(), Is.False));

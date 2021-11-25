@@ -29,8 +29,8 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void Initialization ()
     {
-      var validatorType = typeof (NotEqualValidator);
-      var collectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1);
+      var validatorType = typeof(NotEqualValidator);
+      var collectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector1);
       Func<IPropertyValidator, bool> validatorPredicate = _ => false;
       var removingPropertyValidationRuleCollectorStub = new Mock<IRemovingPropertyValidationRuleCollector>();
 
@@ -51,7 +51,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void Initialization_WithCollectorTypeToRemoveFromIsNull ()
     {
-      var validatorType = typeof (NotEqualValidator);
+      var validatorType = typeof(NotEqualValidator);
       Func<IPropertyValidator, bool> validatorPredicate = _ => false;
       var removingPropertyValidationRuleCollectorStub = new Mock<IRemovingPropertyValidationRuleCollector>();
 
@@ -72,8 +72,8 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void Initialization_WithValidatorPredicateIsNull ()
     {
-      var validatorType = typeof (NotEqualValidator);
-      var collectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1);
+      var validatorType = typeof(NotEqualValidator);
+      var collectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector1);
       var removingPropertyValidationRuleCollectorStub = new Mock<IRemovingPropertyValidationRuleCollector>();
 
       var removingPropertyValidatorRegistration = new RemovingPropertyValidatorRegistration(

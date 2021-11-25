@@ -37,7 +37,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var factory = _serviceLocator.GetInstance<IResourceManagerFactory>();
 
-      Assert.That(factory, Is.TypeOf(typeof (CompoundResourceManagerFactory)));
+      Assert.That(factory, Is.TypeOf(typeof(CompoundResourceManagerFactory)));
       var compoundFactories = ((CompoundResourceManagerFactory) factory).ResourceManagerFactories;
       Assert.That(compoundFactories[0], Is.TypeOf<ResourceAttributeBasedResourceManagerFactory>());
     }

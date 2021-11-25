@@ -65,9 +65,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "PrivateString")))
           .Return(true);
       
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (ClassWithDifferentProperties))).Return("ClassWithDifferentProperties");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassWithDifferentProperties");
       
-      var classReflector = CreateClassReflector(typeof (ClassWithDifferentProperties));
+      var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
       var expected = CreateClassWithDifferentPropertiesClassDefinition();
 
       var actual = classReflector.GetMetadata(null);
@@ -90,9 +90,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "PrivateString")))
           .Return(true);
 
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (DerivedClassWithDifferentProperties))).Return("DerivedClassWithDifferentProperties");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(DerivedClassWithDifferentProperties))).Return("DerivedClassWithDifferentProperties");
 
-      var classReflector = CreateClassReflector(typeof (DerivedClassWithDifferentProperties));
+      var classReflector = CreateClassReflector(typeof(DerivedClassWithDifferentProperties));
       var expected = CreateDerivedClassWithDifferentPropertiesClassDefinition();
 
       var baseClassDefinition = CreateClassWithDifferentPropertiesClassDefinition();
@@ -106,25 +106,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_ForMixedClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (TargetClassA))).Return("ClassID");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(TargetClassA))).Return("ClassID");
 
-      var classReflector = CreateClassReflector(typeof (TargetClassA));
+      var classReflector = CreateClassReflector(typeof(TargetClassA));
       var actual = classReflector.GetMetadata(null);
-      Assert.That(actual.PersistentMixins, Is.EquivalentTo(new[] { typeof (MixinA), typeof (MixinC), typeof (MixinD) }));
+      Assert.That(actual.PersistentMixins, Is.EquivalentTo(new[] { typeof(MixinA), typeof(MixinC), typeof(MixinD) }));
     }
 
     [Test]
     public void GetMetadata_ForDerivedMixedClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (TargetClassA))).Return("ClassID");
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (TargetClassB))).Return("ClassID");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(TargetClassA))).Return("ClassID");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(TargetClassB))).Return("ClassID");
 
-      var classReflectorForBaseClass = CreateClassReflector(typeof (TargetClassA));
+      var classReflectorForBaseClass = CreateClassReflector(typeof(TargetClassA));
       var baseClass = classReflectorForBaseClass.GetMetadata(null);
 
-      var classReflector = CreateClassReflector(typeof (TargetClassB));
+      var classReflector = CreateClassReflector(typeof(TargetClassB));
       var actual = classReflector.GetMetadata(baseClass);
-      Assert.That(actual.PersistentMixins, Is.EquivalentTo(new[] { typeof (MixinB), typeof (MixinE) }));
+      Assert.That(actual.PersistentMixins, Is.EquivalentTo(new[] { typeof(MixinB), typeof(MixinE) }));
     }
 
     [Test]
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
           .Return(true);
 
-      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassWithRealRelationEndPoints));
+      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
 
       SortExpressionDefinitionProviderStub
           .Stub(_ => _.GetSortExpression(Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Null))
@@ -192,9 +192,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
                 mi.ReturnValue = sortExpressionDefinition;
               });
 
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (ClassWithVirtualRelationEndPoints))).Return("ClassWithVirtualRelationEndPoints");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassWithVirtualRelationEndPoints))).Return("ClassWithVirtualRelationEndPoints");
 
-      var classReflector = CreateClassReflector(typeof (ClassWithVirtualRelationEndPoints));
+      var classReflector = CreateClassReflector(typeof(ClassWithVirtualRelationEndPoints));
       var expected = CreateClassWithVirtualRelationEndPointsClassDefinition();
       expected.SetPropertyDefinitions(new PropertyDefinitionCollection());
       CreateEndPointDefinitionsForClassWithVirtualRelationEndPoints(expected);
@@ -215,9 +215,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_GetClassID ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (ClassHavingClassIDAttribute))).Return("ClassIDForClassHavingClassIDAttribute");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassHavingClassIDAttribute))).Return("ClassIDForClassHavingClassIDAttribute");
 
-      var classReflector = CreateClassReflector(typeof (ClassHavingClassIDAttribute));
+      var classReflector = CreateClassReflector(typeof(ClassHavingClassIDAttribute));
 
       var actual = classReflector.GetMetadata(null);
 
@@ -228,9 +228,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_ForClosedGenericClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (ClosedGenericClass))).Return("ClassID");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClosedGenericClass))).Return("ClassID");
 
-      var classReflector = CreateClassReflector(typeof (ClosedGenericClass));
+      var classReflector = CreateClassReflector(typeof(ClosedGenericClass));
 
       Assert.That(classReflector.GetMetadata(null), Is.Not.Null);
     }
@@ -238,9 +238,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_ForClassWithoutStorageGroupAttribute ()
     {
-      var type = typeof (ClassWithoutStorageGroupWithDifferentProperties);
+      var type = typeof(ClassWithoutStorageGroupWithDifferentProperties);
       ClassIDProviderStub.Stub(stub => stub.GetClassID(type)).Return("ClassID");
-      Assert.That(type.IsDefined(typeof (DBStorageGroupAttribute), false), Is.False);
+      Assert.That(type.IsDefined(typeof(DBStorageGroupAttribute), false), Is.False);
   
       var classReflector = CreateClassReflector(type);
 
@@ -254,23 +254,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_ForClassWithStorageGroupAttribute ()
     {
-      var type = typeof (ClassWithStorageGroupAttributeAndBaseClass);
+      var type = typeof(ClassWithStorageGroupAttributeAndBaseClass);
       ClassIDProviderStub.Stub(stub => stub.GetClassID(type)).Return("ClassID");
-      Assert.That(type.IsDefined(typeof (DBStorageGroupAttribute), false), Is.True);
+      Assert.That(type.IsDefined(typeof(DBStorageGroupAttribute), false), Is.True);
 
       var classReflector = CreateClassReflector(type);
 
       var actual = classReflector.GetMetadata(null);
 
       Assert.That(actual, Is.Not.Null);
-      Assert.That(actual.StorageGroupType, Is.SameAs(typeof (DBStorageGroupAttribute)));
+      Assert.That(actual.StorageGroupType, Is.SameAs(typeof(DBStorageGroupAttribute)));
       Assert.That(actual.DefaultStorageClass, Is.EqualTo(DefaultStorageClass.Persistent));
     }
 
     [Test]
     public void GetMetadata_ForClassWithStorageGroupAttributeSupplyingANonDefaultStorageGroup ()
     {
-      var type = typeof (ClassWithNonDefaultStorageClass);
+      var type = typeof(ClassWithNonDefaultStorageClass);
       ClassIDProviderStub.Stub(stub => stub.GetClassID(type)).Return("ClassID");
 
       var classReflector = CreateClassReflector(type);
@@ -278,7 +278,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var actual = classReflector.GetMetadata(null);
 
       Assert.That(actual, Is.Not.Null);
-      Assert.That(actual.StorageGroupType, Is.SameAs(typeof (NonDefaultStorageClassStorageGroupAttribute)));
+      Assert.That(actual.StorageGroupType, Is.SameAs(typeof(NonDefaultStorageClassStorageGroupAttribute)));
       Assert.That(actual.DefaultStorageClass, Is.Not.EqualTo(DefaultStorageClass.Persistent));
       Assert.That(actual.DefaultStorageClass, Is.EqualTo(NonDefaultStorageClassStorageGroupAttribute.NonDefaultStorageClass));
     }
@@ -287,9 +287,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_PersistentMixinFinder_ForBaseClass ()
     {
       
-      ClassIDProviderStub.Stub(mock => mock.GetClassID(typeof (ClassWithDifferentProperties))).Return("ClassID");
+      ClassIDProviderStub.Stub(mock => mock.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassID");
 
-      var classReflector = CreateClassReflector(typeof (ClassWithDifferentProperties));
+      var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
 
       var actual = classReflector.GetMetadata(null);
 
@@ -299,9 +299,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_PersistentMixinFinder_ForDerivedClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (DerivedClassWithDifferentProperties))).Return("ClassID");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(DerivedClassWithDifferentProperties))).Return("ClassID");
 
-      var classReflector = CreateClassReflector(typeof (DerivedClassWithDifferentProperties));
+      var classReflector = CreateClassReflector(typeof(DerivedClassWithDifferentProperties));
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses();
 
       var actual = classReflector.GetMetadata(baseClassDefinition);
@@ -312,9 +312,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_InstanceCreator ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof (ClassWithDifferentProperties))).Return("ClassID");
+      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassID");
 
-      var classReflector = CreateClassReflector(typeof (ClassWithDifferentProperties));
+      var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
 
       var actual = classReflector.GetMetadata(null);
 
@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private ClassDefinition CreateClassWithDifferentPropertiesClassDefinition ()
     {
-      var classDefinition = CreateClassDefinition("ClassWithDifferentProperties", typeof (ClassWithDifferentProperties), false);
+      var classDefinition = CreateClassDefinition("ClassWithDifferentProperties", typeof(ClassWithDifferentProperties), false);
 
       CreatePropertyDefinitionsForClassWithDifferentProperties(classDefinition);
       CreateEndPointDefinitionsForClassWithDifferentProperties(classDefinition);
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = CreateClassDefinition(
           "DerivedClassWithDifferentProperties",
-          typeof (DerivedClassWithDifferentProperties),
+          typeof(DerivedClassWithDifferentProperties),
           false,
           CreateClassWithDifferentPropertiesClassDefinition());
       CreatePropertyDefinitionsForDerivedClassWithDifferentProperties(classDefinition);
@@ -361,7 +361,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = CreateClassDefinition(
           "ClassWithVirtualRelationEndPoints",
-          typeof (ClassWithVirtualRelationEndPoints),
+          typeof(ClassWithVirtualRelationEndPoints),
           false);
 
       return classDefinition;
@@ -372,38 +372,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var properties = new List<PropertyDefinition>();
       properties.Add(
           CreatePersistentPropertyDefinition(
-              classDefinition, typeof (ClassWithDifferentPropertiesNotInMapping), "BaseString", true, null));
+              classDefinition, typeof(ClassWithDifferentPropertiesNotInMapping), "BaseString", true, null));
       properties.Add(
           CreatePersistentPropertyDefinition(
               classDefinition,
-              typeof (ClassWithDifferentPropertiesNotInMapping),
+              typeof(ClassWithDifferentPropertiesNotInMapping),
               "BaseUnidirectionalOneToOne",
               true,
               null));
       properties.Add(
           CreatePersistentPropertyDefinition(
               classDefinition,
-              typeof (ClassWithDifferentPropertiesNotInMapping),
+              typeof(ClassWithDifferentPropertiesNotInMapping),
               "BasePrivateUnidirectionalOneToOne",
               true,
               null));
       properties.Add(
           CreatePersistentPropertyDefinition(
-              classDefinition, typeof (ClassWithDifferentProperties), "Int32", false, null));
+              classDefinition, typeof(ClassWithDifferentProperties), "Int32", false, null));
       properties.Add(
           CreatePersistentPropertyDefinition(
-              classDefinition, typeof (ClassWithDifferentProperties), "String", true, null));
+              classDefinition, typeof(ClassWithDifferentProperties), "String", true, null));
       properties.Add(
           CreatePersistentPropertyDefinition(
               classDefinition,
-              typeof (ClassWithDifferentProperties),
+              typeof(ClassWithDifferentProperties),
               "PrivateString",
               true,
               null));
       properties.Add(
           CreatePersistentPropertyDefinition(
               classDefinition,
-              typeof (ClassWithDifferentProperties),
+              typeof(ClassWithDifferentProperties),
               "UnidirectionalOneToOne",
               true,
               null));
@@ -413,12 +413,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private void CreateEndPointDefinitionsForClassWithDifferentProperties (ClassDefinition classDefinition)
     {
       var endPoints = new List<IRelationEndPointDefinition>();
-      endPoints.Add(CreateRelationEndPointDefinition(classDefinition, typeof (ClassWithDifferentProperties), "UnidirectionalOneToOne", false));
+      endPoints.Add(CreateRelationEndPointDefinition(classDefinition, typeof(ClassWithDifferentProperties), "UnidirectionalOneToOne", false));
       endPoints.Add(
-          CreateRelationEndPointDefinition(classDefinition, typeof (ClassWithDifferentPropertiesNotInMapping), "BaseUnidirectionalOneToOne", false));
+          CreateRelationEndPointDefinition(classDefinition, typeof(ClassWithDifferentPropertiesNotInMapping), "BaseUnidirectionalOneToOne", false));
       endPoints.Add(
           CreateRelationEndPointDefinition(
-              classDefinition, typeof (ClassWithDifferentPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne", false));
+              classDefinition, typeof(ClassWithDifferentPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne", false));
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(endPoints, true));
     }
 
@@ -428,21 +428,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       properties.Add(
           CreatePersistentPropertyDefinition(
               classDefinition,
-              typeof (DerivedClassWithDifferentProperties),
+              typeof(DerivedClassWithDifferentProperties),
               "String",
               true,
               null));
       properties.Add(
           CreatePersistentPropertyDefinition(
               classDefinition,
-              typeof (DerivedClassWithDifferentProperties),
+              typeof(DerivedClassWithDifferentProperties),
               "PrivateString",
               true,
               null));
       properties.Add(
           CreatePersistentPropertyDefinition(
               classDefinition,
-              typeof (DerivedClassWithDifferentProperties),
+              typeof(DerivedClassWithDifferentProperties),
               "OtherString",
               true,
               null));
@@ -455,73 +455,73 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       endPoints.Add(
           CreateDomainObjectCollectionRelationEndPointDefinition(
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForDomainObjectCollection", false, CreateEmptySortExpressionDefinition()));
+              classDefinition, typeof(ClassWithVirtualRelationEndPoints), "NoAttributeForDomainObjectCollection", false, CreateEmptySortExpressionDefinition()));
       endPoints.Add(
           CreateVirtualCollectionRelationEndPointDefinition(
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NoAttributeForVirtualCollection", false, CreateEmptySortExpressionDefinition()));
+              classDefinition, typeof(ClassWithVirtualRelationEndPoints), "NoAttributeForVirtualCollection", false, CreateEmptySortExpressionDefinition()));
       endPoints.Add(
           CreateDomainObjectCollectionRelationEndPointDefinition(
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForDomainObjectCollection", true, CreateEmptySortExpressionDefinition()));
+              classDefinition, typeof(ClassWithVirtualRelationEndPoints), "NotNullableForDomainObjectCollection", true, CreateEmptySortExpressionDefinition()));
       endPoints.Add(
           CreateVirtualCollectionRelationEndPointDefinition(
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "NotNullableForVirtualCollection", true, CreateEmptySortExpressionDefinition()));
+              classDefinition, typeof(ClassWithVirtualRelationEndPoints), "NotNullableForVirtualCollection", true, CreateEmptySortExpressionDefinition()));
       endPoints.Add(
           CreateVirtualObjectRelationEndPointDefinition(
-              classDefinition, typeof (ClassWithVirtualRelationEndPoints), "BidirectionalOneToOne", false));
+              classDefinition, typeof(ClassWithVirtualRelationEndPoints), "BidirectionalOneToOne", false));
       endPoints.Add(
           CreateDomainObjectCollectionRelationEndPointDefinition(
               classDefinition,
-              typeof (ClassWithVirtualRelationEndPoints),
+              typeof(ClassWithVirtualRelationEndPoints),
               "BidirectionalOneToManyForDomainObjectCollection",
               false,
               CreateSortExpressionDefinition("NoAttributeForDomainObjectCollection")));
       endPoints.Add(
           CreateVirtualCollectionRelationEndPointDefinition(
               classDefinition,
-              typeof (ClassWithVirtualRelationEndPoints),
+              typeof(ClassWithVirtualRelationEndPoints),
               "BidirectionalOneToManyForVirtualCollection",
               false,
               CreateSortExpressionDefinition("NoAttributeForVirtualCollection")));
 
       endPoints.Add(
           CreateVirtualObjectRelationEndPointDefinition(
-              classDefinition, typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToOne", false));
+              classDefinition, typeof(ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToOne", false));
       endPoints.Add(
           CreateDomainObjectCollectionRelationEndPointDefinition(
               classDefinition,
-              typeof (ClassWithOneSideRelationPropertiesNotInMapping),
+              typeof(ClassWithOneSideRelationPropertiesNotInMapping),
               "BaseBidirectionalOneToManyForDomainObjectCollection",
               false,
               CreateSortExpressionDefinition("NoAttributeForDomainObjectCollection")));
       endPoints.Add(
           CreateVirtualCollectionRelationEndPointDefinition(
               classDefinition,
-              typeof (ClassWithOneSideRelationPropertiesNotInMapping),
+              typeof(ClassWithOneSideRelationPropertiesNotInMapping),
               "BaseBidirectionalOneToManyForVirtualCollection",
               false,
               CreateSortExpressionDefinition("NoAttributeForVirtualCollection")));
       endPoints.Add(
           CreateVirtualObjectRelationEndPointDefinition(
               classDefinition,
-              typeof (ClassWithOneSideRelationPropertiesNotInMapping),
+              typeof(ClassWithOneSideRelationPropertiesNotInMapping),
               "BasePrivateBidirectionalOneToOne",
               false));
       endPoints.Add(
           CreateDomainObjectCollectionRelationEndPointDefinition(
               classDefinition,
-              typeof (ClassWithOneSideRelationPropertiesNotInMapping),
+              typeof(ClassWithOneSideRelationPropertiesNotInMapping),
               "BasePrivateBidirectionalOneToManyForDomainObjectCollection",
               false,
               CreateSortExpressionDefinition("NoAttributeForDomainObjectCollection")));
       endPoints.Add(
           CreateVirtualCollectionRelationEndPointDefinition(
               classDefinition,
-              typeof (ClassWithOneSideRelationPropertiesNotInMapping),
+              typeof(ClassWithOneSideRelationPropertiesNotInMapping),
               "BasePrivateBidirectionalOneToManyForVirtualCollection",
               false,
               CreateSortExpressionDefinition("NoAttributeForVirtualCollection")));
 
-      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassWithRealRelationEndPoints));
+      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
       foreach (var endPoint in endPoints)
       {
         var endPointStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();

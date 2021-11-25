@@ -47,34 +47,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var idValue = Guid.NewGuid();
 
-      _newDataContainer = DataContainer.CreateNew(new ObjectID(typeof (Order), idValue));
+      _newDataContainer = DataContainer.CreateNew(new ObjectID(typeof(Order), idValue));
       _existingDataContainer = DataContainer.CreateForExisting(
-          new ObjectID(typeof (Order), idValue),
+          new ObjectID(typeof(Order), idValue),
           null,
           propertyDefinition => propertyDefinition.DefaultValue);
 
       _deletedDataContainer = DataContainer.CreateForExisting(
-          new ObjectID(typeof (Order), idValue),
+          new ObjectID(typeof(Order), idValue),
           null,
           propertyDefinition => propertyDefinition.DefaultValue);
       _deletedDataContainer.Delete();
 
-      _invalidObjectID = new ObjectID(typeof (Order), idValue);
+      _invalidObjectID = new ObjectID(typeof(Order), idValue);
       _discardedDataContainer = DataContainer.CreateNew(_invalidObjectID);
       _discardedDataContainer.Discard();
 
       _eventListenerMock = MockRepository.GenerateMock<IDataContainerEventListener>();
 
-      _orderNumberProperty = GetPropertyDefinition(typeof (Order), "OrderNumber");
-      _deliveryDateProperty = GetPropertyDefinition(typeof (Order), "DeliveryDate");
-      _nonOrderProperty = GetPropertyDefinition(typeof (OrderItem), "Order");
+      _orderNumberProperty = GetPropertyDefinition(typeof(Order), "OrderNumber");
+      _deliveryDateProperty = GetPropertyDefinition(typeof(Order), "DeliveryDate");
+      _nonOrderProperty = GetPropertyDefinition(typeof(OrderItem), "Order");
     }
 
     [Test]
     public void CreateNew_IncludesStorageClassPersistentProperties ()
     {
-      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof (ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()));
-      var propertyDefinition = GetPropertyDefinition(typeof (ClassWithPropertiesHavingStorageClassAttribute), "Persistent");
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()));
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Persistent");
       Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(0));
       Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(0));
     }
@@ -82,8 +82,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void CreateNew_IncludesStorageClassTransactionProperties ()
     {
-      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof (ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()));
-      var propertyDefinition = GetPropertyDefinition(typeof (ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()));
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
       Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(0));
       Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(0));
     }
@@ -92,10 +92,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void CreateForExisting_IncludesStorageClassPersistentProperties_WithLookupValue ()
     {
       DataContainer dc = DataContainer.CreateForExisting(
-          new ObjectID(typeof (ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()),
+          new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()),
           1,
           delegate { return 2; });
-      var propertyDefinition = GetPropertyDefinition(typeof (ClassWithPropertiesHavingStorageClassAttribute), "Persistent");
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Persistent");
       Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(2));
       Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(2));
     }
@@ -104,10 +104,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void CreateForExisting_IncludesStorageClassTransactionProperties_WithLookupValue ()
     {
       DataContainer dc = DataContainer.CreateForExisting(
-          new ObjectID(typeof (ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()),
+          new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()),
           1,
           delegate { return 2; });
-      var propertyDefinition = GetPropertyDefinition(typeof (ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
       Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(2));
       Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(2));
     }
@@ -1010,7 +1010,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var sourceDataContainer = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().InternalDataContainer;
       var newDataContainer = DataContainer.CreateNew(DomainObjectIDs.OrderTicket2);
-      var propertyDefinition = GetPropertyDefinition(typeof (OrderTicket), "Order");
+      var propertyDefinition = GetPropertyDefinition(typeof(OrderTicket), "Order");
       Assert.That(newDataContainer.GetValue(propertyDefinition), Is.Not.EqualTo(DomainObjectIDs.Order1));
 
       newDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);

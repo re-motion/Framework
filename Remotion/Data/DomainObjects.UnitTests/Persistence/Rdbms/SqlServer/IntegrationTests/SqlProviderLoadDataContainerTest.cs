@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithGuidID ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithGuidKey), new Guid("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+      ObjectID id = new ObjectID(typeof(ClassWithGuidKey), new Guid("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
       DataContainer container = Provider.LoadDataContainer(id).LocatedObject;
 
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithInvalidIDType ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithKeyOfInvalidType), new Guid("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+      ObjectID id = new ObjectID(typeof(ClassWithKeyOfInvalidType), new Guid("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
       var rdbmsProviderException = Assert.Throws<RdbmsProviderException>(
           () =>
@@ -51,13 +51,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
             DataContainer container = Provider.LoadDataContainer(id).LocatedObject;
           });
       Assert.That(rdbmsProviderException.Message, Is.EqualTo("Error while executing SQL command: Operand type clash: uniqueidentifier is incompatible with datetime"));
-      Assert.That(rdbmsProviderException.InnerException.GetType(), Is.EqualTo(typeof (SqlException)));
+      Assert.That(rdbmsProviderException.InnerException.GetType(), Is.EqualTo(typeof(SqlException)));
     }
 
     [Test]
     public void LoadDataContainerWithoutIDColumn ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithoutIDColumn), new Guid("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+      ObjectID id = new ObjectID(typeof(ClassWithoutIDColumn), new Guid("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
       
       var rdbmsProviderException = Assert.Throws<RdbmsProviderException>(
           () =>
@@ -65,13 +65,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
             DataContainer container = Provider.LoadDataContainer(id).LocatedObject;
           });
       Assert.That(rdbmsProviderException.Message, Is.EqualTo("Error while executing SQL command: Invalid column name 'ID'.\r\nInvalid column name 'ID'."));
-      Assert.That(rdbmsProviderException.InnerException.GetType(), Is.EqualTo(typeof (SqlException)));
+      Assert.That(rdbmsProviderException.InnerException.GetType(), Is.EqualTo(typeof(SqlException)));
     }
 
     [Test]
     public void LoadDataContainerWithoutClassIDColumn ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithoutClassIDColumn), new Guid("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
+      ObjectID id = new ObjectID(typeof(ClassWithoutClassIDColumn), new Guid("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
       Assert.That(
           () => Provider.LoadDataContainer(id),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithoutTimestampColumn ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithoutTimestampColumn), new Guid("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
+      ObjectID id = new ObjectID(typeof(ClassWithoutTimestampColumn), new Guid("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
       Assert.That(
           () => Provider.LoadDataContainer(id),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithNonExistingClassID ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithGuidKey), new Guid("{C9F16F93-CF42-4357-B87B-7493882AAEAF}"));
+      ObjectID id = new ObjectID(typeof(ClassWithGuidKey), new Guid("{C9F16F93-CF42-4357-B87B-7493882AAEAF}"));
       Assert.That(
           () => Provider.LoadDataContainer(id),
           Throws.InstanceOf<MappingException>()
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithClassIDFromOtherClass ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithGuidKey), new Guid("{895853EB-06CD-4291-B467-160560AE8EC1}"));
+      ObjectID id = new ObjectID(typeof(ClassWithGuidKey), new Guid("{895853EB-06CD-4291-B467-160560AE8EC1}"));
       Assert.That(
           () => Provider.LoadDataContainer(id),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerByNonExistingID ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithAllDataTypes), new Guid("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
+      ObjectID id = new ObjectID(typeof(ClassWithAllDataTypes), new Guid("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
 
       Assert.That(Provider.LoadDataContainer(id).LocatedObject, Is.Null);
     }
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerByID ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithAllDataTypes), new Guid("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+      ObjectID id = new ObjectID(typeof(ClassWithAllDataTypes), new Guid("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
       DataContainer actualContainer = Provider.LoadDataContainer(id).LocatedObject;
 
@@ -156,18 +156,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithNullForeignKey ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithValidRelations), new Guid("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
+      ObjectID id = new ObjectID(typeof(ClassWithValidRelations), new Guid("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
       DataContainer container = Provider.LoadDataContainer(id).LocatedObject;
 
-      Assert.IsNull(container.GetValue(GetPropertyDefinition(typeof (ClassWithValidRelations), "ClassWithGuidKeyOptional")), "PropertyValue.Value");
+      Assert.IsNull(container.GetValue(GetPropertyDefinition(typeof(ClassWithValidRelations), "ClassWithGuidKeyOptional")), "PropertyValue.Value");
     }
 
     [Test]
     public void LoadDataContainerWithRelation ()
     {
       DataContainer orderTicketContainer = Provider.LoadDataContainer(DomainObjectIDs.OrderTicket1).LocatedObject;
-      var propertyDefinition = GetPropertyDefinition(typeof (OrderTicket), "Order");
+      var propertyDefinition = GetPropertyDefinition(typeof(OrderTicket), "Order");
       Assert.That(orderTicketContainer.GetValue(propertyDefinition), Is.EqualTo(DomainObjectIDs.Order1));
     }
 
@@ -175,14 +175,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void LoadDataContainerWithRelationAndInheritance ()
     {
       DataContainer ceoContainer = Provider.LoadDataContainer(DomainObjectIDs.Ceo7).LocatedObject;
-      var propertyDefinition = GetPropertyDefinition(typeof (Ceo), "Company");
+      var propertyDefinition = GetPropertyDefinition(typeof(Ceo), "Company");
       Assert.That(ceoContainer.GetValue(propertyDefinition), Is.EqualTo(DomainObjectIDs.Partner2));
     }
 
     [Test]
     public void LoadDataContainerWithoutRelatedIDColumn ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithoutRelatedClassIDColumn), new Guid("{CD3BE83E-FBB7-4251-AAE4-B216485C5638}"));
+      ObjectID id = new ObjectID(typeof(ClassWithoutRelatedClassIDColumn), new Guid("{CD3BE83E-FBB7-4251-AAE4-B216485C5638}"));
       Assert.That(
           () => Provider.LoadDataContainer(id),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainerWithoutRelatedIDColumnAndDerivation ()
     {
-      ObjectID id = new ObjectID(typeof (ClassWithoutRelatedClassIDColumnAndDerivation),
+      ObjectID id = new ObjectID(typeof(ClassWithoutRelatedClassIDColumnAndDerivation),
                            new Guid("{4821D7F7-B586-4435-B572-8A96A44B113E}"));
       Assert.That(
           () => Provider.LoadDataContainer(id),

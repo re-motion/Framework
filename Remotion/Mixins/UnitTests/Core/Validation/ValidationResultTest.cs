@@ -32,8 +32,8 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     [SetUp]
     public void SetUp ()
     {
-      _parentDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (object));
-      _nestedDefinition = DefinitionObjectMother.CreateMixinDefinition(_parentDefinition, typeof (string));
+      _parentDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(object));
+      _nestedDefinition = DefinitionObjectMother.CreateMixinDefinition(_parentDefinition, typeof(string));
       _nestedNestedDefinition = DefinitionObjectMother.CreateMethodDefinition(_nestedDefinition, ReflectionObjectMother.GetSomeMethod());
     }
 

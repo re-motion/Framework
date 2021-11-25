@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   public class GuidProperty : PropertyBase, IBusinessObjectStringProperty
   {
     public GuidProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
 

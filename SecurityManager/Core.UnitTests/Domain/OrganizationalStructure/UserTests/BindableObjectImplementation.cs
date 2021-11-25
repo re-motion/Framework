@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     public override void TearDown ()
     {
       base.TearDown();
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -74,10 +74,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (GroupPropertyTypeSearchService), searchServiceStub.Object);
-      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (User));
+          .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
+      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(User));
       IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition("OwningGroup");
       Assert.That(owningGroupProperty, Is.Not.Null);
 

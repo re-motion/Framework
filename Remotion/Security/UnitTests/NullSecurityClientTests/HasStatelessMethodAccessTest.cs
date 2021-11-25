@@ -36,14 +36,14 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
-      _methodInfo = typeof (SecurableObject).GetMethod("Show");
+      _methodInfo = typeof(SecurableObject).GetMethod("Show");
       _methodInformation = new Mock<IMethodInformation>();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "Show");
+      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof(SecurableObject), "Show");
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.True);
@@ -52,7 +52,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithMethodInfo ()
     {
-      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), _methodInfo);
+      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof(SecurableObject), _methodInfo);
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.True);
@@ -61,7 +61,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithMethodInformation ()
     {
-      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), _methodInformation.Object);
+      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof(SecurableObject), _methodInformation.Object);
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.True);
@@ -73,7 +73,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "Show");
+        hasAccess = _securityClient.HasStatelessMethodAccess(typeof(SecurableObject), "Show");
       }
 
       _testHelper.VerifyAll();
@@ -86,7 +86,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), _methodInfo);
+        hasAccess = _securityClient.HasStatelessMethodAccess(typeof(SecurableObject), _methodInfo);
       }
 
       _testHelper.VerifyAll();
@@ -99,7 +99,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), _methodInformation.Object);
+        hasAccess = _securityClient.HasStatelessMethodAccess(typeof(SecurableObject), _methodInformation.Object);
       }
 
       _testHelper.VerifyAll();

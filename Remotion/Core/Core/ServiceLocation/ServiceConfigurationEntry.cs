@@ -72,7 +72,7 @@ namespace Remotion.ServiceLocation
     /// <param name="serviceType">The service type. This is a type for which instances are requested from a service locator.</param>
     /// <param name="implementationInfos">The <see cref="ServiceImplementationInfo"/> for the <paramref name="serviceType" />.</param>
     public ServiceConfigurationEntry (Type serviceType, params ServiceImplementationInfo[] implementationInfos)
-        : this (serviceType, (IEnumerable<ServiceImplementationInfo>) implementationInfos)
+        : this(serviceType, (IEnumerable<ServiceImplementationInfo>) implementationInfos)
     {
     }
 

@@ -42,13 +42,13 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initializes a new instance. </summary>
     public WebTreeNodeCollection (IControl? ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
     }
 
     /// <summary> Initializes a new instance. </summary>
     public WebTreeNodeCollection (IControl? ownerControl)
-        : this (ownerControl, new[] { typeof (WebTreeNode) })
+        : this(ownerControl, new[] { typeof(WebTreeNode) })
     {
     }
 

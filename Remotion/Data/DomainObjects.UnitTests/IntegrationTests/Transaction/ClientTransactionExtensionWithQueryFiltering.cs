@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
   public class ClientTransactionExtensionWithQueryFiltering : ClientTransactionExtensionBase
   {
     public ClientTransactionExtensionWithQueryFiltering ()
-        : base(typeof (ClientTransactionExtensionWithQueryFiltering).FullName)
+        : base(typeof(ClientTransactionExtensionWithQueryFiltering).FullName)
     {
     }
 

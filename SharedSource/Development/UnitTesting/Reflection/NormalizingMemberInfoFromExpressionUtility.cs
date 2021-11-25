@@ -55,13 +55,13 @@ namespace Remotion.Development.UnitTesting.Reflection
     public static MemberInfo GetMember<TSourceObject> (Expression<Action<TSourceObject>> expression)
     {
       ArgumentUtility.CheckNotNull("expression", expression);
-      return GetMemberInfoFromExpression(typeof (TSourceObject), expression.Body);
+      return GetMemberInfoFromExpression(typeof(TSourceObject), expression.Body);
     }
 
     public static MemberInfo GetMember<TSourceObject, TMemberType> (Expression<Func<TSourceObject, TMemberType>> expression)
     {
       ArgumentUtility.CheckNotNull("expression", expression);
-      return GetMemberInfoFromExpression(typeof (TSourceObject), expression.Body);
+      return GetMemberInfoFromExpression(typeof(TSourceObject), expression.Body);
     }
 
     public static FieldInfo GetField<TFieldType> (Expression<Func<TFieldType>> expression)
@@ -97,13 +97,13 @@ namespace Remotion.Development.UnitTesting.Reflection
     public static MethodInfo GetMethod<TSourceObject> (Expression<Action<TSourceObject>> expression)
     {
       ArgumentUtility.CheckNotNull("expression", expression);
-      return GetMethodInfoFromMethodCallExpression(typeof (TSourceObject), expression.Body);
+      return GetMethodInfoFromMethodCallExpression(typeof(TSourceObject), expression.Body);
     }
 
     public static MethodInfo GetMethod<TSourceObject, TReturnType> (Expression<Func<TSourceObject, TReturnType>> expression)
     {
       ArgumentUtility.CheckNotNull("expression", expression);
-      return GetMethodInfoFromMethodCallExpression(typeof (TSourceObject), expression.Body);
+      return GetMethodInfoFromMethodCallExpression(typeof(TSourceObject), expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition (Expression<Action> expression)
@@ -121,13 +121,13 @@ namespace Remotion.Development.UnitTesting.Reflection
     public static MethodInfo GetGenericMethodDefinition<TSourceObject> (Expression<Action<TSourceObject>> expression)
     {
       ArgumentUtility.CheckNotNull("expression", expression);
-      return GetGenericMethodDefinition(typeof (TSourceObject), expression.Body);
+      return GetGenericMethodDefinition(typeof(TSourceObject), expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition<TSourceObject, TReturnType> (Expression<Func<TSourceObject, TReturnType>> expression)
     {
       ArgumentUtility.CheckNotNull("expression", expression);
-      return GetGenericMethodDefinition(typeof (TSourceObject), expression.Body);
+      return GetGenericMethodDefinition(typeof(TSourceObject), expression.Body);
     }
 
     public static PropertyInfo GetProperty<TPropertyType> (Expression<Func<TPropertyType>> expression)
@@ -139,7 +139,7 @@ namespace Remotion.Development.UnitTesting.Reflection
     public static PropertyInfo GetProperty<TSourceObject, TPropertyType> (Expression<Func<TSourceObject, TPropertyType>> expression)
     {
       ArgumentUtility.CheckNotNull("expression", expression);
-      return GetPropertyInfoFromMemberExpression(typeof (TSourceObject), expression.Body);
+      return GetPropertyInfoFromMemberExpression(typeof(TSourceObject), expression.Body);
     }
 
     private static MemberInfo GetMemberInfoFromExpression (Type? sourceObjectType, Expression expression)

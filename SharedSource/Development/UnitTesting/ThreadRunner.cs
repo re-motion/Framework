@@ -35,7 +35,7 @@ namespace Remotion.Development.UnitTesting
     private readonly TimeSpan _timeoutTimeSpan;
 
     public ThreadRunner (ThreadStart threadStart)
-      : this (threadStart, System.Threading.Timeout.InfiniteTimeSpan)
+      : this(threadStart, System.Threading.Timeout.InfiniteTimeSpan)
     {
     }
 

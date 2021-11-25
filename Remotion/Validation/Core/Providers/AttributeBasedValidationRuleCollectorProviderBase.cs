@@ -77,17 +77,17 @@ namespace Remotion.Validation.Providers
         var methodInfo = MemberInfoFromExpressionUtility.GetGenericMethodDefinition(() => SetValidationRulesForProperty<object, object>(null!));
         var closedGenericMethodInfo = methodInfo.MakeGenericMethod(@params.ValidatedType, @params.PropertyType);
         return (Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>) closedGenericMethodInfo.CreateDelegate(
-            typeof (Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>));
+            typeof(Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>));
       }
     }
 
     private static ValidationRulesResult SetValidationRulesForProperty<TValidatedType, TProperty> (
         IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector)
     {
-      var validatedType = typeof (TValidatedType);
+      var validatedType = typeof(TValidatedType);
       var property = propertyRuleReflector.ValidatedProperty;
       var propertyFunc = propertyRuleReflector.GetValidatedPropertyFunc(validatedType); // TODO RM-5906: change to return Func<TValidatedType, TProperty>
-      var collectorType = typeof (AttributeBasedValidationRuleCollector);
+      var collectorType = typeof(AttributeBasedValidationRuleCollector);
 
       var addingPropertyRule = GetAddingPropertyRuleForRemovableValidators<TValidatedType, TProperty>(propertyRuleReflector, property, propertyFunc, collectorType);
       var addingHardConstraintPropertyRule = GetAddingPropertyRuleForNonRemovableValidators<TValidatedType, TProperty>(

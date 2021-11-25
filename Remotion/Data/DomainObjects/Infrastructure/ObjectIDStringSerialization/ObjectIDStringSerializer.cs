@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     public static readonly ObjectIDStringSerializer Instance = new ObjectIDStringSerializer();
 
     private static readonly string s_delimiterAsString = Delimiter.ToString();
-    private static readonly string s_delimitedGuidTypeName = Delimiter + typeof (Guid).GetFullNameChecked();
-    private static readonly string s_delimitedInt32TypeName = Delimiter + typeof (Int32).GetFullNameChecked();
-    private static readonly string s_delimitedStringTypeName = Delimiter + typeof (String).GetFullNameChecked();
+    private static readonly string s_delimitedGuidTypeName = Delimiter + typeof(Guid).GetFullNameChecked();
+    private static readonly string s_delimitedInt32TypeName = Delimiter + typeof(Int32).GetFullNameChecked();
+    private static readonly string s_delimitedStringTypeName = Delimiter + typeof(String).GetFullNameChecked();
 
     private ObjectIDStringSerializer ()
     {
@@ -151,11 +151,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
     private IObjectIDValueParser GetValueParser (Type type)
     {
-      if (type == typeof (Guid))
+      if (type == typeof(Guid))
         return GuidObjectIDValueParser.Instance;
-      else if (type == typeof (Int32))
+      else if (type == typeof(Int32))
         return Int32ObjectIDValueParser.Instance;
-      else if (type == typeof (String))
+      else if (type == typeof(String))
         return StringObjectIDValueParser.Instance;
       else
         return null;

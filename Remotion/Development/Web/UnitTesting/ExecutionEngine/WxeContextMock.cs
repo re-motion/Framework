@@ -45,7 +45,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
     }
 
     public WxeContextMock (HttpContext context)
-        : base (
+        : base(
             new HttpContextWrapper(context),
             new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
             new WxeFunctionState(new TestFunction(), false),
@@ -54,7 +54,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
     }
 
     public WxeContextMock (HttpContext context, NameValueCollection queryString)
-        : base (
+        : base(
             new HttpContextWrapper(context),
             new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
             new WxeFunctionState(new TestFunction(), false),

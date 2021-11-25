@@ -25,7 +25,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 public class WxeParameterConverterMock: WxeParameterConverter
 {
   public WxeParameterConverterMock (WxeParameterDeclaration parameter)
-    : base (parameter)
+    : base(parameter)
   {
   }
 

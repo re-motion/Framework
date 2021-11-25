@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     /// Executing this state will transition the <see cref="IExecutionStateContext"/> into the <see cref="PostProcessingSubFunctionState"/>.
     /// </summary>
     public RedirectingToSubFunctionState (IExecutionStateContext executionStateContext, RedirectingToSubFunctionStateParameters parameters)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
     }
 

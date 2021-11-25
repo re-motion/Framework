@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void SetUp ()
     {
       _validationRule = new PropertyTypeIsSupportedByStorageProviderValidationRule();
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (DerivedValidationDomainObjectClass));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassNone")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassNone")),
           "PropertyWithStorageClassNone", 
           false,
           true,
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassPersistent")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassPersistent")),
           "PropertyWithStorageClassPersistent", 
           false,
           true,
@@ -85,13 +85,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
           "PropertyWithTypeObjectWithStorageClassPersistent", 
           false,
           true,
           null,
           StorageClass.Persistent);
-      propertyDefinition.SetStorageProperty(new UnsupportedStoragePropertyDefinition(typeof (int), "Message", null));
+      propertyDefinition.SetStorageProperty(new UnsupportedStoragePropertyDefinition(typeof(int), "Message", null));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
 

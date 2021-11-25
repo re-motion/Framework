@@ -52,7 +52,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       
       string? page = pageObject as string;
       if (page == null)
-        throw new InvalidCastException(string.Format("The variable '{0}' was of type '{1}'. Expected type is '{2}'.", _pathReference.Name, pageObject.GetType().GetFullNameSafe(), typeof (string).GetFullNameSafe()));
+        throw new InvalidCastException(string.Format("The variable '{0}' was of type '{1}'. Expected type is '{2}'.", _pathReference.Name, pageObject.GetType().GetFullNameSafe(), typeof(string).GetFullNameSafe()));
 
       return VirtualPathUtility.Combine(
           VirtualPathUtility.AppendTrailingSlash(ResourceRoot),

@@ -50,13 +50,13 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin2 -> NullMixin3 -> NullMixin
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin2), false, new[] { typeof (NullMixin3) }),
-          Tuple.Create(typeof (NullMixin3), false, new[] { typeof (NullMixin) }));
+          Tuple.Create(typeof(NullMixin), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin2), false, new[] { typeof(NullMixin3) }),
+          Tuple.Create(typeof(NullMixin3), false, new[] { typeof(NullMixin) }));
 
       var result = _sorter.SortMixins(targetClassDefinition.Mixins);
 
-      CheckResult(result, typeof (NullMixin2), typeof (NullMixin3), typeof (NullMixin));
+      CheckResult(result, typeof(NullMixin2), typeof(NullMixin3), typeof(NullMixin));
     }
 
     [Test]
@@ -64,10 +64,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin -> NullMixin2 -> NullMixin3 -> NullMixin, NullMixin4
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin), false, new[] { typeof (NullMixin2) }),
-          Tuple.Create(typeof (NullMixin2), false, new[] { typeof (NullMixin3) }),
-          Tuple.Create(typeof (NullMixin3), false, new[] { typeof (NullMixin), typeof (NullMixin4) }),
-          Tuple.Create(typeof (NullMixin4), false, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin), false, new[] { typeof(NullMixin2) }),
+          Tuple.Create(typeof(NullMixin2), false, new[] { typeof(NullMixin3) }),
+          Tuple.Create(typeof(NullMixin3), false, new[] { typeof(NullMixin), typeof(NullMixin4) }),
+          Tuple.Create(typeof(NullMixin4), false, Type.EmptyTypes));
 
       Assert.That(
           () =>_sorter.SortMixins(targetClassDefinition.Mixins).ToArray(),
@@ -84,14 +84,14 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin -> NullMixin2 / NullMixin3 -> NullMixin4
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin2), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin3), false, new[] { typeof (NullMixin4) }),
-          Tuple.Create(typeof (NullMixin), false, new[] { typeof (NullMixin2) }),
-          Tuple.Create(typeof (NullMixin4), false, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin2), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin3), false, new[] { typeof(NullMixin4) }),
+          Tuple.Create(typeof(NullMixin), false, new[] { typeof(NullMixin2) }),
+          Tuple.Create(typeof(NullMixin4), false, Type.EmptyTypes));
 
       var result = _sorter.SortMixins(targetClassDefinition.Mixins);
 
-      CheckResult(result, typeof (NullMixin), typeof (NullMixin3), typeof (NullMixin2), typeof (NullMixin4));
+      CheckResult(result, typeof(NullMixin), typeof(NullMixin3), typeof(NullMixin2), typeof(NullMixin4));
     }
 
     [Test]
@@ -99,15 +99,15 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin / NullMixin2
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin2), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin), false, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin2), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin), false, Type.EmptyTypes));
 
-      AddOverride(targetClassDefinition, typeof (NullMixin), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin2), "GetHashCode");
+      AddOverride(targetClassDefinition, typeof(NullMixin), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin2), "GetHashCode");
 
       var result = _sorter.SortMixins(targetClassDefinition.Mixins);
 
-      CheckResult(result, typeof (NullMixin), typeof (NullMixin2));
+      CheckResult(result, typeof(NullMixin), typeof(NullMixin2));
     }
 
     [Test]
@@ -115,17 +115,17 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin / NullMixin2 / NullMixin3
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin3), true, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin), true, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin2), true, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin3), true, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin), true, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin2), true, Type.EmptyTypes));
       
-      AddOverride(targetClassDefinition, typeof (NullMixin), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin2), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin3), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin2), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin3), "ToString");
 
       var result = _sorter.SortMixins(targetClassDefinition.Mixins);
 
-      CheckResult(result, typeof (NullMixin), typeof (NullMixin2), typeof (NullMixin3));
+      CheckResult(result, typeof(NullMixin), typeof(NullMixin2), typeof(NullMixin3));
     }
 
     [Test]
@@ -133,17 +133,17 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin / NullMixin2 / NullMixin3
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin3), true, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin2), true, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin3), true, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin2), true, Type.EmptyTypes));
 
-      AddOverride(targetClassDefinition, typeof (NullMixin), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin2), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin3), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin2), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin3), "ToString");
 
       var result = _sorter.SortMixins(targetClassDefinition.Mixins);
 
-      CheckResult(result, typeof (NullMixin), typeof (NullMixin2), typeof (NullMixin3));
+      CheckResult(result, typeof(NullMixin), typeof(NullMixin2), typeof(NullMixin3));
     }
 
     [Test]
@@ -151,13 +151,13 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin / NullMixin2 / NullMixin3
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin3), true, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin2), false, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin3), true, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin2), false, Type.EmptyTypes));
 
-      AddOverride(targetClassDefinition, typeof (NullMixin), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin2), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin3), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin2), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin3), "ToString");
 
       Assert.That(
           () => _sorter.SortMixins(targetClassDefinition.Mixins).ToArray(),
@@ -176,15 +176,15 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin / NullMixin2 + NullMixin3 / NullMixin4
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin3), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin4), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin2), false, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin3), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin4), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin2), false, Type.EmptyTypes));
 
-      AddOverride(targetClassDefinition, typeof (NullMixin), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin2), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin3), "GetHashCode");
-      AddOverride(targetClassDefinition, typeof (NullMixin4), "GetHashCode");
+      AddOverride(targetClassDefinition, typeof(NullMixin), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin2), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin3), "GetHashCode");
+      AddOverride(targetClassDefinition, typeof(NullMixin4), "GetHashCode");
 
       Assert.That(
           () => _sorter.SortMixins(targetClassDefinition.Mixins).ToArray(),
@@ -204,15 +204,15 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       // NullMixin / NullMixin2 + NullMixin3 / NullMixin4
       var targetClassDefinition = CreateTargetClassDefinition(
-          Tuple.Create(typeof (NullMixin3), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin4), false, Type.EmptyTypes),
-          Tuple.Create(typeof (NullMixin2), false, Type.EmptyTypes));
+          Tuple.Create(typeof(NullMixin3), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin4), false, Type.EmptyTypes),
+          Tuple.Create(typeof(NullMixin2), false, Type.EmptyTypes));
 
-      AddOverride(targetClassDefinition, typeof (NullMixin), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin2), "ToString");
-      AddOverride(targetClassDefinition, typeof (NullMixin), "GetHashCode");
-      AddOverride(targetClassDefinition, typeof (NullMixin2), "GetHashCode");
+      AddOverride(targetClassDefinition, typeof(NullMixin), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin2), "ToString");
+      AddOverride(targetClassDefinition, typeof(NullMixin), "GetHashCode");
+      AddOverride(targetClassDefinition, typeof(NullMixin2), "GetHashCode");
 
       Assert.That(
           () => _sorter.SortMixins(targetClassDefinition.Mixins).ToArray(),
@@ -243,7 +243,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
 
     private static TargetClassDefinition CreateTargetClassDefinition (params Tuple<Type, bool, Type[]>[] mixinTypesAndDependencies)
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (NullTarget));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(NullTarget));
 
       foreach (var tuple in mixinTypesAndDependencies)
       {

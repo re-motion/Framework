@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     }
 
     protected ClassWithAllDataTypes (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
 

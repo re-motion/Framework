@@ -31,9 +31,9 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
     public void SetUp ()
     {
       _validatorBuilder = SafeServiceLocator.Current.GetInstance<IValidatorBuilder>();
-      _personValidator = _validatorBuilder.BuildValidator(typeof (Person));
+      _personValidator = _validatorBuilder.BuildValidator(typeof(Person));
 
-      _personClass = BindableObjectProvider.GetProviderForBindableObjectType(typeof (Person)).GetBindableObjectClass(typeof (Person));
+      _personClass = BindableObjectProvider.GetProviderForBindableObjectType(typeof(Person)).GetBindableObjectClass(typeof(Person));
       _firstNameBusinessObjectProperty = Assertion.IsNotNull(_personClass.GetPropertyDefinition("FirstName"));
       _lastNameBusinessObjectProperty = Assertion.IsNotNull(_personClass.GetPropertyDefinition("LastName"));
       _phoneNumberBusinessObjectProperty = Assertion.IsNotNull(_personClass.GetPropertyDefinition("PhoneNumber"));

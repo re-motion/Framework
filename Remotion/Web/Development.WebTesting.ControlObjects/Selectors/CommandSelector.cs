@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class CommandSelector : TypedControlSelectorBase<CommandControlObject>
   {
     public CommandSelector ()
-        : base ("Command")
+        : base("Command")
     {
     }
 

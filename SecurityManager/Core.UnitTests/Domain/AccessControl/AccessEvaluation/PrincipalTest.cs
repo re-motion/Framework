@@ -73,8 +73,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var roles = new[]
                   {
                       new PrincipalRole(
-                          new DomainObjectHandle<Position>(new ObjectID(typeof (Position), Guid.NewGuid())),
-                          new DomainObjectHandle<Group>(new ObjectID(typeof (Group), Guid.NewGuid())))
+                          new DomainObjectHandle<Position>(new ObjectID(typeof(Position), Guid.NewGuid())),
+                          new DomainObjectHandle<Group>(new ObjectID(typeof(Group), Guid.NewGuid())))
                   };
       Principal principal = new Principal(tenant.GetHandle(), null, roles);
 

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T>(true);
     }

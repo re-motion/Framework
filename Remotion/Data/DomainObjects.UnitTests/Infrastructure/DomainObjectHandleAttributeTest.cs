@@ -37,16 +37,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void GetReferencedType_ReturnsDomainObjectHandleTypeParameter ()
     {
-      var result = _attribute.GetReferencedType(typeof (IDomainObjectHandle<Order>));
+      var result = _attribute.GetReferencedType(typeof(IDomainObjectHandle<Order>));
 
-      Assert.That(result, Is.SameAs(typeof (Order)));
+      Assert.That(result, Is.SameAs(typeof(Order)));
     }
 
     [Test]
     public void GetReferencedType_NonGenericType_Throws ()
     {
       Assert.That(
-          () => _attribute.GetReferencedType(typeof (Order)),
+          () => _attribute.GetReferencedType(typeof(Order)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType"));
     }
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void GetReferencedType_WrongGenericType_Throws ()
     {
       Assert.That(
-          () => _attribute.GetReferencedType(typeof (List<Order>)),
+          () => _attribute.GetReferencedType(typeof(List<Order>)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType"));
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void GetReferencedType_DomainObjectHandleClass_Throws ()
     {
       Assert.That(
-          () => _attribute.GetReferencedType(typeof (DomainObjectHandle<Order>)),
+          () => _attribute.GetReferencedType(typeof(DomainObjectHandle<Order>)),
           Throws.ArgumentException,
           "It's not recommended to use the DomainObjectHandle<T> class directly, the interface should be used instead.");
     }

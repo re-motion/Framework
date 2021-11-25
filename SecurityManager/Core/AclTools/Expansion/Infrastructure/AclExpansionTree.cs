@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>> _aclExpansionTree;
 
     public AclExpansionTree (List<AclExpansionEntry> aclExpansion)
-        : this (aclExpansion, (classEntry  => (classEntry.AccessControlList is StatelessAccessControlList) ? "" : classEntry.Class.DisplayName))
+        : this(aclExpansion, (classEntry  => (classEntry.AccessControlList is StatelessAccessControlList) ? "" : classEntry.Class.DisplayName))
     {
     }
 

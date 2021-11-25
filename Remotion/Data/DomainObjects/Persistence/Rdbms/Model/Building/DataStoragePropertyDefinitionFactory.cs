@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           (RelationEndPointDefinition) propertyDefinition.ClassDefinition.GetRelationEndPointDefinition(propertyDefinition.PropertyName);
       if (relationEndPointDefinition != null)
       {
-        Assertion.IsTrue(propertyDefinition.PropertyType == typeof (ObjectID));
+        Assertion.IsTrue(propertyDefinition.PropertyType == typeof(ObjectID));
         return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(relationEndPointDefinition);
       }
       else

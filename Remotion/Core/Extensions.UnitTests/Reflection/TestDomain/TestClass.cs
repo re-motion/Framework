@@ -23,34 +23,34 @@ namespace Remotion.Extensions.UnitTests.Reflection.TestDomain
   {
     public static Type StaticMethod (Base @base)
     {
-      return typeof (Base);
+      return typeof(Base);
     }
 
     public static Type StaticMethod (Derived derived)
     {
-      return typeof (Derived);
+      return typeof(Derived);
     }
     
     public readonly Type InvocationType;
 
     public TestClass (Base @base)
     {
-      InvocationType = typeof (Base);
+      InvocationType = typeof(Base);
     }
 
     public TestClass (Derived derived)
     {
-      InvocationType = typeof (Derived);
+      InvocationType = typeof(Derived);
     }
 
     public Type InstanceMethod (Base @base)
     {
-      return typeof (Base);
+      return typeof(Base);
     }
 
     public Type InstanceMethod (Derived derived)
     {
-      return typeof (Derived);
+      return typeof(Derived);
     }
   }
 }

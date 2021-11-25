@@ -28,13 +28,13 @@ namespace Remotion.Mixins.Context.Serialization
   {
     protected override object ConvertToStorageFormat<T> (T value)
     {
-      if (typeof (T) == typeof (Type[]))
+      if (typeof(T) == typeof(Type[]))
       {
         var convertedTypes = ((Type[]) (object) value).Select(ConvertToStorageFormat).Cast<string>().ToArray();
         return ConvertToStorageFormat(convertedTypes);
       }
 
-      if (typeof (T) == typeof (Type))
+      if (typeof(T) == typeof(Type))
         return ConvertToStorageFormat(((Type) (object) value).GetAssemblyQualifiedNameChecked());
 
       return base.ConvertToStorageFormat(value);

@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _serializationInfo = new SerializationInfo(typeof(object), new FormatterConverter());
       _context = new StreamingContext();
       _concreteMixin = new FakeConcreteMixinType();
-      var classContext = ClassContextObjectMother.Create(typeof (ClassOverridingMixinMembers), typeof (FakeConcreteMixinType));
+      var classContext = ClassContextObjectMother.Create(typeof(ClassOverridingMixinMembers), typeof(FakeConcreteMixinType));
       _identifier = DefinitionObjectMother.GetTargetClassDefinition(classContext).Mixins[0].GetConcreteMixinTypeIdentifier();
 
       _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>()

@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // static members
     private static readonly Type[] s_supportedPropertyInterfaces = new Type[]
                                                                    {
-                                                                       typeof (IBusinessObjectReferenceProperty)
+                                                                       typeof(IBusinessObjectReferenceProperty)
                                                                    };
 
     private static readonly object s_clickEvent = new object();
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and destruction
 
     public BocTreeView ()
-        : this (SafeServiceLocator.Current.GetInstance<IRenderingFeatures>(), SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+        : this(SafeServiceLocator.Current.GetInstance<IRenderingFeatures>(), SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
     }
 
@@ -425,7 +425,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                 "BusinessObjectPropertyTreeNode with ItemID '{0}' has parent node of type '{1}' but property node cannot be children of nodes of type '{2}'.",
                 propertyNode.ItemID,
                 propertyNode.ParentNode.GetType().Name,
-                typeof (BusinessObjectTreeNode).Name));
+                typeof(BusinessObjectTreeNode).Name));
       }
 
       BusinessObjectTreeNode parentNode = (BusinessObjectTreeNode) propertyNode.ParentNode;
@@ -550,7 +550,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               && referenceProperty.IsAccessible(parentBusinessObject))
             referenceListPropertyInfos.Add(CreateBusinessObjectPropertyTreeNodeInfo(referenceProperty));
         }
-        return (BusinessObjectPropertyTreeNodeInfo[]) referenceListPropertyInfos.ToArray(typeof (BusinessObjectPropertyTreeNodeInfo));
+        return (BusinessObjectPropertyTreeNodeInfo[]) referenceListPropertyInfos.ToArray(typeof(BusinessObjectPropertyTreeNodeInfo));
       }
 
       return new[] { CreateBusinessObjectPropertyTreeNodeInfo(Property) };
@@ -1137,13 +1137,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string[] _path;
 
     public BocTreeNodeClickEventArgs (BusinessObjectTreeNode node, string[] path)
-        : base (node)
+        : base(node)
     {
       _path = path;
     }
 
     public BocTreeNodeClickEventArgs (BusinessObjectPropertyTreeNode node, string[] path)
-        : base (node)
+        : base(node)
     {
       _path = path;
     }
@@ -1162,12 +1162,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocTreeNodeEventArgs : WebTreeNodeEventArgs
   {
     public BocTreeNodeEventArgs (BusinessObjectTreeNode node)
-        : base (node)
+        : base(node)
     {
     }
 
     public BocTreeNodeEventArgs (BusinessObjectPropertyTreeNode node)
-        : base (node)
+        : base(node)
     {
     }
 

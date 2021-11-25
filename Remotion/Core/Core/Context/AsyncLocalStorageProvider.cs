@@ -24,7 +24,7 @@ using Remotion.Logging;
 
 namespace Remotion.Context
 {
-  [ImplementationFor (typeof (ISafeContextStorageProvider), Lifetime = LifetimeKind.Singleton, Position = 1)]
+  [ImplementationFor (typeof(ISafeContextStorageProvider), Lifetime = LifetimeKind.Singleton, Position = 1)]
   public class AsyncLocalStorageProvider : ISafeContextStorageProvider
   {
     /// <summary>
@@ -104,7 +104,7 @@ namespace Remotion.Context
       }
     }
 
-    private static readonly Lazy<ILog> s_log = new(() => LogManager.GetLogger(typeof (AsyncLocalStorageProvider)));
+    private static readonly Lazy<ILog> s_log = new(() => LogManager.GetLogger(typeof(AsyncLocalStorageProvider)));
 
     private static readonly ConditionalWeakTable<StorageContext, ObjectIdentifier> s_objectIdentifiers = new();
     private static int s_nextObjectIdentifier;
@@ -129,7 +129,7 @@ namespace Remotion.Context
     private readonly AsyncLocal<StorageContext> _context;
 
     public AsyncLocalStorageProvider ()
-        : this (false)
+        : this(false)
     {
     }
 

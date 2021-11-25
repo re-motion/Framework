@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       }
       catch (WxeFatalExecutionException ex)
       {
-        Assert.IsInstanceOf(typeof (InvalidOperationException), ex.InnerException);
+        Assert.IsInstanceOf(typeof(InvalidOperationException), ex.InnerException);
         Assert.That(ex.InnerException.Message, Is.EqualTo("The ClientTransactionScope has already been left."));
       }
     }
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       }
       catch (WxeFatalExecutionException ex)
       {
-        Assert.IsInstanceOf(typeof (InvalidOperationException), ex.InnerException);
+        Assert.IsInstanceOf(typeof(InvalidOperationException), ex.InnerException);
         Assert.That(ex.InnerException.Message, Is.EqualTo("The ClientTransactionScope has already been left."));
       }
     }

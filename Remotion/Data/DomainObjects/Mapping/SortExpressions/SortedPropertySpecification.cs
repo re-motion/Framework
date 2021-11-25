@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
       var underlyingType = Nullable.GetUnderlyingType(propertyDefinition.PropertyType) ?? propertyDefinition.PropertyType;
 
-      if (underlyingType != null && !typeof (IComparable).IsAssignableFrom(underlyingType))
+      if (underlyingType != null && !typeof(IComparable).IsAssignableFrom(underlyingType))
       {
         var message = string.Format(
             "Cannot sort by property '{0}' - its property type ('{1}') does not implement IComparable.",

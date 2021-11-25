@@ -82,7 +82,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void AsRuntimeType_WithTypeAdapter_ReturnsRuntimeType ()
     {
-      var expectedType = typeof (TheType);
+      var expectedType = typeof(TheType);
       ITypeInformation typeInformation = TypeAdapter.Create(expectedType);
 
       Assert.That(typeInformation.AsRuntimeType(), Is.SameAs(expectedType));
@@ -99,7 +99,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void ConvertToRuntimeType_WithTypeAdapter_ReturnsRuntimeType ()
     {
-      var expectedType = typeof (TheType);
+      var expectedType = typeof(TheType);
       ITypeInformation typeInformation = TypeAdapter.Create(expectedType);
 
       Assert.That(typeInformation.ConvertToRuntimeType(), Is.SameAs(expectedType));

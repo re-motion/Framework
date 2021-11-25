@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       var instance = _serviceLocator.GetInstance<IDateTimeFormatter>();
 
       Assert.That(instance, Is.Not.Null);
-      Assert.That(instance, Is.TypeOf(typeof (DateTimeFormatter)));
+      Assert.That(instance, Is.TypeOf(typeof(DateTimeFormatter)));
     }
 
     [Test]

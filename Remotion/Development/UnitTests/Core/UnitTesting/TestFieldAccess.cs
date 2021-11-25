@@ -61,11 +61,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void TestStaticFields ()
     {
-      PrivateInvoke.SetPublicStaticField(typeof (TypeWithFields), "StaticIntField", 22);
-      Assert.That(PrivateInvoke.GetPublicStaticField(typeof (TypeWithFields), "StaticIntField"), Is.EqualTo(22));
+      PrivateInvoke.SetPublicStaticField(typeof(TypeWithFields), "StaticIntField", 22);
+      Assert.That(PrivateInvoke.GetPublicStaticField(typeof(TypeWithFields), "StaticIntField"), Is.EqualTo(22));
 
-      PrivateInvoke.SetNonPublicStaticField(typeof (TypeWithFields), "s_stringField", "test 4");
-      Assert.That(PrivateInvoke.GetNonPublicStaticField(typeof (TypeWithFields), "s_stringField"), Is.EqualTo("test 4"));
+      PrivateInvoke.SetNonPublicStaticField(typeof(TypeWithFields), "s_stringField", "test 4");
+      Assert.That(PrivateInvoke.GetNonPublicStaticField(typeof(TypeWithFields), "s_stringField"), Is.EqualTo("test 4"));
     }
   }
 

@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
         [NotNull] params StatefulAccessControlListData[] statefulAcls)
         where TClass : ISecurableObject
     {
-      _securityContextRepositoryStub.Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof (TClass))))
+      _securityContextRepositoryStub.Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof(TClass))))
                                     .Returns(new SecurableClassDefinitionData(null, statelessAcl, statefulAcls));
     }
 
@@ -71,10 +71,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
         where TClass : TBaseClass
         where TBaseClass : ISecurableObject
     {
-      _securityContextRepositoryStub.Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof (TClass))))
+      _securityContextRepositoryStub.Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof(TClass))))
                                     .Returns(
                                         new SecurableClassDefinitionData(
-                                            TypeUtility.GetPartialAssemblyQualifiedName(typeof (TBaseClass)),
+                                            TypeUtility.GetPartialAssemblyQualifiedName(typeof(TBaseClass)),
                                             statelessAcl,
                                             statefulAcls));
     }
@@ -93,18 +93,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     protected IDomainObjectHandle<StatelessAccessControlList> CreateStatelessAcl ()
     {
-      return new ObjectID(typeof (StatelessAccessControlList), Guid.NewGuid()).GetHandle<StatelessAccessControlList>();
+      return new ObjectID(typeof(StatelessAccessControlList), Guid.NewGuid()).GetHandle<StatelessAccessControlList>();
     }
 
     protected StatefulAccessControlListData CreateStatefulAcl (params State[] states)
     {
-      var handle = new ObjectID(typeof (StatefulAccessControlList), Guid.NewGuid()).GetHandle<StatefulAccessControlList>();
+      var handle = new ObjectID(typeof(StatefulAccessControlList), Guid.NewGuid()).GetHandle<StatefulAccessControlList>();
       return new StatefulAccessControlListData(handle, states);
     }
 
     private static IDomainObjectHandle<StatePropertyDefinition> CreatePropertyHandle ()
     {
-      return new ObjectID(typeof (StatePropertyDefinition), Guid.NewGuid()).GetHandle<StatePropertyDefinition>();
+      return new ObjectID(typeof(StatePropertyDefinition), Guid.NewGuid()).GetHandle<StatePropertyDefinition>();
     }
 
     protected static State CreateState<TEnum> (IDomainObjectHandle<StatePropertyDefinition> propertyHandle, string propertyName, TEnum value)
@@ -119,7 +119,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
       return new State(
-          new ObjectID(typeof (StatePropertyDefinition), Guid.NewGuid()).GetHandle<StatePropertyDefinition>(),
+          new ObjectID(typeof(StatePropertyDefinition), Guid.NewGuid()).GetHandle<StatePropertyDefinition>(),
           propertyName,
           value);
     }

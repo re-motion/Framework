@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
 
-      return (T) LifetimeService.NewObject(ClientTransactionScope.CurrentTransaction, typeof (T), constructorParameters);
+      return (T) LifetimeService.NewObject(ClientTransactionScope.CurrentTransaction, typeof(T), constructorParameters);
     }
 
     #endregion
@@ -226,27 +226,27 @@ namespace Remotion.Data.DomainObjects
 
       try
       {
-        _id = (ObjectID) info.GetValue("DomainObject.ID", typeof (ObjectID));
-        _rootTransaction = (ClientTransaction) info.GetValue("DomainObject._rootTransaction", typeof (ClientTransaction));
+        _id = (ObjectID) info.GetValue("DomainObject.ID", typeof(ObjectID));
+        _rootTransaction = (ClientTransaction) info.GetValue("DomainObject._rootTransaction", typeof(ClientTransaction));
         _needsLoadModeDataContainerOnly = info.GetBoolean("DomainObject._needsLoadModeDataContainerOnly");
 
         PropertyChanging =
-            (EventHandler<PropertyChangeEventArgs>) info.GetValue("DomainObject.PropertyChanging", typeof (EventHandler<PropertyChangeEventArgs>));
+            (EventHandler<PropertyChangeEventArgs>) info.GetValue("DomainObject.PropertyChanging", typeof(EventHandler<PropertyChangeEventArgs>));
         PropertyChanged =
-            (EventHandler<PropertyChangeEventArgs>) info.GetValue("DomainObject.PropertyChanged", typeof (EventHandler<PropertyChangeEventArgs>));
+            (EventHandler<PropertyChangeEventArgs>) info.GetValue("DomainObject.PropertyChanged", typeof(EventHandler<PropertyChangeEventArgs>));
         RelationChanging =
             (EventHandler<RelationChangingEventArgs>)
-                info.GetValue("DomainObject.RelationChanging", typeof (EventHandler<RelationChangingEventArgs>));
+                info.GetValue("DomainObject.RelationChanging", typeof(EventHandler<RelationChangingEventArgs>));
         RelationChanged =
-            (EventHandler<RelationChangedEventArgs>) info.GetValue("DomainObject.RelationChanged", typeof (EventHandler<RelationChangedEventArgs>));
-        Deleting = (EventHandler) info.GetValue("DomainObject.Deleting", typeof (EventHandler));
-        Deleted = (EventHandler) info.GetValue("DomainObject.Deleted", typeof (EventHandler));
+            (EventHandler<RelationChangedEventArgs>) info.GetValue("DomainObject.RelationChanged", typeof(EventHandler<RelationChangedEventArgs>));
+        Deleting = (EventHandler) info.GetValue("DomainObject.Deleting", typeof(EventHandler));
+        Deleted = (EventHandler) info.GetValue("DomainObject.Deleted", typeof(EventHandler));
         Committing =
             (EventHandler<DomainObjectCommittingEventArgs>)
-                info.GetValue("DomainObject.Committing", typeof (EventHandler<DomainObjectCommittingEventArgs>));
-        Committed = (EventHandler) info.GetValue("DomainObject.Committed", typeof (EventHandler));
-        RollingBack = (EventHandler) info.GetValue("DomainObject.RollingBack", typeof (EventHandler));
-        RolledBack = (EventHandler) info.GetValue("DomainObject.RolledBack", typeof (EventHandler));
+                info.GetValue("DomainObject.Committing", typeof(EventHandler<DomainObjectCommittingEventArgs>));
+        Committed = (EventHandler) info.GetValue("DomainObject.Committed", typeof(EventHandler));
+        RollingBack = (EventHandler) info.GetValue("DomainObject.RollingBack", typeof(EventHandler));
+        RolledBack = (EventHandler) info.GetValue("DomainObject.RolledBack", typeof(EventHandler));
       }
       catch (SerializationException ex)
       {

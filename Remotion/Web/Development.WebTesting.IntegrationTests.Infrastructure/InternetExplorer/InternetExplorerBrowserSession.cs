@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
   public class InternetExplorerBrowserSession : BrowserSessionBase<InternetExplorerConfiguration>
   {
     public InternetExplorerBrowserSession ([NotNull] Coypu.BrowserSession value, InternetExplorerConfiguration configuration, int driverProcessId)
-        : base (value, configuration, driverProcessId)
+        : base(value, configuration, driverProcessId)
     {
     }
 

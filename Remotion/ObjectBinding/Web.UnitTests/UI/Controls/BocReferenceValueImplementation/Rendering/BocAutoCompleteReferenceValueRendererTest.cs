@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       _provider = ((IBusinessObject) BusinessObject).BusinessObjectClass.BusinessObjectProvider;
       _provider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
 
-      DataSource = new BindableObjectDataSource { Type = typeof (TypeWithReference) };
+      DataSource = new BindableObjectDataSource { Type = typeof(TypeWithReference) };
       DataSource.Register(Control.Object);
 
       StateBag stateBag = new StateBag();

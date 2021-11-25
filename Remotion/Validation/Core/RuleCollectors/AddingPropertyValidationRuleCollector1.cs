@@ -47,10 +47,10 @@ namespace Remotion.Validation.RuleCollectors
     {
       ArgumentUtility.CheckNotNull("property", property);
       ArgumentUtility.CheckNotNull("propertyFunc", propertyFunc);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof (IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof(IValidationRuleCollector));
 
       CollectorType = collectorType;
-      ValidatedType = typeof (TValidatedType);
+      ValidatedType = typeof(TValidatedType);
       Property = property;
       PropertyFunc = propertyFunc;
       IsRemovable = false; 
@@ -90,9 +90,9 @@ namespace Remotion.Validation.RuleCollectors
     {
       ArgumentUtility.CheckNotNull("predicate", predicate);
 
-      if (typeof (TValidatedTypeForCondition) != typeof (TValidatedType))
+      if (typeof(TValidatedTypeForCondition) != typeof(TValidatedType))
         throw new ArgumentException(
-            $"The type '{typeof (TValidatedTypeForCondition).GetFullNameSafe()}' of the predicate does not match the type '{typeof (TValidatedType).GetFullNameSafe()}' of the validation rule.");
+            $"The type '{typeof(TValidatedTypeForCondition).GetFullNameSafe()}' of the predicate does not match the type '{typeof(TValidatedType).GetFullNameSafe()}' of the validation rule.");
 
       Condition = (Func<TValidatedType, bool>) (object) predicate;
     }

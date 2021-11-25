@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       TLoadStateInterface LoadEndPointAndGetNewState (TEndPoint endPoint);
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>));
 
     protected static ILog Log
     {

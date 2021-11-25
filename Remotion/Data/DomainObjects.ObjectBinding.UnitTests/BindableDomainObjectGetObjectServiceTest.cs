@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void GetObject_ObjectNotFound ()
     {
-      Assert.That(_service.GetObject(_businessObjectClass, new ObjectID(typeof (SampleBindableDomainObject), Guid.NewGuid()).ToString()), Is.Null);
+      Assert.That(_service.GetObject(_businessObjectClass, new ObjectID(typeof(SampleBindableDomainObject), Guid.NewGuid()).ToString()), Is.Null);
     }
 
     [Test]

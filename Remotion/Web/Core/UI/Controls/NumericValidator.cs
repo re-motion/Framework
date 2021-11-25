@@ -91,7 +91,7 @@ namespace Remotion.Web.UI.Controls
         return false;
       }
 
-      if (!_allowNegative && parsedValue.CompareTo(default (T)) < 0)
+      if (!_allowNegative && parsedValue.CompareTo(default(T)) < 0)
         return false;
 
       return true;

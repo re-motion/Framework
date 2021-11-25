@@ -264,7 +264,7 @@ public class ValidationStateViewer : WebControl, IControl
 
     //  Get the resource managers
 
-    IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier));
+    IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier));
     IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
     _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 

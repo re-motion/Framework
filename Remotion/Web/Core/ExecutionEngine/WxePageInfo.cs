@@ -65,9 +65,9 @@ namespace Remotion.Web.ExecutionEngine
     private const string c_styleFileUrl = "ExecutionEngine.css";
     private const string c_styleFileUrlForIE = "ExecutionEngineIE.css";
 
-    private static readonly string s_scriptFileKey = typeof (WxePageInfo).GetFullNameChecked() + "_Script";
-    private static readonly string s_styleFileKey = typeof (WxePageInfo).GetFullNameChecked() + "_Style";
-    private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).GetFullNameChecked() + "_StyleIE";
+    private static readonly string s_scriptFileKey = typeof(WxePageInfo).GetFullNameChecked() + "_Script";
+    private static readonly string s_styleFileKey = typeof(WxePageInfo).GetFullNameChecked() + "_Style";
+    private static readonly string s_styleFileKeyForIE = typeof(WxePageInfo).GetFullNameChecked() + "_StyleIE";
 
     private readonly IWxePage _page;
     private WxeForm? _wxeForm;
@@ -89,7 +89,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   The page must be derived from <see cref="System.Web.UI.Page">System.Web.UI.Page</see>.
     /// </param>
     public WxePageInfo (IWxePage page)
-      : base (page)
+      : base(page)
     {
       ArgumentUtility.CheckNotNull("page", page);
       _page = page;
@@ -219,12 +219,12 @@ namespace Remotion.Web.ExecutionEngine
 
     private bool FindHtmlFormControlFilter (MemberInfo member, object? filterCriteria)
     {
-      return (member is FieldInfo && ((FieldInfo) member).FieldType == typeof (HtmlForm));
+      return (member is FieldInfo && ((FieldInfo) member).FieldType == typeof(HtmlForm));
     }
     private void HandlePageInit (object? sender, EventArgs e)
     {
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(WxePageInfo), ResourceType.Html, c_scriptFileUrl);
       HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
 
       var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
@@ -295,14 +295,14 @@ namespace Remotion.Web.ExecutionEngine
       if (SafeServiceLocator.Current.GetInstance<IRenderingFeatures>().EnableDiagnosticMetadata)
         _page.ClientScript.RegisterHiddenField(_page, WxePageInfo.DmaPostBackSequenceNumberID, currentPostBackID.ToString());
 
-      _page.ClientScript.RegisterClientScriptBlock(_page, typeof (WxePageInfo),  "wxeDoSubmit",
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(WxePageInfo),  "wxeDoSubmit",
             "function wxeDoSubmit (button, pageToken) { \r\n"
           + "  var theForm = document." + _wxeForm.ClientID + "; \r\n"
           + "  theForm." + WxePageInfo.ReturningTokenID + ".value = pageToken; \r\n"
           + "  document.getElementById(button).click(); \r\n"
           + "}");
 
-      _page.ClientScript.RegisterClientScriptBlock(_page, typeof (WxePageInfo), "wxeDoPostBack",
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(WxePageInfo), "wxeDoPostBack",
             "function wxeDoPostBack (control, argument, returningToken) { \r\n"
           + "  var theForm = document." + _wxeForm.ClientID + "; \r\n"
           + "  theForm." + WxePageInfo.ReturningTokenID + ".value = returningToken; \r\n"
@@ -392,7 +392,7 @@ namespace Remotion.Web.ExecutionEngine
       initScript.Append("    ").Append(wxePostBackSequenceNumberFieldID).AppendLine(",");
       initScript.Append("    ").Append(dmaWxePostBackSequenceNumberFieldID).AppendLine("));");
 
-      _page.ClientScript.RegisterClientScriptBlock(_page, typeof (WxePageInfo), "wxeInitialize", initScript.ToString());
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(WxePageInfo), "wxeInitialize", initScript.ToString());
     }
 
 
@@ -547,7 +547,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Find the <see cref="IResourceManager"/> for this WxePageInfo. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
 

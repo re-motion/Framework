@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.Configuration
   public class FakeOtherProvider : ExtendedProviderBase
   {
     public FakeOtherProvider (string name, NameValueCollection config)
-        : base (name, config)
+        : base(name, config)
     {
     }
   }

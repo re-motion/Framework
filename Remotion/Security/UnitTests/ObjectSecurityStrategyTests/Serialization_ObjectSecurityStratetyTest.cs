@@ -51,7 +51,7 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     [SetUp]
     public void SetUp ()
     {
-      _context = SecurityContext.Create(typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
+      _context = SecurityContext.Create(typeof(SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
 
       _invalidationToken = InvalidationToken.Create();
       _strategy = ObjectSecurityStrategy.Create(new SerializableSecurityContextFactory(_context), _invalidationToken);

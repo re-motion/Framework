@@ -46,17 +46,17 @@ namespace Remotion.Globalization.Mixins.UnitTests
 
       var result = _globalizationService.GetResourceManager(typeInformation.Object);
 
-      Assert.That(result, Is.TypeOf(typeof (NullResourceManager)));
+      Assert.That(result, Is.TypeOf(typeof(NullResourceManager)));
     }
 
     [Test]
     public void GetResourceManager_TypeWithoutMixin_ReturnsNullResourceManager ()
     {
-      var typeInformation = TypeAdapter.Create(typeof (ClassWithResources));
+      var typeInformation = TypeAdapter.Create(typeof(ClassWithResources));
 
       var result = _globalizationService.GetResourceManager(typeInformation);
 
-      Assert.That(result, Is.TypeOf(typeof (NullResourceManager)));
+      Assert.That(result, Is.TypeOf(typeof(NullResourceManager)));
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinWithoutResourceAttribute>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
         var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
 
@@ -83,7 +83,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinAddingMultiLingualResourcesAttributes1>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
         var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
 
@@ -101,7 +101,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinAddingMultiLingualResourcesAttributes1>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (InheritedClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(InheritedClassWithoutMultiLingualResourcesAttributes));
 
         var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
 
@@ -119,7 +119,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinAddingMultiLingualResourcesAttributes1>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
         var result1 = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
         var result2 = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
@@ -135,7 +135,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
     [Test]
     public void GetResourceManagerTwice_TypeWithStaticMixinAndSameMixinMasterConfiguration_Same ()
     {
-      var typeInformation = TypeAdapter.Create(typeof (ClassWithMixinResource));
+      var typeInformation = TypeAdapter.Create(typeof(ClassWithMixinResource));
 
       var result1 = _globalizationService.GetResourceManager(typeInformation);
       var result2 = _globalizationService.GetResourceManager(typeInformation);
@@ -145,7 +145,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
     [Test]
     public void GetResourceManagerTwice_TypeWithStaticMixinAndNotSameMixinMasterConfiguration_NotSame ()
     {
-      var typeInformation = TypeAdapter.Create(typeof (ClassWithMixinResource));
+      var typeInformation = TypeAdapter.Create(typeof(ClassWithMixinResource));
 
       var result1 = _globalizationService.GetResourceManager(typeInformation);
       MixinConfiguration.ResetMasterConfiguration();
@@ -158,7 +158,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
     [Test]
     public void GetResourceManagerTwice_TypeWithMixin_DifferentMixinConfiguration_NotSame ()
     {
-      var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+      var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
       ResourceManagerSet result1;
 
       var mixinConfiguration = MixinConfiguration.BuildFromActive()
@@ -182,7 +182,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
     [Test]
     public void GetResourceManagerTwice_WithAndWithoutMixinConfiguration_NotSame ()
     {
-      var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+      var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
       IResourceManager result1;
       using (MixinConfiguration.BuildFromActive()
           .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
@@ -199,7 +199,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
     [Test]
     public void GetResourceManagerTwice_NewMixinConfigurationWithinConfiguration_NotSame ()
     {
-      var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+      var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
       IResourceManager result1;
       IResourceManager result2;
       using (MixinConfiguration.BuildFromActive()
@@ -229,7 +229,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinOfMixinWithResources>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
         var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
 
@@ -250,7 +250,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinOfMixinWithResources>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
         var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
 
@@ -266,7 +266,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinAddingMultiLingualResourcesAttributes2>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
         var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
 
@@ -285,7 +285,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
           .AddMixin<MixinOfMixinWithResources>()
           .EnterScope())
       {
-        var typeInformation = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
         var result = (ResourceManagerSet) _globalizationService.GetResourceManager(typeInformation);
 
@@ -300,8 +300,8 @@ namespace Remotion.Globalization.Mixins.UnitTests
       var backup = MixinConfiguration.GetMasterConfiguration();
       try
       {
-        var typeInformation1 = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
-        var typeInformation2 = TypeAdapter.Create(typeof (InheritedClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation1 = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation2 = TypeAdapter.Create(typeof(InheritedClassWithoutMultiLingualResourcesAttributes));
         var resourceManagerCache =
             (ConcurrentDictionary<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField(_globalizationService, "_resourceManagerCache");
         IResourceManager outValue;
@@ -356,8 +356,8 @@ namespace Remotion.Globalization.Mixins.UnitTests
       var backup = MixinConfiguration.GetMasterConfiguration();
       try
       {
-        var typeInformation1 = TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes));
-        var typeInformation2 = TypeAdapter.Create(typeof (InheritedClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation1 = TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes));
+        var typeInformation2 = TypeAdapter.Create(typeof(InheritedClassWithoutMultiLingualResourcesAttributes));
         var resourceManagerCache =
             (ConcurrentDictionary<ITypeInformation, IResourceManager>) PrivateInvoke.GetNonPublicField(_globalizationService, "_resourceManagerCache");
         IResourceManager outValue;

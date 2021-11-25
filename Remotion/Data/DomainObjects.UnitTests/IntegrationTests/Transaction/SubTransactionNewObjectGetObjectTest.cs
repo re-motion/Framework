@@ -425,7 +425,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (subTransaction.EnterDiscardingScope())
       {
         Assert.That(
-            () => LifetimeService.GetObjects<DomainObject>(subTransaction, new ObjectID(typeof (Order), guid)),
+            () => LifetimeService.GetObjects<DomainObject>(subTransaction, new ObjectID(typeof(Order), guid)),
             Throws.InstanceOf<ObjectsNotFoundException>()
                 .With.Message.EqualTo("Object(s) could not be found: 'Order|33333333-3333-3333-3333-333333333333|System.Guid'."));
       }
@@ -443,7 +443,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             subTransaction,
             DomainObjectIDs.Order1,
             newObject.ID,
-            new ObjectID(typeof (Order), guid),
+            new ObjectID(typeof(Order), guid),
             DomainObjectIDs.Order3);
         var expectedObjects = new DomainObject[]
                               {

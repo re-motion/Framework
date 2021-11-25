@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return new DomainObjectCreator(pipelineRegistry);
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (MappingReflector));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingReflector));
     private readonly IMemberInformationNameResolver _nameResolver;
     private readonly IMappingObjectFactory _mappingObjectFactory;
     private readonly ITypeDiscoveryService _typeDiscoveryService;
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     // This ctor is required when the MappingReflector is instantiated as a configuration element from a config file.
     public MappingReflector ()
-        : this (
+        : this(
             ContextAwareTypeUtility.GetTypeDiscoveryService(),
             new ClassIDProvider(),
             SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private IEnumerable<Type> GetDomainObjectTypes ()
     {
-      return (from type in _typeDiscoveryService.GetTypes(typeof (DomainObject), excludeGlobalTypes: false).Cast<Type>()
+      return (from type in _typeDiscoveryService.GetTypes(typeof(DomainObject), excludeGlobalTypes: false).Cast<Type>()
               where !ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type)
               select type).Distinct();
     }

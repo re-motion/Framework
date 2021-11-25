@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetClassID_ForClassWithoutClassIDAttribute ()
     {
-      var result = _classIDProvider.GetClassID(typeof (ClassWithoutClassIDAttribute));
+      var result = _classIDProvider.GetClassID(typeof(ClassWithoutClassIDAttribute));
 
       Assert.That(result, Is.EqualTo("ClassWithoutClassIDAttribute"));
     }
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetClassID_ForClassHavingClassIDAttribute ()
     {
-      var result = _classIDProvider.GetClassID(typeof (ClassHavingClassIDAttribute));
+      var result = _classIDProvider.GetClassID(typeof(ClassHavingClassIDAttribute));
 
       Assert.That(result, Is.EqualTo("ClassIDForClassHavingClassIDAttribute"));
     }

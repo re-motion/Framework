@@ -68,7 +68,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     private bool AcceptsAlphabeticOrdering (Type mixinType)
     {
-      return mixinType.IsDefined(typeof (AcceptsAlphabeticOrderingAttribute), false);
+      return mixinType.IsDefined(typeof(AcceptsAlphabeticOrderingAttribute), false);
     }
 
     private void AnalyzeMembers (MixinDefinition mixin)
@@ -96,15 +96,15 @@ namespace Remotion.Mixins.Definitions.Building
 
     private void AnalyzeOverrides (MixinDefinition mixin)
     {
-      var methodAnalyzer = new OverridesAnalyzer<MethodDefinition>(typeof (OverrideTargetAttribute), _targetClass.Methods);
+      var methodAnalyzer = new OverridesAnalyzer<MethodDefinition>(typeof(OverrideTargetAttribute), _targetClass.Methods);
       foreach (var methodOverride in methodAnalyzer.Analyze(mixin.Methods))
         InitializeOverride(methodOverride.Overrider, methodOverride.BaseMember);
 
-      var propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition>(typeof (OverrideTargetAttribute), _targetClass.Properties);
+      var propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition>(typeof(OverrideTargetAttribute), _targetClass.Properties);
       foreach (var propertyOverride in propertyAnalyzer.Analyze(mixin.Properties))
         InitializeOverride(propertyOverride.Overrider, propertyOverride.BaseMember);
 
-      var eventAnalyzer = new OverridesAnalyzer<EventDefinition>(typeof (OverrideTargetAttribute), _targetClass.Events);
+      var eventAnalyzer = new OverridesAnalyzer<EventDefinition>(typeof(OverrideTargetAttribute), _targetClass.Events);
       foreach (var eventOverride in eventAnalyzer.Analyze(mixin.Events))
         InitializeOverride(eventOverride.Overrider, eventOverride.BaseMember);
     }

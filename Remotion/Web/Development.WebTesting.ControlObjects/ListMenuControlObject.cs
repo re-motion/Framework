@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems, ISupportsDisabledState
   {
     public ListMenuControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

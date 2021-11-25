@@ -30,12 +30,12 @@ namespace Remotion.Web.UI.Controls
   public class NavigationCommand : Command
   {
     public NavigationCommand ()
-        : this (CommandType.Href, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(CommandType.Href, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
     public NavigationCommand (CommandType defaultType)
-        : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
@@ -43,7 +43,7 @@ namespace Remotion.Web.UI.Controls
         CommandType defaultType,
         [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
         [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
-        : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
+        : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
     }
 

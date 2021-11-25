@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       ArgumentUtility.CheckNotNullOrEmpty("property", property);
 
-      Type type = typeof (T);
+      Type type = typeof(T);
       ClassDefinition classDefinition;
       if (ReflectionUtility.IsDomainObject(type))
       {
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       ArgumentUtility.CheckNotNullOrEmpty("property", property);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      Type type = typeof (T);
+      Type type = typeof(T);
       var propertyInfo = PropertyInfoAdapter.Create(
           type.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
 

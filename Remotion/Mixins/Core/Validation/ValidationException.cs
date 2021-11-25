@@ -87,7 +87,7 @@ namespace Remotion.Mixins.Validation
     /// <param name="validationLogData">The validation log data.</param>
     /// <exception cref="ArgumentNullException">The log is empty.</exception>
     public ValidationException (ValidationLogData validationLogData)
-        : base (BuildExceptionString(validationLogData))
+        : base(BuildExceptionString(validationLogData))
     {
       _serializableValidationLogData = validationLogData.MakeSerializable();
     }
@@ -99,10 +99,10 @@ namespace Remotion.Mixins.Validation
     /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual information about the source or destination.</param>
     /// <exception cref="T:System.ArgumentNullException">The info parameter is null. </exception>
     protected ValidationException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
       _serializableValidationLogData =
-          (SerializableValidationLogData?) info.GetValue("SerializableValidationLogData", typeof (SerializableValidationLogData));
+          (SerializableValidationLogData?) info.GetValue("SerializableValidationLogData", typeof(SerializableValidationLogData));
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)

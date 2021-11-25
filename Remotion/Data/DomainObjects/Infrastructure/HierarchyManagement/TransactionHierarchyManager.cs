@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     private ClientTransaction _subTransaction;
 
     public TransactionHierarchyManager (ClientTransaction thisTransaction, IClientTransactionEventSink thisEventSink)
-        : this (
+        : this(
             thisTransaction,
             thisEventSink,
             new ClientTransactionHierarchy(ArgumentUtility.CheckNotNull("thisTransaction", thisTransaction)),
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction parentTransaction,
         ITransactionHierarchyManager parentHierarchyManager,
         IClientTransactionEventSink parentEventSink)
-        : this (
+        : this(
             thisTransaction,
             thisEventSink,
             parentHierarchyManager.TransactionHierarchy,

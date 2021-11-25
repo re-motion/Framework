@@ -64,7 +64,7 @@ namespace Remotion.UnitTests.ServiceLocation
                      new TestConcreteImplementationAttributeType()
                  };
 
-      var ctorInfo = typeof (TestConstructorInjectionWithThreeParameters).GetConstructors()[0];
+      var ctorInfo = typeof(TestConstructorInjectionWithThreeParameters).GetConstructors()[0];
 
       var ctorArgExpressions = ctorInfo.GetParameters().Select(p => (Expression) Expression.Constant(args[p.Position]));
       Expression<Func<object>> factoryExpression = Expression.Lambda<Func<object>>(Expression.New(ctorInfo, ctorArgExpressions));
@@ -86,7 +86,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void ConstructorInfoInvoke ()
     {
-      var ctorInfo = typeof (TestConstructorInjectionWithThreeParameters).GetConstructors()[0];
+      var ctorInfo = typeof(TestConstructorInjectionWithThreeParameters).GetConstructors()[0];
       var args = new object[]
                  {
                      new TestConstructorInjectionWithOneParameter(null),
@@ -118,7 +118,7 @@ namespace Remotion.UnitTests.ServiceLocation
                      new TestConcreteImplementationAttributeType()
                  };
 
-      Func<object> factory = () => Activator.CreateInstance(typeof (TestConstructorInjectionWithThreeParameters), args);
+      Func<object> factory = () => Activator.CreateInstance(typeof(TestConstructorInjectionWithThreeParameters), args);
 
       int acc = 0;
       using (StopwatchScope.CreateScope("Activator: elapsed: {elapsed}"))

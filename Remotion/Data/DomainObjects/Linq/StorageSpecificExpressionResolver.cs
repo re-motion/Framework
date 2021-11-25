@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Linq
     private static readonly MemberInfo s_objectIDClassIDProperty = MemberInfoFromExpressionUtility.GetProperty((ObjectID obj) => obj.ClassID);
 
     private static readonly ConstructorInfo s_objectIDCtor =
-        Assertion.IsNotNull(typeof (ObjectID).GetConstructor(new[] { typeof (string), typeof (object) }));
+        Assertion.IsNotNull(typeof(ObjectID).GetConstructor(new[] { typeof(string), typeof(object) }));
 
     private readonly IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
 
@@ -159,10 +159,10 @@ namespace Remotion.Data.DomainObjects.Linq
         // We'll therefore use a literal as the ClassID. However, if the value property is null, we must also make the ClassID null.
         var valueExpression = ResolveStorageProperty(originatingEntity, objectIDWithoutClassIDStoragePropertyDefinition.ValueProperty);
         var classIDExpression = SqlCaseExpression.CreateIfThenElse(
-            typeof (string),
+            typeof(string),
             new SqlIsNotNullExpression(valueExpression),
             new SqlLiteralExpression(objectIDWithoutClassIDStoragePropertyDefinition.ClassDefinition.ID),
-            Expression.Constant(null, typeof (string)));
+            Expression.Constant(null, typeof(string)));
         return CreateCompoundObjectIDExpression(classIDExpression, valueExpression);
       }
 
@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.Linq
       // new ObjectID (classID, (object) value)
       var objectIDConstruction = Expression.New(
           s_objectIDCtor,
-          new[] { classIDExpression, Expression.Convert(valueExpression, typeof (object)) },
+          new[] { classIDExpression, Expression.Convert(valueExpression, typeof(object)) },
           new[] { s_objectIDClassIDProperty, s_objectIDValueProperty });
 
       return NamedExpression.CreateNewExpressionWithNamedArguments(objectIDConstruction);

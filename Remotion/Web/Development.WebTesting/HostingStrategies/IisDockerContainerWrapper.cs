@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// </summary>
   public class IisDockerContainerWrapper : IDisposable
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (IisDockerContainerWrapper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(IisDockerContainerWrapper));
 
     private readonly IDockerClient _docker;
     private readonly IisDockerContainerConfigurationParameters _configurationParameters;

@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
       _storageProviderNameProperty = new ConfigurationProperty(
           "provider",
-          typeof (string),
+          typeof(string),
           null,
           ConfigurationPropertyOptions.IsRequired);
 

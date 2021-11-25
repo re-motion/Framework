@@ -25,12 +25,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
   {
     [UsedImplicitly]
     public FrameFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     public FrameFunction (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
     }
 

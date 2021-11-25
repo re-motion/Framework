@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(expression.Arguments[0], Is.SameAs(source.Expression));
       Assert.That(((UnaryExpression) expression.Arguments[1]).Operand, Is.SameAs(relatedObjectSelector));
       Assert.That(expression.Method,
-                   Is.EqualTo(typeof (EagerFetchingExtensionMethods).GetMethod("FetchOne").MakeGenericMethod(typeof (Order), typeof (Customer))));
+                   Is.EqualTo(typeof(EagerFetchingExtensionMethods).GetMethod("FetchOne").MakeGenericMethod(typeof(Order), typeof(Customer))));
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(expression.Arguments[0], Is.SameAs(source.Expression));
       Assert.That(((UnaryExpression) expression.Arguments[1]).Operand, Is.SameAs(relatedObjectSelector));
       Assert.That(expression.Method,
-                   Is.EqualTo(typeof (EagerFetchingExtensionMethods).GetMethod("FetchMany").MakeGenericMethod(typeof (Order), typeof (OrderItem))));
+                   Is.EqualTo(typeof(EagerFetchingExtensionMethods).GetMethod("FetchMany").MakeGenericMethod(typeof(Order), typeof(OrderItem))));
     }
 
     [Test]
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(expression.Arguments[0], Is.SameAs(source.Expression));
       Assert.That(((UnaryExpression) expression.Arguments[1]).Operand, Is.SameAs(relatedObjectSelector));
       Assert.That(expression.Method,
-                   Is.EqualTo(typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchOne").MakeGenericMethod(typeof (OrderTicket), typeof (Order), typeof (Customer))));
+                   Is.EqualTo(typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchOne").MakeGenericMethod(typeof(OrderTicket), typeof(Order), typeof(Customer))));
     }
 
     [Test]
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(expression.Arguments[0], Is.SameAs(source.Expression));
       Assert.That(((UnaryExpression) expression.Arguments[1]).Operand, Is.SameAs(relatedObjectSelector));
       Assert.That(expression.Method,
-                   Is.EqualTo(typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchMany").MakeGenericMethod(typeof (OrderTicket), typeof (Order), typeof (OrderItem))));
+                   Is.EqualTo(typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchMany").MakeGenericMethod(typeof(OrderTicket), typeof(Order), typeof(OrderItem))));
     }
   }
 }

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [SuppressAttributes(typeof (BT1Attribute))]
+  [SuppressAttributes(typeof(BT1Attribute))]
   [BT1]
   public class MixinSuppressingAndAddingBT1Attribute
   {

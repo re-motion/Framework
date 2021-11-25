@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocTreeViewSelector : BocControlSelectorBase<BocTreeViewControlObject>
   {
     public BocTreeViewSelector ()
-        : base ("BocTreeView")
+        : base("BocTreeView")
     {
     }
 

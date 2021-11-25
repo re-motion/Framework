@@ -18,10 +18,10 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends (typeof (BaseClassForDerivedClassIgnoredByMixin))]
-  [IgnoresClass (typeof (DerivedClassIgnoredByMixins))]
-  [IgnoresClass (typeof (GenericClassForMixinIgnoringDerivedClass<>))]
-  [IgnoresClass (typeof (ClosedGenericClassForMixinIgnoringDerivedClass<int>))]
+  [Extends (typeof(BaseClassForDerivedClassIgnoredByMixin))]
+  [IgnoresClass (typeof(DerivedClassIgnoredByMixins))]
+  [IgnoresClass (typeof(GenericClassForMixinIgnoringDerivedClass<>))]
+  [IgnoresClass (typeof(ClosedGenericClassForMixinIgnoringDerivedClass<int>))]
   public class MixinIgnoringDerivedClass
   {
   }

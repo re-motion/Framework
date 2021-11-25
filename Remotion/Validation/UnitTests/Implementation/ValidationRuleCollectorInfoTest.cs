@@ -32,14 +32,14 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void SetUp ()
     {
       _collectorStub = new Mock<IValidationRuleCollector>();
-      _validationRuleCollectorInfo = new ValidationRuleCollectorInfo(_collectorStub.Object, typeof (ApiBasedValidationRuleCollectorProvider));
+      _validationRuleCollectorInfo = new ValidationRuleCollectorInfo(_collectorStub.Object, typeof(ApiBasedValidationRuleCollectorProvider));
     }
 
     [Test]
     public void Initialization ()
     {
       Assert.That(_validationRuleCollectorInfo.Collector, Is.SameAs(_collectorStub.Object));
-      Assert.That(_validationRuleCollectorInfo.ProviderType, Is.EqualTo(typeof (ApiBasedValidationRuleCollectorProvider)));
+      Assert.That(_validationRuleCollectorInfo.ProviderType, Is.EqualTo(typeof(ApiBasedValidationRuleCollectorProvider)));
     }
   }
 }

@@ -36,7 +36,7 @@ namespace Remotion.Web.ExecutionEngine
   {
     public static bool HasAccess (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof (WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof(WxeFunction));
 
       var wxeSecurityAdapter = GetWxeSecurityAdapter();
       if (wxeSecurityAdapter == null)

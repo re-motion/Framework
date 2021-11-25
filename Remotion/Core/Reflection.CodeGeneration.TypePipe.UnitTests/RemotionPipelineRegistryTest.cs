@@ -33,7 +33,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var action = (Action<object, IProxyTypeAssemblyContext>) ((id, ctx) => ctx.ProxyType.AddField("field", 0, typeof (int)));
+      var action = (Action<object, IProxyTypeAssemblyContext>) ((id, ctx) => ctx.ProxyType.AddField("field", 0, typeof(int)));
       var participantStub = new Mock<IParticipant>();
       // Modify proxy type to avoid no-modification optimization.
       participantStub.Setup(_ => _.Participate(It.IsAny<object>(), It.IsAny<IProxyTypeAssemblyContext>())).Callback(action);
@@ -54,10 +54,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
     public void Initialization_IntegrationTest_AddsNonApplicationAssemblyAttribute_OnModuleCreation ()
     {
       // Creates new in-memory assembly.
-      var type = _defaultPipeline.ReflectionService.GetAssembledType(typeof (RequestedType));
+      var type = _defaultPipeline.ReflectionService.GetAssembledType(typeof(RequestedType));
 
-      Assert.That(type, Is.Not.SameAs(typeof (RequestedType)));
-      Assert.That(type.Assembly.IsDefined(typeof (NonApplicationAssemblyAttribute), false), Is.True);
+      Assert.That(type, Is.Not.SameAs(typeof(RequestedType)));
+      Assert.That(type.Assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false), Is.True);
     }
 
     public class RequestedType {}

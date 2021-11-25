@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static IVirtualCollectionData GetDataStrategy (IObjectList<IDomainObject> collection)
     {
-      if (collection.GetType().CanAscribeTo(typeof (VirtualObjectList<>)))
+      if (collection.GetType().CanAscribeTo(typeof(VirtualObjectList<>)))
         return (IVirtualCollectionData) PrivateInvoke.GetNonPublicField(collection, "_dataStrategy");
       else
         throw new NotSupportedException(string.Format("Type '{0}' is not supported by GetDataStrategy().", collection.GetType()));

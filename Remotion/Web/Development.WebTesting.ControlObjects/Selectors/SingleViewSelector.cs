@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class SingleViewSelector : TypedControlSelectorBase<SingleViewControlObject>
   {
     public SingleViewSelector ()
-        : base ("SingleView")
+        : base("SingleView")
     {
     }
 

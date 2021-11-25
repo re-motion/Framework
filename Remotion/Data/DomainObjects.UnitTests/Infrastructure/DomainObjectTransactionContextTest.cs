@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
       Assert.That(GetDataContainer(_loadedOrder1Context).HasBeenMarkedChanged, Is.True);
 
-      _loadedOrder1.OrderNumber = _loadedOrder1.Properties[typeof (Order), "OrderNumber"].GetOriginalValue<int>();
+      _loadedOrder1.OrderNumber = _loadedOrder1.Properties[typeof(Order), "OrderNumber"].GetOriginalValue<int>();
 
       Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
     }
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void TryEnsureDataAvailable_False ()
     {
-      var notFoundObjectReference = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, new ObjectID(typeof (ClassWithAllDataTypes), Guid.NewGuid()));
+      var notFoundObjectReference = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, new ObjectID(typeof(ClassWithAllDataTypes), Guid.NewGuid()));
       var notFoundContext = new DomainObjectTransactionContext(notFoundObjectReference, TestableClientTransaction);
       Assert.That(TestableClientTransaction.DataManager.DataContainers[notFoundObjectReference.ID], Is.Null);
 

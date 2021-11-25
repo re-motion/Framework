@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain
   /// </list>
   /// </remarks>
   [CLSCompliant (false)]
-  [Extends (typeof (BindableObjectServiceFactory), AdditionalDependencies = new[] { typeof (BindableDomainObjectServiceFactoryMixin) })]
+  [Extends (typeof(BindableObjectServiceFactory), AdditionalDependencies = new[] { typeof(BindableDomainObjectServiceFactoryMixin) })]
   public class SecurityManagerObjectServiceFactoryMixin
       : Mixin<BindableObjectServiceFactory, IBusinessObjectServiceFactory>, IBusinessObjectServiceFactory
   {
@@ -55,30 +55,30 @@ namespace Remotion.SecurityManager.Domain
     [OverrideTarget]
     public virtual IBusinessObjectService CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof (IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
 
-      if (serviceType == typeof (SubstitutionPropertiesSearchService))
+      if (serviceType == typeof(SubstitutionPropertiesSearchService))
         return new SubstitutionPropertiesSearchService();
 
-      if (serviceType == typeof (RolePropertiesSearchService))
+      if (serviceType == typeof(RolePropertiesSearchService))
         return new RolePropertiesSearchService();
 
-      if (serviceType == typeof (TenantPropertyTypeSearchService))
+      if (serviceType == typeof(TenantPropertyTypeSearchService))
         return new TenantPropertyTypeSearchService();
 
-      if (serviceType == typeof (GroupPropertyTypeSearchService))
+      if (serviceType == typeof(GroupPropertyTypeSearchService))
         return new GroupPropertyTypeSearchService();
 
-      if (serviceType == typeof (UserPropertyTypeSearchService))
+      if (serviceType == typeof(UserPropertyTypeSearchService))
         return new UserPropertyTypeSearchService();
 
-      if (serviceType == typeof (PositionPropertyTypeSearchService))
+      if (serviceType == typeof(PositionPropertyTypeSearchService))
         return new PositionPropertyTypeSearchService();
 
-      if (serviceType == typeof (GroupTypePropertyTypeSearchService))
+      if (serviceType == typeof(GroupTypePropertyTypeSearchService))
         return new GroupTypePropertyTypeSearchService();
 
-      if (serviceType == typeof (AbstractRoleDefinitionPropertyTypeSearchService))
+      if (serviceType == typeof(AbstractRoleDefinitionPropertyTypeSearchService))
         return new AbstractRoleDefinitionPropertyTypeSearchService();
 
       return Next.CreateService(provider, serviceType);

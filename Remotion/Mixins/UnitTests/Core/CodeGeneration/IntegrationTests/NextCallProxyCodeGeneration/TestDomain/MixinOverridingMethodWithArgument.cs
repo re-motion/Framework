@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.NextCallProxyCodeGeneration.TestDomain
 {
-  [Extends (typeof (TargetClassForMixinOverridingMethodWithArgument))]
+  [Extends (typeof(TargetClassForMixinOverridingMethodWithArgument))]
   public class MixinOverridingMethodWithArgument
       : Mixin<MixinOverridingMethodWithArgument.ITargetRequirements, MixinOverridingMethodWithArgument.ITargetRequirements>
   {

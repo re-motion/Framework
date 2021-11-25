@@ -23,7 +23,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
   public class FirstMappedFunction : WxeFunction
   {
     public FirstMappedFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
   }
@@ -31,7 +31,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
   public class SecondMappedFunction : WxeFunction
   {
     public SecondMappedFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
   }
@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
   public class UnmappedFunction : WxeFunction
   {
     public UnmappedFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
   }

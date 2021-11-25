@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var exception = Assert.Throws<WebTestException>(() => aspNetRequestErrorDetectionParser.CheckPageForError(home.Scope));
 
       Assert.That(exception.Message, Is.EqualTo("Request has failed due to a server error"));
-      Assert.That(exception.InnerException, Is.TypeOf(typeof (ServerErrorException)));
+      Assert.That(exception.InnerException, Is.TypeOf(typeof(ServerErrorException)));
       Assert.That(exception.InnerException.Message, Is.EqualTo("SyncPostbackError"));
       Assert.That(exception.InnerException.StackTrace, Does.StartWith("\r\n[Exception: SyncPostbackError]\r\n"));
     }

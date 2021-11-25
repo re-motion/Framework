@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _factory = DomainObjectCollectionFactory.Instance;
       _data = new DomainObjectCollectionData();
-      _dataWithOrderType = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof (Order), _data);
+      _dataWithOrderType = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), _data);
 
       _orderA = DomainObjectMother.CreateFakeObject<Order>();
       _orderB = DomainObjectMother.CreateFakeObject<Order>();
@@ -48,27 +48,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateCollection_SetsData_ObjectListCtor ()
     {
-      var collection = _factory.CreateCollection(typeof (ObjectList<Order>), _dataWithOrderType);
+      var collection = _factory.CreateCollection(typeof(ObjectList<Order>), _dataWithOrderType);
 
-      Assert.That(collection, Is.InstanceOf(typeof (ObjectList<Order>)));
+      Assert.That(collection, Is.InstanceOf(typeof(ObjectList<Order>)));
       CheckDataStrategy(collection, _dataWithOrderType);
     }
 
     [Test]
     public void CreateCollection_SetsData_DomainObjectCollectionCtor ()
     {
-      var collection = _factory.CreateCollection(typeof (DomainObjectCollection), _data);
+      var collection = _factory.CreateCollection(typeof(DomainObjectCollection), _data);
 
-      Assert.That(collection, Is.InstanceOf(typeof (DomainObjectCollection)));
+      Assert.That(collection, Is.InstanceOf(typeof(DomainObjectCollection)));
       CheckDataStrategy(collection, _data);
     }
 
     [Test]
     public void CreateCollection_ProtectedCtor ()
     {
-      var collection = _factory.CreateCollection(typeof (CollectionWithProtectedCtor), _dataWithOrderType);
+      var collection = _factory.CreateCollection(typeof(CollectionWithProtectedCtor), _dataWithOrderType);
 
-      Assert.That(collection, Is.InstanceOf(typeof (CollectionWithProtectedCtor)));
+      Assert.That(collection, Is.InstanceOf(typeof(CollectionWithProtectedCtor)));
       CheckDataStrategy(collection, _dataWithOrderType);
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateCollection_ThrowsIfNoSupportedCtor ()
     {
       Assert.That(
-          () => _factory.CreateCollection(typeof (CollectionWithMissingDataCtor), _data),
+          () => _factory.CreateCollection(typeof(CollectionWithMissingDataCtor), _data),
           Throws.InstanceOf<MissingMethodException>()
               .With.Message.Contains(
                   "Cannot create an instance of 'Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain.CollectionWithMissingDataCtor' because "
@@ -87,26 +87,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateCollection_ThrowsIfNonCollectionType ()
     {
       Assert.That(
-          () => _factory.CreateCollection(typeof (CollectionNotDerivedFromDomainObjectCollection), _data),
+          () => _factory.CreateCollection(typeof(CollectionNotDerivedFromDomainObjectCollection), _data),
           Throws.InstanceOf<InvalidCastException>());
     }
 
     [Test]
     public void CreateCollection_ForStandaloneCollection ()
     {
-      DomainObjectCollection collection = _factory.CreateCollection(typeof (ObjectList<Order>), new[] { _orderA, _orderB }, typeof (Order));
+      DomainObjectCollection collection = _factory.CreateCollection(typeof(ObjectList<Order>), new[] { _orderA, _orderB }, typeof(Order));
 
       Assert.That(collection, Is.Not.Null);
-      Assert.That(collection.RequiredItemType, Is.EqualTo(typeof (Order)));
+      Assert.That(collection.RequiredItemType, Is.EqualTo(typeof(Order)));
 
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof (Order));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(collection, typeof(Order));
     }
 
     [Test]
     public void CreateCollection_ForStandaloneCollection_PerformsItemChecks ()
     {
       Assert.That(
-          () =>  _factory.CreateCollection(typeof (ObjectList<Order>), new Order[] { null }, typeof (Order)),
+          () =>  _factory.CreateCollection(typeof(ObjectList<Order>), new Order[] { null }, typeof(Order)),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo("Item 0 of parameter 'domainObjects' is null.", "domainObjects"));
     }
@@ -114,15 +114,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateCollection_ForStandaloneCollection_WithInferredItemType ()
     {
-      DomainObjectCollection collection = _factory.CreateCollection(typeof (ObjectList<Order>), new Order[0]);
+      DomainObjectCollection collection = _factory.CreateCollection(typeof(ObjectList<Order>), new Order[0]);
 
-      Assert.That(collection.RequiredItemType, Is.SameAs(typeof (Order)));
+      Assert.That(collection.RequiredItemType, Is.SameAs(typeof(Order)));
     }
 
     [Test]
     public void CreateCollection_ForStandaloneCollection_WithInferredItemType_NoneFound ()
     {
-      DomainObjectCollection collection = _factory.CreateCollection(typeof (DomainObjectCollection), new Order[0]);
+      DomainObjectCollection collection = _factory.CreateCollection(typeof(DomainObjectCollection), new Order[0]);
 
       Assert.That(collection.RequiredItemType, Is.Null);
     }
@@ -130,9 +130,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateReadOnlyCollection ()
     {
-      var collection = _factory.CreateReadOnlyCollection(typeof (OrderCollection), new Order[0]);
+      var collection = _factory.CreateReadOnlyCollection(typeof(OrderCollection), new Order[0]);
 
-      Assert.That(collection, Is.TypeOf(typeof (OrderCollection)));
+      Assert.That(collection, Is.TypeOf(typeof(OrderCollection)));
       Assert.That(collection.IsReadOnly, Is.True);
       Assert.That(collection, Is.Empty);
     }
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateReadOnlyCollection_Contents ()
     {
-      var collection = _factory.CreateReadOnlyCollection(typeof (OrderCollection), new[] { _orderA, _orderB });
+      var collection = _factory.CreateReadOnlyCollection(typeof(OrderCollection), new[] { _orderA, _orderB });
 
       Assert.That(collection, Is.EqualTo(new[] { _orderA, _orderB }));
     }
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateReadOnlyCollection_DataStrategy ()
     {
-      var collection = _factory.CreateReadOnlyCollection(typeof (OrderCollection), new Order[0]);
+      var collection = _factory.CreateReadOnlyCollection(typeof(OrderCollection), new Order[0]);
 
       DomainObjectCollectionDataTestHelper.CheckReadOnlyCollectionStrategy(collection);
     }

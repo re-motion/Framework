@@ -56,7 +56,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     {
       bool afterActionCalled = false;
 
-      FuncInvoker<ClassWithCtors> activator = new FuncInvoker<ClassWithCtors>(new ConstructorLookupInfo(typeof (ClassWithCtors)).GetDelegate);;
+      FuncInvoker<ClassWithCtors> activator = new FuncInvoker<ClassWithCtors>(new ConstructorLookupInfo(typeof(ClassWithCtors)).GetDelegate);;
       FuncInvokerWrapper<ClassWithCtors> wrapper = new FuncInvokerWrapper<ClassWithCtors>(activator, delegate (ClassWithCtors instance)
       {
         afterActionCalled = true;
@@ -87,7 +87,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
 
       afterActionCalled = false;
 
-      ClassWithCtors threeInvoked2 = wrapper.Invoke(new Type[] {typeof (int), typeof (string), typeof (int)}, new object[] { 0, "1", 2 });
+      ClassWithCtors threeInvoked2 = wrapper.Invoke(new Type[] {typeof(int), typeof(string), typeof(int)}, new object[] { 0, "1", 2 });
       Assert.That(afterActionCalled, Is.True);
       Assert.That(threeInvoked2.Ctor, Is.EqualTo("three"));
     }
@@ -98,7 +98,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     {
       ClassWithCtors fixedInstance = new ClassWithCtors(0);
 
-      FuncInvoker<ClassWithCtors> activator = new FuncInvoker<ClassWithCtors>(new ConstructorLookupInfo(typeof (ClassWithCtors)).GetDelegate);;
+      FuncInvoker<ClassWithCtors> activator = new FuncInvoker<ClassWithCtors>(new ConstructorLookupInfo(typeof(ClassWithCtors)).GetDelegate);;
       FuncInvokerWrapper<ClassWithCtors> wrapper = new FuncInvokerWrapper<ClassWithCtors>(activator, delegate (ClassWithCtors instance)
       {
         return fixedInstance;
@@ -113,7 +113,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
       ClassWithCtors threeInvoked1 = wrapper.Invoke(new object[] { 0, "1", 2 });
       Assert.That(threeInvoked1, Is.SameAs(fixedInstance));
 
-      ClassWithCtors threeInvoked2 = wrapper.Invoke(new Type[] { typeof (int), typeof (string), typeof (int) }, new object[] { 0, "1", 2 });
+      ClassWithCtors threeInvoked2 = wrapper.Invoke(new Type[] { typeof(int), typeof(string), typeof(int) }, new object[] { 0, "1", 2 });
       Assert.That(threeInvoked2, Is.SameAs(fixedInstance));
     }
   }

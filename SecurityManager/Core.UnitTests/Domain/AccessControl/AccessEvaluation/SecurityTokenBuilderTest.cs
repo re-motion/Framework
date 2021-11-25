@@ -724,40 +724,40 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     private SecurityContext CreateContext (params Enum[] abstractRoles)
     {
       return SecurityContext.Create(
-          typeof (Order), "group0/user1", "UID: testOwningGroup", "UID: testTenant", new Dictionary<string, Enum>(), abstractRoles);
+          typeof(Order), "group0/user1", "UID: testOwningGroup", "UID: testTenant", new Dictionary<string, Enum>(), abstractRoles);
     }
 
     private SecurityContext CreateContextWithoutOwningTenant ()
     {
-      return SecurityContext.Create(typeof (Order), "group0/user1", "UID: testOwningGroup", null, new Dictionary<string, Enum>(), new Enum[0]);
+      return SecurityContext.Create(typeof(Order), "group0/user1", "UID: testOwningGroup", null, new Dictionary<string, Enum>(), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithNotExistingOwningTenant ()
     {
       return SecurityContext.Create(
-          typeof (Order), "group0/user1", "UID: testOwningGroup", "UID: NotExistingTenant", new Dictionary<string, Enum>(), new Enum[0]);
+          typeof(Order), "group0/user1", "UID: testOwningGroup", "UID: NotExistingTenant", new Dictionary<string, Enum>(), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithoutOwningGroup ()
     {
-      return SecurityContext.Create(typeof (Order), "group0/user1", null, "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
+      return SecurityContext.Create(typeof(Order), "group0/user1", null, "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithNotExistingOwningGroup ()
     {
       return SecurityContext.Create(
-          typeof (Order), "group0/user1", "UID: NotExistingGroup", "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
+          typeof(Order), "group0/user1", "UID: NotExistingGroup", "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithoutOwningUser ()
     {
-      return SecurityContext.Create(typeof (Order), null, "UID: testOwningGroup", "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
+      return SecurityContext.Create(typeof(Order), null, "UID: testOwningGroup", "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithNotExistingOwningUser ()
     {
       return SecurityContext.Create(
-          typeof (Order), "notExistingUser", "UID: testOwningGroup", "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
+          typeof(Order), "notExistingUser", "UID: testOwningGroup", "UID: testTenant", new Dictionary<string, Enum>(), new Enum[0]);
     }
   }
 }

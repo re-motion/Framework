@@ -33,12 +33,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public CollectionChangeState (object sender, DomainObject domainObject)
-      : this (sender, domainObject, null)
+      : this(sender, domainObject, null)
     {
     }
 
     public CollectionChangeState (object sender, DomainObject domainObject, string message)
-      : base (sender, message)
+      : base(sender, message)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 

@@ -28,12 +28,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(
-          CreateSingleServiceConfigurationEntry(typeof (ITestGeneric<int>), typeof (TestGenericImplementationClosedWithInt)));
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<int>), typeof(TestGenericImplementationClosedWithInt)));
       serviceLocator.Register(
-          CreateSingleServiceConfigurationEntry(typeof (ITestGeneric<string>), typeof (TestGenericImplementationClosedWithString)));
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<string>), typeof(TestGenericImplementationClosedWithString)));
 
-      Assert.That(serviceLocator.GetInstance(typeof (ITestGeneric<int>)), Is.TypeOf<TestGenericImplementationClosedWithInt>());
-      Assert.That(serviceLocator.GetInstance(typeof (ITestGeneric<string>)), Is.TypeOf<TestGenericImplementationClosedWithString>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<int>)), Is.TypeOf<TestGenericImplementationClosedWithInt>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<string>)), Is.TypeOf<TestGenericImplementationClosedWithString>());
     }
 
     [Test]
@@ -41,12 +41,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(
-          CreateSingleServiceConfigurationEntry(typeof (ITestGeneric<int>), typeof (TestGenericImplementation<int>)));
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<int>), typeof(TestGenericImplementation<int>)));
       serviceLocator.Register(
-          CreateSingleServiceConfigurationEntry(typeof (ITestGeneric<string>), typeof (TestGenericImplementation<string>)));
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<string>), typeof(TestGenericImplementation<string>)));
 
-      Assert.That(serviceLocator.GetInstance(typeof (ITestGeneric<int>)), Is.TypeOf<TestGenericImplementation<int>>());
-      Assert.That(serviceLocator.GetInstance(typeof (ITestGeneric<string>)), Is.TypeOf<TestGenericImplementation<string>>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<int>)), Is.TypeOf<TestGenericImplementation<int>>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<string>)), Is.TypeOf<TestGenericImplementation<string>>());
     }
   }
 }

@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocListAsGridSelector : BocControlSelectorBase<BocListAsGridControlObject>
   {
     public BocListAsGridSelector ()
-        : base ("BocList")
+        : base("BocList")
     {
     }
 

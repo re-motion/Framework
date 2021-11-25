@@ -22,7 +22,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
   public class Color : ExtensibleEnum<Color>
   {
     public Color (string declarationSpace, string valueName)
-      : base (declarationSpace, valueName)
+      : base(declarationSpace, valueName)
     {
     }
   }

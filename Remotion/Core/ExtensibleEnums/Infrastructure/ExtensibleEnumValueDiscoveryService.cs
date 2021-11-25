@@ -31,12 +31,12 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// via reflection and <see cref="ITypeDiscoveryService"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IExtensibleEnumValueDiscoveryService), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IExtensibleEnumValueDiscoveryService), Lifetime = LifetimeKind.Singleton)]
   public class ExtensibleEnumValueDiscoveryService : IExtensibleEnumValueDiscoveryService
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 
-    private readonly bool _excludeGlobalTypes = !AssemblyTypeCache.IsGacAssembly(typeof (ExtensibleEnum<>).Assembly);
+    private readonly bool _excludeGlobalTypes = !AssemblyTypeCache.IsGacAssembly(typeof(ExtensibleEnum<>).Assembly);
 
     public ExtensibleEnumValueDiscoveryService ()
     {
@@ -89,7 +89,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       ArgumentUtility.CheckNotNull("typeDeclaringMethods", typeDeclaringMethods);
 
       var methods = typeDeclaringMethods.GetMethods(BindingFlags.Static | BindingFlags.Public);
-      var extensionMethods = GetValueExtensionMethods(typeof (T), methods);
+      var extensionMethods = GetValueExtensionMethods(typeof(T), methods);
 
       return from mi in extensionMethods
              let value = (T) mi.Invoke(null, new object[] { definition })!
@@ -110,12 +110,12 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       ArgumentUtility.CheckNotNull("extensibleEnumType", extensibleEnumType);
       ArgumentUtility.CheckNotNull("methodCandidates", methodCandidates);
 
-      var extensibleEnumValuesType = typeof (ExtensibleEnumDefinition<>).MakeGenericType(extensibleEnumType);
+      var extensibleEnumValuesType = typeof(ExtensibleEnumDefinition<>).MakeGenericType(extensibleEnumType);
       return from m in methodCandidates
              where m.IsPublic
                    && !m.IsGenericMethod
                    && extensibleEnumType.IsAssignableFrom(m.ReturnType)
-                   && m.IsDefined(typeof (ExtensionAttribute), false)
+                   && m.IsDefined(typeof(ExtensionAttribute), false)
              let parameters = m.GetParameters()
              where parameters.Length == 1
                    && parameters[0].ParameterType == extensibleEnumValuesType

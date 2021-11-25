@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
 
       _testHelper = new TestHelper();
       _extension = new SecurityClientTransactionExtension();
-      _propertyInfo = typeof (SecurableObject).GetProperty("Parent");
+      _propertyInfo = typeof(SecurableObject).GetProperty("Parent");
 
       _setMethodInformation = MethodInfoAdapter.Create(_propertyInfo.GetSetMethod());
       
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".Parent");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
       _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null);
 
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".Parent");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
       Assert.That(
           () => _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null),
           Throws.InstanceOf<PermissionDeniedException>());
@@ -85,14 +85,14 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessGranted_WithNonPublicAccessor_DowsNotThrow ()
     {
       var propertyInfo =
-          typeof (SecurableObject).GetProperty("NonPublicRelationPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
+          typeof(SecurableObject).GetProperty("NonPublicRelationPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
       var setMethodInformation = MethodInfoAdapter.Create(propertyInfo.GetSetMethod(true));
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(setMethodInformation, TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
 
       _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null);
 
@@ -103,14 +103,14 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessDenied_WithNonPublicAccessor_ThrowsPermissionDeniedException ()
     {
       var propertyInfo =
-          typeof (SecurableObject).GetProperty("NonPublicRelationPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
+          typeof(SecurableObject).GetProperty("NonPublicRelationPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
       var setMethodInformation = MethodInfoAdapter.Create(propertyInfo.GetSetMethod(true));
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(setMethodInformation, TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
       Assert.That(
           () => _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null),
           Throws.InstanceOf<PermissionDeniedException>());
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Edit, true);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".RelationPropertyWithMissingSetAccessor");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".RelationPropertyWithMissingSetAccessor");
 
       _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null);
 
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Edit, false);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".RelationPropertyWithMissingSetAccessor");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".RelationPropertyWithMissingSetAccessor");
       Assert.That(
           () => _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null),
           Throws.InstanceOf<PermissionDeniedException>());
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.ReplayAll();
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".Parent");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
       using (SecurityFreeSection.Activate())
       {
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       NonSecurableObject nonSecurableObject = _testHelper.CreateNonSecurableObject();
       _testHelper.ReplayAll();
-      var endPointDefinition = nonSecurableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (NonSecurableObject).FullName + ".Parent");
+      var endPointDefinition = nonSecurableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(NonSecurableObject).FullName + ".Parent");
 
       _extension.RelationChanging(_testHelper.Transaction, nonSecurableObject, endPointDefinition, null, null);
 
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.Transaction.ExecuteInScope(() => securableObject.OtherParent = _testHelper.CreateSecurableObject());
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_setMethodInformation, TestAccessTypes.First);
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".Parent");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
       HasAccessDelegate hasAccess = delegate
       {
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       SecurableObject newObject = _testHelper.CreateSecurableObject();
-      var childrenPropertyInfo = typeof (SecurableObject).GetProperty("Children");
+      var childrenPropertyInfo = typeof(SecurableObject).GetProperty("Children");
       _testHelper.AddExtension(_extension);
       using (_testHelper.Ordered())
       {
@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       SecurableObject oldObject = _testHelper.CreateSecurableObject();
-      var childrenPropertyInfo = typeof (SecurableObject).GetProperty("Children");
+      var childrenPropertyInfo = typeof(SecurableObject).GetProperty("Children");
       
       _testHelper.Transaction.ExecuteInScope(() => securableObject.Children.Add(oldObject));
       _testHelper.AddExtension(_extension);
@@ -304,7 +304,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
         _testHelper.ExpectObjectSecurityStrategyHasAccessWithMatchingScope(securableObject, scope);
         _testHelper.ReplayAll();
 
-        var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".Parent");
+        var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
         _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null);
       }
 
@@ -319,7 +319,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".Parent");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -337,7 +337,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll();
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof (SecurableObject).FullName + ".Parent");
+      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {

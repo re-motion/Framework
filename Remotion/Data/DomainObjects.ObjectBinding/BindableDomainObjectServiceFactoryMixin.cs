@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   ///   </item>
   /// </list>
   /// </remarks>
-  [Extends (typeof (BindableObjectServiceFactory))]
+  [Extends (typeof(BindableObjectServiceFactory))]
   public class BindableDomainObjectServiceFactoryMixin
       : Mixin<BindableObjectServiceFactory, IBusinessObjectServiceFactory>, IBusinessObjectServiceFactory
   {
@@ -55,14 +55,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public virtual IBusinessObjectService CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
       ArgumentUtility.CheckNotNull("provider", provider);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof (IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
 
       if (provider.ProviderAttribute is BindableDomainObjectProviderAttribute)
       {
-        if (serviceType == typeof (IGetObjectService))
+        if (serviceType == typeof(IGetObjectService))
           return new BindableDomainObjectGetObjectService();
 
-        if (serviceType == typeof (ISearchAvailableObjectsService))
+        if (serviceType == typeof(ISearchAvailableObjectsService))
           return new BindableDomainObjectCompoundSearchService();
       }
 

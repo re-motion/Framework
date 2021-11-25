@@ -33,7 +33,7 @@ namespace Remotion.Web.UnitTests.Core.UI
     [SetUp]
     public void SetUp ()
     {
-      _htmlHeadAppender = (HtmlHeadAppender) Activator.CreateInstance(typeof (HtmlHeadAppender), nonPublic: true);
+      _htmlHeadAppender = (HtmlHeadAppender) Activator.CreateInstance(typeof(HtmlHeadAppender), nonPublic: true);
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
 
-      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof (TitleTag)));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(TitleTag)));
       var titleTag = (TitleTag) htmlHeadElements[0];
       Assert.That(titleTag.Title, Is.EqualTo("The Title"));
     }
@@ -73,7 +73,7 @@ namespace Remotion.Web.UnitTests.Core.UI
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
-      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof (JavaScriptInclude)));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(JavaScriptInclude)));
       Assert.That(((JavaScriptInclude) htmlHeadElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
     }
 
@@ -86,7 +86,7 @@ namespace Remotion.Web.UnitTests.Core.UI
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
-      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof (JavaScriptInclude)));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(JavaScriptInclude)));
       Assert.That(((JavaScriptInclude) htmlHeadElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.js"));
     }
 
@@ -99,10 +99,10 @@ namespace Remotion.Web.UnitTests.Core.UI
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
-      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof (StyleSheetBlock)));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(StyleSheetBlock)));
       var styleSheetBlock = (StyleSheetBlock) htmlHeadElements[0];
       Assert.That(styleSheetBlock.StyleSheetElements.Count, Is.EqualTo(1));
-      Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof (StyleSheetImportRule)));
+      Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof(StyleSheetImportRule)));
       Assert.That(((StyleSheetImportRule) styleSheetBlock.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
     }
 
@@ -115,10 +115,10 @@ namespace Remotion.Web.UnitTests.Core.UI
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
-      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof (StyleSheetBlock)));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(StyleSheetBlock)));
       var styleSheetBlock = (StyleSheetBlock) htmlHeadElements[0];
       Assert.That(styleSheetBlock.StyleSheetElements.Count, Is.EqualTo(1));
-      Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof (StyleSheetImportRule)));
+      Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof(StyleSheetImportRule)));
       Assert.That(((StyleSheetImportRule) styleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.css"));
     }
 
@@ -265,7 +265,7 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(3));
 
-      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof (TitleTag)));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(TitleTag)));
       Assert.That(htmlHeadElements[1], Is.SameAs(element1.Object));
       Assert.That(htmlHeadElements[2], Is.SameAs(element2.Object));
     }

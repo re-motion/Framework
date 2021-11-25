@@ -30,9 +30,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_SingleAndCompoundImplementations_ThrowsInvalidOperationException ()
     {
-      var single = new ServiceImplementationInfo(typeof (TestImplementation1), LifetimeKind.InstancePerDependency, RegistrationType.Single);
-      var compound = new ServiceImplementationInfo(typeof (TestCompound), LifetimeKind.InstancePerDependency, RegistrationType.Compound);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof (ITestType), single, compound);
+      var single = new ServiceImplementationInfo(typeof(TestImplementation1), LifetimeKind.InstancePerDependency, RegistrationType.Single);
+      var compound = new ServiceImplementationInfo(typeof(TestCompound), LifetimeKind.InstancePerDependency, RegistrationType.Compound);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof(ITestType), single, compound);
 
       var serviceLocator = CreateServiceLocator();
 
@@ -46,9 +46,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_SingleAndMultipleImplementations_ThrowsInvalidOperationException ()
     {
-      var single = new ServiceImplementationInfo(typeof (TestImplementation1), LifetimeKind.InstancePerDependency, RegistrationType.Single);
-      var multiple = new ServiceImplementationInfo(typeof (TestImplementation2), LifetimeKind.InstancePerDependency, RegistrationType.Multiple);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof (ITestType), single, multiple);
+      var single = new ServiceImplementationInfo(typeof(TestImplementation1), LifetimeKind.InstancePerDependency, RegistrationType.Single);
+      var multiple = new ServiceImplementationInfo(typeof(TestImplementation2), LifetimeKind.InstancePerDependency, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof(ITestType), single, multiple);
 
       var serviceLocator = CreateServiceLocator();
 
@@ -63,8 +63,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_TypeWithTooManyPublicCtors_ThrowsInvalidOperationException ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestTypeWithErrors),
-          typeof (TestTypeWithTooManyPublicConstructors));
+          typeof(ITestTypeWithErrors),
+          typeof(TestTypeWithTooManyPublicConstructors));
 
       var serviceLocator = CreateServiceLocator();
 
@@ -79,8 +79,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_TypeWithOnlyNonPublicCtor_ThrowsInvalidOperationException ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestTypeWithErrors),
-          typeof (TestTypeWithOnlyNonPublicConstructor));
+          typeof(ITestTypeWithErrors),
+          typeof(TestTypeWithOnlyNonPublicConstructor));
 
       var serviceLocator = CreateServiceLocator();
 
@@ -95,8 +95,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_Twice_ExceptionIsThrown ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementation1));
+          typeof(ITestType),
+          typeof(TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
@@ -111,11 +111,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_AfterGetInstance_ExceptionIsThrown ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementation1));
+          typeof(ITestType),
+          typeof(TestImplementation1));
 
       var serviceConfigurationDiscoveryServiceMock = new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
-      serviceConfigurationDiscoveryServiceMock.Setup(_ => _.GetDefaultConfiguration(typeof (ITestType))).Returns(serviceConfigurationEntry);
+      serviceConfigurationDiscoveryServiceMock.Setup(_ => _.GetDefaultConfiguration(typeof(ITestType))).Returns(serviceConfigurationEntry);
 
       var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceMock.Object);
       serviceLocator.Register(serviceConfigurationEntry);
@@ -130,12 +130,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_IndirectActivationExceptionDuringDependencyResolution_ThrowsActivationException_CausesFullMessageToBeBuilt ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementationWithMultipleConstructorParameters));
+          typeof(ITestType),
+          typeof(TestImplementationWithMultipleConstructorParameters));
 
       var expectedException = new Exception("Expected Exception Message");
       var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
-      serviceConfigurationDiscoveryServiceStub.Setup(_ => _.GetDefaultConfiguration(typeof (InstanceService))).Throws(expectedException);
+      serviceConfigurationDiscoveryServiceStub.Setup(_ => _.GetDefaultConfiguration(typeof(InstanceService))).Throws(expectedException);
 
       var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceStub.Object);
       serviceLocator.Register(serviceConfigurationEntry);
@@ -143,7 +143,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       serviceLocator.Register(CreateSingletonService());
 
       Assert.That(
-          () => serviceLocator.GetInstance(typeof (ITestType)),
+          () => serviceLocator.GetInstance(typeof(ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "Could not resolve type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType': "
               + "Error resolving indirect dependency of constructor parameter 'instanceService1' "
@@ -156,19 +156,19 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_IndirectActivationExceptionDuringConstructor_ThrowsActivationException_CausesFullMessageToBeBuilt ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestTypeWithConstructorThrowingSingleDependency));
+          typeof(ITestType),
+          typeof(TestTypeWithConstructorThrowingSingleDependency));
 
       var serviceConfigurationEntryForError = CreateSingleServiceConfigurationEntry(
-          typeof (ITestTypeWithErrors),
-          typeof (TestTypeWithConstructorThrowingException));
+          typeof(ITestTypeWithErrors),
+          typeof(TestTypeWithConstructorThrowingException));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
       serviceLocator.Register(serviceConfigurationEntryForError);
 
       Assert.That(
-          () => serviceLocator.GetInstance(typeof (ITestType)),
+          () => serviceLocator.GetInstance(typeof(ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "Could not resolve type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType': "
               + "Error resolving indirect dependency of constructor parameter 'param' "
@@ -180,12 +180,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_IndirectActivationExceptionDuringDependencyResolution_ForCollectionParameter_ThrowsActivationException_CausesFullMessageToBeBuilt ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementationWithMultipleConstructorParameters));
+          typeof(ITestType),
+          typeof(TestImplementationWithMultipleConstructorParameters));
 
       var expectedException = new Exception("Expected Exception Message");
       var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
-      serviceConfigurationDiscoveryServiceStub.Setup(_ => _.GetDefaultConfiguration(typeof (MultipleService))).Throws(expectedException);
+      serviceConfigurationDiscoveryServiceStub.Setup(_ => _.GetDefaultConfiguration(typeof(MultipleService))).Throws(expectedException);
 
       var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceStub.Object);
       serviceLocator.Register(serviceConfigurationEntry);
@@ -193,7 +193,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       serviceLocator.Register(CreateSingletonService());
 
       Assert.That(
-          () => serviceLocator.GetInstance(typeof (ITestType)),
+          () => serviceLocator.GetInstance(typeof(ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "Could not resolve type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType': "
               + "Error resolving indirect collection dependency of constructor parameter 'multipleService' "
@@ -206,19 +206,19 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_IndirectActivationExceptionDuringConstructor_ForCollectionParameter_ThrowsActivationException_CausesFullMessageToBeBuilt ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestTypeWithConstructorThrowingMultipleDependency));
+          typeof(ITestType),
+          typeof(TestTypeWithConstructorThrowingMultipleDependency));
 
       var serviceConfigurationEntryForError = CreateMultipleServiceConfigurationEntry(
-          typeof (ITestTypeWithErrors),
-          new[] { typeof (TestTypeWithConstructorThrowingException) });
+          typeof(ITestTypeWithErrors),
+          new[] { typeof(TestTypeWithConstructorThrowingException) });
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
       serviceLocator.Register(serviceConfigurationEntryForError);
 
       Assert.That(
-          () => serviceLocator.GetInstance(typeof (ITestType)),
+          () => serviceLocator.GetInstance(typeof(ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "Could not resolve type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType': "
               + "Error resolving indirect collection dependency of constructor parameter 'param' "
@@ -233,13 +233,13 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       Func<object> factoryAsObject = factory;
       var implementation = ServiceImplementationInfo.CreateSingle<ITestTypeWithErrors>(() => null);
       PrivateInvoke.SetNonPublicField(implementation, "_factory", factoryAsObject);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof (ITestTypeWithErrors), implementation);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof(ITestTypeWithErrors), implementation);
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
 
       Assert.That(
-          () => serviceLocator.GetInstance(typeof (ITestTypeWithErrors)),
+          () => serviceLocator.GetInstance(typeof(ITestTypeWithErrors)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "The instance returned by the registered factory does not implement the requested type "
               + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestTypeWithErrors'. "

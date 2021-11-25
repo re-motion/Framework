@@ -90,9 +90,9 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var otherPropertyExpression = ExpressionHelper.GetTypedMemberExpression<Person, DateTime>(c => c.Birthday);
       var filteredPropertyStub = new Mock<IPropertyInformation>();
 
-      var propertyRule1 = AddingPropertyValidationRuleCollector.Create(userNameExpression, typeof (CustomerValidationRuleCollector1));
-      var propertyRule2 = AddingPropertyValidationRuleCollector.Create(lastNameExpression, typeof (CustomerValidationRuleCollector1));
-      var propertyRule3 = AddingPropertyValidationRuleCollector.Create(lastNameExpression, typeof (CustomerValidationRuleCollector2));
+      var propertyRule1 = AddingPropertyValidationRuleCollector.Create(userNameExpression, typeof(CustomerValidationRuleCollector1));
+      var propertyRule2 = AddingPropertyValidationRuleCollector.Create(lastNameExpression, typeof(CustomerValidationRuleCollector1));
+      var propertyRule3 = AddingPropertyValidationRuleCollector.Create(lastNameExpression, typeof(CustomerValidationRuleCollector2));
       var filteredPropertyRuleStub = new Mock<IAddingPropertyValidationRuleCollector>();
       filteredPropertyRuleStub.Setup(_ => _.Property).Returns(filteredPropertyStub.Object);
       filteredPropertyRuleStub.Setup(_ => _.Validators).Returns(new[] { new Mock<IPropertyValidator>().Object });

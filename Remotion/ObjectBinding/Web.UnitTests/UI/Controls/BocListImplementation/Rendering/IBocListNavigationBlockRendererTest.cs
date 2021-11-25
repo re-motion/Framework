@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var factory = _serviceLocator.GetInstance<IBocListNavigationBlockRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocListNavigationBlockRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocListNavigationBlockRenderer)));
     }
 
     [Test]

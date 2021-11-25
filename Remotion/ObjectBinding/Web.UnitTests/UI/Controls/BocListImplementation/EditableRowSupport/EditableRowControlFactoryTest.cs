@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [SetUp]
     public virtual void SetUp ()
     {
-      _stringValueClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
+      _stringValueClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
 
       _stringValuePropertyPath = BusinessObjectPropertyPath.CreateStatic(_stringValueClass, "FirstValue");
 

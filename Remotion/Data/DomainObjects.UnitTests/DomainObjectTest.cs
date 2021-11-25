@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var instance = _transaction.ExecuteInScope(() => Order.NewObject());
 
       Assert.That(instance.ID, Is.Not.Null);
-      Assert.That(instance.ID.ClassDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof (Order))));
+      Assert.That(instance.ID.ClassDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(Order))));
     }
 
     [Test]
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Initialize_WithUninitializedObject_SetsIDAndRootTransaction ()
     {
-      var type = GetConcreteType(typeof (OrderItem));
+      var type = GetConcreteType(typeof(OrderItem));
       var orderItem = (OrderItem) FormatterServices.GetSafeUninitializedObject(type);
       orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction);
 
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Initialize_ThrowsForNonRootTransaction ()
     {
-      var type = GetConcreteType(typeof (OrderItem));
+      var type = GetConcreteType(typeof(OrderItem));
       var orderItem = (OrderItem) FormatterServices.GetSafeUninitializedObject(type);
       Assert.That(
           () => orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction.CreateSubTransaction()),
@@ -236,7 +236,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void RaiseReferenceInitializatingEvent_CallsReferenceInitializing_TransactionContextIsRestricted ()
     {
       var result = _transaction.ExecuteInScope(() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject(o => o.DefaultTransactionContext));
-      Assert.That(result, Is.TypeOf(typeof (InitializedEventDomainObjectTransactionContextDecorator)));
+      Assert.That(result, Is.TypeOf(typeof(InitializedEventDomainObjectTransactionContextDecorator)));
     }
 
     [Test]
@@ -341,7 +341,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Order order = _transaction.ExecuteInScope(() => Order.NewObject());
 
       var targetInvocatioException = Assert.Throws<TargetInvocationException>(
-          () => typeof (DomainObject).GetMethod("GetType", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+          () => typeof(DomainObject).GetMethod("GetType", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
               .Invoke(order, new object[0]));
       Assert.That(targetInvocatioException.InnerException, Is.InstanceOf<InvalidOperationException>());
       Assert.That(targetInvocatioException.InnerException?.Message, Is.EqualTo("DomainObject.GetType should not be used."));
@@ -351,7 +351,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetPublicDomainObjectType ()
     {
       Customer customer = _transaction.ExecuteInScope(() => Customer.NewObject());
-      Assert.That(customer.GetPublicDomainObjectType(), Is.SameAs(typeof (Customer)));
+      Assert.That(customer.GetPublicDomainObjectType(), Is.SameAs(typeof(Customer)));
     }
 
     [Test]
@@ -450,7 +450,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void TryGetObject_NotFound ()
     {
-      var objectID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var objectID = new ObjectID(typeof(Order), Guid.NewGuid());
       Assert.That(_transaction.IsInvalid(objectID), Is.False);
 
       var order = _transaction.ExecuteInScope(() => objectID.TryGetObject<TestDomainBase>());
@@ -472,7 +472,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var order = (Order) LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
       Assert.That(order.NeedsLoadModeDataContainerOnly, Is.False);
 
-      PrivateInvoke.InvokeNonPublicMethod(order, typeof (DomainObject), "OnLoaded");
+      PrivateInvoke.InvokeNonPublicMethod(order, typeof(DomainObject), "OnLoaded");
 
       Assert.That(order.NeedsLoadModeDataContainerOnly, Is.True);
     }
@@ -558,7 +558,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var order = _transaction.ExecuteInScope(() => Order.NewObject());
       var transactionContextIndexer = order.TransactionContext;
 
-      Assert.That(transactionContextIndexer, Is.InstanceOf(typeof (DomainObjectTransactionContextIndexer)));
+      Assert.That(transactionContextIndexer, Is.InstanceOf(typeof(DomainObjectTransactionContextIndexer)));
       Assert.That(((DomainObjectTransactionContext) transactionContextIndexer[_transaction]).DomainObject, Is.SameAs(order));
     }
 

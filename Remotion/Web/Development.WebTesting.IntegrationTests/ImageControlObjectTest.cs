@@ -28,11 +28,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
+    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ImageSelector, ImageControlObject> testAction)
     {
       testAction(Helper, e => e.Images(), "image");

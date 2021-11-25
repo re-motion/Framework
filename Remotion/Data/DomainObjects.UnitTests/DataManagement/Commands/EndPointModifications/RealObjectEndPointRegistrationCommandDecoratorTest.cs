@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       
       var nestedCommands = result.GetNestedCommands();
       Assert.That(nestedCommands.Count, Is.EqualTo(1));
-      Assert.That(nestedCommands[0], Is.TypeOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(nestedCommands[0], Is.TypeOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
       
       var innerExpandedCommand = (RealObjectEndPointRegistrationCommandDecorator) nestedCommands[0];
       Assert.That(innerExpandedCommand.DecoratedCommand, Is.SameAs(fakeExpandedCommand));

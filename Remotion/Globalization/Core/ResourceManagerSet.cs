@@ -31,7 +31,7 @@ namespace Remotion.Globalization
   /// <threadsafety static="true" instance="true" />
   public class ResourceManagerSet : IResourceManager
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (ResourceManagerSet));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceManagerSet));
 
     private readonly IResourceManager[] _resourceManagers;
     private readonly string _name;

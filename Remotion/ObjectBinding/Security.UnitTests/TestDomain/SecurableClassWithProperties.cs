@@ -21,7 +21,7 @@ using Remotion.Security;
 namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
 {
   [BindableObject]
-  [Uses (typeof (MixinSecurableClassWithProperties))]
+  [Uses (typeof(MixinSecurableClassWithProperties))]
   public class SecurableClassWithProperties : ISecurableObject
   {
     private readonly IObjectSecurityStrategy _securityStrategy;

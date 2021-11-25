@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
       initialize();
 
       var getAppender = LateBoundDelegateFactory.CreateDelegate(
-          linqToSqlProfilerType, "GetAppender", typeof (Func<,>).MakeGenericType(typeof (string), linqToSqlAppenderType));
+          linqToSqlProfilerType, "GetAppender", typeof(Func<,>).MakeGenericType(typeof(string), linqToSqlAppenderType));
       _linqToSqlAppender = getAppender.DynamicInvoke(name);
 
       _connectionStarted = LateBoundDelegateFactory.CreateDelegate<Action<Guid>>(_linqToSqlAppender, "ConnectionStarted");

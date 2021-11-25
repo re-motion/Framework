@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTreeViewImplementation
       var factory = _serviceLocator.GetInstance<IWebTreeViewRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (WebTreeViewRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(WebTreeViewRenderer)));
     }
 
     [Test]

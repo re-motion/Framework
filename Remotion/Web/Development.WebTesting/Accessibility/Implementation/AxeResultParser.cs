@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     {
       ArgumentUtility.CheckNotNullOrEmpty("rawJson", rawJson);
 
-      var serializer = new DataContractJsonSerializer(typeof (AxeResult));
+      var serializer = new DataContractJsonSerializer(typeof(AxeResult));
       using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(rawJson)))
       {
         return (AxeResult) Assertion.IsNotNull(serializer.ReadObject(stream), "Axe result could not be deserialized.");

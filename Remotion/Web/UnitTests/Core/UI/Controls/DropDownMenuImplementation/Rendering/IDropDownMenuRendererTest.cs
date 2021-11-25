@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       var factory = _serviceLocator.GetInstance<IDropDownMenuRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (DropDownMenuRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(DropDownMenuRenderer)));
     }
 
     [Test]

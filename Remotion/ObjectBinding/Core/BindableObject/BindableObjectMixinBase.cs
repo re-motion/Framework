@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       var stringFormatterService =
           (IBusinessObjectStringFormatterService?)
-          BusinessObjectClass.BusinessObjectProvider.GetService(typeof (IBusinessObjectStringFormatterService));
+          BusinessObjectClass.BusinessObjectProvider.GetService(typeof(IBusinessObjectStringFormatterService));
 
       Assertion.IsNotNull(stringFormatterService, "An implementation of {0} must be available.", nameof(IBusinessObjectStringFormatterService));
 

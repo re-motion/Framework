@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public abstract class ObjectEndPoint : RelationEndPoint, IObjectEndPoint
   {
     protected ObjectEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
-        : base (clientTransaction, id)
+        : base(clientTransaction, id)
     {
       if (id.Definition.Cardinality != CardinalityType.One)
         throw new ArgumentException("End point ID must refer to an end point with cardinality 'One'.", "id");
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     #region Serialization
 
     protected ObjectEndPoint (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
     }
 

@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
   /// Implements the <see cref="IBocMultilineTextValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocMultilineTextValueValidatorFactory"/>
-  [ImplementationFor (typeof (IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor (typeof(IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocMultilineTextValueValidatorFactory : IBocMultilineTextValueValidatorFactory
   {
     public const int Position = 0;

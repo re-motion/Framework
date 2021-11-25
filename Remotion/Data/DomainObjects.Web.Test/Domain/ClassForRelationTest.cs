@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       get { return ClassWithAllDataTypes.EnumType.Value3; }
     }
 
-    [ItemType (typeof (ClassWithAllDataTypes))]
+    [ItemType (typeof(ClassWithAllDataTypes))]
     [ObjectBinding (ReadOnly = true)]
     [StorageClassNone]
     public DomainObjectCollection ComputedList

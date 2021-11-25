@@ -40,7 +40,7 @@ namespace Remotion.ExtensibleEnums
   {
     private static readonly Lazy<ExtensibleEnumDefinition<T>> s_values =
         new Lazy<ExtensibleEnumDefinition<T>>(
-            () => (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition(typeof (T)),
+            () => (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition(typeof(T)),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace Remotion.ExtensibleEnums
     /// <param name="id">The identifier of the value being created. This identifier is used for equality comparisons
     /// and hash code calculations.</param>
     protected ExtensibleEnum (string id)
-        : this (
+        : this(
             (string?) null, 
             ArgumentUtility.CheckNotNullOrEmpty("id", id))
     {
@@ -115,7 +115,7 @@ namespace Remotion.ExtensibleEnums
     /// <param name="valueName">The name of the value being created. This identifier is used for equality comparisons
     /// and hash code calculations.</param>
     protected ExtensibleEnum (Type declaringType, string valueName)
-        : this (
+        : this(
             ArgumentUtility.CheckNotNull("declaringType", declaringType).GetFullNameChecked(), 
             ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName))
     {
@@ -128,7 +128,7 @@ namespace Remotion.ExtensibleEnums
     /// to pass for this parameter. The method's full name is used as the identifier of the value being created. This identifier is used for 
     /// equality comparisons and hash code calculations.</param>
     protected ExtensibleEnum (MethodBase currentMethod)
-        : this (
+        : this(
             ArgumentUtility.CheckNotNull("currentMethod", currentMethod).DeclaringType!,
             currentMethod.Name)
     {
@@ -174,7 +174,7 @@ namespace Remotion.ExtensibleEnums
     /// </summary>
     public Type GetEnumType ()
     {
-      return typeof (T);
+      return typeof(T);
     }
 
     /// <summary>

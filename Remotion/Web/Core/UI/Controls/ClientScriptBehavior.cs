@@ -24,7 +24,7 @@ namespace Remotion.Web.UI.Controls
   /// Implements <see cref="IClientScriptBehavior"/> for standard mode.
   /// <see cref="IsBrowserCapableOfScripting"/> always returns <see langword="true" />.
   /// </summary>
-  [ImplementationFor (typeof (IClientScriptBehavior), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IClientScriptBehavior), Lifetime = LifetimeKind.Singleton)]
   public class ClientScriptBehavior : IClientScriptBehavior
   {
     public ClientScriptBehavior ()

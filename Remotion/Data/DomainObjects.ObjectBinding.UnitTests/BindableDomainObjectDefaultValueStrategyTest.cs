@@ -82,10 +82,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var instance = SampleBindableDomainObject.NewObject();
 
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof (bool));
+      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
       propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
-      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(typeof (bool)));
-      propertyInformationStub.Stub(stub => stub.GetOriginalDeclaringType()).Return(TypeAdapter.Create(typeof (bool)));
+      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(typeof(bool)));
+      propertyInformationStub.Stub(stub => stub.GetOriginalDeclaringType()).Return(TypeAdapter.Create(typeof(bool)));
       var property = CreateProperty(propertyInformationStub);
 
       var result = strategy.IsDefaultValue(instance, property);
@@ -113,12 +113,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       PropertyReflector reflector = PropertyReflector.Create(property, provider);
       return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod(
-          reflector, typeof (PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
+          reflector, typeof(PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
     }
 
     private Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof (PropertyReflector), "GetUnderlyingType");
+      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
   }
 }

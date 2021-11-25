@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests
       var obj = _serviceLocator.GetInstance<IFunctionalSecurityStrategy>();
 
       Assert.That(obj, Is.Not.Null);
-      Assert.That(obj, Is.TypeOf(typeof (FunctionalSecurityStrategy)));
+      Assert.That(obj, Is.TypeOf(typeof(FunctionalSecurityStrategy)));
     }
 
     [Test]

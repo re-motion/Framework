@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests
       var obj = _serviceLocator.GetInstance<ISecurityProvider>();
 
       Assert.That(obj, Is.Not.Null);
-      Assert.That(obj, Is.TypeOf(typeof (NullSecurityProvider)));
+      Assert.That(obj, Is.TypeOf(typeof(NullSecurityProvider)));
     }
 
     [Test]

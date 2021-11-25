@@ -50,7 +50,7 @@ namespace Remotion.Mixins
     public static bool IsGeneratedConcreteMixedType (Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
-      return typeof (IMixinTarget).IsAssignableFrom(type) && !type.IsInterface;
+      return typeof(IMixinTarget).IsAssignableFrom(type) && !type.IsInterface;
     }
     
     /// <summary>
@@ -65,8 +65,8 @@ namespace Remotion.Mixins
     {
       ArgumentUtility.CheckNotNull("type", type);
       return IsGeneratedConcreteMixedType(type)
-          || typeof (IGeneratedMixinType).IsAssignableFrom(type)
-          || typeof (IGeneratedNextCallProxyType).IsAssignableFrom(type)
+          || typeof(IGeneratedMixinType).IsAssignableFrom(type)
+          || typeof(IGeneratedNextCallProxyType).IsAssignableFrom(type)
           || (type.IsNested && type.IsInterface && IsGeneratedByMixinEngine(type.DeclaringType!));
     }
 

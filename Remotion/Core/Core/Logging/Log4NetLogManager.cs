@@ -90,7 +90,7 @@ namespace Remotion.Logging
             + "from the '{2}' class.", 
             repositoryAssembly.GetName().GetNameSafe(),
             loggerRepository.GetType(),
-            typeof (Hierarchy));
+            typeof(Hierarchy));
         throw new InvalidOperationException(message);
       }
 
@@ -113,7 +113,7 @@ namespace Remotion.Logging
         {
           var message = string.Format(
               "Log-specific thresholds can only be set for log4net loggers of type '{0}'. The specified logger '{1}' is of type '{2}'.",
-              typeof (Logger),
+              typeof(Logger),
               log4netLog.Logger.Name,
               log4netLog.Logger.GetType());
           throw new ArgumentException(message, "logThresholds");

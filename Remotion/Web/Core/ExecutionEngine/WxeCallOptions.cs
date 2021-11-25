@@ -30,7 +30,7 @@ namespace Remotion.Web.ExecutionEngine
   public sealed class WxeCallOptions : WxeCallOptionsBase
   {
     public WxeCallOptions ()
-        : this (WxePermaUrlOptions.Null)
+        : this(WxePermaUrlOptions.Null)
     {
     }
 

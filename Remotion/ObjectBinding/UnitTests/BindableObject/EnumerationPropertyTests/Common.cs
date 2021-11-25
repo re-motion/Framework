@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     public void Initialize_NullableWithUndefinedValue ()
     {
       Assert.That(
-          () => CreateProperty(typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar"),
+          () => CreateProperty(typeof(ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar"),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The property 'NullableScalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue]'"
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     public void Initialize_FlagsEnum ()
     {
       Assert.That(
-          () => CreateProperty(typeof (ClassWithValueType<TestFlags>), "Scalar"),
+          () => CreateProperty(typeof(ClassWithValueType<TestFlags>), "Scalar"),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The property 'Scalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.TestFlags]'"
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     public void Initialize_WithUndefinedEnumValueFromOtherType ()
     {
       Assert.That(
-          () => CreateProperty(typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar"),
+          () => CreateProperty(typeof(ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar"),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The enum type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValueFromOtherType' "

@@ -110,8 +110,8 @@ namespace Remotion.Xml
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      XmlTypeAttribute? xmlType = (XmlTypeAttribute?) Attribute.GetCustomAttribute(type, typeof (XmlTypeAttribute), true);
-      XmlRootAttribute? xmlRoot = (XmlRootAttribute?) Attribute.GetCustomAttribute(type, typeof (XmlRootAttribute), true);
+      XmlTypeAttribute? xmlType = (XmlTypeAttribute?) Attribute.GetCustomAttribute(type, typeof(XmlTypeAttribute), true);
+      XmlRootAttribute? xmlRoot = (XmlRootAttribute?) Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute), true);
       bool hasXmlType = xmlType != null;
       bool hasXmlRoot = xmlRoot != null;
       if (!hasXmlType && !hasXmlRoot)

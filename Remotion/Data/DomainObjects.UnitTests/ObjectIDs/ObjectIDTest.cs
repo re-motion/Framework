@@ -41,11 +41,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     public void Initialize_WithAbstractType ()
     {
       Assert.That(
-          () => new ObjectID(typeof (TIDomainBase), Guid.NewGuid()),
+          () => new ObjectID(typeof(TIDomainBase), Guid.NewGuid()),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               string.Format(
                   "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.",
-                  typeof (TIDomainBase).AssemblyQualifiedName,
+                  typeof(TIDomainBase).AssemblyQualifiedName,
                   "TI_DomainBase"),
               "classDefinition"));
     }
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
 
       Assert.That(result, Is.TypeOf<DomainObjectHandle<Order>>());
       Assert.That(result.ObjectID, Is.EqualTo(id));
-      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof (IDomainObjectHandle<DomainObject>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(IDomainObjectHandle<DomainObject>)));
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
 
       Assert.That(result, Is.TypeOf<DomainObjectHandle<Order>>());
       Assert.That(result.ObjectID, Is.EqualTo(id));
-      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof (IDomainObjectHandle<DomainObject>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(IDomainObjectHandle<DomainObject>)));
     }
 
     [Test]
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
       Assert.That(id, Is.TypeOf<ObjectID>());
       Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("TestDomain"));
       Assert.That(id.ClassID, Is.EqualTo("Order"));
-      Assert.That(id.Value.GetType(), Is.EqualTo(typeof (Guid)));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(Guid)));
       Assert.That(id.Value, Is.EqualTo(new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
     }
     
@@ -277,7 +277,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     public void Initialize_WithClassType ()
     {
       var value = new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
-      var id = new ObjectID(typeof (Order), value);
+      var id = new ObjectID(typeof(Order), value);
 
       Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("TestDomain"));
       Assert.That(id.ClassDefinition, Is.SameAs(_orderClassDefinition));
@@ -377,9 +377,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     [Test]
     public void CompareTo_Guid ()
     {
-      var id1 = new ObjectID(typeof (Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
-      var id2 = new ObjectID(typeof (Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C37}"));
-      var id3 = new ObjectID(typeof (Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
+      var id1 = new ObjectID(typeof(Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
+      var id2 = new ObjectID(typeof(Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C37}"));
+      var id3 = new ObjectID(typeof(Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
 
       Assert.That(id1.CompareTo(id2), Is.EqualTo(-1));
       Assert.That(id2.CompareTo(id1), Is.EqualTo(1));
@@ -389,7 +389,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     [Test]
     public void CompareTo_DifferentValueTypes ()
     {
-      var id1 = new ObjectID(typeof (Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
+      var id1 = new ObjectID(typeof(Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
       var id2 = new ObjectID("Official", "test");
 
       Assert.That(id1.CompareTo(id2), Is.EqualTo(1));

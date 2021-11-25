@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       var deserializedInstance1 = (TargetClassForMixinWithState) Serializer.Deserialize(serializedData);
       Assert.That(Mixin.Get<MixinWithState>(deserializedInstance1), Is.Not.Null);
 
-      using (MixinConfiguration.BuildNew().ForClass(typeof (TargetClassForMixinWithState)).AddMixins(typeof (NullMixin)).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(TargetClassForMixinWithState)).AddMixins(typeof(NullMixin)).EnterScope())
       {
         var deserializedInstance2 = (TargetClassForMixinWithState) Serializer.Deserialize(serializedData);
 

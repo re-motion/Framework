@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void GetPropertyDefaultForNonMappingProperties ()
     {
       var businessObject = (IBusinessObject)
-                           LifetimeService.NewObject(ClientTransaction.Current, typeof (BindableDomainObjectWithProperties), ParamList.Empty);
+                           LifetimeService.NewObject(ClientTransaction.Current, typeof(BindableDomainObjectWithProperties), ParamList.Empty);
       Assert.That(businessObject.GetProperty("RequiredPropertyNotInMapping"), Is.Not.Null);
       Assert.That(businessObject.GetProperty("RequiredPropertyNotInMapping"), Is.EqualTo(true));
     }
@@ -117,9 +117,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void GetProperty_CustomIPropertyInformationImplementation ()
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof (bool));
+      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
       propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
-      propertyInformationStub.Stub(stub => stub.GetGetMethod(true)).Return(MethodInfoAdapter.Create(typeof (object).GetMethod("ToString")));
+      propertyInformationStub.Stub(stub => stub.GetGetMethod(true)).Return(MethodInfoAdapter.Create(typeof(object).GetMethod("ToString")));
 
       var booleanProperty = CreateProperty(propertyInformationStub);
 
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void PropertyWithNoGetter ()
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof (bool));
+      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
       propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
       propertyInformationStub.Stub(stub => stub.GetGetMethod(true)).Return(null);
 
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void PropertyWithNoSetter ()
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof (bool));
+      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
       propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
       propertyInformationStub.Stub(stub => stub.GetSetMethod(true)).Return(null);
 
@@ -173,12 +173,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       PropertyReflector reflector = PropertyReflector.Create(property, provider);
       return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod(
-          reflector, typeof (PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
+          reflector, typeof(PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
     }
 
     private Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof (PropertyReflector), "GetUnderlyingType");
+      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
   }
 }

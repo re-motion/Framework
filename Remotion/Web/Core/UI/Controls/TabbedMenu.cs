@@ -62,8 +62,8 @@ namespace Remotion.Web.UI.Controls
     // construction and destruction
     public TabbedMenu ()
     {
-      _mainMenuTabStrip = new WebTabStrip(new MainMenuTabCollection(this, new[] { typeof (MainMenuTab) }));
-      _subMenuTabStrip = new WebTabStrip(this, new[] { typeof (SubMenuTab) });
+      _mainMenuTabStrip = new WebTabStrip(new MainMenuTabCollection(this, new[] { typeof(MainMenuTab) }));
+      _subMenuTabStrip = new WebTabStrip(this, new[] { typeof(SubMenuTab) });
       _statusStyle = new Style();
       _subMenuBackgroundColor = new Color();
     }
@@ -340,7 +340,7 @@ namespace Remotion.Web.UI.Controls
       else
         value = Context.Request.QueryString[SelectionID];
       if (value != null)
-        selection = (string[]?)TypeConversionProvider.Convert(typeof (string), typeof (string[]), value);
+        selection = (string[]?)TypeConversionProvider.Convert(typeof(string), typeof(string[]), value);
 
       if (selection == null)
         selection = new string[0];
@@ -416,7 +416,7 @@ namespace Remotion.Web.UI.Controls
       else
         throw new NotSupportedException(string.Format("menuTab is of unsupported type '{0}'.", menuTab.GetType().GetFullNameSafe()));
 
-      string? value = (string?) TypeConversionProvider.Convert(typeof (string[]), typeof (string), tabIDs);
+      string? value = (string?) TypeConversionProvider.Convert(typeof(string[]), typeof(string), tabIDs);
 
       NameValueCollection urlParameters = new NameValueCollection();
       urlParameters.Add(SelectionID, value);
@@ -705,8 +705,8 @@ namespace Remotion.Web.UI.Controls
     [Description ("The background color that you want to apply to the sub menu area.")]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
     [NotifyParentProperty (true)]
-    [TypeConverter (typeof (WebColorConverter))]
-    [DefaultValue (typeof (Color), "")]
+    [TypeConverter (typeof(WebColorConverter))]
+    [DefaultValue (typeof(Color), "")]
     public Color SubMenuBackgroundColor
     {
       get { return _subMenuBackgroundColor; }

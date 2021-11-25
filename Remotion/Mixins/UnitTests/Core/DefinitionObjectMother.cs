@@ -58,7 +58,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
-      var targetClassDefinition = CreateTargetClassDefinition(typeof (NullTarget));
+      var targetClassDefinition = CreateTargetClassDefinition(typeof(NullTarget));
       return CreateMixinDefinition(targetClassDefinition, mixinType);
     }
 
@@ -66,7 +66,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ArgumentUtility.CheckNotNull("definition", definition);
 
-      var mixinDependency = new MixinDependencyDefinition(new RequiredMixinTypeDefinition(definition.TargetClass, typeof (IBaseType2)), definition, null);
+      var mixinDependency = new MixinDependencyDefinition(new RequiredMixinTypeDefinition(definition.TargetClass, typeof(IBaseType2)), definition, null);
       PrivateInvoke.InvokeNonPublicMethod(definition.MixinDependencies, "Add", mixinDependency);
       return mixinDependency;
     }
@@ -85,7 +85,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       var dependency =
           new ComposedInterfaceDependencyDefinition(
-              new RequiredTargetCallTypeDefinition(targetClassDefinition, typeof (ISimpleInterface)), typeof (ISimpleInterface), null);
+              new RequiredTargetCallTypeDefinition(targetClassDefinition, typeof(ISimpleInterface)), typeof(ISimpleInterface), null);
       PrivateInvoke.InvokeNonPublicMethod(targetClassDefinition.ComposedInterfaceDependencies, "Add", dependency);
       return dependency;
     }
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ArgumentUtility.CheckNotNull("definition", definition);
 
-      var nextCallDependency = new NextCallDependencyDefinition(new RequiredNextCallTypeDefinition(definition.TargetClass, typeof (IBaseType2)), definition, null);
+      var nextCallDependency = new NextCallDependencyDefinition(new RequiredNextCallTypeDefinition(definition.TargetClass, typeof(IBaseType2)), definition, null);
       PrivateInvoke.InvokeNonPublicMethod(definition.NextCallDependencies, "Add", nextCallDependency);
       return nextCallDependency;
     }
@@ -103,7 +103,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ArgumentUtility.CheckNotNull("definition", definition);
 
-      var targetCallDependency = new TargetCallDependencyDefinition(new RequiredTargetCallTypeDefinition(definition.TargetClass, typeof (IBaseType2)), definition, null);
+      var targetCallDependency = new TargetCallDependencyDefinition(new RequiredTargetCallTypeDefinition(definition.TargetClass, typeof(IBaseType2)), definition, null);
       PrivateInvoke.InvokeNonPublicMethod(definition.TargetCallDependencies, "Add", targetCallDependency);
       return targetCallDependency;
     }
@@ -172,7 +172,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ArgumentUtility.CheckNotNull("declaringDefinition", declaringDefinition);
 
-      var attributeData = CustomAttributeData.GetCustomAttributes(typeof (BaseType1)).Single(a => a.Constructor.DeclaringType == typeof (BT1Attribute));
+      var attributeData = CustomAttributeData.GetCustomAttributes(typeof(BaseType1)).Single(a => a.Constructor.DeclaringType == typeof(BT1Attribute));
 
       var attributeDefinition = new AttributeDefinition(declaringDefinition, new CustomAttributeDataAdapter(attributeData), true);
       PrivateInvoke.InvokeNonPublicMethod(declaringDefinition.CustomAttributes, "Add", attributeDefinition);
@@ -183,7 +183,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ArgumentUtility.CheckNotNull("definition", definition);
 
-      var nonInterfaceIntroduction = new NonInterfaceIntroductionDefinition(typeof (IBT1Mixin1), definition, true);
+      var nonInterfaceIntroduction = new NonInterfaceIntroductionDefinition(typeof(IBT1Mixin1), definition, true);
       PrivateInvoke.InvokeNonPublicMethod(definition.NonInterfaceIntroductions, "Add", nonInterfaceIntroduction);
       return nonInterfaceIntroduction;
     }
@@ -192,7 +192,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ArgumentUtility.CheckNotNull("definition", definition);
 
-      var interfaceIntroduction = new InterfaceIntroductionDefinition(typeof (IBT1Mixin1), definition);
+      var interfaceIntroduction = new InterfaceIntroductionDefinition(typeof(IBT1Mixin1), definition);
       PrivateInvoke.InvokeNonPublicMethod(definition.InterfaceIntroductions, "Add", interfaceIntroduction);
       return interfaceIntroduction;
     }
@@ -236,7 +236,7 @@ namespace Remotion.Mixins.UnitTests.Core
       ArgumentUtility.CheckNotNull("memberOverride", memberOverride);
       ArgumentUtility.CheckNotNull("overriddenMember", overriddenMember);
 
-      typeof (MemberDefinitionBase).GetProperty("BaseAsMember").SetValue(memberOverride, overriddenMember, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
+      typeof(MemberDefinitionBase).GetProperty("BaseAsMember").SetValue(memberOverride, overriddenMember, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
       var overridesCollection = PrivateInvoke.GetNonPublicField(overriddenMember.Overrides, "_items");
       PrivateInvoke.InvokeNonPublicMethod(overridesCollection, "Add", memberOverride);
     }

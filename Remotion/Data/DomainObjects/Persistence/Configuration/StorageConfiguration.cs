@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       _storageProviderGroupsProperty = new ConfigurationProperty(
           "groups",
-          typeof (ConfigurationElementCollection<StorageGroupElement>),
+          typeof(ConfigurationElementCollection<StorageGroupElement>),
           null,
           ConfigurationPropertyOptions.None);
 

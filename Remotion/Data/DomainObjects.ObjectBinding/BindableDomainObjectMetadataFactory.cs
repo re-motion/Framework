@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
 
     protected BindableDomainObjectMetadataFactory ()
-      : this (SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+      : this(SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
               SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>())
     {
     }

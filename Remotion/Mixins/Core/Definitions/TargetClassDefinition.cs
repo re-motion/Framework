@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions
     private readonly MixinTypeCloser _mixinTypeCloser;
 
     public TargetClassDefinition (ClassContext configurationContext)
-        : base (configurationContext.Type)
+        : base(configurationContext.Type)
     {
       ArgumentUtility.CheckNotNull("configurationContext", configurationContext);
 

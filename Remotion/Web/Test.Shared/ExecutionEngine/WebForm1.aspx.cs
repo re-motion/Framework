@@ -48,8 +48,8 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     protected System.Web.UI.WebControls.Calendar Calendar1;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
-        new WxeParameterDeclaration("text", true, WxeParameterDirection.InOut, typeof (string)),
-        new WxeParameterDeclaration("invocations", false, WxeParameterDirection.Out, typeof (int))
+        new WxeParameterDeclaration("text", true, WxeParameterDirection.InOut, typeof(string)),
+        new WxeParameterDeclaration("invocations", false, WxeParameterDirection.Out, typeof(int))
     };
 
     private ISampleFunctionVariables Function
@@ -187,12 +187,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     public class SubFunction : WxeFunction, ISampleFunctionVariables
     {
       public SubFunction (string var1, string var2)
-          : base (new NoneTransactionMode(), var1, var2)
+          : base(new NoneTransactionMode(), var1, var2)
       {
       }
 
       public SubFunction (params object[] args)
-          : base (new NoneTransactionMode(), args)
+          : base(new NoneTransactionMode(), args)
       {
       }
 
@@ -215,7 +215,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         Var2 = "SubFunction Step1";
       }
 
-      private WxeStep Step2 = new WxeResourcePageStep(typeof (WebForm1), @"ExecutionEngine\WebForm1.aspx");
+      private WxeStep Step2 = new WxeResourcePageStep(typeof(WebForm1), @"ExecutionEngine\WebForm1.aspx");
 
       private static int counter = 0;
       private void Step3 (WxeContext context)

@@ -47,7 +47,7 @@ namespace Remotion.Validation.RuleBuilders
     {
       var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate(validatorPredicate);
 
-      return Validator(typeof (TValidator), null, typeCheckedValidatorPredicate);
+      return Validator(typeof(TValidator), null, typeCheckedValidatorPredicate);
     }
 
     public IRemovingObjectValidationRuleBuilder<TValidatedType> Validator<TValidator, TCollectorTypeToRemoveFrom> (
@@ -56,7 +56,7 @@ namespace Remotion.Validation.RuleBuilders
     {
       var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate(validatorPredicate);
 
-      return Validator(typeof (TValidator), typeof (TCollectorTypeToRemoveFrom), typeCheckedValidatorPredicate);
+      return Validator(typeof(TValidator), typeof(TCollectorTypeToRemoveFrom), typeCheckedValidatorPredicate);
     }
 
     public IRemovingObjectValidationRuleBuilder<TValidatedType> Validator (

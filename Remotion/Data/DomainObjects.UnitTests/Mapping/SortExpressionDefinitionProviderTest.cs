@@ -14,7 +14,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetSortExpression_WithValidSortExpressionText_ReturnsNull ()
     {
       var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
-      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof (OrderItem));
+      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof(OrderItem));
       var referencePropertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Order o) => o.OrderItems));
 
       var sortExpressionDefinition = sortExpressionDefinitionProvider.GetSortExpression(referencePropertyInfo, referencedClassDefinition, "Product asc");
@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetSortExpression_WithEmptySortExpressionText_ReturnsNull ()
     {
       var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
-      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof (OrderItem));
+      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof(OrderItem));
       var referencePropertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Order o) => o.OrderItems));
 
       Assert.That(sortExpressionDefinitionProvider.GetSortExpression(referencePropertyInfo, referencedClassDefinition, ""), Is.Null);
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetSortExpression_WithNullSortExpressionText_ReturnsNull ()
     {
       var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
-      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof (OrderItem));
+      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof(OrderItem));
       var referencePropertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Order o) => o.OrderItems));
 
       Assert.That(sortExpressionDefinitionProvider.GetSortExpression(referencePropertyInfo, referencedClassDefinition, null), Is.Null);
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetSortExpression_WithInvalidSortExpressionText_WrapsExceptionWithPropertyMetadata ()
     {
       var sortExpressionDefinitionProvider = new SortExpressionDefinitionProvider();
-      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof (OrderItem));
+      var referencedClassDefinition = Configuration.GetTypeDefinition(typeof(OrderItem));
       var referencePropertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Order o) => o.OrderItems));
 
       Assert.That(

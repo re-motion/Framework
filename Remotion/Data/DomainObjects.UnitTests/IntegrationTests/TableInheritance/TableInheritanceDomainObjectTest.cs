@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
     [Test]
     public void SameIDInDifferentConcreteTables ()
     {
-      TIPerson person = new ObjectID(typeof (TIPerson), new Guid("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")).GetObject<TIPerson>();
+      TIPerson person = new ObjectID(typeof(TIPerson), new Guid("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")).GetObject<TIPerson>();
       Assert.That(
           () => person.HistoryEntries.EnsureDataComplete(),
           Throws.InstanceOf<PersistenceException>()

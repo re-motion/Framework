@@ -101,15 +101,15 @@ namespace Remotion.Web.Services
             "Web method '{0}' on web service type '{1}' does not have the ResponseFormat property of the {2} set to Json.",
             method,
             type.GetFullNameSafe(),
-            typeof (ScriptMethodAttribute).Name);
+            typeof(ScriptMethodAttribute).Name);
       }
       CheckParameters(type, methodInfo, parameters);
     }
 
     private static void CheckType (Type type)
     {
-      if (!typeof (WebService).IsAssignableFrom(type))
-        throw CreateArgumentException("Web service type '{0}' does not derive from '{1}'.", type.GetFullNameSafe(), typeof (WebService).GetFullNameSafe());
+      if (!typeof(WebService).IsAssignableFrom(type))
+        throw CreateArgumentException("Web service type '{0}' does not derive from '{1}'.", type.GetFullNameSafe(), typeof(WebService).GetFullNameSafe());
     }
 
     private static MethodInfo GetCheckedMethodInfo (Type type, string method)
@@ -138,7 +138,7 @@ namespace Remotion.Web.Services
         throw CreateArgumentException(
             "Web service type '{0}' does not have the '{1}' applied.",
             type.GetFullNameSafe(),
-            typeof (T).GetFullNameSafe());
+            typeof(T).GetFullNameSafe());
       }
       return attribute;
     }
@@ -153,7 +153,7 @@ namespace Remotion.Web.Services
             "Web method '{0}' on web service type '{1}' does not have the '{2}' applied.",
             methodInfo.Name,
             type.GetFullNameSafe(),
-            typeof (T).GetFullNameSafe());
+            typeof(T).GetFullNameSafe());
       }
       return attribute;
     }
@@ -190,7 +190,7 @@ namespace Remotion.Web.Services
     {
       // C# compiler 7.2 already provides caching for anonymous method.
       return (T?) s_attributeCache.GetOrAdd(
-          Tuple.Create(memberInfo, typeof (T)),
+          Tuple.Create(memberInfo, typeof(T)),
           key => AttributeUtility.GetCustomAttribute<T>(key.Item1, true));
     }
 

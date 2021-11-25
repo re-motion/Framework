@@ -24,17 +24,17 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (ITestCompoundRegistration), RegistrationType = RegistrationType.Multiple, Position = 1)]
+  [ImplementationFor (typeof(ITestCompoundRegistration), RegistrationType = RegistrationType.Multiple, Position = 1)]
   public class TestCompoundImplementation1 : ITestCompoundRegistration
   {
   }
 
-  [ImplementationFor (typeof (ITestCompoundRegistration), RegistrationType = RegistrationType.Multiple, Position = 2)]
+  [ImplementationFor (typeof(ITestCompoundRegistration), RegistrationType = RegistrationType.Multiple, Position = 2)]
   public class TestCompoundImplementation2 : ITestCompoundRegistration
   {
   }
 
-  [ImplementationFor (typeof (ITestCompoundRegistration), RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(ITestCompoundRegistration), RegistrationType = RegistrationType.Compound)]
   public class TestCompoundRegistration : ITestCompoundRegistration
   {
     private readonly IEnumerable<ITestCompoundRegistration> _compoundRegistrations;
@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
     }
   }
   
-  [ImplementationFor (typeof (ITestCompoundRegistration), RegistrationType = RegistrationType.Compound, Position = 2)]
+  [ImplementationFor (typeof(ITestCompoundRegistration), RegistrationType = RegistrationType.Compound, Position = 2)]
   public class TestCompoundRegistration2 : ITestCompoundRegistration
   {
     private readonly IEnumerable<ITestCompoundRegistration> _compoundRegistrations;

@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReview.Product = null;
 
-      Assert.That(_productReview.Properties[typeof (ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_productReview.Properties[typeof(ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
     }
 
     [Test]

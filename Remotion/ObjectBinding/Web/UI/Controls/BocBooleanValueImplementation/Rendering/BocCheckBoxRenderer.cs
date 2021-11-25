@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// Responsible for rendering <see cref="BocCheckBox"/> controls.
   /// <seealso cref="IBocCheckBox"/>
   /// </summary>
-  [ImplementationFor (typeof (IBocCheckBoxRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocCheckBoxRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCheckBoxRenderer : BocBooleanValueRendererBase<IBocCheckBox>, IBocCheckBoxRenderer
   {
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private const string c_trueIcon = "sprite.svg#CheckBoxTrue";
     private const string c_falseIcon = "sprite.svg#CheckBoxFalse";
 
-    private static readonly string s_startUpScriptKey = typeof (BocCheckBoxRenderer).GetFullNameChecked() + "_Startup";
+    private static readonly string s_startUpScriptKey = typeof(BocCheckBoxRenderer).GetFullNameChecked() + "_Startup";
 
     public BocCheckBoxRenderer (
         IResourceUrlFactory resourceUrlFactory,
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
@@ -66,14 +66,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptFileKey = typeof (BocCheckBoxRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (BocCheckBoxRenderer), ResourceType.Html, "BocCheckbox.js");
+      string scriptFileKey = typeof(BocCheckBoxRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocCheckBoxRenderer), ResourceType.Html, "BocCheckbox.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleFileKey = typeof (BocCheckBoxRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocCheckBoxRenderer), ResourceType.Html, "BocCheckbox.css");
+      string styleFileKey = typeof(BocCheckBoxRenderer).GetFullNameChecked() + "_Style";
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocCheckBoxRenderer), ResourceType.Html, "BocCheckbox.css");
       htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
@@ -217,20 +217,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private void RegisterStartupScriptIfNeeded (BocCheckBoxRenderingContext renderingContext)
     {
-      if (renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof (BocCheckBoxRenderer), s_startUpScriptKey))
+      if (renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(BocCheckBoxRenderer), s_startUpScriptKey))
         return;
 
       string startupScript = string.Format(
           "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
           renderingContext.Control.DefaultTrueDescription,
           renderingContext.Control.DefaultFalseDescription);
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(renderingContext.Control, typeof (BocCheckBoxRenderer), s_startUpScriptKey, startupScript);
+      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(renderingContext.Control, typeof(BocCheckBoxRenderer), s_startUpScriptKey, startupScript);
     }
 
     private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, string? description)
     {
       var imageUrl = ResourceUrlFactory.CreateThemedResourceUrl(
-          typeof (HtmlHeadAppenderExtensions),
+          typeof(HtmlHeadAppenderExtensions),
           ResourceType.Image,
           renderingContext.Control.Value!.Value ? c_trueIcon : c_falseIcon);
 

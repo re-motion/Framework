@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (WebTestAction));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebTestAction));
 
     private readonly ControlObject _control;
     private readonly ElementScope _scope;

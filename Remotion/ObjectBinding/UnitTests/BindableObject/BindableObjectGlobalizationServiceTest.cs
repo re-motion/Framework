@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var factory = _serviceLocator.GetInstance<BindableObjectGlobalizationService>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BindableObjectGlobalizationService)));
+      Assert.That(factory, Is.TypeOf(typeof(BindableObjectGlobalizationService)));
     }
 
     [Test]

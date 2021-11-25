@@ -65,7 +65,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
   }
 
-  [Uses (typeof (MixinOverridingInheritedMethod))]
+  [Uses (typeof(MixinOverridingInheritedMethod))]
   public class ClassWithInheritedMethod : BaseClassWithInheritedMethod
   {
     public string InvokeInheritedMethods ()

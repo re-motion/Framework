@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       var ordersQuery = CreateOrdersQuery("OrderNo IN (1, 3)");
       AddOrderItemsFetchQuery(ordersQuery, "o.OrderNo IN (1, 3)");
 
-      var id1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
-      var id2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof (Order), "OrderItems");
+      var id1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
+      var id2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "OrderItems");
 
       Assert.That(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id1), Is.Null);
       Assert.That(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id2), Is.Null);
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           Is.EquivalentTo(new[] { DomainObjectIDs.OrderItem1.GetObject<OrderItem>(), DomainObjectIDs.OrderItem2.GetObject<OrderItem>() }));
 
       var orderEndPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(
-          RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof (OrderItem), "Order"));
+          RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order"));
       Assert.That(orderEndPoint, Is.Not.Null);
       Assert.That(orderEndPoint.IsSynchronized, Is.True);
       Assert.That(orderEndPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Order1));
@@ -74,8 +74,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       var employeeQuery = CreateEmployeeQuery(string.Format("ID IN ('{0}', '{1}')", employeeWithComputer.Value, employeeWithoutComputer.Value));
       AddEmployeeComputerFetchQuery(employeeQuery, string.Format("e.ID IN ('{0}', '{1}')", employeeWithComputer.Value, employeeWithoutComputer.Value));
 
-      var id1 = RelationEndPointID.Create(employeeWithComputer, typeof (Employee), "Computer");
-      var id2 = RelationEndPointID.Create(employeeWithoutComputer, typeof (Employee), "Computer");
+      var id1 = RelationEndPointID.Create(employeeWithComputer, typeof(Employee), "Computer");
+      var id2 = RelationEndPointID.Create(employeeWithoutComputer, typeof(Employee), "Computer");
 
       Assert.That(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id1), Is.Null);
       Assert.That(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id2), Is.Null);
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       Assert.That(existingComputerEndPoint.GetOppositeObject(), Is.EqualTo(existingComputer.GetObject<Computer>()));
 
       var employeeEndPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(
-          RelationEndPointID.Create(existingComputer, typeof (Computer), "Employee"));
+          RelationEndPointID.Create(existingComputer, typeof(Computer), "Employee"));
       Assert.That(employeeEndPoint, Is.Not.Null);
       Assert.That(employeeEndPoint.IsSynchronized, Is.True);
       Assert.That(employeeEndPoint.OppositeObjectID, Is.EqualTo(employeeWithComputer));
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       var ordersQuery = CreateOrdersQuery("OrderNo IN (1)");
       AddOrderItemsFetchQuery(ordersQuery, "o.OrderNo IN (1)");
 
-      var id1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var id1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       bool onLoadedRaised = false;
 
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           TestDomainStorageProviderDefinition,
           "SELECT * FROM [Employee] o WHERE " + whereCondition,
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
     }
 
     private IQuery CreateOrdersQuery (string whereCondition)
@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           TestDomainStorageProviderDefinition,
           "SELECT * FROM [Order] o WHERE " + whereCondition,
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
     }
 
     private IQuery CreateCustomerQuery (string whereCondition)
@@ -239,61 +239,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           TestDomainStorageProviderDefinition,
           "SELECT * FROM [Company] c WHERE c.ClassID='Customer' AND " + whereCondition,
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
     }
 
     private IQuery AddOrderItemsFetchQuery (IQuery ordersQuery, string whereCondition)
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderItems");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
       var orderItemsFetchQuery = QueryFactory.CreateCollectionQuery(
           "test fetch",
           TestDomainStorageProviderDefinition,
           "SELECT oi.* FROM [Order] o LEFT OUTER JOIN OrderItem oi ON o.ID = oi.OrderID WHERE " + whereCondition,
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       ordersQuery.EagerFetchQueries.Add(relationEndPointDefinition, orderItemsFetchQuery);
       return orderItemsFetchQuery;
     }
 
     private IQuery AddEmployeeComputerFetchQuery (IQuery ordersQuery, string whereCondition)
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       var orderItemsFetchQuery = QueryFactory.CreateCollectionQuery(
           "test fetch",
           TestDomainStorageProviderDefinition,
           "SELECT c.* FROM [Employee] e LEFT OUTER JOIN Computer c ON e.ID = c.EmployeeID WHERE " + whereCondition,
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       ordersQuery.EagerFetchQueries.Add(relationEndPointDefinition, orderItemsFetchQuery);
       return orderItemsFetchQuery;
     }
 
     private IQuery AddOrderFetchQuery (IQuery customerQuery, string whereCondition)
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var orderItemsFetchQuery = QueryFactory.CreateCollectionQuery(
           "test fetch",
           TestDomainStorageProviderDefinition,
           "SELECT o.* FROM [Company] c LEFT OUTER JOIN [Order] o ON c.ID = o.CustomerID WHERE " + whereCondition,
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       customerQuery.EagerFetchQueries.Add(relationEndPointDefinition, orderItemsFetchQuery);
       return orderItemsFetchQuery;
     }
 
     private void AddOrderFetchAgainQuery (IQuery orderItemsFetchQuery, string originalOrderWhereCondition)
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (OrderItem), "Order");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(OrderItem), "Order");
 
       var ordersFetchQuery = QueryFactory.CreateCollectionQuery(
           "test fetch",
           TestDomainStorageProviderDefinition,
           "SELECT DISTINCT o2.* FROM [Order] o LEFT OUTER JOIN OrderItem oi ON o.ID = oi.OrderID LEFT OUTER JOIN [Order] o2 ON o2.ID = oi.OrderID WHERE " + originalOrderWhereCondition,
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       orderItemsFetchQuery.EagerFetchQueries.Add(relationEndPointDefinition, ordersFetchQuery);
     }
 

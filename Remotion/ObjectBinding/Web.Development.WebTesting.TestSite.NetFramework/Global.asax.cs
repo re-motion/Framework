@@ -59,13 +59,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
 
       var provider = new XmlReflectionBusinessObjectStorageProvider(reflectionBusinessObjectStorageProvider);
       XmlReflectionBusinessObjectStorageProvider.SetCurrent(provider);
-      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService(typeof (IGetObjectService), provider);
+      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService(typeof(IGetObjectService), provider);
     }
 
     private static void RegisterAutoCompleteService ()
     {
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-          .AddService(typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
+          .AddService(typeof(ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
     }
 
     private static void RegisterIconService ()
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
       var reflectionBusinessObjectWebUiService = new ReflectionBusinessObjectWebUIService(resourceUrlFactory);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-          .AddService(typeof (IBusinessObjectWebUIService), reflectionBusinessObjectWebUiService);
+          .AddService(typeof(IBusinessObjectWebUIService), reflectionBusinessObjectWebUiService);
     }
 
     private static void RegisterResourceVirtualPathProvider ()

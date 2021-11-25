@@ -77,7 +77,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       CurrentFunctionPermaLink.Text = CurrentFunctionPermaLink.NavigateUrl;
       NameValueCollection queryString = new NameValueCollection();
       queryString.Add("Parameter", "Hello World!");
-      SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl(typeof (SampleWxeFunction), queryString);
+      SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl(typeof(SampleWxeFunction), queryString);
       SampleFunctionPermaLink.Text = HttpUtility.HtmlEncode(SampleFunctionPermaLink.NavigateUrl);
     }
 

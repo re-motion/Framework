@@ -30,7 +30,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     {
       SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema(
           GetReaderForDefaultFragment(1),
-          typeof (SampleClass),
+          typeof(SampleClass),
           GetXmlSchemaSet());
 
       Assert.That(actual, Is.Not.Null);
@@ -42,7 +42,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     {
       SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema(
           GetReaderForDefaultFragment(1),
-          typeof (SampleClass),
+          typeof(SampleClass),
           SampleClass.SchemaUri,
           SampleClass.GetSchemaReader());
 
@@ -55,7 +55,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     {
       SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema(
           GetReaderForDefaultFragment(1),
-          typeof (SampleClass),
+          typeof(SampleClass),
           "http://www.re-motion.org/core/unitTests",
           GetXmlSchemaSet());
 
@@ -69,7 +69,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
       Assert.That(
           () => XmlSerializationUtility.DeserializeUsingSchema(
               GetReaderForDefaultFragment("data"),
-              typeof (SampleClass),
+              typeof(SampleClass),
               "http://www.re-motion.org/core/unitTests",
               GetXmlSchemaSet()),
           Throws.InstanceOf<XmlSchemaValidationException>()

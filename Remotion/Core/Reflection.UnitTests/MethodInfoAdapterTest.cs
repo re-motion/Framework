@@ -42,15 +42,15 @@ namespace Remotion.Reflection.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _method = typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod");
+      _method = typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod");
       _adapter = MethodInfoAdapter.Create(_method);
 
-      _explicitInterfaceImplementationMethod = typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod(
+      _explicitInterfaceImplementationMethod = typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceMethod",
           BindingFlags.NonPublic | BindingFlags.Instance);
       _explicitInterfaceAdapter = MethodInfoAdapter.Create(_explicitInterfaceImplementationMethod);
 
-      _implicitInterfaceImplementationMethod = typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod(
+      _implicitInterfaceImplementationMethod = typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod(
           "ImplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
       _implicitInterfaceAdapter = MethodInfoAdapter.Create(_implicitInterfaceImplementationMethod);
     }
@@ -76,8 +76,8 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void Create_ReturnsSameInstance_ForMethodsReflectedFromDifferentLevelsInHierarchy ()
     {
-      var methodViaBase = typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod");
-      var methodViaDerived = typeof (DerivedClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod");
+      var methodViaBase = typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod");
+      var methodViaDerived = typeof(DerivedClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod");
 
       Assert.That(methodViaBase, Is.Not.SameAs(methodViaDerived));
       Assert.That(MethodInfoAdapter.Create(methodViaBase), Is.SameAs(MethodInfoAdapter.Create(methodViaDerived)));
@@ -159,7 +159,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void Invoke_BaseMethod ()
     {
-      var methodInfo = typeof (ClassWithBaseMember).GetMethod("BaseMethod");
+      var methodInfo = typeof(ClassWithBaseMember).GetMethod("BaseMethod");
       var adapter = MethodInfoAdapter.Create(methodInfo);
       var result = adapter.Invoke(new ClassWithBaseMember(), new object[] { });
 
@@ -169,7 +169,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void Invoke_NullParameterForMethod_GetExceptionFromReflectionApi ()
     {
-      var methodInfo = typeof (string).GetMethod("Insert", new[] { typeof (int), typeof (string) });
+      var methodInfo = typeof(string).GetMethod("Insert", new[] { typeof(int), typeof(string) });
       var adapter = MethodInfoAdapter.Create(methodInfo);
       Assert.That(
           () => adapter.Invoke("Test", new object[] { 5, null }),
@@ -179,7 +179,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void Invoke_WrongInstanceForMethod_GetExceptionFromReflectionApi ()
     {
-      var methodInfo = typeof (ClassWithBaseMember).GetMethod("BaseMethod");
+      var methodInfo = typeof(ClassWithBaseMember).GetMethod("BaseMethod");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       Assert.That(
@@ -191,24 +191,24 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindInterfaceImplementation_ImplicitImplementation ()
     {
-      var methodInfo = typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
-      var implementation = adapter.FindInterfaceImplementation(typeof (ClassWithReferenceType<object>));
+      var implementation = adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>));
 
-      var expectedPropertyGetter = typeof (ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var expectedPropertyGetter = typeof(ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_ExplicitImplementation ()
     {
-      var methodInfo = typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ExplicitInterfaceScalar");
+      var methodInfo = typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ExplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
-      var implementation = adapter.FindInterfaceImplementation(typeof (ClassWithReferenceType<object>));
+      var implementation = adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>));
 
-      var expectedPropertyGetter = typeof (ClassWithReferenceType<object>).GetMethod(
+      var expectedPropertyGetter = typeof(ClassWithReferenceType<object>).GetMethod(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.get_ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
       CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation);
@@ -217,10 +217,10 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindInterfaceImplementation_NonInterfaceMethod ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
       Assert.That(
-          () => adapter.FindInterfaceImplementation(typeof (ClassWithReferenceType<object>)),
+          () => adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>)),
           Throws.InvalidOperationException
               .With.Message.EqualTo("This method is not an interface method."));
     }
@@ -228,10 +228,10 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindInterfaceImplementation_ImplementationIsInterface ()
     {
-      var methodInfo = typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
       Assert.That(
-          () => adapter.FindInterfaceImplementation(typeof (IInterfaceWithReferenceType<object>)),
+          () => adapter.FindInterfaceImplementation(typeof(IInterfaceWithReferenceType<object>)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The implementationType parameter must not be an interface.", "implementationType"));
     }
@@ -239,10 +239,10 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindInterfaceImplementation_ImplementationIsNotAssignableToTheInterface ()
     {
-      var methodInfo = typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
-      var result = adapter.FindInterfaceImplementation(typeof (object));
+      var result = adapter.FindInterfaceImplementation(typeof(object));
 
       Assert.That(result, Is.Null);
     }
@@ -250,7 +250,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindInterfaceDeclaration_DeclaringTypeIsInterface ()
     {
-      var methodInfo = typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       Assert.That(
           () => MethodInfoAdapter.Create(methodInfo).FindInterfaceDeclarations(),
           Throws.InvalidOperationException
@@ -260,40 +260,40 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindInterfaceDeclaration_ImplicitImplementation ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       var result = adapter.FindInterfaceDeclarations();
 
-      var expectedMethodInfos = new[] { typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar") };
+      var expectedMethodInfos = new[] { typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar") };
       CheckUnorderedMethodInfos(expectedMethodInfos, result.Cast<MethodInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclaration_ExplicitImplementation ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<object>).GetMethod(
+      var methodInfo = typeof(ClassWithReferenceType<object>).GetMethod(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.get_ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       var result = adapter.FindInterfaceDeclarations();
 
-      var expectedMethodInfos = new[] { typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ExplicitInterfaceScalar") };
+      var expectedMethodInfos = new[] { typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ExplicitInterfaceScalar") };
       CheckUnorderedMethodInfos(expectedMethodInfos, result.Cast<MethodInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclaration_ExplicitImplementation_FromBaseType ()
     {
-      var methodInfo = typeof (DerivedClassWithReferenceType<object>).GetMethod(
+      var methodInfo = typeof(DerivedClassWithReferenceType<object>).GetMethod(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.get_ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       var result = adapter.FindInterfaceDeclarations();
 
-      var expectedMethodInfos = new[] { typeof (IInterfaceWithReferenceType<object>).GetMethod("get_ExplicitInterfaceScalar") };
+      var expectedMethodInfos = new[] { typeof(IInterfaceWithReferenceType<object>).GetMethod("get_ExplicitInterfaceScalar") };
       CheckUnorderedMethodInfos(expectedMethodInfos, result.Cast<MethodInfoAdapter>());
     }
 
@@ -317,21 +317,21 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindInterfaceDeclaration_ComparesMethodsWithoutReflectedTypes ()
     {
-      var methodInfo = typeof (DerivedClassWithReferenceType<object>).GetMethod("ImplicitInterfaceMethod");
+      var methodInfo = typeof(DerivedClassWithReferenceType<object>).GetMethod("ImplicitInterfaceMethod");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       Assert.That(methodInfo.ReflectedType, Is.Not.SameAs(methodInfo.DeclaringType));
 
       var result = adapter.FindInterfaceDeclarations();
 
-      var expectedMethodInfos = new[] { typeof (IInterfaceWithReferenceType<object>).GetMethod("ImplicitInterfaceMethod") };
+      var expectedMethodInfos = new[] { typeof(IInterfaceWithReferenceType<object>).GetMethod("ImplicitInterfaceMethod") };
       CheckUnorderedMethodInfos(expectedMethodInfos, result.Cast<MethodInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclaration_NoImplementation ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<object>).GetMethod("TestMethod");
+      var methodInfo = typeof(ClassWithReferenceType<object>).GetMethod("TestMethod");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       var result = adapter.FindInterfaceDeclarations();
@@ -342,18 +342,18 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void FindDeclaringProperty_PropertyFound ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       var result = adapter.FindDeclaringProperty();
 
-      CheckProperty(TypeAdapter.Create(typeof (ClassWithReferenceType<object>)), "ImplicitInterfaceScalar", result);
+      CheckProperty(TypeAdapter.Create(typeof(ClassWithReferenceType<object>)), "ImplicitInterfaceScalar", result);
     }
 
     [Test]
     public void FindDeclaringProperty_NoPropertyCanBeFound ()
     {
-      var methodInfo = typeof (ClassWithBaseMember).GetMethod("BaseMethod");
+      var methodInfo = typeof(ClassWithBaseMember).GetMethod("BaseMethod");
       var adapter = MethodInfoAdapter.Create(methodInfo);
 
       var result = adapter.FindDeclaringProperty();
@@ -364,7 +364,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetFastInvoker_PublicMethod ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<string>).GetMethod("get_ImplicitInterfaceScalar");
+      var methodInfo = typeof(ClassWithReferenceType<string>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(methodInfo);
       var instance = new ClassWithReferenceType<string>();
       instance.ImplicitInterfaceScalar = "Test";
@@ -377,7 +377,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetFastInvoker_PrivateMethod ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<string>).GetMethod("get_PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+      var methodInfo = typeof(ClassWithReferenceType<string>).GetMethod("get_PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic);
       var adapter = MethodInfoAdapter.Create(methodInfo);
       var instance = new ClassWithReferenceType<string>();
       PrivateInvoke.SetNonPublicProperty(instance, "PrivateProperty", "Test");
@@ -390,21 +390,21 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetFastInvoker_DerivedClassPrivateMethod_Get ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<string>).GetMethod("get_PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+      var methodInfo = typeof(ClassWithReferenceType<string>).GetMethod("get_PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic);
       var adapter = MethodInfoAdapter.Create(methodInfo);
       var instance = new DerivedClassWithReferenceType<string>();
       PrivateInvoke.SetNonPublicProperty(instance, "PrivateProperty", "Test");
 
       var result = adapter.GetFastInvoker<Func<ClassWithReferenceType<string>, string>>();
 
-      Assert.That(result.GetType(), Is.EqualTo(typeof (Func<ClassWithReferenceType<string>, string>)));
+      Assert.That(result.GetType(), Is.EqualTo(typeof(Func<ClassWithReferenceType<string>, string>)));
       Assert.That(result(instance), Is.EqualTo("Test"));
     }
 
     [Test]
     public void GetFastInvoker_DerivedClassPrivateMethod_Set ()
     {
-      var methodInfo = typeof (ClassWithReferenceType<string>).GetMethod("set_PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+      var methodInfo = typeof(ClassWithReferenceType<string>).GetMethod("set_PrivateProperty", BindingFlags.Instance | BindingFlags.NonPublic);
       var adapter = MethodInfoAdapter.Create(methodInfo);
       var instance = new DerivedClassWithReferenceType<string>();
       instance.ImplicitInterfaceScalar = "Test";
@@ -413,7 +413,7 @@ namespace Remotion.Reflection.UnitTests
 
       result(instance, "Test");
       Assert.That(PrivateInvoke.GetNonPublicProperty(instance, "PrivateProperty"), Is.EqualTo("Test"));
-      Assert.That(result.GetType(), Is.EqualTo(typeof (Action<ClassWithReferenceType<string>, string>)));
+      Assert.That(result.GetType(), Is.EqualTo(typeof(Action<ClassWithReferenceType<string>, string>)));
     }
 
     [Test]
@@ -425,7 +425,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetParameters_MethodWithParameters ()
     {
-      var method = typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethodWithParameters");
+      var method = typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethodWithParameters");
       var adapter = MethodInfoAdapter.Create(method);
 
       Assert.That(adapter.GetParameters().Length, Is.EqualTo(2));
@@ -434,26 +434,26 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetOriginalDeclaration_NoBaseDefinition ()
     {
-      var method = typeof (object).GetMethod("GetType");
+      var method = typeof(object).GetMethod("GetType");
       var adapter = MethodInfoAdapter.Create(method);
 
       var result = adapter.GetOriginalDeclaration();
 
-      Assert.That(result, Is.TypeOf(typeof (MethodInfoAdapter)));
+      Assert.That(result, Is.TypeOf(typeof(MethodInfoAdapter)));
       CheckMethodInfo(method, (MethodInfoAdapter) result);
     }
 
     [Test]
     public void GetOriginalDeclaration_WithBaseDefinition ()
     {
-      var method = typeof (DerivedClassWithReferenceType<SimpleReferenceType>).GetMethod("get_ImplicitInterfaceScalar");
+      var method = typeof(DerivedClassWithReferenceType<SimpleReferenceType>).GetMethod("get_ImplicitInterfaceScalar");
       var adapter = MethodInfoAdapter.Create(method);
 
       var result = adapter.GetOriginalDeclaration();
 
-      Assert.That(result, Is.TypeOf(typeof (MethodInfoAdapter)));
+      Assert.That(result, Is.TypeOf(typeof(MethodInfoAdapter)));
 
-      var expectedMethodInfo = typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod("get_ImplicitInterfaceScalar");
+      var expectedMethodInfo = typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("get_ImplicitInterfaceScalar");
       CheckMethodInfo(expectedMethodInfo, (MethodInfoAdapter) result);
     }
 
@@ -462,10 +462,10 @@ namespace Remotion.Reflection.UnitTests
     {
       Assert.That(_adapter.Equals(null), Is.False);
       Assert.That(_adapter.Equals("test"), Is.False);
-      Assert.That(_adapter.Equals(MethodInfoAdapter.Create(typeof (ClassWithOverridingMember).GetMethod("BaseMethod"))), Is.False);
+      Assert.That(_adapter.Equals(MethodInfoAdapter.Create(typeof(ClassWithOverridingMember).GetMethod("BaseMethod"))), Is.False);
 
       Assert.That(_adapter.Equals(MethodInfoAdapter.Create(_method)), Is.True);
-      Assert.That(_adapter.Equals(MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod"))), Is.True);
+      Assert.That(_adapter.Equals(MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod"))), Is.True);
     }
 
     [Test]
@@ -473,10 +473,10 @@ namespace Remotion.Reflection.UnitTests
     {
       Assert.That(
           _adapter.GetHashCode(),
-          Is.EqualTo(MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod")).GetHashCode()));
+          Is.EqualTo(MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("TestMethod")).GetHashCode()));
       Assert.That(
-          MethodInfoAdapter.Create(typeof (int[]).GetMethod("ToString")).GetHashCode(),
-          Is.EqualTo(MethodInfoAdapter.Create(typeof (int[]).GetMethod("ToString")).GetHashCode()));
+          MethodInfoAdapter.Create(typeof(int[]).GetMethod("ToString")).GetHashCode(),
+          Is.EqualTo(MethodInfoAdapter.Create(typeof(int[]).GetMethod("ToString")).GetHashCode()));
     }
 
     [Test]
@@ -496,7 +496,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
 
-      Assert.That(typeConversionProvider.CanConvert(typeof (MethodInfoAdapter), typeof (MethodInfo)), Is.True);
+      Assert.That(typeConversionProvider.CanConvert(typeof(MethodInfoAdapter), typeof(MethodInfo)), Is.True);
     }
 
     private void CheckProperty (ITypeInformation expectedDeclaringType, string expectedName, IPropertyInformation actualProperty)

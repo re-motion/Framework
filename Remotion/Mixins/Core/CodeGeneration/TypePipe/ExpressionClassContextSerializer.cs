@@ -40,7 +40,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Expression.New(
           s_constructor,
           Expression.Constant(Type),
-          Expression.NewArrayInit(typeof (MixinContext), MixinContexts!.Select(CreateMixinContextExpression)), // TODO RM-7691 Change serializer properties to non-nullable return values
+          Expression.NewArrayInit(typeof(MixinContext), MixinContexts!.Select(CreateMixinContextExpression)), // TODO RM-7691 Change serializer properties to non-nullable return values
           Expression.ArrayConstant(ComposedInterfaces));
     }
 

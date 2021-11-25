@@ -85,14 +85,14 @@ namespace Remotion.Mixins
   /// <threadsafety static="true" instance="true" />
   public partial class MixinConfiguration
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (MixinConfiguration));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixinConfiguration));
 
     private readonly ClassContextCollection _classContexts;
 
     /// <summary>
     /// Initializes an empty mixin configuration.
     /// </summary>
-    public MixinConfiguration () : this (new ClassContextCollection())
+    public MixinConfiguration () : this(new ClassContextCollection())
     {
     }
 

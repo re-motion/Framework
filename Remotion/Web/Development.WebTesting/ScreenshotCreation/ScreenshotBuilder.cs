@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public class ScreenshotBuilder : IDisposable
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (ScreenshotBuilder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ScreenshotBuilder));
 
     /// <summary>
     /// Returns <see langword="true" /> if the mouse cursor should be drawn onto the screenshot, otherwise <see langword="false" />.

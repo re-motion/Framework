@@ -35,13 +35,13 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
   /// Responsible for rendering a <see cref="ListMenu"/> control in standard mode.
   /// <seealso cref="IListMenu"/>
   /// </summary>
-  [ImplementationFor (typeof (IListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class ListMenuRenderer : RendererBase<IListMenu>, IListMenuRenderer
   {
     private const string c_whiteSpace = "&nbsp;";
 
     public ListMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService, IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -56,14 +56,14 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptFileKey = typeof (ListMenuRenderer).GetFullNameChecked() + "_Script";
-      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof (ListMenuRenderer), ResourceType.Html, "ListMenu.js");
+      string scriptFileKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Script";
+      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(ListMenuRenderer), ResourceType.Html, "ListMenu.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptFileUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleSheetKey = typeof (ListMenuRenderer).GetFullNameChecked() + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (ListMenuRenderer), ResourceType.Html, "ListMenu.css");
+      string styleSheetKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Style";
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(ListMenuRenderer), ResourceType.Html, "ListMenu.css");
       htmlHeadAppender.RegisterStylesheetLink(styleSheetKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 
@@ -215,7 +215,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       WebMenuItem[] groupedListMenuItems = renderingContext.Control.MenuItems.GroupMenuItems(false);
 
       string key = renderingContext.Control.UniqueID + "_MenuItems";
-      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof (ListMenuRenderer), key))
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(ListMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
         script.AppendFormat("ListMenu.Initialize ('#{0}');", renderingContext.Control.ClientID).AppendLine();
@@ -243,7 +243,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
             renderingContext.Control,
-            typeof (ListMenuRenderer),
+            typeof(ListMenuRenderer),
             key,
             script.ToString());
       }

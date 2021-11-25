@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void OriginalData_IsReadOnly ()
     {
       Assert.That(_decoratorWithRealData.OriginalData.IsReadOnly, Is.True);
-      Assert.That(_decoratorWithRealData.OriginalData, Is.TypeOf(typeof (ReadOnlyDomainObjectCollectionDataDecorator)));
+      Assert.That(_decoratorWithRealData.OriginalData, Is.TypeOf(typeof(ReadOnlyDomainObjectCollectionDataDecorator)));
     }
 
     [Test]

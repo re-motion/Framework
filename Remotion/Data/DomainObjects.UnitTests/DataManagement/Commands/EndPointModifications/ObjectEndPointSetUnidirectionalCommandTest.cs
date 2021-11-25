@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Bidirectional_OneMany ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderItem))
-          .GetMandatoryRelationEndPointDefinition(typeof (OrderItem).FullName + ".Order");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem))
+          .GetMandatoryRelationEndPointDefinition(typeof(OrderItem).FullName + ".Order");
       var orderItem = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
       var id = RelationEndPointID.Create(orderItem.ID, definition);
 
@@ -92,8 +92,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Bidirectional_OneOne ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderTicket))
-          .GetMandatoryRelationEndPointDefinition(typeof (OrderTicket).FullName + ".Order");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderTicket))
+          .GetMandatoryRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().ID, definition);
       var endPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(

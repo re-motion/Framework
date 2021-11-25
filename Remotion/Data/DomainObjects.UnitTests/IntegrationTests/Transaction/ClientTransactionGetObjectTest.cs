@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void GetObject_NotFound_True ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       Assert.That(
           () => LifetimeService.GetObject(TestableClientTransaction, notFoundID, true), 
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void GetObject_NotFound_False ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       Assert.That(() => LifetimeService.GetObject(TestableClientTransaction, notFoundID, false), Throws.TypeOf<ObjectsNotFoundException>());
     }
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void TryGetObject_NotFound ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       var domainObject = LifetimeService.TryGetObject(TestableClientTransaction, notFoundID);
       Assert.That(domainObject, Is.Null);
@@ -285,7 +285,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var guid = new Guid("33333333333333333333333333333333");
       Assert.That(
-          () => LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, new ObjectID(typeof (Order), guid)),
+          () => LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, new ObjectID(typeof(Order), guid)),
           Throws.InstanceOf<ObjectsNotFoundException>()
               .With.Message.EqualTo("Object(s) could not be found: 'Order|33333333-3333-3333-3333-333333333333|System.Guid'."));
     }
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           TestableClientTransaction, 
           DomainObjectIDs.Order1,
           newObject.ID,
-          new ObjectID(typeof (Order), guid),
+          new ObjectID(typeof(Order), guid),
           DomainObjectIDs.Order3);
       var expectedObjects = new DomainObject[] { 
           DomainObjectIDs.Order1.GetObject<Order>(), 

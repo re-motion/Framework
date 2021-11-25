@@ -59,11 +59,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var result = _factory.GetCreateElement(_emptyViewDefinitionWithCustomSchema);
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
       Assert.That(elements.Count, Is.EqualTo(3));
-      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
-      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [SchemaName].[EmptyView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
@@ -78,11 +78,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var result = _factory.GetCreateElement(_emptyViewDefinitionWithDefaultSchema);
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
       Assert.That(elements.Count, Is.EqualTo(3));
-      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
-      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [dbo].[EmptyView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP VIEW [SchemaName].[EmptyView1]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView2' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP VIEW [dbo].[EmptyView2]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }

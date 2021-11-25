@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Definitions
     private readonly MixinDefinition _dependingMixin;
 
     public TargetCallDependencyDefinition (RequiredTargetCallTypeDefinition requiredType, MixinDefinition dependingMixin, TargetCallDependencyDefinition? aggregator)
-      : base (requiredType, aggregator)
+      : base(requiredType, aggregator)
     {
       ArgumentUtility.CheckNotNull("dependingMixin", dependingMixin);
       _dependingMixin = dependingMixin;

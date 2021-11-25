@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
         case "UserCondition":
           return value.IsEnabled && IsUserConditionEnabled((UserCondition) value.Value, isStateful);
         default:
-          throw CreateInvalidOperationException("The property '{0}' is not supported by the '{1}'.", property.Identifier, typeof (AccessControlEntryPropertiesEnumerationValueFilter).GetFullNameChecked());
+          throw CreateInvalidOperationException("The property '{0}' is not supported by the '{1}'.", property.Identifier, typeof(AccessControlEntryPropertiesEnumerationValueFilter).GetFullNameChecked());
       }
     }
 

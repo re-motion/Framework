@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
 
     public BooleanProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
       _booleanToEnumPropertyConverter = new BooleanToEnumPropertyConverter(this);
     }

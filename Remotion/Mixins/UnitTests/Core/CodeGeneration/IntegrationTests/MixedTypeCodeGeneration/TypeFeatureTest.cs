@@ -35,21 +35,21 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void GeneratedTypeIsAssignableButDifferent ()
     {
-      Type t = TypeFactory.GetConcreteType(typeof (BaseType1));
-      Assert.That(typeof (BaseType1).IsAssignableFrom(t), Is.True);
-      Assert.That(t, Is.Not.EqualTo(typeof (BaseType1)));
+      Type t = TypeFactory.GetConcreteType(typeof(BaseType1));
+      Assert.That(typeof(BaseType1).IsAssignableFrom(t), Is.True);
+      Assert.That(t, Is.Not.EqualTo(typeof(BaseType1)));
 
-      t = TypeFactory.GetConcreteType(typeof (BaseType2));
-      Assert.That(typeof (BaseType2).IsAssignableFrom(t), Is.True);
+      t = TypeFactory.GetConcreteType(typeof(BaseType2));
+      Assert.That(typeof(BaseType2).IsAssignableFrom(t), Is.True);
 
-      t = TypeFactory.GetConcreteType(typeof (BaseType3));
-      Assert.That(typeof (BaseType3).IsAssignableFrom(t), Is.True);
+      t = TypeFactory.GetConcreteType(typeof(BaseType3));
+      Assert.That(typeof(BaseType3).IsAssignableFrom(t), Is.True);
 
-      t = TypeFactory.GetConcreteType(typeof (BaseType4));
-      Assert.That(typeof (BaseType4).IsAssignableFrom(t), Is.True);
+      t = TypeFactory.GetConcreteType(typeof(BaseType4));
+      Assert.That(typeof(BaseType4).IsAssignableFrom(t), Is.True);
 
-      t = TypeFactory.GetConcreteType(typeof (BaseType5));
-      Assert.That(typeof (BaseType5).IsAssignableFrom(t), Is.True);
+      t = TypeFactory.GetConcreteType(typeof(BaseType5));
+      Assert.That(typeof(BaseType5).IsAssignableFrom(t), Is.True);
 
       Assert.That(ObjectFactory.Create<BaseType1>(ParamList.Empty), Is.Not.Null);
       Assert.That(ObjectFactory.Create<BaseType2>(ParamList.Empty), Is.Not.Null);
@@ -102,28 +102,28 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void GeneratedTypeHasMixedTypeAttribute ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
-      Assert.That(generatedType.IsDefined(typeof (ConcreteMixedTypeAttribute), false), Is.True);
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
+      Assert.That(generatedType.IsDefined(typeof(ConcreteMixedTypeAttribute), false), Is.True);
 
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof (ConcreteMixedTypeAttribute), false);
+      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
     }
 
     [Test]
     public void GeneratedTypeHasDebuggerDisplayAttribute ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
-      Assert.That(generatedType.IsDefined(typeof (DebuggerDisplayAttribute), false), Is.True);
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
+      Assert.That(generatedType.IsDefined(typeof(DebuggerDisplayAttribute), false), Is.True);
 
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof (DebuggerDisplayAttribute), false);
+      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
     }
 
     [Test]
     public void DebuggerDisplayAttribute_NotAddedIfExistsViaMixin ()
     {
-      Type generatedType = CreateMixedType(typeof (NullTarget), typeof (MixinAddingDebuggerDisplay));
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof (DebuggerDisplayAttribute), false);
+      Type generatedType = CreateMixedType(typeof(NullTarget), typeof(MixinAddingDebuggerDisplay));
+      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0].Value, Is.EqualTo("Y"));
     }
@@ -131,11 +131,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void DebuggerDisplayAttribute_NotAddedIfAlreadyExistsOnTargetClass ()
     {
-      Type generatedType = CreateMixedType(typeof (ClassWithDebuggerDisplay), typeof (NullMixin));
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof (DebuggerDisplayAttribute), false);
+      Type generatedType = CreateMixedType(typeof(ClassWithDebuggerDisplay), typeof(NullMixin));
+      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(0));
 
-      attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof (DebuggerDisplayAttribute), true);
+      attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), true);
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0].Value, Is.EqualTo("On Target"));
     }
@@ -143,11 +143,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void DebuggerDisplayAttribute_NotAddedIfAlreadyExistsOnTargetClassBase ()
     {
-      Type generatedType = CreateMixedType(typeof (ClassInheritingDebuggerDisplay), typeof (NullMixin));
-      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof (DebuggerDisplayAttribute), false);
+      Type generatedType = CreateMixedType(typeof(ClassInheritingDebuggerDisplay), typeof(NullMixin));
+      var attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(0));
 
-      attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof (DebuggerDisplayAttribute), true);
+      attributes = (DebuggerDisplayAttribute[]) generatedType.GetCustomAttributes(typeof(DebuggerDisplayAttribute), true);
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0].Value, Is.EqualTo("On Target"));
     }
@@ -155,17 +155,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixedTypeAttribute_GetsClassContext ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof (ConcreteMixedTypeAttribute), false);
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
+      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
       ClassContext context = attributes[0].GetClassContext();
-      Assert.That(context, Is.EqualTo(MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType3))));
+      Assert.That(context, Is.EqualTo(MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType3))));
     }
 
     [Test]
     public void MixedTypeAttribute_GetsOrderedMixinTypes ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType7));
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof (ConcreteMixedTypeAttribute), false);
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType7));
+      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
 
       Assert.That(attributes[0].OrderedMixinTypes, Is.EqualTo(BigTestDomainScenarioTest.ExpectedBaseType7OrderedMixinTypesSmall));
     }
@@ -173,23 +173,23 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixedTypeAttribute_GetsClosedGenericMixinTypes ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
-      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof (ConcreteMixedTypeAttribute), false);
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
+      var attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false);
 
-      Assert.That(attributes[0].OrderedMixinTypes, Has.Member(typeof (BT3Mixin3<BaseType3, IBaseType33>)));
+      Assert.That(attributes[0].OrderedMixinTypes, Has.Member(typeof(BT3Mixin3<BaseType3, IBaseType33>)));
     }
 
     [Test]
     public void GeneratedTypeHasTypeInitializer ()
     {
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType3));
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType3));
       Assert.That(generatedType.GetConstructor(BindingFlags.Static | BindingFlags.NonPublic, null, Type.EmptyTypes, null), Is.Not.Null);
     }
 
     [Test]
     public void AbstractBaseTypesLeadToAbstractConcreteTypes ()
     {
-      Type concreteType = CreateMixedType(typeof (AbstractBaseType), typeof (MixinOverridingClassMethod));
+      Type concreteType = CreateMixedType(typeof(AbstractBaseType), typeof(MixinOverridingClassMethod));
       Assert.That(concreteType, Is.Not.Null);
       Assert.That(concreteType.IsAbstract, Is.True);
       MethodInfo[] abstractMethods = Array.FindAll(concreteType.GetMethods(), method => method.IsAbstract);
@@ -201,28 +201,28 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void CopiedAttributesAreNotReplicated ()
     {
-      Type concreteType = CreateGeneratedTypeWithoutMixins(typeof (ClassWithCopyCustomAttributes));
-      Assert.That(concreteType, Is.Not.SameAs(typeof (ClassWithCopyCustomAttributes)));
-      Assert.That(concreteType.GetCustomAttributes(typeof (SampleCopyTemplateAttribute), true), Is.Empty);
+      Type concreteType = CreateGeneratedTypeWithoutMixins(typeof(ClassWithCopyCustomAttributes));
+      Assert.That(concreteType, Is.Not.SameAs(typeof(ClassWithCopyCustomAttributes)));
+      Assert.That(concreteType.GetCustomAttributes(typeof(SampleCopyTemplateAttribute), true), Is.Empty);
     }
 
     [Test]
     public void ValueTypeMixin ()
     {
-      CreateMixedType(typeof (BaseType1), typeof (ValueTypeMixin));
+      CreateMixedType(typeof(BaseType1), typeof(ValueTypeMixin));
     }
 
     [Test]
     public void ExtensionsFieldIsPrivate ()
     {
-      Type concreteType = CreateMixedType(typeof (BaseType1), typeof (BT1Mixin1));
+      Type concreteType = CreateMixedType(typeof(BaseType1), typeof(BT1Mixin1));
       Assert.That(concreteType.GetField("__extensions", BindingFlags.NonPublic | BindingFlags.Instance).Attributes, Is.EqualTo(FieldAttributes.Private));
     }
 
     [Test]
     public void FirstFieldIsPrivateNonSerialized ()
     {
-      Type concreteType = CreateMixedType(typeof (BaseType1), typeof (BT1Mixin1));
+      Type concreteType = CreateMixedType(typeof(BaseType1), typeof(BT1Mixin1));
       Assert.That(
           concreteType.GetField("__first", BindingFlags.NonPublic | BindingFlags.Instance).Attributes,
           Is.EqualTo(FieldAttributes.Private | FieldAttributes.NotSerialized));
@@ -231,7 +231,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void ConfigurationFieldIsPrivate ()
     {
-      Type concreteType = CreateMixedType(typeof (BaseType1), typeof (BT1Mixin1));
+      Type concreteType = CreateMixedType(typeof(BaseType1), typeof(BT1Mixin1));
       var classContextField = concreteType.GetField("__classContext", BindingFlags.NonPublic | BindingFlags.Static);
       Assert.That(classContextField.Attributes, Is.EqualTo(FieldAttributes.Private | FieldAttributes.Static));
     }
@@ -241,7 +241,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     {
       var mixinTarget = (IMixinTarget) ObjectFactory.Create<BaseType1>(ParamList.Empty);
 
-      var expectedClassContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1));
+      var expectedClassContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType1));
       Assert.That(mixinTarget.ClassContext, Is.Not.Null);
       Assert.That(mixinTarget.ClassContext, Is.EqualTo(expectedClassContext));
 
@@ -249,17 +249,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Assert.That(mixins, Is.Not.Null);
       Assert.That(mixins.Length, Is.EqualTo(mixinTarget.ClassContext.Mixins.Count));
 
-      var mixinTypes = MixinTypeUtility.GetMixinTypesExact(typeof (BaseType1));
+      var mixinTypes = MixinTypeUtility.GetMixinTypesExact(typeof(BaseType1));
       Assert.That(mixins[0], Is.InstanceOf(mixinTypes[0]));
     }
 
     [Test]
     public void TypeImplementedOverrideInterfaces_OfMixinTypes ()
     {
-      var concreteType = CreateMixedType(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
+      var concreteType = CreateMixedType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
       var concreteMixinType = CodeGenerationTypeMother.GetGeneratedMixinTypeAndMetadata(
-          typeof (ClassOverridingMixinMembers), 
-          typeof (MixinWithAbstractMembers));
+          typeof(ClassOverridingMixinMembers), 
+          typeof(MixinWithAbstractMembers));
 
       Assert.That(concreteType.GetInterfaces(), Has.Member(concreteMixinType.GeneratedOverrideInterface));
     }
@@ -267,10 +267,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void TypeImplementedOverrideInterfaces_OfMixinTypes_ProtectedOverriders ()
     {
-      var concreteType = CreateMixedType(typeof (ClassOverridingMixinMembersProtected), typeof (MixinWithAbstractMembers));
+      var concreteType = CreateMixedType(typeof(ClassOverridingMixinMembersProtected), typeof(MixinWithAbstractMembers));
       var concreteMixinType = CodeGenerationTypeMother.GetGeneratedMixinTypeAndMetadata(
-          typeof (ClassOverridingMixinMembersProtected),
-          typeof (MixinWithAbstractMembers));
+          typeof(ClassOverridingMixinMembersProtected),
+          typeof(MixinWithAbstractMembers));
 
       Assert.That(concreteType.GetInterfaces(), Has.Member(concreteMixinType.GeneratedOverrideInterface));
 

@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   internal class BocListCellFunctionality : WebFormsControlObjectWithDiagnosticMetadata, ICommandHost, IControlHost, IControlObjectWithText
   {
     public BocListCellFunctionality ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

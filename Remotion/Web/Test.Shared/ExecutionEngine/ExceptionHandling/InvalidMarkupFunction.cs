@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   public class InvalidMarkupFunction : WxeFunction
   {
     public InvalidMarkupFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof (InvalidMarkupForm), "ExecutionEngine/ExceptionHandling/InvalidMarkupForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(InvalidMarkupForm), "ExecutionEngine/ExceptionHandling/InvalidMarkupForm.aspx");
   }
 }

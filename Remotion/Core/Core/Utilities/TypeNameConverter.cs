@@ -39,12 +39,12 @@ namespace Remotion.Utilities
 
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      return sourceType == typeof (string);
+      return sourceType == typeof(string);
     }
 
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
-      return destinationType == typeof (string);
+      return destinationType == typeof(string);
     }
 
     public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
@@ -69,7 +69,7 @@ namespace Remotion.Utilities
       if (value == null)
         return string.Empty;
 
-      if (value is Type && destinationType == typeof (string))
+      if (value is Type && destinationType == typeof(string))
         return TypeUtility.GetPartialAssemblyQualifiedName((Type) value);
 
       return base.ConvertTo(context, culture, value, destinationType);

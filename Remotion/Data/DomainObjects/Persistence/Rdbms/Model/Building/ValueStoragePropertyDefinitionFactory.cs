@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       ArgumentUtility.CheckNotNullOrEmpty("columnName", columnName);
 
-      var propertyType = value != null ? value.GetType() : typeof (object);
+      var propertyType = value != null ? value.GetType() : typeof(object);
       IStorageTypeInformation storageType;
       try
       {

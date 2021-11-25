@@ -39,9 +39,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       PropertyBase.Parameters parameters = CreateParameters(
           _businessObjectProvider,
-          GetPropertyInfo(typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
-          typeof (SimpleBusinessObjectClass),
-          typeof (ClassWithAllDataTypes),
+          GetPropertyInfo(typeof(ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
+          typeof(SimpleBusinessObjectClass),
+          typeof(ClassWithAllDataTypes),
           null,
           true,
           false,
@@ -60,9 +60,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       PropertyBase.Parameters parameters = CreateParameters(
           _businessObjectProvider,
-          GetPropertyInfo(typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
-          typeof (SimpleBusinessObjectClass),
-          typeof (SimpleBusinessObjectClass),
+          GetPropertyInfo(typeof(ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
+          typeof(SimpleBusinessObjectClass),
+          typeof(SimpleBusinessObjectClass),
           null,
           true,
           false,

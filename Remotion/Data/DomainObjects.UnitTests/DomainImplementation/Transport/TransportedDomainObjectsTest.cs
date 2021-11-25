@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
 
       TransportedDomainObjects transportedObjects = TransportAndChangeObjects(
-          typeof (ClassWithAllDataTypes).FullName + ".Int32Property",
+          typeof(ClassWithAllDataTypes).FullName + ".Int32Property",
           42,
           DomainObjectIDs.ClassWithAllDataTypes1,
           DomainObjectIDs.ClassWithAllDataTypes2);

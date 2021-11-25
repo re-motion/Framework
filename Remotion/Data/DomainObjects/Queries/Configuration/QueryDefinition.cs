@@ -71,7 +71,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// </exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="queryType"/> is not a valid enum value.</exception>
   public QueryDefinition (string queryID, StorageProviderDefinition storageProviderDefinition, string statement, QueryType queryType)
-    : this (queryID, storageProviderDefinition, statement, queryType, null)
+    : this(queryID, storageProviderDefinition, statement, queryType, null)
   {
   }
 
@@ -109,11 +109,11 @@ public class QueryDefinition : ISerializable, IObjectReference
       throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
 
     if (queryType == QueryType.Collection && collectionType == null)
-      collectionType = typeof (DomainObjectCollection);
+      collectionType = typeof(DomainObjectCollection);
 
     if (collectionType != null 
-        && !collectionType.Equals(typeof (DomainObjectCollection)) 
-        && !collectionType.IsSubclassOf(typeof (DomainObjectCollection)))
+        && !collectionType.Equals(typeof(DomainObjectCollection)) 
+        && !collectionType.IsSubclassOf(typeof(DomainObjectCollection)))
     {
       throw new ArgumentException(string.Format(
           "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
@@ -142,8 +142,8 @@ public class QueryDefinition : ISerializable, IObjectReference
        _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
 
       _statement = info.GetString("Statement");
-      _queryType = (QueryType) info.GetValue("QueryType", typeof (QueryType));
-      _collectionType = (Type) info.GetValue("CollectionType", typeof (Type));
+      _queryType = (QueryType) info.GetValue("QueryType", typeof(QueryType));
+      _collectionType = (Type) info.GetValue("CollectionType", typeof(Type));
     }
   }
 

@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected BocCommandEnabledColumnDefinition ()
     {
-      _command = new SingleControlItemCollection(new BocListItemCommand(), new[] { typeof (BocListItemCommand) });
+      _command = new SingleControlItemCollection(new BocListItemCommand(), new[] { typeof(BocListItemCommand) });
     }
 
     protected override void OnOwnerControlChanged ()

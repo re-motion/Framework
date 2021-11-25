@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core
   [TestFixture]
   public class UsesAttributeTest
   {
-    private readonly Type _userType = typeof (object);
+    private readonly Type _userType = typeof(object);
 
     private MockRepository _mockRepository;
     private MixinConfigurationBuilder _configurationBuilderMock;
@@ -40,31 +40,31 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Initialization_Defaults ()
     {
-      UsesAttribute attribute = new UsesAttribute(typeof (string));
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
       Assert.That(attribute.AdditionalDependencies, Is.Empty);
       Assert.That(attribute.SuppressedMixins, Is.Empty);
-      Assert.That(attribute.MixinType, Is.EqualTo(typeof (string)));
+      Assert.That(attribute.MixinType, Is.EqualTo(typeof(string)));
       Assert.That(attribute.IntroducedMemberVisibility, Is.EqualTo(MemberVisibility.Private));
     }
 
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new UsesAttribute(typeof (string));
+      var attribute = new UsesAttribute(typeof(string));
       Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
 
     [Test]
     public void Apply ()
     {
-      UsesAttribute attribute = new UsesAttribute(typeof (string));
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -79,15 +79,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_AdditionalDependencies ()
     {
-      UsesAttribute attribute = new UsesAttribute(typeof (string));
-      attribute.AdditionalDependencies = new[] { typeof (int) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.AdditionalDependencies = new[] { typeof(int) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -102,15 +102,15 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_SuppressedMixins ()
     {
-      UsesAttribute attribute = new UsesAttribute(typeof (string));
-      attribute.SuppressedMixins = new[] { typeof (double) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.SuppressedMixins = new[] { typeof(double) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -125,8 +125,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_PrivateVisibility ()
     {
-      UsesAttribute attribute = new UsesAttribute(typeof (string));
-      attribute.SuppressedMixins = new[] { typeof (double) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.SuppressedMixins = new[] { typeof(double) };
       attribute.IntroducedMemberVisibility = MemberVisibility.Private;
 
       _configurationBuilderMock
@@ -134,7 +134,7 @@ namespace Remotion.Mixins.UnitTests.Core
               mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -149,8 +149,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_PublicVisibility ()
     {
-      UsesAttribute attribute = new UsesAttribute(typeof (string));
-      attribute.SuppressedMixins = new[] { typeof (double) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.SuppressedMixins = new[] { typeof(double) };
       attribute.IntroducedMemberVisibility = MemberVisibility.Public;
 
       _configurationBuilderMock
@@ -158,7 +158,7 @@ namespace Remotion.Mixins.UnitTests.Core
               mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Public,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -173,7 +173,7 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_InvalidOperation ()
     {
-      UsesAttribute attribute = new UsesAttribute(typeof (string));
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
       _configurationBuilderMock
           .Expect(mock => mock.AddMixinToClass(MixinKind.Used, null, null, MemberVisibility.Private, null, null, null))
           .IgnoreArguments()

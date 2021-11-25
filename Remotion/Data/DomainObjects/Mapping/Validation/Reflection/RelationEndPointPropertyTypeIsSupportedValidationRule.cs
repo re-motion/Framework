@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
           return MappingValidationResult.CreateInvalidResultForProperty(
               relationEndPointDefinition.PropertyInfo,
               "The property type of an uni-directional relation property must be assignable to '{0}'.",
-              typeof (DomainObject).Name);
+              typeof(DomainObject).Name);
         }
       }
 

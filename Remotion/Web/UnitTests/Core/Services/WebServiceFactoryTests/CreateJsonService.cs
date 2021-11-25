@@ -83,7 +83,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       var service = _webServiceFactory.CreateJsonService<IValidJsonService>("~/VirtualServicePath");
 
@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_InterfaceNotImplemented ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateJsonService<IInvalidInterface>("~/VirtualServicePath"),
@@ -105,7 +105,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_BaseTypeNotImplemented ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateJsonService<InvalidBaseType>("~/VirtualServicePath"),
@@ -117,7 +117,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_FactoryChecksJsonServiceDeclaration ()
     {
-      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof(TestScriptService));
 
       Assert.That(
           () => _webServiceFactory.CreateJsonService<IInvalidJsonServiceWithWrongResponseFormat>("~/VirtualServicePath"),

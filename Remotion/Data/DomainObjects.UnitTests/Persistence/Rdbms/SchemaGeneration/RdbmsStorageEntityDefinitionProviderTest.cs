@@ -40,9 +40,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       _storageProviderDefinition = new UnitTestStorageProviderStubDefinition("SPID");
       _entityDefinitionProvider = new RdbmsStorageEntityDefinitionProvider();
-      _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(_storageProviderDefinition, classType: typeof (Order));
-      _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(_storageProviderDefinition, classType: typeof (OrderItem));
-      _classDefinition3 = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(_storageProviderDefinition, classType: typeof (Customer));
+      _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(_storageProviderDefinition, classType: typeof(Order));
+      _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(_storageProviderDefinition, classType: typeof(OrderItem));
+      _classDefinition3 = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(_storageProviderDefinition, classType: typeof(Customer));
     }
 
     [Test]

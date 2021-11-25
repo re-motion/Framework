@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       var factory = _serviceLocator.GetInstance<IClientScriptBehavior>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (ClientScriptBehavior)));
+      Assert.That(factory, Is.TypeOf(typeof(ClientScriptBehavior)));
     }
 
     [Test]

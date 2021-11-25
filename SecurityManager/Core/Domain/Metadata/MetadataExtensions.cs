@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
   /// </summary>
   public static class MetadataExtensions
   {
-    [LinqPropertyRedirection (typeof (StatePropertyDefinition), "DefinedStatesInternal")]
+    [LinqPropertyRedirection (typeof(StatePropertyDefinition), "DefinedStatesInternal")]
     public static ObjectList<StateDefinition> GetDefinedStatesForQuery (this StatePropertyDefinition statePropertyDefinition)
     {
       ArgumentUtility.CheckNotNull("statePropertyDefinition", statePropertyDefinition);
@@ -37,19 +37,19 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return new ObjectList<StateDefinition>(statePropertyDefinition.DefinedStates);
     }
 
-    [LinqPropertyRedirection (typeof (StatePropertyDefinition), "StatePropertyReferences")]
+    [LinqPropertyRedirection (typeof(StatePropertyDefinition), "StatePropertyReferences")]
     public static ObjectList<StatePropertyReference> GetStatePropertyReferencesForQuery (this StatePropertyDefinition statePropertyDefinition)
     {
       throw new NotSupportedException("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
     }
 
-    [LinqPropertyRedirection (typeof (SecurableClassDefinition), "StatePropertyReferences")]
+    [LinqPropertyRedirection (typeof(SecurableClassDefinition), "StatePropertyReferences")]
     public static ObjectList<StatePropertyReference> GetStatePropertyReferencesForQuery (this SecurableClassDefinition securableClassDefinition)
     {
       throw new NotSupportedException("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
     }
 
-    [LinqPropertyRedirection (typeof (SecurableClassDefinition), "AccessTypeReferences")]
+    [LinqPropertyRedirection (typeof(SecurableClassDefinition), "AccessTypeReferences")]
     public static ObjectList<AccessTypeReference> GetAccessTypeReferencesForQuery (this SecurableClassDefinition securableClassDefinition)
     {
       throw new NotSupportedException("GetAccessTypeReferences() is only supported for building LiNQ query expressions.");

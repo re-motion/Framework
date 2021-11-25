@@ -23,22 +23,22 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
   public class TestFunctionWithSerializableParameters: WxeFunction
   {
     public TestFunctionWithSerializableParameters ()
-      : base (new NoneTransactionMode())
+      : base(new NoneTransactionMode())
     {
     }
 
     public TestFunctionWithSerializableParameters (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
     }
 
     public TestFunctionWithSerializableParameters (string StringValue, int? NaInt32Value, int IntValue)
-        : base (new NoneTransactionMode(), StringValue, NaInt32Value, IntValue)
+        : base(new NoneTransactionMode(), StringValue, NaInt32Value, IntValue)
     {
     }
 
     public TestFunctionWithSerializableParameters (string StringValue, int? NaInt32Value)
-        : this (new NoneTransactionMode(), StringValue, NaInt32Value, -1)
+        : this(new NoneTransactionMode(), StringValue, NaInt32Value, -1)
     {
     }
 

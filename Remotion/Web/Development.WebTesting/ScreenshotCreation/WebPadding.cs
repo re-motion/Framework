@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private readonly int _bottom;
 
     public WebPadding (int all)
-        : this (all, all, all, all)
+        : this(all, all, all, all)
     {
     }
 

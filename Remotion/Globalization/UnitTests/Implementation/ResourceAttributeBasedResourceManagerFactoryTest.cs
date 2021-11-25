@@ -38,7 +38,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void CreateResourceManager_WithTypeDefiningSingleResource_ReturnsResourceManager ()
     {
-      var result = _factory.CreateResourceManager(typeof (ClassWithResources));
+      var result = _factory.CreateResourceManager(typeof(ClassWithResources));
 
       Assert.That(result.IsNull, Is.False);
       Assert.That(result.Name, Is.EqualTo("Remotion.Globalization.UnitTests.TestDomain.Resources.ClassWithResources"));
@@ -47,7 +47,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void CreateResourceManager_WithTypeDefiningMultipleResources_ReturnsResourceManagersInOrderOfDefinition ()
     {
-      var result =  _factory.CreateResourceManager(typeof (ClassWithMultiLingualResourcesAttributes));
+      var result =  _factory.CreateResourceManager(typeof(ClassWithMultiLingualResourcesAttributes));
 
       Assert.That(result.IsNull, Is.False);
       Assert.That(result, Is.InstanceOf<ResourceManagerSet>());
@@ -62,7 +62,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void CreateResourceManager_TypeWithoutResources_ReturnsNullResult ()
     {
-      var result =  _factory.CreateResourceManager(typeof (ClassWithoutMultiLingualResourcesAttributes));
+      var result =  _factory.CreateResourceManager(typeof(ClassWithoutMultiLingualResourcesAttributes));
 
       Assert.That(result.IsNull, Is.True);
     }
@@ -70,8 +70,8 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void CreateResourceManager_UsesCache ()
     {
-      var resourceManagers1 = _factory.CreateResourceManager(typeof (ClassWithResources));
-      var resourceManagers2 = _factory.CreateResourceManager(typeof (ClassWithResources));
+      var resourceManagers1 = _factory.CreateResourceManager(typeof(ClassWithResources));
+      var resourceManagers2 = _factory.CreateResourceManager(typeof(ClassWithResources));
 
       Assert.That(resourceManagers2, Is.Not.SameAs(resourceManagers1));
       Assert.That(resourceManagers1, Is.InstanceOf<ResourceManagerSet>());
@@ -84,7 +84,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void CreateResourceManager_UsesAvailableResourcesLanguagesAttribute ()
     {
-      var resourceManager = _factory.CreateResourceManager(typeof (ClassWithResources));
+      var resourceManager = _factory.CreateResourceManager(typeof(ClassWithResources));
 
       var availableStrings = resourceManager.GetAvailableStrings("type:ClassWithShortResourceIdentifier");
       Assert.That(availableStrings.Count, Is.EqualTo(5));
@@ -96,7 +96,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     public void CreateResourceManager_MissingResourceFile_ThrowsMissingManifestResourceException ()
     {
       Assert.That(
-          () => _factory.CreateResourceManager(typeof (ClassWithMissingResources)),
+          () => _factory.CreateResourceManager(typeof(ClassWithMissingResources)),
           Throws.TypeOf<MissingManifestResourceException>()
               .With.Message.EqualTo(
                   "Could not find any resources appropriate for the neutral culture. "

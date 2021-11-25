@@ -30,7 +30,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     private readonly WxeReturnOptions _returnOptions;
 
     public PreparingRedirectToSubFunctionState (IExecutionStateContext executionStateContext, PreparingRedirectToSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
       ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
       

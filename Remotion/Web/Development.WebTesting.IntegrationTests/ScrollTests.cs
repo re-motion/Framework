@@ -78,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var failed = new List<KeyValuePair<string, Exception>>();
 
       var count = 0;
-      foreach (var contentAlignment in Enum.GetValues(typeof (ContentAlignment)).Cast<ContentAlignment>())
+      foreach (var contentAlignment in Enum.GetValues(typeof(ContentAlignment)).Cast<ContentAlignment>())
       {
         count++;
 

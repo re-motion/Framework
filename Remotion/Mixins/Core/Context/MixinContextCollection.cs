@@ -41,7 +41,7 @@ namespace Remotion.Mixins.Context
     }
 
     public MixinContextCollection (IEnumerable<MixinContext> values)
-      : base (delegate (MixinContext context) { return context.MixinType; }, values)
+      : base(delegate (MixinContext context) { return context.MixinType; }, values)
     {
     }
 

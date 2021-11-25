@@ -33,11 +33,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ITransactionFactory transactionFactory = new ClientTransactionFactory();
 
       ITransaction transaction = transactionFactory.CreateRootTransaction();
-      Assert.That(transaction, Is.InstanceOf(typeof (ClientTransactionWrapper)));
-      Assert.That(transaction.To<ClientTransaction>(), Is.InstanceOf(typeof (ClientTransaction)));
+      Assert.That(transaction, Is.InstanceOf(typeof(ClientTransactionWrapper)));
+      Assert.That(transaction.To<ClientTransaction>(), Is.InstanceOf(typeof(ClientTransaction)));
       
       var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(transaction.To<ClientTransaction>());
-      Assert.That(persistenceStrategy, Is.InstanceOf(typeof (RootPersistenceStrategy)));
+      Assert.That(persistenceStrategy, Is.InstanceOf(typeof(RootPersistenceStrategy)));
     }
 
     [Test]

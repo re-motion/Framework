@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
          +"  ON [SchemaName].[TableName1] ([XmlColumn])\r\n"
          +"  USING XML INDEX [PrimaryIndexName]\r\n"
          +"  FOR Property";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
          +"  ON [dbo].[TableName2] ([XmlColumn])\r\n"
          +"  USING XML INDEX [PrimaryIndexName]\r\n"
          +"  FOR Value";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           +"  FOR Path\r\n"
           +"  WITH (PAD_INDEX = ON, FILLFACTOR = 12, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON, DROP_EXISTING = ON, ALLOW_ROW_LOCKS = ON, "
           +"ALLOW_PAGE_LOCKS = ON, MAXDOP = 2)";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
          +"  FOR Property\r\n"
          +"  WITH (PAD_INDEX = OFF, FILLFACTOR = 0, SORT_IN_TEMPDB = OFF, STATISTICS_NORECOMPUTE = OFF, DROP_EXISTING = OFF, ALLOW_ROW_LOCKS = OFF, "
          +"ALLOW_PAGE_LOCKS = OFF, MAXDOP = 0)";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "schema_name (so.schema_id)='SchemaName' AND si.[name] = 'Index1')\r\n"
           + "  DROP INDEX [Index1] ON [SchemaName].[TableName1]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "schema_name (so.schema_id)='dbo' AND si.[name] = 'Index2')\r\n"
           + "  DROP INDEX [Index2] ON [dbo].[TableName2]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }

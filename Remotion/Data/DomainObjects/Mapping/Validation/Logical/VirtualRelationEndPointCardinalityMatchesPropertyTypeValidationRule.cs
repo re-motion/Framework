@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         return MappingValidationResult.CreateInvalidResultForProperty(
             virtualObjectRelationEndPointDefinition.PropertyInfo,
             "The property type of a virtual end point of a one-to-one relation must be assignable to '{0}'.",
-            typeof (DomainObject).Name);
+            typeof(DomainObject).Name);
       }
 
       if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         return MappingValidationResult.CreateInvalidResultForProperty(
             domainObjectCollectionRelationEndPointDefinition.PropertyInfo,
             "The property type of a virtual end point of a one-to-many relation must be assignable to '{0}'.",
-            typeof (ObjectList<>).Name);
+            typeof(ObjectList<>).Name);
       }
 
       if (relationEndPointDefinition is VirtualCollectionRelationEndPointDefinition virtualCollectionRelationEndPointDefinition
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         return MappingValidationResult.CreateInvalidResultForProperty(
             virtualCollectionRelationEndPointDefinition.PropertyInfo,
             "The property type of a virtual end point of a one-to-many relation must be '{0}'.",
-            typeof (IObjectList<>).Name);
+            typeof(IObjectList<>).Name);
       }
 
       return MappingValidationResult.CreateValidResult();

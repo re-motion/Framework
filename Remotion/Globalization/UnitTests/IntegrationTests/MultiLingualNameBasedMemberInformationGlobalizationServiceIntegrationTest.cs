@@ -36,8 +36,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("de-AT Type Name"));
@@ -48,8 +48,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("de Type Name"));
@@ -60,8 +60,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("de Type Name"));
@@ -72,8 +72,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("en Type Name"));
@@ -84,8 +84,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("Invariant Type Name"));
@@ -96,8 +96,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (DerivedClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(DerivedClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("de-AT Derived Type Name"));
@@ -108,8 +108,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (DerivedClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(DerivedClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("Invariant Derived Type Name"));
@@ -120,8 +120,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.False);
         Assert.That(resourceValue, Is.Null);
@@ -132,8 +132,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (EnumWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (EnumWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(EnumWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(EnumWithMultiLingualNameAttribute)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("The Invariant Enum Name"));
@@ -144,8 +144,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (StructWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (StructWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(StructWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(StructWithMultiLingualNameAttribute)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("The Invariant Struct Name"));
@@ -156,8 +156,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (InterfaceWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (InterfaceWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(InterfaceWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(InterfaceWithMultiLingualNameAttribute)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("The Invariant Interface Name"));
@@ -169,8 +169,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (DerivedInterfaceWithoutOwnMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (DerivedInterfaceWithoutOwnMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(DerivedInterfaceWithoutOwnMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(DerivedInterfaceWithoutOwnMultiLingualNameAttribute)),
                 out resourceValue),
             Is.False);
       }
@@ -180,8 +180,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (DerivedInterfaceWithOwnMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (DerivedInterfaceWithOwnMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(DerivedInterfaceWithOwnMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(DerivedInterfaceWithOwnMultiLingualNameAttribute)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("The Invariant Derived Interface Name"));
@@ -192,8 +192,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithInterfaceIntroducedMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithInterfaceIntroducedMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithInterfaceIntroducedMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithInterfaceIntroducedMultiLingualNameAttribute)),
                 out resourceValue),
             Is.False);
       }
@@ -208,8 +208,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       {
         Assert.That(
             service.GetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.EqualTo("de-AT Type Name"));
       }
 
@@ -217,8 +217,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       {
         Assert.That(
             service.GetTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.EqualTo("ClassWithoutMultiLingualNameAttribute"));
       }
     }
@@ -232,16 +232,16 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       {
         Assert.That(
             service.ContainsTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.True);
       }
       using (new CultureScope("it", "de-AT"))
       {
         Assert.That(
             service.ContainsTypeDisplayName(
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualNameAttribute)),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.False);
       }
     }
@@ -256,8 +256,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("de-AT Property Name"));
@@ -268,8 +268,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("de Property Name"));
@@ -280,8 +280,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("Invariant Property Name"));
@@ -292,8 +292,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (DerivedClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                PropertyInfoAdapter.Create(typeof(DerivedClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.True);
         Assert.That(resourceValue, Is.EqualTo("de-AT Property Name"));
@@ -304,8 +304,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
         string resourceValue;
         Assert.That(
             service.TryGetPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithoutMultiLingualNameAttribute).GetProperty("PropertyWithoutMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                PropertyInfoAdapter.Create(typeof(ClassWithoutMultiLingualNameAttribute).GetProperty("PropertyWithoutMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                 out resourceValue),
             Is.False);
         Assert.That(resourceValue, Is.Null);
@@ -390,9 +390,9 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
           () =>
               service.TryGetPropertyDisplayName(
                   PropertyInfoAdapter.Create(
-                      typeof (DerivedClassWithMultiLingualNameAttribute)
+                      typeof(DerivedClassWithMultiLingualNameAttribute)
                           .GetProperty("PropertyWithMultiLingualNameAttributeOnOverride")),
-                  TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+                  TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
                   out resourceValue),
           Throws.InvalidOperationException);
     }
@@ -406,8 +406,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       {
         Assert.That(
             service.GetPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.EqualTo("de-AT Property Name"));
       }
 
@@ -415,8 +415,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       {
         Assert.That(
             service.GetPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithoutMultiLingualNameAttribute).GetProperty("PropertyWithoutMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                PropertyInfoAdapter.Create(typeof(ClassWithoutMultiLingualNameAttribute).GetProperty("PropertyWithoutMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.EqualTo("PropertyWithoutMultiLingualNameAttribute"));
       }
     }
@@ -430,8 +430,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       {
         Assert.That(
             service.ContainsPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.True);
       }
 
@@ -439,8 +439,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       {
         Assert.That(
             service.ContainsPropertyDisplayName(
-                PropertyInfoAdapter.Create(typeof (ClassWithoutMultiLingualNameAttribute).GetProperty("PropertyWithoutMultiLingualNameAttribute")),
-                TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+                PropertyInfoAdapter.Create(typeof(ClassWithoutMultiLingualNameAttribute).GetProperty("PropertyWithoutMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
             Is.False);
       }
     }
@@ -451,8 +451,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       var service = GetGlobalizationService();
 
       var result = service.GetAvailablePropertyDisplayNames(
-          PropertyInfoAdapter.Create(typeof (ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-          TypeAdapter.Create(typeof (ClassWithResources)));
+          PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+          TypeAdapter.Create(typeof(ClassWithResources)));
 
       Assert.That(result.Values, Is.EquivalentTo(new [] { "de Property Name", "Invariant Property Name", "de-AT Property Name" }));
     }
@@ -463,8 +463,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       var service = GetGlobalizationService();
 
       var result = service.GetAvailableTypeDisplayNames(
-          TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-          TypeAdapter.Create(typeof (ClassWithResources)));
+          TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+          TypeAdapter.Create(typeof(ClassWithResources)));
 
       Assert.That(result.Values, Is.EquivalentTo(new[] { "de Type Name", "Invariant Type Name", "en Type Name", "de-AT Type Name" }));
     }
