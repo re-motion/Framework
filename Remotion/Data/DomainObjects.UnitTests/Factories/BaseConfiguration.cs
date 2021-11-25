@@ -65,35 +65,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     protected BaseConfiguration ()
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
-      
+
       _storageConfiguration = new StorageConfiguration(
-          storageProviderDefinitionCollection, 
+          storageProviderDefinitionCollection,
           storageProviderDefinitionCollection[DatabaseTest.DefaultStorageProviderID]);
-      
+
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(
-              new TestDomainAttribute(), 
+              new TestDomainAttribute(),
               DatabaseTest.c_testDomainProviderID));
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(
-              new NonPersistentTestDomainAttribute(), 
+              new NonPersistentTestDomainAttribute(),
               DatabaseTest.c_nonPersistentTestDomainProviderID));
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(
-              new StorageProviderStubAttribute(), 
+              new StorageProviderStubAttribute(),
               DatabaseTest.c_unitTestStorageProviderStubID));
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(
-              new TableInheritanceTestDomainAttribute(), 
+              new TableInheritanceTestDomainAttribute(),
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-     
+
       _mappingLoaderConfiguration = new MappingLoaderConfiguration();
       _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
-     
+
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
       _mappingConfiguration = new MappingConfiguration(
-          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService), 
+          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
           new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfiguration)));
     }
 

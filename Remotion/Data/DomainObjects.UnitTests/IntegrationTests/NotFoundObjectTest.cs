@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       {
         var instance = LifetimeService.GetObjectReference(ClientTransaction.Current, _nonExistingObjectIDForSubtransaction);
         CheckObjectIsMarkedInvalid(instance.ID);
-        
+
         Assert.That(() => instance.EnsureDataAvailable(), ThrowsObjectInvalidException(_nonExistingObjectIDForSubtransaction));
 
         var instance2 = LifetimeService.GetObjectReference(ClientTransaction.Current, _nonExistingObjectID);
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       // After the object has been marked invalid
       Assert.That(
-          () => TestableClientTransaction.EnsureDataAvailable(new[] { _nonExistingObjectID, DomainObjectIDs.Order1 }), 
+          () => TestableClientTransaction.EnsureDataAvailable(new[] { _nonExistingObjectID, DomainObjectIDs.Order1 }),
           ThrowsObjectInvalidException(_nonExistingObjectID));
     }
 
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         Assert.That(() => instance.TryEnsureDataAvailable(), ThrowsObjectInvalidException(_nonExistingObjectIDForSubtransaction));
 
         var instance2 = LifetimeService.GetObjectReference(ClientTransaction.Current, _nonExistingObjectID);
-        
+
         var result = instance2.TryEnsureDataAvailable();
 
         Assert.That(result, Is.False);
@@ -347,7 +347,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       try
       {
         clientID = CreateClientWithNonExistingParentClient();
-        
+
         var client = clientID.GetObject<Client>();
         Client instance = null;
         Assert.That(() => instance = client.ParentClient, Throws.Nothing);
@@ -391,7 +391,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
 
       DomainObject instance = null;
-      
+
       Assert.That(() => instance = objectWithInvalidRelation.ClassWithGuidKey, Throws.Nothing);
 
       Assert.That(instance.State.IsNotLoadedYet, Is.True);
@@ -440,7 +440,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       {
         // Trigger the load event
         triggeringObjectReference.EnsureDataAvailable();
-        
+
         CheckObjectIsMarkedInvalid(_nonExistingObjectID);
       }
 

@@ -125,7 +125,7 @@ public class TestTabbedForm : TestWxeBasePage
   }
 
   private void AddMainMenuTab (string id, string text, IconInfo icon)
-  {  
+  {
     WebTab tab = new WebTab();
     tab.Text = text;
     tab.ItemID = id ;
@@ -215,7 +215,7 @@ public class TestTabbedForm : TestWxeBasePage
 
     _wxeControlsPlaceHolder = new PlaceHolder();
     MultiView.BottomControls.Add(_wxeControlsPlaceHolder);
-		
+
     base.OnInit(e);
 
     this.EnableAbort = true;
@@ -229,13 +229,13 @@ public class TestTabbedForm : TestWxeBasePage
 	}
 	#region Web Form Designer generated code
 
-	
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
 	private void InitializeComponent ()
-	{    
+	{
     MultiView.ActiveViewChanged += new EventHandler(MultiView_ActiveViewChanged);
   }
 	#endregion
@@ -326,7 +326,7 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void MultiView_ActiveViewChanged (object sender, EventArgs e)
   {
-  
+
   }
 
   protected override ControlCollection WxeControls

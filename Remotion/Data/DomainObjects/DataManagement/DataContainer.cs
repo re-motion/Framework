@@ -128,11 +128,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
-      
+
       RaisePropertyValueReadingNotification(propertyDefinition, valueAccess);
       object value = GetValueWithoutEvents(propertyValue, valueAccess);
      RaisePropertyValueReadNotification(propertyDefinition, value, valueAccess);
-      
+
       return value;
     }
 
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         propertyValue.Touch();
         return;
       }
-      
+
       RaisePropertyValueChangingNotification(propertyDefinition, propertyValue.Value, value);
 
       var oldValue = propertyValue.Value;
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       var propertyValue = GetPropertyValue(propertyDefinition);
       propertyValue.CommitState();
-      
+
       // Invalidate state rather than recalculating it - CommitValue might be called multiple times.
       _hasBeenChanged = null;
     }
@@ -282,7 +282,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </value>
     public bool IsRegistered
     {
-      get 
+      get
       {
         return _clientTransaction != null;
       }
@@ -373,7 +373,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       {
         if (_isDiscarded)
           return new DataContainerState.Builder().SetDiscarded().Value;
-        
+
         switch (_state)
         {
           case DataContainerStateType.New:
@@ -461,7 +461,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       if (_state == DataContainerStateType.Deleted)
         throw new InvalidOperationException("Deleted data containers cannot be committed, they have to be discarded.");
-      
+
       foreach (PropertyValue propertyValue in _propertyValues.Values)
         propertyValue.CommitState();
 

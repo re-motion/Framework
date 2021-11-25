@@ -485,7 +485,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var domainObject = DomainObjectIDs.Employee3.GetObject<Employee>();
 
       domainObject.Computer = null;
-      
+
       UnloadService.UnloadData(TestableClientTransaction, domainObject.ID);
 
       Assert.That(domainObject.State.IsNotLoadedYet, Is.True);
@@ -599,7 +599,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       AssertObjectWasLoaded(listenerMock, order1);
       Assert.That(order1.State.IsUnchanged, Is.True);
     }
-    
+
     [Test]
     public void ReadingPropertyAccessor_DoesNotReloadObject ()
     {
@@ -671,7 +671,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       customer.Orders.Add(Order.NewObject()); // reloads the relation contents and thus the object
 
       AssertObjectWasLoadedAmongOthers(listenerMock, order1);
-      
+
       Assert.That(order1.State.IsUnchanged, Is.True);
       Assert.That(customerOrders.IsDataComplete, Is.True);
     }
@@ -831,12 +831,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       Console.WriteLine(customer.State);
       EnsureTransactionThrowsOnLoad();
-      
+
       customer.Orders.Add(Order.NewObject()); // does not reload order1 because that object's foreign key is not involved
 
       Assert.That(order1.State.IsNotLoadedYet, Is.True);
     }
-    
+
     [Test]
     public void AddingToCollectionEndPoint_ReloadsObjectBeingAdded ()
     {

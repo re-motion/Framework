@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     {
       _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<DocumentMixin, ITenantBoundObject>(out _targetStub);
     }
-    
+
     [Test]
     public void TargetCommitting_ReplacesNullTitle ()
     {

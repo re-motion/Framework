@@ -324,7 +324,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var entityExpression = CreateFakeEntityExpression(typeof(Order));
 
       Assert.That(
-          () => _resolver.ResolveMemberExpression(entityExpression, property), 
+          () => _resolver.ResolveMemberExpression(entityExpression, property),
           Throws.TypeOf<NotSupportedException>().With.Message.EqualTo(
               "Cannot resolve a collection-valued end-point definition. ('Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems')"));
     }
@@ -454,12 +454,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           new SqlCollectionExpression(
               typeof(string[]),
               new Expression[]
-              { 
-                  new SqlLiteralExpression("Partner"), 
-                  new SqlLiteralExpression("Distributor"), 
-                  new SqlLiteralExpression("Supplier") 
+              {
+                  new SqlLiteralExpression("Partner"),
+                  new SqlLiteralExpression("Distributor"),
+                  new SqlLiteralExpression("Supplier")
               }));
-      
+
       SqlExpressionTreeComparer.CheckAreEqualTrees(result, expectedExpression);
     }
 
@@ -474,7 +474,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var classIDExpression = Expression.MakeMemberAccess(idExpression, typeof(ObjectID).GetProperty("ClassID"));
       var expectedExpression = new SqlInExpression(
           classIDExpression, new SqlCollectionExpression(typeof(string[]), new Expression[] { new SqlLiteralExpression("Distributor") }));
-      
+
       SqlExpressionTreeComparer.CheckAreEqualTrees(result, expectedExpression);
     }
 
@@ -534,7 +534,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var entityExpression = CreateFakeEntityExpression(typeof(Order));
       var property = typeof(Order).GetProperty("Customer");
       var entityRefMemberExpression = new SqlEntityRefMemberExpression(entityExpression, property);
-      
+
       var result = _resolver.TryResolveOptimizedMemberExpression(entityRefMemberExpression, typeof(DomainObject).GetProperty("State"));
 
       _storageSpecificExpressionResolverStub

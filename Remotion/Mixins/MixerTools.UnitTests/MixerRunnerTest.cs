@@ -69,7 +69,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       _parameters.AssemblyOutputDirectory = "MixerRunnerTest";
       _parameters.BaseDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "MixerRunnerTest_Input");
       var assemblyPath = Path.Combine(_parameters.AssemblyOutputDirectory, "Remotion.Mixins.Persistent.1.dll");
-      
+
       Assert.That(Directory.Exists(_parameters.AssemblyOutputDirectory), Is.False);
       Assert.That(File.Exists(assemblyPath), Is.False);
 
@@ -81,7 +81,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
 
         var compiler = new AssemblyCompiler(
             Path.Combine(TestContext.CurrentContext.TestDirectory, @"SampleAssembly"),
-            Path.Combine(_parameters.BaseDirectory, "SampleAssembly.dll"), 
+            Path.Combine(_parameters.BaseDirectory, "SampleAssembly.dll"),
             typeof(Mixin).Assembly.Location);
         compiler.Compile();
 

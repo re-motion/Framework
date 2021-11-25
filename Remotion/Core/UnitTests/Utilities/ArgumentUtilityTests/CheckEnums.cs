@@ -81,7 +81,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum>("arg", null),
 		      Throws.InstanceOf<ArgumentNullException>());
 		}
-    
+
     [Test]
 		public void Fail_UndefinedValue ()
 		{
@@ -132,7 +132,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       TestEnum? result = ArgumentUtility.CheckValidEnumValueAndType<TestEnum>("arg", null);
 		  Assert.That(result, Is.Null);
 		}
-    
+
     [Test]
 		public void Fail_UndefinedValue ()
 		{

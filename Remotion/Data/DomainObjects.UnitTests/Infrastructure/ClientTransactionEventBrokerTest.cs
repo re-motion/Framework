@@ -57,9 +57,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     private IUnloadEventReceiver _unloadEventReceiverMock;
     private ILoadEventReceiver _loadEventReceiverMock;
-    
+
     private ClientTransactionMockEventReceiver _transactionEventReceiverMock;
-    
+
     private IClientTransactionExtension _extensionMock;
     private IClientTransactionListener _listenerMock;
 
@@ -712,7 +712,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var relationEndPoint = MockRepository.GenerateStub<IRelationEndPoint>();
       CheckEventWithListenersOnly(
-          s => s.RaiseRelationEndPointMapRegisteringEvent(relationEndPoint), 
+          s => s.RaiseRelationEndPointMapRegisteringEvent(relationEndPoint),
           l => l.RelationEndPointMapRegistering(_clientTransaction, relationEndPoint));
     }
 

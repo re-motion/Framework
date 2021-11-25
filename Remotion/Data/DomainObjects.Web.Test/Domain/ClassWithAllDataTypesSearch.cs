@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     public byte? BytePropertyTo { get; set; }
 
     public ClassWithAllDataTypes.EnumType EnumProperty { get; set; }
-    
+
     public Color ExtensibleEnumProperty { get; set; }
 
     [DateProperty]

@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
       ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
-      
+
       foreach (var expectedDefinition in expectedDefinitions)
       {
         var actualDefinition = actualDefinitions[expectedDefinition.ClassType];
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
       ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
-      
+
       foreach (var expectedDefinition in expectedDefinitions)
       {
         var actualDefinition = actualDefinitions[expectedDefinition.ClassType];
@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
       ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
-  
+
       Assert.AreEqual(
           expectedDefinition.StorageEntityDefinition.StorageProviderDefinition,
           actualDefinition.StorageEntityDefinition.StorageProviderDefinition,
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.AreEqual(
           expectedEntityName,
-          actualEntityName,  
+          actualEntityName,
           "Entity name of class definition '{0}' does not match.",
           expectedDefinition.ID);
 
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
       ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
-      
+
       CheckDerivedClasses(expectedDefinition.DerivedClasses, actualDefinition.DerivedClasses, expectedDefinition);
     }
 

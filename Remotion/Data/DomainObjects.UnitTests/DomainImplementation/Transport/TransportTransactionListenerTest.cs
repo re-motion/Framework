@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           () => listener.PropertyValueChanging(TestableClientTransaction, null, null, null, null),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "Cannot use the transported transaction for changing properties after " 
+                  "Cannot use the transported transaction for changing properties after "
                   + "it has been deserialized."));
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           () => _listener.PropertyValueChanging(TestableClientTransaction, source, GetPropertyDefinition(typeof(Computer), "SerialNumber"), null, null),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' " 
+                  "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' "
                   + "cannot be modified for transportation because it hasn't been loaded yet. Load it before manipulating it."));
     }
 

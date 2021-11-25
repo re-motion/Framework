@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private DomainObjectCollectionEndPointCollectionProvider _provider;
 
     private IDomainObjectCollectionData _dataStrategyStub;
-    
+
     public override void SetUp ()
     {
       base.SetUp();
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(_endPointID);
       var collection = new DomainObjectCollection(_dataStrategyStub);
-      
+
       _provider.RegisterCollection(_endPointID, collection);
 
       Assert.That(_provider.GetCollection(_endPointID), Is.SameAs(collection));

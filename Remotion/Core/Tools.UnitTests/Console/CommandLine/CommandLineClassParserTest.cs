@@ -41,7 +41,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
   [TestFixture]
   public class CommandLineClassParserTest
   {
-    [Test] 
+    [Test]
     public void TestParser ()
     {
       CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
@@ -52,7 +52,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
       Assert.That(arguments.ReplaceTarget, Is.EqualTo(TestOption.yes));
     }
 
-    [Test] 
+    [Test]
     public void TestModeArgDefault ()
     {
       CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
@@ -60,7 +60,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
       Assert.That(arguments.Mode, Is.EqualTo(TestMode.Mode1));
     }
 
-    [Test] 
+    [Test]
     public void TestModeArgMode2 ()
     {
       CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
@@ -68,7 +68,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
       Assert.That(arguments.Mode, Is.EqualTo(TestMode.Mode2));
     }
 
-    [Test] 
+    [Test]
     public void TestModeArgConfict ()
     {
       CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
@@ -77,7 +77,7 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
           Throws.InstanceOf<ConflictCommandLineParameterException>());
     }
 
-    [Test] 
+    [Test]
     public void TestModeArgInvalidValue ()
     {
       CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));
@@ -94,8 +94,8 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
           () => (Arguments) parser.Parse("/b~", true),
           Throws.InstanceOf<InvalidCommandLineArgumentNameException>());
     }
-    
-    [Test] 
+
+    [Test]
     public void TestOptional ()
     {
       CommandLineClassParser parser = new CommandLineClassParser(typeof(Arguments));

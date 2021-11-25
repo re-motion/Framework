@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
           string.Join(", ", Enumerable.Range(0, dataReader.FieldCount).Select(dataReader.GetName)));
         throw new RdbmsProviderException(message, ex);
       }
-      
+
     }
   }
 }

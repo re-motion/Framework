@@ -50,7 +50,7 @@ public class QueryParameterCollection : CommonCollection
   /// <param name="collection">The <see cref="QueryParameterCollection"/> to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-  public QueryParameterCollection (QueryParameterCollection collection, bool makeCollectionReadOnly)  
+  public QueryParameterCollection (QueryParameterCollection collection, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull("collection", collection);
 
@@ -125,7 +125,7 @@ public class QueryParameterCollection : CommonCollection
   /// <summary>
   /// Gets the <see cref="QueryParameter"/> with a given <paramref name="index"/> in the <see cref="QueryParameterCollection"/>.
   /// </summary>
-  public QueryParameter this [int index]  
+  public QueryParameter this [int index]
   {
     get { return (QueryParameter) BaseGetObject(index); }
   }
@@ -134,7 +134,7 @@ public class QueryParameterCollection : CommonCollection
   /// Gets the <see cref="QueryParameter"/> with a given <paramref name="name"/> in the <see cref="QueryParameterCollection"/>.
   /// </summary>
   /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="name"/> was not found.</remarks>
-  public QueryParameter this [string name]  
+  public QueryParameter this [string name]
   {
     get { return (QueryParameter) BaseGetObject(name); }
   }
@@ -144,10 +144,10 @@ public class QueryParameterCollection : CommonCollection
   /// </summary>
   /// <param name="parameter">The <see cref="QueryParameter"/> to add.</param>
   /// <returns>The zero-based index where <paramref name="parameter"/> has been added.</returns>
-  public int Add (QueryParameter parameter)  
+  public int Add (QueryParameter parameter)
   {
     ArgumentUtility.CheckNotNull("parameter", parameter);
-    
+
     return BaseAdd(parameter.Name, parameter);
   }
 

@@ -36,7 +36,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     public void NonOverlappingMixins_AreSortedAlphabetically_ThirdMixin_SortedAccordingToDependencies_Front ()
     {
       var instance = BuildMixedInstance<C>(
-          b => b.AddMixinDependency<MixinC, MixinA>().AddMixinDependency<MixinC, MixinB>(), 
+          b => b.AddMixinDependency<MixinC, MixinA>().AddMixinDependency<MixinC, MixinB>(),
           typeof(MixinB), typeof(MixinC), typeof(MixinA));
 
       Assert.That(instance.Method1(), Is.EqualTo("MixinC.Method1 - MixinA.Method1 - C.Method1"));

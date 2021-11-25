@@ -69,8 +69,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void SchemaGeneration ()
     {
       var scriptGenerator = new ScriptGenerator(
-          pd => pd.Factory.CreateSchemaScriptBuilder(pd), 
-          new RdbmsStorageEntityDefinitionProvider(), 
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
+          new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
 
       var script = scriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions()).Single();

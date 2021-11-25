@@ -51,7 +51,7 @@ public class TabbedMenuTest: WebControlTest
   protected override void SetUpContext ()
   {
     base.SetUpContext();
-    
+
     _currentHttpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
     HttpContextHelper.SetCurrent(_currentHttpContext);
@@ -93,7 +93,7 @@ public class TabbedMenuTest: WebControlTest
   public void GetUrlParametersForMainMenuTab ()
   {
     string expectedParameterValue = _mainMenuTab2.ItemID;
-    
+
     NameValueCollection parameters = _tabbedMenu.GetUrlParameters(_mainMenuTab2);
 
     Assert.That(parameters, Is.Not.Null);
@@ -108,7 +108,7 @@ public class TabbedMenuTest: WebControlTest
   public void GetUrlParametersForSubMenuTab ()
   {
     string expectedParameterValue = string.Format("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
-    
+
     NameValueCollection parameters = _tabbedMenu.GetUrlParameters(_subMenuTab22);
 
     Assert.That(parameters, Is.Not.Null);
@@ -125,7 +125,7 @@ public class TabbedMenuTest: WebControlTest
     string url = "/AppDir/page.aspx";
     string expectedParameterValue = _mainMenuTab2.ItemID;
     string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
+
     string value = _tabbedMenu.FormatUrl(url, _mainMenuTab2);
 
     Assert.That(value, Is.Not.Null);
@@ -138,7 +138,7 @@ public class TabbedMenuTest: WebControlTest
     string url = "/AppDir/page.aspx";
     string expectedParameterValue = string.Format("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
     string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
+
     string value = _tabbedMenu.FormatUrl(url, _subMenuTab22);
 
     Assert.That(value, Is.Not.Null);
@@ -152,7 +152,7 @@ public class TabbedMenuTest: WebControlTest
     _mainMenuTab3.IsSelected = true;
     string expectedParameterValue = _mainMenuTab3.ItemID;
     string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
+
     string value = _tabbedMenu.FormatUrl(url);
 
     Assert.That(value, Is.Not.Null);
@@ -166,7 +166,7 @@ public class TabbedMenuTest: WebControlTest
     _subMenuTab12.IsSelected = true;
     string expectedParameterValue = string.Format("{0},{1}", _subMenuTab12.Parent.ItemID, _subMenuTab12.ItemID);
     string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
+
     string value = _tabbedMenu.FormatUrl(url);
 
     Assert.That(value, Is.Not.Null);
@@ -179,7 +179,7 @@ public class TabbedMenuTest: WebControlTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _mainMenuTab1.Command.Type = CommandType.Event;
     _subMenuTab11.Command.Type = CommandType.Event;
-    
+
     _tabbedMenu.EvaluateWaiConformity();
 
 	  Assert.That(WcagHelperMock.HasWarning, Is.False);

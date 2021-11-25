@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.RelationRefle
   [DBTable]
   public class DerivedClass2 : BaseClass2
   {
-    
+
 
   }
 }

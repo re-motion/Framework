@@ -27,7 +27,7 @@ public enum WaiConformanceLevel
   /// <summary> The web application is not required to follow the WAI guidelines. </summary>
   Undefined = 0,
   /// <summary> WAI conformance level A, all Priority 1 checkpoints are satisfied. </summary>
-  A = 1, 
+  A = 1,
   /// <summary> WAI conformance level Double-A, all Priority 1 and 2 checkpoints are satisfied. </summary>
   DoubleA = 3,
   /// <summary> WAI conformance level Triple-A, all Priority 1, 2, and 3 checkpoints are satisfied. </summary>

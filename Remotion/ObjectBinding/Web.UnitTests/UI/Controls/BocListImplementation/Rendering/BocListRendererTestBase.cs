@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
             TypeWithReference.Create("referencedObject1"),
             TypeWithReference.Create("referencedObject2"));
         businessObject.ReferenceList = new[] { businessObject.FirstValue, businessObject.SecondValue };
-        
+
       }
       else
       {

@@ -51,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     {
       _lastExecutedStepID = "1";
     }
-  
+
     void Step2 ()
     {
       _lastExecutedStepID = "2";
@@ -68,12 +68,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.1";
       }
-    
+
       void Step2 ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.2";
       }
-    
+
       void Step3_ ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.3";
@@ -85,7 +85,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
       }
 
     }
-  
+
     void Step4 ()
     {
       _lastExecutedStepID = "4";

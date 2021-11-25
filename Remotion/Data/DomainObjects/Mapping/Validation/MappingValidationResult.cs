@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
     }
 
     private static string BuildMessage (
-        ITypeInformation type, 
+        ITypeInformation type,
         IPropertyInformation property,
         string relationID,
         string messageFormat,

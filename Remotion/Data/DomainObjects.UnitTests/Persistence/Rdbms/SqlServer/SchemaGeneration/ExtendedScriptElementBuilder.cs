@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
   public class ExtendedScriptElementBuilder : IScriptBuilder
   {
     private readonly IScriptBuilder _innerScriptBuilder;
-    
+
     public ExtendedScriptElementBuilder (IScriptBuilder innerScriptBuilder)
     {
       ArgumentUtility.CheckNotNull("innerScriptBuilder", innerScriptBuilder);

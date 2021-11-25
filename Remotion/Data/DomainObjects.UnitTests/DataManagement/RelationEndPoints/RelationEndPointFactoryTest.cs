@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           _lazyLoaderStub,
           _transactionEventSinkStub,
           _virtualObjectEndPointDataManagerFactoryStub,
-          _domainObjectCollectionEndPointDataManagerFactoryStub, 
+          _domainObjectCollectionEndPointDataManagerFactoryStub,
           _domainObjectCollectionEndPointCollectionProviderStub,
           _associatedDomainObjectCollectionStrategyFactoryStub,
           _virtualCollectionEndPointCollectionProviderStub,
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
-      
+
       var endPoint = _factory.CreateRealObjectEndPoint(endPointID, dataContainer);
 
       Assert.That(endPoint, Is.TypeOf<RealObjectEndPoint>());
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
 
       Assert.That(
-          () => _factory.CreateRealObjectEndPoint(endPointID, dataContainer), 
+          () => _factory.CreateRealObjectEndPoint(endPointID, dataContainer),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("End point ID must refer to a non-virtual end point.", "id"));
     }
 
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
       Assert.That(
-          () => _factory.CreateVirtualObjectEndPoint(endPointID), 
+          () => _factory.CreateVirtualObjectEndPoint(endPointID),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("End point ID must refer to a virtual end point.", "id"));
     }
 
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(endPoint.ClientTransaction, Is.SameAs(_clientTransaction));
       Assert.That(endPoint.ID, Is.EqualTo(endPointID));
       Assert.That(
-          ((DomainObjectCollectionEndPoint) endPoint).CollectionManager, 
+          ((DomainObjectCollectionEndPoint) endPoint).CollectionManager,
           Is.TypeOf<DomainObjectCollectionEndPointCollectionManager>()
             .With.Property<DomainObjectCollectionEndPointCollectionManager>(p => p.DomainObjectCollectionProvider).SameAs(_domainObjectCollectionEndPointCollectionProviderStub)
             .And.Property<DomainObjectCollectionEndPointCollectionManager>(p => p.DataStrategyFactory).SameAs(_associatedDomainObjectCollectionStrategyFactoryStub));
@@ -252,7 +252,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           new SerializableLazyLoaderFake(),
           new SerializableClientTransactionEventSinkFake(),
           new SerializableVirtualObjectEndPointDataManagerFactoryFake(),
-          new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake(), 
+          new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake(),
           new SerializableDomainObjectCollectionEndPointCollectionProviderFake(),
           new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake(),
           new SerializableVirtualCollectionEndPointCollectionProviderFake(),

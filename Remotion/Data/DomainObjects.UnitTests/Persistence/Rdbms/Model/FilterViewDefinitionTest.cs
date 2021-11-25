@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     private SimpleStoragePropertyDefinition _property1;
     private SimpleStoragePropertyDefinition _property2;
     private SimpleStoragePropertyDefinition _property3;
-    
+
     private TableDefinition _baseEntityDefinition;
     private FilterViewDefinition _filterViewDefinition;
     private IIndexDefinition[] _indexes;

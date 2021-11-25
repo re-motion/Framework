@@ -20,6 +20,6 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting.TestDomai
 {
   public class IndependentMixin2
   {
-    
+
   }
 }

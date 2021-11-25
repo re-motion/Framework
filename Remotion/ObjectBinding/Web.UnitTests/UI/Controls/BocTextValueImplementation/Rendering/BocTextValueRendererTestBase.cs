@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     private readonly Unit _height = new Unit(17, UnitType.Point);
     private readonly Unit _width = new Unit(123, UnitType.Point);
     protected Mock<T> TextValue { get; set; }
-    
+
     protected Unit Height
     {
       get { return _height; }

@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
     public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      var rdbmsProviderDefinition = 
+      var rdbmsProviderDefinition =
           ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
 
       var commandFactory = CreateStorageProviderCommandFactory(rdbmsProviderDefinition);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
 
       var entityDefinitionFactory = CreateEntityDefinitionFactory(
           rdmsStorageProviderDefinition,
-          storageNameProvider, 
+          storageNameProvider,
           infrastructureStoragePropertyDefinitionFactory,
           foreignKeyConstraintDefinitionFactory,
           storagePropertyDefinitionResolver);
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
         ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
         IMappingConfiguration mappingConfiguration)
     {
-      var rdmsStorageProviderDefinition = 
+      var rdmsStorageProviderDefinition =
           ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("methodCallTransformerProvider", methodCallTransformerProvider);
       ArgumentUtility.CheckNotNull("resultOperatorHandlerRegistry", resultOperatorHandlerRegistry);
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
 
       return new RdbmsPersistenceModelProvider();
     }
-    
+
     public ISqlQueryGenerator CreateSqlQueryGenerator (
         RdbmsProviderDefinition storageProviderDefinition,
         IMethodCallTransformerProvider methodCallTransformerProvider,
@@ -323,7 +323,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
       return new TableSerializer(decoratedPropertySerializer);
     }
 
-    public virtual IPropertySerializer CreatePropertySerializer () 
+    public virtual IPropertySerializer CreatePropertySerializer ()
     {
       return new PropertySerializer(CreateColumnSerializer());
     }
@@ -473,7 +473,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
     protected virtual IDataContainerValidator CreateDataContainerValidator (RdbmsProviderDefinition storageProviderDefinition)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      
+
       return _dataContainerValidator;
     }
 
@@ -509,10 +509,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
     }
 
     protected virtual IRdbmsStorageEntityDefinitionFactory CreateEntityDefinitionFactory (
-        RdbmsProviderDefinition storageProviderDefinition, 
-        IStorageNameProvider storageNameProvider, 
-        IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionFactory, 
-        IForeignKeyConstraintDefinitionFactory foreignKeyConstraintDefinitionFactory, 
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageNameProvider storageNameProvider,
+        IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionFactory,
+        IForeignKeyConstraintDefinitionFactory foreignKeyConstraintDefinitionFactory,
         IStoragePropertyDefinitionResolver storagePropertyDefinitionResolver)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -520,7 +520,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
       ArgumentUtility.CheckNotNull("foreignKeyConstraintDefinitionFactory", foreignKeyConstraintDefinitionFactory);
       ArgumentUtility.CheckNotNull("storagePropertyDefinitionResolver", storagePropertyDefinitionResolver);
       ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
-      
+
       return new RdbmsStorageEntityDefinitionFactory(
           infrastructureStoragePropertyDefinitionFactory,
           foreignKeyConstraintDefinitionFactory,

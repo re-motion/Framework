@@ -68,9 +68,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void Equals_True ()
     {
       var c1a = new MixinContext(
-          MixinKind.Extending, 
-          typeof(BT6Mixin1), 
-          MemberVisibility.Private, 
+          MixinKind.Extending,
+          typeof(BT6Mixin1),
+          MemberVisibility.Private,
           new[] { typeof(BT6Mixin2), typeof(BT6Mixin3<>) },
           MixinContextOriginObjectMother.Create());
       var c1b = new MixinContext(
@@ -80,8 +80,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context
           new[] { typeof(BT6Mixin2), typeof(BT6Mixin3<>) },
           MixinContextOriginObjectMother.Create());
       var c1WithDifferentDependencyOrder = new MixinContext(
-          MixinKind.Extending, 
-          typeof(BT6Mixin1), 
+          MixinKind.Extending,
+          typeof(BT6Mixin1),
           MemberVisibility.Private,
           new[] { typeof(BT6Mixin3<>), typeof(BT6Mixin2) },
           MixinContextOriginObjectMother.Create());

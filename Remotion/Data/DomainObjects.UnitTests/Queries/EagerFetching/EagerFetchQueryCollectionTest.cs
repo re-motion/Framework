@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       _endPointDefinition1 = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
       _endPointDefinition2 = DomainObjectIDs.Customer1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Customer).FullName + ".Orders");
-      
+
       _objectEndPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
 
       _collection = new EagerFetchQueryCollection();
@@ -56,15 +56,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     {
       _collection.Add(_endPointDefinition1, _query1);
       Assert.That(_collection.ToArray(), Is.EquivalentTo(
-          new[] { 
-              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition1, _query1) 
+          new[] {
+              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition1, _query1)
           }));
 
       _collection.Add(_endPointDefinition2, _query2);
       Assert.That(_collection.ToArray(), Is.EquivalentTo(
-          new[] { 
-              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition1, _query1), 
-              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition2, _query2) 
+          new[] {
+              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition1, _query1),
+              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition2, _query2)
           }));
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
           () => _collection.Add(_endPointDefinition1, _query2),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "There is already an eager fetch query for relation end point " 
+                  "There is already an eager fetch query for relation end point "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'."));
     }
 

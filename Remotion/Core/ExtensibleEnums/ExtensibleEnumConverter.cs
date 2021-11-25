@@ -46,8 +46,8 @@ namespace Remotion.ExtensibleEnums
     /// Gets the extensible enum type to be be converted from and to.
     /// </summary>
     /// <value>The extensible enum type.</value>
-    public Type ExtensibleEnumType 
-    { 
+    public Type ExtensibleEnumType
+    {
       get { return _extensibleEnumType; }
     }
 
@@ -106,7 +106,7 @@ namespace Remotion.ExtensibleEnums
     {
       if (value == null)
         return null;
-      
+
       var stringValue = value as string;
       if (stringValue == null)
       {

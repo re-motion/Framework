@@ -24,6 +24,6 @@ namespace Remotion.Globalization.Mixins
   [AttributeUsage (AttributeTargets.Assembly)]
   public class EnsureGlobalizationSupportForMixinsAttribute : Attribute
   {
-     
+
   }
 }

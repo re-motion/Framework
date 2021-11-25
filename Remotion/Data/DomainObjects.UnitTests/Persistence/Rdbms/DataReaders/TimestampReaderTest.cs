@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     private IColumnOrdinalProvider _columnOrdinalProviderStub;
 
     private TimestampReader _reader;
-    
+
     private ObjectID _fakeObjectIDResult;
     private object _fakeTimestampResult;
 
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
           .Return(_fakeTimestampResult)
           .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]));
       ReplayAll();
-      
+
       var result = _reader.Read(_dataReaderStrictMock);
 
       VerifyAll();
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
           .Return(fakeTimestampResult2)
           .Repeat.Once();
       ReplayAll();
-      
+
       var result = _reader.ReadSequence(_dataReaderStrictMock).ToArray();
 
       VerifyAll();
@@ -178,6 +178,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       Assert.That(columnValueReader.DataReader, Is.SameAs(_dataReaderStrictMock));
       Assert.That(columnValueReader.ColumnOrdinalProvider, Is.SameAs(_columnOrdinalProviderStub));
     }
- 
+
   }
 }

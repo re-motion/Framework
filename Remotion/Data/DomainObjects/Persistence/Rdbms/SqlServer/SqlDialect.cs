@@ -49,6 +49,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
       return "[" + identifier + "]";
     }
-    
+
   }
 }

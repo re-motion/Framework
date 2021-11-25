@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       var rootTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver>(_rootTransaction);
       var subTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver>(_subTransaction);
-      
+
       rootTransactionEventReceiverMock
         .Expect(mock => mock.Loaded(new[] { _orderReference }))
         .WhenCalled(

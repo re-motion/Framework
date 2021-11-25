@@ -60,7 +60,7 @@ namespace Remotion.Development.UnitTesting
               Type parameterType = parameters[i].ParameterType;
 
               if (! (    (argument == null && ! parameterType.IsValueType)        // null is a valid argument for any reference type
-                      || (argument != null && parameterType.IsAssignableFrom(argument.GetType()))))  
+                      || (argument != null && parameterType.IsAssignableFrom(argument.GetType()))))
               {
                 isMatch = false;
                 break;

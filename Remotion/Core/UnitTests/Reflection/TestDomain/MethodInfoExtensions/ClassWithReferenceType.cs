@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
     public static T StaticScalar { get; set; }
 
     private T _explicitInterfaceScalar;
-    
+
     public ClassWithReferenceType ()
     {
     }
@@ -42,6 +42,6 @@ namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
     public T ReadOnlyNonPublicSetterScalar { get; protected set; }
 
     private T PrivateProperty { get; set; }
-    
+
   }
 }

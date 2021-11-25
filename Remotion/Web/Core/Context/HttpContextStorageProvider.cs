@@ -45,7 +45,7 @@ namespace Remotion.Web.Context
       var httpContext = HttpContext.Current;
       if (httpContext != null)
         httpContext.Items[key] = value;
-      else 
+      else
         _fallbackProvider.SetData(key, value);
     }
 

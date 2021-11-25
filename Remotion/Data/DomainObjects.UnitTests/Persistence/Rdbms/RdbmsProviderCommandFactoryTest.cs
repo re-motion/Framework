@@ -51,9 +51,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
       var storageTypeInformationProvider = new SqlStorageTypeInformationProvider();
       var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
-      
+
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
-      var infrastructureStoragePropertyDefinitionProvider = 
+      var infrastructureStoragePropertyDefinitionProvider =
           new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
       var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
       var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory(

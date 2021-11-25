@@ -109,12 +109,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _builder1Mock.VerifyAllExpectations();
       _builder2Mock.VerifyAllExpectations();
-      
+
       Assert.That(result.Elements.Count, Is.EqualTo(2));
       Assert.That(result.Elements[0], Is.SameAs(_fakeResultCollection1));
       Assert.That(result.Elements[1], Is.SameAs(_fakeResultCollection2));
     }
-    
+
     [Test]
     public void GetDropScript ()
     {

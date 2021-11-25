@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       DomainObjectCollectionDataTestHelper.CheckReadOnlyCollectionStrategy(collection);
     }
-    
+
     private void CheckDataStrategy (DomainObjectCollection collection, IDomainObjectCollectionData expectedData)
     {
       var data = DomainObjectCollectionDataTestHelper.GetDataStrategy(collection);

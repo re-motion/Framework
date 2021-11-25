@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
 {
   [ClassID ("DefinedID")]
   public class ClassWithSameClassID : DomainObject
-  {    
+  {
   }
 
   [ClassID ("DefinedID")]

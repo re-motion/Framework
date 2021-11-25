@@ -98,7 +98,7 @@ namespace Remotion.Web.Security.UI
     {
       get { return _permissionSource; }
     }
-	
+
     public Type? FunctionType
     {
       get { return _functionType; }
@@ -108,7 +108,7 @@ namespace Remotion.Web.Security.UI
     {
       get { return _methodName; }
     }
-  
+
     public Type? SecurableClass
     {
       get { return _securableClass; }

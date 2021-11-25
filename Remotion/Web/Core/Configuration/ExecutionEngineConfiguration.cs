@@ -39,15 +39,15 @@ public class ExecutionEngineConfiguration
   [XmlAttribute ("functionTimeout")]
   public int FunctionTimeout
   {
-    get 
+    get
     {
-      return _functionTimeout; 
+      return _functionTimeout;
     }
     set
     {
       if (value < 1)
         throw new ArgumentException("The FunctionTimeout must be greater than zero.");
-      _functionTimeout = value; 
+      _functionTimeout = value;
     }
   }
 
@@ -67,13 +67,13 @@ public class ExecutionEngineConfiguration
   {
     get
     {
-      return _refreshInterval; 
+      return _refreshInterval;
     }
     set
     {
       if (value < 0)
         throw new ArgumentException("The RefreshInterval must not be a negative number.");
-      _refreshInterval = value; 
+      _refreshInterval = value;
     }
   }
 
@@ -105,7 +105,7 @@ public class ExecutionEngineConfiguration
   public string DefaultWxeHandler
   {
     get { return _defaultWxeHandler; }
-    set 
+    set
     {
       if (string.IsNullOrEmpty(value))
       {
@@ -119,7 +119,7 @@ public class ExecutionEngineConfiguration
           throw new ArgumentException(string.Format("No absolute paths are allowed. Resource: '{0}'", value), "value");
         if (! value.StartsWith("~/"))
           value = "~/" + value;
-        _defaultWxeHandler = value; 
+        _defaultWxeHandler = value;
       }
     }
   }

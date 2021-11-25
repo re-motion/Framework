@@ -22,6 +22,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
   [ClassID ("Bidirectional_WithInvalidPropertyReferences_InvalidRelationClass2")]
   public class InvalidRelationClass2 : BaseRelationClass2
   {
-   
+
   }
 }

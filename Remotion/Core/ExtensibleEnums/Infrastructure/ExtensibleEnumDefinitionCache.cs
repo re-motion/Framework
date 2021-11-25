@@ -35,7 +35,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
       ArgumentUtility.CheckNotNull("valueDiscoveryService", valueDiscoveryService);
-      
+
       _valueDiscoveryService = valueDiscoveryService;
 
       // Optimized for memory allocations

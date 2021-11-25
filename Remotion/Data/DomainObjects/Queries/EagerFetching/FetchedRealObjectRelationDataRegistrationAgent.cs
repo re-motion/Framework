@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     }
 
     public override void GroupAndRegisterRelatedObjects (
-        IRelationEndPointDefinition relationEndPointDefinition, 
-        ICollection<ILoadedObjectData> originatingObjects, 
+        IRelationEndPointDefinition relationEndPointDefinition,
+        ICollection<ILoadedObjectData> originatingObjects,
         ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);

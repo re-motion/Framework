@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     [NotNull]
     public abstract string GetStringValue (IBusinessObject obj);
-    
+
     /// <summary>
     /// Creates an implementation of <see cref="IComparer{T}"/> that can be used to comparere two <see cref="BocListRow"/> instances based on the this
     /// column definition.

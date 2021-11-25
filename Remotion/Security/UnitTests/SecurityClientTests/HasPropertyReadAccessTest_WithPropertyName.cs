@@ -171,7 +171,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
             Throws.InvalidOperationException
                 .With.Message.EqualTo("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
       }
-     
+
       _testHelper.VerifyAll();
     }
   }

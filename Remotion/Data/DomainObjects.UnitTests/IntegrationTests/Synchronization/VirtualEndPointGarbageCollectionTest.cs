@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       UnloadService.UnloadData(TestableClientTransaction, unsynchronizedCompany.ID);
 
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(virtualEndPointID), Is.Null);
-      
+
       // But DomainObjectCollection stays valid
       Assert.That(industrialSector.Companies, Is.SameAs(companies));
     }

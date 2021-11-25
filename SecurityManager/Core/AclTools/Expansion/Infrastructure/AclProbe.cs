@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 
       return aclProbe;
     }
-     
+
     private static IList<IDomainObjectHandle<AbstractRoleDefinition>> CreateAbstractRolesEntry (AclProbe aclProbe, AccessControlEntry ace)
     {
       var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>>();
@@ -158,7 +158,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           Assertion.IsNotNull(role.Group);
           // GroupHierarchyCondition should always contain the flag for "this group";
           // if this condition is violated, using owningGroup = role.Group will no longer work, since it will not match.
-          Assertion.IsTrue((ace.GroupHierarchyCondition & GroupHierarchyCondition.This) != 0); 
+          Assertion.IsTrue((ace.GroupHierarchyCondition & GroupHierarchyCondition.This) != 0);
           owningGroup = role.Group;
           aclProbe.AccessConditions.OwningGroup = owningGroup;
           aclProbe.AccessConditions.GroupHierarchyCondition = ace.GroupHierarchyCondition;

@@ -191,4 +191,4 @@ namespace Remotion.Data.DomainObjects.Tracing
       return parameters.Cast<IDbDataParameter>().ToDictionary(parameter => parameter.ParameterName, parameter => parameter.Value);
     }
   }
-} 
+}

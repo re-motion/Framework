@@ -86,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.AddHeader("Content-Length", length.ToString());  //Some high number so browser does not think we are finished
       response.ContentType = "text/plain";
       response.Flush();
-       
+
       byte[] someMagicNumber = new byte[1024 * 500];
       new Random().NextBytes(someMagicNumber);
       response.OutputStream.Write(someMagicNumber, 0, someMagicNumber.Length);

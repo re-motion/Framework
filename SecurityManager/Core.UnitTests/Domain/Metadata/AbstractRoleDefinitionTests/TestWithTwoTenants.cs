@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefinit
     public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
-    
+
       _dbFixtures = new DatabaseFixtures();
       _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
     }

@@ -59,15 +59,15 @@ namespace Remotion.ObjectBinding.BindableObject
     public IEnumerable<IPropertyInformation> GetPropertyInfos ()
     {
       var propertyNames = new HashSet<string>();
-      
+
       foreach (Type currentType in GetInheritanceHierarchy())
       {
         var propertyInfos = currentType.FindMembers(
-            MemberTypes.Property, 
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly, 
-            PropertyFilter, 
+            MemberTypes.Property,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly,
+            PropertyFilter,
             null);
-        
+
         foreach (PropertyInfo propertyInfo in propertyInfos)
         {
           if (!propertyNames.Contains(propertyInfo.Name))

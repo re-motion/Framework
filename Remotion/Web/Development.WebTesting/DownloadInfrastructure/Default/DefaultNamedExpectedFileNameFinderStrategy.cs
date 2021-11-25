@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
       if (newFiles.Count == 0)
         throw new DownloadResultNotFoundException("Did not find any new files in the download directory.", newFiles);
-      
+
       var foundFiles = newFiles.Where(file => file == _fileName).ToArray();
 
       if (foundFiles.Length != 1)

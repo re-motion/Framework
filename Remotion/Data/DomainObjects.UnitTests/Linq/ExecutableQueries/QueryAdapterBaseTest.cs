@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
       var testHelper = new DecoratorTestHelper<IQuery>(_queryAdapterBase, _queryMock);
 
       var parameterCollection = new QueryParameterCollection { { "p1", 7 } };
-      var eagerFetchQueries = 
+      var eagerFetchQueries =
           new EagerFetchQueryCollection { { GetEndPointDefinition(typeof(Order), "OrderTicket"), MockRepository.GenerateStub<IQuery>() } };
-      
+
       testHelper.CheckDelegation(q => q.ID, "Some ID");
       testHelper.CheckDelegation(q => q.Statement, "Some Statement");
       testHelper.CheckDelegation(q => q.StorageProviderDefinition, TestDomainStorageProviderDefinition);

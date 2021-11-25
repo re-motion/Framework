@@ -40,10 +40,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       _classWithPropertiesInstance = BindableDomainObjectWithProperties.NewObject();
       _classWithPropertiesMixin = Mixin.Get<BindableDomainObjectMixin>(_classWithPropertiesInstance);
       _classWithMixedPropertiesInstance = BindableDomainObjectWithMixedPersistentProperties.NewObject();
-      
+
       _classWithPropertiesMixinInstanceAsBusinessObject = _classWithPropertiesMixin;
       _classWithPropertiesMixinInstanceAsBusinessObjectClass = _classWithPropertiesMixinInstanceAsBusinessObject.BusinessObjectClass;
-      
+
       _classWithMixedPropertiesInstanceAsBusinessObject = _classWithMixedPropertiesInstance;
       _classWithMixedPropertiesInstanceAsBusinessObjectClass = _classWithMixedPropertiesInstanceAsBusinessObject.BusinessObjectClass;
     }
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       ((IBindableDomainObjectWithProperties) _classWithPropertiesInstance).RequiredStringPropertyExplicitInInterface = propertyValue;
       Assert.That(_classWithPropertiesMixinInstanceAsBusinessObject.GetProperty(property), Is.EqualTo(propertyValue));
     }
-    
+
     [Test]
     public void MixedPublicProperty_DefaultValue ()
     {
@@ -197,6 +197,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       ((IMixinAddingPersistentProperties) _classWithMixedPropertiesInstance).ExplicitMixedProperty = dateTime;
       Assert.That(_classWithMixedPropertiesInstanceAsBusinessObject.GetProperty(property), Is.EqualTo(dateTime));
     }
-    
+
   }
 }

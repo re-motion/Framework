@@ -91,16 +91,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               new[] { typeof(Order), typeof(Company), typeof(Partner), typeof(Customer) });
 
       _mappingObjectFactoryMock.VerifyAllExpectations();
-      
+
       Assert.That(classDefinitions.Length, Is.EqualTo(4));
-      
+
       var orderClassDefinition = classDefinitions.Single(cd => cd.ClassType == typeof(Order));
       Assert.That(orderClassDefinition.DerivedClasses.Count, Is.EqualTo(0));
 
       var companyClassDefinition = classDefinitions.Single(cd => cd.ClassType == typeof(Company));
       Assert.That(companyClassDefinition.DerivedClasses, Is.EquivalentTo(new[] { fakeClassDefinitionPartner, fakeClassDefinitionCustomer }));
     }
-    
+
     [Test]
     public void GetClassDefinition_ForDerivedClass_WithStorageGroupAttribute_IgnoresBaseClass ()
     {

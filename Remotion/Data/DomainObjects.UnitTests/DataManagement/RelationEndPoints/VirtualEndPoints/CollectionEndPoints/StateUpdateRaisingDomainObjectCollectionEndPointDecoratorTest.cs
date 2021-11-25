@@ -316,12 +316,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var exception = new Exception();
       Assert.That(
-          () => _decoratorTestHelper.CheckDelegationWithContinuation(action, mi => { throw exception; }), 
+          () => _decoratorTestHelper.CheckDelegationWithContinuation(action, mi => { throw exception; }),
           Throws.Exception.SameAs(exception));
 
       _listenerMock.VerifyAllExpectations();
     }
-    
+
     private void CheckCreateStateUpdateRaisingCommand (Func<IDomainObjectCollectionEndPoint, IDataManagementCommand> action)
     {
       var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand>();

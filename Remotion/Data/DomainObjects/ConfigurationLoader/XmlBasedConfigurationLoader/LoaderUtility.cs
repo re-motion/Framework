@@ -28,14 +28,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     {
       ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
 
-      return TypeUtility.GetType(typeName.Trim(), true);    
+      return TypeUtility.GetType(typeName.Trim(), true);
     }
 
     public static Type GetType (XmlNode node)
     {
       ArgumentUtility.CheckNotNull("node", node);
 
-      return GetType(node.InnerText);    
+      return GetType(node.InnerText);
     }
 
     public static Type GetType (XmlNode node, string xPath, XmlNamespaceManager namespaceManager)
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       ArgumentUtility.CheckNotNull("selectionNode", selectionNode);
       ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
       ArgumentUtility.CheckNotNull("namespaceManager", namespaceManager);
-    
+
       XmlNode typeNode = selectionNode.SelectSingleNode(xPath, namespaceManager);
 
       if (typeNode != null)

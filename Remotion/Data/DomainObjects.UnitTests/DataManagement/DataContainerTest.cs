@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetEventListener ()
     {
       Assert.That(_existingDataContainer.EventListener, Is.Null);
-      
+
       _existingDataContainer.SetEventListener(_eventListenerMock);
 
       Assert.That(_existingDataContainer.EventListener, Is.Not.Null.And.SameAs(_eventListenerMock));
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       _existingDataContainer.SetEventListener(_eventListenerMock);
       Assert.That(
-          () => _existingDataContainer.SetEventListener(_eventListenerMock), 
+          () => _existingDataContainer.SetEventListener(_eventListenerMock),
           Throws.InvalidOperationException.With.Message.EqualTo("Only one event listener can be registered for a DataContainer."));
     }
 
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       _eventListenerMock
           .Expect(mock => mock.PropertyValueReading(_existingDataContainer, _orderNumberProperty, ValueAccess.Original))
           .Throw(exception);
-      
+
       Assert.That(() => _existingDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original), Throws.Exception.SameAs(exception));
       _eventListenerMock.AssertWasNotCalled(
           mock => mock.PropertyValueRead(
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void GetValue_InvalidProperty ()
     {
       Assert.That(
-          () => _existingDataContainer.GetValue(_nonOrderProperty), 
+          () => _existingDataContainer.GetValue(_nonOrderProperty),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
@@ -265,7 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(_existingDataContainer.HasValueBeenTouched(_orderNumberProperty), Is.True);
       Assert.That(_existingDataContainer.HasValueChanged(_orderNumberProperty), Is.False);
     }
-    
+
     [Test]
     public void SetValue_Discarded ()
     {
@@ -286,7 +286,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetValue_InvalidProperty ()
     {
       Assert.That(
-          () => _existingDataContainer.SetValue(_nonOrderProperty, 17), 
+          () => _existingDataContainer.SetValue(_nonOrderProperty, 17),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
@@ -333,7 +333,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void GetValueWithoutEvents_InvalidProperty ()
     {
       Assert.That(
-          () => _existingDataContainer.GetValueWithoutEvents(_nonOrderProperty, ValueAccess.Current), 
+          () => _existingDataContainer.GetValueWithoutEvents(_nonOrderProperty, ValueAccess.Current),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
@@ -349,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void HasValueBeenTouched_InvalidProperty ()
     {
       Assert.That(
-          () => _existingDataContainer.HasValueBeenTouched(_nonOrderProperty), 
+          () => _existingDataContainer.HasValueBeenTouched(_nonOrderProperty),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void TouchValue_InvalidProperty ()
     {
       Assert.That(
-          () => _existingDataContainer.TouchValue(_nonOrderProperty), 
+          () => _existingDataContainer.TouchValue(_nonOrderProperty),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
@@ -405,7 +405,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void HasValueChanged_InvalidProperty ()
     {
       Assert.That(
-          () => _existingDataContainer.HasValueChanged(_nonOrderProperty), 
+          () => _existingDataContainer.HasValueChanged(_nonOrderProperty),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
@@ -616,7 +616,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DataContainerObjectMother.Create(_existingDataContainer.ID);
       _existingDataContainer.Discard();
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer), 
+          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.TypeOf<ObjectInvalidException>());
     }
 
@@ -646,7 +646,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(
           () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "Cannot set this data container's property values from 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'; the data " 
+              "Cannot set this data container's property values from 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'; the data "
               + "containers do not have the same class definition.", "source"));
     }
 

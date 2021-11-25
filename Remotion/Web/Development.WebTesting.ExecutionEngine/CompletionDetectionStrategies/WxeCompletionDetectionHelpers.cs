@@ -151,7 +151,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         {
           // ignored
         }
-        
+
         context.RequestErrorDetectionStrategy.CheckPageForError(context.Scope);
 
         throw;

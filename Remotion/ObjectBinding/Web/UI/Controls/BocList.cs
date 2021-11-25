@@ -65,8 +65,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   // TODO: see "Doc\Bugs and ToDos.txt"
   [DefaultEvent ("CommandClick")]
   [ToolboxItemFilter ("System.Web.UI")]
-  public partial class BocList : 
-      BusinessObjectBoundEditableWebControl, 
+  public partial class BocList :
+      BusinessObjectBoundEditableWebControl,
       IBocList,
       IPostBackEventHandler,
       IPostBackDataHandler,
@@ -207,7 +207,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     // member fields
-    
+
     private IRowIDProvider _rowIDProvider = new NullValueRowIDProvider();
 
     private readonly PlaceHolder _availableViewsListPlaceHolder;
@@ -1373,7 +1373,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     string IBocList.GetCustomCellPostBackClientEvent (int columnIndex, BocListRow row, string customCellArgument)
     {
       ArgumentUtility.CheckNotNull("row", row);
-      
+
       if (_editModeController.IsRowEditModeActive)
         return "return false;";
       string postBackArgument = FormatCustomCellPostBackArgument(columnIndex, row, customCellArgument);
@@ -1587,7 +1587,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       _allPropertyColumns = null;
     }
-    
+
     protected virtual void InitializeMenusItems ()
     {
     }
@@ -1933,7 +1933,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       return rows.OrderBy(sortingOrder);
     }
-    
+
     protected ReadOnlyCollection<SortedRow> EnsureBocListRowsForCurrentPageGot ()
     {
       if (_currentPageRows == null)
@@ -3060,7 +3060,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         handler(this, e);
       }
     }
-    
+
     protected virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);

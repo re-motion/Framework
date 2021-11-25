@@ -107,7 +107,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
 
       var entry1 = new ServiceConfigurationEntry(typeof(object), new ServiceImplementationInfo(typeof(DomainType1), LifetimeKind.InstancePerDependency));
       var entry2 = new ServiceConfigurationEntry(typeof(IFormattable), new ServiceImplementationInfo(typeof(DomainType2), LifetimeKind.Singleton));
-      
+
       using (new ServiceLocatorScope(entry1, entry2))
       {
         Assert.That(ServiceLocator.Current, Is.Not.SameAs(_locator1));

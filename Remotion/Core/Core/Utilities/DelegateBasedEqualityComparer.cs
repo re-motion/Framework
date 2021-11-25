@@ -28,7 +28,7 @@ namespace Remotion.Utilities
   {
     private readonly Func<T?, T?, bool> _comparison;
     private readonly Func<T, int> _hash;
-    
+
     public DelegateBasedEqualityComparer (Func<T?, T?, bool> comparison, Func<T, int> hash)
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);

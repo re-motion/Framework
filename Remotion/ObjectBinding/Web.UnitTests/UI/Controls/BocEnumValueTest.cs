@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(actual[1], Is.EqualTo(valueName + "_1"));
       Assert.That(actual[2], Is.EqualTo(valueName + "_2"));
     }
-    
+
     [Test]
     public void SetValueToEnum ()
     {

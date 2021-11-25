@@ -43,9 +43,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
                 PropertyInfo.DeclaringType));
       }
       _undefinedValue = GetUndefinedValue();
-      
+
       var filterProvider = new EnumValueFilterProvider<DisableEnumValuesAttribute>(
-          PropertyInfo, 
+          PropertyInfo,
           t => AttributeUtility.GetCustomAttributes<DisableEnumValuesAttribute>(t, true));
       _enumerationValueFilter = filterProvider.GetEnumerationValueFilter();
     }

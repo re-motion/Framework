@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(CollectionEndPoint.HasBeenTouched, Is.True);
     }
 
-    [Test] 
+    [Test]
     public void ExpandToAllRelatedObjects ()
     {
       var bidirectionalModification = _command.ExpandToAllRelatedObjects();

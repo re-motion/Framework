@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       _publicMethod = ReflectionObjectMother.GetSomePublicMethod();
       _wrapperOrInterfaceMethod = ReflectionObjectMother.GetSomeMethod();
       _concreteMixinType = new ConcreteMixinType(
-          identifier, 
+          identifier,
           typeof(object),
           typeof(IServiceProvider),
           new Dictionary<MethodInfo, MethodInfo> { { _nonPublicMethod, _wrapperOrInterfaceMethod } },

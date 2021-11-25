@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
 
       var transactionHierarchyManager = _factory.CreateTransactionHierarchyManager(_fakeConstructedTransaction, eventSink);
-      
+
       Assert.That(transactionHierarchyManager, Is.TypeOf<TransactionHierarchyManager>());
       Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ThisTransaction, Is.SameAs(_fakeConstructedTransaction));
       Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ThisEventSink, Is.SameAs(eventSink));
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(relationEndPointManager.EndPointFactory, Is.TypeOf<StateUpdateRaisingRelationEndPointFactoryDecorator>());
 
       Assert.That(RelationEndPointManagerTestHelper.GetMap(relationEndPointManager).TransactionEventSink, Is.SameAs(eventSink));
-      
+
       var stateUpdateRaisingFactory = (StateUpdateRaisingRelationEndPointFactoryDecorator) relationEndPointManager.EndPointFactory;
       Assert.That(
           stateUpdateRaisingFactory.Listener,

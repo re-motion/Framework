@@ -97,7 +97,7 @@ public class FormGridLabel: Label, ISmartControl
   {
     get { return PageWrapper.CastOrCreate(base.Page); }
   }
-  
+
   protected override HtmlTextWriterTag TagKey
   {
     get
@@ -143,7 +143,7 @@ public class FormGridLabel: Label, ISmartControl
     base.AddAttributesToRender(writer);
     AssociatedControlID = associatedControlID;
   }
- 
+
 
 }
 

@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     string Explicit ();
   }
- 
+
   public class MixinWithExplicitImplementation : IExplicit
   {
     string IExplicit.Explicit ()

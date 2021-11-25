@@ -42,7 +42,7 @@ public class WxeMethodStep: WxeStep
     {
       var message = string.Format(
           "The delegate's target must be a non-null WxeStepList, but it was '{0}'. When used within a WxeFunction, the delegate should be a method "
-          + "of the surrounding WxeFunction, and it must not be a closure.", 
+          + "of the surrounding WxeFunction, and it must not be a closure.",
           method.Target != null ? method.Target.GetType().ToString() : "null");
       throw new ArgumentException(message, "method");
     }
@@ -80,11 +80,11 @@ public class WxeMethodStep: WxeStep
 
     Type targetType = target.GetType();
     Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
-    
+
     bool isAssignable = declaringType.IsAssignableFrom(targetType);
     if (! isAssignable || method.IsStatic)
       throw new WxeException("Method step '" + method.Name + "' is not an instance method of the type '" + targetType.GetFullNameSafe() + "'.");
-    
+
     ParameterInfo[] parameters = method.GetParameters();
     if (parameters.Length > 1)
       throw new WxeException("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', does not support more than one parameter.");
@@ -130,7 +130,7 @@ public class WxeMethodStep: WxeStep
     {
       if (_methodWithContext == null)
       {
-        _methodWithContext = 
+        _methodWithContext =
           (WxeMethodWithContext) Delegate.CreateDelegate(typeof(WxeMethodWithContext), _target, _methodName, false);
       }
       _methodWithContext(context);

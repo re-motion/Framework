@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       EventSinkWithMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void Serializable ()
     {

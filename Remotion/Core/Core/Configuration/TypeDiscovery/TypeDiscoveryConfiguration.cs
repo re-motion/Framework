@@ -32,7 +32,7 @@ namespace Remotion.Configuration.TypeDiscovery
   {
     // TODO RM-7788: The Type property of CustomRootAssemblyFinder & CustomTypeDiscoveryService should be constrained to reference types.
 
-    private static readonly DoubleCheckedLockingContainer<TypeDiscoveryConfiguration> s_current = 
+    private static readonly DoubleCheckedLockingContainer<TypeDiscoveryConfiguration> s_current =
         new DoubleCheckedLockingContainer<TypeDiscoveryConfiguration>(GetTypeDiscoveryConfiguration);
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace Remotion.Configuration.TypeDiscovery
 
     private static TypeDiscoveryConfiguration GetTypeDiscoveryConfiguration ()
     {
-      return (TypeDiscoveryConfiguration) 
+      return (TypeDiscoveryConfiguration)
              (ConfigurationWrapper.Current.GetSection("remotion.typeDiscovery", false) ?? new TypeDiscoveryConfiguration());
     }
 
@@ -146,9 +146,9 @@ namespace Remotion.Configuration.TypeDiscovery
       if (CustomRootAssemblyFinder.Type == null)
       {
         string message = string.Format(
-            "In CustomRootAssemblyFinder mode, a custom root assembly finder must be specified in the type discovery configuration. {0}", 
+            "In CustomRootAssemblyFinder mode, a custom root assembly finder must be specified in the type discovery configuration. {0}",
             GetConfigurationBodyErrorMessage(
-                "CustomRootAssemblyFinder", 
+                "CustomRootAssemblyFinder",
                 "<customRootAssemblyFinder type=\"ApplicationNamespace.CustomFinderType, ApplicationAssembly\"/>"));
         throw new ConfigurationErrorsException(message);
       }

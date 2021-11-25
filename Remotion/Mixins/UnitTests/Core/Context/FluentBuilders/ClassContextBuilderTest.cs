@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     private ClassContextBuilder _classBuilder;
     private ClassContextBuilder _classBuilderMock;
     private MixinContextBuilder _mixinBuilderMock;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       Assert.That(_classBuilder.Parent, Is.SameAs(_parentBuilderMock));
       Assert.That(_classBuilder.MixinContextBuilders, Is.Empty);
       Assert.That(_classBuilder.ComposedInterfaces.ToArray(), Is.Empty);
-      
+
       ClassContext classContext = _classBuilder.BuildClassContext(new ClassContext[0]);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(0));
       Assert.That(classContext.ComposedInterfaces.Count, Is.EqualTo(0));
@@ -91,7 +91,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var classBuilder = new ClassContextBuilder(_parentBuilderMock, typeof(BaseType1));
       classBuilder.AddMixin<BT1Mixin2>();
       classBuilder.AddComposedInterface<IBaseType31>();
-      
+
       Assert.That(classBuilder.MixinContextBuilders, Is.Not.Empty);
       Assert.That(classBuilder.ComposedInterfaces, Is.Not.Empty);
       Assert.That(classBuilder.SuppressInheritance, Is.False);
@@ -439,7 +439,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void EnsureMixin_Inheritance ()
     {
       var contextWithMixin = ClassContextObjectMother.Create(typeof(BaseType3), typeof(NullTarget));
-      
+
       MixinContextBuilder builder = _classBuilder.EnsureMixin(typeof(DerivedNullTarget));
       Assert.That(builder.MixinType, Is.EqualTo(typeof(DerivedNullTarget)));
       Type[] mixinTypes = GetMixinTypes();
@@ -639,7 +639,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       _classBuilder.SuppressMixin(ruleStub);
       Assert.That(_classBuilder.SuppressedMixins, Is.EquivalentTo(new[] { ruleStub }));
     }
-    
+
     [Test]
     public void SuppressMixin_NonGeneric ()
     {
@@ -710,7 +710,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       _classBuilder.AddMixinDependency(typeof(BT1Mixin2), typeof(double));
 
       Assert.That(_classBuilder.MixinDependencies.Count(), Is.EqualTo(2));
-      
+
       var mixinDependencySpecification1 = _classBuilder.MixinDependencies.Single(dep => dep.MixinType == typeof(BT1Mixin1));
       Assert.That(mixinDependencySpecification1.Dependencies, Is.EqualTo(new[] { typeof(int), typeof(float) }));
 
@@ -776,7 +776,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
           .AddMixin(typeof(BT7Mixin1))
           .AddComposedInterface(typeof(BT1Mixin2))
           .BuildClassContext();
-      
+
       _classBuilder.AddMixins<BT1Mixin1, BT1Mixin2>();
       _classBuilder.AddComposedInterfaces<IBT6Mixin1, IBT6Mixin2>();
 
@@ -872,7 +872,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       _classBuilder.AddMixinDependency<BT1Mixin1, BT1Mixin2>();
 
       Assert.That(
-          () => _classBuilder.BuildClassContext(), 
+          () => _classBuilder.BuildClassContext(),
           Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(
               "The mixin dependencies configured for type 'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType2' could not be processed: "
               + "The mixin 'Remotion.Mixins.UnitTests.Core.TestDomain.BT1Mixin1' is not configured for class "
@@ -899,7 +899,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     public void ParentMembers ()
     {
       _mockRepository.BackToRecordAll();
-      
+
       var r1 = new ClassContextBuilder(new MixinConfigurationBuilder(null), typeof(object));
       var r2 = new MixinConfiguration();
       var r3 = _mockRepository.StrictMock<IDisposable>();
@@ -911,7 +911,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
         _parentBuilderMock.Expect(mock => mock.BuildConfiguration()).Return(r2);
         _parentBuilderMock.Expect(mock => mock.EnterScope()).Return(r3);
       }
-      
+
       _mockRepository.ReplayAll();
 
       Assert.That(_classBuilder.ForClass<object>(), Is.SameAs(r1));

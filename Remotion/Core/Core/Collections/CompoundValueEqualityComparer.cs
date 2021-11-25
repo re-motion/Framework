@@ -33,7 +33,7 @@ namespace Remotion.Collections
   /// </para>
   /// </summary>
   /// <typeparam name="T">Type for which <see cref="Equals(T,T)"/>, <see cref="Equals(T,object)"/> and <see cref="GetHashCode"/> are supplied.</typeparam>
-  public class CompoundValueEqualityComparer<T> : IEqualityComparer<T> where T : class 
+  public class CompoundValueEqualityComparer<T> : IEqualityComparer<T> where T : class
   {
     private readonly Func<T, object[]> _equalityParticipantsProvider;
 
@@ -101,6 +101,6 @@ namespace Remotion.Collections
     {
       return new ReadOnlyCollection<object>(_equalityParticipantsProvider(x));
     }
- 
+
   }
 }

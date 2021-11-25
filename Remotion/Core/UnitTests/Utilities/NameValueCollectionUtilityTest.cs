@@ -44,7 +44,7 @@ public class NameValueCollectionUtilityTest
 
   [SetUp]
   public void SetUp ()
-  { 
+  {
     _collection = new NameValueCollection();
     _collection.Add("FirstKey", "FirstValue");
     _collection.Add("SecondKey", "SecondValue");
@@ -89,7 +89,7 @@ public class NameValueCollectionUtilityTest
     Assert.That(_collection["FirstKey"], Is.EqualTo("FirstValue"));
     Assert.That(_collection["SecondKey"], Is.EqualTo("SecondValue"));
     Assert.That(_collection["ThirdKey"], Is.EqualTo("ThirdValue,Other ThirdValue"));
-  } 
+  }
 
   [Test]
   public void AppendWithEmptyCollection ()
@@ -105,7 +105,7 @@ public class NameValueCollectionUtilityTest
     Assert.That(_collection["FirstKey"], Is.EqualTo("FirstValue"));
     Assert.That(_collection["SecondKey"], Is.EqualTo("SecondValue"));
     Assert.That(_collection["ThirdKey"], Is.EqualTo("ThirdValue,Other ThirdValue"));
-  } 
+  }
 
   [Test]
   public void AppendWithOtherCollection ()
@@ -125,7 +125,7 @@ public class NameValueCollectionUtilityTest
     Assert.That(_collection["ThirdKey"], Is.EqualTo("ThirdValue,Other ThirdValue"));
     Assert.That(_collection["FourthKey"], Is.EqualTo("FourthValue"));
     Assert.That(_collection["FifthKey"], Is.EqualTo("FifthValue"));
-  } 
+  }
 
   [Test]
   public void MergeWithFirstNullAndSecondNull ()
@@ -189,7 +189,7 @@ public class NameValueCollectionUtilityTest
     Assert.That(actual["ThirdKey"], Is.EqualTo("ThirdValue,Other ThirdValue"));
     Assert.That(actual["FourthKey"], Is.EqualTo("FourthValue"));
     Assert.That(actual["FifthKey"], Is.EqualTo("FifthValue"));
-  } 
+  }
 }
 
 }

@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       InitializeMyTreeView();
 
       InitializeMyTreeViewWithSpecialChildren();
-      
+
       InitializeTreeViewWithOnlyRootWithSingleQuote();
 
       InitializeTreeViewWithOnlyRootWithDoubleQuote();

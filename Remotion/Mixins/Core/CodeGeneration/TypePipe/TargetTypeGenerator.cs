@@ -57,7 +57,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         MemberInfoFromExpressionUtility.GetProperty(() => MixedObjectInstantiationScope.Current);
     private static readonly PropertyInfo s_suppliedMixinInstancesProperty =
         MemberInfoFromExpressionUtility.GetProperty((MixedObjectInstantiationScope o) => o.SuppliedMixinInstances);
-    
+
     private readonly MutableType _concreteTarget;
     private readonly IExpressionBuilder _expressionBuilder;
     private readonly IAttributeGenerator _attributeGenerator;
@@ -83,7 +83,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull("expressionBuilder", expressionBuilder);
       ArgumentUtility.CheckNotNull("attributeGenerator", attributeGenerator);
       ArgumentUtility.CheckNotNull("nextCallProxyGenerator", nextCallProxyGenerator);
-      
+
       _concreteTarget = concreteTarget;
       _expressionBuilder = expressionBuilder;
       _attributeGenerator = attributeGenerator;

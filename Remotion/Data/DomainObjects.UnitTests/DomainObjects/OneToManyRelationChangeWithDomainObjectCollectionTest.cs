@@ -333,7 +333,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void HasBeenTouched_FromOneProperty ()
     {
-      CheckTouching(delegate { _order1.Customer = _newCustomer; }, _order1, "Customer", 
+      CheckTouching(delegate { _order1.Customer = _newCustomer; }, _order1, "Customer",
         RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
         RelationEndPointID.Create(_newCustomer.ID, typeof(Customer).FullName + ".Orders"),
         RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
@@ -368,7 +368,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void HasBeenTouched_FromManyPropertyReplaceWithNew ()
     {
       Order newOrder = Order.NewObject();
-      
+
       Assert.IsFalse(newOrder.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(Order), "Customer")), "newOrder ObjectID touched");
 
       CheckTouching(delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf(_order1)] = newOrder; }, _order1, "Customer",
@@ -395,7 +395,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"),
           RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
     }
-    
+
     [Test]
     public void GetOriginalRelatedObject ()
     {
@@ -473,7 +473,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(_oldCustomer.Orders, Is.EqualTo(new[] { _order1, _order2 }));
 
       var eventReceiver = new SequenceEventReceiver(
-          new DomainObject[] { _oldCustomer, _order1, _order2 }, 
+          new DomainObject[] { _oldCustomer, _order1, _order2 },
           new[] { _oldCustomer.Orders });
 
       _oldCustomer.Orders.Clear();

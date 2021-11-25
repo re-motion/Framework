@@ -67,7 +67,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
       {
       }
     }
-    
+
     private class TestNotAWebService
     {
     }
@@ -77,7 +77,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     {
       Assert.That(() => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "JsonMethod", new string[0]), Throws.Nothing);
     }
-    
+
     [Test]
     public void Test_BaseTypeNotWebService ()
     {

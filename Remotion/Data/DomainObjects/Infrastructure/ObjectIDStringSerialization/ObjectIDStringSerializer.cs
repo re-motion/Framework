@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
         return errorHandler(string.Format(
             "Serialized ObjectID '{0}' is not correctly formatted: value '{1}' is not in the correct format for type '{2}'.",
             objectIDString,
-            valuePart, 
+            valuePart,
             typePart));
       }
 

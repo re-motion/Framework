@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
           () => _service.GetAllObjects(ClientTransaction.Current, typeof(NonBindableDomainObject)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "This service only supports queries for bindable DomainObject types, the " 
+                  "This service only supports queries for bindable DomainObject types, the "
                   + "given type 'Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search.NonBindableDomainObject' is not a bindable type. "
                   + "Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", "type"));
     }

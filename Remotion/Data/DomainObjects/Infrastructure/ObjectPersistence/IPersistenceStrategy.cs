@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// </para>
     /// </remarks>
     ILoadedObjectData ResolveObjectRelationData (
-        RelationEndPointID relationEndPointID, 
+        RelationEndPointID relationEndPointID,
         ILoadedObjectDataProvider alreadyLoadedObjectDataProvider);
 
     /// <summary>

@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     // methods and properties
 
-    [SetUp] 
+    [SetUp]
     public virtual void SetUp ()
     {
       _value = (IBusinessObject) TypeWithString.Create();

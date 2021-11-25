@@ -37,7 +37,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <remarks>This is the first step of a two-step filtering protocol. Assemblies rejected by this method will not be explicitly loaded by the
     /// <see cref="FilteringAssemblyLoader"/>.</remarks>
     bool ShouldConsiderAssembly (AssemblyName assemblyName);
-    
+
     /// <summary>
     /// Determines whether the given assembly should be included in the list of assemblies returned by the <see cref="FilteringAssemblyLoader"/>.
     /// </summary>

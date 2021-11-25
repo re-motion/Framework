@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       ArgumentUtility.CheckNotNullOrEmpty("unionedEntities", unionedEntities);
 
       return Create(
-          storageProviderDefinition, 
-          viewName, 
-          unionedEntities, 
-          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty, 
-          SimpleStoragePropertyDefinitionObjectMother.TimestampProperty, 
+          storageProviderDefinition,
+          viewName,
+          unionedEntities,
+          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
+          SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new IRdbmsStoragePropertyDefinition[0]);
     }
 

@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
   public abstract class ClassForRelationTest : BindableDomainObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
     private SecurityContext _securityContext;
-    
+
     public static ClassForRelationTest NewObject ()
     {
       return DomainObject.NewObject<ClassForRelationTest>();

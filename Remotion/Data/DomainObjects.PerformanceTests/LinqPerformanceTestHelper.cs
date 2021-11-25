@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var storageProviderDefinition =
           (RdbmsProviderDefinition) MappingConfiguration.Current.GetTypeDefinition(typeof(Client)).StorageEntityDefinition.StorageProviderDefinition;
       var storageObjectFactory = (SqlStorageObjectFactory) storageProviderDefinition.Factory;
-      var sqlQueryGenerator = 
+      var sqlQueryGenerator =
           storageObjectFactory.CreateSqlQueryGenerator(storageProviderDefinition, _methodCallTransformerProvider, _resultOperatorHandlerRegistry);
 
       var queryable = _queryGenerator();

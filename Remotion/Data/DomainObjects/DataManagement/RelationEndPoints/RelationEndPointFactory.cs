@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         ILazyLoader lazyLoader,
         IClientTransactionEventSink transactionEventSink,
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
-        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory, 
-        IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionEndPointCollectionProvider, 
+        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory,
+        IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionEndPointCollectionProvider,
         IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory,
         IVirtualCollectionEndPointCollectionProvider virtualCollectionEndPointCollectionProvider,
         IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)

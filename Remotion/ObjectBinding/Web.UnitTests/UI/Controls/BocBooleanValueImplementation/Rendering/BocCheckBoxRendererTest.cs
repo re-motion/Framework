@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Setup(mock => mock.GetValueName()).Returns(c_valueName);
       _checkbox.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
       _checkbox.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
-      
+
       var clientScriptManagerMock = new Mock<IClientScriptManager>();
       _startupScript = string.Format(
           "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
       _renderer.Render(new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox.Object));
-      
+
       var document = Html.GetResultDocument();
       var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.ControlType, "BocCheckBox");

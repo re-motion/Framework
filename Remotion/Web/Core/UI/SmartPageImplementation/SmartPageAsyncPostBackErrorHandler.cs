@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public SmartPageAsyncPostBackErrorHandler (HttpContextBase context)
     {
       ArgumentUtility.CheckNotNull("context", context);
-      
+
       _context = context;
     }
 

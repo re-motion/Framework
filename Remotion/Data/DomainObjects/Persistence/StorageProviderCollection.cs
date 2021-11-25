@@ -34,7 +34,7 @@ public class StorageProviderCollection : CommonCollection, IDisposable
   }
 
   // standard constructor for collections
-  public StorageProviderCollection (StorageProviderCollection collection, bool makeCollectionReadOnly)  
+  public StorageProviderCollection (StorageProviderCollection collection, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull("collection", collection);
 
@@ -51,7 +51,7 @@ public class StorageProviderCollection : CommonCollection, IDisposable
   public virtual void Dispose ()
   {
     for (int i = Count - 1; i>= 0; i--)
-      this[i].Dispose();      
+      this[i].Dispose();
 
     BaseClear();
     GC.SuppressFinalize(this);
@@ -76,24 +76,24 @@ public class StorageProviderCollection : CommonCollection, IDisposable
     return BaseContainsKey(storageProviderID);
   }
 
-  public StorageProvider this [int index]  
+  public StorageProvider this [int index]
   {
     get { return (StorageProvider) BaseGetObject(index); }
   }
 
-  public StorageProvider this [string storageProviderID]  
+  public StorageProvider this [string storageProviderID]
   {
-    get 
+    get
     {
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
-      return (StorageProvider) BaseGetObject(storageProviderID); 
+      return (StorageProvider) BaseGetObject(storageProviderID);
     }
   }
 
   public int Add (StorageProvider value)
   {
     ArgumentUtility.CheckNotNull("value", value);
-    
+
     return BaseAdd(value.StorageProviderDefinition.Name, value);
   }
 

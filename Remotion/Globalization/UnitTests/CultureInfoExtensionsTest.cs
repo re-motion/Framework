@@ -51,7 +51,7 @@ namespace Remotion.Globalization.UnitTests
                   new CultureInfo("")
               }));
     }
-    
+
     [Test]
     public void GetCultureHierarchy_WithNeutralCulture_ReturnsNeutralThenInvariant ()
     {
@@ -66,7 +66,7 @@ namespace Remotion.Globalization.UnitTests
                   new CultureInfo("")
               }));
     }
-    
+
     [Test]
     public void GetCultureHierarchy_WithSpecificCulture_ReturnsSpecificThenNeutralThenInvariant ()
     {

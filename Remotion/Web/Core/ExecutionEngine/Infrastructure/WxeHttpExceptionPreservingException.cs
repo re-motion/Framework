@@ -29,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     public static Exception? GetUnwrappedException ([NotNull] Exception exception)
     {
       ArgumentUtility.CheckNotNull("exception", exception);
-      
+
       var unwrappedException = exception;
       while (unwrappedException is HttpException || unwrappedException is WxeHttpExceptionPreservingException)
         unwrappedException = unwrappedException.InnerException;

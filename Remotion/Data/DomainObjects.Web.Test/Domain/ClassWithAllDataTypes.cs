@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       Value2 = 2,
       Value3 = 3
     }
-    
+
     // static members and constants
 
     public static ClassWithAllDataTypes NewObject ()

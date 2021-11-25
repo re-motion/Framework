@@ -40,7 +40,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     private bool IncludeType (Type type, Type baseTypeFilter, bool excludeGlobalTypes)
     {
-      return (baseTypeFilter == null || baseTypeFilter.IsAssignableFrom(type)) 
+      return (baseTypeFilter == null || baseTypeFilter.IsAssignableFrom(type))
              && (!excludeGlobalTypes || !AssemblyTypeCache.IsGacAssembly(type.Assembly));
     }
   }

@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Linq
     public DomainObjectQueryGenerator (
         ISqlQueryGenerator sqlQueryGenerator,
         ITypeConversionProvider typeConversionProvider,
-        IStorageTypeInformationProvider storageTypeInformationProvider, 
+        IStorageTypeInformationProvider storageTypeInformationProvider,
         IMappingConfiguration mappingConfiguration)
     {
       ArgumentUtility.CheckNotNull("sqlQueryGenerator", sqlQueryGenerator);
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
       var queryType = sqlQuery.SelectedEntityType != null ? QueryType.Collection : QueryType.Custom;
       var query = CreateQuery(id, storageProviderDefinition, command.CommandText, command.Parameters, queryType, sqlQuery.SelectedEntityType);
-      
+
       if (queryType == QueryType.Collection)
       {
         var selectedEntityClassDefinition = _mappingConfiguration.GetTypeDefinition(sqlQuery.SelectedEntityType);
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.Linq
     }
 
     protected virtual IQuery CreateQuery (
-        string id, 
+        string id,
         StorageProviderDefinition storageProviderDefinition,
         string statement,
         CommandParameter[] commandParameters,

@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       get { return "odd"; }
     }
-    
+
     /// <summary> Gets the CSS-Class additionally applied to the <see cref="BocList"/>'s even data rows. </summary>
     /// <remarks> Class: <c>even</c> </remarks>
     public string DataRowEven
@@ -256,7 +256,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public string GetTableBlock (bool hasMenuBlock, bool hasNavigator)
     {
       string cssClass = TableBlock;
-      
+
       if (hasMenuBlock)
         cssClass = cssClass + " " + HasMenuBlock;
 

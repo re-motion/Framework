@@ -35,7 +35,7 @@ namespace Remotion.Collections.Caching
   /// </remarks>
   /// <threadsafety static="true" instance="false" />
   [Serializable]
-  public sealed class Cache<TKey, TValue> : ICache<TKey, TValue> 
+  public sealed class Cache<TKey, TValue> : ICache<TKey, TValue>
       where TKey: notnull
   {
     private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
@@ -118,7 +118,7 @@ namespace Remotion.Collections.Caching
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
-      
+
       return TryGetValueInternal(key, out value);
     }
 

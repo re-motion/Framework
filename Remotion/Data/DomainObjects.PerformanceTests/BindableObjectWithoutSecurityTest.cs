@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
           "Expected average duration of BindableObjectWithoutSecurityTest for BusinessObject_GetProperty on reference system: ~1.4 µs (release build), ~3.8 µs (debug build)");
 
       base.BusinessObject_GetProperty();
-      
+
       Console.WriteLine();
     }
 

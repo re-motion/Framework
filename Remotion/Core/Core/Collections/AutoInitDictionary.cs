@@ -78,7 +78,7 @@ namespace Remotion.Collections
         return value;
       }
     }
-    
+
     // ICollection <KeyValuePair<TKey,TValue>> Members
 
     private ICollection<KeyValuePair<TKey, TValue>> AsCollection

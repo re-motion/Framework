@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
         return createListMethod(size);
       else if (template is Array)
         return Array.CreateInstance(template.GetType().GetElementType()!, size);
-      else 
+      else
         throw new NotSupportedException("Cannot create instance if argument 'createListMethod' is null and 'template' is not an array.");
     }
 

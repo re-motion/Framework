@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 
       Assert.That(_enumSerializer.EnumTypes, Is.Empty);
     }
-    
+
     [Test]
     public void CollectPropertyType_CollectsNullableEnumType ()
     {

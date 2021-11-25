@@ -74,7 +74,7 @@ public abstract class CommandLineArgumentException: Exception
 /// </summary>
 [Serializable]
 public class InvalidCommandLineArgumentValueException: CommandLineArgumentException
-{ 
+{
   private const string c_message = "Invalid argument value";
 
   public InvalidCommandLineArgumentValueException (CommandLineArgument argument)
@@ -111,7 +111,7 @@ public class InvalidCommandLineArgumentNameException: CommandLineArgumentExcepti
 {
   internal const string MessageNotFound = "Argument /{0}: invalid argument name.";
   internal const string MessageAmbiguous = "Argument /{0}: ambiguous argument name.";
- 
+
   public InvalidCommandLineArgumentNameException (string name, string message)
     : base(string.Format(message, name))
   {
@@ -130,7 +130,7 @@ public class InvalidCommandLineArgumentNameException: CommandLineArgumentExcepti
 public class InvalidNumberOfCommandLineArgumentsException: CommandLineArgumentException
 {
   private const string c_message = "Argument /{0}: unexpected argument. Only {1} unnamed arguments are allowed.";
- 
+
   public InvalidNumberOfCommandLineArgumentsException (string argument, int number)
     : base(string.Format(c_message, argument, number))
   {
@@ -149,7 +149,7 @@ public class InvalidNumberOfCommandLineArgumentsException: CommandLineArgumentEx
 public class MissingRequiredCommandLineParameterException: CommandLineArgumentException
 {
   private const string c_message = ": Required Argument not specified.";
- 
+
   public MissingRequiredCommandLineParameterException (CommandLineArgument argument)
     : base(FormatArgument.Format(argument) + c_message)
   {
@@ -168,7 +168,7 @@ public class MissingRequiredCommandLineParameterException: CommandLineArgumentEx
 public class ConflictCommandLineParameterException: CommandLineArgumentException
 {
   private const string c_message = "Conflicting Arguments: {0} and {1} cannot be used together.";
- 
+
   public ConflictCommandLineParameterException (CommandLineArgument argument1, CommandLineArgument argument2)
     : base(string.Format(c_message, FormatArgument.Format(argument1), FormatArgument.Format(argument2)))
   {

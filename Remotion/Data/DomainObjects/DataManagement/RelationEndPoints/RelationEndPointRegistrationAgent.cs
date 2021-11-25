@@ -42,13 +42,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("map", map);
-      
+
       if (map[endPoint.ID] != null)
       {
         var message = string.Format("A relation end-point with ID '{0}' has already been registered.", endPoint.ID);
         throw new InvalidOperationException(message);
       }
-      
+
       map.AddEndPoint(endPoint);
 
       var realObjectEndPoint = endPoint as IRealObjectEndPoint;
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("map", map);
-      
+
       if (map[endPoint.ID] != endPoint)
       {
         var message = string.Format("End-point '{0}' is not part of this map.", endPoint.ID);
@@ -101,12 +101,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         realObjectEndPoint.ResetSyncState();
         return;
       }
-      
+
       var oppositeEndPoint = _virtualEndPointProvider.GetOrCreateVirtualEndPoint(oppositeEndPointID);
       if (oppositeEndPoint == null)
       {
         var message = string.Format(
-            "Opposite end-point of '{0}' not found. When unregistering a non-virtual bidirectional end-point, the opposite end-point must exist.", 
+            "Opposite end-point of '{0}' not found. When unregistering a non-virtual bidirectional end-point, the opposite end-point must exist.",
             realObjectEndPoint.ID);
         throw new InvalidOperationException(message);
       }

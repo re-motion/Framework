@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       var setupFileName = @"TestOutputPath\SetupDB.sql";
       var tearDownFileName = @"TestOutputPath\TearDownDB.sql";
-      
+
       _fileGenerator.WriteScriptsToDisk(_script, false);
 
       Assert.That(File.Exists(setupFileName), Is.True);

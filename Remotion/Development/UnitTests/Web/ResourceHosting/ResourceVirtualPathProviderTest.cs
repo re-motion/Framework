@@ -239,7 +239,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
 
       Assert.That(provider.DirectoryExists("~/res/UnknownDirectory/test"), Is.True);
     }
-    
+
     [Test]
     public void GetDirectory ()
     {
@@ -260,7 +260,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     public void GetDirectory_ResourceRootDirectory ()
     {
       var expectedDirectoryPath = "c:\\temp";
-     
+
       var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
       provider.SetMakeRelativeVirtualPathOverride((a, b) => "testDirectory");
       provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");

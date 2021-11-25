@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
 
       Assert.That(_dataSourceControl.IsReadOnly, Is.False);
     }
-    
+
     [Test]
     public void NoBoundControls_ReturnsTrue ()
     {

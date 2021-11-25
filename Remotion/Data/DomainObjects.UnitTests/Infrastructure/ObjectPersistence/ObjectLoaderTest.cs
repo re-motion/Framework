@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
   public class ObjectLoaderTest : StandardMappingTest
   {
     private MockRepository _mockRepository;
-    
+
     private IPersistenceStrategy _persistenceStrategyMock;
     private ILoadedObjectDataRegistrationAgent _loadedObjectDataRegistrationAgentMock;
     private ILoadedObjectDataProvider _loadedObjectDataProviderStub;
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Expect(
               mock =>
               mock.RegisterIfRequired(
-                  Arg<IEnumerable<ILoadedObjectData>>.List.Equal(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }), 
+                  Arg<IEnumerable<ILoadedObjectData>>.List.Equal(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }),
                   Arg.Is(true)));
 
       _mockRepository.ReplayAll();

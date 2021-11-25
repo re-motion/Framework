@@ -428,7 +428,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-      
+
       string? key = ResourceManagerUtility.GetGlobalResourceKey(Category);
       if (!string.IsNullOrEmpty(key))
         Category = resourceManager.GetString(key);

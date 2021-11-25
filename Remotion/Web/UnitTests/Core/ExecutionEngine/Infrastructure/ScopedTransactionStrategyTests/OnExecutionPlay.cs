@@ -91,7 +91,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public void Test_ChildStrategyThrows ()
     {
       var innerException = new ApplicationException("InnerListener Exception");
-      
+
       var sequence = new MockSequence();
       TransactionMock.InSequence(sequence).Setup(mock => mock.EnterScope()).Returns(ScopeMock.Object).Verifiable();
       ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();

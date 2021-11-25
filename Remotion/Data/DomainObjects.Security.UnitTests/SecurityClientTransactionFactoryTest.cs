@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(clientTransaction);
       Assert.That(persistenceStrategy, Is.InstanceOf(typeof(RootPersistenceStrategy)));
       Assert.That(
-          clientTransaction.Extensions, 
+          clientTransaction.Extensions,
           Has.Some.InstanceOf(typeof(SecurityClientTransactionExtension))
               .With.Property("Key").EqualTo(typeof(SecurityClientTransactionExtension).FullName));
     }

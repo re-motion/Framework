@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _classDefinition, "PropertyName", false, typeof(DomainObjectCollection));
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
-      
+
       var validationResult = _validationRule.Validate(relationDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var endPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create(
         _classDefinition, "PropertyName", false, typeof(DerivedValidationDomainObjectClass));
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
-      
+
       var validationResult = _validationRule.Validate(relationDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
@@ -82,14 +82,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           _classDefinition, "PropertyName", false, typeof(DomainObject), "SortExpression");
 
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
-      
+
       var validationResult = _validationRule.Validate(relationDefinition);
 
-      var expectedMessage = 
+      var expectedMessage =
         "Property 'PropertyName' of class 'Order' must not specify a SortExpression, because cardinality is equal to 'one'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\nProperty: PropertyName";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
-    
+
   }
 }

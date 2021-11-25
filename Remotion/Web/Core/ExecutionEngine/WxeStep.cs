@@ -159,7 +159,7 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/CurrentException/*' />
   protected Exception? CurrentException
   {
-    get 
+    get
     {
       for (WxeStep? step = this;
            step != null;
@@ -179,7 +179,7 @@ public abstract class WxeStep
   {
     get { return _isAborted; }
   }
-  
+
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
   [EditorBrowsable (EditorBrowsableState.Never)]

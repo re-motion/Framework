@@ -167,7 +167,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void IntroducedMemberAttributes_Method ()
     {
       Type t = CreateMixedType(typeof(NullTarget), typeof(MixinIntroducingMembersWithDifferentVisibilities));
-      
+
       MethodInfo methodInfo = t.GetMethod("MethodWithPublicVisibility", BindingFlags.Public | BindingFlags.Instance);
       var methodAttribute = (IntroducedMemberAttribute) methodInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), false).Single();
 

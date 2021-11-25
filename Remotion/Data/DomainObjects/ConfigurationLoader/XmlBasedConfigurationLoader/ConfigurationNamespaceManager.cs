@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     // construction and disposing
 
     public ConfigurationNamespaceManager (
-        XmlDocument document, 
+        XmlDocument document,
         PrefixNamespace[] configurationNamespaces)
         : base(document.NameTable)
     {
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       string formattedXPath = xPath;
       for (int i = 0; i < uris.Length; i++)
       {
-        formattedXPath = formattedXPath.Replace("{" + i.ToString() + "}", this[uris[i]].Prefix);   
+        formattedXPath = formattedXPath.Replace("{" + i.ToString() + "}", this[uris[i]].Prefix);
       }
 
       return formattedXPath;

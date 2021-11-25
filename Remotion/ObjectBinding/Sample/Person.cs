@@ -269,7 +269,7 @@ namespace Remotion.ObjectBinding.Sample
           return null;
         return string.Join("\r\n", _cv);
       }
-      set 
+      set
       {
         if (value == null)
           _cv = null;

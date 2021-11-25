@@ -69,7 +69,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       s_assemblyBuilder.Save(s_moduleBuilder.ScopeName);
       var path = s_moduleBuilder.FullyQualifiedName;
-      
+
       s_assemblyBuilder = null;
       s_moduleBuilder = null;
 

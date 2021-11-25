@@ -476,7 +476,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
                 "The type 'The.Full.Type.Name' has no MultiLingualNameAttribute for the assembly's neutral resource language ('en') applied."));
       }
     }
-    
+
     [Test]
     public void Test_WithMultipleMultiLingualNameAttributesForSameCulture_ThrowsInvalidOperationException ()
     {
@@ -499,7 +499,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
       using (new CultureScope("it-IT", "en-US"))
       {
         string multiLingualName;
-        
+
         Assert.That(
             () => service.TryGetTypeDisplayName(typeInformationStub.Object, typeInformationForResourceResolutionStub.Object, out multiLingualName),
             Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo(

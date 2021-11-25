@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
       _loadedObjectData = new FreshlyLoadedObjectData(_dataContainer);
     }
-    
+
     [Test]
     public void Initialization ()
     {
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     public void GetDomainObjectReference_BeforeRegistration ()
     {
       Assert.That(
-          () => _loadedObjectData.GetDomainObjectReference(), 
+          () => _loadedObjectData.GetDomainObjectReference(),
           Throws.InvalidOperationException.With.Message.EqualTo(
             "Cannot obtain a DomainObject reference for a freshly loaded object that has not yet been registered."));
     }

@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     private EditableRowDataSourceFactory? _dataSourceFactory;
     private EditableRowControlFactory? _controlFactory;
-  
+
     private IBusinessObjectReferenceDataSource? _dataSource;
 
     private PlaceHolder? _editControls;
@@ -68,28 +68,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     [DisallowNull]
     public EditableRowDataSourceFactory? DataSourceFactory
     {
-      get 
+      get
       {
-        return _dataSourceFactory; 
+        return _dataSourceFactory;
       }
-      set 
+      set
       {
         ArgumentUtility.CheckNotNull("value", value);
-        _dataSourceFactory = value; 
+        _dataSourceFactory = value;
       }
     }
 
     [DisallowNull]
     public EditableRowControlFactory? ControlFactory
     {
-      get 
+      get
       {
-        return _controlFactory; 
+        return _controlFactory;
       }
-      set 
+      set
       {
         ArgumentUtility.CheckNotNull("value", value);
-        _controlFactory = value; 
+        _controlFactory = value;
       }
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
             _rowEditModeControls[idxColumns] = control;
           }
         }
-      }  
+      }
       _isRowEditModeValidatorsRestored = false;
     }
 
@@ -252,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       Assertion.IsNotNull(_validatorControls, "_validatorControls must not be null.");
 
       if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException("columnIndex");
-    
+
       if (HasEditControl(columnIndex))
         return _validatorControls.Controls[columnIndex].Controls;
       else
@@ -389,7 +389,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
       return false;
     }
-  
+
     protected bool IsDirty (int columnIndex)
     {
       if (HasEditControl(columnIndex))
@@ -427,14 +427,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       if (! HasEditControl(columnIndex))
         return;
-  
+
       ControlCollection? validators = GetValidators(columnIndex);
       Assertion.IsNotNull(validators, "GetValidators(columnIndex) != null");
 
       Assertion.IsNotNull(_rowEditModeControls, "_rowEditModeControls must not be null.");
       IBusinessObjectBoundEditableWebControl editModeControl = _rowEditModeControls[columnIndex];
 
-      bool enforceWidth = column.EnforceWidth 
+      bool enforceWidth = column.EnforceWidth
                           && ! column.Width.IsEmpty
                           && column.Width.Type != UnitType.Percentage;
 
@@ -500,7 +500,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         validator.RenderControl(writer);
         writer.RenderEndTag();
 
-        if (   ! validator.IsValid 
+        if (   ! validator.IsValid
                && validator.Display == ValidatorDisplay.None
                && ! _editModeHost.DisableEditModeValidationMessages)
         {
@@ -556,6 +556,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     ///   </remarks>
     protected virtual string CssClassEditModeValidationMessage
     { get { return "bocListEditModeValidationMessage"; } }
-  
+
   }
 }

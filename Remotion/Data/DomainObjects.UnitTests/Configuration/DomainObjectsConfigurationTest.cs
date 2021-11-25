@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
         DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
         Assert.That(
-            () => domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, 
+            () => domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition,
             Throws.TypeOf<ConfigurationErrorsException>().With.Message.StartsWith(
                 "The factory type 'Remotion.Data.DomainObjects.UnitTests.Configuration.DomainObjectsConfigurationTest+IUnresolvedCustomStorageObjectFactory' "
                 + "specified in the configuration of the 'Test' StorageProvider definition cannot be instantiated because it is abstract. Either "
@@ -171,7 +171,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
         DomainObjectsConfiguration domainObjectsConfiguration = (DomainObjectsConfiguration) configuration.GetSectionGroup("domainObjects");
         // For ReSharper's sake
         Assertion.IsNotNull(domainObjectsConfiguration);
-        
+
         Assert.That(domainObjectsConfiguration.SectionGroupName, Is.EqualTo("domainObjects"));
         Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);

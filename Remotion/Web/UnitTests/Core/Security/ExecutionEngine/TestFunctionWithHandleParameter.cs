@@ -29,7 +29,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     }
 
     [WxeParameter (0, false, WxeParameterDirection.In)]
-    public IHandle<SecurableObject> HandleWithSecurableObject 
+    public IHandle<SecurableObject> HandleWithSecurableObject
     {
       get { return (IHandle<SecurableObject>) Variables["HandleWithSecurableObject"]; }
       set { Variables["HandleWithSecurableObject"] = value; }

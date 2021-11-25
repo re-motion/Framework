@@ -82,10 +82,10 @@ namespace Remotion.ExtensibleEnums.UnitTests
     public void IsDefined_Value_False_Type ()
     {
       var definition = CreateDefinition(_red);
-      
+
       var valueWithWrongType = new EnumWithDifferentCtors(_red.ID);
       Assert.That(valueWithWrongType.ID, Is.EqualTo(_red.ID));
-      
+
       Assert.That(definition.IsDefined(valueWithWrongType), Is.False);
     }
 
@@ -142,7 +142,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void GetValueInfos_ExplicitOrder_WithKeys ()
     {
-      var infos = new[]  { 
+      var infos = new[]  {
           CreateInfo(new Planet("Earth"), 1.5),
           CreateInfo(new Planet("Mars"), 2.0),
           CreateInfo(new Planet("Venus"), 1.0),
@@ -157,7 +157,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void GetValueInfos_ExplicitOrder_SameKeys_DefaultToAlphabetic ()
     {
-      var infos = new[]  { 
+      var infos = new[]  {
           CreateInfo(new Planet("Saturn"), 1.0),
           CreateInfo(new Planet("Jupiter"), 1.0)
       };
@@ -327,26 +327,26 @@ namespace Remotion.ExtensibleEnums.UnitTests
       Assert.That(valueInfo, Is.SameAs(expectedValueInfo));
     }
 
-    private IEnumerable<ExtensibleEnumInfo<T>> GetInfos<T> (params T[] values) 
+    private IEnumerable<ExtensibleEnumInfo<T>> GetInfos<T> (params T[] values)
         where T: ExtensibleEnum<T>
     {
       return values.Select(value => CreateInfo(value, 0.0));
     }
 
-    private ExtensibleEnumInfo<T> CreateInfo<T> (T value,  double positionalKey) 
+    private ExtensibleEnumInfo<T> CreateInfo<T> (T value,  double positionalKey)
         where T: ExtensibleEnum<T>
     {
       return new ExtensibleEnumInfo<T>(value, _fakeMethod, positionalKey);
     }
 
-    private ExtensibleEnumDefinition<T> CreateDefinition<T> (params T[] values) 
+    private ExtensibleEnumDefinition<T> CreateDefinition<T> (params T[] values)
         where T: ExtensibleEnum<T>
     {
       var infos = GetInfos(values);
       return CreateDefinition(infos);
     }
 
-    private ExtensibleEnumDefinition<T> CreateDefinition<T> (IEnumerable<ExtensibleEnumInfo<T>> infos) 
+    private ExtensibleEnumDefinition<T> CreateDefinition<T> (IEnumerable<ExtensibleEnumInfo<T>> infos)
         where T: ExtensibleEnum<T>
     {
       var valueDiscoveryServiceStub = new Mock<IExtensibleEnumValueDiscoveryService>();

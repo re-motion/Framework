@@ -99,7 +99,7 @@ namespace Remotion.UnitTests.ServiceLocation
       serviceLocatorProviderStub
           .Setup(stub => stub.GetServiceLocator(It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>()))
           .Returns(fakeServiceLocator.Object);
-      
+
       ConfigureServiceLocatorProvider(serviceLocatorProviderStub.Object);
 
       Assert.That(SafeServiceLocator.Current, Is.SameAs(fakeServiceLocator.Object));
@@ -206,7 +206,7 @@ namespace Remotion.UnitTests.ServiceLocation
                     SafeServiceLocator.Current,
                     Is.Not.Null.And.SameAs(((BootstrapServiceConfiguration) SafeServiceLocator.BootstrapConfiguration).BootstrapServiceLocator));
               });
-      
+
       ConfigureServiceLocatorProvider(serviceLocatorProvider.Object);
 
       var result = SafeServiceLocator.Current;
@@ -235,7 +235,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
     private void ResetDefaultServiceLocator ()
     {
-      var defaultServiceLocatorContainer = 
+      var defaultServiceLocatorContainer =
           (DoubleCheckedLockingContainer<IServiceLocator>) PrivateInvoke.GetNonPublicStaticField(typeof(SafeServiceLocator), "s_defaultServiceLocator");
       defaultServiceLocatorContainer.Value = null;
     }

@@ -129,7 +129,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
 #endif
 
       CreateMixedType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
-      
+
       var assembly = FlushAndLoadAssemblyWithoutLocking();
 
       var pipelineForLoading = CreatePipeline();

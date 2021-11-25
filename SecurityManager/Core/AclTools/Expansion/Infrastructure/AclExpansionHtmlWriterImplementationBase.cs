@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       foreach (char c in name)
       {
         if (invalidFileNameCharsSortedList.BinarySearch(c) >= 0)
-        { 
+        {
           sb.Append('_');
         }
         else

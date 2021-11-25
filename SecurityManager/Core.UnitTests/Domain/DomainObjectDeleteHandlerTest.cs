@@ -74,7 +74,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler(list);
 
       deleteHandler.Delete();
-   
+
       Assert.That(deleteHandler.IsDeleted);
     }
 

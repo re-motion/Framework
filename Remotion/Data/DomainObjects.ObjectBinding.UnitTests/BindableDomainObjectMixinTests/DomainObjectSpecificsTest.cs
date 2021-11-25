@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(BindableDomainObjectWithProperties));
       _businessObjectClassWithProperties = provider.GetBindableObjectClass(typeof(BindableDomainObjectWithProperties));
       _businessObjectSampleClass = provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));

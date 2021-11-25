@@ -101,7 +101,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
       _deleteHandler = new DomainObjectDeleteHandler(StateUsages);
     }
-    
+
     protected override void OnDeleted (EventArgs args)
     {
       base.OnDeleted(args);

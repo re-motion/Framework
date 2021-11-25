@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       var mockRepository = new MockRepository();
       var storageProviderMock = mockRepository.StrictMock<StorageProvider>(
-          UnitTestStorageProviderDefinition, 
+          UnitTestStorageProviderDefinition,
           NullPersistenceExtension.Instance);
 
       var officialDC1 = DataContainer.CreateNew(DomainObjectIDs.Official1);
@@ -234,7 +234,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void LoadDataContainers_NotFound ()
     {
       var objectIds = new[] { _invalidOrderID1, _invalidOrderID2, DomainObjectIDs.Order1 };
-      
+
       var dataContainers = _persistenceManager.LoadDataContainers(objectIds).ToArray();
 
       Assert.That(dataContainers.Length, Is.EqualTo(3));

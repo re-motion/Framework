@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
           _propertyMetadataProvider);
       var propertyInfos = propertyFinder.FindPropertyInfos();
 
-      return from IPropertyInformation propertyInfo in propertyInfos 
+      return from IPropertyInformation propertyInfo in propertyInfos
              select Validate(propertyInfo);
     }
 

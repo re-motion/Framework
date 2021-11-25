@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
           Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(subTransaction));
           Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(subTransaction));
 
-          using (_rootTransaction.EnterNonDiscardingScope())  
+          using (_rootTransaction.EnterNonDiscardingScope())
           {
             Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
             Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));

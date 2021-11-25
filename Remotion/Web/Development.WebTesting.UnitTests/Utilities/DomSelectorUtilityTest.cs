@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
 
       Assert.That(actualValue, Is.EqualTo("\"string'Parameter\""));
     }
-    
+
     [Test]
     public void CreateMatchValueForXPath_WithSingleQuoteAndDoubleQuote_ShouldReturnCorrectlyEnclosedParameter ()
     {
@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       Assert.That(actualValue, Is.EqualTo("'stringParameter'"));
     }
 
-    
+
     [Test]
     public void CreateMatchValueForCssSelector_WithSingleQuote_ShouldReturnCorrectlyEnclosedAndEscapedParameter ()
     {

@@ -96,7 +96,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(DerivedWithOwnUses)).Mixins.ContainsKey(typeof(DedicatedMixin)), Is.True);
 
       Type[] mixinTypes = configuration.GetContext(typeof(DerivedWithOwnUses)).Mixins.Select(mixin => mixin.MixinType).ToArray();
-      
+
       Assert.That(mixinTypes, Is.EquivalentTo(new[] {typeof(NullMixin), typeof(DedicatedMixin)}));
       Assert.That(configuration.GetContext(typeof(DerivedWithOwnUses)).Mixins.Count, Is.EqualTo(2));
     }

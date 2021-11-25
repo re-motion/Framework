@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                   new NamedExpression("ClassID", new SqlColumnDefinitionExpression(typeof(string), "o", "ClassID", false)),
                   new NamedExpression("Value", Expression.Convert(new SqlColumnDefinitionExpression(typeof(Guid), "o", "ID", true), typeof(object)))
               },
-              new[] 
+              new[]
               {
                   typeof(ObjectID).GetProperty("ClassID"),
                   typeof(ObjectID).GetProperty("Value")
@@ -374,8 +374,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       // Customer.Order
       var customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer));
       var customerTableDefinition = TableDefinitionObjectMother.Create(
-          TestDomainStorageProviderDefinition, 
-          new EntityNameDefinition(null, "CustomerTable"), 
+          TestDomainStorageProviderDefinition,
+          new EntityNameDefinition(null, "CustomerTable"),
           new EntityNameDefinition(null, "CustomerView"));
       _rdbmsPersistenceModelProviderStub
           .Stub(stub => stub.GetEntityDefinition(customerClassDefinition))
@@ -489,7 +489,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var propertyDefinition = CreatePropertyDefinitionAndAssociateWithClass(_classDefinition, "Customer", "Customer");
       var objectIDStorageProperty =
           new ObjectIDWithoutClassIDStoragePropertyDefinition(
-              SimpleStoragePropertyDefinitionObjectMother.CreateGuidStorageProperty("CustomerID"), 
+              SimpleStoragePropertyDefinitionObjectMother.CreateGuidStorageProperty("CustomerID"),
               GetTypeDefinition(typeof(Customer)));
 
       var foreignKeyEndPointDefinition = new RelationEndPointDefinition(propertyDefinition, false);

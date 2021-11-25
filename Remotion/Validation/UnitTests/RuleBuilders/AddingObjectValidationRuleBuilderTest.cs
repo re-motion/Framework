@@ -21,7 +21,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
   [TestFixture]
   public class AddingObjectValidationRuleBuilderTest
   {
-    
+
 
     [Test]
     [Ignore ("TODO RM-5906")]

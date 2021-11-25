@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
         // CommitValidate: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - this is what actually gets committed
         ExpectTransactionCommitValidate(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
-        
+
         // Commit _fakeNewPersistableItem, _fakeDeletedPersistableItem found earlier
         ExpectPersistData(_fakeNewPersistableItem, _fakeDeletedPersistableItem);
         _dataManagerMock.Expect(mock => mock.Commit());

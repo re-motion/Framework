@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       var queryID = Guid.NewGuid();
       var commandText = "commandText";
       var parameters = _mockRepository.StrictMock<IDictionary<string, object>>();
-      
+
       _innerPersistenceListener1.Expect(mock => mock.QueryExecuting(connectionID, queryID, commandText, parameters));
       _innerPersistenceListener2.Expect(mock => mock.QueryExecuting(connectionID, queryID, commandText, parameters));
       _mockRepository.ReplayAll();

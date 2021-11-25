@@ -132,9 +132,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       Assert.That(aclProbe.AccessConditions, Is.EqualTo(accessConditionsExpected));
     }
 
-    
-    
-    
+
+
+
     //--------------------------------------------------------------------------------------------------------------------------------
     // SecurityToken creation expectance tests
     //--------------------------------------------------------------------------------------------------------------------------------

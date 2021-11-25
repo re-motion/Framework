@@ -33,7 +33,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void FromAttributeApplication ()
     {
-      var attribute = ((ConcreteMixedTypeAttribute[]) 
+      var attribute = ((ConcreteMixedTypeAttribute[])
           typeof(LoadableConcreteMixedTypeForBaseType1).GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false)).Single();
       var classContext = attribute.GetClassContext();
 
@@ -169,7 +169,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void Roundtrip_WithPublicVisibility_IntegrationTest ()
     {
       var classContext = new ClassContext(
-          typeof(BaseType1), 
+          typeof(BaseType1),
           new[] { MixinContextObjectMother.Create() },
           Enumerable.Empty<Type>());
       var attribute = CreateAttribute(classContext);

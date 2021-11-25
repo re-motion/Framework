@@ -293,7 +293,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       }
     }
 
-    
+
     [Test]
     public void GetResourceManager_ChangingTheMasterConfigurationOnADifferentThreadIsRecognizedOnOtherThreads_CacheIsNotResetForCurrentFieldValue ()
     {

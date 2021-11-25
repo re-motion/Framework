@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       Assert.That(columnDefinition.InnerException, Is.Null);
       Assert.That(
-          () => columnDefinition.GetColumns(), 
+          () => columnDefinition.GetColumns(),
           Throws.TypeOf<NotSupportedException>().With.InnerException.Null);
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void GetColumnsForComparison ()
     {
       Assert.That(
-          () => _unsupportedStorageProperty.GetColumnsForComparison(), 
+          () => _unsupportedStorageProperty.GetColumnsForComparison(),
           Throws.TypeOf<NotSupportedException>()
               .With.Message.EqualTo("This operation is not supported because the storage property is invalid. Reason: Message")
               .And.InnerException.SameAs(_innerException));
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var exception = new Exception();
       var property1 = new UnsupportedStoragePropertyDefinition(typeof(int), "x", exception);
       var property2 = new UnsupportedStoragePropertyDefinition(typeof(int), "y", exception);
-      
+
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(

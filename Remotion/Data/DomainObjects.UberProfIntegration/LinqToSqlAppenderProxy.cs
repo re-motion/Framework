@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   {
     private static readonly DoubleCheckedLockingContainer<LinqToSqlAppenderProxy> s_instance =
         new DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>(() => new LinqToSqlAppenderProxy(
-            "re-store ClientTransaction", 
-            Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler, HibernatingRhinos.Profiler.Appender", true, false), 
+            "re-store ClientTransaction",
+            Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler, HibernatingRhinos.Profiler.Appender", true, false),
             Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlAppender, HibernatingRhinos.Profiler.Appender", true, false)));
 
     public static LinqToSqlAppenderProxy Instance
@@ -45,34 +45,34 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     [NonSerialized]
     private readonly object _linqToSqlAppender;
-    
+
     [NonSerialized]
     private readonly Action<Guid> _connectionStarted;
-    
+
     [NonSerialized]
     private readonly Action<Guid> _connectionDisposed;
-    
+
     [NonSerialized]
     private readonly Action<Guid, Guid, int> _statementRowCount;
-    
+
     [NonSerialized]
     private readonly Action<Guid, Exception> _statementError;
-    
+
     [NonSerialized]
     private readonly Action<Guid, long, int?> _commandDurationAndRowCount;
-    
+
     [NonSerialized]
     private readonly Action<Guid, Guid, string> _statementExecuted;
-    
+
     [NonSerialized]
     private readonly Action<Guid, IsolationLevel> _transactionBegan;
-    
+
     [NonSerialized]
     private readonly Action<Guid> _transactionCommit;
-    
+
     [NonSerialized]
     private readonly Action<Guid> _transactionDisposed;
-    
+
     [NonSerialized]
     private readonly Action<Guid> _transactionRolledBack;
 

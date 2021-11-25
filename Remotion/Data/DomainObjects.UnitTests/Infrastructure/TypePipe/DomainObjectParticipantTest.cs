@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       Assert.That(_proxyType.AddedInterfaces, Is.EqualTo(new[] { typeof(IInterceptedDomainObject) }));
       Assert.That(_proxyType.AddedMethods, Has.Count.EqualTo(2));
-      
+
       var performConstructorCheck = _proxyType.AddedMethods.Single(m => m.Name == "PerformConstructorCheck");
       Assert.That(performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property("Type").SameAs(typeof(void)));
 

@@ -141,7 +141,7 @@ public class ClientTransaction
   protected ClientTransaction (IClientTransactionComponentFactory componentFactory)
   {
     ArgumentUtility.CheckNotNull("componentFactory", componentFactory);
-    
+
     _applicationData = componentFactory.CreateApplicationData(this);
     _eventBroker = componentFactory.CreateEventBroker(this);
     _hierarchyManager = componentFactory.CreateTransactionHierarchyManager(this, _eventBroker);
@@ -172,8 +172,8 @@ public class ClientTransaction
   /// Gets the parent transaction for this <see cref="ClientTransaction"/>, or <see langword="null" /> if this transaction is a root transaction.
   /// </summary>
   /// <value>The parent transaction, or <see langword="null" /> if this transaction is a root transaction.</value>
-  public ClientTransaction ParentTransaction 
-  { 
+  public ClientTransaction ParentTransaction
+  {
     get { return _hierarchyManager.ParentTransaction; }
   }
 
@@ -192,8 +192,8 @@ public class ClientTransaction
   /// If this <see cref="ClientTransaction"/> is itself a root transaction (i.e, it has no <see cref="ParentTransaction"/>), it is returned.
   /// </summary>
   /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
-  public ClientTransaction RootTransaction 
-  { 
+  public ClientTransaction RootTransaction
+  {
     get { return _hierarchyManager.TransactionHierarchy.RootTransaction; }
   }
 
@@ -1055,7 +1055,7 @@ public class ClientTransaction
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
 
     return relatedObjects;
-  }  
+  }
 
   /// <summary>
   /// Deletes a <see cref="DomainObject"/>.
@@ -1139,7 +1139,7 @@ public class ClientTransaction
   protected internal virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs eventArgs)
   {
     ArgumentUtility.CheckNotNull("eventArgs", eventArgs);
-    
+
     if (SubTransactionCreated != null)
       SubTransactionCreated(this, eventArgs);
   }

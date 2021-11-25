@@ -28,7 +28,7 @@ using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
-public class CompleteBocUserControl : 
+public class CompleteBocUserControl :
     UserControl,
     IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
@@ -107,9 +107,9 @@ public class CompleteBocUserControl :
     incomeField.Visible = false;
     //  A new row
     newRows.Add(new FormGridRowInfo(
-        incomeField, 
-        FormGridRowInfo.RowType.ControlInRowWithLabel, 
-        BooleanField.ID, 
+        incomeField,
+        FormGridRowInfo.RowType.ControlInRowWithLabel,
+        BooleanField.ID,
         FormGridRowInfo.RowPosition.AfterRowWithID));
 
     InitalizeReferenceFieldMenuItems();
@@ -188,7 +188,7 @@ public class CompleteBocUserControl :
   }
 
 	#region Web Form Designer generated code
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.

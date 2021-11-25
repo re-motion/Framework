@@ -95,7 +95,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
 
       Tenant child1_1 = TestHelper.CreateTenant("Child1.1", "UID: Child1.1");
       child1_1.Parent = child1;
-      
+
       Tenant child2_1 = TestHelper.CreateTenant("Child2.1", "UID: Child2.1");
       child2_1.Parent = child2;
 

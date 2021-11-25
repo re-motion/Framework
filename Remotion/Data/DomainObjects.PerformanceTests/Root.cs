@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       //LinqTest();
       //InstantiationTest ();
-      
+
       // RelationQuerySyncSpike ();
 
       //ClassDefinitionTest();

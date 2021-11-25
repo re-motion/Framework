@@ -23,7 +23,7 @@ using Remotion.Tools.Console.ConsoleApplication;
 namespace Remotion.SecurityManager.AclTools.Expander
 {
 
-  public class Program  
+  public class Program
   {
     public static int Main (string[] args)
     {

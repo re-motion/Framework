@@ -160,7 +160,7 @@ namespace Remotion.Web.ExecutionEngine
     public WxeFunctionState GetItem (string functionToken)
     {
       ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
-      
+
       Stopwatch? stopwatch = null;
       bool hasOutOfProcessSession = _session.Mode != SessionStateMode.Off && _session.Mode != SessionStateMode.InProc;
       if (hasOutOfProcessSession)

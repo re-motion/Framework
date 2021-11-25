@@ -26,14 +26,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Represents the state of a <see cref="DomainObjectCollectionEndPoint"/> where not all of its data is available (ie., the end-point has not been (lazily) 
   /// loaded, or it has been unloaded).
   /// </summary>
-  public class IncompleteDomainObjectCollectionEndPointLoadState 
+  public class IncompleteDomainObjectCollectionEndPointLoadState
       : IncompleteVirtualEndPointLoadStateBase<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager, IDomainObjectCollectionEndPointLoadState>,
         IDomainObjectCollectionEndPointLoadState
   {
     private readonly IDomainObjectCollectionEndPointDataManagerFactory _dataManagerFactory;
 
     public IncompleteDomainObjectCollectionEndPointLoadState (
-        IEndPointLoader endPointLoader, 
+        IEndPointLoader endPointLoader,
         IDomainObjectCollectionEndPointDataManagerFactory dataManagerFactory)
       : base(endPointLoader)
     {
@@ -80,8 +80,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     }
 
     public IDataManagementCommand CreateSetCollectionCommand (
-        IDomainObjectCollectionEndPoint collectionEndPoint, 
-        DomainObjectCollection newCollection, 
+        IDomainObjectCollectionEndPoint collectionEndPoint,
+        DomainObjectCollection newCollection,
         IDomainObjectCollectionEndPointCollectionManager collectionEndPointCollectionManager)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public IDataManagementCommand CreateDeleteCommand (IDomainObjectCollectionEndPoint collectionEndPoint)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
-      
+
       var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
       return completeState.CreateDeleteCommand(collectionEndPoint);
     }
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
-      
+
       var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
       return completeState.CreateAddCommand(collectionEndPoint, addedRelatedObject);
     }

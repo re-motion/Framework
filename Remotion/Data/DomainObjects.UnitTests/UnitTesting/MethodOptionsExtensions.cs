@@ -43,8 +43,8 @@ namespace Remotion.Data.UnitTests.UnitTesting
     /// Use this method rather then <see cref="Ordered{T}"/> when you need to specify your own <see cref="IMethodOptions{T}.WhenCalled"/> handler.
     /// </summary>
     public static IMethodOptions<T> WhenCalledOrdered<T> (
-        this IMethodOptions<T> options, 
-        OrderedExpectationCounter counter, 
+        this IMethodOptions<T> options,
+        OrderedExpectationCounter counter,
         Action<MethodInvocation> whenCalledAction,
         string message = null)
     {

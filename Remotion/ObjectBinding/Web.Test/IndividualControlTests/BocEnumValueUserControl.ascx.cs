@@ -67,7 +67,7 @@ public class BocEnumValueUserControl : BaseUserControl
   protected WebButton ReadOnlyGenderTestSetNullButton;
   protected WebButton ReadOnlyGenderTestSetNewItemButton;
   protected HtmlTable FormGrid;
-  
+
   private string _instanceEnum;
 
   public string InstanceEnum
@@ -196,7 +196,7 @@ public class BocEnumValueUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.

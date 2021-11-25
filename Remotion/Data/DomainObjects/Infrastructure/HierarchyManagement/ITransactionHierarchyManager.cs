@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     ClientTransaction ParentTransaction { get; }
     bool IsWriteable { get; }
     ClientTransaction SubTransaction { get; }
-    
+
     void OnBeforeTransactionInitialize ();
     void OnTransactionDiscard ();
     void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs);

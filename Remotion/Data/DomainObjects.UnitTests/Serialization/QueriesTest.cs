@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       base.SetUp();
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
-    
+
     [Test]
     public void QueryParameter ()
     {

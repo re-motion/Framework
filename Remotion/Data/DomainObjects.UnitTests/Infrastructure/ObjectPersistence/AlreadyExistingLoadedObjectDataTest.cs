@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _loadedObjectData = new AlreadyExistingLoadedObjectData(_dataContainer);
     }
-    
+
     [Test]
     public void Initialization ()
     {
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       var existingDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
       existingDataContainer.SetDomainObject(DomainObjectMother.CreateFakeObject<Order>(existingDataContainer.ID));
-      
+
       Assert.That(
           () => new AlreadyExistingLoadedObjectData(existingDataContainer),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       Assert.That(reference, Is.SameAs(_dataContainer.DomainObject));
     }
-    
+
     [Test]
     public void Accept ()
     {

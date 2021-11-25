@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       var subTransaction2 = subTransaction1.CreateSubTransaction();
 
       _hierarchy.AppendLeafTransaction(subTransaction2);
-      
+
       Assert.That(_hierarchy.RootTransaction, Is.SameAs(_rootTransaction));
       Assert.That(_hierarchy.LeafTransaction, Is.SameAs(subTransaction2));
       Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       var unrelatedTransaction = ClientTransactionObjectMother.Create();
 
       Assert.That(
-          () => _hierarchy.AppendLeafTransaction(unrelatedTransaction), 
+          () => _hierarchy.AppendLeafTransaction(unrelatedTransaction),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The new LeafTransaction must have the previous LeafTransaction as its parent.", "leafTransaction"));
 

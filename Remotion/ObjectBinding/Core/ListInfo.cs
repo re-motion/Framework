@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding
     {
       ArgumentUtility.CheckNotNull("propertyType", propertyType);
       ArgumentUtility.CheckNotNull("itemType", itemType);
-    
+
       _propertyType = propertyType;
       _itemType = itemType;
     }

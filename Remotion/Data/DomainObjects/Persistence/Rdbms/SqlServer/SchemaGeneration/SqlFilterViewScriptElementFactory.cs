@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       var classIDColumns = filterViewDefinition.ObjectIDProperty.ClassIDProperty.GetColumnsForComparison().ToList();
       Assertion.IsTrue(
-          classIDColumns.Count == 1, 
+          classIDColumns.Count == 1,
           "The SQL provider's model is built with a single ClassID column by InfrastructureStoragePropertyDefinitionProvider.");
 
       return string.Format(

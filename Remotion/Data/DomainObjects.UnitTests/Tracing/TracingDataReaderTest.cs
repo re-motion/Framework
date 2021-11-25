@@ -610,7 +610,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
                 Arg<int>.Matches(p => p == 1)));
       _innerDataReader.Expect(mock => mock.Close());
       _mockRepository.ReplayAll();
-      
+
       _dataReader.Read();
       _dataReader.Close();
 

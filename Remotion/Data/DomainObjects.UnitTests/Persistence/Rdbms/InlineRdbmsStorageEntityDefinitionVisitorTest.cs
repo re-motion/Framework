@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       _voidReceiverMock.Expect(mock => mock.HandleUnionViewDefinition(Arg.Is(_unionViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
       _voidReceiverMock.Replay();
- 
+
       InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           _unionViewDefinition,
           _voidReceiverMock.HandleTableDefinition,

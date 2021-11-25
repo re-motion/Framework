@@ -33,7 +33,7 @@ namespace Remotion.Validation.Providers
   /// </summary>
   public abstract class AttributeBasedValidationRuleCollectorProviderBase : IValidationRuleCollectorProvider
   {
-    private static readonly ConcurrentDictionary<(Type ValidatedType, Type PropertyType), Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>> s_cachedDelegatesForSetValidationRulesForProperty = 
+    private static readonly ConcurrentDictionary<(Type ValidatedType, Type PropertyType), Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>> s_cachedDelegatesForSetValidationRulesForProperty =
         new ConcurrentDictionary<(Type, Type), Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>>();
 
     protected AttributeBasedValidationRuleCollectorProviderBase ()
@@ -140,10 +140,10 @@ namespace Remotion.Validation.Providers
         Type collectorType)
     {
       var propertyRule = new RemovingPropertyValidationRuleCollector(property, collectorType);
-      
+
       foreach (var removingValidatorRegistration in propertyRuleReflector.GetRemovingValidatorRegistrations())
         propertyRule.RegisterValidator(removingValidatorRegistration.ValidatorType, removingValidatorRegistration.CollectorTypeToRemoveFrom, null);
-      
+
       return propertyRule;
     }
 
@@ -153,10 +153,10 @@ namespace Remotion.Validation.Providers
         Type collectorType)
     {
       var propertyRule = new PropertyMetaValidationRuleCollector(propertyInfo, collectorType);
-      
+
       foreach (var metaValidationRule in propertyRuleReflector.GetMetaValidationRules())
         propertyRule.RegisterMetaValidationRule(metaValidationRule);
-      
+
       return propertyRule;
     }
   }

@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     {
       _enumValue.Object.ListControlStyle.ControlType = ListControlType.ListBox;
       _enumValue.Object.ListControlStyle.AutoPostBack = true;
-      
+
       var resourceUrlFactory = new FakeResourceUrlFactory();
       var renderer = new BocEnumValueRenderer(
           resourceUrlFactory,
@@ -197,7 +197,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
       renderer.Render(new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue.Object));
-      
+
       var document = Html.GetResultDocument();
       var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.ControlType, "BocEnumValue");

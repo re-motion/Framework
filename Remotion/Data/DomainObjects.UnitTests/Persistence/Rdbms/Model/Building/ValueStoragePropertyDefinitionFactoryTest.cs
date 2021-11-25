@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     private IStorageNameProvider _storageNameProviderStub;
 
     private ValueStoragePropertyDefinitionFactory _factory;
-    
+
     private ClassDefinition _someClassDefinition;
     private ClassDefinition _someClassDefinitionWithoutBaseClass;
     private ClassDefinition _someClassDefinitionWithBaseClass;
@@ -275,7 +275,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Return(_fakeStorageTypeInformation1);
 
       var result = _factory.CreateStoragePropertyDefinition(null, "Column");
-      
+
       _storageTypeInformationProviderMock.VerifyAllExpectations();
       CheckSimplePropertyDefinition(result, typeof(object), "Column", _fakeStorageTypeInformation1);
     }

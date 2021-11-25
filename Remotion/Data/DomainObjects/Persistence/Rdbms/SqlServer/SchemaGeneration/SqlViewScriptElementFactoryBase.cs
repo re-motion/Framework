@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected abstract string GetSelectStatements (T entityDefinition);
     protected abstract bool UseCheckOption (T entityDefinition);
-    
+
     protected virtual bool UseSchemaBinding (T entityDefinition)
     {
       ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);

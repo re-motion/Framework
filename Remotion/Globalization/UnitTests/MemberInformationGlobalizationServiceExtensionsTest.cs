@@ -172,7 +172,7 @@ namespace Remotion.Globalization.UnitTests
     public void GetPropertyDisplayNameOrDefault_ResourceFound_ReturnsLocalizedValue ()
     {
       var outValue = "expected";
-      
+
       _serviceStub
           .Setup(
               _ => _.TryGetPropertyDisplayName(

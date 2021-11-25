@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <see cref="StorageProvider"/>.
     /// </summary>
     object GetRawValue (int position);
-    
+
     /// <summary>
     /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="StorageProvider"/> 
     /// to convert the value into the given <paramref name="type"/>.

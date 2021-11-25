@@ -168,7 +168,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
       object attribute = AttributeUtility.GetCustomAttribute(typeof(DerivedClassWithAttribute), typeof(InheritedNotMultipleAttribute), true);
       Assert.That(attribute, Is.EqualTo(new InheritedNotMultipleAttribute("DerivedClass")));
     }
-    
+
     [Test]
     public void Test_ReturnsNewInstanceForType ()
     {

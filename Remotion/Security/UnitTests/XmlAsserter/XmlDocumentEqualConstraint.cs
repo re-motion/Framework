@@ -38,7 +38,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       if (expectedParentNode.ChildNodes.Count != actualParentNode.ChildNodes.Count)
       {
-        
+
         Messages.Add("Child node lengths differ:");
         Messages.Add("Expected: " + expectedParentNode.ChildNodes.Count);
         Messages.Add("Actual: " + actualParentNode.ChildNodes.Count);

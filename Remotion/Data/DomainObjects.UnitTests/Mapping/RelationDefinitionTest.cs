@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(relation.Contains(_orderEndPoint), Is.True);
       Assert.That(relation.Contains(_customerEndPoint), Is.True);
-      
+
       var invalidEndPoint = CreateEquivalentEndPointDefinitionFake(_customerEndPoint);
       Assert.That(relation.Contains(invalidEndPoint), Is.False);
     }

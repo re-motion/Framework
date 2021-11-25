@@ -23,7 +23,7 @@ namespace Remotion.Mixins.MixerTools
   public interface IMixerPipelineFactory
   {
     IPipeline CreatePipeline ([CanBeNull]string? assemblyOutputDirectory);
-    
+
     string[] GetModulePaths ([CanBeNull]string? assemblyOutputDirectory);
   }
 }

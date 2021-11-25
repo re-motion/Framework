@@ -32,11 +32,11 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     private Assembly _assembly1;
     private Assembly _assembly2;
     private Assembly _assembly3;
-    
+
     private AssemblyName _name1;
     private AssemblyName _name2;
     private AssemblyName _name3;
-    
+
     private AssemblyNameSpecification _specification1;
     private AssemblyNameSpecification _specification2;
     private AssemblyNameSpecification _specification3;

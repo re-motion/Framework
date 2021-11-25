@@ -21,7 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.UnitTests.UnitTesting
 {
-  public static class ConstraintExpressionExtensions 
+  public static class ConstraintExpressionExtensions
   {
     public static ResolvableConstraintExpression Property<T> (this ConstraintExpression constraintExpression, Expression<Func<T, object>> propertyExpression)
     {

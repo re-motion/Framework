@@ -33,33 +33,33 @@ public class TestFunction: WxeFunction
   public TestFunction ()
     : base(new NoneTransactionMode())
   {
-    
+
   }
 
   [WxeParameter (1, false, WxeParameterDirection.In)]
   public string UserControl
   {
-    get 
+    get
     {
-      return (string) Variables["UserControl"]; 
+      return (string) Variables["UserControl"];
     }
     set
     {
       ArgumentUtility.CheckNotNullOrEmpty("UserControl", value);
-      Variables["UserControl"] = value; 
+      Variables["UserControl"] = value;
     }
   }
 
   [WxeParameter (2, false, WxeParameterDirection.In)]
   public int? Delay
   {
-    get 
+    get
     {
-      return (int?) Variables["Delay"]; 
+      return (int?) Variables["Delay"];
     }
     set
     {
-      Variables["Delay"] = value; 
+      Variables["Delay"] = value;
     }
   }
 
@@ -115,7 +115,7 @@ public class TestFunction: WxeFunction
     }
 
     Job[] jobs = new Job[2];
-    
+
     jobs[0] = Job.CreateObject(Guid.NewGuid());
     jobs[0].Title = "Programmer";
     jobs[0].StartDate = new DateTime(2000, 1, 1);
@@ -150,7 +150,7 @@ public class TestFunction: WxeFunction
     {
       person.Jobs = jobs;
     }
-  
+
     _person = person;
   }
 

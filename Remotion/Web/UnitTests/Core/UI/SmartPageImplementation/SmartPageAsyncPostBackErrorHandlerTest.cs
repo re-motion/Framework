@@ -45,7 +45,7 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
 
             <span><H1>"));
       Assert.That(message, Does.Contain("[ApplicationException: The error]"));
-      
+
       //The first value is the error page on a system without .Net 4.8 installed.
       //The second value is the error page on a system with .Net 4.8 installed.
       Assert.That(message, Does.EndWith(@"<br>

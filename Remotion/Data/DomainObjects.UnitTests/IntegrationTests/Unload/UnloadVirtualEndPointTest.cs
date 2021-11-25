@@ -126,12 +126,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That(orderItems, Is.EquivalentTo(new[] { orderItem1, orderItem2 }));
 
       UnloadService.UnloadVirtualEndPoint(
-          TestableClientTransaction, 
+          TestableClientTransaction,
           orderItems.AssociatedEndPointID);
 
       Assert.That(orderItems, Is.EquivalentTo(new[] { orderItem1, orderItem2, newOrderItemID.GetObject<OrderItem>() }));
     }
-    
+
     [Test]
     public void UnloadVirtualEndPoint_DomainObjectCollection_AlreadyUnloaded ()
     {
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, endPoint.ID);
     }
-    
+
     [Test]
     public void UnloadVirtualEndPoint_VirtualCollection_AlreadyUnloaded ()
     {
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That(endPoint.HasChanged, Is.True);
 
       Assert.That(
-          () => UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, endPoint.ID), 
+          () => UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, endPoint.ID),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The end point with ID "
               + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' has been "

@@ -92,7 +92,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
       using (var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new Assembly[0]))
       {
         var result = sandbox.CreateSandboxedInstance<SampleTestRunner>();
-        
+
         Assert.That(result, Is.TypeOf(typeof(SampleTestRunner)));
         Assert.That(RemotingServices.IsTransparentProxy(result), Is.True);
         Assert.That(result.GetCurrentDomain(), Is.SameAs(sandbox.AppDomain));

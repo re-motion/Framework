@@ -95,7 +95,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var element1 = new ByFileIncludeRootAssemblyElement { FilePattern = "*.dll", IncludeReferencedAssemblies = true };
       var element2 = new ByFileIncludeRootAssemblyElement { FilePattern = "*.exe" };
       var element3 = new ByFileExcludeRootAssemblyElement { FilePattern = "Utilities.exe" };
-      
+
       var collection = new ByFileRootAssemblyElementCollection();
       collection.Add(element1);
       collection.Add(element2);

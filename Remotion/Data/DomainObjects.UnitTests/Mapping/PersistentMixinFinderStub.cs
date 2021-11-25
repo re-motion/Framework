@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private readonly ClassContext _mixinConfiguration;
 
-    public PersistentMixinFinderStub (Type classType, params Type[] persistentMixins) 
+    public PersistentMixinFinderStub (Type classType, params Type[] persistentMixins)
         : this(classType, CreateClassContext(classType, persistentMixins))
     {
     }

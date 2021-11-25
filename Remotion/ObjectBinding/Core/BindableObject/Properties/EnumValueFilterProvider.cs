@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull("typeAttributeProvider", typeAttributeProvider);
-      
+
       _propertyInformation = propertyInformation;
       _typeAttributeProvider = typeAttributeProvider;
     }

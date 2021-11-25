@@ -44,7 +44,7 @@ namespace Remotion.Mixins
     // Singleton implementations with nested classes are documented here: http://csharpindepth.com/Articles/General/Singleton.aspx.
     static class LazyStaticFields
     {
-      public static readonly IObjectFactoryImplementation ObjectFactoryImplementation = 
+      public static readonly IObjectFactoryImplementation ObjectFactoryImplementation =
           SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>();
 
       // ReSharper disable EmptyConstructor
@@ -270,7 +270,7 @@ namespace Remotion.Mixins
     {
       return (T) Create(allowNonPublicConstructors, typeof(T), constructorParameters, preparedMixins);
     }
-    
+
     /// <summary>
     /// Creates a mixed instance of the given <paramref name="targetOrConcreteType"/>.
     /// </summary>

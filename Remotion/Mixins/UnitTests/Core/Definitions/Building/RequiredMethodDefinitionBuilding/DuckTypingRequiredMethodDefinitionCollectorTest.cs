@@ -30,15 +30,15 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefi
     {
       var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(ClassImplementingInterfaceWithDuckTyping));
       var m1 = DefinitionObjectMother.CreateMethodDefinition(
-          targetClassDefinition, 
+          targetClassDefinition,
           typeof(ClassImplementingInterfaceWithDuckTyping).GetMethod("Method1"));
       var m2 = DefinitionObjectMother.CreateMethodDefinition(
-          targetClassDefinition, 
+          targetClassDefinition,
           typeof(ClassImplementingInterfaceWithDuckTyping).GetMethod("Method2"));
 
       var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof(IInterface));
       var builder = new DuckTypingRequiredMethodDefinitionCollector(targetClassDefinition);
-      
+
       var definitions = builder.CreateRequiredMethodDefinitions(requirement).OrderBy(def => def.FullName).ToArray();
       Assert.That(definitions.Length, Is.EqualTo(2));
 
@@ -116,7 +116,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefi
       var dependency = DefinitionObjectMother.CreateTargetCallDependencyDefinition(requiringMixin);
       var requirement = dependency.RequiredType;
       DefinitionObjectMother.AddRequiringDependency(requirement, dependency);
-      
+
       var builder = new DuckTypingRequiredMethodDefinitionCollector(targetClassDefinition);
       Assert.That(
           () => builder.CreateRequiredMethodDefinitions(requirement).ToArray(),

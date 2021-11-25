@@ -23,7 +23,7 @@ using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluation
 {
   [TestFixture]
-  public class AccessTypeStatisticsTest 
+  public class AccessTypeStatisticsTest
   {
     private AccessControlTestHelper _testHelper;
 

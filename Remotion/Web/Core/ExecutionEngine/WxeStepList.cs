@@ -119,7 +119,7 @@ namespace Remotion.Web.ExecutionEngine
       if (_executingStep >= index)
         throw new ArgumentException("Cannot insert step only after the last executed step.", "index");
       ArgumentUtility.CheckNotNull("step", step);
-      
+
       _steps.Insert(index, step);
       step.SetParentStep(this);
     }

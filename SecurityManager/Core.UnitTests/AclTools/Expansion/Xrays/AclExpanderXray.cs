@@ -22,7 +22,7 @@ using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TestClasses
 {
-  internal class AclExpanderXray 
+  internal class AclExpanderXray
   {
     public static IUserRoleAclAceCombinationFinder GetUserRoleAclAceCombinationFinder (AclExpander instance)
     {

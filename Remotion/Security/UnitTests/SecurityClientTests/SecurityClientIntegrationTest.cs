@@ -62,7 +62,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
           .Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object))
           .Returns(new[] { AccessType.Get(GeneralAccessTypes.Delete) });
 
-      ISecurableObject securableObject = 
+      ISecurableObject securableObject =
           new SecurableObject(ObjectSecurityStrategy.Create(securityContextFactoryStub.Object, InvalidationToken.Create()));
       var methodInfo = typeof(SecurableObject).GetMethod("Delete", new Type[0]);
 
@@ -82,7 +82,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
           .Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object))
           .Returns(new[] { AccessType.Get(GeneralAccessTypes.Create) });
 
-      ISecurableObject securableObject = 
+      ISecurableObject securableObject =
           new DerivedSecurableObject(ObjectSecurityStrategy.Create(securityContextFactoryStub.Object, InvalidationToken.Create()));
       var methodInfo = typeof(DerivedSecurableObject).GetMethod("Make");
 

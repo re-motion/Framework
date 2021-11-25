@@ -79,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     {
       var overridden = typeof(MixinWithMethodsOverriddenByDifferentClasses).GetMethod("M1");
       var expectedIdentifier = new ConcreteMixinTypeIdentifier(
-          typeof(MixinWithMethodsOverriddenByDifferentClasses), 
+          typeof(MixinWithMethodsOverriddenByDifferentClasses),
           new HashSet<MethodInfo>(),
           new HashSet<MethodInfo> { overridden });
 
@@ -109,8 +109,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     public void GetConcreteMixinTypeIdentifier_ProtectedOverriders ()
     {
       const BindingFlags bf = BindingFlags.NonPublic | BindingFlags.Instance;
-      var overriders = new[] { 
-          typeof(MixinWithProtectedOverrider).GetMethod("VirtualMethod", bf), 
+      var overriders = new[] {
+          typeof(MixinWithProtectedOverrider).GetMethod("VirtualMethod", bf),
           typeof(MixinWithProtectedOverrider).GetMethod("get_VirtualProperty", bf),
           typeof(MixinWithProtectedOverrider).GetMethod("add_VirtualEvent", bf),
           typeof(MixinWithProtectedOverrider).GetMethod("remove_VirtualEvent", bf),
@@ -125,7 +125,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
           .Mixins[typeof(MixinWithProtectedOverrider)];
       Assert.That(definition.GetConcreteMixinTypeIdentifier(), Is.EqualTo(expectedIdentifier));
     }
-    
+
     [Test]
     public void GetOrderRelevateDependencies ()
     {
@@ -144,7 +144,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     {
       var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
       var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1), typeof(BT1Mixin1)).Mixins[0];
-      
+
       var interfaceIntroduction = DefinitionObjectMother.CreateInterfaceIntroductionDefinition(definition);
       var nonInterfaceIntroduction = DefinitionObjectMother.CreateNonInterfaceIntroductionDefinition(definition);
       var attributeIntroduction = DefinitionObjectMother.CreateAttributeIntroductionDefinition(definition);
@@ -176,7 +176,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     public void GetAllOverrides ()
     {
       var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1), typeof(BT1Mixin1)).Mixins[0];
-      
+
       var methodOverride = DefinitionObjectMother.CreateMethodDefinition(definition, definition.Type.GetMethod("ToString"));
       var overriddenMethod = DefinitionObjectMother.CreateMethodDefinition(definition.TargetClass, definition.Type.GetMethod("ToString"));
       DefinitionObjectMother.DeclareOverride(methodOverride, overriddenMethod);

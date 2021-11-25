@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       Assert.That(_rootTransaction.IsInvalid(DomainObjectIDs.Order1), Is.True);
       Assert.That(ClientTransactionTestHelper.CallGetInvalidObjectReference(_rootTransaction, DomainObjectIDs.Order1), Is.SameAs(domainObject));
-      
+
       Assert.That(middleTransaction.IsInvalid(DomainObjectIDs.Order1), Is.True);
       Assert.That(ClientTransactionTestHelper.CallGetInvalidObjectReference(middleTransaction, DomainObjectIDs.Order1), Is.SameAs(domainObject));
 

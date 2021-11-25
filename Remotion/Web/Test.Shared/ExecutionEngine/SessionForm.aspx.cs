@@ -97,13 +97,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     }
     #region Web Form Designer generated code
 
-	
+
     /// <summary>
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent ()
-    {    
+    {
       this.PostBackButton.Click += new System.EventHandler(this.PostBackButton_Click);
       this.OpenSelfButton.Click += new System.EventHandler(this.OpenSelfButton_Click);
       this.Button1.Click += new System.EventHandler(this.Button1_Click);
@@ -158,7 +158,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void PostBackButton_Click (object sender, System.EventArgs e)
     {
-      System.Threading.Thread.Sleep(10000);  
+      System.Threading.Thread.Sleep(10000);
     }
 
     private void OpenSelfButton_Click (object sender, System.EventArgs e)
@@ -169,24 +169,24 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void Button1_Click (object sender, System.EventArgs e)
     {
-  
+
     }
 
     private void Button1Button_Click (object sender, System.EventArgs e)
     {
-  
+
     }
 
     private void Submit1Button_Click (object sender, System.EventArgs e)
     {
-  
+
     }
 
     private void Button2Button_Click (object sender, System.EventArgs e)
     {
-  
+
     }
-    
+
     private void ImageButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)

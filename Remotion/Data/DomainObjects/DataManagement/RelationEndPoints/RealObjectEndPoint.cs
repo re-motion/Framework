@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private IRealObjectEndPointSyncState _syncState; // keeps track of whether this end-point is synchronised with the opposite end point
 
     public RealObjectEndPoint (
-        ClientTransaction clientTransaction, 
+        ClientTransaction clientTransaction,
         RelationEndPointID id,
         DataContainer foreignKeyDataContainer,
         IRelationEndPointProvider endPointProvider,

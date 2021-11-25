@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     public abstract ClassWithInvalidBidirectionalRelationLeftSide MissingBidirectionalRelationAttributeRightSide { get; set; }
 
     //[DBBidirectionalRelation ("MissingBidirectionalRelationAttributeForCollectionPropertyLeftSide")]
-    public abstract ClassWithInvalidBidirectionalRelationLeftSide MissingBidirectionalRelationAttributeForCollectionPropertyRightSide { get; set; }    
-  
+    public abstract ClassWithInvalidBidirectionalRelationLeftSide MissingBidirectionalRelationAttributeForCollectionPropertyRightSide { get; set; }
+
     [DBBidirectionalRelation ("Invalid")]
     public abstract ClassWithInvalidBidirectionalRelationLeftSide InvalidPropertyNameInBidirectionalRelationAttributeOnOppositePropertyRightSide { get; set; }
 

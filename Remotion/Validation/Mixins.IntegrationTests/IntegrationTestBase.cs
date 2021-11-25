@@ -38,7 +38,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
     {
       var serviceLocator = DefaultServiceLocator.Create();
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
-      
+
       MemoryAppender = new MemoryAppender();
       BasicConfigurator.Configure(MemoryAppender);
 

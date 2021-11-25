@@ -55,7 +55,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
       ArgumentUtility.CheckNotNull("scope", scope);
 
       CustomClassEmitter requirementsInterface = new CustomClassEmitter(new InterfaceEmitter(scope, typeName));
-      
+
       Dictionary<MethodInfo, MethodInfo> methodToInterfaceMap = new Dictionary<MethodInfo, MethodInfo>();
       foreach (MethodInfo method in methodsToOverride)
       {

@@ -45,7 +45,7 @@ public class StorageProviderManager : IDisposable
         _storageProviders.Dispose();
 
       _storageProviders = null;
-      
+
       _disposed = true;
       GC.SuppressFinalize(this);
     }
@@ -70,7 +70,7 @@ public class StorageProviderManager : IDisposable
 
   public StorageProvider this [string storageProviderID]
   {
-    get 
+    get
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
@@ -89,10 +89,10 @@ public class StorageProviderManager : IDisposable
 
   public StorageProviderCollection StorageProviders
   {
-    get 
-    { 
+    get
+    {
       CheckDisposed();
-      return _storageProviders; 
+      return _storageProviders;
     }
   }
 

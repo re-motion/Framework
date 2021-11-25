@@ -155,7 +155,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != GetType()) 
+      if (obj.GetType() != GetType())
         return false;
       var other = (MixinIntroducedPropertyInformation) obj;
 

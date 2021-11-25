@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   {
     public SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule ()
     {
-      
+
     }
 
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
@@ -58,6 +58,6 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
       }
       return MappingValidationResult.CreateValidResult();
     }
-    
+
   }
 }

@@ -126,7 +126,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
         throw new ReleaseException();
 
       if (_child != null)
-      { 
+      {
         _child._parent = null;
         _child = null;
       }

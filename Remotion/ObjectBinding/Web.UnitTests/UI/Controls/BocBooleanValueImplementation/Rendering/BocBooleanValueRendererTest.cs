@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.GetDisplayValueName()).Returns(c_displayValueName);
       _booleanValue.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
       _booleanValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
-      
+
       string startupScriptKey = typeof(BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format(
           "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
@@ -314,7 +314,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
       _renderer.Render(new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue.Object));
-      
+
       var document = Html.GetResultDocument();
       var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.ControlType, "BocBooleanValue");

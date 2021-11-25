@@ -28,7 +28,7 @@ namespace OBWTest
 
 [MultiLingualResources ("OBWTest.Globalization.SingleBocTestBasePage")]
 public class SingleBocTestBasePage:
-    SmartPage, 
+    SmartPage,
     IControl,
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
     // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)

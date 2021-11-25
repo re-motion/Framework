@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateEmptyDomain();
-      
+
       _factory = new OrganizationalStructureFactory();
     }
 

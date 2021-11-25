@@ -39,7 +39,7 @@ public class UrlMappingConfiguration: ConfigurationBase
   /// <remarks> <c>http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0</c> </remarks>
   public const string SchemaUri = "http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0";
 
-  private static readonly DoubleCheckedLockingContainer<UrlMappingConfiguration> s_current = 
+  private static readonly DoubleCheckedLockingContainer<UrlMappingConfiguration> s_current =
       new DoubleCheckedLockingContainer<UrlMappingConfiguration>(CreateConfig);
 
   public static UrlMappingConfiguration CreateUrlMappingConfiguration (string configurationFile)
@@ -124,11 +124,11 @@ public class UrlMappingEntry
   {
     get
     {
-      return _id; 
+      return _id;
     }
     set
     {
-      _id = StringUtility.EmptyToNull(value); 
+      _id = StringUtility.EmptyToNull(value);
     }
   }
 
@@ -146,9 +146,9 @@ public class UrlMappingEntry
   [XmlAttribute ("type")]
   public string FunctionTypeName
   {
-    get 
+    get
     {
-      return _functionTypeName; 
+      return _functionTypeName;
     }
     set
     {
@@ -167,7 +167,7 @@ public class UrlMappingEntry
   {
     get
     {
-      return _functionType; 
+      return _functionType;
     }
     set
     {
@@ -186,11 +186,11 @@ public class UrlMappingEntry
   [XmlAttribute ("resource")]
   public string Resource
   {
-    get 
-    { 
-      return _resource; 
+    get
+    {
+      return _resource;
     }
-    set 
+    set
     {
       ArgumentUtility.CheckNotNull("Resource", value);
       value = value!.Trim();
@@ -199,7 +199,7 @@ public class UrlMappingEntry
         throw new ArgumentException(string.Format("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
       if (! value.StartsWith("~/"))
         value = "~/" + value;
-      _resource = value; 
+      _resource = value;
     }
   }
 }

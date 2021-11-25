@@ -22,6 +22,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
   [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.MixinOfMixinAddingResources")]
   public class MixinOfMixinAddingResources
   {
-     
+
   }
 }

@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var dataContainer1 = PrepareDataContainer(_dataContainerMapStub, domainObject1);
       dataContainer1.SetValue(propertyDefinition, "A");
-      
+
       var dataContainer2 = PrepareDataContainer(_dataContainerMapStub, domainObject2);
       dataContainer2.SetValue(propertyDefinition, "B");
 
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var dataContainer1 = PrepareDataContainer(_dataContainerMapStub, domainObject1);
       dataContainer1.SetValue(propertyDefinition, "A");
-      
+
       var dataContainer2 = PrepareDataContainer(_dataContainerMapStub, domainObject2);
       dataContainer2.SetValue(propertyDefinition, "B");
 

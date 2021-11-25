@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// </summary>
   public static class ReflectionBasedPropertyResolver
   {
-    public static T ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T> definitionGetter) 
+    public static T ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T> definitionGetter)
         where T : class
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
@@ -53,8 +53,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     private static List<Tuple<IPropertyInformation, T>> GetMatchingDefinitions<T> (
-        IPropertyInformation propertyInformation, 
-        ClassDefinition classDefinition, 
+        IPropertyInformation propertyInformation,
+        ClassDefinition classDefinition,
         Func<string, T> definitionGetter) where T: class
     {
       IEnumerable<IPropertyInformation> propertyImplementationCandidates;
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Mapping
               where definition != null
               select Tuple.Create(pi, definition))
           .Distinct(new DelegateBasedEqualityComparer<Tuple<IPropertyInformation, T>>(
-                         (x, y) => object.Equals(x.Item1, y.Item1), 
+                         (x, y) => object.Equals(x.Item1, y.Item1),
                          x => x.Item1.GetHashCode()))
           .ToList();
     }
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (interfaceProperty.DeclaringType.IsAssignableFrom(TypeAdapter.Create(classDefinition.ClassType)))
         yield return classDefinition.ClassType;
 
-      var implementingPersistentMixins = 
+      var implementingPersistentMixins =
           from cd in classDefinition.CreateSequence(cd => cd.BaseClass)
           from mixinType in cd.PersistentMixins
           where interfaceProperty.DeclaringType.IsAssignableFrom(TypeAdapter.Create(mixinType))

@@ -150,7 +150,7 @@ namespace Remotion.Collections.DataStore
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () 
+    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ()
         where TKey : notnull
         where TValue: class?
     {
@@ -174,7 +174,7 @@ namespace Remotion.Collections.DataStore
     /// should therefor be replaced.
     /// </remarks>
     [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer) 
+    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
         where TValue: class?
     {

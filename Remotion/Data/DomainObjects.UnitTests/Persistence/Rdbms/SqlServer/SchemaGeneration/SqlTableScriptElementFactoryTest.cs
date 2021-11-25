@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var idColumn = new ColumnDefinition("ID", StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation(false), true);
       var classIDColumn = new ColumnDefinition("ClassID", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation(true), false);
       var objectIDProperty = new ObjectIDStoragePropertyDefinition(
-          new SimpleStoragePropertyDefinition(typeof(object), idColumn), 
+          new SimpleStoragePropertyDefinition(typeof(object), idColumn),
           new SimpleStoragePropertyDefinition(typeof(string), classIDColumn));
       var timestampColumn = new ColumnDefinition("Timestamp", StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation(true), false);
       var timestampProperty = new SimpleStoragePropertyDefinition(typeof(object), timestampColumn);

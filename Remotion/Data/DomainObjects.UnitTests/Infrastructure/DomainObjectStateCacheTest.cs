@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       UnloadService.UnloadData(_transaction, _existingOrder.ID);
       var stateBeforeChange = _cachingListener.GetState(_existingOrder.ID);
-      
+
       _transaction.EnsureDataAvailable(_existingOrder.ID);
       var stateAfterChange = _cachingListener.GetState(_existingOrder.ID);
 

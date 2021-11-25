@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext>();
 
       Assert.That(
-          () => action(new InitializedEventDomainObjectTransactionContextDecorator(contextMock)), 
+          () => action(new InitializedEventDomainObjectTransactionContextDecorator(contextMock)),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "While the OnReferenceInitializing event is executing, this member cannot be used."));
 

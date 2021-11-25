@@ -28,7 +28,7 @@ namespace Remotion.Web.Compilation
   /// <remarks>
   /// Use the <see cref="FileLevelControlBuilderAttribute"/> to apply the extension point to a class derived from <see cref="Page"/>.
   /// </remarks>
-  public class CodeProcessingPageControlBuilder : FileLevelPageControlBuilder 
+  public class CodeProcessingPageControlBuilder : FileLevelPageControlBuilder
   {
     public override void ProcessGeneratedCode (
         CodeCompileUnit codeCompileUnit,

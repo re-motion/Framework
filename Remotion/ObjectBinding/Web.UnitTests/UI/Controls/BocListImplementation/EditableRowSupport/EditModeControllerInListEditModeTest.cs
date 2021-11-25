@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       SetValues((EditableRow) Controller.Controls[4], "New Value E", "500");
 
       Controller.SwitchListIntoEditMode(Columns);
-     
+
       CheckEvents(expectedEvents, ActualEvents);
 
       Assert.That(Controller.IsListEditModeActive, Is.True);
@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       SetValues((EditableRow) Controller.Controls[4], "New Value E", "");
 
       Controller.SwitchListIntoEditMode(Columns);
-     
+
       CheckEvents(expectedEvents, ActualEvents);
 
       Assert.That(Controller.IsListEditModeActive, Is.True);
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       SetValues((EditableRow) Controller.Controls[0], "New Value C", "300");
 
       Controller.SwitchListIntoEditMode(Columns);
-     
+
       CheckEvents(expectedEvents, ActualEvents);
 
       Assert.That(Controller.IsListEditModeActive, Is.True);
@@ -199,7 +199,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       SetValues((EditableRow) Controller.Controls[0], "New Value C", "");
 
       Controller.SwitchListIntoEditMode(Columns);
-     
+
       CheckEvents(expectedEvents, ActualEvents);
 
       Assert.That(Controller.IsRowEditModeActive, Is.True);
@@ -439,7 +439,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.Controls[3].ID, Is.EqualTo(string.Format(idFormat, 3)));
       Assert.That(Controller.Controls[4].ID, Is.EqualTo(string.Format(idFormat, 4)));
     }
-    
+
     [Test]
     public void EnsureEditModeRestoredWithAddedRow ()
     {
@@ -874,7 +874,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.Validate(), Is.False);
     }
 
-  
+
     [Test]
     public void PrepareValidation ()
     {
@@ -887,9 +887,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
         BocTextValue stringValueField = (BocTextValue) editableRow.GetEditControl(0);
         BocTextValue int32ValueField = (BocTextValue) editableRow.GetEditControl(1);
-      
+
         Controller.PrepareValidation();
-      
+
         Assert.AreEqual(stringValueField.Text, stringValueField.Text, "Row {0}", i);
         Assert.AreEqual(int32ValueField.Text, int32ValueField.Text, "Row {0}", i);
       }
@@ -915,7 +915,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Controller.SwitchListIntoEditMode(Columns);
 
       EditableRow row = (EditableRow) Controller.Controls[2];
-      Remotion.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
+      Remotion.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField =
           (Remotion.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl(0);
       stringValueField.Value = "New Value";
 

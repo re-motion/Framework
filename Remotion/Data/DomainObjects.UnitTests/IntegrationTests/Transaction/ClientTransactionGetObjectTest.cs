@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
       Assert.That(
-          () => LifetimeService.GetObject(TestableClientTransaction, notFoundID, true), 
+          () => LifetimeService.GetObject(TestableClientTransaction, notFoundID, true),
           Throws.TypeOf<ObjectsNotFoundException>().With.Property("IDs").EqualTo(new[] { notFoundID }));
     }
 
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           () => LifetimeService.GetObject(TestableClientTransaction, domainObject.ID, true),
           Throws.TypeOf<ObjectInvalidException>().With.Message.EqualTo(expectedMessage));
       Assert.That(
-          () => LifetimeService.GetObject(TestableClientTransaction, domainObject.ID, false), 
+          () => LifetimeService.GetObject(TestableClientTransaction, domainObject.ID, false),
           Throws.TypeOf<ObjectInvalidException>().With.Message.EqualTo(expectedMessage));
     }
 
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           DomainObjectIDs.OrderItem1);
 
       var expectedObjects = new object[] {
-          DomainObjectIDs.Order1.GetObject<Order>(), 
+          DomainObjectIDs.Order1.GetObject<Order>(),
           DomainObjectIDs.Order3.GetObject<Order>(),
           DomainObjectIDs.OrderItem1.GetObject<OrderItem>()};
       Assert.That(objects, Is.EqualTo(expectedObjects));
@@ -296,14 +296,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order newObject = Order.NewObject();
       var guid = new Guid("33333333333333333333333333333333");
       Order[] objects = LifetimeService.TryGetObjects<Order>(
-          TestableClientTransaction, 
+          TestableClientTransaction,
           DomainObjectIDs.Order1,
           newObject.ID,
           new ObjectID(typeof(Order), guid),
           DomainObjectIDs.Order3);
-      var expectedObjects = new DomainObject[] { 
-          DomainObjectIDs.Order1.GetObject<Order>(), 
-          newObject, 
+      var expectedObjects = new DomainObject[] {
+          DomainObjectIDs.Order1.GetObject<Order>(),
+          newObject,
           null,
           DomainObjectIDs.Order3.GetObject<Order>() };
       Assert.That(objects, Is.EqualTo(expectedObjects));

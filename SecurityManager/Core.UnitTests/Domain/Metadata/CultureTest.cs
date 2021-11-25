@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
-    
+
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateAndCommitSecurableClassDefinitionWithLocalizedNames(ClientTransaction.CreateRootTransaction());
     }

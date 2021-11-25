@@ -95,7 +95,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessTypeAndAttachToAce(ace, false);
       AccessTypeDefinition copyAccessType = _testHelper.CreateAccessTypeForAce(ace, true, Guid.NewGuid(), "Copy", 3);
       AccessTypeDefinition moveAccessType = _testHelper.CreateAccessTypeForAce(ace, false, Guid.NewGuid(), "Move", 4);
-      
+
       AccessControlList acl = _testHelper.CreateStatefulAcl(ace);
       SecurityToken token = _testHelper.CreateTokenWithoutUser();
 
@@ -130,7 +130,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       AccessTypeDefinition readAccessType = _testHelper.CreateAccessTypeForAce(ace1, true, Guid.NewGuid(), "Read", 0);
       AccessTypeDefinition copyAccessType = _testHelper.CreateAccessTypeForAce(ace1, true, Guid.NewGuid(), "Copy", 1);
       AccessTypeDefinition indexAccessType = _testHelper.CreateAccessTypeForAce(ace1, true, Guid.NewGuid(), "Index", 2);
-      
+
       AccessTypeDefinition moveAccessType = _testHelper.CreateAccessTypeForAce(ace1, false, Guid.NewGuid(), "Move", 3);
       AccessTypeDefinition appendAccessType = _testHelper.CreateAccessTypeForAce(ace1, false, Guid.NewGuid(), "Append", 4);
       AccessTypeDefinition renameAccessType = _testHelper.CreateAccessTypeForAce(ace1, false, Guid.NewGuid(), "Rename", 5);
@@ -145,11 +145,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       _testHelper.AttachAccessType(ace2, readAccessType, true);
       _testHelper.AttachAccessType(ace2, copyAccessType, false);
       _testHelper.AttachAccessType(ace2, indexAccessType, null);
-  
+
       _testHelper.AttachAccessType(ace2, moveAccessType, true);
       _testHelper.AttachAccessType(ace2, appendAccessType, false);
       _testHelper.AttachAccessType(ace2, renameAccessType, null);
-  
+
       _testHelper.AttachAccessType(ace2, writeAccessType, true);
       _testHelper.AttachAccessType(ace2, deleteAccessType, false);
       _testHelper.AttachAccessType(ace2, findAccessType, null);
@@ -173,7 +173,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         accessInformation.AllowedAccessTypes,
         Is.EquivalentTo(new[] { readAccessType, indexAccessType, writeAccessType }));
       Assert.That(
-        accessInformation.DeniedAccessTypes, 
+        accessInformation.DeniedAccessTypes,
         Is.EquivalentTo(new[] { copyAccessType, moveAccessType, appendAccessType, renameAccessType, deleteAccessType }));
     }
 

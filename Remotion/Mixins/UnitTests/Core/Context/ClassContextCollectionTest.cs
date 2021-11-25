@@ -174,7 +174,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void GetWithInheritance_Cached ()
     {
       Assert.That(_collectionWithObjectAndString.ContainsExact(typeof(ClassContextInheritanceTest)), Is.False);
-      
+
       var inheritedContext1 = _collectionWithObjectAndString.GetWithInheritance(typeof(ClassContextCollectionTest));
       var inheritedContext2 = _collectionWithObjectAndString.GetWithInheritance(typeof(ClassContextCollectionTest));
 

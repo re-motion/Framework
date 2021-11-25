@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         listenerMock
             .Expect(mock => mock.ObjectsUnloading(
-                Arg.Is(TestableClientTransaction), 
+                Arg.Is(TestableClientTransaction),
                 Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })))
             .WhenCalled(
             mi =>
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
             });
         listenerMock
             .Expect(mock => mock.ObjectsUnloaded(
-                Arg.Is(TestableClientTransaction), 
+                Arg.Is(TestableClientTransaction),
                 Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })))
             .WhenCalled(
             mi =>
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var endPointID = RelationEndPointID.Resolve(order1, o => o.OrderItems);
       var orderItemA = order1.OrderItems[0];
       var orderItemB = order1.OrderItems[1];
-      
+
       // Change a single OrderItem - this must cause nothing to be unloaded
       orderItemB.Product = "Changed";
 
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       CheckDataContainerExists(orderItemA, true);
       CheckDataContainerExists(orderItemB, true);
       CheckVirtualEndPointExistsAndComplete(endPointID, true, true);
-      
+
       Assert.That(() => UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, endPointID), Throws.InvalidOperationException);
 
       CheckDataContainerExists(orderItemA, true);

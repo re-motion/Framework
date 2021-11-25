@@ -33,9 +33,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly IEnumerable<RequiredTargetCallTypeDefinition> _requiredTargetCallTypes;
 
     public ImplementedInterfaceFinder (
-        IEnumerable<Type> alreadyImplementedInterfaces, 
-        IEnumerable<InterfaceIntroductionDefinition> receivedInterfaces, 
-        IEnumerable<RequiredTargetCallTypeDefinition> requiredTargetCallTypes, 
+        IEnumerable<Type> alreadyImplementedInterfaces,
+        IEnumerable<InterfaceIntroductionDefinition> receivedInterfaces,
+        IEnumerable<RequiredTargetCallTypeDefinition> requiredTargetCallTypes,
         IEnumerable<IMixinInfo> mixinInfos)
     {
       ArgumentUtility.CheckNotNull("alreadyImplementedInterfaces", alreadyImplementedInterfaces);

@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
       }
     }
-    
+
     /// <summary> 
     ///   Creates a <see cref="BocDropDownMenuColumnDefinition"/> if <see cref="RowMenuDisplay"/> is set to
     ///   <see cref="Controls.RowMenuDisplay.Automatic"/>.

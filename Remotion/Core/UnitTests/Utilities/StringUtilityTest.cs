@@ -28,9 +28,9 @@ namespace Remotion.UnitTests.Utilities
 [TestFixture]
 public class StringUtilityTest
 {
-  private enum TestEnum 
-  { 
-    Value1 
+  private enum TestEnum
+  {
+    Value1
   }
 
   private CultureInfo _cultureBackup;
@@ -55,7 +55,7 @@ public class StringUtilityTest
   {
     _cultureEnUs = new CultureInfo("en-US");
     _cultureDeDe = new CultureInfo("de-DE");
-    
+
     _cultureBackup = Thread.CurrentThread.CurrentCulture;
     Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -676,7 +676,7 @@ public class StringUtility_ParseSeparatedListTest
 
   private void Check (
       string value,
-      char delimiter, char openingQuote, char closingQuote, char escapingChar, string whitespaceCharacters, 
+      char delimiter, char openingQuote, char closingQuote, char escapingChar, string whitespaceCharacters,
       bool interpretSpecialCharacters,
       params StringUtility.ParsedItem[] expectedItems)
   {

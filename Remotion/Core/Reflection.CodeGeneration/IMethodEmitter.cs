@@ -29,7 +29,7 @@ namespace Remotion.Reflection.CodeGeneration
     ArgumentReference[] ArgumentReferences { get; }
     Type ReturnType { get; }
     Type[] ParameterTypes { get; }
-    
+
     Expression[] GetArgumentExpressions ();
     IMethodEmitter ImplementByReturning (Expression result);
     IMethodEmitter ImplementByReturningVoid ();

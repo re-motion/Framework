@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.InheritanceRootSample
   {
     public StorageGroupClass ()
     {
-    
+
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]

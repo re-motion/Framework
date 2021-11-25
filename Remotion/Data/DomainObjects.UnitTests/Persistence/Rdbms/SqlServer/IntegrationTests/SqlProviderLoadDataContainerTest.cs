@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void LoadDataContainerWithoutIDColumn ()
     {
       ObjectID id = new ObjectID(typeof(ClassWithoutIDColumn), new Guid("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
-      
+
       var rdbmsProviderException = Assert.Throws<RdbmsProviderException>(
           () =>
           {

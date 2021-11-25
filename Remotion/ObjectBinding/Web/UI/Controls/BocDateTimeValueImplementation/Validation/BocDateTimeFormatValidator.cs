@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       // Empty date defaults to 01.01.0001 
       DateTime dateTimeFirstDay = DateTime.Parse(dateValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.NoCurrentDateDefault);
-      
+
       //  Empty date defaults to today
       DateTime dateTimeToday = DateTime.Parse(dateValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None);
 

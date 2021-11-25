@@ -134,7 +134,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-      
+
       base.LoadResources(resourceManager, globalizationService);
       if (Command != null)
         Command.LoadResources(resourceManager, globalizationService);

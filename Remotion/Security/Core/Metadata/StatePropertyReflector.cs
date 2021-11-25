@@ -64,7 +64,7 @@ namespace Remotion.Security.Metadata
 
       if (!Attribute.IsDefined(property.PropertyType, typeof(SecurityStateAttribute), false))
       {
-        throw new ArgumentException(string.Format("The type of the property '{0}' in type '{1}' does not have the {2} applied.", 
+        throw new ArgumentException(string.Format("The type of the property '{0}' in type '{1}' does not have the {2} applied.",
                 property.Name, property.DeclaringType!.GetFullNameSafe(), typeof(SecurityStateAttribute).GetFullNameSafe()),
             "property");
       }

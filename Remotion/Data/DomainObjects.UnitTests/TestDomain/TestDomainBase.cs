@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public DataContainer InternalDataContainer
     {
-      get 
+      get
       {
         var transaction = RootTransaction.ActiveTransaction;
         return GetInternalDataContainerForTransaction(transaction);
@@ -195,12 +195,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     protected override void OnLoaded (LoadMode loadMode)
     {
       base.OnLoaded(loadMode);
- 
+
       OnLoadedCalled = true;
       OnLoadedTx = ClientTransaction.Current;
       OnLoadedLoadMode = loadMode;
       ++OnLoadedCallCount;
-      
+
       if (ProtectedLoaded != null)
         ProtectedLoaded(this, EventArgs.Empty);
       if (StaticLoadHandler != null)

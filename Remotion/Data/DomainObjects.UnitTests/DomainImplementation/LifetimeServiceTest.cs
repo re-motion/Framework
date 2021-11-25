@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var id = new ObjectID(typeof(Order), Guid.NewGuid());
       Assert.That(TestableClientTransaction.IsInvalid(id), Is.False);
-      
+
       var result = LifetimeService.TryGetObject(TestableClientTransaction, id);
 
       Assert.That(result, Is.Null);

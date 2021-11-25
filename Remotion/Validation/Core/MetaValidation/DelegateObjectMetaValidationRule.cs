@@ -9,7 +9,7 @@ namespace Remotion.Validation.MetaValidation
   /// Implementation of <seealso cref="IObjectMetaValidationRule"/> which uses a <see cref="Delegate"/> to validate a set of <see cref="IObjectValidator"/>s.
   /// </summary>
   /// <typeparam name="TValidator">The type of the <see cref="IObjectValidator"/> to which the validation is constrained.</typeparam>
-  public class DelegateObjectMetaValidationRule<TValidator> : ObjectMetaValidationRuleBase<TValidator> 
+  public class DelegateObjectMetaValidationRule<TValidator> : ObjectMetaValidationRuleBase<TValidator>
       where TValidator : IObjectValidator
   {
     private readonly Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> _metaValidationRule;
@@ -17,7 +17,7 @@ namespace Remotion.Validation.MetaValidation
     public DelegateObjectMetaValidationRule (Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRule)
     {
       ArgumentUtility.CheckNotNull("metaValidationRule", metaValidationRule);
-      
+
       _metaValidationRule = metaValidationRule;
     }
 

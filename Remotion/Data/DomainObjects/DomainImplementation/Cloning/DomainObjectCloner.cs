@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull("source", source);
-      
+
       T clone = CreateCloneHull(source);
       CopyProperties(source, clone, null, null);
       InvokeClonerCallback(source, clone, _cloneTransaction);

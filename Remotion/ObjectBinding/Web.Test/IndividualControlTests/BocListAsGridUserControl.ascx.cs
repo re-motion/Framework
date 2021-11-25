@@ -82,10 +82,10 @@ public class BocListAsGridUserControl : BaseUserControl
     AddRowsButton.Click += new EventHandler(AddRowsButton_Click);
     RemoveRowsButton.Click += new EventHandler(RemoveRowsButton_Click);
     RemoveItemsButton.Click += new EventHandler(RemoveItemsButton_Click);
-    
+
     ChildrenList.ListItemCommandClick += new BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
     ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
-    
+
     ChildrenList.DataRowRender += new BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
 
     ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler(ChildrenList_EditableRowChangesCanceling);
@@ -264,7 +264,7 @@ public class BocListAsGridUserControl : BaseUserControl
   private void AddRowsButton_Click (object sender, EventArgs e)
   {
     int count = 0;
-    
+
     if (NumberOfNewRowsField.Validate())
       count = (int) NumberOfNewRowsField.Value;
 

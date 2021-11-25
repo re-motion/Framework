@@ -80,8 +80,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
         Assert.That(ex, Is.TypeOf(typeof(TException)));
         var expectedMessage = String.Format(expectedMessageFormatString, formatArgs);
         Assert.That(
-            ex.Message, 
-            Does.Contain(expectedMessage), 
+            ex.Message,
+            Does.Contain(expectedMessage),
             "Expected: " + expectedMessage + Environment.NewLine + "Was: " + ex.Message);
       }
 
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
       computer = CreateComputerAndSetEmployeeInOtherTransaction(employee2.ID).GetObject<Computer>();
       Assert.That(computer.Employee, Is.SameAs(employee2));
-      
+
       // 1:1 relations automatically cause virtual end-points to be marked loaded when the foreign key object is loaded, so unload the virtual side
       UnloadService.UnloadVirtualEndPoint(ClientTransaction.Current, RelationEndPointID.Resolve(employee2, e => e.Computer));
 

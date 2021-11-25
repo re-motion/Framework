@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     public void DependencyOnInterface_ViaAssemblyLevelAttribute_IsResolvedToImplementingMixin ()
     {
       PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(C), typeof(M1), typeof(IM2)));
-      
+
       var instance = ObjectFactory.Create<C>();
 
       var result = instance.M();

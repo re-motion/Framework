@@ -120,7 +120,7 @@ namespace Remotion.Web.UI.Controls
     public string GetUpdateScriptReference (string getSelectionCount)
     {
       ArgumentUtility.CheckNotNullOrEmpty("getSelectionCount", getSelectionCount);
-      
+
       return string.Format("ListMenu.Update ('#{0}', {1});", ClientID, getSelectionCount);
     }
 

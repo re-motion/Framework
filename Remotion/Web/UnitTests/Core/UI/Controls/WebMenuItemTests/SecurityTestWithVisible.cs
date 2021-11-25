@@ -173,7 +173,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
       menuItem.Command = null;
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       menuItem.SecurableObject = _mockSecurableObject.Object;
-      
+
       return menuItem;
     }
   }

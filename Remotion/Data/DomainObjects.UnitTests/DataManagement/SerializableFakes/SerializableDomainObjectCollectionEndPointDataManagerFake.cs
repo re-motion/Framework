@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-     
+
     }
   }
 }

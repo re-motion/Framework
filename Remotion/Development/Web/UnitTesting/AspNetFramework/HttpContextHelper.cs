@@ -111,7 +111,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
       PrivateInvoke.SetNonPublicField(context.Request, "_params", null);
     }
- 
+
     protected static HttpSessionState CreateSession ()
     {
       HttpSessionState sessionState;

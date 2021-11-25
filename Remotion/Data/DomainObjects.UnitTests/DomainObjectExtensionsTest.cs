@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var transaction = new TestableClientTransaction();
       var order = DomainObjectMother.GetNotLoadedObject(transaction, DomainObjectIDs.Order1);
       Assert.That(transaction.DataManager.DataContainers[order.ID], Is.Null);
-      
+
       transaction.ExecuteInScope(order.EnsureDataAvailable);
 
       Assert.That(transaction.DataManager.DataContainers[order.ID], Is.Not.Null);

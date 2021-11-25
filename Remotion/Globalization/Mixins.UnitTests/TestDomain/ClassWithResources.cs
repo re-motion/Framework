@@ -27,6 +27,6 @@ namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
     {
       get { return _value1; }
       set { _value1 = value; }
-    } 
+    }
   }
 }

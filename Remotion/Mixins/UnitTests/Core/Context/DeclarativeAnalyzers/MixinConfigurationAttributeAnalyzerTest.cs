@@ -56,7 +56,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
 
       attributeMock1.Expect(mock => mock.Apply(_fakeConfigurationBuilder, _fakeEntity));
       attributeMock2.Expect(mock => mock.Apply(_fakeConfigurationBuilder, _fakeEntity));
-      
+
       analyzer.Analyze(_fakeEntity, _fakeConfigurationBuilder);
 
       attributeMock1.VerifyAllExpectations();

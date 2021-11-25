@@ -32,7 +32,7 @@ namespace Remotion.Globalization.Implementation
   {
     private readonly IResourceManagerResolver _resourceManagerResolver;
 
-    private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache = 
+    private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache =
         new ConcurrentDictionary<ITypeInformation, IResourceManager>();
 
     private readonly Func<ITypeInformation, IResourceManager> _getResourceManagerImplementationFunc;

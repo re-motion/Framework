@@ -539,6 +539,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
 
-    
+
   }
 }

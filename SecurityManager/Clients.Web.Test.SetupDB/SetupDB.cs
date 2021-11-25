@@ -85,7 +85,7 @@ public class SetupDB
             connection.Open();
 
             Console.WriteLine("Ensure DB exists...");
-            DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "CreateDB.sql"), connection, _databaseName, databaseFilesPath);  
+            DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "CreateDB.sql"), connection, _databaseName, databaseFilesPath);
           }
         }
         catch (SqlException)
@@ -160,7 +160,7 @@ public class SetupDB
 
       arguments.Add(argname.ToLower(), argvalue);
     }
-    
+
     if (arguments["s"] == null && arguments["l"] == null)
       throw new ApplicationException("At least one of the following arguments must be specified: /s, /l.");
 
@@ -173,7 +173,7 @@ public class SetupDB
     {
       switch (arguments["l"].ToString().ToLower())
       {
-        case "t": 
+        case "t":
           _loadDataAction = LoadDataAction.Test;
           break;
         default:

@@ -58,7 +58,7 @@ namespace Remotion.Context
       get
       {
         T? current = GetCurrentInternal();
-          
+
         if (current == null)
         {
           current = _creator();

@@ -103,7 +103,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       var expectedDirectory1 = Directory.CreateDirectory(Path.Combine(_testDirectory, "subDirectory1"));
       var expectedFile1 = Path.Combine(_testDirectory, "expetedFile1.txt");
       File.WriteAllText(expectedFile1, "hello");
-      
+
       var resourceVirtualDirectory = new ResourceVirtualDirectory("~/res/test/", new DirectoryInfo(_testDirectory));
 
       var actual = resourceVirtualDirectory.Children.Cast<VirtualFileBase>().ToArray();

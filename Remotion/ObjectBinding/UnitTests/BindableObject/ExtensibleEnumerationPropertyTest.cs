@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               property))
           .Returns(false)
           .Verifiable();
-      
+
       var info = property.CreateEnumerationValueInfo(extensibleEnumInfo, businessObjectStub.Object);
 
       filterMock.Verify();
@@ -190,7 +190,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           () => property.GetValueInfoByIdentifier("?", null),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "The identifier '?' does not identify a defined value for type " 
+                  "The identifier '?' does not identify a defined value for type "
                   + "'Remotion.ObjectBinding.UnitTests.TestDomain.ExtensibleEnumWithResources'.", "identifier"));
     }
 
@@ -255,7 +255,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       return new ExtensibleEnumerationProperty(GetPropertyParameters(propertyInfoStub.Object, _businessObjectProvider));
     }
-    
+
     private bool IsEnabled (ExtensibleEnumerationProperty propertyWithFilteredType, IExtensibleEnum value)
     {
       return propertyWithFilteredType.CreateEnumerationValueInfo(value.GetValueInfo(), null).IsEnabled;

@@ -95,7 +95,7 @@ namespace Remotion.Validation.IntegrationTests
       person.LastName = "value";
 
       var validator = ValidationBuilder.BuildValidator<Person>();
-      
+
       using (new CultureScope("de-AT"))
       {
         var result = validator.Validate(person);
@@ -116,7 +116,7 @@ namespace Remotion.Validation.IntegrationTests
     [Ignore ("RM-5906: Build test for each validator type and evaluate message for all supported cultures.")]
     public void LengthValidator_CanBuildFormattedValidationMessage ()
     {
-      
+
     }
   }
 }

@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
       ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
-      
+
       _cache = new SecurityContextRevisionBasedCache(revisionProvider);
       _userNamesCache = new SecurityContextUserNamesRevisionBasedCache(userRevisionProvider);
     }

@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsDisabled(), Is.True);
       Assert.That(
-          () => control.FillWith("text"), 
+          () => control.FillWith("text"),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "FillWith").Message));
       Assert.That(
           () => control.FillWith("text", FinishInput.Promptly),
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsReadOnly(), Is.True);
       Assert.That(
-          () => control.FillWith("text"), 
+          () => control.FillWith("text"),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
           () => control.FillWith("text", FinishInput.Promptly),
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => control.FillWith(new[] { "text" }),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.FillWith(new[] { "text" }, FinishInput.Promptly), 
+          () => control.FillWith(new[] { "text" }, FinishInput.Promptly),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 

@@ -61,7 +61,7 @@ namespace Remotion.Development.Web.UnitTesting.UI
       _control = control;
       _property = property;
     }
- 
+
     public override void HandleWarning (int priority)
     {
       HandleWarning(priority, null, null);
@@ -80,12 +80,12 @@ namespace Remotion.Development.Web.UnitTesting.UI
       _control = control;
       _property = property;
     }
- 
+
     public override void HandleError (string message)
     {
       throw new NotSupportedException("Not supported for testing purposes. Use the HandleError (int, [Control, [string]]) overload instead.");
     }
- 
+
     public override void HandleWarning (string message)
     {
       throw new NotSupportedException("Not supported for testing purposes. Use the HandleWarning (int, [Control, [string]]) overload instead.");

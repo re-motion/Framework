@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       _mappingObjectFactoryMock = MockRepository.GenerateStrictMock<IMappingObjectFactory>();
       _factory = new RelationDefinitionCollectionFactory(_mappingObjectFactoryMock);
       _orderClassDefinition = MappingConfiguration.Current.GetClassDefinition("Order");

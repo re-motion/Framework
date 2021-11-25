@@ -41,12 +41,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       base.SetUp();
 
       _employee1 = Employee.NewObject();
-      
+
       _computer1 = Computer.NewObject();
       _computer2 = Computer.NewObject();
 
       _employee1.Computer = _computer1;
-      
+
       TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope();
 
       _employee1.Computer.EnsureDataAvailable();
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       CheckCurrentData(_computer2);
       CheckCurrentOppositeEndPoint(_computer2EndPoint);
     }
-    
+
     private T GetEndPoint<T> (RelationEndPointID endPointID) where T : IRelationEndPoint
     {
       var relationEndPointID = endPointID;

@@ -42,9 +42,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     // IEqualityComparer for value based comparison of AclExpansionEntry|s.
     private static readonly CompoundValueEqualityComparer<AclExpansionEntry> _aclExpansionEntryEqualityComparer =
       new CompoundValueEqualityComparer<AclExpansionEntry>(a => new object[] {
-          a.User, 
-          a.Role, 
-          a.Class, 
+          a.User,
+          a.Role,
+          a.Class,
           a.AccessControlList is StatefulAccessControlList ? ComponentwiseEqualsAndHashcodeWrapper.New(a.GetStateCombinations()) : null,
           a.AccessConditions.AbstractRole,
           a.AccessConditions.GroupHierarchyCondition,

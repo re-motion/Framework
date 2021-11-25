@@ -38,7 +38,7 @@ namespace Remotion.Reflection
         new ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter>(MemberInfoEqualityComparer<PropertyInfo>.Instance);
 
     ///<remarks>Optimized for memory allocations</remarks>
-    private static readonly Func<PropertyInfo, PropertyInfoAdapter> s_ctorFunc = pi => new PropertyInfoAdapter(pi); 
+    private static readonly Func<PropertyInfo, PropertyInfoAdapter> s_ctorFunc = pi => new PropertyInfoAdapter(pi);
 
     public static PropertyInfoAdapter Create (PropertyInfo propertyInfo)
     {
@@ -223,11 +223,11 @@ namespace Remotion.Reflection
       var implementationMethod = interfaceAccessorMethod.FindInterfaceImplementation(implementationType);
       if (implementationMethod == null)
         return null;
-      
+
       var implementationProperty = implementationMethod.FindDeclaringProperty();
-      
+
       Assertion.IsNotNull(
-          implementationProperty, 
+          implementationProperty,
           "We assume that property acessor '" + implementationMethod + "' must be found on '" + implementationType + "'.");
 
       return implementationProperty;

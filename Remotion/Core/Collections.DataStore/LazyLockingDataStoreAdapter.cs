@@ -112,7 +112,7 @@ namespace Remotion.Collections.DataStore
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
-      
+
 
       if (_innerDataStore.TryGetValue(key, out var result))
       {

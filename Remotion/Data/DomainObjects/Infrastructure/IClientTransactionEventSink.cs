@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IRelationEndPointDefinition relationEndPointDefinition,
         DomainObject oldRelatedObject,
         DomainObject newRelatedObject);
-    
+
     // User event
     QueryResult<T> RaiseFilterQueryResultEvent<T> (QueryResult<T> queryResult) where T : DomainObject;
     // Infrastructure event, may become user event if needed

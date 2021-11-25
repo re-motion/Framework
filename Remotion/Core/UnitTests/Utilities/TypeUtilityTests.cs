@@ -57,7 +57,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestAbbreviatedTypeName ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "Remotion.UnitTests::Utilities.TypeUtilityTests",
           "Remotion.UnitTests.Utilities.TypeUtilityTests, Remotion.UnitTests");
     }
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestAbbreviatedTypeName_WithNestedType ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedType",
           "Remotion.UnitTests.Utilities.TypeUtilityTests+NestedType, Remotion.UnitTests");
     }
@@ -73,7 +73,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestAbbreviatedOpenGenericTypeName ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "A.B::C.D`2",
           "A.B.C.D`2, A.B");
     }
@@ -81,7 +81,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestAbbreviatedClosedGenericTypeName ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "A.B::C.D`2[a.b::c.d,System.String]",
           "A.B.C.D`2[[a.b.c.d, a.b],System.String], A.B");
     }
@@ -89,7 +89,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestAbbreviatedTypeArgumentWithOptionalBrackets ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "Dictionary`2[[a.b::c.d],System.String]",
           "Dictionary`2[[a.b.c.d, a.b],System.String]");
     }
@@ -97,7 +97,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestClosedGenericTypeNameWithAbbreviatedTypeArgument ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "A.B.C.D`2[a.b::c.d,System.String], A.B",
           "A.B.C.D`2[[a.b.c.d, a.b],System.String], A.B");
     }
@@ -105,7 +105,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestPartiallyAbbreviatedClosedGenericTypeName ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "A.B::C.D`2[a.b::c.d,System.String], Version=1.0.0.0",
           "A.B.C.D`2[[a.b.c.d, a.b],System.String], A.B, Version=1.0.0.0");
     }
@@ -113,7 +113,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void TestAbbreviatedClosedGenericTypeWithPartiallyAbbreviatedTypeArgument ()
     {
-      AssertTransformation(  
+      AssertTransformation(
           "A.B::C.D`2[[a.b::c.d, Version=1.0.0.0],System.String]",
           "A.B.C.D`2[[a.b.c.d, a.b, Version=1.0.0.0],System.String], A.B");
     }

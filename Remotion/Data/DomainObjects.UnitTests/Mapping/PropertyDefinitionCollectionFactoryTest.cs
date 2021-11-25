@@ -40,13 +40,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void CreatePropertyDefinitions ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
-      
+
       var propertyInfo1 = PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderNumber"));
       var propertyInfo2 = PropertyInfoAdapter.Create(typeof(Order).GetProperty("DeliveryDate"));
 
       var fakePropertyDefinition1 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "P1");
       var fakePropertyDefinition2 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "P2");
-      
+
       _mappingObjectFactoryMock
           .Expect(mock => mock.CreatePropertyDefinition(classDefinition, propertyInfo1))
           .Return(fakePropertyDefinition1);

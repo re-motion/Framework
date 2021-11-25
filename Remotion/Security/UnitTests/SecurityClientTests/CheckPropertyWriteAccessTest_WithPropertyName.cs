@@ -30,7 +30,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     private SecurityClient _securityClient;
     private Mock<IPropertyInformation> _propertyInformation;
     private Mock<IMethodInformation> _methodInformation;
-    
+
     [SetUp]
     public void SetUp ()
     {

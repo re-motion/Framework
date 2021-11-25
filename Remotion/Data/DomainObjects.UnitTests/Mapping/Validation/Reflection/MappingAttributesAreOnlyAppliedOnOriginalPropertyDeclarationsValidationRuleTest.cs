@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     {
       var type = typeof(DerivedClassWithMappingAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);
-      
+
       var validationResult = _validationRule.Validate(classDefinition).Where(r=>!r.IsValid).ToArray();
 
       var expectedMessage1 =
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void NonOriginalPropertiesDeclarationWithMappingAttributeOnMixin_NoInheritanceRoot ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassUsingMixinPropertiesNoInheritanceRoot));
-      
+
       var validationResult = _validationRule.Validate(classDefinition).ToArray();
 
       var expectedMessage1 =

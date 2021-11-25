@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           () => new DomainObjectWithSpecialConstructor("string"),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "DomainObject constructors must not be called directly. Use " 
+                  "DomainObject constructors must not be called directly. Use "
                   + "DomainObject.NewObject to create DomainObject instances."));
     }
 

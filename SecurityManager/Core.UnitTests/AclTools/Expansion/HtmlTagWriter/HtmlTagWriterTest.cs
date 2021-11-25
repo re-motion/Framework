@@ -109,7 +109,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.HtmlTagWriter
     {
       string[] tagNames = new[] { "html", "head", "title", "style", "body", "table", "th", "tr", "td", "p", "a"  };
       foreach (string tagName in tagNames)
-      { 
+      {
         AssertTagNameOpenCloseHtml(tagName);
       }
     }

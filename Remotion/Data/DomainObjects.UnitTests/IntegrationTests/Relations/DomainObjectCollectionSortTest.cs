@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       var eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
       eventReceiverMock.Expect(mock => mock.OnReplaceData());
       eventReceiverMock.Replay();
-      
+
       var orderCollection = _owningCustomer.Orders;
       orderCollection.SetEventReceiver(eventReceiverMock);
 

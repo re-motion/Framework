@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IDomainObjectCollectionEndPointLoadState _loadStateMock;
 
     private DomainObjectCollectionEndPoint _endPoint;
-    
+
     private IRealObjectEndPoint _relatedEndPointStub;
 
     public override void SetUp ()
@@ -86,10 +86,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Initialize ()
     {
       var endPoint = new DomainObjectCollectionEndPoint(
-          TestableClientTransaction, 
-          _customerEndPointID, 
+          TestableClientTransaction,
+          _customerEndPointID,
           _collectionManagerMock,
-          _lazyLoaderMock, 
+          _lazyLoaderMock,
           _endPointProviderStub,
           _transactionEventSinkStub,
           _dataManagerFactoryStub);
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(loadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
       Assert.That(((IncompleteDomainObjectCollectionEndPointLoadState) loadState).DataManagerFactory, Is.SameAs(_dataManagerFactoryStub));
       Assert.That(
-          ((IncompleteDomainObjectCollectionEndPointLoadState) loadState).EndPointLoader, 
+          ((IncompleteDomainObjectCollectionEndPointLoadState) loadState).EndPointLoader,
           Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock));
     }
 
@@ -331,7 +331,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(result, Is.False);
     }
-    
+
     [Test]
     public void EnsureDataComplete ()
     {
@@ -342,7 +342,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _loadStateMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void MarkDataComplete ()
     {
@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var dataManagerStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManager>();
       stateSetter(dataManagerStub);
-      
+
       var newLoadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.TypeOf(typeof(CompleteDomainObjectCollectionEndPointLoadState)));
 
@@ -389,7 +389,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint), Is.SameAs(_loadStateMock));
 
       stateSetter();
-      
+
       var newLoadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
       Assert.That(
@@ -512,7 +512,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _loadStateMock.VerifyAllExpectations();
       Assert.That(_endPoint.HasBeenTouched, Is.False);
     }
-    
+
     [Test]
     public void Rollback_TouchedUnchanged ()
     {
@@ -639,7 +639,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _loadStateMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void SynchronizeOppositeEndPoint ()
     {

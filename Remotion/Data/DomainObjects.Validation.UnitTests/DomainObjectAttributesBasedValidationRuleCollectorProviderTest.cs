@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       var result = _provider.GetValidationRuleCollectors(new[] { typeof(TypeWithDomainObjectAttributes) })
           .SelectMany(t => t)
           .SingleOrDefault();
-      
+
       Assert.That(result, Is.Not.Null);
       Assert.That(result.Collector.ValidatedType, Is.EqualTo(typeof(TypeWithDomainObjectAttributes)));
       Assert.That(result.Collector.AddedPropertyRules.Count, Is.EqualTo(12));

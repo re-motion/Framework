@@ -69,11 +69,11 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
           testHelper.CreateInvoiceClassDefinition();
 
           LocalizeClassEnDe(orderClass, "Order", "Bestellung");
-          
+
           LocalizeStatePropertyEnDe(orderClass, "Payment", "Payment", "Bezahlstatus");
           LocalizeStateEnDe(orderClass, "Payment", (int) PaymentState.None, "None", "Offen");
           LocalizeStateEnDe(orderClass, "Payment", (int) PaymentState.Paid, "Paid", "Bezahlt");
-          
+
           LocalizeStatePropertyEnDe(orderClass, "State", "Order State", "Bestellstatus");
           LocalizeStateEnDe(orderClass, "State", (int) OrderState.Delivered, "Delivered", "Ausgelifert");
           LocalizeStateEnDe(orderClass, "State", (int) OrderState.Received, "Received", "Erhalten");
@@ -98,13 +98,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
       LocalizedName.NewObject(nameGerman, _cultureDe, metadataObject);
       LocalizedName.NewObject(nameEnglish, _cultureEn, metadataObject);
     }
-  
+
     private void LocalizeClassEnDe (SecurableClassDefinition classDefinition, string nameEnglish, string nameGerman)
     {
       LocalizeMetadataObjectEnDe(classDefinition, nameEnglish, nameGerman);
     }
 
-    private void LocalizeStatePropertyEnDe (SecurableClassDefinition classDefinition, 
+    private void LocalizeStatePropertyEnDe (SecurableClassDefinition classDefinition,
       string statePropertyName, string nameEnglish, string nameGerman)
     {
       var stateProperty = classDefinition.GetStateProperty(statePropertyName);

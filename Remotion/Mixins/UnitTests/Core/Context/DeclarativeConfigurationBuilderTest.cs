@@ -178,7 +178,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That(configuration.ClassContexts,
           Is.EquivalentTo(new object[] { c1, parentConfiguration.GetContext(typeof(int)), _globalClassContext }));
     }
-    
+
     [Test]
     public void BuildConfiguration_Duplicates_NotIgnoredInGeneral ()
     {

@@ -237,7 +237,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotEmpty("value", value);
 
-      _loadMenuItemStatus = value; 
+      _loadMenuItemStatus = value;
     }
 
     string IControlWithDiagnosticMetadata.ControlType

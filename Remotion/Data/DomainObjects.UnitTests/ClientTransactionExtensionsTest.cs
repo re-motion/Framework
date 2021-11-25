@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void ExecuteInScope_Action_SetsCurrentTx ()
     {
       Assert.That(ClientTransaction.Current, Is.Null);
-      
+
       ClientTransaction currentInDelegate = null;
       Action action = () => currentInDelegate = ClientTransaction.Current;
 

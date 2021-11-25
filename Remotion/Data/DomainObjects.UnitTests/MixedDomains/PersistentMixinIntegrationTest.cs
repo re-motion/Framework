@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       Assert.That(relation.ID, Is.EqualTo(string.Format(
           "{0}:{1}.RelationProperty->{2}.RelationProperty1",
           typeof(TargetClassForPersistentMixin).FullName,
-          typeof(MixinAddingPersistentProperties).FullName, 
+          typeof(MixinAddingPersistentProperties).FullName,
           typeof(RelationTargetForPersistentMixin).FullName)));
     }
 
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       Assert.That(classDefinition.GetPropertyDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty"), Is.Null);
       Assert.That(classDefinition.GetRelationEndPointDefinition(typeof(RelationTargetForPersistentMixin).FullName + ".RelationProperty1").RelationDefinition, Is.Not.Null);
     }
-    
+
     [Test]
     public void DynamicChangeInPersistentMixinConfigurationThrowsInNewObject ()
     {

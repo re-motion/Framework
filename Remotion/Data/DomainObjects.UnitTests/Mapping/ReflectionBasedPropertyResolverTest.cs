@@ -145,8 +145,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ResolveDefinition_ExplicitInterfaceImplementation_FromImplementationProperty ()
     {
       var property = CreatePropertyInfoAdapterForExplicitImplementation(
-          typeof(IInterfaceWithProperty), 
-          "Property", 
+          typeof(IInterfaceWithProperty),
+          "Property",
           typeof(ClassWithInterfaceExplicitImplementation));
 
       var classDefinition = GetTypeDefinition(typeof(ClassWithInterfaceExplicitImplementation));

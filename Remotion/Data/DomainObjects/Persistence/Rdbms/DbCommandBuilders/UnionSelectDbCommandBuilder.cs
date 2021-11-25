@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
     private readonly ISelectedColumnsSpecification _selectedColumns;
     private readonly IComparedColumnsSpecification _comparedColumns;
     private readonly IOrderedColumnsSpecification _orderedColumns;
-    
+
     public UnionSelectDbCommandBuilder (
         UnionViewDefinition unionViewDefinition,
         ISelectedColumnsSpecification selectedColumns,

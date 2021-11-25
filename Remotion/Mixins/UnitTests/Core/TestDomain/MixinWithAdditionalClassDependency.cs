@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   }
 
   [Extends (typeof(TargetClassWithAdditionalDependencies), AdditionalDependencies = new Type[] { typeof( MixinWithNoAdditionalDependency ) })]
-  public class MixinWithAdditionalClassDependency : Mixin<object, ITargetClassWithAdditionalDependencies>, IMixinWithAdditionalClassDependency 
+  public class MixinWithAdditionalClassDependency : Mixin<object, ITargetClassWithAdditionalDependencies>, IMixinWithAdditionalClassDependency
   {
     [OverrideTarget]
     public string GetString ()

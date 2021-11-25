@@ -110,7 +110,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
       return this;
     }
 
- 
+
 
     public HtmlTagWriter Value (string s)
     {
@@ -168,7 +168,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     //------------------------------------------------------------
     // Dispose
     //------------------------------------------------------------
-    
+
     public void Close ()
     {
       _xmlWriter.Close();

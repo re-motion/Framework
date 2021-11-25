@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var statement = new StringBuilder();
       var command = MockRepository.GenerateStub<IDbCommand>();
-      
+
       var specificationMock = MockRepository.GenerateStrictMock<IComparedColumnsSpecification>();
       specificationMock.Expect(mock => mock.AddParameters(command, _sqlDialectStub));
       specificationMock
@@ -84,6 +84,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       specificationMock.VerifyAllExpectations();
       Assert.That(statement.ToString(), Is.EqualTo(" ORDER BY orders..."));
     }
-    
+
   }
 }

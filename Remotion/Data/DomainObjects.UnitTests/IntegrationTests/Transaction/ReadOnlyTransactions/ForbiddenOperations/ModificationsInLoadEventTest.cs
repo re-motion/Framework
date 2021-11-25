@@ -243,9 +243,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                 {
                   Assert.That(ClientTransaction.Current, Is.SameAs(ReadOnlyRootTransaction));
                   Assert.That(
-                      () => ReadOnlyMiddleTransaction.EnsureDataAvailable(_order.ID), 
+                      () => ReadOnlyMiddleTransaction.EnsureDataAvailable(_order.ID),
                       Throws.InvalidOperationException.With.Message.EqualTo(
-                          "It's not possible to load objects into a subtransaction while they are being loaded into a parent transaction: " 
+                          "It's not possible to load objects into a subtransaction while they are being loaded into a parent transaction: "
                           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
                   Assert.That(
                       () => WriteableSubTransaction.EnsureDataAvailable(_order.ID),
@@ -260,7 +260,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                 {
                   Assert.That(ClientTransaction.Current, Is.SameAs(ReadOnlyMiddleTransaction));
                   Assert.That(
-                      () => WriteableSubTransaction.EnsureDataAvailable(_order.ID), 
+                      () => WriteableSubTransaction.EnsureDataAvailable(_order.ID),
                       Throws.InvalidOperationException.With.Message.EqualTo(
                           "It's not possible to load objects into a subtransaction while they are being loaded into a parent transaction: "
                           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
@@ -292,9 +292,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       offendingObject = offendingObject ?? modifiedObject;
       offendingProperty = offendingProperty ?? GetPropertyAccessorData(modifiedObject, propertyExpression).PropertyIdentifier;
 
-      CheckForbiddenOperation(clientTransaction, 
-          () => SetProperty(clientTransaction, modifiedObject, propertyExpression, newValue), 
-          loadedObject, 
+      CheckForbiddenOperation(clientTransaction,
+          () => SetProperty(clientTransaction, modifiedObject, propertyExpression, newValue),
+          loadedObject,
           string.Format("The object '{0}' cannot be modified. (Modified property: '{1}'.)", offendingObject.ID, offendingProperty));
     }
 

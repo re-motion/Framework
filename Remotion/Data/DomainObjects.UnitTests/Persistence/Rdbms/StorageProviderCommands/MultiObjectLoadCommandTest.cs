@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
     private object _fakeResult1;
     private object _fakeResult2;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var command = new MultiObjectLoadCommand<object>(
           new[]
           {
-              Tuple.Create(_dbCommandBuilderMock1, _objectReaderStub1), 
+              Tuple.Create(_dbCommandBuilderMock1, _objectReaderStub1),
               Tuple.Create(_dbCommandBuilderMock2, _objectReaderStub2)
           });
 
@@ -120,10 +120,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _objectReaderStub2.Stub(stub => stub.ReadSequence(_dataReaderMock)).Return(new[] { _fakeResult2 });
 
       var command = new MultiObjectLoadCommand<object>(
-          new[] 
-          { 
-            Tuple.Create(_dbCommandBuilderMock1, _objectReaderStub1), 
-            Tuple.Create(_dbCommandBuilderMock2, _objectReaderStub2) 
+          new[]
+          {
+            Tuple.Create(_dbCommandBuilderMock1, _objectReaderStub1),
+            Tuple.Create(_dbCommandBuilderMock2, _objectReaderStub2)
           });
 
       var result = command.Execute(_commandExecutionContextStub).ToArray();

@@ -65,7 +65,7 @@ namespace Remotion.Configuration
             string.Format("The attribute '{0}' is missing in the configuration of the '{1}' provider.", attribute, providerName));
       }
       config.Remove(attribute);
-      
+
       return value;
     }
   }

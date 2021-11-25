@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialization ()
     {
       var attribute = new LinqPropertyRedirectionAttribute(typeof(Order), "OrderNumber");
-      
+
       var expected = Is.EqualTo(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(attribute.GetMappedProperty(), expected);
     }
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialization_NonPublicProperty ()
     {
       var attribute = new LinqPropertyRedirectionAttribute(typeof(ClassWithNonPublicProperties), "PrivateGetSet");
-      
+
       var expected = typeof(ClassWithNonPublicProperties).GetProperty("PrivateGetSet", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(attribute.GetMappedProperty(), Is.EqualTo(expected));
     }
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var transformer = attribute.GetExpressionTransformer(null);
 
       Assert.That(transformer, Is.TypeOf(typeof(LinqPropertyRedirectionAttribute.MethodCallTransformer)));
-      Assert.That(((LinqPropertyRedirectionAttribute.MethodCallTransformer) transformer).MappedProperty, 
+      Assert.That(((LinqPropertyRedirectionAttribute.MethodCallTransformer) transformer).MappedProperty,
           Is.SameAs(typeof(Order).GetProperty("OrderNumber")));
     }
 

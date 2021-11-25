@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
                 classDefinition.ID,
                 typeof(IRdbmsStoragePropertyDefinition).Name));
         }
-        
+
         Assertion.IsNotNull(propertyDefinition.StoragePropertyDefinition);
       }
     }

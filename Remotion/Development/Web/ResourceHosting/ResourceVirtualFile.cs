@@ -34,7 +34,7 @@ namespace Remotion.Development.Web.ResourceHosting
     {
       // TODO RM-8063: The constructor of ResourceVirtualFile should not accept null FileInfo arguments
       ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
-      
+
       _physicalFile = physicalFile;
     }
 

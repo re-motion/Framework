@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
     private VirtualRelationEndPointCardinalityMatchesPropertyTypeValidationRule _validationRule;
     private ClassDefinition _classDefinition;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var endPointDefinition = new AnonymousRelationEndPointDefinition(_classDefinition);
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
-      
+
       var validationResult = _validationRule.Validate(relationDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);

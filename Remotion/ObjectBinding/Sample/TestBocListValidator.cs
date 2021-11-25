@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Sample
       }
 
       return true;
-    } 
+    }
 
     /// <summary> Gets or sets the input control to validate. </summary>
     public new string ControlToValidate

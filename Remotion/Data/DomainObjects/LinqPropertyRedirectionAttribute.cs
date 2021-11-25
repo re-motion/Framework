@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects
       {
         throw new InvalidOperationException(ex.Message, ex);
       }
-      
+
       return new MethodCallTransformer(mappedProperty);
     }
   }

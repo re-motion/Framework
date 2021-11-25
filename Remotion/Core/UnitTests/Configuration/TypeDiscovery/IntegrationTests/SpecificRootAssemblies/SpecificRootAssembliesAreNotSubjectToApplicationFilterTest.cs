@@ -48,7 +48,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
       var section = Deserialize(c_xmlFragmentWithMscorlibByName);
 
       var service = section.CreateTypeDiscoveryService();
-      
+
       var types = service.GetTypes(null, false);
       Assert.That(types, Has.Member(typeof(Moq.Capture)));
     }

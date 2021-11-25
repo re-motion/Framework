@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         throw ArgumentUtility.CreateArgumentTypeException(
             "renderingContext.ColumnDefinition", renderingContext.ColumnDefinition.GetType(), typeof(TBocColumnDefinition));
     }
-    
+
     public new TBocColumnDefinition ColumnDefinition
     {
       get { return (TBocColumnDefinition) base.ColumnDefinition; }

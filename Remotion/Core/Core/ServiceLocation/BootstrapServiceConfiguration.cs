@@ -34,7 +34,7 @@ namespace Remotion.ServiceLocation
 
     public BootstrapServiceConfiguration ()
     {
-      
+
     }
 
     public IServiceLocator BootstrapServiceLocator

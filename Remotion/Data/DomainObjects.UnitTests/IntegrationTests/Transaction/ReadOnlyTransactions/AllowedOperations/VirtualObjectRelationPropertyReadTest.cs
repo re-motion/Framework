@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
 
       var orderTicket = ExecuteInReadOnlyRootTransaction(() => _order1.OrderTicket);
-      
+
       Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
 
       CheckDataLoaded(ReadOnlyRootTransaction, _order1);

@@ -35,7 +35,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     public override void ExecuteSubFunction (WxeContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);
-      
+
       try
       {
         context.HttpContext.Response.Redirect(Parameters.DestinationUrl);

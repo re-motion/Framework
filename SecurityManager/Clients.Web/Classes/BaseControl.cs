@@ -127,7 +127,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       get { return ServiceLocator.GetInstance<IResourceUrlFactory>(); }
     }
 
-    protected IGlobalizationService GlobalizationService 
+    protected IGlobalizationService GlobalizationService
     {
       get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
@@ -139,7 +139,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
       var control = FindControl(controlID);
-      
+
       if (control == null)
       {
         throw new InvalidOperationException(string.Format("No control with the ID '{0}' found on {1}.", controlID, GetType().Name));

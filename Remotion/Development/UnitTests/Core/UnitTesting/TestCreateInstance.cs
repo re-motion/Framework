@@ -70,7 +70,7 @@ public class TestCreateInstance
     PublicClass internalInstance;
 
     internalInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor(
-        c_assemblyName, c_internalClassName, 
+        c_assemblyName, c_internalClassName,
         "test 1");
     Assert.That(PrivateInvoke.InvokeNonPublicMethod(internalInstance, "f"), Is.EqualTo("test 1"));
 

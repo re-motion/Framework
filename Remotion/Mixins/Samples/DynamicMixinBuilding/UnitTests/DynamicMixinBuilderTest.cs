@@ -87,7 +87,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
         _calls.Add(Tuple.Create(instance, method, args, result));
         return "Intercepted: " + result;
       };
-      
+
       _calls.Clear();
 
       _builder = new DynamicMixinBuilder(typeof(SampleTarget));

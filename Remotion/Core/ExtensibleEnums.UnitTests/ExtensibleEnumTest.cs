@@ -243,12 +243,12 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var valueInfos = Color.Values.GetValueInfos();
       Assert.That(valueInfos.Select(info => info.Value).ToArray(),
-          Is.EqualTo(new[] { 
+          Is.EqualTo(new[] {
               Color.Values.Green(),
               Color.Values.LightBlue(),
-              Color.Values.LightRed(), 
-              Color.Values.Red(), 
-              Color.Values.RedMetallic(), 
+              Color.Values.LightRed(),
+              Color.Values.Red(),
+              Color.Values.RedMetallic(),
           }));
     }
 
@@ -258,16 +258,16 @@ namespace Remotion.ExtensibleEnums.UnitTests
       var valueInfos = Planet.Values.GetValueInfos();
       Assert.That(
           valueInfos.Select(info => info.Value).ToArray(),
-          Is.EqualTo(new[] { 
-              Planet.Values.Mercury(), 
-              Planet.Values.Venus(), 
-              Planet.Values.Earth(), 
-              Planet.Values.Mars(), 
-              Planet.Values.Jupiter(), 
-              Planet.Values.Saturn(), 
-              Planet.Values.Uranus(), 
-              Planet.Values.Neptune(), 
-              Planet.Values.Pluto(), 
+          Is.EqualTo(new[] {
+              Planet.Values.Mercury(),
+              Planet.Values.Venus(),
+              Planet.Values.Earth(),
+              Planet.Values.Mars(),
+              Planet.Values.Jupiter(),
+              Planet.Values.Saturn(),
+              Planet.Values.Uranus(),
+              Planet.Values.Neptune(),
+              Planet.Values.Pluto(),
               Planet.Values.Eris() }));
     }
 

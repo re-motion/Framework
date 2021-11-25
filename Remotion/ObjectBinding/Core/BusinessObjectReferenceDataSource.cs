@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding
         return _property;
       }
     }
-    
+
     protected override string GetDataSourceIdentifier ()
     {
       return string.Format("{0}", GetType().Name);

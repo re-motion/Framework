@@ -51,15 +51,15 @@ namespace Remotion.ObjectBinding.BindableObject
     public object? GetProperty (IBusinessObjectProperty property)
     {
       var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>("property", property);
-      
+
       object nativeValue = propertyBase.GetValue((IBusinessObject) Target);
-      
+
       if (!propertyBase.IsList && propertyBase.IsDefaultValue(((IBusinessObject) Target)))
         return null;
       else
         return propertyBase.ConvertFromNativePropertyType(nativeValue);
     }
-    
+
     /// <overloads> Sets the value accessed through the specified property. </overloads>
     /// <summary> Sets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
     /// <param name="property"> 
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.BindableObject
     public void SetProperty (IBusinessObjectProperty property, object? value)
     {
       var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>("property", property);
-      
+
       object? nativeValue = propertyBase.ConvertToNativePropertyType(value);
 
       propertyBase.SetValue((IBusinessObject)Target, nativeValue);

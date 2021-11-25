@@ -64,10 +64,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       targetTypeGenerator.ImplementIntroducedInterfaces(targetClassDefinition.ReceivedInterfaces);
       targetTypeGenerator.ImplementRequiredDuckMethods(targetClassDefinition);
       targetTypeGenerator.ImplementAttributes(targetClassDefinition);
-      
+
       targetTypeGenerator.AddMixedTypeAttribute(targetClassDefinition);
       targetTypeGenerator.AddDebuggerDisplayAttribute(targetClassDefinition);
-      
+
       targetTypeGenerator.ImplementOverrides(targetClassDefinition);
       targetTypeGenerator.ImplementOverridingMethods(targetClassDefinition, mixinInfos);
     }

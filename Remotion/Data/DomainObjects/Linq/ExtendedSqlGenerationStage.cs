@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
       ArgumentUtility.CheckNotNull("expression", expression);
-      
+
       ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(expression, commandBuilder, this, setOperationsMode);
     }
   }

@@ -35,7 +35,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain
     public void SettlementProperties ()
     {
       var instance = Settlement.NewObject();
-      
+
       instance.SettlementKind = "Ordinary";
       Assert.That(instance.SettlementKind, Is.EqualTo("Ordinary"));
     }

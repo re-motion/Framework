@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   {
     public virtual AclExpansionEntry CreateAclExpansionEntry (UserRoleAclAceCombination userRoleAclAce)
     {
-      var accessTypesResult = GetAccessTypes(userRoleAclAce); 
+      var accessTypesResult = GetAccessTypes(userRoleAclAce);
 
       AclExpansionEntry aclExpansionEntry = null;
 
@@ -72,7 +72,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       Assertion.IsTrue(roles.Count == 1);
       Assertion.IsTrue(object.ReferenceEquals(roles[0].Position.GetObjectReference(), userRoleAclAce.Role.Position));
       Assertion.IsTrue(object.ReferenceEquals(roles[0].Group.GetObjectReference(), userRoleAclAce.Role.Group));
-      
+
       AccessInformation accessInformation = userRoleAclAce.Acl.GetAccessTypes(aclProbe.SecurityToken, accessTypeStatistics);
 
       return new AclExpansionEntryCreator_GetAccessTypesResult(accessInformation, aclProbe, accessTypeStatistics);

@@ -26,7 +26,7 @@ namespace Remotion.Diagnostics
   /// </summary>
   /// <include file='..\doc\include\Diagnostics\OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample1/*' />
   /// <include file='..\doc\include\Diagnostics\OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample2/*' />
-  public class OuterProductIndexGenerator 
+  public class OuterProductIndexGenerator
   {
     private int _numberElementsProcessed;
     private int[] _numberElementsPerDimension = null!;
@@ -149,7 +149,7 @@ namespace Remotion.Diagnostics
       }
     }
 
- 
+
     /// <summary>
     /// The recursive method which implements the variable number of for-loops together with processing callbacks to the outerProductProcessor.
     /// </summary>
@@ -168,14 +168,14 @@ namespace Remotion.Diagnostics
       for (int currentDimensionIndex = 0; currentDimensionIndex < _numberElementsPerDimension[dimensionIndex]; ++currentDimensionIndex)
       {
         DimensionIndices[dimensionIndex] = currentDimensionIndex;
-        
+
         outerProductProcessor.SetProcessingState(processingState);
         bool continueProcessingBeforeLoop = outerProductProcessor.DoBeforeLoop();
         if (!continueProcessingBeforeLoop)
         {
           break;
         }
-        
+
         ProcessOuterProductRecursive(dimensionIndex + 1, outerProductProcessor);
 
         outerProductProcessor.SetProcessingState(processingState);

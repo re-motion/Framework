@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     public virtual event EventHandler Event;
   }
-  
+
   public class BaseWithOverrideAttributes
   {
     [OverrideTarget]
@@ -115,7 +115,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     public new event EventHandler Event;
   }
 
-  
+
   public class DerivedNewWithoutOverrideAttributes : BaseWithoutOverrideAttributes
   {
     public new void Method (int i)

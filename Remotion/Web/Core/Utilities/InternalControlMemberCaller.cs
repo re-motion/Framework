@@ -58,7 +58,7 @@ namespace Remotion.Web.Utilities
 
     private static readonly Lazy<Action<Control, object>> s_LoadViewStateRecursive = GetLazyMethod<Action<Control, object>>("LoadViewStateRecursive");
 
-    private static readonly Lazy<Func<Control, ViewStateMode, object>> s_SaveViewStateRecursive = 
+    private static readonly Lazy<Func<Control, ViewStateMode, object>> s_SaveViewStateRecursive =
         GetLazyMethod<Func<Control, ViewStateMode, object>>("SaveViewStateRecursive");
 
     private static readonly Lazy<Action<Page>> s_SaveAllState = GetLazyMethod<Action<Page>>("SaveAllState");

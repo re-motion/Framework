@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       base.TestFixtureTearDown();
     }
-   
+
     protected DomainObjectIDs DomainObjectIDs
     {
       get { return StandardConfiguration.Instance.GetDomainObjectIDs(); }

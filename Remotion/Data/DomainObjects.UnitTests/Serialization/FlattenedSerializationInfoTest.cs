@@ -332,7 +332,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       FlattenedSerializableStub stub1 = new FlattenedSerializableStub("begone, foul fiend", 123);
       FlattenedSerializableStub stub2 = new FlattenedSerializableStub("befoul, gone fiend", 125);
       stub1.Data3 = stub2;
-      
+
       FlattenedSerializationInfo serializationInfo = new FlattenedSerializationInfo();
       serializationInfo.AddHandle(stub1);
       object[] data = serializationInfo.GetData();

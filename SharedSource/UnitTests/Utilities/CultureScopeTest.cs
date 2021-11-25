@@ -160,8 +160,8 @@ namespace Remotion.UnitTests.Utilities
       {
         Assert.That(currentThread.CurrentCulture, Is.EqualTo(CultureInfo.InvariantCulture));
         Assert.That(currentThread.CurrentUICulture, Is.EqualTo(CultureInfo.InvariantCulture));
-      }    
-    
+      }
+
     }
   }
 }

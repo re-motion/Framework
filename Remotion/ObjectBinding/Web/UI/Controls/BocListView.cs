@@ -36,13 +36,13 @@ public class BocListView: BusinessObjectControlItem
   /// <summary> Initialize a new instance. </summary>
   public BocListView (
       IBusinessObjectBoundWebControl? ownerControl,
-      object title, 
+      object title,
       BocColumnDefinition[]? columnDefinitions)
   {
     _title = title;
     _columnDefinitions = new BocColumnDefinitionCollection(
       ownerControl);
-    
+
     if (columnDefinitions != null)
       _columnDefinitions.AddRange(columnDefinitions);
   }
@@ -126,5 +126,5 @@ public class BocListView: BusinessObjectControlItem
   }
 }
 
-  
+
 }

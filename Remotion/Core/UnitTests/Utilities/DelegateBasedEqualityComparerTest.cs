@@ -64,6 +64,6 @@ namespace Remotion.UnitTests.Utilities
     {
       Assert.That(_comparer.GetHashCode(_obj1), Is.EqualTo(_comparer.GetHashCode(_obj1)));
     }
-    
+
   }
 }

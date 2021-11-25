@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
       var value = ExecuteInReadOnlyRootTransaction(() => _order1.OrderNumber);
-      
+
       Assert.That(value, Is.EqualTo(1));
 
       CheckDataLoaded(ReadOnlyRootTransaction, _order1);

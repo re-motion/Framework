@@ -99,9 +99,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
           _webTabStrip.Object,
           new[]
           {
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab1.Object, false, true, _style),
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab3.Object, true, true, _style)
           });
 
@@ -121,9 +121,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
           _webTabStrip.Object,
           new[]
           {
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab1.Object, false, true, _style),
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab3.Object, true, true, _style)
           });
 
@@ -144,9 +144,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
           _webTabStrip.Object,
           new[]
           {
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab1.Object, false, true, _style),
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab3.Object, true, true, _style)
           });
 
@@ -164,9 +164,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
           _webTabStrip.Object,
           new[]
           {
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab1.Object, false, true, _style),
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab2.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab3.Object, true, true, _style)
           });
 
@@ -185,7 +185,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
           _webTabStrip.Object,
           new[]
           {
-              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(), _tab0.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab1.Object, false, true, _style),
               new WebTabRendererAdapter(CreateWebTabRenderer(), _tab3.Object, true, true, _style)
           });
@@ -203,7 +203,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
           _webTabStrip.Object,
           new[]
           {
-              new WebTabRendererAdapter(CreateWebTabRenderer(RenderingFeatures.WithDiagnosticMetadata), _tab0.Object, true, true, _style), 
+              new WebTabRendererAdapter(CreateWebTabRenderer(RenderingFeatures.WithDiagnosticMetadata), _tab0.Object, true, true, _style),
           });
 
       _renderer = new WebTabStripRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);

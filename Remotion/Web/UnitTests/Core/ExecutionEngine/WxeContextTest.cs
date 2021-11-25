@@ -63,7 +63,7 @@ public class WxeContextTest
 
   [TearDown]
   public virtual void TearDown ()
-  { 
+  {
     WebConfigurationMock.Current = null;
     Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent(null);
   }
@@ -201,7 +201,7 @@ public class WxeContextTest
 
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add(queryString);
-    
+
     string parentUrl = _currentHttpContext.Request.Url.AbsolutePath;
     parentUrl += UrlUtility.FormatQueryString(_currentHttpContext.Request.QueryString);
     expectedQueryString.Add(WxeHandler.Parameters.ReturnUrl, parentUrl);
@@ -247,7 +247,7 @@ public class WxeContextTest
 
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add(queryString);
-    
+
     string parentUrl = _currentHttpContext.Request.Url.AbsolutePath;
     parentUrl += UrlUtility.FormatQueryString(_currentHttpContext.Request.QueryString);
     parentUrl = UrlUtility.DeleteParameter(parentUrl, WxeHandler.Parameters.ReturnUrl, Encoding.UTF8);

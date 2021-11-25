@@ -28,8 +28,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   public class DomainObjectCollectionEndPointReplaceSameCommand : RelationEndPointModificationCommand
   {
     public DomainObjectCollectionEndPointReplaceSameCommand (
-        IDomainObjectCollectionEndPoint modifiedEndPoint, 
-        DomainObject selfReplacedObject, 
+        IDomainObjectCollectionEndPoint modifiedEndPoint,
+        DomainObject selfReplacedObject,
         IClientTransactionEventSink transactionEventSink)
         : base(
             ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),

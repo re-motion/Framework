@@ -59,8 +59,8 @@ namespace Remotion.ObjectBinding
     /// Initializes a new instance of the <see cref="DisableEnumValuesAttribute"/> class with a number of enum values to disable.
     /// </summary>
     /// <param name="disabledEnumValue1">The disabled enum values.</param>
-    public DisableEnumValuesAttribute (object disabledEnumValue1) 
-        : this(new[] { 
+    public DisableEnumValuesAttribute (object disabledEnumValue1)
+        : this(new[] {
             ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue1) })
     {
     }
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding
     public DisableEnumValuesAttribute (
         object disabledEnumValue1,
         object disabledEnumValue2)
-      : this(new[] { 
+      : this(new[] {
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue1),
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue2),
       })
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding
         object disabledEnumValue1,
         object disabledEnumValue2,
         object disabledEnumValue3)
-      : this(new[] { 
+      : this(new[] {
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue1),
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue2),
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue3),
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding
         object disabledEnumValue2,
         object disabledEnumValue3,
         object disabledEnumValue4)
-      : this(new[] { 
+      : this(new[] {
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue1),
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue2),
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue3),
@@ -128,12 +128,12 @@ namespace Remotion.ObjectBinding
     /// <param name="disabledEnumValue4">A disabled enum value.</param>
     /// <param name="disabledEnumValue5">A disabled enum value.</param>
     public DisableEnumValuesAttribute (
-        object disabledEnumValue1, 
-        object disabledEnumValue2, 
-        object disabledEnumValue3, 
-        object disabledEnumValue4, 
+        object disabledEnumValue1,
+        object disabledEnumValue2,
+        object disabledEnumValue3,
+        object disabledEnumValue4,
         object disabledEnumValue5)
-      : this(new[] { 
+      : this(new[] {
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue1),
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue2),
           ArgumentUtility.CheckNotNull("disabledEnumValue1", disabledEnumValue3),

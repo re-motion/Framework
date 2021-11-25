@@ -24,7 +24,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// </summary>
   public interface IExtensibleEnumValueDiscoveryService
   {
-    IEnumerable<ExtensibleEnumInfo<T>> GetValueInfos<T> (ExtensibleEnumDefinition<T> definition) 
+    IEnumerable<ExtensibleEnumInfo<T>> GetValueInfos<T> (ExtensibleEnumDefinition<T> definition)
         where T: ExtensibleEnum<T>;
   }
 }

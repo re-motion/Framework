@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void ToObjectList ()
     {
       IQueryable<Order> queryable = from o in QueryFactory.CreateLinqQuery<Order>()
-                                    where o.OrderNumber == 1 || o.ID == DomainObjectIDs.Order3 
+                                    where o.OrderNumber == 1 || o.ID == DomainObjectIDs.Order3
                                     select o;
       ObjectList<Order> list = queryable.ToObjectList();
       Assert.That(list, Is.EquivalentTo(new[] { DomainObjectIDs.Order1.GetObject<Order>(), DomainObjectIDs.Order3.GetObject<Order>() }));

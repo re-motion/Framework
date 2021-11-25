@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       var instance = SampleBindableDomainObject_ImplementingISerializable.NewObject();
       instance = Serializer.SerializeAndDeserialize(instance);
-      
+
       var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
@@ -149,12 +149,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SampleBindableDomainObject));
       var instance = LifetimeService.GetObjectReference(TestableClientTransaction, new ObjectID(classDefinition, Guid.NewGuid()));
-      
+
       var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
     }
-    
+
     [Test]
     public void GetProperty ()
     {
@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _implementationMock.Replay();
 
       Assert.That(((IBusinessObject) instance).GetPropertyString(_propertyFake, "gj"), Is.EqualTo("yay"));
-      _implementationMock.VerifyAllExpectations(); 
+      _implementationMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _implementationMock.Replay();
 
       Assert.That(instance.DisplayName, Is.EqualTo("Philips"));
-      _implementationMock.VerifyAllExpectations(); 
+      _implementationMock.VerifyAllExpectations();
     }
 
     [Test]

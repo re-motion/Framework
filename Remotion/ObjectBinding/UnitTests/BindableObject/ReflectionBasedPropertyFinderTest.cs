@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var finder = new ReflectionBasedPropertyFinder(typeof(ClassWithReferenceType<object>));
       var properties = finder.GetPropertyInfos();
-     
+
       Assert.That(properties.Where(p => p.Name == "NotVisibleAttributeScalar").Count(), Is.EqualTo(0));
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var finder = new ReflectionBasedPropertyFinder(typeof(ClassWithReferenceType<object>));
       var properties = finder.GetPropertyInfos();
-      
+
       Assert.That(properties.Where(p => p.Name == "Item").Count(), Is.EqualTo(0));
     }
 
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var properties = finder.GetPropertyInfos();
       Assert.That(properties.Where(p => p.Name == "InterfaceProperty").Count(), Is.EqualTo(1));
     }
-    
+
     [Test]
     public void FindsPropertiesFromExplicitInterfaceImplementations ()
     {
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var interfaceImplProperty = (from p in propertyInfos
                                where p.Name == "InterfaceProperty"
                                select p).Single();
-      
+
       Assert.That(interfaceImplProperty, Is.TypeOf(typeof(InterfaceImplementationPropertyInformation)));
       Assert.That(interfaceImplProperty.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(TestTypeWithInterfaces))));
       Assert.That(interfaceImplProperty.FindInterfaceDeclarations().Single().DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(ITestInterface))));
@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                                select p).Single();
 
       Assert.That(interfaceImplProperty, Is.TypeOf(typeof(InterfaceImplementationPropertyInformation)));
-      
+
       Assert.That(interfaceImplProperty, Is.TypeOf(typeof(InterfaceImplementationPropertyInformation)));
       Assert.That(interfaceImplProperty.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(TestTypeWithInterfaces))));
       Assert.That(interfaceImplProperty.FindInterfaceDeclarations().Single().DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(IExplicitTestInterface))));
@@ -205,7 +205,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That(propertyInformation_6, Is.TypeOf(typeof(MixinIntroducedPropertyInformation)));
       Assert.That(propertyInformation_6.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(MixinAddingProperty))));
       Assert.That(
-          propertyInformation_6.Name, 
+          propertyInformation_6.Name,
           Is.EqualTo("Remotion.ObjectBinding.UnitTests.TestDomain.IMixinAddingProperty.ExplicitMixedProperty"));
     }
 
@@ -227,7 +227,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private IEnumerable<PropertyInfo> UnwrapCollection (IEnumerable<IPropertyInformation> properties)
     {
-      return from PropertyInfoAdapter adapter in properties 
+      return from PropertyInfoAdapter adapter in properties
              select adapter.PropertyInfo;
     }
   }

@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       ArgumentUtility.CheckNotNull("thisTransaction", thisTransaction);
       ArgumentUtility.CheckNotNull("thisEventSink", thisEventSink);
       ArgumentUtility.CheckNotNull("transactionHierarchy", transactionHierarchy);
-      
+
 
       _thisTransaction = thisTransaction;
       _thisEventSink = thisEventSink;

@@ -20,6 +20,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 {
   public class SetCurrentException : Exception
   {
-    
+
   }
 }

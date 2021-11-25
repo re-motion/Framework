@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     {
       var nameValueCollection = new NameValueCollection { { "factoryType", typeof(IStorageObjectFactory).AssemblyQualifiedName } };
       Assert.That(
-          () => new TestableStorageProviderDefinition("TestProvider", nameValueCollection), 
+          () => new TestableStorageProviderDefinition("TestProvider", nameValueCollection),
           Throws.TypeOf<ConfigurationErrorsException>().With.Message.EqualTo(
               "The factory type 'Remotion.Data.DomainObjects.Persistence.IStorageObjectFactory' specified in the configuration of the 'TestProvider' "
               + "StorageProvider definition cannot be instantiated because it is abstract. Either register an implementation of "
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 
     public class FakeMixin { }
 
-    public class StorageObjectFactoryFakeWithCtorParameters 
+    public class StorageObjectFactoryFakeWithCtorParameters
     {
       public StorageObjectFactoryFakeWithCtorParameters (string s)
       {
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       }
     }
 
-    private class DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter : StorageObjectFactoryFake 
+    private class DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter : StorageObjectFactoryFake
     {
       public DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter (string s)
       {

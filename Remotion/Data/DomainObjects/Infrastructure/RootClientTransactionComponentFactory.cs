@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     public override ITransactionHierarchyManager CreateTransactionHierarchyManager (
-        ClientTransaction constructedTransaction, 
+        ClientTransaction constructedTransaction,
         IClientTransactionEventSink eventSink)
     {
       ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           virtualCollectionEndPointDataManagerFactory);
       var virtualEndPointStateUpdateListener = new VirtualEndPointStateUpdateListener(eventSink);
       var stateUpdateRaisingRelationEndPointFactory = new StateUpdateRaisingRelationEndPointFactoryDecorator(
-          relationEndPointFactory, 
+          relationEndPointFactory,
           virtualEndPointStateUpdateListener);
 
       var relationEndPointRegistrationAgent = new RootRelationEndPointRegistrationAgent(endPointProvider);
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           lazyLoader,
           eventSink,
           virtualObjectEndPointDataManagerFactory,
-          domainObjectCollectionEndPointDataManagerFactory, 
+          domainObjectCollectionEndPointDataManagerFactory,
           domainObjectCollectionEndPointCollectionProvider,
           associatedDomainObjectCollectionDataStrategyFactory,
           virtualCollectionEndPointCollectionProvider,

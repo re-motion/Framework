@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
       ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
-      
+
       _renderingFeatures = renderingFeatures;
       _cssClasses = cssClasses;
     }

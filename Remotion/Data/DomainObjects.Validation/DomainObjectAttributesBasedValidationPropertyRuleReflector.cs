@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Validation
             _validationMessageFactory);
       }
 
-      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation) 
+      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation)
           && typeof(IEnumerable).IsAssignableFrom(_implementationProperty.PropertyType)
           && !ReflectionUtility.IsObjectList(_implementationProperty.PropertyType)
           && !ReflectionUtility.IsIObjectList(_implementationProperty.PropertyType))

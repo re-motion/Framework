@@ -21,6 +21,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   [SuppressAttributes(typeof(Attribute))]
   public class ClassWithSuppressAttribute
   {
-    
+
   }
 }

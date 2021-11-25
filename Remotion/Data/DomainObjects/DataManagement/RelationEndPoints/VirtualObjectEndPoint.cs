@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private IVirtualObjectEndPointLoadState _loadState;
 
     private bool _hasBeenTouched;
-    
+
     public VirtualObjectEndPoint (
         ClientTransaction clientTransaction,
         RelationEndPointID id,
@@ -301,7 +301,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
       _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
       _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
-      
+
       _loadState = info.GetValue<IVirtualObjectEndPointLoadState>();
       _hasBeenTouched = info.GetBoolValue();
     }

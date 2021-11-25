@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private IObjectReader<Tuple<ObjectID, object>> _timestampReader2Stub;
     private IObjectReader<DataContainer> _dataContainerReader1Stub;
     private IObjectReader<DataContainer> _dataContainerReader2Stub;
-    
+
     private LookupCommandFactory _factory;
 
     private TableDefinition _tableDefinition1;
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private ObjectID _objectID1;
     private ObjectID _objectID2;
     private ObjectID _objectID3;
-    
+
     public override void SetUp ()
     {
       base.SetUp();
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void CreateForSingleIDLookup ()
     {
       var expectedSelectedColumns = _tableDefinition1.GetAllColumns().ToArray();
-      var expectedComparedColumns = 
+      var expectedComparedColumns =
           new[] { new ColumnValue(StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_tableDefinition1.ObjectIDProperty), _objectID1.Value) };
 
       _dbCommandBuilderFactoryStrictMock
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
 
       Assert.That(result, Is.TypeOf<SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>>());
-      
+
       var associateCommand = (SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>) result;
       Assert.That(associateCommand.ExpectedObjectID, Is.EqualTo(_objectID1));
       Assert.That(associateCommand.InnerCommand, Is.TypeOf(typeof(SingleObjectLoadCommand<DataContainer>)));
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void CreateForSortedMultiIDLookup_SingleIDLookup ()
     {
       var expectedSelectedColumns = _tableDefinition1.GetAllColumns();
-      var expectedComparedColumns = 
+      var expectedComparedColumns =
           new[] { new ColumnValue(StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_tableDefinition1.ObjectIDProperty), _objectID1.Value) };
       _dbCommandBuilderFactoryStrictMock
           .Stub(
@@ -169,8 +169,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           new[] { StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_tableDefinition1.ObjectIDProperty) },
           new[]
           {
-            new ColumnValueTable.Row(new[] { _objectID1.Value }), 
-            new ColumnValueTable.Row(new[] { _objectID2.Value }), 
+            new ColumnValueTable.Row(new[] { _objectID1.Value }),
+            new ColumnValueTable.Row(new[] { _objectID2.Value }),
           });
 
       _dbCommandBuilderFactoryStrictMock
@@ -183,7 +183,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           .Return(_dbCommandBuilder1Stub);
 
       var expectedSelectedColumns2 = _tableDefinition2.GetAllColumns();
-      var expectedComparedColumns2 = 
+      var expectedComparedColumns2 =
           new[] { new ColumnValue(StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_tableDefinition2.ObjectIDProperty), _objectID3.Value) };
       _dbCommandBuilderFactoryStrictMock
           .Expect(
@@ -248,16 +248,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var expectedSelectedColumns1 =
           new[]
           {
-              StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_tableDefinition1.ObjectIDProperty), 
-              StoragePropertyDefinitionTestHelper.GetClassIDColumnDefinition(_tableDefinition1.ObjectIDProperty), 
+              StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_tableDefinition1.ObjectIDProperty),
+              StoragePropertyDefinitionTestHelper.GetClassIDColumnDefinition(_tableDefinition1.ObjectIDProperty),
               StoragePropertyDefinitionTestHelper.GetSingleColumn(_tableDefinition1.TimestampProperty)
           };
       var expectedComparedColumns1 = new ColumnValueTable(
           new[] { StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_tableDefinition1.ObjectIDProperty) },
           new[]
           {
-            new ColumnValueTable.Row(new[] { _objectID1.Value }), 
-            new ColumnValueTable.Row(new[] { _objectID2.Value }), 
+            new ColumnValueTable.Row(new[] { _objectID1.Value }),
+            new ColumnValueTable.Row(new[] { _objectID2.Value }),
           });
       _dbCommandBuilderFactoryStrictMock
           .Expect(

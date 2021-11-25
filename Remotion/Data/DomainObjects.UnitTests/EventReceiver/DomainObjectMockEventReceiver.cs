@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
           mock => RelationChanging(
               Arg.Is(_domainObject),
               Arg<RelationChangingEventArgs>.Matches(args =>
-                  args.RelationEndPointDefinition == relationEndPointDefinition 
+                  args.RelationEndPointDefinition == relationEndPointDefinition
                       && args.OldRelatedObject == oldRelatedObject
                       && args.NewRelatedObject == newRelatedObject)));
     }
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
           mock => RelationChanged(
               Arg.Is(_domainObject),
               Arg<RelationChangedEventArgs>.Matches(args =>
-                  args.RelationEndPointDefinition == relationEndPointDefinition 
+                  args.RelationEndPointDefinition == relationEndPointDefinition
                       && args.OldRelatedObject == oldRelatedObject
                       && args.NewRelatedObject == newRelatedObject)));
     }

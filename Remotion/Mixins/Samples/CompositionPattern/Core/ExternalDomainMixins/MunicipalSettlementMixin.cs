@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins
       base.OnTargetReferenceInitializing();
       MunicipalityID = 12;
     }
-    
+
     public virtual int MunicipalityID { get; set; }
 
     public virtual string GetDescriptionForMayors ()

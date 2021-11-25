@@ -81,7 +81,7 @@ namespace Remotion.Mixins.Definitions.Building
             sourceName, ex.Message);
         throw new ConfigurationException(message, ex);
       }
-      
+
       if (copiedAttributesSource == null)
       {
         string message = string.Format("The CopyCustomAttributes attribute on {0} specifies an unknown attribute source {1}.",
@@ -103,17 +103,17 @@ namespace Remotion.Mixins.Definitions.Building
       // be inherited anyway.
       var isCopyingFromSameMember = copiedAttributesSource.Equals(copyAttributeSource);
       var copiedAttributesData = GetCopiedAttributesData(
-          copiedAttributesSource: copiedAttributesSource, 
-          copyAttribute: copyAttribute, 
-          includeCopyAttributes: !isCopyingFromSameMember, 
+          copiedAttributesSource: copiedAttributesSource,
+          copyAttribute: copyAttribute,
+          includeCopyAttributes: !isCopyingFromSameMember,
           includeInheritableAttributes: !isCopyingFromSameMember);
       Apply(copiedAttributesSource, copiedAttributesData, true);
     }
 
     private IEnumerable<ICustomAttributeData> GetCopiedAttributesData (
-        MemberInfo copiedAttributesSource, 
+        MemberInfo copiedAttributesSource,
         CopyCustomAttributesAttribute copyAttribute,
-        bool includeCopyAttributes, 
+        bool includeCopyAttributes,
         bool includeInheritableAttributes)
     {
       foreach (var attributeData in TypePipeCustomAttributeData.GetCustomAttributes(copiedAttributesSource, inherit: true))

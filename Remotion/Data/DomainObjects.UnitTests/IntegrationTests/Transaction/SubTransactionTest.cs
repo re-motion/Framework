@@ -170,11 +170,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var subTx = TestableClientTransaction.CreateSubTransaction();
 
       var order = DomainObjectIDs.Order1.GetObject<Order>(subTx);
-     
+
       Assert.That(subTx.IsEnlisted(order), Is.True);
       Assert.That(TestableClientTransaction.IsEnlisted(order), Is.True);
     }
-    
+
     [Test]
     public void SubTransactionCreatedEvent ()
     {

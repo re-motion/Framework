@@ -59,7 +59,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       bool hasAccess;
-      
+
       using (SecurityFreeSection.Activate())
       {
         hasAccess = _securityClient.HasConstructorAccess(typeof(SecurableObject));

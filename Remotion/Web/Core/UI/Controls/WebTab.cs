@@ -93,7 +93,7 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Sets this tab's <see cref="WebTabStrip"/>. </summary>
   protected internal virtual void SetTabStrip (WebTabStrip? tabStrip)
   {
-    _tabStrip = tabStrip; 
+    _tabStrip = tabStrip;
     if (_selectDesired == 1)
     {
       _selectDesired = 0;
@@ -165,7 +165,7 @@ public class WebTab: IWebTab, IControlStateManager
             throw new ArgumentException(string.Format("The collection already contains a tab with ItemID '{0}'.", value), "value");
         }
       }
-      _itemID = value; 
+      _itemID = value;
     }
   }
 
@@ -185,10 +185,10 @@ public class WebTab: IWebTab, IControlStateManager
   public virtual string Text
   {
     get { return _text; }
-    set 
+    set
     {
       ArgumentUtility.CheckNotNullOrEmpty("value", value);
-      _text = value; 
+      _text = value;
     }
   }
 
@@ -211,13 +211,13 @@ public class WebTab: IWebTab, IControlStateManager
   [DefaultValue (true)]
   public bool IsVisible
   {
-    get 
-    { 
-      return _isVisible; 
-    }
-    set 
+    get
     {
-      _isVisible = value; 
+      return _isVisible;
+    }
+    set
+    {
+      _isVisible = value;
       if (! _isVisible && _tabStrip != null)
         _tabStrip.Tabs.DeselectTabInternal(this);
     }
@@ -230,13 +230,13 @@ public class WebTab: IWebTab, IControlStateManager
   [DefaultValue (false)]
   public bool IsDisabled
   {
-    get 
+    get
     {
-      return _isDisabled; 
+      return _isDisabled;
     }
     set
     {
-      _isDisabled = value; 
+      _isDisabled = value;
       if (_isDisabled && _tabStrip != null)
         _tabStrip.Tabs.DeselectTabInternal(this);
     }
@@ -269,7 +269,7 @@ public class WebTab: IWebTab, IControlStateManager
   public bool IsSelected
   {
     get { return _isSelected; }
-    set 
+    set
     {
       SetSelected(value);
       if (_tabStrip != null)
@@ -301,7 +301,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
     get { return _ownerControl;  }
     set
-    { 
+    {
       if (_ownerControl != value)
       {
         if (OwnerControl != null)
@@ -333,9 +333,9 @@ public class WebTab: IWebTab, IControlStateManager
   {
     try
     {
-      if (_tabStrip == null) 
+      if (_tabStrip == null)
         throw new InvalidOperationException("The WebTab is not part of a WebTabStrip.");
-      if (_tabStrip.Page == null) 
+      if (_tabStrip.Page == null)
         throw new InvalidOperationException(string.Format("WebTabStrip '{0}' is not part of a page.", _tabStrip.ID));
     }
     catch (NullReferenceException)
@@ -358,11 +358,11 @@ public class WebTab: IWebTab, IControlStateManager
   {
     ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
     ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-    
+
     var key = ResourceManagerUtility.GetGlobalResourceKey(Text);
     if (! string.IsNullOrEmpty(key))
       Text = resourceManager.GetString(key);
-    
+
     if (Icon != null)
       Icon.LoadResources(resourceManager);
   }
@@ -429,7 +429,7 @@ public class WebTabStyle: Style
   [EditorBrowsable (EditorBrowsableState.Never)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public new Color BorderColor 
+  public new Color BorderColor
   {
     get { return base.BorderColor; }
     set { base.BorderColor = value; }

@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Definitions
     }
 
     public MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes { get; private set; }
-    
+
     public MultiDefinitionCollection<Type, AttributeIntroductionDefinition> ReceivedAttributes { get; private set; }
     public MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> SuppressedReceivedAttributes { get; private set; }
 

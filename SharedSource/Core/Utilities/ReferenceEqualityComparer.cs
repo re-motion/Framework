@@ -44,7 +44,7 @@ namespace Remotion.Utilities
 
     public int GetHashCode (T obj)
     {
-      return RuntimeHelpers.GetHashCode(obj); 
+      return RuntimeHelpers.GetHashCode(obj);
     }
   }
 }

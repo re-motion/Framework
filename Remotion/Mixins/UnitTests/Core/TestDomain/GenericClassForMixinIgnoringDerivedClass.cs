@@ -20,6 +20,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public class GenericClassForMixinIgnoringDerivedClass<T> : BaseClassForDerivedClassIgnoredByMixin
   {
-    
+
   }
 }

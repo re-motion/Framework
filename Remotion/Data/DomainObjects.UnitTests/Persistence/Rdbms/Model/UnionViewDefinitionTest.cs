@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     private SimpleStoragePropertyDefinition _property1;
     private SimpleStoragePropertyDefinition _property2;
     private SimpleStoragePropertyDefinition _property3;
-    
+
     private UnitTestStorageProviderStubDefinition _storageProviderDefinition;
     private IIndexDefinition[] _indexes;
     private EntityNameDefinition[] _synonyms;
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void SetUp ()
     {
       _storageProviderDefinition = new UnitTestStorageProviderStubDefinition("SPID");
-      
+
       _timestampProperty = SimpleStoragePropertyDefinitionObjectMother.TimestampProperty;
       _objectIDProperty = ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty;
       _property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1");
@@ -159,11 +159,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       var availableColumns = new[]
                              {
-                                 ColumnDefinitionObjectMother.IDColumn, 
+                                 ColumnDefinitionObjectMother.IDColumn,
                                  ColumnDefinitionObjectMother.ClassIDColumn,
-                                 ColumnDefinitionObjectMother.TimestampColumn, 
-                                 _property3.ColumnDefinition, 
-                                 ColumnDefinitionObjectMother.CreateColumn("Test"), 
+                                 ColumnDefinitionObjectMother.TimestampColumn,
+                                 _property3.ColumnDefinition,
+                                 ColumnDefinitionObjectMother.CreateColumn("Test"),
                                  _property1.ColumnDefinition
                              };
 
@@ -232,7 +232,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
                              {
                                  ColumnDefinitionObjectMother.IDColumn,
                                  ColumnDefinitionObjectMother.ClassIDColumn,
-                                 ColumnDefinitionObjectMother.TimestampColumn, 
+                                 ColumnDefinitionObjectMother.TimestampColumn,
                                  _property1.ColumnDefinition
                              };
 

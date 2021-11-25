@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Transaction", DomainModelConstraintProviderStub);
-      
+
       propertyReflector.GetMetadata();
     }
 

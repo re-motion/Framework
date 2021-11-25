@@ -360,7 +360,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           Does.StartWith("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.set_ThrowingProperty(T value)"));
 #endif
     }
-   
+
     [Test]
     public void IsAccessible_ReturnsValueFromStrategy ()
     {

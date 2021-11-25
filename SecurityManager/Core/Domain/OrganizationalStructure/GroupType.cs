@@ -73,7 +73,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     protected override void OnDeleting (EventArgs args)
     {
       base.OnDeleting(args);
-     
+
       using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
         if (QueryFactory.CreateLinqQuery<Group>().Where(g => g.GroupType == this).Any())
@@ -84,7 +84,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         }
 
         var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificGroupType == this);
-        
+
         _deleteHandler = new DomainObjectDeleteHandler(aces, Positions);
       }
     }

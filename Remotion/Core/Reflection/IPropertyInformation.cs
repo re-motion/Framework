@@ -31,7 +31,7 @@ namespace Remotion.Reflection
     /// </summary>
     /// <value>The type of the property.</value>
     [NotNull]Type PropertyType { get; }
-    
+
     /// <summary>
     /// Determines whether the property can be set from the outside.
     /// </summary>

@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateNullEndPoint_DomainObjectCollectionEndPoint ()
     {
-      var orderItemsDefinition = 
+      var orderItemsDefinition =
           Configuration.GetTypeDefinition(typeof(Order)).GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
 
       var nullObjectEndPoint = RelationEndPointManager.CreateNullEndPoint(TestableClientTransaction, orderItemsDefinition);
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateNullEndPoint_VirtualCollectionEndPoint ()
     {
-      var productReviewsDefinition = 
+      var productReviewsDefinition =
           Configuration.GetTypeDefinition(typeof(Product)).GetRelationEndPointDefinition(typeof(Product).FullName + ".Reviews");
 
       var nullObjectEndPoint = RelationEndPointManager.CreateNullEndPoint(TestableClientTransaction, productReviewsDefinition);

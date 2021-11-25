@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       ArgumentUtility.CheckNotNull("loadedObject", loadedObject);
 
       listenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
-          Arg.Is(ClientTransaction.Current), 
+          Arg.Is(ClientTransaction.Current),
           Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { loadedObject })));
     }
 

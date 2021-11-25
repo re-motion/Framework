@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           result.GetNestedCommands(),
           Is.EqualTo(new[] { expandedStub1A, expandedStub1B, expandedStub2A, expandedStub2B, expandedStub3A, expandedStub3B }));
     }
-    
+
     [Test]
     public void CombineWith ()
     {
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       var otherCommandStub = MockRepository.GenerateStub<IDataManagementCommand>();
       otherCommandStub.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      
+
       var compositeCommand = CreateComposite();
       var result = compositeCommand.CombineWith(otherCommandStub);
 

@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       _managerWithoutParent.OnBeforeObjectRegistration(Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
 
       Assert.That(
-          _managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, 
+          _managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs,
           Is.EquivalentTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
 
       _managerWithoutParent.OnBeforeObjectRegistration(Array.AsReadOnly(new[] { DomainObjectIDs.Order4 }));
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Func<ClientTransaction, ClientTransaction> factory = tx => fakeSubTransaction;
 
       Assert.That(
-          () => _manager.CreateSubTransaction(factory), 
+          () => _manager.CreateSubTransaction(factory),
           Throws.InvalidOperationException.With.Message.EqualTo("The given factory did not create a sub-transaction for this transaction."));
 
       _thisEventSinkWithStrictMock.AssertWasNotCalled(mock => mock.RaiseSubTransactionCreatedEvent( Arg<ClientTransaction>.Is.Anything));
@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     public void Unlock_ReadOnly ()
     {
       FakeManagerWithSubtransaction(_manager);
-      
+
       Assert.That(_manager.IsWriteable, Is.False);
       Assert.That(_manager.SubTransaction, Is.Not.Null);
 
@@ -442,7 +442,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       var instance = new TransactionHierarchyManager(
           ClientTransactionObjectMother.Create(),
           new SerializableClientTransactionEventSinkFake(),
-          ClientTransactionObjectMother.Create(), 
+          ClientTransactionObjectMother.Create(),
           new SerializableTransactionHierarchyManagerFake(),
           new SerializableClientTransactionEventSinkFake());
       var deserializedInstance = Serializer.SerializeAndDeserialize(instance);

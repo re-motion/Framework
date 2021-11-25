@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     private IDomainObjectCollectionData _wrappedData;
     private ChangeCachingDomainObjectCollectionDataDecorator _decoratorWithRealData;
-    
+
     private IDomainObjectCollectionEndPointChangeDetectionStrategy _strategyStrictMock;
 
     public override void SetUp ()
@@ -421,7 +421,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert.That(_decoratorWithRealData.Count, Is.GreaterThan(0));
       _decoratorWithRealData.Clear();
-      
+
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
       _decoratorWithRealData.RegisterOriginalItem(domainObject);
 

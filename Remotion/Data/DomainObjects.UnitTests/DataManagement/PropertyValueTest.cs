@@ -521,7 +521,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(AttributeTargets));
       var propertyValue = new PropertyValue(definition, AttributeTargets.Method);
-      
+
       propertyValue.Value = AttributeTargets.Field | AttributeTargets.Method;
       Assert.That(propertyValue.Value, Is.EqualTo(AttributeTargets.Field | AttributeTargets.Method));
     }

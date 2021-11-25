@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Linq
           _storageProviderDefinition,
           queryModel,
           fetchQueryModelBuilders);
-      return query.Execute(ClientTransaction.Current.QueryManager); 
+      return query.Execute(ClientTransaction.Current.QueryManager);
     }
 
     private ICollection<FetchQueryModelBuilder> RemoveTrailingFetchRequests (QueryModel queryModel)

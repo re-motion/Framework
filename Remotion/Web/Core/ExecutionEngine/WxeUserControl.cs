@@ -57,7 +57,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       if (!_isWxeInfoInitialized)
       {
-        _wxeInfo.Initialize(Context);  
+        _wxeInfo.Initialize(Context);
         _isWxeInfoInitialized = true;
       }
 

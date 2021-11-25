@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IRelationEndPointProvider _endPointProviderStub;
     private IClientTransactionEventSink _transactionEventSinkStub;
     private IDomainObjectCollectionEventRaiser _eventRaiserMock;
-    
+
     private CompleteDomainObjectCollectionEndPointLoadState _loadState;
 
     private IRelationEndPointDefinition _definition;
@@ -603,7 +603,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
                   + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' property."));
     }
-    
+
     [Test]
     public void CreateReplaceCommand_WithItemWithoutEndPoint ()
     {

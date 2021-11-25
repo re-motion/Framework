@@ -412,7 +412,7 @@ namespace Remotion.FunctionalProgramming
         return element;
       }
     }
-    
+
     /// <summary>
     /// Works like <see cref="Enumerable.SingleOrDefault{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Func{TSource,bool})"/>
     /// but throws a custom exception if the sequence contains more than one matching element.
@@ -431,7 +431,7 @@ namespace Remotion.FunctionalProgramming
       ArgumentUtility.CheckNotNull("source", source);
       ArgumentUtility.CheckNotNull("predicate", predicate);
       ArgumentUtility.CheckNotNull("createMultipleMatchingElementsException", createMultipleMatchingElementsException);
-      
+
       return SingleOrDefault(source.Where(predicate), createMultipleMatchingElementsException);
     }
 

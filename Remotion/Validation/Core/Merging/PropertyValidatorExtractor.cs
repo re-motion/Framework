@@ -85,7 +85,7 @@ namespace Remotion.Validation.Merging
 
       static bool IsPredicateMatch (IPropertyValidator currentValidator, Func<IPropertyValidator, bool>? predicateToMatch)
       {
-        return predicateToMatch == null 
+        return predicateToMatch == null
                || predicateToMatch(currentValidator);
       }
     }

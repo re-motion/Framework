@@ -25,6 +25,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [ClassID ("MixinAddedTwiceWithDifferentNullability_TargetClassWithDBTable")]
   public class TargetClassWithDBTable : LayerSupertype
   {
-     
+
   }
 }

@@ -200,7 +200,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       OptionDefinition GetSelectedOption ();
       IReadOnlyList<OptionDefinition> GetOptionDefinitions ();
-        
+
       UnspecifiedPageObject SelectOption ([NotNull] string itemID, IWebTestActionOptions? actionOptions);
       UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions);
       UnspecifiedPageObject SelectOptionByText ([NotNull] string text, IWebTestActionOptions? actionOptions);

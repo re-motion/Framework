@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       _mockRepository = new MockRepository();
       _parentBuilderMock = _mockRepository.StrictMock<ClassContextBuilder>(typeof(object));
       _origin = MixinContextOriginObjectMother.Create();
-    
+
       _mixinBuilder = new MixinContextBuilder(_parentBuilderMock, typeof(BT2Mixin1), _origin);
     }
 
@@ -143,7 +143,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       _parentBuilderMock
           .Expect(mock => mock.SuppressMixin(Arg<IMixinSuppressionRule>.Matches(
-              rule => ((MixinTreeReplacementSuppressionRule) rule).ReplacingMixinType == _mixinBuilder.MixinType 
+              rule => ((MixinTreeReplacementSuppressionRule) rule).ReplacingMixinType == _mixinBuilder.MixinType
                   && ((MixinTreeReplacementSuppressionRule) rule).MixinBaseTypeToSuppress == typeof(int))))
           .Return(_parentBuilderMock);
       _parentBuilderMock.Replay();

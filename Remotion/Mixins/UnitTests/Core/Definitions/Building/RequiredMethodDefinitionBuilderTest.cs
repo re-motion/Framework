@@ -247,7 +247,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
                     + "could not be found on the target class."));
       }
     }
-    
+
     [Test]
     public void WorksIfRequiredMethodIsProtected ()
     {

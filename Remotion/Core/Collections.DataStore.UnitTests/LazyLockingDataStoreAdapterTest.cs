@@ -111,7 +111,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var value = new object();
       var doubleCheckedLockingContainer = CreateContainerThatChecksForNotProtected(value);
-      
+
       _innerDataStoreMock
           .Setup(mock => mock["test"])
           .Returns(doubleCheckedLockingContainer)
@@ -376,7 +376,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     private LockingDataStoreDecorator<string, Lazy<Wrapper>> GetLockingDataStoreDecorator (
         LazyLockingDataStoreAdapter<string, object> lazyLockingDataStoreAdapter)
     {
-      return (LockingDataStoreDecorator<string, Lazy<Wrapper>>) 
+      return (LockingDataStoreDecorator<string, Lazy<Wrapper>>)
           PrivateInvoke.GetNonPublicField(lazyLockingDataStoreAdapter, "_innerDataStore");
     }
 

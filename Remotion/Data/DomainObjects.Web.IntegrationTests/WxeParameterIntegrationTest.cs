@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
       function.VariablesContainer.EnsureParametersInitialized(null);
 
       var queryString = function.VariablesContainer.SerializeParametersForQueryString();
-      
+
       Assert.That(queryString, Is.EqualTo(new NameValueCollection { { "name", objectID.ToString() } }));
     }
 

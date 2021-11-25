@@ -63,7 +63,7 @@ namespace Remotion.Validation.Implementation
           .ItemType;
 
       if (itemType != null)
-        return itemType; 
+        return itemType;
 
       return _validatedTypeResolver.GetValidatedType(collectorType);
     }

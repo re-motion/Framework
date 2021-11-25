@@ -131,9 +131,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       factoryPartialMock.Replay();
 
       var dataManager = (DataManager) factoryPartialMock.CreateDataManager(
-          _fakeConstructedTransaction, 
-          fakeEventSink, 
-          fakeInvalidDomainObjectManager, 
+          _fakeConstructedTransaction,
+          fakeEventSink,
+          fakeInvalidDomainObjectManager,
           fakePersistenceStrategy,
           fakeHierarchyManager);
 
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           _fakeConstructedTransaction, eventSink, invalidDomainObjectManager, dataManager, enlistedDomainObjectManager, persistenceStrategy);
 
       Assert.That(result, Is.TypeOf(typeof(ObjectLifetimeAgent)));
-      
+
       var objectLifetimeAgent = ((ObjectLifetimeAgent) result);
       Assert.That(objectLifetimeAgent.ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
       Assert.That(objectLifetimeAgent.EventSink, Is.SameAs(eventSink));
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
       var persistenceStrategy = MockRepository.GenerateStub<IPersistenceStrategy>();
       var dataManager = MockRepository.GenerateStub<IDataManager>();
-      
+
       var result = _factory.CreateCommitRollbackAgent(_fakeConstructedTransaction, eventSink, persistenceStrategy, dataManager);
 
       Assert.That(result, Is.TypeOf<CommitRollbackAgent>());

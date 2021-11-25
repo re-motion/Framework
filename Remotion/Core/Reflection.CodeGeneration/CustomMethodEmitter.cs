@@ -139,7 +139,7 @@ namespace Remotion.Reflection.CodeGeneration
       if (baseMethod.IsAbstract)
         throw new ArgumentException(string.Format("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.GetFullNameSafe(), baseMethod.Name),
             "baseMethod");
-      
+
       AddDelegatingCallStatements(baseMethod, new TypeReferenceWrapper(SelfReference.Self, _declaringType.TypeBuilder), false);
       return this;
     }

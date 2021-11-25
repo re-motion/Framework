@@ -26,11 +26,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
   public class DomainObjectCollectionStandaloneEventsTest : ClientTransactionBaseTest
   {
     private OrderCollection.ICollectionEventReceiver _eventReceiverMock;
-    
+
     private Order _itemA;
     private Order _itemB;
     private Order _itemCNotInCollection;
-    
+
     private OrderCollection _collection;
 
     public override void SetUp ()
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       base.SetUp();
 
       _eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
-      
+
       _itemA = DomainObjectMother.CreateFakeObject<Order>();
       _itemB = DomainObjectMother.CreateFakeObject<Order>();
       _itemCNotInCollection = DomainObjectMother.CreateFakeObject<Order>();
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.That(_collection, Is.Empty);
     }
 
-    
+
     [Test]
     public void Clear_Events_Cancel ()
     {
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       _eventReceiverMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void Remove_Events_Cancel ()
     {

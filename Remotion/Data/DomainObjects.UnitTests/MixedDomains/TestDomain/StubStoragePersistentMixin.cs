@@ -20,6 +20,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
   public class StubStoragePersistentMixin : DomainObjectMixin<DomainObject>
   {
-    
+
   }
 }

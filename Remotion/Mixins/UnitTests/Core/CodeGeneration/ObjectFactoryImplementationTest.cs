@@ -31,9 +31,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
   public class ObjectFactoryImplementationTest
   {
     private IPipeline _defaultPipelineMock;
-    
+
     private ObjectFactoryImplementation _implementation;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -157,7 +157,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var allowNonPublicCtor = BooleanObjectMother.GetRandomBoolean();
       var concreteType = TypeFactory.GetConcreteType(typeof(BaseType1));
       var paramList = ParamList.Create("blub");
-      
+
       var fakePreparedInstance = new object();
 
       var reflectionServiceMock = MockRepository.GenerateStrictMock<IReflectionService>();

@@ -216,7 +216,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _controlExistedInPreviousRequest;
 
     private string? _assignedLabelID;
-    
+
     /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
     protected BusinessObjectBoundWebControl ()
     {

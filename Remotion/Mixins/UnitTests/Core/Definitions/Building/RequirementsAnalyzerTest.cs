@@ -75,14 +75,14 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public void GetRequirements_InterfaceIsRecursed_Twice ()
     {
       var result = _thisAnalyzer.GetRequirements(typeof(BT3Mixin3<ICBaseType3BT3Mixin4, BaseType3>));
-      Assert.That(result, Is.EquivalentTo(new[] { 
-          typeof(ICBaseType3BT3Mixin4), 
-          typeof(IBT3Mixin4), 
-          typeof(ICBaseType3), 
-          typeof(IBaseType31), 
-          typeof(IBaseType32), 
-          typeof(IBaseType33), 
-          typeof(IBaseType34), 
+      Assert.That(result, Is.EquivalentTo(new[] {
+          typeof(ICBaseType3BT3Mixin4),
+          typeof(IBT3Mixin4),
+          typeof(ICBaseType3),
+          typeof(IBaseType31),
+          typeof(IBaseType32),
+          typeof(IBaseType33),
+          typeof(IBaseType34),
           typeof(IBaseType35) }));
     }
 

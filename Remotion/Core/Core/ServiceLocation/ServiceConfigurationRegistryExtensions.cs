@@ -130,6 +130,6 @@ namespace Remotion.ServiceLocation
       }
 
       serviceConfigurationRegistry.Register(serviceConfigurationEntry);
-    } 
+    }
   }
 }

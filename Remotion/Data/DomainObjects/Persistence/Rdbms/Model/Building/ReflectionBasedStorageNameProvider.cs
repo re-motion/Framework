@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("foreignKeyColumns", foreignKeyColumns);
-      
+
       var tableName = GetTableName(classDefinition).EntityName;
 
       return String.Format("FK_{0}_{1}", tableName, String.Join((string) "_", (IEnumerable<string>) foreignKeyColumns.Select(cd => cd.Name)));

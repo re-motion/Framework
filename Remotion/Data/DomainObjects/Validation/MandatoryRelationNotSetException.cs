@@ -25,18 +25,18 @@ namespace Remotion.Data.DomainObjects.Validation
     private readonly DomainObject _domainObject;
     private readonly string _propertyName;
 
-    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message) 
-        : this(domainObject, propertyName, message, null) 
-    { 
+    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message)
+        : this(domainObject, propertyName, message, null)
+    {
     }
 
-    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner) 
-        : base(message, inner) 
+    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner)
+        : base(message, inner)
     {
       _domainObject = domainObject;
       _propertyName = propertyName;
     }
-    
+
     protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base(info, context)
     {
       _domainObject = (DomainObject) info.GetValue("_domainObject", typeof(DomainObject));

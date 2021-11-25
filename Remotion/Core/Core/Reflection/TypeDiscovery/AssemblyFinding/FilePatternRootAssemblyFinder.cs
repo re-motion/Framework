@@ -65,9 +65,9 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     private readonly IAssemblyLoader _assemblyLoader;
 
     public FilePatternRootAssemblyFinder (
-        string searchPath, 
-        IEnumerable<FilePatternSpecification> specifications, 
-        IFileSearchService fileSearchService, 
+        string searchPath,
+        IEnumerable<FilePatternSpecification> specifications,
+        IFileSearchService fileSearchService,
         IAssemblyLoader assemblyLoader)
     {
       ArgumentUtility.CheckNotNullOrEmpty("searchPath", searchPath);

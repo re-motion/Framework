@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       DataContainer tempClassWithAllDataTypes = LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1);
       SetPropertyValue(tempClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NullableBinaryProperty", ResourceManager.GetImage1());
       Provider.Save(new[] { tempClassWithAllDataTypes });
-      
+
       var savedClassWithAllDataTypes = LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(true));

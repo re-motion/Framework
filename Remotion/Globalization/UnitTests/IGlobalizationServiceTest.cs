@@ -32,7 +32,7 @@ namespace Remotion.Globalization.UnitTests
     {
       _serviceLocator = DefaultServiceLocator.Create();
     }
-    
+
     [Test]
     public void GetInstance_Once ()
     {

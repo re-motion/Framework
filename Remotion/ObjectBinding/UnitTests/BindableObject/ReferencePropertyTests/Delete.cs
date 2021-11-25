@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
                   + "Remotion.ObjectBinding.UnitTests'."));
 
       mockService.Verify();
-      
+
     }
 
     private ReferenceProperty DeleteProperty (string propertyName)

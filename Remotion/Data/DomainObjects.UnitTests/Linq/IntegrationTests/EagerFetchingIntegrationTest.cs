@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                    where o1.OrderNumber < 6
                    select o1).Distinct().FetchMany(x => x.OrderItems);
 
-      CheckQueryResult(query, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4, DomainObjectIDs.Order5, 
+      CheckQueryResult(query, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4, DomainObjectIDs.Order5,
                         DomainObjectIDs.Order2);
 
       CheckDataContainersRegistered(DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4, DomainObjectIDs.Order5,
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           DomainObjectIDs.OrderTicket1, DomainObjectIDs.OrderTicket2, // the customer's orders' tickets
           DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2, DomainObjectIDs.OrderItem6 // the customer's orders' items
           );
-      
+
       CheckObjectRelationRegistered(DomainObjectIDs.Order1, "Customer", DomainObjectIDs.Customer1);
       CheckDomainObjectCollectionRelationRegistered(DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
 
@@ -341,7 +341,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_CollectionPropertyVirtualSide_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint 
+                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint
                          || o.ID == DomainObjectIDs.EagerFetching_BaseClass
                    select o)
                    .FetchMany(o => ((EagerFetching_DerivedClass1) o).CollectionPropertyManySide);
@@ -355,7 +355,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_ScalarPropertyVirtualSide_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithScalarVirtualEndPoint 
+                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithScalarVirtualEndPoint
                          || o.ID == DomainObjectIDs.EagerFetching_BaseClass
                    select o)
                    .FetchOne(o => ((EagerFetching_DerivedClass1) o).ScalarProperty1VirtualSide);
@@ -369,7 +369,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_ScalarPropertyRealSide_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithScalarRealEndPoint 
+                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithScalarRealEndPoint
                          || o.ID == DomainObjectIDs.EagerFetching_BaseClass
                    select o)
                    .FetchOne(o => ((EagerFetching_DerivedClass2) o).ScalarProperty2RealSide);
@@ -383,7 +383,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_UnidirectionalProperty_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithUnidirectionalEndPoint 
+                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithUnidirectionalEndPoint
                          || o.ID == DomainObjectIDs.EagerFetching_BaseClass
                    select o)
                    .FetchOne(o => ((EagerFetching_DerivedClass2) o).UnidirectionalProperty);
@@ -494,7 +494,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       var queryableWithFetch = queryableStub.FetchOne(o => o.Customer);
 
       var result = queryableWithFetch.ToArray();
-      
+
       Assert.That(result, Is.EqualTo(orders));
     }
 

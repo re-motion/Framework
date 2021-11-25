@@ -88,9 +88,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       catch (EventReceiverCancelException)
       {
         ChangeState[] expectedStates = new ChangeState[]
-            { 
+            {
               new ObjectDeletionState(_orderItem, "1. Deleting event of orderItem"),
-              new CollectionChangeState(_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems") 
+              new CollectionChangeState(_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems")
             };
 
         _eventReceiver.Check(expectedStates);

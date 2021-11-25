@@ -116,8 +116,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       var timestamp = _timestampProperty.CombineValue(columnValueReader);
 
       var dataContainer = DataContainer.CreateForExisting(
-          id, 
-          timestamp, 
+          id,
+          timestamp,
           pd => pd.StorageClass == StorageClass.Persistent ? ReadPropertyValue(pd, columnValueReader, id) : pd.DefaultValue);
 
       _dataContainerValidator.Validate(dataContainer);

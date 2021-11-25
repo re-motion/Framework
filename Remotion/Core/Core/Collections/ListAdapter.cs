@@ -140,8 +140,8 @@ namespace Remotion.Collections
   public static class ListAdapter
   {
     public static ListAdapter<TSource, TDest> Adapt<TSource, TDest> (
-        IList<TSource> adaptedList, 
-        Func<TSource, TDest> sourceToDest, 
+        IList<TSource> adaptedList,
+        Func<TSource, TDest> sourceToDest,
         Func<TDest, TSource> destToSource)
     {
       return new ListAdapter<TSource, TDest>(adaptedList, sourceToDest, destToSource);

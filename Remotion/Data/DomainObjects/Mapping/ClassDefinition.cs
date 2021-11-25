@@ -358,7 +358,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection MyRelationEndPointDefinitions
     {
-      get 
+      get
       {
         if (_relationEndPoints == null)
           throw new InvalidOperationException(String.Format("No relation end point definitions have been set for class '{0}'.", ID));

@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       get { return _statelessAclStateHtmlText; }
       set { _statelessAclStateHtmlText = value; }
     }
-    
+
     public string AclWithNoAssociatedStatesHtmlText
     {
       get { return _aclWithNoAssociatedStatesHtmlText; }
@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     }
 
 
-    private void WriteTableDataAddendum (object addendum) 
+    private void WriteTableDataAddendum (object addendum)
     {
       if (addendum != null)
       {
@@ -69,7 +69,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       WriteRowspanAttribute(rowCount);
       HtmlTagWriter.Value(value);
       if (_settings.OutputRowCount)
-      { 
+      {
         WriteTableDataAddendum(rowCount);
       }
       HtmlTagWriter.Tags.tdEnd();
@@ -79,7 +79,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     private void WriteRowspanAttribute (int rowCount)
     {
       if (rowCount > 0)
-      { 
+      {
         HtmlTagWriter.Attribute("rowspan", Convert.ToString(rowCount));
       }
     }
@@ -93,7 +93,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       HtmlTagWriter.Value(", ");
       HtmlTagWriter.Value(role.Position.DisplayName);
       if (_settings.OutputRowCount)
-      { 
+      {
         WriteTableDataAddendum(rowCount);
       }
       HtmlTagWriter.Tags.tdEnd();
@@ -111,7 +111,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
         IOrderedEnumerable<StateDefinition> stateDefinitions = GetAllStatesForAclExpansionEntry(aclExpansionEntry);
 
         if (!stateDefinitions.Any())
-        { 
+        {
           HtmlTagWriter.Value(AclWithNoAssociatedStatesHtmlText);
         }
         else
@@ -151,7 +151,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       foreach (AccessTypeDefinition accessTypeDefinition in accessTypeDefinitionsSorted)
       {
         if (!firstElement)
-        { 
+        {
           HtmlTagWriter.Value(", ");
         }
         HtmlTagWriter.Value(accessTypeDefinition.DisplayName);
@@ -182,7 +182,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       HtmlTagWriter.Value(""); // To force <td></td> instead of <td />
       var owningGroup = conditions.OwningGroup;
       if (owningGroup != null)
-      { 
+      {
         HtmlTagWriter.Value(owningGroup.DisplayName);
       }
 
@@ -213,7 +213,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       HtmlTagWriter.Value(""); // To force <td></td> instead of <td />
       var owningTenant = conditions.OwningTenant;
       if (owningTenant != null)
-      { 
+      {
         HtmlTagWriter.Value(owningTenant.DisplayName);
       }
 
@@ -232,7 +232,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     public void WriteTableDataForBooleanCondition (bool required)
     {
       HtmlTagWriter.Tags.td();
-      HtmlTagWriter.Value(required ? "X" : ""); 
+      HtmlTagWriter.Value(required ? "X" : "");
       HtmlTagWriter.Tags.tdEnd();
     }
 

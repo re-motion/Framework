@@ -35,12 +35,12 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly IPersistenceModelValidatorFactory _persistenceModelValidatorFactory;
 
     public MappingConfigurationValidationHelper (
-        IMappingValidatorFactory mappingValidatorFactory, 
+        IMappingValidatorFactory mappingValidatorFactory,
         IPersistenceModelValidatorFactory persistenceModelValidatorFactory)
     {
       ArgumentUtility.CheckNotNull("mappingValidatorFactory", mappingValidatorFactory);
       ArgumentUtility.CheckNotNull("persistenceModelValidatorFactory", persistenceModelValidatorFactory);
-      
+
       _mappingValidatorFactory = mappingValidatorFactory;
       _persistenceModelValidatorFactory = persistenceModelValidatorFactory;
     }

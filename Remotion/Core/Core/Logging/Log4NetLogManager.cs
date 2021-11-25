@@ -87,7 +87,7 @@ namespace Remotion.Logging
       {
         var message = string.Format(
             "Cannot set a default threshold for the logger repository of type '{1}' configured for assembly '{0}'. The repository does not derive "
-            + "from the '{2}' class.", 
+            + "from the '{2}' class.",
             repositoryAssembly.GetName().GetNameSafe(),
             loggerRepository.GetType(),
             typeof(Hierarchy));

@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           false);
 
       _objectIDStoragePropertyDefinition = new ObjectIDStoragePropertyDefinition(
-          new SimpleStoragePropertyDefinition(typeof(object), _idColumnDefinition), 
+          new SimpleStoragePropertyDefinition(typeof(object), _idColumnDefinition),
           new SimpleStoragePropertyDefinition(typeof(string), _classIDColumnDefinition));
       _timestampStoragePropertyDefinition = new SimpleStoragePropertyDefinition(typeof(object), _timestampColumnDefinition);
     }

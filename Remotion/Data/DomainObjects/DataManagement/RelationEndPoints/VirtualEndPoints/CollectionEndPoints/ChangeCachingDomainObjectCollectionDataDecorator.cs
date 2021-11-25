@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly IDomainObjectCollectionData _unobservedWrappedData;
 
     private readonly CopyOnWriteDomainObjectDomainObjectCollectionData _originalData;
-    
+
     private bool _isCacheUpToDate;
     private bool _cachedHasChangedFlag;
 

@@ -38,7 +38,7 @@ public class BocTest
   public BocTest ()
   {
   }
-  
+
   [SetUp]
   public virtual void SetUp ()
   {

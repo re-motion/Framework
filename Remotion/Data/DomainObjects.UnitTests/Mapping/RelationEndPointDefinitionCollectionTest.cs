@@ -89,12 +89,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       derivedClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPoint2 }, true));
 
       var endPoints = RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(derivedClassDefinition, true);
-       
+
       Assert.That(endPoints.Count, Is.EqualTo(2));
       Assert.That(endPoints[0], Is.SameAs(endPoint2));
       Assert.That(endPoints[1], Is.SameAs(endPoint1));
     }
-    
+
     [Test]
     public void Add ()
     {

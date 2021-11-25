@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       DataContainer dataContainer;
       Assertion.DebugAssert(
-          (dataContainer = ClientTransaction.DataManager.DataContainers[DomainObject.ID]) != null 
+          (dataContainer = ClientTransaction.DataManager.DataContainers[DomainObject.ID]) != null
           && dataContainer.DomainObject == DomainObject,
           "Guaranteed because CheckIfRightTransaction ensures that DomainObject is enlisted.");
     }

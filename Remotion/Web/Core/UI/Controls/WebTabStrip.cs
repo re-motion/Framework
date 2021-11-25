@@ -253,7 +253,7 @@ namespace Remotion.Web.UI.Controls
 
       var builder = new WebTabRendererAdapterArrayBuilder(GetVisibleTabs().ToArray(), TabStyle, SelectedTabStyle);
       builder.EnableSelectedTab = EnableSelectedTab;
-      
+
       var renderers = builder.GetWebTabRenderers();
 
       return new WebTabStripRenderingContext(Page!.Context!, writer, this, renderers); // TODO RM-8118: not null assertion

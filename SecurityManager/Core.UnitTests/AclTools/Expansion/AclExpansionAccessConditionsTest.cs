@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       var a = new AclExpansionAccessConditions();
       var equalityObjects = AclExpansionAccessConditions.EqualityComparer.GetEqualityParticipatingObjects(a);
-      Assert.That(equalityObjects, Is.EqualTo(new object[] { a.AbstractRole, a.OwningGroup, a.OwningTenant, 
+      Assert.That(equalityObjects, Is.EqualTo(new object[] { a.AbstractRole, a.OwningGroup, a.OwningTenant,
         a.GroupHierarchyCondition, a.TenantHierarchyCondition, a.IsOwningUserRequired }));
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     public void GetHashCodeTest ()
     {
       var aclExpansionAccessConditions = new AclExpansionAccessConditions();
-      Assert.That(aclExpansionAccessConditions.GetHashCode(), 
+      Assert.That(aclExpansionAccessConditions.GetHashCode(),
         Is.EqualTo(AclExpansionAccessConditions.EqualityComparer.GetHashCode(aclExpansionAccessConditions)));
     }
   }

@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
       var actuallyLoadedDomainObjects = Array.AsReadOnly(new[] { DomainObjectMother.CreateFakeObject(), DomainObjectMother.CreateFakeObject() });
-      
+
       using (_mockRepository.Ordered())
       {
         _eventSinkWithMock.Expect(mock => mock.RaiseObjectsLoadedEvent( actuallyLoadedDomainObjects));
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     public void OnObjectsNotFound ()
     {
       var notFoundObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-      
+
       _eventSinkWithMock.Expect(mock => mock.RaiseObjectsNotFoundEvent( notFoundObjectIDs));
       _mockRepository.ReplayAll();
 

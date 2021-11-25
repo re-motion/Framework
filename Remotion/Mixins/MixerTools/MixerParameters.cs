@@ -28,7 +28,7 @@ namespace Remotion.Mixins.MixerTools
     public string BaseDirectory = Environment.CurrentDirectory;
 
     [CommandLineStringArgument ("config", true,
-        Description = 
+        Description =
             "The config file holding the application's configuration. "
             + "Unless the path is rooted, the config file is located relative to the baseDirectory.",
         Placeholder = "app.config")]

@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       base.InitializeWriteableSubTransaction();
       ClassWithAllDataTypes.NewObject();
     }
-    
+
     [Test]
     public void RollbackInReadOnlyRootTransaction_IsForbidden ()
     {

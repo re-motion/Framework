@@ -49,7 +49,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     {
       var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns} />";
       DeserializeSection(xmlFragment);
-      
+
       Assert.That(_section.ForceStrongNaming.ElementInformation.IsPresent, Is.False);
       Assert.That(_section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent, Is.False);
     }

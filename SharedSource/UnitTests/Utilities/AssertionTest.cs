@@ -109,7 +109,7 @@ namespace Remotion.UnitTests.Utilities
 
     [Test]
     public void IsNull_Message_Args_True ()
-    {     
+    {
       Assertion.IsNull(null, "a{0}b", 5);
     }
 

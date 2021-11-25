@@ -52,7 +52,7 @@ public class MonospaceTextFormatTest
     string description = "the quick brown fox jumps over the lazy dog. THE (VERY QUICK) FOX JUMPS OVER THE LAZY DOG.";
     StringBuilder sb = new StringBuilder(label);
     MonospaceTextFormat.AppendIndentedText(sb, label.Length, 30, description);
-    string expectedText = 
+    string expectedText =
             "this is the label  the quick"
         + "\n                   brown fox"
         + "\n                   jumps over"

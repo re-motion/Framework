@@ -28,7 +28,7 @@ namespace Remotion.Web.Compilation
   /// <remarks>
   /// Use the <see cref="FileLevelControlBuilderAttribute"/> to apply the extension point to a class derived from <see cref="UserControl"/>.
   /// </remarks>
-  public class CodeProcessingUserControlBuilder : FileLevelUserControlBuilder 
+  public class CodeProcessingUserControlBuilder : FileLevelUserControlBuilder
   {
     public override void ProcessGeneratedCode (
         CodeCompileUnit codeCompileUnit,

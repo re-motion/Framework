@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
       get { return _compoundRegistrations; }
     }
   }
-  
+
   [ImplementationFor (typeof(ITestCompoundRegistration), RegistrationType = RegistrationType.Compound, Position = 2)]
   public class TestCompoundRegistration2 : ITestCompoundRegistration
   {

@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _sqlDialectStub.Stub(stub => stub.GetParameterName("First")).Return("pFirst");
       _sqlDialectStub.Stub(stub => stub.GetParameterName("Second")).Return("pSecond");
-      
+
       _sqlDialectStub.Stub(mock => mock.DelimitIdentifier("First")).Return("[First]");
       _sqlDialectStub.Stub(mock => mock.DelimitIdentifier("Second")).Return("[Second]");
 

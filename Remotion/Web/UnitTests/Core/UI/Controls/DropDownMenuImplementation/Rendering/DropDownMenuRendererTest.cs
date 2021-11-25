@@ -127,7 +127,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
       var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
       renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
-      
+
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement("span", 0);
       containerDiv.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "DropDownMenu");

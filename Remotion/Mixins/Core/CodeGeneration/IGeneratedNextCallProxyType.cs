@@ -20,6 +20,6 @@ namespace Remotion.Mixins.CodeGeneration
 {
   public interface IGeneratedNextCallProxyType
   {
-    
+
   }
 }

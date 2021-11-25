@@ -69,8 +69,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       Assert.That(
           () => _agent.GroupAndRegisterRelatedObjects(
-              endPointDefinition, 
-              _originatingObjects, 
+              endPointDefinition,
+              _originatingObjects,
               _relatedObjects),
           Throws.InvalidOperationException.With.Message.EqualTo("Anonymous relation end-points cannot have data registered."));
     }

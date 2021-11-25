@@ -146,7 +146,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     {
       var instance = ObjectFactory.Create<TypeWithArrayArray>();
       var bytes = new[] { new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 } };
-      
+
       var result = instance.M(bytes);
 
       Assert.That(result, Is.EqualTo("{4,5,6},{1,2,3} mixed"));

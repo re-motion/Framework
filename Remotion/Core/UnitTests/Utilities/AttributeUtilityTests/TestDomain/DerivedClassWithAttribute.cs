@@ -26,6 +26,6 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
   [SuppressAttributes (typeof(InheritedNotMultipleAttribute))]
   public class DerivedClassWithAttribute : BaseClassWithAttribute
   {
-    
+
   }
 }

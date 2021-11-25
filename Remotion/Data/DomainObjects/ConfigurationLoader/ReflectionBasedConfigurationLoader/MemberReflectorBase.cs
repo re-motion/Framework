@@ -88,6 +88,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       return _nameResolver.GetPropertyName(PropertyInfo);
     }
-    
+
   }
 }

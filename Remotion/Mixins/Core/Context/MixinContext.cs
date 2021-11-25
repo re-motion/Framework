@@ -104,7 +104,7 @@ namespace Remotion.Mixins.Context
       if (other == null)
         return false;
 
-      if (other._mixinKind != _mixinKind 
+      if (other._mixinKind != _mixinKind
         || other._mixinType != _mixinType
         || other._introducedMemberVisibility != _introducedMemberVisibility
         || other._explicitDependencies.Count != _explicitDependencies.Count)
@@ -189,7 +189,7 @@ namespace Remotion.Mixins.Context
     public MixinContext ApplyAdditionalExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
       ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
-      
+
       var newDependencies = _explicitDependencies.Concat(explicitDependencies);
       return new MixinContext(_mixinKind, _mixinType, _introducedMemberVisibility, newDependencies, _origin);
     }

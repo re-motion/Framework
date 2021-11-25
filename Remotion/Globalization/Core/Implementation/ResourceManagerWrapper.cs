@@ -196,7 +196,7 @@ namespace Remotion.Globalization.Implementation
       // if a culture has no resources the resource manager creates a fallback resource set for this culture.
       // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
       CheckAndSetAvailableCultures(_availableCultures);
-      
+
       // Loop through all entries in the resource managers
       // Copy the resources into a collection
       var result = new Dictionary<CultureInfo, string>();

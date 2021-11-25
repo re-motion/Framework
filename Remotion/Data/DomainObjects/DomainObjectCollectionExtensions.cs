@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("collection", collection);
       ArgumentUtility.CheckNotNull("sourceCollection", sourceCollection);
-      
+
       collection.CheckNotReadOnly("A read-only collection cannot be combined with another collection.");
 
       collection.AddRange(sourceCollection.Cast<DomainObject>().Where(obj => !collection.Contains(obj.ID)));

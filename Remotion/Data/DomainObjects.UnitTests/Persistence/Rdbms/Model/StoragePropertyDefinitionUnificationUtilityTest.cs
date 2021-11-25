@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       object actual = new DateTime(2013, 04, 10, 10, 28, 10);
 
       var result = StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
-          expected, 
-          actual, 
-          "param", 
+          expected,
+          actual,
+          "param",
           item => Tuple.Create<string, object>("Year", item.Year));
 
       Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(DateTime)));
@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       object actual = Tuple.Create<int?>(null);
 
       var result = StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
-          expected, 
-          actual, 
-          "param", 
+          expected,
+          actual,
+          "param",
           item => Tuple.Create<string, object>("Item1", item.Item1));
 
       Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(Tuple<int?>)));

@@ -24,6 +24,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.V
   /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocCheckBoxValidatorFactoryDecorator"/>
   public interface IBocCheckBoxValidatorFactory : IBocValidatorFactory<IBocCheckBox>
   {
-     
+
   }
 }

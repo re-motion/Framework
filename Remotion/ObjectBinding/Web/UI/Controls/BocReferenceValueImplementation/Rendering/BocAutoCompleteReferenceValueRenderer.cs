@@ -367,7 +367,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         ID = renderingContext.Control.GetKeyValueName(),
         Page = renderingContext.Control.Page!.WrappedInstance,
         EnableViewState = true,
-        Value = renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString        
+        Value = renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString
       };
     }
 

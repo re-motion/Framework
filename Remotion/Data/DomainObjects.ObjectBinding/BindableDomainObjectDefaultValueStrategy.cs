@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       var domainObject = ArgumentUtility.CheckNotNullAndType<IDomainObject>("obj", obj);
       ArgumentUtility.CheckNotNull("property", property);
-      
+
       if (!domainObject.GetState().IsNew)
         return false;
 

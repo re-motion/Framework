@@ -123,9 +123,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var insertedEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(_insertedRelatedObject.ID, "Customer");
       var insertedEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithoutLoading(insertedEndPointID);
       Assert.That(insertedEndPoint, Is.Not.Null);
-      
+
       EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(insertedEndPoint.ID)).Return(insertedEndPoint);
-      
+
       var oldCustomer = _insertedRelatedObject.Customer;
       var oldRelatedEndPointOfInsertedObject = DataManager.GetRelationEndPointWithoutLoading(RelationEndPointID.Resolve(oldCustomer, c => c.Orders));
       EndPointProviderStub

@@ -92,7 +92,7 @@ namespace Remotion.Security.Metadata
 
       return new List<EnumValueInfo>(accessTypes.Values);
     }
-    
+
     private void AddAccessTypes (Type type, Dictionary<Enum, EnumValueInfo> accessTypes, MetadataCache cache)
     {
       var instanceMethods = GetInstanceMethods(type);

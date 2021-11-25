@@ -77,7 +77,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
       _control.Setup(stub => stub.ActiveViewClientID).Returns(_control.Object.ClientID + "_ActiveView");
       _control.Setup(stub => stub.ActiveViewContentClientID).Returns(_control.Object.ActiveViewClientID + "_Content");
       _control.Setup(stub => stub.WrapperClientID).Returns("WrapperClientID");
-      
+
 
       StateBag stateBag = new StateBag();
       _control.Setup(stub => stub.Attributes).Returns(new AttributeCollection(stateBag));
@@ -153,7 +153,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
       PopulateControl();
 
       _renderer = new TabbedMultiViewRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
-      
+
       var div = AssertControl(false, false, false, false);
 
       div.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "TabbedMultiView");
@@ -162,7 +162,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     private void PopulateControl ()
     {
       _control.Object.TopControl.Controls.Add(new LiteralControl("TopControls"));
-      
+
       var view1 = new TabView { ID="View1ID", Title = "View1Title" };
       view1.LazyControls.Add(new LiteralControl("View1Contents"));
       _control.Setup(stub=>stub.GetActiveView()).Returns(view1);
@@ -196,7 +196,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
 
       var document = _htmlHelper.GetResultDocument();
       var outerDiv = document.GetAssertedChildElement("div", 0);
-      
+
       outerDiv.AssertAttributeValueEquals("class", cssClass);
       if (isDesignMode)
       {

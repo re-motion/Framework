@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     {
       PerformSerializationTests(10250, "SerializeSmallValuePropertyObjects10250", 2121, 2185, 8921542, CreateAndFillSmallValuePropertyObject);
     }
-    
+
     [Test]
     public void SerializeValuePropertyObjects00050 ()
     {
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
         deserializationStopwatch.Start();
         Serializer.Deserialize(data);
         deserializationStopwatch.Stop();
-        
+
         dataSize += data.Length;
       }
 

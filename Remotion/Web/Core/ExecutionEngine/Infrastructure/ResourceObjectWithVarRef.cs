@@ -49,7 +49,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       object? pageObject =  variables[_pathReference.Name];
       if (pageObject == null)
         throw new InvalidOperationException(string.Format("The variable '{0}' could not be found in the list of variables.", _pathReference.Name));
-      
+
       string? page = pageObject as string;
       if (page == null)
         throw new InvalidCastException(string.Format("The variable '{0}' was of type '{1}'. Expected type is '{2}'.", _pathReference.Name, pageObject.GetType().GetFullNameSafe(), typeof(string).GetFullNameSafe()));

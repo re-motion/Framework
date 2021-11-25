@@ -76,8 +76,8 @@ namespace Remotion.Data.DomainObjects.Linq
         Assertion.IsTrue(originalObjectIDProjection.Constructor.Equals(s_objectIDConstructor));
 
         var nullSafeObjectIDProjection = Expression.Call(
-            s_getObjectIDOrNullMethod, 
-            originalObjectIDProjection.Arguments[0], 
+            s_getObjectIDOrNullMethod,
+            originalObjectIDProjection.Arguments[0],
             originalObjectIDProjection.Arguments[1]);
         CommandBuilder.SetInMemoryProjectionBody(nullSafeObjectIDProjection);
       }

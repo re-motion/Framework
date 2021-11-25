@@ -71,7 +71,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
     public void ExecuteBatchString ()
     {
       SetupCommandExpectations("ABCDEFG", null, delegate { Expect.Call(_commandMock.ExecuteNonQuery()).Return(5); });
-      
+
       _mockRepository.ReplayAll();
 
       TestableDatabaseAgent agent = new TestableDatabaseAgent(_connectionStub);
@@ -86,7 +86,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
     {
       SetupCommandExpectations("ABC", null, delegate { Expect.Call(_commandMock.ExecuteNonQuery()).Return(10); });
       SetupCommandExpectations("GFE", null, delegate { Expect.Call(_commandMock.ExecuteNonQuery()).Return(20); });
-      
+
       _mockRepository.ReplayAll();
 
       TestableDatabaseAgent agent = new TestableDatabaseAgent(_connectionStub);

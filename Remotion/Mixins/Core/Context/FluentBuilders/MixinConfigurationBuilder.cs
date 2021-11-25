@@ -191,8 +191,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
         var classContextCollection = new ClassContextCollection(allContexts);
         return new MixinConfiguration(classContextCollection)
             .LogAndReturnValue(
-                s_log, 
-                LogLevel.Info, 
+                s_log,
+                LogLevel.Info,
                 conf => string.Format("Built mixin configuration from fluent builders with {0} class contexts.", conf.ClassContexts.Count));
       }
     }

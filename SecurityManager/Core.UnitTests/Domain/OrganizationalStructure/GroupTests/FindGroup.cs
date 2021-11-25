@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
   [TestFixture]
   public class FindGroup : GroupTestBase
   {
-    private readonly QueryableComparer _queryableComparer 
+    private readonly QueryableComparer _queryableComparer
         = new QueryableComparer((actual, exptected) => Assert.That(actual, Is.EqualTo(exptected)));
 
     private DatabaseFixtures _dbFixtures;

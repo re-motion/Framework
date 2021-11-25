@@ -63,7 +63,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       if (_isDisposed)
         return;
-      
+
       _isDisposed = true;
 
       foreach (var generatedAssemblyPath in _generatedAssemblyPaths)
@@ -79,7 +79,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       var allReferencedAssemblies = _alwaysReferencedAssemblies.Concat(referencedAssemblies).ToArray();
       var fullSourceDirectory = Path.Combine(_sourceDirectoryRoot, Path.GetFileNameWithoutExtension(outputAssemblyFileName));
       var assemblyCompiler = new AssemblyCompiler(fullSourceDirectory, outputAssemblyPath, allReferencedAssemblies);
-      
+
 #if NETFRAMEWORK
       assemblyCompiler.CompileInSeparateAppDomain();
       _generatedAssemblyPaths.Add(outputAssemblyPath);

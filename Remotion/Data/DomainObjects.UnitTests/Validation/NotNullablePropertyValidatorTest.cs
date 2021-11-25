@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       _validator = new NotNullablePropertyValidator();
     }
 
@@ -185,6 +185,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var dataContainer = DataContainer.CreateNew(domainObject.ID);
       return new PersistableData(domainObject, domainObjectState, dataContainer, Enumerable.Empty<IRelationEndPoint>());
     }
-    
+
   }
 }

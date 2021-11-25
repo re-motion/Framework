@@ -69,10 +69,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 
       var customerProperty = orderClassDefinition.MyPropertyDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
       var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition) customerProperty.StoragePropertyDefinition).GetColumnsForComparison();
-      
+
       _storageNameProviderMock
           .Expect(mock => mock.GetForeignKeyConstraintName(
-              Arg.Is(orderClassDefinition), 
+              Arg.Is(orderClassDefinition),
               Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedComparedColumns)))
           .Return("FakeConstraintName");
       _storageNameProviderMock
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       Assert.That(foreignKeyConstraint.ReferencingColumns, Is.EqualTo(expectedComparedColumns));
       Assert.That(foreignKeyConstraint.ReferencedColumns, Is.EqualTo(_fakeObjectIDStoragePropertyDefinition.GetColumnsForComparison()));
     }
-    
+
     [Test]
     public void CreateForeignKeyConstraints_StorageClassTransactionPropertiesAreIgnored ()
     {

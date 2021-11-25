@@ -131,7 +131,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       if (string.IsNullOrEmpty(SpecificTenantField.ControlServicePath))
         SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificTenantField);
- 
+
       if (string.IsNullOrEmpty(SpecificGroupField.ControlServicePath))
         SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificGroupField);
 
@@ -143,7 +143,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       if (string.IsNullOrEmpty(SpecificPositionField.ControlServicePath))
         SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificPositionField);
-      
+
       if (string.IsNullOrEmpty(SpecificAbstractRoleField.ControlServicePath))
         SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificAbstractRoleField);
     }

@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Context
   public class ClassContextDeriver
   {
     public static readonly ClassContextDeriver Instance = new ClassContextDeriver();
-    
+
     public ClassContext DeriveContext (ClassContext contextToBeDerived, IEnumerable<ClassContext> baseContexts)
     {
       ArgumentUtility.CheckNotNull("contextToBeDerived", contextToBeDerived);

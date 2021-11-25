@@ -78,7 +78,7 @@ namespace Remotion.Validation
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull("propertySelector", propertySelector);
-      
+
       var propertyRule = AddingPropertyValidationRuleCollector.Create(propertySelector, GetType());
       _addedPropertyRules.Add(propertyRule);
 
@@ -100,7 +100,7 @@ namespace Remotion.Validation
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull("propertySelector", propertySelector);
-      
+
       var propertyRule = RemovingPropertyValidationRuleCollector.Create(propertySelector, GetType());
       _removedPropertyRules.Add(propertyRule);
 

@@ -81,11 +81,11 @@ namespace Remotion.Collections
     {
       throw new NotSupportedException("'Remove' ist not supported for read-only collections.");
     }
-    
+
     void ICollection<T>.Clear ()
     {
       throw new NotSupportedException("'Clear' ist not supported for read-only collections.");
     }
-    
+
   }
 }

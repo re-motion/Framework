@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public abstract void SetDataFromSubTransaction (IRelationEndPoint source);
 
     public abstract void ValidateMandatory ();
-    
+
     public abstract IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject);
     public abstract IDataManagementCommand CreateDeleteCommand ();
 

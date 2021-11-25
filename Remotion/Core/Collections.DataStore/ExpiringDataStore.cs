@@ -90,12 +90,12 @@ namespace Remotion.Collections.DataStore
       {
         if (!TryGetValue(key, out var result))
           throw new KeyNotFoundException("Key not found.");
-        return result; 
+        return result;
       }
       set
       {
         RemoveExpiredItems();
-        _innerDataStore[key] = Tuple.Create(value, _expirationPolicy.GetExpirationInfo(value)); 
+        _innerDataStore[key] = Tuple.Create(value, _expirationPolicy.GetExpirationInfo(value));
       }
     }
 
@@ -158,10 +158,10 @@ namespace Remotion.Collections.DataStore
       if (_expirationPolicy.ShouldScanForExpiredItems(_nextScanInfo))
       {
         var expiredKeys = (
-            from kvp in _innerDataStore 
-            where _expirationPolicy.IsExpired(kvp.Value.Item1, kvp.Value.Item2) 
+            from kvp in _innerDataStore
+            where _expirationPolicy.IsExpired(kvp.Value.Item1, kvp.Value.Item2)
             select kvp.Key).ToList();
-        
+
         foreach (var key in expiredKeys)
           RemoveWithoutScanning(key);
 

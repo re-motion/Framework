@@ -144,7 +144,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
       Assert.That(MethodCaller.CallFunc<string>("Say").With(c_as_a, "Hi"), Is.EqualTo("Hi C from B"));
       Assert.That(MethodCaller.CallFunc<int>("get_PrivateProperty", BindingFlags.NonPublic | BindingFlags.Instance).With(foo), Is.EqualTo(-1));
     }
-    
+
     [Test]
     public void CallAction ()
     {

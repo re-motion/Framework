@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       var subTransaction = ClientTransaction.CreateRootTransaction();
       _testHelper.AddExtension(_extension);
-      
+
       _extension.SubTransactionInitialize(_testHelper.Transaction, subTransaction);
-      
+
       Assert.That(subTransaction.Extensions[_extension.Key], Is.SameAs(_extension));
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       subTransaction.Extensions.Add(existingExtension);
 
       _extension.SubTransactionInitialize(_testHelper.Transaction, subTransaction);
-      
+
       Assert.That(subTransaction.Extensions[_extension.Key], Is.SameAs(existingExtension));
     }
   }

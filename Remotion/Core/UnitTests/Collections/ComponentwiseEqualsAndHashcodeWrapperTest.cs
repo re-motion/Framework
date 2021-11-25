@@ -132,7 +132,7 @@ namespace Remotion.UnitTests.Collections
           return true;
         }
       }
-    
+
       return false;
     }
 

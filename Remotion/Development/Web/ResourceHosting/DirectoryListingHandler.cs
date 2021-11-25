@@ -75,7 +75,7 @@ namespace Remotion.Development.Web.ResourceHosting
       {
         responseWriter.AddAttribute(HtmlTextWriterAttribute.Style, "display: table-row;");
         responseWriter.RenderBeginTag(HtmlTextWriterTag.Li);
-        
+
         if (item is ResourceVirtualDirectory directory)
         {
           var directoryPath = Assertion.IsNotNull(directory.PhysicalPath);

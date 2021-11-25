@@ -399,7 +399,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "BocAutoCompleteReferenceValue");
       control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.TriggersPostBack, "true");
     }
-    
+
     protected void AddStyle ()
     {
       Control.SetupProperty(_ => _.Height);
@@ -471,7 +471,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
       contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       contentSpan.AssertChildElementCount(1);
-      
+
       var innerSpan = contentSpan.GetAssertedChildElement("span", 0);
       innerSpan.AssertAttributeValueEquals("id", c_readOnlyTextValueName);
       innerSpan.AssertAttributeValueEquals("data-value", c_uniqueidentifier);

@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       using (ClientTransaction.CreateRootTransaction().CreateSubTransaction().EnterDiscardingScope())
       {
         ClassWithValueProperties[] objects = TestDomainObjectMother.PrepareDatabaseObjectsWithValueProperties(TestSetSize);
-        
+
         // Create 3000 unchanged objects in ClientTransaction in order to make test set more similar to relation test
         for (int i = 0; i < 3000; ++i)
           TestDomainObjectMother.CreateAndFillValuePropertyObject();

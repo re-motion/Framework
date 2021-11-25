@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class StubBusinessObjectService : IBusinessObjectService
   {
     public StubBusinessObjectService ()
-    {        
+    {
     }
   }
 }

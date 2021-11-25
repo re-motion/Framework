@@ -580,7 +580,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
       using (var enumerator = resultSequence.GetEnumerator())
       {
         Assert.That(sum, Is.EqualTo(0));
-        
+
         Assert.That(enumerator.MoveNext(), Is.True);
         Assert.That(sum, Is.EqualTo(1));
 

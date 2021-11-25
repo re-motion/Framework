@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       Assert.That(importTransaction.IsEnlisted(importedInstance), Is.True, "DomainObject should be enlisted");
     }
-    
+
     [Test]
     public void NonExistingObjects_New ()
     {
@@ -303,7 +303,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       byte[] binaryData = DomainObjectTransporterTestHelper.GetBinaryDataFor(transporter);
       var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
-      
+
       var loadedObject1 = (Computer) imported.Find(obj => obj.ID == DomainObjectIDs.Computer1);
       var loadedObject2 = (Employee) imported.Find(obj => obj.ID == DomainObjectIDs.Employee4);
       Assert.That(loadedObject1.Employee, Is.SameAs(loadedObject2));
@@ -352,11 +352,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       {
         items = new[] { TransportItem.PackageDataContainer(DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer) };
       }
-      
+
       var repository = new MockRepository();
       var strategyMock = repository.StrictMock<IImportStrategy>();
       var streamFake = repository.Stub<Stream>();
-      
+
       strategyMock.Expect(mock => mock.Import(streamFake)).Return(items);
 
       strategyMock.Replay();
@@ -364,7 +364,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       var importer = DomainObjectImporter.CreateImporterFromStream(streamFake, strategyMock);
       TransportedDomainObjects result = importer.GetImportedObjects();
       Assert.That(
-          result.TransportedObjects, 
+          result.TransportedObjects,
           Is.EquivalentTo(LifetimeService.GetObjects<Order>(result.DataTransaction, DomainObjectIDs.Order1)));
 
       strategyMock.VerifyAllExpectations();

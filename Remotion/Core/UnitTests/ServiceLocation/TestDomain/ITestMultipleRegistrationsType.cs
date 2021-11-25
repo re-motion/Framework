@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   }
 
   public class TestMultipleRegistrationType1 : ITestMultipleRegistrationsType
-  { 
+  {
   }
 
   public class TestMultipleRegistrationType2 : ITestMultipleRegistrationsType

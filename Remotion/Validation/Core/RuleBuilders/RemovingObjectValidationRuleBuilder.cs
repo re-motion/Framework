@@ -69,7 +69,7 @@ namespace Remotion.Validation.RuleBuilders
       _removingObjectValidationRuleCollector.RegisterValidator(validatorType, collectorTypeToRemoveFrom, validatorPredicate);
       return this;
     }
-    
+
     [CanBeNull]
     private static Func<IObjectValidator, bool>? GetTypeCheckedValidatorPredicate<TValidator> ([CanBeNull]Func<TValidator, bool>? validatorPredicate)
         where TValidator : IObjectValidator

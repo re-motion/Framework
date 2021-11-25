@@ -103,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       get { return _parentContext; }
     }
-    
+
     /// <summary>
     /// Returns the <see cref="IRequestErrorDetectionStrategy"/> implementation passed in the <see cref="PageObjectContext"/>constructor.
     /// </summary>
@@ -129,7 +129,7 @@ namespace Remotion.Web.Development.WebTesting
       var rootScope = browserSession.Window.GetRootScope();
 
       var pageObjectContext = new PageObjectContext(browserSession, browserSession.Window, RequestErrorDetectionStrategy, rootScope, this);
-      
+
       // No error page detection. See remarks documentation on this method.
 
       return pageObjectContext;
@@ -176,7 +176,7 @@ namespace Remotion.Web.Development.WebTesting
       var rootScope = Window.GetRootScope();
 
       var cloneForNewPage = new PageObjectContext(Browser, Window, RequestErrorDetectionStrategy, rootScope, ParentContext);
-      
+
       // No error page detection. See remarks documentation on this method.
 
       return cloneForNewPage;

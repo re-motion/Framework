@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       base.SetUp();
     }
-    
+
     [Test]
     public void Initialize ()
     {

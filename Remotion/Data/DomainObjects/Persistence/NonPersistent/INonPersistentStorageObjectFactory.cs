@@ -21,6 +21,6 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
   /// </summary>
   public interface INonPersistentStorageObjectFactory : IStorageObjectFactory
   {
-    
+
   }
 }

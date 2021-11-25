@@ -109,7 +109,7 @@ namespace Remotion.Reflection.CodeGeneration
                   wrappedParameter.Name),
               "wrappedMethod");
         }
-        
+
         if (wrappedParameter.ParameterType.IsByRef)
         {
           throw new ArgumentException(

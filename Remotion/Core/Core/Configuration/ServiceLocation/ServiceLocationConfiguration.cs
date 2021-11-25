@@ -51,7 +51,7 @@ namespace Remotion.Configuration.ServiceLocation
 
     private static ServiceLocationConfiguration GetServiceLocationConfiguration ()
     {
-      return (ServiceLocationConfiguration) 
+      return (ServiceLocationConfiguration)
              (ConfigurationWrapper.Current.GetSection("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
     }
 

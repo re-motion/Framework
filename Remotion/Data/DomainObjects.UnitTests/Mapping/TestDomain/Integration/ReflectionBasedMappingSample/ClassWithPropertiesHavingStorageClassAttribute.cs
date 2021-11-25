@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     public abstract DateTime TransactionWithDateTimeDataType { get; set; }
 
     [StorageClassNone]
-    public object None 
+    public object None
     { get { return null; }
       set { }
     }

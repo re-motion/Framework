@@ -29,7 +29,7 @@ namespace Remotion.Security.Metadata
     // member fields
 
     private List<EnumValueInfo> _values = new List<EnumValueInfo>();
-	
+
     // construction and disposing
 
     public StatePropertyInfo ()

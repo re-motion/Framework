@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
               classDefinitionAsTypeNotFoundClassDefinition.RelationProperty.PropertyType.Name);
         }
       }
-      
+
       return MappingValidationResult.CreateValidResult();
     }
   }

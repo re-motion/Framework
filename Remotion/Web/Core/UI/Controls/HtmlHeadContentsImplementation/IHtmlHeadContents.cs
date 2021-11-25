@@ -20,6 +20,6 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation
 {
   public interface IHtmlHeadContents : IControl
   {
-    
+
   }
 }

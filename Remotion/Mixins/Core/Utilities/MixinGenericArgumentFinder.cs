@@ -40,7 +40,7 @@ namespace Remotion.Mixins.Utilities
         return null;
 
       Assertion.IsTrue(mixinBase.IsGenericType);
-      
+
       var genericArguments = mixinBase.GetGenericArguments();
       return genericArguments.Length > _genericArgumentIndex ? genericArguments[_genericArgumentIndex] : null;
     }

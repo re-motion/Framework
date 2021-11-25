@@ -701,7 +701,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       ExpectDiscarded(() => Dev.Null = property.GetValueWithoutTypeCheck());
       ExpectDiscarded(() => property.SetValue(0));
       ExpectDiscarded(() => property.SetValueWithoutTypeCheck(0));
-      
+
       // no exceptions
       Dev.Null = property.PropertyData;
       Dev.Null = property.DomainObject;

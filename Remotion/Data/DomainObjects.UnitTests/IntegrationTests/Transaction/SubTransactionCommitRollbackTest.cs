@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Assert.That(TestableClientTransaction.IsWriteable, Is.False);
       }
     }
-    
+
     [Test]
     public void CommitPropagatesNewObjectsToParentTransaction ()
     {

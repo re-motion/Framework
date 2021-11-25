@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
       ArgumentUtility.CheckNotNull("requirement", requirement);
 
       Assertion.IsTrue(requirement.Type.IsInterface);
-      
+
       InterfaceIntroductionDefinition introduction = requirement.TargetClass.ReceivedInterfaces[requirement.Type];
       foreach (EventIntroductionDefinition eventIntroduction in introduction.IntroducedEvents)
       {
@@ -52,7 +52,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
           yield return new RequiredMethodDefinition(requirement, setMethod, implementedSetMethod);
         }
       }
-      
+
       foreach (MethodIntroductionDefinition methodIntroduction in introduction.IntroducedMethods)
         yield return new RequiredMethodDefinition(requirement, methodIntroduction.InterfaceMember, methodIntroduction.ImplementingMember);
     }

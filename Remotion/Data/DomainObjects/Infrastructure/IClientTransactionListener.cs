@@ -157,6 +157,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState);
     void VirtualRelationEndPointStateUpdated (ClientTransaction clientTransaction, RelationEndPointID endPointID, bool? newEndPointChangeState);
-    
+
   }
 }

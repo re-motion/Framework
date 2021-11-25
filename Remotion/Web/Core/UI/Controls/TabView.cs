@@ -26,9 +26,9 @@ namespace Remotion.Web.UI.Controls
   public class TabView : System.Web.UI.WebControls.View
   {
     //  constants
-    
+
     // statics
-    
+
     // types
 
     // fields

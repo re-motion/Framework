@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           dataManager,
           ClientTransactionTestHelper.GetEventBroker(clientTransaction),
           new DomainObjectCollectionEndPointDataManagerFactory(changeDetectionStrategy));
-      
+
       if (initialContents != null)
         DomainObjectCollectionEndPointTestHelper.FillCollectionEndPointWithInitialContents(collectionEndPoint, initialContents);
 

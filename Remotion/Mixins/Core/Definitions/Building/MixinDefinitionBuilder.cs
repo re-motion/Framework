@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Definitions.Building
   public class MixinDefinitionBuilder
   {
     private readonly TargetClassDefinition _targetClass;
-    private readonly RequirementsAnalyzer _targetRequirementsAnalyzer; 
+    private readonly RequirementsAnalyzer _targetRequirementsAnalyzer;
     private readonly RequirementsAnalyzer _nextRequirementsAnalyzer;
 
     public MixinDefinitionBuilder (TargetClassDefinition targetClass)
@@ -120,7 +120,7 @@ namespace Remotion.Mixins.Definitions.Building
       }
       baseMember.AddOverride(overrider);
     }
-    
+
     private void AnalyzeDependencies (MixinDefinition mixin, IEnumerable<Type> additionalDependencies)
     {
       var targetCallDependencyBuilder = new TargetCallDependencyDefinitionBuilder(mixin);
@@ -128,7 +128,7 @@ namespace Remotion.Mixins.Definitions.Building
 
       var nextCallDependencyBuilder = new NextCallDependencyDefinitionBuilder(mixin);
       nextCallDependencyBuilder.Apply(_nextRequirementsAnalyzer.GetRequirements(mixin.Type));
-      
+
       var mixinDependencyBuilder = new MixinDependencyDefinitionBuilder(mixin);
       mixinDependencyBuilder.Apply(additionalDependencies);
     }

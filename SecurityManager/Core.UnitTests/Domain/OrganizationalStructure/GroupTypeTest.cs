@@ -93,7 +93,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
         GroupType groupType = group.GroupType;
 
         Assert.That(
-            () => groupType.Delete(), 
+            () => groupType.Delete(),
             Throws.InvalidOperationException
                 .With.Message.EqualTo(
                     "The GroupType 'groupType 1' is still assigned to at least one group. Please update or delete the dependent groups before proceeding."));

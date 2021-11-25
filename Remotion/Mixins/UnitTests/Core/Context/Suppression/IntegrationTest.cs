@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Suppression
                   + "'Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain.MixinSuppressingItself' applied to target class "
                   + "'Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain.ClassWithMixins' suppresses itself."));
     }
-    
+
     [Test]
     public void GenericSuppressingMixinWithSpecialization ()
     {

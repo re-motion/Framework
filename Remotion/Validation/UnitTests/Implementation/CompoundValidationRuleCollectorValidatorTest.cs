@@ -51,6 +51,6 @@ namespace Remotion.Validation.UnitTests.Implementation
       _collectorValidatorMock1.Verify();
       _collectorValidatorMock2.Verify();
     }
-    
+
   }
 }

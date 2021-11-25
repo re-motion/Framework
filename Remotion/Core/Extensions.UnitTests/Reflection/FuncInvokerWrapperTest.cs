@@ -62,7 +62,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
         afterActionCalled = true;
         return instance;
       });
-      
+
       ClassWithCtors one = wrapper.With(0);
       Assert.That(afterActionCalled, Is.True);
       Assert.That(one.Ctor, Is.EqualTo("one"));

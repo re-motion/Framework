@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       _endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
       _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
       _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var oppositeEndPointMock = MockRepository.GenerateStrictMock<IVirtualEndPoint>();
       oppositeEndPointMock.Replay();
-      
+
       _state.Synchronize(_endPointMock, oppositeEndPointMock);
 
       oppositeEndPointMock.AssertWasNotCalled(mock=>mock.SynchronizeOppositeEndPoint(_endPointMock));

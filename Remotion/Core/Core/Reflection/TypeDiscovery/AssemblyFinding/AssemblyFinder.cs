@@ -38,7 +38,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     private readonly IRootAssemblyFinder _rootAssemblyFinder;
     private readonly IAssemblyLoader _assemblyLoader;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AssemblyFinder"/> class.
     /// </summary>

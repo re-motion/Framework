@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       computer.Int32TransactionProperty = 5;
       computer.DateTimeTransactionProperty = referenceDateTime;
       computer.EmployeeTransactionProperty = referenceEmployee;
-      
+
       CheckValueAfterCommitAndRollback(computer, referenceDateTime, referenceEmployee);
       CheckValueInParallelRootTransaction(computer, referenceEmployee);
     }

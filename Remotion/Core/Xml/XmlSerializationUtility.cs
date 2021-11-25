@@ -69,7 +69,7 @@ namespace Remotion.Xml
           string errorMessage = string.Format(
               "Error reading {0}: {1}",
               innerReader.BaseURI,
-              e.Message); 
+              e.Message);
           throw new XmlException(errorMessage, e);
         }
       }
@@ -101,7 +101,7 @@ namespace Remotion.Xml
       return DeserializeUsingSchema(reader, type, GetNamespace(type), schemas);
     }
 
-   
+
     /// <summary>
     /// Get the Namespace from a type's <see cref="XmlRootAttribute"/> (preferred) or <see cref="XmlTypeAttribute"/>.
     /// </summary>

@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     private const string c_validationErrors = "ValidationError";
 
     private BocMultilineTextValueRenderer _renderer;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
           RenderingFeatures.WithDiagnosticMetadata,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      
+
       var span = RenderMultiLineEditable(false, false, false, false, true);
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.ControlType, "BocMultilineTextValue");
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "true");
@@ -182,7 +182,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
           RenderingFeatures.WithDiagnosticMetadata,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      
+
       var span = RenderMultiLineEditable(false, false, false, false, false);
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.ControlType, "BocMultilineTextValue");
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
@@ -195,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Setup(mock => mock.Enabled).Returns(!isDisabled);
 
       _renderer.Render(new BocMultilineTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
-      
+
       var document = Html.GetResultDocument();
       Html.AssertChildElementCount(document.DocumentElement, 1);
 

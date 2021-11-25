@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var dataContainer = DataContainer.CreateForExisting(objectID, null, pd => pd.DefaultValue);
 
       Assert.That(
-          () => Provider.UpdateTimestamps(new[] { dataContainer }), 
+          () => Provider.UpdateTimestamps(new[] { dataContainer }),
           Throws.TypeOf<RdbmsProviderException>()
             .With.Message.EqualTo("No timestamp found for object 'ClassWithAllDataTypes|e067a627-ba3f-4ee5-8b61-1f46dc28dfc3|System.Guid'."));
     }
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var dataContainerLoadedFromDB = Provider.LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject;
       var dataContainerCreatedInMemory = DataContainer.CreateForExisting(DomainObjectIDs.ClassWithAllDataTypes1, null, pd => pd.DefaultValue);
       Assert.That(dataContainerCreatedInMemory.Timestamp, Is.Null);
-      
+
       Provider.UpdateTimestamps(new[] { dataContainerCreatedInMemory });
 
       Assert.That(dataContainerCreatedInMemory.Timestamp, Is.Not.Null);
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var dataContainer2 = DataContainer.CreateForExisting(DomainObjectIDs.ClassWithAllDataTypes2, null, pd => pd.DefaultValue);
       Assert.That(dataContainer1.Timestamp, Is.Null);
       Assert.That(dataContainer2.Timestamp, Is.Null);
-      
+
       Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2 });
 
       Assert.That(dataContainer1.Timestamp, Is.Not.Null);

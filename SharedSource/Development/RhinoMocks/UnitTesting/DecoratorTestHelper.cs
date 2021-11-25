@@ -28,7 +28,7 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
   /// Provides functionality for testing decorator methods that do nothing else but forward to the equivalent methods on a decorated object.
   /// </summary>
   /// <typeparam name="TInterface">The type of the interface.</typeparam>
-  public partial class DecoratorTestHelper<TInterface> 
+  public partial class DecoratorTestHelper<TInterface>
       where TInterface : class
   {
     private readonly TInterface _decorator;

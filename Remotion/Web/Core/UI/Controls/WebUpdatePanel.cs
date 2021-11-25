@@ -67,7 +67,7 @@ namespace Remotion.Web.UI.Controls
         _renderMode = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<WebUpdatePanelRenderMode>("value", value);
       }
     }
- 
+
     protected override void LoadViewState (object? savedState)
     {
       if (savedState != null)
@@ -135,7 +135,7 @@ namespace Remotion.Web.UI.Controls
 
         case WebUpdatePanelRenderMode.Thead:
           return HtmlTextWriterTag.Thead;
-        
+
         case WebUpdatePanelRenderMode.Tfoot:
           return HtmlTextWriterTag.Tfoot;
 

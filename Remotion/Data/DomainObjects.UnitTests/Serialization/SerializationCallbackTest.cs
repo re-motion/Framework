@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DeserializationEvents ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
+      var instance = (ClassWithSerializationCallbacks)
           LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithSerializationCallbacks), ParamList.Empty);
 
       Assert.That(((object) instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));

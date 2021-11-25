@@ -64,7 +64,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
     public int ExecuteBatchFile (string sqlFileName, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
       ArgumentUtility.CheckNotNullOrEmpty("sqlFileName", sqlFileName);
-      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);      
+      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);
 
       _fileName = sqlFileName;
       if (!Path.IsPathRooted(sqlFileName))
@@ -84,7 +84,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
     public int ExecuteBatchString (string commandBatch, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
       ArgumentUtility.CheckNotNull("commandBatch", commandBatch);
-      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);      
+      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);
 
       foreach (var replacement in replacementDictionary)
         commandBatch = commandBatch.Replace(replacement.Key, replacement.Value);

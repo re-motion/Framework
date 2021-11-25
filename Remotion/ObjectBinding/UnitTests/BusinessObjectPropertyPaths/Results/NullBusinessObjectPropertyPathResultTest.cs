@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     {
       Assert.That(_result.ResultObject, Is.Null);
     }
- 
+
     [Test]
     public void GetResulProperty ()
     {

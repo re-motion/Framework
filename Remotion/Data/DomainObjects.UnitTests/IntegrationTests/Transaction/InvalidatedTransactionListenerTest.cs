@@ -44,9 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       foreach (var method in methods)
       {
-        var concreteMethod = 
-            method.Name == "FilterQueryResult" || method.Name == "FilterCustomQueryResult" 
-            ? method.MakeGenericMethod(typeof(Order)) 
+        var concreteMethod =
+            method.Name == "FilterQueryResult" || method.Name == "FilterCustomQueryResult"
+            ? method.MakeGenericMethod(typeof(Order))
             : method;
 
         object[] arguments = Array.ConvertAll(concreteMethod.GetParameters(), p => GetDefaultValue(p.ParameterType));

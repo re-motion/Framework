@@ -65,9 +65,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       _generator = new DomainObjectQueryGenerator(
-          _sqlQueryGeneratorMock, 
-          _typeConversionProvider, 
-          _storageTypeInformationProviderStub, 
+          _sqlQueryGeneratorMock,
+          _typeConversionProvider,
+          _storageTypeInformationProviderStub,
           Configuration);
 
       _customerClassDefinition = GetTypeDefinition(typeof(Customer));
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void CreateSequenceQuery_EntityQuery_NoParameters ()
     {
       var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(
-        selectedEntityType: typeof(Order), 
+        selectedEntityType: typeof(Order),
         parameters: new CommandParameter[0]);
       _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void CreateSequenceQuery_EntityQuery_WithParameters ()
     {
       var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(
-          selectedEntityType: typeof(Order), 
+          selectedEntityType: typeof(Order),
           parameters: new[] { new CommandParameter("p0", "paramval") });
       _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
             Assert.That(actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause>());
             var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single();
             var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition(typeof(RelationTargetForPersistentMixin), "RelationProperty4"));
-            Assert.That(endPointDefinition.GetSortExpression().ToString(), 
+            Assert.That(endPointDefinition.GetSortExpression().ToString(),
                 Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.MixinAddingPersistentProperties.PersistentProperty ASC"));
             var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((IMixinAddingPersistentProperties o) => o.PersistentProperty);
             Assert.That(((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs(sortedByMember));
@@ -509,7 +509,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var resultConversion = ((CustomSequenceQueryAdapter<int>) result).ResultConversion;
       Assert.That(resultConversion(fakeQueryResultRow), Is.EqualTo(42));
     }
-    
+
     [Test]
     public void CreateSequenceQuery_NonEntityQuery_NoParameters ()
     {
@@ -548,9 +548,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
               .With.Message.EqualTo(
                   "Only queries returning DomainObjects can perform eager fetching."));
     }
-    
+
     private SqlQueryGeneratorResult CreateSqlQueryGeneratorResult (
-        string commandText = null, 
+        string commandText = null,
         CommandParameter[] parameters = null,
         Type selectedEntityType = null,
         ParameterExpression inMemoryProjectionParameter = null,

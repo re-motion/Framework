@@ -63,7 +63,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var property = GetPropertyDefinition(ace, "GroupCondition");
 
       Assert.That(
-          property.GetEnabledValues(ace).Select(value => value.Value).ToArray(), 
+          property.GetEnabledValues(ace).Select(value => value.Value).ToArray(),
           Is.EquivalentTo(Enum.GetValues(typeof(GroupCondition))));
     }
 
@@ -85,7 +85,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var property = GetPropertyDefinition(ace, "TenantCondition");
 
       Assert.That(
-          property.GetEnabledValues(ace).Select(value => value.Value).ToArray(), 
+          property.GetEnabledValues(ace).Select(value => value.Value).ToArray(),
           Is.EquivalentTo(Enum.GetValues(typeof(TenantCondition))));
     }
 

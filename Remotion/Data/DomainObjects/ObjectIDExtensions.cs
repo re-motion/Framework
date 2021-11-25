@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("id", id);
-      
+
       return GetHandleChecked<T>(id).GetObject(clientTransaction, includeDeleted);
     }
 

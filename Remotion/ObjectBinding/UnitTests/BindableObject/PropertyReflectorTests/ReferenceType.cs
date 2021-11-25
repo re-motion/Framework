@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithReadWriteExplicitInterfaceScalar ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), 
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>),
           typeof(IInterfaceWithReferenceType<SimpleReferenceType>), "ExplicitInterfaceScalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
@@ -166,13 +166,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That(businessObjectProperty.IsList, Is.False);
       Assert.That(businessObjectProperty.IsNullable, Is.True);
       Assert.That(businessObjectProperty.IsRequired, Is.False);
-      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False); 
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyExplicitInterfaceScalar ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), 
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>),
           typeof(IInterfaceWithReferenceType<SimpleReferenceType>), "ExplicitInterfaceReadOnlyScalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 

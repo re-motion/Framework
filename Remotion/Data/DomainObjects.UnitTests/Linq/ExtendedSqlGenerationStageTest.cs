@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       base.SetUp();
 
       _stage = new ExtendedSqlGenerationStage();
-    
+
       _commandBuilder = new SqlCommandBuilder();
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var getObjectIDOrNullMethod =
           MemberInfoFromExpressionUtility.GetMethod(() => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull(null, null));
       Assert.That(((MethodCallExpression) _commandBuilder.GetInMemoryProjectionBody()).Method, Is.EqualTo(getObjectIDOrNullMethod));
-    } 
+    }
 
     [Test]
     public void GenerateTextForOuterSelectExpression_PassesOnSetOperationsMode ()

@@ -48,7 +48,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     {
       if (methodInfo == null)
         throw new ArgumentNullException("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
-      
+
       return new TestResult(methodInfo, SandboxTestStatus.Failed, exception);
     }
 

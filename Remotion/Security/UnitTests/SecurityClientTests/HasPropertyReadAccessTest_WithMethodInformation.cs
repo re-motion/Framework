@@ -28,7 +28,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
     private Mock<IMethodInformation> _methodInformation;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -122,12 +122,12 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithSecurityStrategyIsNull ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.First);
-      
+
       Assert.That(
           () => _securityClient.HasPropertyReadAccess(new SecurableObject(null), _methodInformation.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo("The securableObject did not return an IObjectSecurityStrategy."));
-      
+
       _testHelper.VerifyAll();
     }
 
@@ -161,7 +161,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
             Throws.InvalidOperationException
                 .With.Message.EqualTo("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
       }
-    
+
       _testHelper.VerifyAll();
     }
   }

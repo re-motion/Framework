@@ -176,7 +176,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       return true;
     }
-    
+
     private void PrepareScripts (BocCheckBoxRenderingContext renderingContext, HtmlInputCheckBox checkBoxControl, Label labelControl, HtmlGenericControl checkBoxVisualizerControl)
     {
       string checkBoxScript;

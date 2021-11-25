@@ -28,7 +28,7 @@ namespace Remotion.Development.Web.UnitTesting.Configuration
     public WebConfigurationMock ()
     {
     }
-  
+
     public static new WebConfiguration Current
     {
       get { return WebConfiguration.Current; }

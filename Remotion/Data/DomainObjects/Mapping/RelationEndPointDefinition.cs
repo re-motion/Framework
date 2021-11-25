@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     public RelationEndPointDefinition (PropertyDefinition propertyDefinition, bool isMandatory)
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
-      
+
       if (!propertyDefinition.IsObjectID)
       {
         throw CreateMappingException(
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return CardinalityType.One; }
     }
 
-    public IPropertyInformation PropertyInfo 
+    public IPropertyInformation PropertyInfo
     {
       get { return _propertyDefinition.PropertyInfo; }
     }

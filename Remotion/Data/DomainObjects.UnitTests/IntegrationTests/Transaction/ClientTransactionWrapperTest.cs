@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void CanBeDerivedFrom ()
     {
-      var ctor =  typeof(ClientTransactionWrapper).GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, 
+      var ctor =  typeof(ClientTransactionWrapper).GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
           new[] {typeof(ClientTransaction)}, null);
       Assert.That(typeof(ClientTransactionWrapper).IsSealed, Is.False);
       Assert.That(ctor.IsFamilyOrAssembly);

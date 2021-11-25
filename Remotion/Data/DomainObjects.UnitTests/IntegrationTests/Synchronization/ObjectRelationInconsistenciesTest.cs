@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       CheckActionThrows<InvalidOperationException>(() => computer.Employee = null, "out of sync with the opposite property");
 
       BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(computer, c => c.Employee));
-      
+
       CheckSyncState(computer, c => c.Employee, true);
       CheckSyncState(employee, e => e.Computer, false);
       CheckSyncState(employee2, e => e.Computer, true);
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       // Reload virtual relation from database => computer2 and employee now match, computer is unsynchronized
       UnloadService.UnloadVirtualEndPoint(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
       Dev.Null = employee.Computer;
-      
+
       CheckSyncState(computer, c => c.Employee, false);
       CheckSyncState(computer2, c => c.Employee, true);
       CheckSyncState(employee, e => e.Computer, true);

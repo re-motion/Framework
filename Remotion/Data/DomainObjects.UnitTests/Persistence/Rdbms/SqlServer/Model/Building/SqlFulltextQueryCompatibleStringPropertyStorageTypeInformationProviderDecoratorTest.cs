@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [TestCase (DbType.AnsiStringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
     [TestCase (DbType.StringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForPropertyDefinition_ReturnsOriginalStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int? storageTypeLength)
     {
       var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [TestCase (DbType.AnsiString, 8000, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiString_ReturnsDecoratedStorageTypeInformation")]
     [TestCase (DbType.String, 4000, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndString_ReturnsDecoratedStorageTypeInformation")]
     public void GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_ReturnsDecoratedStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int supportedMaxLength)
     {
       var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [TestCase (DbType.AnsiStringFixedLength, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
     [TestCase (DbType.StringFixedLength, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForType_ReturnsOriginalStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int? storageTypeLength)
     {
       var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [TestCase (DbType.AnsiStringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
     [TestCase (DbType.StringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForValue_ReturnsOriginalStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int? storageTypeLength,
         object value)
     {

@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     public virtual int PublicGetSet { get; set; }
     public virtual int PublicGetProtectedSet { get; protected set; }
     protected virtual int ProtectedGetSet { get; set; }
-    
+
     private int PrivateGetSet
     {
       get { return Properties[typeof(ClassWithNonPublicProperties), "PrivateGetSet"].GetValue<int>(); }

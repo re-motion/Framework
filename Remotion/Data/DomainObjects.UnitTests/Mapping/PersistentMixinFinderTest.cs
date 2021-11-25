@@ -296,7 +296,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
             () => new PersistentMixinFinder(typeof(TargetClassB), false).FindOriginalMixinTarget(typeof(MixinA)),
             Throws.InstanceOf<InvalidOperationException>()
                 .With.Message.EqualTo(
-                    "The given mixin is inherited from the base class, but " 
+                    "The given mixin is inherited from the base class, but "
                     + "includeInherited is not set to true."));
       }
     }

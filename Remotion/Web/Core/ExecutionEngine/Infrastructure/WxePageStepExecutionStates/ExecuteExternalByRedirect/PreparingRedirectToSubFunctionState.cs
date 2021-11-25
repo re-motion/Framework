@@ -33,7 +33,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
         : base(executionStateContext, parameters)
     {
       ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
-      
+
       _returnOptions = returnOptions;
     }
 

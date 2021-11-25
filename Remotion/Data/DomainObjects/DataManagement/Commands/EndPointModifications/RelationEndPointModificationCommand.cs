@@ -122,8 +122,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     }
 
     protected IRelationEndPoint GetOppositeEndPoint (
-        IRelationEndPoint originatingEndPoint, 
-        DomainObject oppositeObject, 
+        IRelationEndPoint originatingEndPoint,
+        DomainObject oppositeObject,
         IRelationEndPointProvider endPointProvider)
     {
       var oppositeEndPointID = RelationEndPointID.CreateOpposite(originatingEndPoint.Definition, oppositeObject.GetSafeID());

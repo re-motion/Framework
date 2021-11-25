@@ -27,7 +27,7 @@ namespace Remotion.Collections
     public struct Wrapper: IEquatable<Wrapper>
     {
       private T[] _array;
-    
+
       public Wrapper (T[] array)
       {
         _array = array;
@@ -40,7 +40,7 @@ namespace Remotion.Collections
 
       public static implicit operator T[] (Wrapper wrapper)
       {
-        return wrapper.Array; 
+        return wrapper.Array;
       }
 
       public static implicit operator Wrapper (T[] array)

@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
-        
+
         Guid fixedGuid = Guid.NewGuid();
         ((IStorageProviderWithFixedGuid) provider).FixedGuid = fixedGuid;
 

@@ -30,7 +30,7 @@ namespace Remotion.Extensions.UnitTests.Reflection.TestDomain
     {
       return typeof(Derived);
     }
-    
+
     public readonly Type InvocationType;
 
     public TestClass (Base @base)

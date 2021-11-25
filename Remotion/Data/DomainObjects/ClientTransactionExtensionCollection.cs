@@ -49,11 +49,11 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <see cref="IClientTransactionExtension"/> of the given <paramref name="key"/> or <see langword="null"/> if the name was not found.</returns>
     public IClientTransactionExtension this[string key]
     {
-      get 
+      get
       {
         ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-        return (IClientTransactionExtension) BaseGetObject(key); 
+        return (IClientTransactionExtension) BaseGetObject(key);
       }
     }
 
@@ -82,13 +82,13 @@ namespace Remotion.Data.DomainObjects
     public void Add (IClientTransactionExtension clientTransactionExtension)
     {
       ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
-      
+
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
 
-      if (BaseContainsKey(key)) 
+      if (BaseContainsKey(key))
         throw new InvalidOperationException(string.Format("An extension with key '{0}' is already part of the collection.", key));
-      
+
       BaseAdd(key, clientTransactionExtension);
     }
 
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects
     public void Insert (int index, IClientTransactionExtension clientTransactionExtension)
     {
       ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
-      
+
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
 

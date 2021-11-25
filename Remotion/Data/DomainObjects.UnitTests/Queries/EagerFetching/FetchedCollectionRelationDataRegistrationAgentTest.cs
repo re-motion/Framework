@@ -39,14 +39,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
     private Customer _originatingCustomer1;
     private Customer _originatingCustomer2;
-    
+
     private ILoadedObjectData _originatingCustomerData1;
     private ILoadedObjectData _originatingCustomerData2;
 
     private Order _fetchedOrder1;
     private Order _fetchedOrder2;
     private Order _fetchedOrder3;
-    
+
     private LoadedObjectDataWithDataSourceData _fetchedOrderData1;
     private LoadedObjectDataWithDataSourceData _fetchedOrderData2;
     private LoadedObjectDataWithDataSourceData _fetchedOrderData3;
@@ -54,9 +54,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       _virtualEndPointProviderMock = MockRepository.GenerateStrictMock<IVirtualEndPointProvider>();
-      
+
       _agent = new FetchedCollectionRelationDataRegistrationAgent(_virtualEndPointProviderMock);
 
       _originatingCustomer1 = DomainObjectMother.CreateFakeObject<Customer>(DomainObjectIDs.Customer1);
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       var collectionEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       ExpectGetEndPoint(_originatingCustomer1.ID, endPointDefinition, _virtualEndPointProviderMock, collectionEndPointMock, false);
       collectionEndPointMock.Expect(mock => mock.MarkDataComplete(new DomainObject[0]));
-      
+
       _virtualEndPointProviderMock.Replay();
       collectionEndPointMock.Replay();
 
@@ -335,7 +335,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       Assert.That(
           () => _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
-          new[] { _originatingCustomerData1 }, 
+          new[] { _originatingCustomerData1 },
           new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.OrderItem2) }),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
@@ -354,7 +354,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
           _agent.GroupAndRegisterRelatedObjects(
               endPointDefinition,
               new[] { _originatingCustomerData1 },
-              new[] { _fetchedOrderData1 }), 
+              new[] { _fetchedOrderData1 }),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Only collection-valued relations can be handled by this registration agent.", "relationEndPointDefinition"));
     }
@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     public void Serialization ()
     {
       var agent = new FetchedCollectionRelationDataRegistrationAgent(new SerializableVirtualEndPointProviderFake());
-      
+
       var deserializedInstance = Serializer.SerializeAndDeserialize(agent);
 
       Assert.That(deserializedInstance.VirtualEndPointProvider, Is.Not.Null);

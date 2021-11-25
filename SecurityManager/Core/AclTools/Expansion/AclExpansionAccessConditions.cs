@@ -23,7 +23,7 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.AclTools.Expansion
 {
-  public class AclExpansionAccessConditions  
+  public class AclExpansionAccessConditions
   {
     private static readonly CompoundValueEqualityComparer<AclExpansionAccessConditions> _equalityComparer =
       new CompoundValueEqualityComparer<AclExpansionAccessConditions>(a => new object[] {
@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     {
       get { return AbstractRole != null; }
     }
-    
+
     public AbstractRoleDefinition AbstractRole { get; set; }
 
 
@@ -60,8 +60,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     // Owning Tenant
     public Tenant OwningTenant { get; set; }
     public TenantHierarchyCondition TenantHierarchyCondition { get; set; }
-    
-    public bool HasOwningTenantCondition 
+
+    public bool HasOwningTenantCondition
     {
       get { return OwningTenant != null; }
     }

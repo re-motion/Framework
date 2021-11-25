@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       _downloadStartedTimeout = downloadStartedTimeout;
       _downloadUpdatedTimeout = downloadUpdatedTimeout;
     }
-    
+
     protected abstract DownloadedFileFinder CreateDownloadedFileFinderForExpectedFileName ([NotNull] string fileName);
     protected abstract DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName ();
     protected abstract IDownloadedFile HandleDownload ([NotNull] DownloadedFileFinder downloadedFileFinder, TimeSpan downloadStartedTimeout, TimeSpan downloadUpdatedTimeout);
@@ -57,10 +57,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     {
       var localDownloadStartedTimeout = downloadStartedTimeout ?? _downloadStartedTimeout;
       var localDownloadUpdatedTimeout = downloadUpdatedTimeout ?? _downloadUpdatedTimeout;
-      
+
       return HandleDownload(CreateDownloadedFileFinderForUnknownFileName(), localDownloadStartedTimeout, localDownloadUpdatedTimeout);
     }
-    
+
     public void DeleteFiles ()
     {
       foreach (var tempDirectory in _tempDirectories)
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// Moves the <paramref name="downloadedFile"/> to the temp directory maintained by the <see cref="DownloadHelperBase"/>. 
     /// This will prevent the file from interfering with future downloads. 
     /// </summary>
-    [NotNull] 
+    [NotNull]
     protected IDownloadedFile MoveDownloadedFile ([NotNull] DownloadedFile downloadedFile)
     {
       ArgumentUtility.CheckNotNull("downloadedFile", downloadedFile);

@@ -53,9 +53,9 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       _configuration = new MixinConfiguration(classContexts);
 
       _configuredTypeDiscoveryServiceStub = CreateTypeDiscoveryServiceStub(
-          _configuredClassContext1.Type, 
-          _configuredClassContext2.Type, 
-          _genericClassContext.Type, 
+          _configuredClassContext1.Type,
+          _configuredClassContext2.Type,
+          _genericClassContext.Type,
           _interfaceClassContext.Type);
     }
 

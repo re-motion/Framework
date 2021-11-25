@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<T> renderingContext)
     {
       base.AddDiagnosticMetadataAttributes(renderingContext);
-      
+
       var hasAutoPostBack = renderingContext.Control.TextBoxStyle.AutoPostBack.HasValue && renderingContext.Control.TextBoxStyle.AutoPostBack.Value;
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
     }
@@ -120,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     protected virtual TextBox GetTextBox (BocRenderingContext<T> renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      
+
       TextBox textBox = new RenderOnlyTextBox { ClientIDMode = ClientIDMode.Static };
       textBox.Text = renderingContext.Control.Text;
       textBox.ID = renderingContext.Control.GetValueName();

@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   public class BindableDomainObjectSearchAllService : ISearchAvailableObjectsService
   {
     private static readonly QueryCache s_queryCache = new QueryCache();
-    private static readonly MethodInfo s_getQueryMethod = 
+    private static readonly MethodInfo s_getQueryMethod =
         typeof(BindableDomainObjectSearchAllService).GetMethod("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
     private readonly ConcurrentDictionary<Type, bool> _bindableObjectTypeCache = new ConcurrentDictionary<Type, bool>();
@@ -48,14 +48,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (!SupportsProperty(property))
       {
         var message = string.Format("The property '{0}' on type '{1}' is not supported by the BindableDomainObjectSearchAllService: The service "
-            + "only supports relation properties (ie. references to other DomainObject instances).", property.Identifier, 
+            + "only supports relation properties (ie. references to other DomainObject instances).", property.Identifier,
             property.ReflectedClass.Identifier);
         throw new ArgumentException(message, "property");
       }
 
       var referencedDomainObjectType = GetDomainObjectType(property);
       var referencingDomainObject = referencingObject as DomainObject;
-      
+
       var clientTransaction = referencingDomainObject != null ? referencingDomainObject.DefaultTransactionContext.ClientTransaction : ClientTransaction.Current;
       if (clientTransaction == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread or the referencing object.");

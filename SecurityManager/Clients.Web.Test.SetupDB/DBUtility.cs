@@ -97,13 +97,13 @@ public class DBUtility
     string[] tables = {
         "File",
         "FileItem",
-        "Tenant", 
-        "Group", 
-        "GroupType", 
-        "GroupTypePosition", 
-        "Position", 
-        "Role", 
-        "User", 
+        "Tenant",
+        "Group",
+        "GroupType",
+        "GroupTypePosition",
+        "Position",
+        "Role",
+        "User",
         "SecurableClassDefinition",
         "StatePropertyDefinition",
         "EnumValueDefinition",
@@ -133,7 +133,7 @@ public class DBUtility
 
       foreach (string table in tables)
         sb.AppendFormat("DELETE FROM [{0}];\r\n", table);
-      
+
       SqlCommand command = new SqlCommand(sb.ToString(), connection, transaction);
       command.ExecuteNonQuery();
     }
@@ -278,7 +278,7 @@ public class DBUtility
 
     // Not all tables have identity columns (e.g. Resources) => 
     // Check if table has an identity column before using IDENTITY_INSERT.
-    string sqlStatementTemplate = 
+    string sqlStatementTemplate =
         "IF EXISTS (SELECT * FROM syscolumns WHERE id = OBJECT_ID ('[{0}]') and (colstat & 1 <> 0))\n" +
         "  SET IDENTITY_INSERT [{0}] {1}";
 
@@ -299,7 +299,7 @@ public class DBUtility
       string[] record = records[idxRecord];
       if (record.Length > columnNames.Length)
       {
-        throw new ApplicationException(string.Format("error in row {0} (line {1}): field count = {2}, column count = {3}.", 
+        throw new ApplicationException(string.Format("error in row {0} (line {1}): field count = {2}, column count = {3}.",
             idxRecord, idxRecord + 2, record.Length, columnNames.Length));
       }
 
@@ -360,10 +360,10 @@ public class DBUtility
           parameter = command.Parameters.Add(parameterName, SqlDbType.Image);
           parameter.Value = isNull ? DBNull.Value : (object) Encoding.UTF8.GetBytes(columnValue);
         }
-        else 
+        else
         {
           throw new ApplicationException(string.Format("Unsupported type in column {0} (Views?). Cannot insert {1} values.",
-              columnNames[idxColumn], 
+              columnNames[idxColumn],
               (columnType != null) ? columnType.FullName : "(unknown type)"));
         }
       }
@@ -441,7 +441,7 @@ public class DBUtility
     }
     else
     {
-      return string.Format("INSERT INTO {0} ( {1} ) VALUES ( {2} )", 
+      return string.Format("INSERT INTO {0} ( {1} ) VALUES ( {2} )",
           tableName, columns, parameters);
     }
   }
@@ -482,7 +482,7 @@ public class DBUtility
             cell.Append(c);
           }
           break;
-        
+
         case 1: // within quotation marks
           if (c == '"' && nextC == '"')
           {
@@ -493,7 +493,7 @@ public class DBUtility
           {
             state = 0;
           }
-          else 
+          else
           {
             cell.Append(c);
           }
@@ -514,13 +514,13 @@ public class DBUtility
       s_prevNow = now;
     #endif 
   }
-  
+
   [Conditional ("VERBOSE")]
   private static void Trace (string msg)
   {
     Debug.WriteLine(msg);
   }
-  
+
   [Conditional ("VERBOSE")]
   private static void Trace (string format, params object[] args)
   {

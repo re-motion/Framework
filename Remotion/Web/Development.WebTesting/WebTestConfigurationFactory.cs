@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting
     /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
     protected const string LatestTestedChromeVersion = "91";
-    
+
     /// <summary>
     /// Represents the latest version of Edge verified to be compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Edge browser with a matching MSEdgeDriver version should be used.
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting
     public ITestInfrastructureConfiguration CreateTestInfrastructureConfiguration ()
     {
       var configSettings = WebTestConfigurationSection.Current;
-      
+
       //Not extensible as it is used in user code and test infrastructure utilities 
       return new TestInfrastructureConfiguration(configSettings);
     }

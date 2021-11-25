@@ -116,7 +116,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The message displayed when the user attempts to leave the page.")]
   [Category ("Appearance")]
   [DefaultValue ("")]
-  public virtual string? AbortMessage 
+  public virtual string? AbortMessage
   {
     get { return _smartPageInfo.AbortMessage; }
     set { _smartPageInfo.AbortMessage = value; }
@@ -471,7 +471,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     {
       if (! WebConfiguration.Current.SmartNavigation.EnableScrolling)
         return false;
-      return _enableSmartScrolling != false; 
+      return _enableSmartScrolling != false;
     }
   }
 
@@ -511,7 +511,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     {
       if (! WebConfiguration.Current.SmartNavigation.EnableFocusing)
         return false;
-      return _enableSmartFocusing != false; 
+      return _enableSmartFocusing != false;
     }
   }
 

@@ -441,7 +441,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       MemberCallerMock.Verify();
 
       Assert.That(
-          testPageHolder.Page.Controls, 
+          testPageHolder.Page.Controls,
           Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }));
       Assert.That(replacer.Controls, Is.EqualTo(new[] { controlToWrap }));
       Assert.That(controlToReplace.Replacer, Is.Null);

@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "This LINQ provider does not support queries with complex projections that include DomainObjects.\r\n"
-                  + "Either change the query to return just a sequence of DomainObjects " 
-                  + "(e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select o') or change the complex projection to contain no DomainObjects " 
+                  + "Either change the query to return just a sequence of DomainObjects "
+                  + "(e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select o') or change the complex projection to contain no DomainObjects "
                   + "(e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select new { o.OrderNumber, o.OrderDate }')."));
     }
   }

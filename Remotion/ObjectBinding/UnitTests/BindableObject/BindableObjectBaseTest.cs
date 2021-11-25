@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _implementationMock.Setup(mock => mock.GetPropertyString(_propertyFake.Object, "gj")).Returns("yay").Verifiable();
 
       Assert.That(_instance.GetPropertyString(_propertyFake.Object, "gj"), Is.EqualTo("yay"));
-      _implementationMock.Verify(); 
+      _implementationMock.Verify();
     }
 
     [Test]

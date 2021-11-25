@@ -52,7 +52,7 @@ public class TestDataLoader : IDisposable
     {
       ExecuteSqlFile(c_testDomainFilename);
 
-      _transaction.Commit();  
+      _transaction.Commit();
     }
   }
 

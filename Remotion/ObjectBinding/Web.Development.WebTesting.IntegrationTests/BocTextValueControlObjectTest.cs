@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsDisabled(), Is.True);
       Assert.That(
-          () => control.FillWith("text"), 
+          () => control.FillWith("text"),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "FillWith").Message));
       Assert.That(
           () => control.FillWith("text", FinishInput.Promptly),

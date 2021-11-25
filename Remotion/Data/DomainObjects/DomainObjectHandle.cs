@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects
       get { return _objectID; }
     }
 
-    public IDomainObjectHandle<TOther> Cast<TOther> () 
+    public IDomainObjectHandle<TOther> Cast<TOther> ()
       where TOther : IDomainObject
     {
       try

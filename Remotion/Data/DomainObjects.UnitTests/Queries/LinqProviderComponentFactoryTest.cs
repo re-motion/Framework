@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(selectMethod), Is.SameAs(typeof(SelectExpressionNode)));
       var processingSteps = ((CompoundExpressionTreeProcessor) queryParser.Processor).InnerProcessors;
-      Assert.That(processingSteps.Count, 
+      Assert.That(processingSteps.Count,
           Is.EqualTo(ExpressionTreeParser.CreateDefaultProcessor(ExpressionTransformerRegistry.CreateDefault()).InnerProcessors.Count));
     }
 
@@ -126,11 +126,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition);
 
       Assert.That(executor, Is.TypeOf<DomainObjectQueryExecutor>());
-      
+
       var domainObjectQueryExecutor = (DomainObjectQueryExecutor) executor;
       Assert.That(domainObjectQueryExecutor.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
       Assert.That(
-          ((DomainObjectQueryGenerator) domainObjectQueryExecutor.QueryGenerator).MappingConfiguration, 
+          ((DomainObjectQueryGenerator) domainObjectQueryExecutor.QueryGenerator).MappingConfiguration,
           Is.SameAs(MappingConfiguration.Current));
     }
 
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var provider = GetMethodCallTransformerProviderFromExecutor(executor);
 
       var toStringMethod = ToStringMethodCallTransformer.SupportedMethods[0];
-      
+
       Assert.That(provider.Providers.Length, Is.EqualTo(2));
 
       Assert.That(provider.Providers[0], Is.TypeOf(typeof(MethodInfoBasedMethodCallTransformerRegistry)));

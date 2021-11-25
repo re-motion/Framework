@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     public int OnLoadedCount;
     public LoadMode OnLoadedLoadMode;
     public bool OnCreatedCalled;
-    
+
     public bool OnDomainObjectReferenceInitializingCalled;
     public int OnDomainObjectReferenceInitializingCount;
 
@@ -58,9 +58,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
         InitializationHandler(this, EventArgs.Empty);
     }
 
-    public new HookedTargetClass Target 
-    { 
-      get { return base.Target; } 
+    public new HookedTargetClass Target
+    {
+      get { return base.Target; }
     }
   }
 }

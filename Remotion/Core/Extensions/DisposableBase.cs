@@ -52,7 +52,7 @@ namespace Remotion
     }
 
     protected bool Disposed
-    { 
+    {
       get { return _disposed; }
     }
 

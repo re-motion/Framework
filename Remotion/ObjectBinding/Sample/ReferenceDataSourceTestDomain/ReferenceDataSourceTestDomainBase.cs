@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
   [BindableObject]
   [DefaultValueServiceType(typeof(ReferenceDataSourceTestDefaultValueService))]
   [DeleteObjectServiceType(typeof(ReferenceDataSourceTestDeleteObjectService))]
-  public class ReferenceDataSourceTestDomainBase 
+  public class ReferenceDataSourceTestDomainBase
   {
   }
 #pragma warning restore 612,618

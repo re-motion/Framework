@@ -23,7 +23,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests.TestDomain
   {
     string IfcMethod ();
   }
-  
+
   [Serializable]
   public class BaseType2 : IBaseType2, ISerializable
   {

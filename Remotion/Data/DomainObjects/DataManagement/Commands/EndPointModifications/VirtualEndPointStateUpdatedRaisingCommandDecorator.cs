@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDataManagementCommand decoratedCommand,
         RelationEndPointID modifiedEndPointID,
         IVirtualEndPointStateUpdateListener listener,
-        Func<bool?> changeStateProvider) 
+        Func<bool?> changeStateProvider)
       : base(decoratedCommand)
     {
       ArgumentUtility.CheckNotNull("modifiedEndPointID", modifiedEndPointID);

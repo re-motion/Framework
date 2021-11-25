@@ -294,7 +294,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
       Assert.That(result.GetErrors(), Is.EqualTo(new object[] { AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyChildren }));
     }
-   
+
     [Test]
     public void ValidateSpecificUser_IsValid ()
     {

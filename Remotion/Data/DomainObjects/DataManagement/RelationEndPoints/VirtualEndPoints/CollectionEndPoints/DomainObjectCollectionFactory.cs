@@ -56,11 +56,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
 
       var ctor = collectionType.GetConstructor(
-          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
-          null, 
-          new[] { typeof(IDomainObjectCollectionData) }, 
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+          null,
+          new[] { typeof(IDomainObjectCollectionData) },
           null);
-      
+
       if (ctor == null)
         throw CreateMissingConstructorException(collectionType);
 
@@ -83,10 +83,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("content", content);
 
       var eventRaiser = new IndirectDomainObjectCollectionEventRaiser();
-      
+
       var dataStore = new DomainObjectCollectionData();
       dataStore.AddRangeAndCheckItems(content, requiredItemType);
-      
+
       var dataStrategy = DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStore, requiredItemType, eventRaiser);
       var collection = CreateCollection(collectionType, dataStrategy);
 

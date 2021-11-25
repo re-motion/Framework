@@ -23,7 +23,7 @@ namespace Remotion.Mixins
 {
   public partial class MixinConfiguration
   {
-    private static readonly DoubleCheckedLockingContainer<MixinConfiguration> s_masterConfiguration = 
+    private static readonly DoubleCheckedLockingContainer<MixinConfiguration> s_masterConfiguration =
         new DoubleCheckedLockingContainer<MixinConfiguration>(BuildMasterConfiguration);
 
     /// <summary>

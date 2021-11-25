@@ -156,8 +156,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       endPointMock.Replay();
 
       _agent.GroupAndRegisterRelatedObjects(
-          endPointDefinition, 
-          new[] { _originatingEmployeeData1 }, 
+          endPointDefinition,
+          new[] { _originatingEmployeeData1 },
           new[] { LoadedObjectDataObjectMother.CreateNullLoadedObjectDataWithDataSourceData() });
 
       _virtualEndPointProviderMock.VerifyAllExpectations();
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       var originatingCompany = DomainObjectMother.CreateFakeObject<Company>();
       var originatingCompanyData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCompany);
-      
+
       var originatingSupplier = DomainObjectMother.CreateFakeObject<Supplier>();
       var originatingSupplierData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingSupplier);
 
@@ -322,7 +322,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       _virtualEndPointProviderMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void GroupAndRegisterRelatedObjects_OriginatingObjectOfInvalidType ()
     {
@@ -331,8 +331,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       _virtualEndPointProviderMock.Replay();
       Assert.That(
           () => _agent.GroupAndRegisterRelatedObjects(
-          endPointDefinition, 
-          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Computer1) }, 
+          endPointDefinition,
+          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Computer1) },
           new LoadedObjectDataWithDataSourceData[0]),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
@@ -350,8 +350,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       _virtualEndPointProviderMock.Replay();
       Assert.That(
           () => _agent.GroupAndRegisterRelatedObjects(
-          endPointDefinition, 
-          new[] { _originatingEmployeeData1 },  
+          endPointDefinition,
+          new[] { _originatingEmployeeData1 },
           new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.Employee2) }),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
@@ -370,7 +370,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
           _agent.GroupAndRegisterRelatedObjects(
               endPointDefinition,
               new[] { _originatingEmployeeData1 },
-              new[] { _fetchedComputerData1 }), 
+              new[] { _fetchedComputerData1 }),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Only virtual object-valued relation end-points can be handled by this registration agent.", "relationEndPointDefinition"));
     }

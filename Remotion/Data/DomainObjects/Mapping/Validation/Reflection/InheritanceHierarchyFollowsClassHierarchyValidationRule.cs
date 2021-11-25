@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public InheritanceHierarchyFollowsClassHierarchyValidationRule ()
     {
-      
+
     }
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)

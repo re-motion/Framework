@@ -21,6 +21,6 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
   [BaseNonInherited ("ClassWithNonInheritedAttribute")]
   public class ClassWithNonInheritedAttribute
   {
-    
+
   }
 }

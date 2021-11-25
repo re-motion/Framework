@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       if(expectedObjectIDs==null)
         return new T[] { null };
-      return (from id in expectedObjectIDs 
+      return (from id in expectedObjectIDs
               select (id == null ? null : (T) LifetimeService.GetObject(TestableClientTransaction, id, false))).ToArray();
     }
 

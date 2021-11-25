@@ -69,7 +69,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
             null,
             additionalUrlParameters,
             false,
-            style, 
+            style,
             new NameValueCollection(0));
 
         return command;

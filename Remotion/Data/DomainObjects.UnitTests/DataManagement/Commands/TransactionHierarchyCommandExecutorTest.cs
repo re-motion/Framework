@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Expect(mock => mock.Create(_leafRootTransaction))
           .Return(_commandMock1);
       _commandMock1.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      
+
       using (_mockRepository.Ordered())
       {
         _commandMock1.Expect(mock => mock.Begin());
@@ -242,7 +242,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Expect(mock => mock.Create(_leafRootTransaction))
           .Return(_commandMock1);
       _commandMock1.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      
+
       using (_mockRepository.Ordered())
       {
         _commandMock1.Expect(mock => mock.Begin());

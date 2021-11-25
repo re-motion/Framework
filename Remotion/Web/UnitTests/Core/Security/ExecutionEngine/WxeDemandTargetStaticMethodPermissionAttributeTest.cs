@@ -48,7 +48,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void Initialize_WithMethodNameEnumAndSecurableClass ()
     {
-      WxeDemandTargetStaticMethodPermissionAttribute attribute = 
+      WxeDemandTargetStaticMethodPermissionAttribute attribute =
           new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Search, typeof(DerivedSecurableObject));
 
       Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Static));

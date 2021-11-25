@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Context.Serialization
         : base(values)
     {
     }
-    
+
     protected override T ConvertFromStorageFormat<T> (object value, int index)
     {
       if (typeof(T) == typeof(Type[]))

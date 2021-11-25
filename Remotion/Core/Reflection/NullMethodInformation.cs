@@ -30,7 +30,7 @@ namespace Remotion.Reflection
   {
     public string Name
     {
-      get 
+      get
       {
         //TODO RM-7432: Implementation does not match nullability of IMethodInformation
         return null!;
@@ -39,7 +39,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation? DeclaringType
     {
-      get 
+      get
       {
         return null;
       }
@@ -67,7 +67,7 @@ namespace Remotion.Reflection
 
     public Type ReturnType
     {
-      get { 
+      get {
         //TODO RM-7432: Implementation does not match nullability of IMethodInformation
         return null!;
       }

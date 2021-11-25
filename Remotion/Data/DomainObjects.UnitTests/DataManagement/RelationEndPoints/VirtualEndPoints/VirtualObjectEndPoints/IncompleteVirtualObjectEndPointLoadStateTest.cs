@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       _virtualObjectEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
-    
+
       _endPointLoaderMock = MockRepository.GenerateStrictMock<IncompleteVirtualObjectEndPointLoadState.IEndPointLoader>();
       _dataManagerFactoryStub = MockRepository.GenerateStub<IVirtualObjectEndPointDataManagerFactory>();
 
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       newManagerMock.VerifyAllExpectations();
       _virtualObjectEndPointMock.AssertWasNotCalled(mock => mock.RegisterOriginalOppositeEndPoint(Arg<IRealObjectEndPoint>.Is.Anything));
     }
-    
+
     [Test]
     public void MarkDataComplete_ItemWithEndPoint ()
     {
@@ -227,9 +227,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
       var lazyLoader = new SerializableVirtualEndPointLoaderFake<
-          IVirtualObjectEndPoint, 
-          DomainObject, 
-          IVirtualObjectEndPointDataManager, 
+          IVirtualObjectEndPoint,
+          DomainObject,
+          IVirtualObjectEndPointDataManager,
           IVirtualObjectEndPointLoadState>();
       var dataManagerFactory = new SerializableVirtualObjectEndPointDataManagerFactoryFake();
 

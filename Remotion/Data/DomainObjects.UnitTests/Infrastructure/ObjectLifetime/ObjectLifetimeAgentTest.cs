@@ -73,10 +73,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _persistenceStrategyMock = MockRepository.GenerateStrictMock<IPersistenceStrategy>();
 
       _agent = new ObjectLifetimeAgent(
-          _transaction, 
-          _eventSinkWithMock, 
-          _invalidDomainObjectManagerMock, 
-          _dataManagerMock, 
+          _transaction,
+          _eventSinkWithMock,
+          _invalidDomainObjectManagerMock,
+          _dataManagerMock,
           _enlistedDomainObjectManagerMock,
           _persistenceStrategyMock);
 
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var typeDefinition = GetTypeDefinition(typeof(AbstractClass));
       Assert.That(
-          () => _agent.NewObject(typeDefinition, ParamList.Empty), 
+          () => _agent.NewObject(typeDefinition, ParamList.Empty),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "Cannot instantiate type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.AbstractClass' because it is abstract. "
               + "For classes with automatic properties, InstantiableAttribute must be used."));
@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       var exception = new Exception("Test");
       _domainObjectCreatorMock
           .Expect(mock => mock.CreateNewObject(Arg<IObjectInitializationContext>.Is.Anything, Arg.Is(constructorParameters), Arg.Is(_transaction)))
-          .WhenCalled(mi => 
+          .WhenCalled(mi =>
           {
             // Pretend an object was registered, then throw an exception - that way, the registered object needs to be cleaned up
             FakeRegisteredObject((NewObjectInitializationContext) mi.Arguments[0], _domainObject1);
@@ -203,12 +203,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
             throw exceptionInCreate;
           })
           .Return(null);
-      
+
       var exceptionInDelete = new InvalidOperationException("Cancelled");
       var deleteCommandMock = SetupDeleteExpectationsWithException(_dataManagerMock, _domainObject1, exceptionInDelete);
 
       Assert.That(
-          () => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters), 
+          () => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters),
           Throws.TypeOf<ObjectCleanupException>()
               .With.Message.EqualTo(
                   "While cleaning up an object of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' that threw an exception of type "
@@ -244,7 +244,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       _domainObjectCreatorMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void GetObjectReference_KnownObject_Invalid_Works ()
     {
@@ -366,7 +366,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _invalidDomainObjectManagerMock.Expect(stub => stub.GetInvalidObjectReference(_objectID1)).Return(_domainObject1);
 
       var result = _agent.TryGetObject(_objectID1);
-      
+
       _dataManagerMock.AssertWasNotCalled(mock => mock.GetDataContainerWithLazyLoad(Arg<ObjectID>.Is.Anything, Arg<bool>.Is.Anything));
       Assert.That(result, Is.SameAs(_domainObject1));
     }
@@ -416,7 +416,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .Return(new[] { _dataContainer1, _dataContainer2 });
 
       Assert.That(
-          () => _agent.GetObjects<ClassWithAllDataTypes>(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }), 
+          () => _agent.GetObjects<ClassWithAllDataTypes>(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }),
           Throws.TypeOf<InvalidCastException>());
     }
 

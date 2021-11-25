@@ -62,9 +62,9 @@ namespace Remotion.Security.Metadata
     }
 
     private void AppendCollection<T> (
-        XmlDocument document, 
-        XmlElement parentElement, 
-        string collectionElementName, 
+        XmlDocument document,
+        XmlElement parentElement,
+        string collectionElementName,
         List<T> infos,
         CreateCollectionItemNodeDelegate<T> createCollectionItemNodeDelegate)
     {
@@ -117,16 +117,16 @@ namespace Remotion.Security.Metadata
 
       XmlAttribute propertyIdAttribute = document.CreateAttribute("id");
       propertyIdAttribute.Value = propertyInfo.ID;
-      
+
       XmlAttribute propertyNameAttribute = document.CreateAttribute("name");
       propertyNameAttribute.Value = propertyInfo.Name;
-      
+
       propertyElement.Attributes.Append(propertyIdAttribute);
       propertyElement.Attributes.Append(propertyNameAttribute);
-      
+
       foreach (EnumValueInfo enumValueInfo in propertyInfo.Values)
         propertyElement.AppendChild(CreateStatePropertyValueNode(document, enumValueInfo));
-      
+
       return propertyElement;
     }
 
@@ -137,26 +137,26 @@ namespace Remotion.Security.Metadata
       XmlAttribute propertyValueNameAttribute = document.CreateAttribute("name");
       // TODO RM-7875: MetadataInfo and subtypes should be reworked to increase null safety.
       propertyValueNameAttribute.Value = EnumWrapper.Get(enumValueInfo.Name!, enumValueInfo.TypeName).Name;
-      
+
       XmlAttribute propertyValueValueAttribute = document.CreateAttribute("value");
       propertyValueValueAttribute.Value = enumValueInfo.Value.ToString();
 
       propertyValueElement.Attributes.Append(propertyValueNameAttribute);
       propertyValueElement.Attributes.Append(propertyValueValueAttribute);
-      
+
       return propertyValueElement;
     }
 
     private XmlElement CreateClassNode (XmlDocument document, SecurableClassInfo classInfo)
     {
       XmlElement classElement = document.CreateElement("class", _metadataSchema.SchemaUri);
-      
+
       XmlAttribute classIdAttribute = document.CreateAttribute("id");
       classIdAttribute.Value = classInfo.ID;
-      
+
       XmlAttribute classNameAttribute = document.CreateAttribute("name");
       classNameAttribute.Value = classInfo.Name;
-      
+
       classElement.Attributes.Append(classIdAttribute);
       classElement.Attributes.Append(classNameAttribute);
 

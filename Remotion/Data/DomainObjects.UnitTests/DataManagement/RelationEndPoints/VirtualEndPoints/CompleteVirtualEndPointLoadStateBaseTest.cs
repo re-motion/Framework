@@ -374,7 +374,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
                   + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' - the "
                   + "end-point is not in the list of unsynchronized end-points."));
     }
-    
+
     [Test]
     public void HasChanged ()
     {

@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
   public class SingleValuePropertyPath_BusinessObjectPropertyPathBaseTest
   {
     private BusinessObjectPropertyPathTestHelper _testHelper;
-    
+
     [SetUp]
     public void SetUp ()
     {

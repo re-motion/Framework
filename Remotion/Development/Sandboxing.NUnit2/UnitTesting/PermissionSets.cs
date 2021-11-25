@@ -39,7 +39,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
                {
                    new AspNetHostingPermission(AspNetHostingPermissionLevel.Medium),
                    new DnsPermission(PermissionState.Unrestricted),
-                   new EnvironmentPermission(EnvironmentPermissionAccess.Read, "TEMP;TMP;USERNAME;OS;COMPUTERNAME"), 
+                   new EnvironmentPermission(EnvironmentPermissionAccess.Read, "TEMP;TMP;USERNAME;OS;COMPUTERNAME"),
                    CreateRWAPFileIOPermission(appDir),
                    new IsolatedStorageFilePermission(PermissionState.None)
                      {UsageAllowed = IsolatedStorageContainment.AssemblyIsolationByUser, UserQuota = 9223372036854775807L},

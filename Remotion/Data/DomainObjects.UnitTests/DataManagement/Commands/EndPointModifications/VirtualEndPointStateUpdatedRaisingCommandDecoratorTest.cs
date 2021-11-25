@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _mockRepository.VerifyAll();
     }
-    
+
     [Test]
     public void ExpandToAllRelatedObjects ()
     {

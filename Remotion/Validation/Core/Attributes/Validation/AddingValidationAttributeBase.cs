@@ -39,7 +39,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// </summary>
     public string? ErrorMessage { get; set; }
 
-    protected abstract IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory); 
+    protected abstract IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory);
 
     public IEnumerable<IPropertyValidator> GetPropertyValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {

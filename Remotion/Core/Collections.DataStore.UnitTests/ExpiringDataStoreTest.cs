@@ -114,7 +114,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void Add ()
     {
       StubShouldScanForExpiredItems_False(_initialScanInfo);
-      
+
       StubExpirationInfo(_fakeValue, _fakeExpirationInfo);
       _dataStore.Add("Test", _fakeValue);
 
@@ -204,7 +204,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       PrepareItem("Test", _fakeValue, _fakeExpirationInfo);
       StubShouldScanForExpiredItems_False(_initialScanInfo);
       _expirationPolicyMock.Setup(stub => stub.IsExpired(_fakeValue, _fakeExpirationInfo)).Returns(false);
-      
+
       Assert.That(_dataStore["Test"], Is.SameAs(_fakeValue));
     }
 
@@ -327,7 +327,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void TryGetValue_KeyDoesNotExist ()
     {
       var result = CheckScansForExpiredItems_WithShouldScanTrue(store => store.TryGetValue("Test", out var value));
-      
+
       Assert.That(result, Is.False);
     }
 
@@ -397,7 +397,7 @@ namespace Remotion.Collections.DataStore.UnitTests
 
       object result = null;
       CheckScansForExpiredItems_WithShouldScanFalse(store => { result = store.GetOrCreateValue("Test", k => new object()); });
-      
+
       Assert.That(result, Is.SameAs(_fakeValue));
     }
 
@@ -413,7 +413,7 @@ namespace Remotion.Collections.DataStore.UnitTests
 
       object result = null;
       CheckScansForExpiredItems_WithShouldScanFalse(store => { result = store.GetOrCreateValue("Test", k => newValue); });
-      
+
       Assert.That(result, Is.SameAs(newValue));
       CheckItemContained("Test", newValue, _fakeExpirationInfo2);
     }

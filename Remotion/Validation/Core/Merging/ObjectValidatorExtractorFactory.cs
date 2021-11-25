@@ -38,7 +38,7 @@ namespace Remotion.Validation.Merging
     {
       ArgumentUtility.CheckNotNull("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
       ArgumentUtility.CheckNotNull("logContext", logContext);
-      
+
       return new ObjectValidatorExtractor(removingObjectValidatorRegistrations, logContext);
     }
   }

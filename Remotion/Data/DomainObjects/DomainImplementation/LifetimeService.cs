@@ -243,7 +243,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
-      
+
       return clientTransaction.TryGetObjects<T>(objectIDs);
     }
     /// <summary>

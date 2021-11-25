@@ -110,7 +110,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     public void Test_WithSecurityStrategyIsNull ()
     {
       bool hasAccess = _securityClient.HasMethodAccess(new SecurableObject(null), "Show");
-    
+
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.True);
     }

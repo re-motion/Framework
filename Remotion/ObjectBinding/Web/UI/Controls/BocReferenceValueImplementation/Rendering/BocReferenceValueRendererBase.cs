@@ -265,7 +265,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       var labelIDs = renderingContext.Control.GetLabelIDs();
       LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs.ToArray(), new[] { label.ClientID });
-      
+
       var attributeCollection = new AttributeCollection(new StateBag());
       ValidationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);
       attributeCollection.AddAttributes(renderingContext.Writer);

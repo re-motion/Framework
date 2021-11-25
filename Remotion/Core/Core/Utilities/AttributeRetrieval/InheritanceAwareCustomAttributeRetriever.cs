@@ -42,7 +42,7 @@ namespace Remotion.Utilities.AttributeRetrieval
             {
               var runtimeMethodInfoType = Type.GetType("System.Reflection.RuntimeMethodInfo");
               Assertion.IsNotNull(runtimeMethodInfoType, "The internal type RuntimeMethodInfo has been removed. We need to patch this implementation.");
-             
+
               var method = runtimeMethodInfoType.GetMethod(
                   "GetParentDefinition",
                   BindingFlags.Instance | BindingFlags.NonPublic,

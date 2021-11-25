@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   [DBTable]
   [Serializable]
-  public class SampleBindableDomainObject_ImplementingISerializable 
+  public class SampleBindableDomainObject_ImplementingISerializable
       : SimpleDomainObject<SampleBindableDomainObject_ImplementingISerializable>, ISerializable
   {
     protected SampleBindableDomainObject_ImplementingISerializable ()
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     }
 
     public virtual int IntProperty { get; set; }
-    
+
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       BaseGetObjectData(info, context);

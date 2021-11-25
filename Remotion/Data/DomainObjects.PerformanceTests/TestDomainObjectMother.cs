@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       instance.StringProperty8 = "Eight";
       instance.StringProperty9 = "Nine";
       instance.StringProperty10 = "Ten";
-      
+
       return instance;
     }
   }

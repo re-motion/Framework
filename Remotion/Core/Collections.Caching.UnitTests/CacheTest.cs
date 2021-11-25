@@ -28,7 +28,7 @@ namespace Remotion.Collections.Caching.UnitTests
   public class CacheTest
   {
     private ICache<string, object> _cache;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -102,7 +102,7 @@ namespace Remotion.Collections.Caching.UnitTests
       Assert.That(
           () => _cache.GetOrCreateValue("key1", key => throw exception),
           Throws.Exception.SameAs(exception));
-      
+
       Assert.That(_cache.TryGetValue("key1", out var actual), Is.False);
       Assert.That(actual, Is.Null);
     }
@@ -189,7 +189,7 @@ namespace Remotion.Collections.Caching.UnitTests
             return expected;
           });
       Assert.That(actualValue, Is.EqualTo(expected));
-      
+
       Assert.That(_cache.TryGetValue("key1", out var actualValue2), Is.True);
       Assert.That(actualValue2, Is.SameAs(expected));
     }
@@ -373,7 +373,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var cache = new Cache<string, object>();
       cache.GetOrCreateValue("key", k => "value");
       cache.TryGetValue("key", out var value);
-      
+
       var stopwatch = new Stopwatch();
       stopwatch.Start();
 

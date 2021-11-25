@@ -50,8 +50,8 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   public Type? EnumType
   {
     get { return _enumType; }
-    set 
-    { 
+    set
+    {
       if (value != null && ! value.IsEnum) throw new ArgumentOutOfRangeException("enumType", value, "Argument must be an enumeration type.");
       _enumType = value!;
     }
@@ -75,7 +75,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
           _value = (Enum) enumValue.GetValue(null)!;
           break;
         }
-        else if (enumName.Length > value.Length 
+        else if (enumName.Length > value.Length
                && string.Compare(enumValue.Name, 0, value, 0, value.Length, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
         {
           if (foundIncremental)
@@ -134,7 +134,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     {
       if (first)
         first = false;
-      else 
+      else
         sb.Append("|");
       sb.Append(enumValue.Name);
     }
@@ -154,10 +154,10 @@ public class CommandLineEnumArgument: CommandLineValueArgument
 
   public override object? ValueObject
   {
-    get 
+    get
     {
       if (HasValue)
-        return Value; 
+        return Value;
       else
         return null;
     }
@@ -165,10 +165,10 @@ public class CommandLineEnumArgument: CommandLineValueArgument
 
   public Enum? Value
   {
-    get 
-    { 
+    get
+    {
       if (!_hasValue) throw new InvalidOperationException("Cannot read value if 'HasValue' is false.");
-      return _value; 
+      return _value;
     }
   }
 

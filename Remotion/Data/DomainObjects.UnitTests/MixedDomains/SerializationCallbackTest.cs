@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void SerializationEvents_OnTarget ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
+      var instance = (ClassWithSerializationCallbacks)
           LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithSerializationCallbacks), ParamList.Empty);
 
       Assert.That(((object) instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void DeserializationEvents_OnTarget ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
+      var instance = (ClassWithSerializationCallbacks)
           LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithSerializationCallbacks), ParamList.Empty);
 
       Assert.That(((object) instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void SerializationEvents_OnMixin ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
+      var instance = (ClassWithSerializationCallbacks)
           LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithSerializationCallbacks), ParamList.Empty);
 
       Assert.That(((object) instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));

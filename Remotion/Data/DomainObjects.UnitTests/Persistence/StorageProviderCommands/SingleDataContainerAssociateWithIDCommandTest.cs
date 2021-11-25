@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
             "The ObjectID of the loaded DataContainer 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' and the expected ObjectID "
             + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' differ."));
     }
-    
+
     [Test]
     public void Execute_Null ()
     {

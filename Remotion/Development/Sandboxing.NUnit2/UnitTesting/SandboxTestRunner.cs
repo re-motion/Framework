@@ -36,7 +36,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     {
       ArgumentUtility.CheckNotNull("testFixtureTypes", testFixtureTypes);
       ArgumentUtility.CheckNotNull("permissions", permissions);
-     
+
       using (var sandbox = Sandbox.CreateSandbox(permissions, fullTrustAssemblies))
       {
         var runner = sandbox.CreateSandboxedInstance<SandboxTestRunner>(permissions);

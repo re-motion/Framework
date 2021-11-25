@@ -258,7 +258,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     {
       var concreteType = CreateMixedType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
       var concreteMixinType = CodeGenerationTypeMother.GetGeneratedMixinTypeAndMetadata(
-          typeof(ClassOverridingMixinMembers), 
+          typeof(ClassOverridingMixinMembers),
           typeof(MixinWithAbstractMembers));
 
       Assert.That(concreteType.GetInterfaces(), Has.Member(concreteMixinType.GeneratedOverrideInterface));

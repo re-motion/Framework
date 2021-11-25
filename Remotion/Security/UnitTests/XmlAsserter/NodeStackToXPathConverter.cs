@@ -77,7 +77,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
       xPathBuilder.Append("[");
       bool isFirstAttribute = true;
-      
+
       foreach (XmlAttribute attribute in attributes)
       {
         if (!isFirstAttribute)

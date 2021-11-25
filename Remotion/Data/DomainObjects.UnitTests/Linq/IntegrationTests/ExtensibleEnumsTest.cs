@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       Assert.That(result1, Is.EqualTo(
           new[]
           {
-              DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>(), 
+              DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>(),
               DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>()
           }));
 

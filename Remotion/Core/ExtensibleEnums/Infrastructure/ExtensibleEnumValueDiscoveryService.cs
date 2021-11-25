@@ -46,7 +46,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     protected ExtensibleEnumValueDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
     {
       ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
-      
+
       _typeDiscoveryService = typeDiscoveryService;
     }
 

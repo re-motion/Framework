@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.That(targetClass.RequiredTargetCallTypes.ContainsKey(typeof(IBaseType2)), Is.False);
 
       CheckAllRequiringEntities(
-          targetClass.RequiredTargetCallTypes[typeof(IBaseType31)], 
+          targetClass.RequiredTargetCallTypes[typeof(IBaseType31)],
           targetClass.Mixins[typeof(BT3Mixin1)], targetClass.GetMixinByConfiguredType(typeof(BT3Mixin6<,>)));
 
       Assert.That(targetClass.RequiredTargetCallTypes[typeof(IBaseType31)].IsEmptyInterface, Is.False);
@@ -420,12 +420,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.That(dependency.ComposedInterface, Is.SameAs(typeof(ICBaseType3)));
 
       CheckSomeRequiringComposedInterface(requirement, typeof(ICBaseType3));
-      
+
       Assert.That(dependency.IsAggregate, Is.True);
       Assert.That(dependency.AggregatedDependencies[typeof(IBaseType31)], Is.Not.Null);
       Assert.That(dependency.AggregatedDependencies[typeof(IBaseType31)], Is.TypeOf<ComposedInterfaceDependencyDefinition>());
       Assert.That(
-          ((ComposedInterfaceDependencyDefinition) dependency.AggregatedDependencies[typeof(IBaseType31)]).ComposedInterface, 
+          ((ComposedInterfaceDependencyDefinition) dependency.AggregatedDependencies[typeof(IBaseType31)]).ComposedInterface,
           Is.SameAs(typeof(ICBaseType3)));
       Assert.That(bt3.RequiredTargetCallTypes[typeof(IBaseType31)], Is.Not.Null);
       Assert.That(bt3.RequiredTargetCallTypes[typeof(IBaseType31)], Is.SameAs(dependency.AggregatedDependencies[typeof(IBaseType31)].RequiredType));

@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
 
       _targetClassDefinition = targetClassDefinition;
       _allTargetClassMethods = new Dictionary<MethodInfo, MethodDefinition>();
-      
+
       foreach (MethodDefinition methodDefinition in targetClassDefinition.GetAllMethods())
         _allTargetClassMethods.Add(methodDefinition.MethodInfo, methodDefinition);
     }

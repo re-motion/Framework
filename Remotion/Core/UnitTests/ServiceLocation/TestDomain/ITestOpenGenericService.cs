@@ -20,7 +20,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
   public interface ITestOpenGenericService<T>
   {
-     
+
   }
 
   [ImplementationFor (typeof(ITestOpenGenericService<int>))]

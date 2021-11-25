@@ -22,6 +22,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   [Uses (typeof(MixinAddingBT1Attribute))]
   public class TargetClassSuppressingBT1Attribute
   {
-    
+
   }
 }

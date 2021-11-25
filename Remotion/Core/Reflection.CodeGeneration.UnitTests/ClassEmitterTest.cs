@@ -29,7 +29,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   [TestFixture]
   public class ClassEmitterTest : CodeGenerationTestBase
   {
-    private const BindingFlags _declaredInstanceBindingFlags = 
+    private const BindingFlags _declaredInstanceBindingFlags =
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
     [Test]
@@ -152,7 +152,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       var classEmitter = new CustomClassEmitter(Scope, "CreateMethod", typeof(object));
       var method = classEmitter.CreateMethod("Check", MethodAttributes.Public, typeof(string), new Type[0]);
       method.AddStatement(new ReturnStatement(new ConstReference("ret")));
-      
+
       object instance = Activator.CreateInstance(classEmitter.BuildType());
       Assert.That(instance.GetType().GetMethod("Check").Invoke(instance, null), Is.EqualTo("ret"));
     }
@@ -617,7 +617,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       eventEmitter.RemoveMethod =
           classEmitter.CreateMethodOverride(typeof(ClassWithAllKindsOfMembers).GetMethod("remove_Event", _declaredInstanceBindingFlags));
       eventEmitter.RemoveMethod.AddStatement(new ReturnStatement());
-      
+
       Type builtType = classEmitter.BuildType();
       var instance = (ClassWithAllKindsOfMembers) Activator.CreateInstance(builtType);
 
@@ -822,7 +822,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       object instance = Activator.CreateInstance(classEmitter.BuildType());
       MethodInfo publicWrapper = instance.GetType().GetMethod("__wrap__GetSecret");
-      
+
       var attribute = AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute>(publicWrapper, false);
       Assert.That(attribute, Is.Not.Null);
     }
@@ -867,8 +867,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       // must be unsigned because the nested class uses unsigned interface and base type
       var classEmitter = new CustomClassEmitter(Scope, "CreateNestedClass", typeof(object), Type.EmptyTypes, TypeAttributes.Public, true);
       var innerClassEmitter = classEmitter.CreateNestedClass(
-          "InnerClass", 
-          typeof(ClassWithAllKindsOfMembers), 
+          "InnerClass",
+          typeof(ClassWithAllKindsOfMembers),
           new[] { typeof(IInterfaceWithMethod) });
 
       var innerT = innerClassEmitter.BuildType();

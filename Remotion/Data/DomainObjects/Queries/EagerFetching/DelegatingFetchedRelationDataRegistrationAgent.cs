@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     private readonly IFetchedRelationDataRegistrationAgent _collectionDataRegistrationAgent;
 
     public DelegatingFetchedRelationDataRegistrationAgent (
-        IFetchedRelationDataRegistrationAgent realObjectDataRegistrationAgent, 
-        IFetchedRelationDataRegistrationAgent virtualObjectDataRegistrationAgent, 
+        IFetchedRelationDataRegistrationAgent realObjectDataRegistrationAgent,
+        IFetchedRelationDataRegistrationAgent virtualObjectDataRegistrationAgent,
         IFetchedRelationDataRegistrationAgent collectionDataRegistrationAgent)
     {
       ArgumentUtility.CheckNotNull("realObjectDataRegistrationAgent", realObjectDataRegistrationAgent);

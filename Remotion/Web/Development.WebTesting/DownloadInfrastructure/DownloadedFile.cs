@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       ArgumentUtility.CheckNotNull("newFilePath", newFilePath);
 
       File.Move(_fullFilePath, newFilePath);
-      
+
       return new DownloadedFile(newFilePath, _fileName);
     }
 
@@ -86,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     public DownloadedFile Rename ([NotNull] string newName)
     {
       ArgumentUtility.CheckNotNull("newName", newName);
-      
+
       return new DownloadedFile(_fullFilePath, newName);
     }
   }

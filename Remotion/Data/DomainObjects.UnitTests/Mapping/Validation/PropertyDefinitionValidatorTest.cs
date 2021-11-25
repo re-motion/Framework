@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
       _fakeValidMappingValidationResult = MappingValidationResult.CreateValidResult();
       _fakeInvalidMappingValidationResult = MappingValidationResult.CreateInvalidResult("Test");
     }
-    
+
     [Test]
     public void ValidateWithOneRuleAndClassDefinition_ValidResult ()
     {

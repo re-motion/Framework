@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     protected static readonly Unit Width = Unit.Pixel(250);
     protected static readonly Unit Height = Unit.Point(12);
     private IResourceUrlFactory _resourceUrlFactoryStub;
-    
+
     public Mock<IClientScriptManager> ClientScriptManagerMock { get; set; }
     public Mock<IBocReferenceValue> Control { get; set; }
     public TypeWithReference BusinessObject { get; set; }
@@ -487,7 +487,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
           new StubValidationErrorRenderer(),
           () => DropDownList);
       renderer.Render(CreateRenderingContext());
-      
+
       var document = Html.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement("span", 0);
 

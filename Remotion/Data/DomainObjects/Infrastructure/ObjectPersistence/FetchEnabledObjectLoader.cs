@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
       ArgumentUtility.CheckNotNull("eagerFetcher", eagerFetcher);
-      
+
       _persistenceStrategy = persistenceStrategy;
       _eagerFetcher = eagerFetcher;
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       var pendingRegistrationCollector = new LoadedObjectDataPendingRegistrationCollector();
 
       var loadedObjectData = _persistenceStrategy.ExecuteCollectionQuery(query, LoadedObjectDataProvider);
-      
+
       var loadedObjectDataAfterConsolidation = LoadedObjectDataRegistrationAgent
           .BeginRegisterIfRequired(loadedObjectData, true, pendingRegistrationCollector)
           .ConvertToCollection();
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     }
 
     public ICollection<LoadedObjectDataWithDataSourceData> GetOrLoadFetchQueryResult (
-        IQuery query, 
+        IQuery query,
         LoadedObjectDataPendingRegistrationCollector pendingRegistrationCollector)
     {
       ArgumentUtility.CheckNotNull("query", query);
@@ -97,14 +97,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
               true,
               pendingRegistrationCollector)
           .ToList();
-      
+
       Assertion.IsTrue(loadedObjectDataWithSource.Count == loadedObjectDataAfterConsolidation.Count);
       var loadedObjectDataWithSourceAfterConsolidation = loadedObjectDataWithSource
           .Select((d, i) => new LoadedObjectDataWithDataSourceData(loadedObjectDataAfterConsolidation[i], d.DataSourceData))
           .ConvertToCollection();
 
       _eagerFetcher.PerformEagerFetching(loadedObjectDataAfterConsolidation, query.EagerFetchQueries, this, pendingRegistrationCollector);
-      
+
       return loadedObjectDataWithSourceAfterConsolidation;
     }
   }

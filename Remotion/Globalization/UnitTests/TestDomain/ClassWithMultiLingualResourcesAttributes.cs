@@ -23,6 +23,6 @@ namespace Remotion.Globalization.UnitTests.TestDomain
   [MultiLingualResources (NamedResources.Three)]
   public class ClassWithMultiLingualResourcesAttributes
   {
-    
+
   }
 }

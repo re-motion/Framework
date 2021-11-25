@@ -34,7 +34,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var typeBuilder = generator.CreateType("GeneratedType");
       generator.AddCustomAttribute(typeof(NonApplicationAssemblyAttribute));
       _generatedType = typeBuilder.CreateType();
-      
+
       var generatedAssemblyPath = generator.Save();
       AddSavedAssembly(generatedAssemblyPath);
     }

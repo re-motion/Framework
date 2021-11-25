@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           "FakeViewName",
           new IRdbmsStoragePropertyDefinition[]
           {
-              _fakeObjectIDStorageProperty, 
+              _fakeObjectIDStorageProperty,
               _fakeTimestampStorageProperty,
               _fakeStorageProperty1
           },
@@ -246,8 +246,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           new[] { "Derived2Class", "DerivedDerivedClass", "DerivedDerivedDerivedClass" },
           new IRdbmsStoragePropertyDefinition[]
           {
-              _fakeObjectIDStorageProperty, 
-              _fakeTimestampStorageProperty, 
+              _fakeObjectIDStorageProperty,
+              _fakeTimestampStorageProperty,
               _fakeStorageProperty1
           },
           new IIndexDefinition[0],
@@ -287,8 +287,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           new[] { fakeUnionEntity1, fakeUnionEntity2 },
           new IRdbmsStoragePropertyDefinition[]
           {
-              _fakeObjectIDStorageProperty, 
-              _fakeTimestampStorageProperty, 
+              _fakeObjectIDStorageProperty,
+              _fakeTimestampStorageProperty,
               _fakeStorageProperty1
           },
           new IIndexDefinition[0],
@@ -323,8 +323,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           "FakeViewName",
           new IRdbmsStoragePropertyDefinition[]
           {
-              _fakeObjectIDStorageProperty, 
-              _fakeTimestampStorageProperty, 
+              _fakeObjectIDStorageProperty,
+              _fakeTimestampStorageProperty,
               _fakeStorageProperty1
           },
           new IIndexDefinition[0],

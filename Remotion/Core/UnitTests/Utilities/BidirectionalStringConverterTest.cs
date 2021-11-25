@@ -34,7 +34,7 @@ public class BidirectionalStringConverterTest
     ValueA,
     ValueB
   }
-  
+
   [SetUp]
   public void SetUp ()
   {
@@ -442,6 +442,6 @@ public class BidirectionalStringConverterTest
   {
     Assert.That(_converter.ConvertFrom(DBNull.Value), Is.EqualTo(""));
   }
-}            
+}
 
 }

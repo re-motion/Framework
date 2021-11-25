@@ -46,7 +46,7 @@ namespace Remotion.ExtensibleEnums
       DefiningMethod = declaringMethod;
       PositionalKey = positionalKey;
     }
-    
+
     /// <summary>
     /// Gets the <see cref="ExtensibleEnum{T}"/> value described by this instance.
     /// </summary>

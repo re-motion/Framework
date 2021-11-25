@@ -49,12 +49,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _comparedColumnsStrictMock = MockRepository.GenerateStrictMock<IComparedColumnsSpecification>();
       _fullSelectedColumnsStub = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
       _orderedColumnsStub = MockRepository.GenerateStub<IOrderedColumnsSpecification>();
-      
+
       _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
       _sqlDialectStub.Stub(stub => stub.StatementDelimiter).Return(";");
 
       _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      
+
       _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
       _commandExecutionContextStub.Stub(stub => stub.CreateDbCommand()).Return(_dbCommandStub);
 
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[delimited FKID] = pFKID"))
           .Repeat.Once();
       _comparedColumnsStrictMock.Replay();
-      
+
       var result = builder.Create(_commandExecutionContextStub);
 
       Assert.That(

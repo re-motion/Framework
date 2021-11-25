@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
       ArgumentUtility.CheckNotNull("cellText", cellText);
-      
+
       var cell = GetCellWhere().ColumnWithItemIDContainsExactly(itemID, cellText);
       return GetRowFromCell(cell);
     }

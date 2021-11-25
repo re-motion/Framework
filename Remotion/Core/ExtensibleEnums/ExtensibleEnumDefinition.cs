@@ -166,7 +166,7 @@ namespace Remotion.ExtensibleEnums
                        from attribute in AttributeUtility.GetCustomAttributes(extensionType, attributeType, false)
                        select attribute;
       var list = attributes.ToList();
-      
+
       var array = (object[]) Array.CreateInstance(attributeType, list.Count);
       list.CopyTo(array);
       return array;

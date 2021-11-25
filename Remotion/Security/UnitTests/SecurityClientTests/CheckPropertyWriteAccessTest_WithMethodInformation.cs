@@ -118,7 +118,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.First);
 
       Assert.That(
-          () => _securityClient.CheckPropertyWriteAccess(new SecurableObject(null), _methodInformation.Object), 
+          () => _securityClient.CheckPropertyWriteAccess(new SecurableObject(null), _methodInformation.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo("The securableObject did not return an IObjectSecurityStrategy."));
       _testHelper.VerifyAll();

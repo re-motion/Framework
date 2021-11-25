@@ -30,14 +30,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     public ClassWithResources ()
     {
     }
-    
+
     public string Value1
     {
       get { return _value1; }
       set { _value1 = value; }
     }
 
-    public string Value2 
+    public string Value2
     {
       get { return _value2; }
       set { _value2 = value; }

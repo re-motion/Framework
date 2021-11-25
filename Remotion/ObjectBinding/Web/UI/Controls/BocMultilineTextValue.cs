@@ -131,7 +131,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (interim)
         return false;
-      
+
       bool isValid = Validate();
       if (!isValid)
         return false;
@@ -201,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         SetValue(value);
       }
     }
-    
+
     /// <summary> Gets or sets the string representation of the current value. </summary>
     /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. The default value is an empty <see cref="String"/>. </remarks>
     [Description ("The string representation of the current value.")]
@@ -234,7 +234,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-       
+
         UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
         UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
       }

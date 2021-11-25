@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Create ()
     {
       var relationEndPointID = RelationEndPointID.Create(
-          DomainObjectIDs.Customer1, 
+          DomainObjectIDs.Customer1,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
 
       var result = _factory.CreateEndPointDataManager(relationEndPointID);

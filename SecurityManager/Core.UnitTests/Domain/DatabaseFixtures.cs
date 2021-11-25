@@ -83,11 +83,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain
         Position globalPosition = CreatePosition("Global");
         globalPosition.Delegation = Delegation.Enabled;
         globalPosition.UniqueIdentifier = "UID: Global";
-        
+
         Position officialPosition = CreatePosition("Official");
         officialPosition.UniqueIdentifier = "UID: Official";
         officialPosition.Delegation = Delegation.Enabled;
-        
+
         Position managerPosition = CreatePosition("Manager");
         managerPosition.Delegation = Delegation.Disabled;
         managerPosition.UniqueIdentifier = "UID: Manager";
@@ -240,7 +240,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
         SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition();
         StatelessAccessControlList statelessAccessControlList = StatelessAccessControlList.NewObject();
         classDefinition.StatelessAccessControlList = statelessAccessControlList;
-        
+
         var stateProperty = StatePropertyDefinition.NewObject(Guid.NewGuid(), "Property");
         classDefinition.AddStateProperty(stateProperty);
 
@@ -293,7 +293,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
 
         for (int i = 1; i < stateCombinations; i++)
           CreateStateCombination(statefulAccessControlList, stateProperty, StateDefinition.NewObject(string.Format("Value {0}", i), i));
-        
+
         ClientTransactionScope.CurrentTransaction.Commit();
 
         return statefulAccessControlList;

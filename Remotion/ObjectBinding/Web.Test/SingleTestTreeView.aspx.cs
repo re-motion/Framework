@@ -77,7 +77,7 @@ namespace OBWTest
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
       var jobIconUrl = resourceUrlFactory.CreateResourceUrl(typeof(Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif");
-      
+
       WebTreeNodeCollection nodes;
 
       // Use '|' in the tree node IDs to simulate serialized ObjectIDs and detect conflicts.

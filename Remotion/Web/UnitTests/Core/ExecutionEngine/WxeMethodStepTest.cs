@@ -86,7 +86,7 @@ public class WxeMethodStepTest: WxeTest
     Type functionType = typeof(TestFunction);
     MethodInfo step1 = functionType.GetMethod("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
     WxeMethodStep methodStep = new WxeMethodStep(_function, step1);
-    
+
     methodStep.Execute(CurrentWxeContext);
 
     Assert.That(_function.LastExecutedStepID, Is.EqualTo("1"));
@@ -126,7 +126,7 @@ public class WxeMethodStepTest: WxeTest
         () => new WxeMethodStep(action),
         Throws.ArgumentException
             .With.ArgumentExceptionMessageEqualTo(
-                "The delegate's target must be a non-null WxeStepList, but it was 'Remotion.Web.UnitTests.Core.ExecutionEngine.WxeMethodStepTest'. When used " 
+                "The delegate's target must be a non-null WxeStepList, but it was 'Remotion.Web.UnitTests.Core.ExecutionEngine.WxeMethodStepTest'. When used "
                 + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.", "method"));
   }
 
@@ -161,7 +161,7 @@ public class WxeMethodStepTest: WxeTest
     Type functionType = typeof(TestFunction);
     MethodInfo step2 = functionType.GetMethod("Step2", BindingFlags.Instance | BindingFlags.NonPublic);
     WxeMethodStep methodStepWithContext = new WxeMethodStep(_function, step2);
-    
+
     methodStepWithContext.Execute(CurrentWxeContext);
 
     Assert.That(_function.LastExecutedStepID, Is.EqualTo("2"));
@@ -172,7 +172,7 @@ public class WxeMethodStepTest: WxeTest
   public void ExecuteMethodStepWithDelegateWithContext ()
   {
     WxeMethodStep methodStepWithContext = new WxeMethodStep(_function.PublicStepMethodWithContext);
-    
+
     methodStepWithContext.Execute(CurrentWxeContext);
 
     Assert.That(_function.LastExecutedStepID, Is.EqualTo("2"));

@@ -53,7 +53,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects
 
       if (x is IDomainObjectHandle<DomainObject> && y is IDomainObjectHandle<DomainObject>)
         return Equals((IDomainObjectHandle<DomainObject>) x, (IDomainObjectHandle<DomainObject>) y);
-      
+
       if (x is DomainObject && y is DomainObject)
         return Equals(((DomainObject) x).GetHandle(), ((DomainObject) y).GetHandle());
 

@@ -54,14 +54,14 @@ public class CommandLineFlagArgument: CommandLineArgument
 
     switch (value)
     {
-      case "": 
+      case "":
         _value = true;
         break;
 
       case "+":
         _value = true;
         break;
-      
+
       case "-":
         _value = false;
         break;
@@ -78,7 +78,7 @@ public class CommandLineFlagArgument: CommandLineArgument
   {
     get { return Value; }
   }
-  
+
   public bool? Value
   {
     get { return _value ?? _defaultValue; }

@@ -68,7 +68,7 @@ namespace OBWTest
     protected void Application_Start (Object sender, EventArgs e)
     {
       LogManager.Initialize();
-      
+
       string objectPath = Server.MapPath("~/objects");
       if (!Directory.Exists(objectPath))
         Directory.CreateDirectory(objectPath);

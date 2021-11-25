@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     public void NewObjectCreating_ForbiddenWhenTransactionReadOnly ()
     {
       ClientTransactionTestHelper.SetIsWriteable(_transaction, false);
-      
+
       Assert.That(() => _listener.NewObjectCreating(_transaction, typeof(Order)), Throws.TypeOf<ClientTransactionReadOnlyException>());
     }
 
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       CheckForbiddenOperationWithLoadMode(
           () => _listener.PropertyValueChanging(_transaction, _order1, _orderNumberPropertyDefinition, null, null),
-          "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be modified. " 
+          "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be modified. "
           + "(Modified property: 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber'.)");
     }
 
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(_listener.IsInLoadMode, Is.True);
 
       Assert.That(
-          () => _listener.PropertyValueChanging(_transaction, _order1, _orderNumberPropertyDefinition, null, null), 
+          () => _listener.PropertyValueChanging(_transaction, _order1, _orderNumberPropertyDefinition, null, null),
           Throws.InvalidOperationException);
 
       _listener.AddCurrentlyLoadingObjectIDs(new[] { DomainObjectIDs.Order1 });
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(
           () => _listener.PropertyValueChanging(_transaction, _order1, _orderNumberPropertyDefinition, null, null),
           Throws.InvalidOperationException.With.Message.EqualTo(
-              "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' can no longer be modified because its data has already been loaded " 
+              "Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' can no longer be modified because its data has already been loaded "
               + "into the subtransaction."));
     }
 
@@ -253,7 +253,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       var fakeSubTransaction = CreateFakeSubTransaction(_transaction);
 
       var relationEndPointID = RelationEndPointID.Create(_order1.ID, _orderTicketEndPointDefinition);
-      
+
       // Works if there is no matching end-point in the subtx.
       Assert.That(ClientTransactionTestHelper.GetIDataManager(fakeSubTransaction).RelationEndPoints[relationEndPointID], Is.Null);
       Assert.That(() => _listener.RelationChanging(_transaction, _order1, _orderTicketEndPointDefinition, null, null), Throws.Nothing);
@@ -344,7 +344,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       var someDataContainer = DataContainerObjectMother.Create(DomainObjectIDs.Client1);
 
       Assert.That(
-          () => _listener.DataContainerStateUpdated(_transaction, someDataContainer, new DataContainerState.Builder().SetChanged().Value), 
+          () => _listener.DataContainerStateUpdated(_transaction, someDataContainer, new DataContainerState.Builder().SetChanged().Value),
           Throws.TypeOf<ClientTransactionReadOnlyException>());
     }
 

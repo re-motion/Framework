@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
       throw new NotSupportedException();
     }
-    
+
     [LinqPropertyRedirection (typeof(Order), "RedirectedOrderNumber")]
     public static int GetRedirectedRedirectedOrderNumber (this Order order)
     {

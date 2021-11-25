@@ -35,14 +35,14 @@ public class WcagException: Exception
 
   public WcagException (int priority, Control control)
     : base(string.Format(
-       "{0} '{1}' does not comply with a priority {2} checkpoint.", 
+       "{0} '{1}' does not comply with a priority {2} checkpoint.",
         control.GetType().Name, control.ID, priority))
   {
   }
 
   public WcagException (int priority, Control control, string property)
     : base(string.Format(
-        "The value of property '{0}' for {1} '{2}' does not comply with a priority {3} checkpoint.", 
+        "The value of property '{0}' for {1} '{2}' does not comply with a priority {3} checkpoint.",
         property, control.GetType().Name, control.ID, priority))
   {
   }

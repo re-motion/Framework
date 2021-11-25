@@ -143,8 +143,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceEvent (
         TraceEventCache? eventCache,
-        string source, 
-        TraceEventType eventType, int id, 
+        string source,
+        TraceEventType eventType, int id,
         string? format,
         params Object?[]? args)
     {
@@ -175,7 +175,7 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceData (TraceEventCache? eventCache, string source, TraceEventType eventType, int id, params Object?[]? data)
     {
-      if (ShouldTrace(eventCache, source, eventType, id, null, null, null, data)) 
+      if (ShouldTrace(eventCache, source, eventType, id, null, null, null, data))
       {
         string message = string.Empty;
         if (data != null)
@@ -210,8 +210,8 @@ namespace Remotion.Logging
     {
       // TODO RM-7805: Add a fallback value for message.
       TraceEvent(eventCache, source, TraceEventType.Information, id,
-          message + ", relatedActivityId=" + relatedActivityId, new object[0]); 
-    } 
+          message + ", relatedActivityId=" + relatedActivityId, new object[0]);
+    }
 
 
     private bool ShouldTrace (

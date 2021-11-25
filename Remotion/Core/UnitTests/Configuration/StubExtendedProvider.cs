@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.Configuration
         : base(name, config)
     {
     }
-    
+
      // methods and properties
 
     public new string GetAndRemoveNonEmptyStringAttribute (NameValueCollection config, string attribute, string providerName, bool required)

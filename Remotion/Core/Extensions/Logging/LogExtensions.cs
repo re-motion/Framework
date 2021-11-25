@@ -29,7 +29,7 @@ namespace Remotion.Logging
     private static readonly DoubleCheckedLockingContainer<IEnumerationGlobalizationService> s_globalizationService =
         new DoubleCheckedLockingContainer<IEnumerationGlobalizationService>(
             () => SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>());
-    
+
 
     /// <summary>
     /// Log a message and event id derived from the <paramref name="messageEnum"/> with the specified <paramref name="logLevel"/>, including the stack 

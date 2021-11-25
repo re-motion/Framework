@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       Assert.That(_context.RegisteredObject, Is.SameAs(_domainObject));
     }
-    
+
     [Test]
     public void RegisterObject_WithError ()
     {

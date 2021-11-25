@@ -67,14 +67,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     private ClientTransaction _transaction;
-    
+
     private DomainObject _unchangedObject;
     private DomainObject _changedObject;
     private DomainObject _newObject;
     private DomainObject _deletedObject;
-    
+
     private MockRepository _mockRepository;
-    
+
     private IClientTransactionListener _listenerMock;
     private IClientTransactionExtension _extensionMock;
     private ClientTransactionMockEventReceiver _transactionMockEventReceiver;
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var methodOptions = ExpectCommittingEventsWithCustomOptions(domainObjectsAndMocks);
 
       methodOptions.TransactionOptions.WithCurrentTransaction(_transaction);
-      
+
       foreach (var domainObjectOption in methodOptions.DomainObjectOptions)
         domainObjectOption.WithCurrentTransaction(_transaction);
     }

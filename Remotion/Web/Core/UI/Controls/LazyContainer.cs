@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
       _isEnsured = true;
 
       if (_isLazyLoadingEnabled)
-      {        
+      {
         if (!_hasControlStateLoaded && Page != null && Page.IsPostBack)
           throw new InvalidOperationException(string.Format("Cannot ensure LazyContainer '{0}' before its state has been loaded.", ID));
 
@@ -223,7 +223,7 @@ namespace Remotion.Web.UI.Controls
 
       return values;
     }
-    
+
     protected virtual IServiceLocator ServiceLocator
     {
       get { return SafeServiceLocator.Current; }

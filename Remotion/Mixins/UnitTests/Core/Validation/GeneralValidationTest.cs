@@ -110,7 +110,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     public void DefaultConfiguration_EverythingIsVisitedOnce ()
     {
       var activeConfiguration = MixinConfiguration.ActiveConfiguration;
-      
+
       ValidationLogData log;
       using (MixinConfiguration.BuildNew().EnterScope())
       {

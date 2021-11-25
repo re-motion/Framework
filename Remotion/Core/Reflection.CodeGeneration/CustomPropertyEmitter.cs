@@ -54,7 +54,7 @@ namespace Remotion.Reflection.CodeGeneration
 
       _propertyType = propertyType;
       _indexParameters = indexParameters;
-    
+
       CallingConventions callingConvention = propertyKind == PropertyKind.Instance ? CallingConventions.HasThis : CallingConventions.Standard;
       _propertyBuilder = _declaringType.TypeBuilder.DefineProperty(
            name, attributes, callingConvention, propertyType, null, null, indexParameters, null, null);

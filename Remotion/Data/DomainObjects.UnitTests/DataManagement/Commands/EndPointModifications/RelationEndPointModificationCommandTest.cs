@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     private ObjectID _objectID;
     private Order _domainObject;
     private IRelationEndPointDefinition _endPointDefinition;
-    
+
     private IRelationEndPoint _endPointMock;
     private OrderTicket _oldRelatedObject;
     private OrderTicket _newRelatedObject;
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _objectID = DomainObjectIDs.Order1;
       _domainObject = _transaction.ExecuteInScope(() => Order.NewObject());
       _endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
-      
+
       _endPointMock = MockRepository.GenerateMock<IRelationEndPoint>();
       _endPointMock.Stub(mock => mock.ClientTransaction).Return(_transaction);
       _endPointMock.Stub(mock => mock.ObjectID).Return(_objectID);

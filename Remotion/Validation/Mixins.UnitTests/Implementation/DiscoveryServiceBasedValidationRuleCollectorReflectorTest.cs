@@ -72,6 +72,6 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
       //ApplyWithMixin attribute!
     }
 
-    
+
   }
 }

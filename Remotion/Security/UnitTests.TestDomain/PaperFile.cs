@@ -23,7 +23,7 @@ namespace Remotion.Security.UnitTests.TestDomain
   {
     private FileState _state;
     private string _location;
-    
+
     public PaperFile ()
     {
     }

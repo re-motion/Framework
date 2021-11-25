@@ -28,12 +28,12 @@ public class WxeFunctionStateMock: WxeFunctionState
     : base(function, enableCleanUp)
   {
   }
-  
+
   public WxeFunctionStateMock (WxeFunction function, int lifetime, bool enableCleanUp)
     : base(function, lifetime, enableCleanUp)
   {
   }
-  
+
   public WxeFunctionStateMock (
       WxeFunction function, int lifetime, bool enableCleanUp, string functionToken)
     : base(function, lifetime, enableCleanUp)

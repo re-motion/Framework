@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
       ArgumentUtility.CheckNotNull("fluentTabbedMenu", fluentTabbedMenu);
       ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
 
-      
+
       _fluentTabbedMenu = fluentTabbedMenu;
       _fluentElement = fluentElement;
     }

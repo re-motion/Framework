@@ -57,7 +57,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DuplicateAssembliesAreIgnored ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(
-          Assembly.GetExecutingAssembly(), 
+          Assembly.GetExecutingAssembly(),
           Assembly.GetExecutingAssembly());
 
       ClassContext classContext = configuration.GetContext(typeof(BaseType1));
@@ -120,7 +120,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void IgnoreForMixinConfiguration ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromTypes(
-          null, 
+          null,
           new[] { typeof(BaseType1), typeof(BT1Mixin1), typeof(MixinWithIgnoreForMixinConfigurationAttribute) });
 
       Assert.That(configuration.GetContext(typeof(BaseType1)).Mixins.ContainsKey(typeof(MixinWithIgnoreForMixinConfigurationAttribute)), Is.False);

@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     {
       if (classDefinition.StorageEntityDefinition is FilterViewDefinition)
         return ((FilterViewDefinition) classDefinition.StorageEntityDefinition).GetBaseTable();
-      
+
       if (classDefinition.StorageEntityDefinition is TableDefinition)
         return (TableDefinition) classDefinition.StorageEntityDefinition;
 

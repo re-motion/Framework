@@ -110,10 +110,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = _storagePropertyDefinition.SplitValuesForComparison(new[] { value1, value2 });
 
       var expectedTable = new ColumnValueTable(
-          new[] { _innerColumnDefinition }, 
+          new[] { _innerColumnDefinition },
           new[]
           {
-              new ColumnValueTable.Row(new[] { value1 }), 
+              new ColumnValueTable.Row(new[] { value1 }),
               new ColumnValueTable.Row(new[] { value2 })
           });
       ColumnValueTableTestHelper.CheckTable(expectedTable, result);
@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new[] { _innerColumnDefinition },
           new[]
           {
-              new ColumnValueTable.Row(new object[] { null }), 
+              new ColumnValueTable.Row(new object[] { null }),
               new ColumnValueTable.Row(new[] { value2 })
           });
       ColumnValueTableTestHelper.CheckTable(expectedTable, result);

@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
                       It.Is<ISecurityContext>(sc => TypeUtility.GetType(sc.Class, true) == securableClassType),
                       principal))
           .Returns(returnedAccessTypes.Select(accessType => AccessType.Get(accessType)).ToArray());
-      
+
       return securityProviderStub.Object;
     }
 
@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       var userProviderStub = new Mock<IPrincipalProvider>();
       userProviderStub.Setup(stub => stub.GetPrincipal()).Returns(principal);
-      
+
       return userProviderStub.Object;
     }
 

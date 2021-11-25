@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull("extensionsField", extensionsField);
-      
+
       _concreteTarget = concreteTarget;
       _extensionsField = extensionsField;
     }

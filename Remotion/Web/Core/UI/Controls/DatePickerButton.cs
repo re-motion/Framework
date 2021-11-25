@@ -55,7 +55,7 @@ namespace Remotion.Web.UI.Controls
       base.OnInit(e);
       RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
-    
+
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull("writer", writer);

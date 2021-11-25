@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       parameter2StrictMock.Replay();
 
       var dataParameterCollectionMock = MockRepository.GenerateStrictMock<IDataParameterCollection>();
-      
+
       _dbCommandStub.Stub(stub => stub.Parameters).Return(dataParameterCollectionMock);
       _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(parameter1StrictMock).Repeat.Once();
       _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(parameter2StrictMock).Repeat.Once();
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       dataParameterCollectionMock.Expect(mock => mock.Add(parameter1StrictMock)).Return(0).Repeat.Once();
       dataParameterCollectionMock.Expect(mock => mock.Add(parameter2StrictMock)).Return(1).Repeat.Once();
       dataParameterCollectionMock.Replay();
-      
+
       _sqlDialectStub.Stub(stub => stub.GetParameterName("ID")).Return("@ID");
       _sqlDialectStub.Stub(stub => stub.GetParameterName("Timestamp")).Return("@Timestamp");
 

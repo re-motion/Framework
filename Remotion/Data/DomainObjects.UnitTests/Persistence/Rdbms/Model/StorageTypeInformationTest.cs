@@ -471,7 +471,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
               "Only equivalent properties can be combined, but this property has .NET type converter type 'Remotion.Utilities.DefaultConverter', and "
               + "the given property has .NET type converter type 'Remotion.Utilities.AdvancedEnumConverter'.", "equivalentStorageTypes"));
     }
-    
+
     private class FakeStorageTypeInformation : IStorageTypeInformation
     {
       public Type StorageType

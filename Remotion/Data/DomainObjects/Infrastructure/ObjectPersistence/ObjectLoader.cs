@@ -89,18 +89,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       Assertion.IsTrue(loadedObjectData.Count == idsToBeLoadedAsCollection.Count, "Persistence strategy must return exactly as many items as requested.");
       Assertion.DebugAssert(
-          loadedObjectData.Zip(idsToBeLoadedAsCollection).All(tuple => tuple.Item1.ObjectID == tuple.Item2), 
+          loadedObjectData.Zip(idsToBeLoadedAsCollection).All(tuple => tuple.Item1.ObjectID == tuple.Item2),
           "Persistence strategy result must be in the same order as the input IDs.");
 
       _loadedObjectDataRegistrationAgent.RegisterIfRequired(loadedObjectData, throwOnNotFound);
-      
+
       return loadedObjectData;
     }
 
     public virtual ILoadedObjectData GetOrLoadRelatedObject (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
-      
+
       if (!relationEndPointID.Definition.IsVirtual)
         throw new ArgumentException("GetOrLoadRelatedObject can only be used with virtual end points.", "relationEndPointID");
 

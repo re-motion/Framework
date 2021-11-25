@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
 
       Assert.That(_mixin.Title, Is.EqualTo("Test (for municipality 13)"));
     }
-    
+
     [Test]
     public void TargetCommitting_ReplacesNullTitle ()
     {

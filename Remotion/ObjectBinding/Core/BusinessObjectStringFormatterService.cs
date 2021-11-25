@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
       ArgumentUtility.CheckNotNull("property", property);
-      
+
       if (property.IsList)
       {
         Tuple<int, string?> result = GetLineCountAndFormatString(format);
@@ -155,7 +155,7 @@ namespace Remotion.ObjectBinding
       {
         string[] formatStrings = format.Split(new char[] {'|'}, 2);
         return new Tuple<string?, string?>(
-            formatStrings[0].Substring(lineCountPrefix.Length), 
+            formatStrings[0].Substring(lineCountPrefix.Length),
             (formatStrings.Length == 2) ? formatStrings[1] : null);
       }
 

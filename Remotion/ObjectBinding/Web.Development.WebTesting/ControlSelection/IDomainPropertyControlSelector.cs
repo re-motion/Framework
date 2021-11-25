@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
         [NotNull] ControlSelectionContext context,
         [NotNull] string domainProperty,
         [CanBeNull] string? domainClass);
-    
+
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="domainProperty"/> and
     /// <paramref name="domainClass"/> exists. If the <paramref name="domainClass"/> is <see langword="null" />, only the 

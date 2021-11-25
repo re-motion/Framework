@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
       ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
-      
+
       return serviceLocator.GetInstance<IBocCustomColumnRenderer>();
     }
 
@@ -440,7 +440,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               BocCustomColumnDefinitionMode.NoControls,
               BocCustomColumnDefinitionMode.ControlInEditedRow));
     }
-    
+
     [NotNull]
     internal IComparer<BocListRow> CreateCellValueComparerInternal (BocCustomCellArguments arguments)
     {

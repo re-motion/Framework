@@ -51,7 +51,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
   /// Needs to derive from <see cref="ConsoleApplicationSettings"/>.
   /// </typeparam>
 
-  public class ConsoleApplication<TApplication, TApplicationSettings> 
+  public class ConsoleApplication<TApplication, TApplicationSettings>
       where TApplication: IApplicationRunner<TApplicationSettings>, new()
       where TApplicationSettings : ConsoleApplicationSettings, new()
   {
@@ -106,7 +106,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
       get { return _synopsis; }
     }
 
- 
+
     public int BufferWidth
     {
       get { return _bufferWidth; }
@@ -195,7 +195,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
       }
       catch (Exception e)
       {
-        _synopsis = "(An error occured while retrieving the application usage synopsis: " + e.Message + ")";  
+        _synopsis = "(An error occured while retrieving the application usage synopsis: " + e.Message + ")";
       }
     }
   }

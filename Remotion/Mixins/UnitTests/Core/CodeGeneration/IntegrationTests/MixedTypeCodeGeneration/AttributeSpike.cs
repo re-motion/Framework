@@ -125,7 +125,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       attributes = typeof(DerivedWithAttributes).GetProperty("Property").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(4));
 
-      Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(), 
+      Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(),
             new NonMultiNonInheritedAttribute(), new MultiNonInheritedAttribute(), new NonMultiInheritedAttribute() }));
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       attributes = typeof(DerivedWithAttributes).GetEvent("Event").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(4));
 
-      Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(), 
+      Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(),
             new NonMultiNonInheritedAttribute(), new MultiNonInheritedAttribute(), new NonMultiInheritedAttribute() }));
     }
   }

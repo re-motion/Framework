@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                   + "('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = Convert([t1].[ID] AS Value, Object))') in a place where SQL requires a single value."
 #endif
                   ));
-    }  
+    }
 
     [Test]
     public void Query_ReturnsCompoundID ()

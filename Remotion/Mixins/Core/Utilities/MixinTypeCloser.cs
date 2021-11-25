@@ -136,7 +136,7 @@ namespace Remotion.Mixins.Utilities
       Type? instantiation = null;
       if (IsBoundToTargetType(genericArgument))
         instantiation = _targetClass;
-        
+
       if (IsBoundToConstraint(genericArgument))
       {
         if (instantiation != null)

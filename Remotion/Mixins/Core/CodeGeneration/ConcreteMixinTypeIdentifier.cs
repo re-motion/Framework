@@ -117,9 +117,9 @@ namespace Remotion.Mixins.CodeGeneration
     public override bool Equals (object? obj)
     {
       var other = obj as ConcreteMixinTypeIdentifier;
-      return other != null 
-          && other.MixinType == MixinType 
-          && other._overriders.SetEquals(_overriders) 
+      return other != null
+          && other.MixinType == MixinType
+          && other._overriders.SetEquals(_overriders)
           && other._overridden.SetEquals(_overridden);
     }
 

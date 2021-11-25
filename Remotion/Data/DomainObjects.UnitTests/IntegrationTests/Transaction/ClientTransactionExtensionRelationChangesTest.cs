@@ -240,14 +240,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             TestableClientTransaction, oldOrderOfOrderTicket3, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null);
         oldOrderOfOrderTicket3EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null);
 
-        
+
         oldOrderOfOrderTicket3EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null);
         _extension.RelationChanged(
             TestableClientTransaction, oldOrderOfOrderTicket3, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null);
-        
+
         orderTicket3EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderTicket), "Order"), oldOrderOfOrderTicket3, _order1);
         _extension.RelationChanged(TestableClientTransaction, orderTicket3, GetEndPointDefinition(typeof(OrderTicket), "Order"), oldOrderOfOrderTicket3, _order1);
-        
+
         _orderTicket1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null);
         _extension.RelationChanged(TestableClientTransaction, _orderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null);
 
@@ -467,7 +467,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             TestableClientTransaction, oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null);
         oldOrderOfNewOrderItemEventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null);
 
-       
+
         oldOrderOfNewOrderItemEventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null);
         _extension.RelationChanged(
             TestableClientTransaction, oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null);
@@ -539,7 +539,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extension.RelationChanging(
             TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem);
         _order1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem);
-        
+
         _order1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem);
         _extension.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem);
 

@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var dataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
       dataStub.Stub(stub => stub.RequiredItemType).Return(typeof(Order));
-      
+
       var collection = new ObjectList<DomainObject>(dataStub);
 
       Assert.That(collection.RequiredItemType, Is.SameAs(typeof(Order)));
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       IList<OrderItem> list = new ObjectList<OrderItem>();
       list.Add(_orderItem1);
       Assert.That(list, Is.EqualTo(new object[] { _orderItem1 }));
-      
+
       list.Add(_orderItem2);
       Assert.That(list, Is.EqualTo(new object[] { _orderItem1, _orderItem2 }));
     }

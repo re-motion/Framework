@@ -25,6 +25,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator"/>
   public interface IBocAutoCompleteReferenceValueValidatorFactory : IBocValidatorFactory<IBocAutoCompleteReferenceValue>
   {
-     
+
   }
 }

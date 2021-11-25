@@ -290,7 +290,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     {
       ArgumentUtility.CheckNotNull("origin", origin);
       ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
-      
+
       Type? lastMixinType = null;
       foreach (Type mixinType in mixinTypes)
       {
@@ -769,7 +769,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
       Type typeDefinition = mixinType.GetGenericTypeDefinition();
 
       return MixinContextBuilders
-          .Any(mixinContextBuilder => mixinContextBuilder.MixinType.IsGenericType 
+          .Any(mixinContextBuilder => mixinContextBuilder.MixinType.IsGenericType
               && mixinContextBuilder.MixinType.GetGenericTypeDefinition() == typeDefinition);
     }
 

@@ -228,7 +228,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
       XmlElement actualRootNode = actual.CreateElement("root", "http://test");
       XmlElement elementsNode = actual.CreateElement("elements", "http://test");
-      
+
       XmlElement element1Node = actual.CreateElement("element", "http://test");
       XmlAttribute element1IDAttribute = actual.CreateAttribute("id");
       element1IDAttribute.Value = "id1";

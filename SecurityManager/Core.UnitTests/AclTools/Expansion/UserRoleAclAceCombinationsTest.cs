@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       Assert.That(Remotion.Development.UnitTesting.PrivateInvoke.GetNonPublicField(userRoleAclAceCombinations, "_accessControlListFinder"), Is.EqualTo(aclFinderMock.Object));
     }
 
-    
+
     [Test]
     public void EnumeratorTest ()
     {

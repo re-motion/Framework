@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       return new RelationEndPointID(objectID, definition);
     }
-    
+
     public static RelationEndPointID Create (ObjectID objectID, string propertyIdentifier)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
@@ -64,13 +64,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
       return CreateViaPropertyAccessorData(
-          objectID, 
-          "shortPropertyName", 
+          objectID,
+          "shortPropertyName",
           cache => cache.GetMandatoryPropertyAccessorData(declaringType, shortPropertyName));
     }
 
     public static RelationEndPointID Resolve<TDomainObject, TRelation> (
-        TDomainObject domainObject, 
+        TDomainObject domainObject,
         Expression<Func<TDomainObject, TRelation>> propertyAccessExpression)
         where TDomainObject : DomainObject
     {
@@ -92,8 +92,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     private static RelationEndPointID CreateViaPropertyAccessorData (
-        ObjectID objectID, 
-        string argumentName, 
+        ObjectID objectID,
+        string argumentName,
         Func<PropertyAccessorDataCache, PropertyAccessorData> dataGetter)
     {
       PropertyAccessorData data;
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public static IEnumerable<RelationEndPointID> GetAllRelationEndPointIDs (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
-      
+
       var endPointDefinitions = objectID.ClassDefinition.GetRelationEndPointDefinitions();
       return endPointDefinitions.Select(endPointDefinition => Create(objectID, endPointDefinition));
     }
@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       var objectID = (ObjectID) info.GetValue("ObjectID", typeof(ObjectID));
       var classDefinitionID = info.GetString("ClassID");
       var propertyName = info.GetString("PropertyName");
-      
+
       var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
       var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
 

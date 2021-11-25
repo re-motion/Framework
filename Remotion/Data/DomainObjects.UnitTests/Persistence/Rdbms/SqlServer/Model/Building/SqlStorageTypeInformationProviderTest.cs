@@ -186,24 +186,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       CheckGetStorageType_ForProperty(
           typeof(Int32Enum),
-          null, 
-          false, 
+          null,
+          false,
           false,
           typeof(Int32),
           "int",
-          DbType.Int32, 
+          DbType.Int32,
           false,
           null,
           typeof(Int32Enum),
           Is.TypeOf(typeof(AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof(Int32Enum)));
       CheckGetStorageType_ForProperty(
           typeof(Int16Enum),
-          null, 
-          false, 
+          null,
+          false,
           false,
           typeof(Int16),
           "smallint",
-          DbType.Int16, 
+          DbType.Int16,
           false,
           null,
           typeof(Int16Enum),
@@ -216,12 +216,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var maxColorIDLength = Color.Values.Green().ID.Length;
       CheckGetStorageType_ForProperty(
           typeof(Color),
-          null, 
-          false, 
+          null,
+          false,
           false,
           typeof(string),
           "varchar (" + maxColorIDLength + ")",
-          DbType.AnsiString, 
+          DbType.AnsiString,
           false,
           maxColorIDLength,
           typeof(Color),
@@ -269,12 +269,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       CheckGetStorageType_ForProperty(
           typeof(String),
-          200, 
-          false, 
+          200,
+          false,
           false,
           typeof(string),
           "nvarchar (200)",
-          DbType.String, 
+          DbType.String,
           false,
           200,
           typeof(string),
@@ -305,12 +305,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
       CheckGetStorageType_ForProperty(
           typeof(String),
-          null, 
-          false, 
+          null,
+          false,
           false,
           typeof(string),
           "nvarchar (max)",
-          DbType.String, 
+          DbType.String,
           false,
           -1,
           typeof(string),
@@ -322,12 +322,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       CheckGetStorageType_ForProperty(
           typeof(Byte[]),
-          200, 
-          false, 
+          200,
+          false,
           false,
           typeof(Byte[]),
           "varbinary (200)",
-          DbType.Binary, 
+          DbType.Binary,
           false,
           200,
           typeof(byte[]),
@@ -358,12 +358,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
       CheckGetStorageType_ForProperty(
           typeof(Byte[]),
-          null, 
-          false, 
+          null,
+          false,
           false,
           typeof(Byte[]),
           "varbinary (max)",
-          DbType.Binary, 
+          DbType.Binary,
           false,
           -1,
           typeof(byte[]),
@@ -375,12 +375,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       CheckGetStorageType_ForProperty(
           typeof(bool?),
-          null, 
-          false, 
+          null,
+          false,
           false,
           typeof(bool?),
           "bit",
-          DbType.Boolean, 
+          DbType.Boolean,
           false,
           null,
           typeof(bool?),
@@ -489,7 +489,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           typeof(string),
           Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
 
-      var storageTypeForSerializedObjectIDNotNullable = 
+      var storageTypeForSerializedObjectIDNotNullable =
           (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForSerializedObjectID(false);
       CheckStorageTypeInformation(
           storageTypeForSerializedObjectIDNotNullable,
@@ -636,7 +636,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           result,
           typeof(object),
           "nvarchar (max)",
-          DbType.String, 
+          DbType.String,
           true,
           -1,
           typeof(object),

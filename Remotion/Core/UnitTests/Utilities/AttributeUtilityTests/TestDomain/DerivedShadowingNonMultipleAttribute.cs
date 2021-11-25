@@ -21,6 +21,6 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
   [InheritedNotMultiple ("Derived")]
   public class DerivedShadowingNonMultipleAttribute : BaseWithInheritedNonMultipleAttribute
   {
-     
+
   }
 }

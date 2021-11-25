@@ -184,7 +184,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       };
       var helper = new WxeDemandMethodPermissionAttributeHelper(typeof(TestFunctionWithHandleParameter), attribute);
       var function = new TestFunctionWithHandleParameter { HandleWithSecurableObject = new Handle<SecurableObject>(_securableObject) };
-      
+
       var result = helper.GetSecurableObject(function);
 
       Assert.That(result, Is.SameAs(_securableObject));
@@ -201,7 +201,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       var function = new TestFunctionWithHandleParameter { HandleWithSecurableObject = new Handle<SecurableObject>(null) };
 
       Assert.That(
-          () => helper.GetSecurableObject(function), 
+          () => helper.GetSecurableObject(function),
           Throws.TypeOf<WxeException>().With.Message.EqualTo(
               "The parameter 'HandleWithSecurableObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to WxeFunction "
               + "'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithHandleParameter' is null."));

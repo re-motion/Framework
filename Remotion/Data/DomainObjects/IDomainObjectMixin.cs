@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects
     /// Called when the mixin's target domain object has been newly created, after the constructors have finished execution.
     /// </summary>
     void OnDomainObjectCreated ();
-    
+
     /// <summary>
     /// Called when the mixin's target domain object has been loaded.
     /// </summary>

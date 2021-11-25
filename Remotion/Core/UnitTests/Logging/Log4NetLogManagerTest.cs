@@ -73,7 +73,7 @@ namespace Remotion.UnitTests.Logging
       var log = _logManager.GetLogger(typeof(SampleType));
 
       Assert.IsInstanceOf(typeof(Log4NetLog), log);
-     
+
       var log4NetLog = (Log4NetLog) log;
       Assert.That(log4NetLog.Logger.Name, Is.EqualTo("Remotion.UnitTests.Logging.SampleType"));
     }
@@ -124,7 +124,7 @@ namespace Remotion.UnitTests.Logging
     public void InitializeConsole_WithThreshold_SetsDefaultThreshold ()
     {
       _logManager.InitializeConsole(LogLevel.Warn);
-      
+
       var log = _logManager.GetLogger(typeof(SampleType));
       log.Log(LogLevel.Debug, "Test Debug");
       log.Log(LogLevel.Info, "Test Info");

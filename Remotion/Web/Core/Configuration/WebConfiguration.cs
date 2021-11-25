@@ -38,7 +38,7 @@ public class WebConfiguration: IConfigurationSectionHandler
   /// <remarks> <c>http://www.re-motion.org/web/configuration</c> </remarks>
   public const string SchemaUri = "http://www.re-motion.org/web/configuration";
 
-  private static readonly DoubleCheckedLockingContainer<WebConfiguration> s_current = 
+  private static readonly DoubleCheckedLockingContainer<WebConfiguration> s_current =
       new DoubleCheckedLockingContainer<WebConfiguration>(CreateConfig);
 
   /// <summary> Gets the <see cref="WebConfiguration"/>. </summary>

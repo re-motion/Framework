@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };
@@ -238,7 +238,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };
@@ -255,7 +255,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
                          SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };

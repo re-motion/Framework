@@ -34,7 +34,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       propertyEmitter.ImplementWithBackingField();
 
       var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
-      
+
       LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof(string));
       PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
       Assert.That(propertyWithSelfOwner.Type, Is.EqualTo(typeof(string)));

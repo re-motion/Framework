@@ -163,7 +163,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     {
       var instance = new DummyTest5();
       var testMethod = typeof(DummyTest5).GetMethod("TestExpectedExceptionSucceeded");
-      
+
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       testResult.EnsureNotFailed();
     }
@@ -183,7 +183,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     {
       var instance = new DummyTest5();
       var testMethod = typeof(DummyTest5).GetMethod("TestSucceeded");
-      
+
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       Assert.That(testResult.Status, Is.EqualTo(SandboxTestStatus.Succeeded));
     }
@@ -197,6 +197,6 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
       var testResult = _sandboxTestRunner.RunTestMethod(instance, testMethod, null, null);
       Assert.That(testResult.Status, Is.EqualTo(SandboxTestStatus.Failed));
     }
-  
+
   }
 }

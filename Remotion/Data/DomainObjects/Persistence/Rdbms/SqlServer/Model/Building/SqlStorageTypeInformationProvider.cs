@@ -66,12 +66,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     protected virtual StorageTypeInformation GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
     {
       return new StorageTypeInformation(
-          typeof(string), 
-          "varchar (255)", 
-          DbType.AnsiString, 
-          isStorageTypeNullable, 
+          typeof(string),
+          "varchar (255)",
+          DbType.AnsiString,
+          isStorageTypeNullable,
           255,
-          typeof(string), 
+          typeof(string),
           new DefaultConverter(typeof(string)));
     }
 

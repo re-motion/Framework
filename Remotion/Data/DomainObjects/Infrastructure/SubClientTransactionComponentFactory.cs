@@ -63,8 +63,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     protected SubClientTransactionComponentFactory (
         ClientTransaction parentTransaction,
         IInvalidDomainObjectManager parentInvalidDomainObjectManager,
-        IEnlistedDomainObjectManager parentEnlistedDomainObjectManager, 
-        ITransactionHierarchyManager parentHierarchyManager, 
+        IEnlistedDomainObjectManager parentEnlistedDomainObjectManager,
+        ITransactionHierarchyManager parentHierarchyManager,
         IClientTransactionEventSink parentEventSink)
     {
       ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction);

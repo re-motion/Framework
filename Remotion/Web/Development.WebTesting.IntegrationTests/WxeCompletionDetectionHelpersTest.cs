@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WxeCompletionDetectionHelpersTest : IntegrationTest
   {
     private DiagnosticInformationCollectioningRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
       var rootScope = home.Context.Window.GetRootScope();
       var completionDetection = new WxePostBackCompletionDetectionStrategy(1);
- 
+
       try
       {
         completionDetection.WaitForCompletion(home.Context, 2);
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       catch (WebTestException)
       {
       }
- 
+
       Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
       Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
       var rootScope = home.Context.Window.GetRootScope();
       var completionDetection = new WxeResetCompletionDetectionStrategy();
- 
+
       try
       {
         completionDetection.WaitForCompletion(home.Context, "wxeFunctionToken");
@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       catch (WebTestException)
       {
       }
- 
+
       Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
       Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }

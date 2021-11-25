@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     public IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject)
-    { 
+    {
       return new NullEndPointModificationCommand(this);
     }
 

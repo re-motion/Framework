@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       return GetNodeInHierarchy().WithItemID(itemID);
     }
-    
+
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
     {

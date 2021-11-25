@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
         InitializeNew();
     }
-  
+
     private void InitializeNew ()
     {
       CreatedBy = "UnitTests";

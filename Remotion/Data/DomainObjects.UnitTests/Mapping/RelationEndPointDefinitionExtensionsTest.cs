@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       endPointDefinition.Stub(stub => stub.RelationDefinition).Return(null);
 
       Assert.That(
-          () => endPointDefinition.GetOppositeEndPointDefinition(), 
+          () => endPointDefinition.GetOppositeEndPointDefinition(),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The given IRelationEndPointDefinition object must be part of a RelationDefinition.", "relationEndPointDefinition"));
     }

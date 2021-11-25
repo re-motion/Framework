@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     private IScriptElement _fakeElement1;
     private IScriptElement _fakeElement2;
     private IScriptElement _fakeElement3;
-    
+
     public override void SetUp ()
     {
       base.SetUp();
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       _tableScriptfactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition1)).Return(_fakeElement1);
       _tableScriptfactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition1)).Return(_fakeElement2);
-      
+
       _builder.AddEntityDefinition(_tableDefinition1);
 
       var createScriptResult = _builder.GetCreateScript();
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _tableScriptfactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition2)).Return(_fakeElement2);
       _tableScriptfactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition3)).Return(_fakeElement3);
       _tableScriptfactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition3)).Return(_fakeElement1);
-      
+
       _builder.AddEntityDefinition(_tableDefinition1);
       _builder.AddEntityDefinition(_tableDefinition2);
       _builder.AddEntityDefinition(_tableDefinition3);

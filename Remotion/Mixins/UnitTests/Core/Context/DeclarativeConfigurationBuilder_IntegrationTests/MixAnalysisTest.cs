@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void Origin ()
     {
       ClassContext context = MixinConfiguration.ActiveConfiguration.GetContext(typeof(TargetClassForGlobalMix));
-      
+
       var expectedOrigin = new MixinContextOrigin("MixAttribute", typeof(TargetClassForGlobalMix).Assembly, "assembly");
       Assert.That(context.Mixins[typeof(MixinForGlobalMix)].Origin, Is.EqualTo(expectedOrigin));
     }

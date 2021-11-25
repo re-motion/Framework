@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Validation
         Assertion.IsFalse(item.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
         var validator = _validatorProvider.GetValidator(item.DomainObject.GetPublicDomainObjectType());
-        
+
         var validationResult = validator.Validate(item.DomainObject);
 
         if (!validationResult.IsValid)

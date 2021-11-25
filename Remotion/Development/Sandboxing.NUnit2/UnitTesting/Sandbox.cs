@@ -82,7 +82,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
       if (publicKey == null || publicKey.Length == 0)
       {
         var message = string.Format(
-            "The assembly '{0}' does not have a public key. Only assemblies with a public key can be fully trusted.", 
+            "The assembly '{0}' does not have a public key. Only assemblies with a public key can be fully trusted.",
             assemblyName.Name);
         throw new InvalidOperationException(message);
       }

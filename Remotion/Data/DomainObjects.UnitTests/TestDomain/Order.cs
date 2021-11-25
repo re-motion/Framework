@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       [LinqPropertyRedirection (typeof(Order), "RedirectedOrderNumber")]
       get { return RedirectedOrderNumber; }
     }
-    
+
     public abstract DateTime DeliveryDate { get; set; }
 
     [Mandatory]

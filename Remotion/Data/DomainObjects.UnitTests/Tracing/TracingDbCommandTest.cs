@@ -315,7 +315,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       IDataReader readerStub = MockRepository.GenerateStub<IDataReader>();
       _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
       _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
-      
+
       using (_mockRepository.Ordered())
       {
         _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
@@ -367,7 +367,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       IDataReader readerStub = MockRepository.GenerateStub<IDataReader>();
       _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
       _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
-      
+
       using (_mockRepository.Ordered())
       {
         _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
@@ -418,7 +418,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
       _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
-      
+
       using (_mockRepository.Ordered())
       {
         _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());

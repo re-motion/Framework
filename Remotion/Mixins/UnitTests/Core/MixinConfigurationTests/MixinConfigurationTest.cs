@@ -95,7 +95,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     public void GetMasterConfiguration_Default ()
     {
       var oldMasterConfiguration = MixinConfiguration.GetMasterConfiguration();
-      
+
       MixinConfiguration.SetMasterConfiguration(null);
       var newMasterConfiguration = MixinConfiguration.GetMasterConfiguration();
 

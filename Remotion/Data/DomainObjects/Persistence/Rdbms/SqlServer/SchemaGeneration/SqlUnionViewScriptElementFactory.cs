@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
 
       var createSelectStringBuilder = new StringBuilder();
-      
+
       foreach (var tableDefinition in unionViewDefinition.GetAllTables())
       {
         if (createSelectStringBuilder.Length > 0)

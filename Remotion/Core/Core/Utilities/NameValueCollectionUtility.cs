@@ -40,7 +40,7 @@ namespace Remotion.Utilities
     public static void Append (NameValueCollection first, NameValueCollection? second)
     {
       ArgumentUtility.CheckNotNull("first", first);
-      
+
       if (second != null)
       {
         for (int i = 0; i < second.Count; i++)

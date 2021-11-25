@@ -24,13 +24,13 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Resources
   [TestFixture]
   public class ResourceUtilityTest
   {
-    
+
     [Test]
     public void GetResourceStream ()
     {
-      var resourceStream = ResourceUtility.GetResourceStream(Assembly.GetExecutingAssembly(), 
+      var resourceStream = ResourceUtility.GetResourceStream(Assembly.GetExecutingAssembly(),
           "Remotion.Development.UnitTests.Core.UnitTesting.Resources.TestEmbeddedResource.txt");
-      
+
       Assert.That(resourceStream.Length, Is.EqualTo(11));
     }
 

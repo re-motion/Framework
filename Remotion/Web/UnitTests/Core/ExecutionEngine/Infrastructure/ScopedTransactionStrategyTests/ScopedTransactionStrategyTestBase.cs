@@ -49,7 +49,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       _context = wxeContextFactory.CreateContext(new TestFunction());
 
       _executionListenerStub = new Mock<IWxeFunctionExecutionListener>();
-      
+
       _transactionFactoryMock = new Mock<ITransactionFactory>(MockBehavior.Strict);
       _transactionMock = new Mock<ITransaction>(MockBehavior.Strict);
       _transactionFactoryMock.Setup(stub => stub.Create()).Returns(_transactionMock.Object);
@@ -84,7 +84,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       get { return _transactionMock; }
     }
-    
+
     protected Mock<ITransactionScope> ScopeMock
     {
       get { return _scopeMock; }

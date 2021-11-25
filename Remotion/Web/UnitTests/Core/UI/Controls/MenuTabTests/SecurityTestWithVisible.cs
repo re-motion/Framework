@@ -162,7 +162,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
       mainMenuTab.Command.Type = CommandType.None;
       mainMenuTab.Command = null;
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
-      
+
       return mainMenuTab;
     }
   }

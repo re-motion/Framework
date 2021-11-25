@@ -123,8 +123,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Suppression
 
       rule.RemoveAffectedMixins(dictionary);
 
-      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { 
-          typeof(GenericMixinWithVirtualMethod<object>), 
+      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] {
+          typeof(GenericMixinWithVirtualMethod<object>),
           typeof(DerivedGenericMixin<object>) }));
     }
 

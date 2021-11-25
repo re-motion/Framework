@@ -49,13 +49,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       _constraint1 = new ForeignKeyConstraintDefinition("FK1", _table1, new[] { _column1 }, new[] { _column2 });
       _constraint2 = new ForeignKeyConstraintDefinition("FK2", _table2, new[] { _column1, _column2 }, new[] { _column2, _column1 });
     }
-    
+
     [Test]
     public void GetCreateElement_DefaultSchema ()
     {
       var result = _factory.GetCreateElement(_constraint1, _table1);
 
-      var expectedResult = 
+      var expectedResult =
         "ALTER TABLE [dbo].[TableName1] ADD\r\n"
        +"  CONSTRAINT [FK1] FOREIGN KEY ([Column1]) REFERENCES [dbo].[TableName1] ([Column2])";
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var result = _factory.GetDropElement(_constraint2, _table2);
 
-      var expectedResult = 
+      var expectedResult =
         "IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' "
         +"AND fk.name = 'FK2' AND schema_name (t.schema_id) = 'SchemaName' AND t.name = 'TableName2')\r\n"
         +"  ALTER TABLE [SchemaName].[TableName2] DROP CONSTRAINT FK2";

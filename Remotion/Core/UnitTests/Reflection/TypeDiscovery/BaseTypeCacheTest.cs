@@ -163,7 +163,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     {
       var expected = new[]
                      {
-                         typeof(OpenGenericBase<>), 
+                         typeof(OpenGenericBase<>),
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),
@@ -174,7 +174,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
 
       Assert.That(baseTypeCache.GetTypes(typeof(OpenGenericBase<>)), Is.EquivalentTo(expected));
     }
-    
+
     [Test]
     public void GetTypes_ForOpenGenericDerivedClass ()
     {
@@ -197,7 +197,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       var expected = new[]
                      {
                          typeof(NonGenericBase),
-                         typeof(OpenGenericBase<>), 
+                         typeof(OpenGenericBase<>),
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),

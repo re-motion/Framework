@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Definitions
     private readonly UniqueDefinitionCollection<Type, MixinDependencyDefinition> _mixinDependencies =
         new UniqueDefinitionCollection<Type, MixinDependencyDefinition>(d => d.RequiredType.Type);
 
-    private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductions = 
+    private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductions =
         new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
     private readonly MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition> _nonAttributeIntroductions =
         new MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition>(a => a.AttributeType);
@@ -50,7 +50,7 @@ namespace Remotion.Mixins.Definitions
     private readonly bool _acceptsAlphabeticOrdering;
 
     private ConcreteMixinTypeIdentifier? _concreteTypeIdentifier;
-    
+
     public MixinDefinition (MixinKind mixinKind, Type type, TargetClassDefinition targetClass, bool acceptsAlphabeticOrdering)
         : base(type)
     {
@@ -140,7 +140,7 @@ namespace Remotion.Mixins.Definitions
 
       _interfaceIntroductions.Accept(visitor);
       _nonInterfaceIntroductions.Accept(visitor);
-      
+
       AttributeIntroductions.Accept(visitor);
       NonAttributeIntroductions.Accept(visitor);
       SuppressedAttributeIntroductions.Accept(visitor);

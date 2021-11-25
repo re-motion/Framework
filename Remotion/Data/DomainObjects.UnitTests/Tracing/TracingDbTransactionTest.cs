@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
         _innerTransactionMock.Expect(mock => mock.Dispose());
         _extensionMock.Expect(mock => mock.TransactionDisposed(_connectionID));
         _innerTransactionMock.Expect(mock => mock.Commit());
-        
+
       }
       _mockRepository.ReplayAll();
 

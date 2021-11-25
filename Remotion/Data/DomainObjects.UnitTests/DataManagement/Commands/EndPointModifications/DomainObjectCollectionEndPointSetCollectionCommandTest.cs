@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _collectionManagerMock = _mockRepository.StrictMock<IDomainObjectCollectionEndPointCollectionManager>();
 
       _command = new DomainObjectCollectionEndPointSetCollectionCommand(
-          CollectionEndPoint, 
+          CollectionEndPoint,
           _newCollection,
           _modifiedCollectionData,
           _collectionManagerMock,
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
           .Return(new DomainObjectCollectionData(new[] { _order1, _order3 }))
           .WhenCalled(mi => Assert.That(_modifiedCollectionData, Is.EqualTo(new[] { _order1, _order2 })));
       _mockRepository.ReplayAll();
-      
+
       _command.Perform();
 
       _mockRepository.VerifyAll();

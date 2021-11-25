@@ -165,7 +165,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     {
       LoadAndSaveValue("DateTime", new DateTime(2000, 1, 1, 1, 1, 0), new DateTime(2000, 1, 2, 1, 1, 0));
     }
-    
+
     private void LoadAndSaveValue<T> (string propertyidentifier, T initialValue, T newValue, string newValueAsString = null)
     {
       _businessObject.SetProperty(propertyidentifier, initialValue);

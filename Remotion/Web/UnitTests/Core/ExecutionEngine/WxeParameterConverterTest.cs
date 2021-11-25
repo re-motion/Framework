@@ -193,7 +193,7 @@ public class WxeParameterConverterTest
     Assert.That(converter.ConvertVarRefToString(varRef, _callerParameters), Is.Null);
   }
 
-  
+
   [Test]
   public void CheckForRequiredOutParameter ()
   {

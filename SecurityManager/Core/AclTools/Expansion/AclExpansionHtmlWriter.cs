@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       _implementation = implementation;
       _settings = settings;
     }
-   
+
 
     public AclExpansionHtmlWriterImplementation Implementation
     {
@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     public void WriteAclExpansion (List<AclExpansionEntry> aclExpansion)
     {
       ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
-    
+
       var aclExpansionTree = new AclExpansionTree(aclExpansion);
 
       Implementation.WritePageStart(AclToolsExpansion.PageTitleSingleFile); // re-motion ACL Expansion
@@ -104,7 +104,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     private void WriteTableBody_ProcessUser (AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> userNode)
     {
       Implementation.WriteTableDataWithRowCount(userNode.Key.DisplayName, userNode.NumberLeafNodes);
-  
+
       foreach (var roleNode in userNode.Children)
       {
         WriteTableBody_ProcessRole(roleNode);
@@ -114,14 +114,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     private void WriteTableBody_ProcessRole (AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> roleNode)
     {
       Implementation.WriteTableDataForRole(roleNode.Key, roleNode.NumberLeafNodes);
- 
+
       foreach (var classNode in roleNode.Children)
       {
         WriteTableBody_ProcessClass(classNode);
       }
     }
 
-    public virtual void WriteTableBody_ProcessClass (AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, 
+    public virtual void WriteTableBody_ProcessClass (AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry,
       AclExpansionEntry>> classNode)
     {
       if (classNode.Key != null)

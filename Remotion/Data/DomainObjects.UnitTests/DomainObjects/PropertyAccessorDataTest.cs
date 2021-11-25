@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyType ()
     {
-      Assert.AreEqual(typeof(string), CreateAccessorData(typeof(IndustrialSector), "Name").PropertyType, 
+      Assert.AreEqual(typeof(string), CreateAccessorData(typeof(IndustrialSector), "Name").PropertyType,
           "Property value type");
 
       Assert.AreEqual(typeof(ObjectList<Company>), CreateAccessorData(typeof(IndustrialSector), "Companies").PropertyType,

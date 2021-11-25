@@ -31,7 +31,7 @@ namespace Remotion.Development.UnitTesting
     {
       return new AssemblyCompiler(sourceDirectory, referencedAssemblies);
     }
-    
+
     private readonly string _sourceDirectory;
     private CompilerResults? _results;
     private readonly CompilerParameters _compilerParameters;

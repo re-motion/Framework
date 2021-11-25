@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     [StorageClassNone]
     [Mandatory]
     public virtual ObjectList<TestDomainObject> DomainObjectCollectionProperty { get; set; }
- 
+
     [StorageClassNone]
     [Mandatory]
     public virtual IObjectList<TestDomainObject> VirtualCollectionProperty { get; set; }

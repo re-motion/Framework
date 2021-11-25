@@ -45,14 +45,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(PropertyInfo);
       var propertyFinder = new NameBasedPropertyFinder(
-          BidirectionalRelationAttribute.OppositeProperty, 
-          type, 
-          true, 
-          true, 
-          NameResolver, 
+          BidirectionalRelationAttribute.OppositeProperty,
+          type,
+          true,
+          true,
+          NameResolver,
           new PersistentMixinFinder(type, true),
           PropertyMetadataProvider);
-      
+
       return propertyFinder.FindPropertyInfos().LastOrDefault();
     }
   }

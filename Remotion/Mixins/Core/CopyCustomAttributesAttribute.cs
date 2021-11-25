@@ -31,7 +31,7 @@ namespace Remotion.Mixins
   {
     private readonly Type _attributeSourceType;
     private readonly string? _attributeSourceMemberName;
-    
+
     private Type[] _copiedAttributeTypes;
 
     // For CLS compatibility...

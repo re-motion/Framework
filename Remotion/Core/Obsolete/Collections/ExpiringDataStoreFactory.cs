@@ -41,7 +41,7 @@ namespace Remotion.Collections
     [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
-        IEqualityComparer<TKey> comparer) 
+        IEqualityComparer<TKey> comparer)
         where TValue: class
     {
       throw new NotImplementedException();

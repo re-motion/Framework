@@ -56,7 +56,7 @@ namespace Remotion.Validation.RuleCollectors
 
       CollectorType = collectorType;
       ValidatedType = TypeAdapter.Create(typeof(TValidatedType));
-      IsRemovable = false; 
+      IsRemovable = false;
     }
 
     IValidationRule IAddingObjectValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)

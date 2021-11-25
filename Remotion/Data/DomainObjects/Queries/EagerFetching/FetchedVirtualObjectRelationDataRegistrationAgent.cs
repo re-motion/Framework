@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       if (relationEndPointDefinition.Cardinality != CardinalityType.One || !relationEndPointDefinition.IsVirtual)
       {
         throw new ArgumentException(
-            "Only virtual object-valued relation end-points can be handled by this registration agent.", 
+            "Only virtual object-valued relation end-points can be handled by this registration agent.",
             "relationEndPointDefinition");
       }
 

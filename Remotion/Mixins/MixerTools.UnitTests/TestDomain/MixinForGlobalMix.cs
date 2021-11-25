@@ -20,6 +20,6 @@ namespace Remotion.Mixins.MixerTools.UnitTests.TestDomain
 {
   public class MixinForGlobalMix
   {
-    
+
   }
 }

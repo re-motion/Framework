@@ -23,7 +23,7 @@ using Remotion.Reflection.CodeGeneration;
 namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 {
   public class MethodWrapperEmitterTestBase
-  {    
+  {
     private static int s_counter;
 
     private bool _hasBeenBuilt;

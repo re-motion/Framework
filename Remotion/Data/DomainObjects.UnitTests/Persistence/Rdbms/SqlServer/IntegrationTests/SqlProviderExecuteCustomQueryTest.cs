@@ -66,10 +66,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           qrr =>
           new object[]
           {
-              qrr.GetConvertedValue<string>(0), 
-              qrr.GetConvertedValue<Int16>(1), 
+              qrr.GetConvertedValue<string>(0),
+              qrr.GetConvertedValue<Int16>(1),
               qrr.GetConvertedValue<bool>(2),
-              qrr.GetConvertedValue<ClassWithAllDataTypes.EnumType>(3), 
+              qrr.GetConvertedValue<ClassWithAllDataTypes.EnumType>(3),
               qrr.GetConvertedValue<Color>(4)
           }).ToArray();
 

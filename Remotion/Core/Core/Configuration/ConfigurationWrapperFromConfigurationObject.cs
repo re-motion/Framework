@@ -36,7 +36,7 @@ namespace Remotion.Configuration
       ArgumentUtility.CheckNotNull("configuration", configuration);
 
       _configuration = configuration;
-      
+
       MethodInfo getRuntimeObject = configuration.AppSettings.GetType().GetMethod(
         "GetRuntimeObject",
         BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.ExactBinding)!;
@@ -61,7 +61,7 @@ namespace Remotion.Configuration
     public override string? GetAppSetting (string name)
     {
        ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      
+
       return _appSettings[name];
     }
   }

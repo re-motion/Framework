@@ -299,7 +299,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-      
+
       for (int i = 0; i < InnerList.Count; i++)
       {
         IControlItem controlItem = (IControlItem) InnerList[i]!;

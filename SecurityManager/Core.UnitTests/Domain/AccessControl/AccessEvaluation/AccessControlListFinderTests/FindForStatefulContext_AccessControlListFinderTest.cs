@@ -108,7 +108,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
                     + "for the property 'State' of the securable class 'Remotion.SecurityManager.UnitTests.TestDomain.Order, Remotion.SecurityManager.UnitTests' "
                     + "or its base classes."));
     }
-    
+
     [Test]
     public void Find_WithUnknownStatePropertyInContext_ReturnsNull ()
     {

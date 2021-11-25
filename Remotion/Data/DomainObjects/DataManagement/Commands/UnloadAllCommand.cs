@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private List<DataContainer> _unloadedDataContainers = new List<DataContainer>();
 
     public UnloadAllCommand (
-        IRelationEndPointManager relationEndPointManager, 
-        DataContainerMap dataContainerMap, 
+        IRelationEndPointManager relationEndPointManager,
+        DataContainerMap dataContainerMap,
         IInvalidDomainObjectManager invalidDomainObjectManager,
         IClientTransactionEventSink transactionEventSink)
     {

@@ -65,10 +65,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(ClientTransaction.Current, instance));
       var deserializedInstance = deserializedData.Item2;
-      
+
       Assert.That(deserializedInstance.ID, Is.EqualTo(instance.ID));
       Assert.That(deserializedInstance.RootTransaction, Is.SameAs(deserializedData.Item1));
-      
+
       using (deserializedData.Item1.EnterNonDiscardingScope())
       {
         Assert.That(deserializedInstance, Is.Not.SameAs(instance));
@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That(
           () => UnwrapTargetInvocationExceptions(() => Serializer.SerializeAndDeserialize(domainObject)),
           Throws.InvalidOperationException.With.Message.EqualTo(
-              "The DomainObject constructor may only be called via ClientTransaction.NewObject. " 
+              "The DomainObject constructor may only be called via ClientTransaction.NewObject. "
               + "If this exception occurs during a base call of a deserialization constructor, adjust the base call to call the DomainObject's "
               + "deserialization constructor instead."));
     }

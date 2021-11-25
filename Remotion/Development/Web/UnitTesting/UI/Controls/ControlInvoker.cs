@@ -28,7 +28,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls
     // static members and constants
 
     // member fields
-  
+
     private Control _control;
 
     // construction and disposing

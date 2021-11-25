@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     private IDbCommand _commandStub;
     private ISqlDialect _sqlDialectStub;
     private IDbDataParameter _parameterStub;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       _objectValue1 = "<Test1";
       _objectValue2 = 689;
       _objectValue3 = true;
-      
+
       _specification = new SqlXmlSetComparedColumnSpecification(_columnDefinition, new[] { _objectValue1, _objectValue2, _objectValue3 });
 
       _statement = new StringBuilder();
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
 
       _commandStub = MockRepository.GenerateStub<IDbCommand>();
       _commandStub.Stub(stub => stub.Parameters).Return(_parametersCollectionMock);
-      
+
       _parameterStub = MockRepository.GenerateStub<IDbDataParameter>();
       _commandStub.Stub(stub => stub.CreateParameter()).Return(_parameterStub);
 
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     {
       _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column")).Return("[delimited Column]");
       _sqlDialectStub.Stub(stub => stub.GetParameterName("Column")).Return("pColumn");
-      
+
       _specification.AppendComparisons(_statement, _commandStub, _sqlDialectStub);
 
       Assert.That(_statement.ToString(), Is.EqualTo("[delimited Column] IN (SELECT T.c.value('.', 'varchar(100)') FROM pColumn.nodes('/L/I') T(c))"));

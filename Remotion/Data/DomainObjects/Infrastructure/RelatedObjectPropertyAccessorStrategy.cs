@@ -101,9 +101,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (newRelatedObject != null && transaction.RootTransaction != newRelatedObject.RootTransaction)
       {
         var formattedMessage = String.Format(
-            "Property '{1}' of DomainObject '{2}' cannot be set to DomainObject '{0}'.", 
-            newRelatedObject.ID, 
-            endPoint.Definition.PropertyName, 
+            "Property '{1}' of DomainObject '{2}' cannot be set to DomainObject '{0}'.",
+            newRelatedObject.ID,
+            endPoint.Definition.PropertyName,
             endPoint.ObjectID);
         throw new ClientTransactionsDifferException(formattedMessage + " The objects do not belong to the same ClientTransaction.");
       }

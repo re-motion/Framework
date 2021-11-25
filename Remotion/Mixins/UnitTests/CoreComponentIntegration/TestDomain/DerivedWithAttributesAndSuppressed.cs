@@ -23,6 +23,6 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
   [SuppressAttributes(typeof(BaseInheritedAttribute))]
   public class DerivedWithAttributesAndSuppressed : BaseWithAttributesForSuppressed
   {
-    
+
   }
 }
