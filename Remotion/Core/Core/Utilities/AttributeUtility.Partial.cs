@@ -60,7 +60,7 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull("element", element);
       CheckAttributeType(typeof(T), "T");
-      
+
       return (T?) (object?) GetCustomAttribute(element, typeof(T), inherit);
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull("element", element);
       CheckAttributeType(typeof(T), "T");
-      
+
       return (T[])GetCustomAttributes(element, typeof(T), inherit);
     }
 

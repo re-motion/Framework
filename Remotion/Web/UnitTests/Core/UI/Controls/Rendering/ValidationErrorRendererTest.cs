@@ -187,7 +187,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
       var document = _html.GetResultDocument();
       var span = _html.GetAssertedChildElement(document, "span", 0);
 
-      
+
       _html.AssertAttribute(span, "id", "ValidationErrorID");
       _html.AssertAttribute(span, "hidden", "hidden");
       Assert.That(span.InnerXml, Is.EqualTo("ValidationError1<br />ValidationError2<br />"));

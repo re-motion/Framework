@@ -373,7 +373,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             newOrder2,
             null);
         newCustomer1OrdersEventReceiver.Removed(newCustomer1Orders, newOrder2);
-        
+
         newOrder2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "Customer"), newCustomer1, null);
         extension.RelationChanged(
             TestableClientTransaction,
@@ -580,7 +580,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             Arg.Is(GetEndPointDefinition(typeof(OrderTicket), "Order")),
             Arg.Is((DomainObject) null),
             Arg.Is(newOrder1));
-        
+
         extension.RelationChanging(
             Arg.Is(ClientTransactionScope.CurrentTransaction),
             Arg.Is(newOrder1),
@@ -607,7 +607,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             Arg.Is(GetEndPointDefinition(typeof(Order), "OrderTicket")),
             Arg.Is((DomainObject) null),
             Arg<OrderTicket>.Is.TypeOf);
-        
+
         extension.RelationChanged(
             Arg.Is(ClientTransactionScope.CurrentTransaction),
             Arg<OrderTicket>.Is.TypeOf,
@@ -926,7 +926,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
           extension.Committing(
               Arg.Is(ClientTransactionScope.CurrentTransaction),
               Arg<ReadOnlyCollection<DomainObject>>.Matches(
-                  c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })), 
+                  c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })),
               Arg<ICommittingEventRegistrar>.Is.Anything);
 
           using (mockRepository.Unordered())
@@ -977,7 +977,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             LastCall.Constraints(Mocks_Is.Same(newOrderTicket1), Mocks_Is.NotNull());
           }
           extension.Committed(
-              Arg.Is(ClientTransactionScope.CurrentTransaction), 
+              Arg.Is(ClientTransactionScope.CurrentTransaction),
               Arg<ReadOnlyCollection<DomainObject>>.Matches(
                   c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })));
         }

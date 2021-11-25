@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected override void AddAdditionalAttributes (RenderingContext<IBocList> renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      
+
       base.AddAdditionalAttributes(renderingContext);
 
       renderingContext.Writer.AddAttribute("role", "group");

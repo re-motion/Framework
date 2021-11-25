@@ -134,9 +134,9 @@ namespace Remotion.Mixins.Context
       if (other == null)
         return false;
 
-      if (other._cachedHashCode != _cachedHashCode 
-          || other.Type != Type 
-          || other._mixins.Count != _mixins.Count 
+      if (other._cachedHashCode != _cachedHashCode
+          || other.Type != Type
+          || other._mixins.Count != _mixins.Count
           || other._composedInterfaces.Count != _composedInterfaces.Count)
         return false;
 
@@ -183,7 +183,7 @@ namespace Remotion.Mixins.Context
           "ClassContext: '{0}'{1}  Mixins: {2}{1}  ComposedInterfaces: ({3})",
           Type,
           Environment.NewLine,
-          string.Join("", Mixins.Select(mc => Environment.NewLine + "    " + mc)), 
+          string.Join("", Mixins.Select(mc => Environment.NewLine + "    " + mc)),
           string.Join(",", ComposedInterfaces.Select(ifc => ifc.Name)));
     }
 

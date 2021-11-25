@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
 
       computer.Employee = null;
-      
+
       SetDatabaseModifyable();
       TestableClientTransaction.Commit();
 

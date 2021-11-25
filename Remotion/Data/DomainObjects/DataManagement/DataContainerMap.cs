@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     public DataContainerMap (IClientTransactionEventSink transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      
+
       _transactionEventSink = transactionEventSink;
       _dataContainers = new DataContainerCollection();
     }

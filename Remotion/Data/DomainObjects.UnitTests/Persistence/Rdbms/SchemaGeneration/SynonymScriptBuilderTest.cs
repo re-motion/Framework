@@ -58,9 +58,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _emptyViewElementFactoryStub = MockRepository.GenerateStub<ISynonymScriptElementFactory<EmptyViewDefinition>>();
 
       _builder = new SynonymScriptBuilder(
-          _tableViewElementFactoryStub, 
-          _unionViewElementFactoryStub, 
-          _filterViewElementFactoryStub, 
+          _tableViewElementFactoryStub,
+          _unionViewElementFactoryStub,
+          _filterViewElementFactoryStub,
           _emptyViewElementFactoryStub,
           new SqlCommentScriptElementFactory());
 

@@ -217,7 +217,7 @@ namespace Remotion.UnitTests.Logging
       Assert.That(events.Length, Is.EqualTo(1));
       Assert.That(events[0].Level, Is.EqualTo(Level.Info));
       Assert.That(events[0].MessageObject.ToString(), Is.EqualTo(exception.ToString()));
-    } 
+    }
 
     [Test]
     public void Test_TraceData_WithArray ()

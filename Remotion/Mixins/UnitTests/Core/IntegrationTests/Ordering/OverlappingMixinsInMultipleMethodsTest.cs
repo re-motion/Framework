@@ -39,7 +39,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     {
       CheckOrderingException(
           () => BuildMixedInstance<C>(typeof(MixinA), typeof(MixinB), typeof(MixinC)),
-          typeof(C), 
+          typeof(C),
           Tuple.Create(new[] { typeof(MixinA), typeof(MixinC) }, "Method1"),
           Tuple.Create(new[] { typeof(MixinA), typeof(MixinB) }, "Method2"),
           Tuple.Create(new[] { typeof(MixinA), typeof(MixinB), typeof(MixinC) }, "Method4"),

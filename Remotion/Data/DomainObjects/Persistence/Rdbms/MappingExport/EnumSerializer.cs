@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
   public class EnumSerializer : IEnumSerializer
   {
     private readonly HashSet<Type> _enumTypes = new HashSet<Type>();
- 
+
     public EnumSerializer ()
     {
     }

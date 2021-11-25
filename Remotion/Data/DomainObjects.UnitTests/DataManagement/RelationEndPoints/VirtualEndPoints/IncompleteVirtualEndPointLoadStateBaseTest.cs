@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CanEndPointBeCollected_False ()
     {
       _loadState.RegisterOriginalOppositeEndPoint(_virtualEndPointMock, _relatedEndPointStub1);
-      
+
       var result = _loadState.CanEndPointBeCollected(_virtualEndPointMock);
 
       Assert.That(result, Is.False);
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       endPointMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
       endPointMock.Expect(mock => mock.ResetSyncState());
       endPointMock.Replay();
-      
+
       _loadState.RegisterOriginalOppositeEndPoint(_virtualEndPointMock, endPointMock);
 
       Assert.That(_loadState.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointMock }));
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _loadState.RegisterOriginalOppositeEndPoint(_virtualEndPointMock, endPointMock);
       Assert.That(_loadState.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointMock }));
-      
+
       _loadState.UnregisterOriginalOppositeEndPoint(_virtualEndPointMock, endPointMock);
 
       Assert.That(_loadState.OriginalOppositeEndPoints.Count, Is.EqualTo(0));
@@ -226,8 +226,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var endPointLoader =
           new SerializableVirtualEndPointLoaderFake<
-              IVirtualEndPoint<object>, 
-              object, 
+              IVirtualEndPoint<object>,
+              object,
               IVirtualEndPointDataManager,
               IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>>();
 
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           null,
           DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket1));
       state.RegisterOriginalOppositeEndPoint(_virtualEndPointMock, oppositeEndPoint);
-      
+
       var result = FlattenedSerializer.SerializeAndDeserialize(state);
 
       Assert.That(result, Is.Not.Null);
@@ -262,7 +262,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     private void CheckOperationDelegatesToCompleteState<T> (
-        Func<IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>, T> operation, 
+        Func<IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>, T> operation,
         T fakeResult)
     {
       var newStateMock = MockRepository.GenerateStrictMock<IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>>();

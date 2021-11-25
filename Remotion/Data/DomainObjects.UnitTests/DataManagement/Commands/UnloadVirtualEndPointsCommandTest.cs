@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       _endPointMock1.Expect(mock => mock.MarkDataIncomplete());
       _endPointMock1.Stub(stub => stub.CanBeCollected).Return(false);
-      
+
       _endPointMock2.Expect(mock => mock.MarkDataIncomplete());
       _endPointMock2.Stub(stub => stub.CanBeCollected).Return(false);
       _mockRepository.ReplayAll();

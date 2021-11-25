@@ -118,7 +118,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
           Tuple.Create(typeof(NullMixin3), true, Type.EmptyTypes),
           Tuple.Create(typeof(NullMixin), true, Type.EmptyTypes),
           Tuple.Create(typeof(NullMixin2), true, Type.EmptyTypes));
-      
+
       AddOverride(targetClassDefinition, typeof(NullMixin), "ToString");
       AddOverride(targetClassDefinition, typeof(NullMixin2), "ToString");
       AddOverride(targetClassDefinition, typeof(NullMixin3), "ToString");

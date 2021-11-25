@@ -50,7 +50,7 @@ public class LengthValidator : BaseValidator
 
     return true;
   }
-  
+
   /// <summary> The minimum number of characters allowed. </summary>
   /// <value> 
   ///  The minimum length of the validated string, or <see langword="null"/> to disable the validation of the minimum length.
@@ -65,7 +65,7 @@ public class LengthValidator : BaseValidator
     {
       if (value.HasValue && value.Value < 0)
         throw new ArgumentOutOfRangeException("value", value, "The MinimumLength must not be less than zero.");
-      _minimumLength = value; 
+      _minimumLength = value;
     }
   }
 
@@ -83,7 +83,7 @@ public class LengthValidator : BaseValidator
     {
       if (value.HasValue && value.Value < 0)
         throw new ArgumentOutOfRangeException("value", value, "The MaximumLength must not be less than zero.");
-      _maximumLength = value; 
+      _maximumLength = value;
     }
   }
 

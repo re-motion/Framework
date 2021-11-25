@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       ArgumentUtility.CheckNotNull("values", values);
 
       return new ColumnValueTable(
-          EnumerableUtility.Singleton(_columnDefinition), 
+          EnumerableUtility.Singleton(_columnDefinition),
           values.Select(v => new ColumnValueTable.Row(EnumerableUtility.Singleton(v))));
     }
 

@@ -316,7 +316,7 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       _typeDiscoveryServiceStub.Setup(_ => _.GetTypes(typeof(ITestConcreteImplementationAttributeWithUnresolvableImplementationType), false))
         .Returns(new Type[0]);
-      
+
       var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(
           new[] { typeof(ITestConcreteImplementationAttributeWithUnresolvableImplementationType) }).ToArray();
 
@@ -364,7 +364,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
       // Because the TestDomain contains test classes with ambiguous attributes, we expect an exception here.
       Assert.That(
-          () => defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(new[] { GetType().Assembly }).ToArray(), 
+          () => defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(new[] { GetType().Assembly }).ToArray(),
             Throws.InvalidOperationException);
     }
 

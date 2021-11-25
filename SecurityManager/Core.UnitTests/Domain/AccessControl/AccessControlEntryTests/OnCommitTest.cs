@@ -178,7 +178,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
         ClientTransactionScope.CurrentTransaction.Commit();
         Assert.That(ace.SpecificGroupType, Is.Not.Null);
-      }      
+      }
     }
 
     [Test]
@@ -278,7 +278,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var acl = _testHelper.CreateStatelessAcl(classDefinition);
       var ace = _testHelper.CreateAceWithOwningUser();
       acl.AccessControlEntries.Add(ace);
-     
+
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         bool commitOnClassWasCalled = false;
@@ -302,7 +302,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var acl = _testHelper.CreateStatelessAcl(classDefinition);
       var ace = _testHelper.CreateAceWithOwningUser();
       acl.AccessControlEntries.Add(ace);
-     
+
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         bool commitOnClassWasCalled = false;

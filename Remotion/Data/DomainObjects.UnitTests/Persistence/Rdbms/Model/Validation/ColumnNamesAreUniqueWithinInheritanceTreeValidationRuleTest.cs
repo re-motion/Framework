@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void InheritanceRoot_PersistentPropertiesWithDifferentStorageSpecificPropertyNameInSameClass ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
-         
+
       var propertyDefinition1 = CreatePersistentPropertyDefinition(
           classDefinition,
           "FirstName1",
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void InheritanceRoot_TwoPersistentPropertiesWithSameStorageSpecificPropertyNameInSameInheritanceHierarchieLevel ()
     {
       var propertyDefinition1 = CreatePersistentPropertyDefinition(
-          _derivedBaseClass1, 
+          _derivedBaseClass1,
           "FirstName1",
           SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Property"));
       var propertyDefinition2 = CreatePersistentPropertyDefinition(
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void InheritanceRoot_ThreePersistentPropertiesWithSameStorageSpecificPropertyName ()
     {
       var propertyDefinition1 = CreatePersistentPropertyDefinition(
-          _baseOfBaseClass, 
+          _baseOfBaseClass,
           "FirstName1",
           SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Property"));
       var propertyDefinition2 = CreatePersistentPropertyDefinition(
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
       _derivedBaseClass2.SetPropertyDefinitions(new PropertyDefinitionCollection());
       _derivedClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition3 }, true));
       _derivedBaseClass1.SetReadOnly();
-      
+
       var validationResults = _validationRule.Validate(_baseOfBaseClass).ToArray();
 
       Assert.That(validationResults.Length, Is.EqualTo(2));

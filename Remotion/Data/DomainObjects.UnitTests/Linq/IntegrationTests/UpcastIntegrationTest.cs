@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       var queryWithSingleTableInheritance =
           from obj in QueryFactory.CreateLinqQuery<SingleInheritanceBaseClass>()
           where
-              (obj is SingleInheritanceFirstDerivedClass || obj is SingleInheritanceSecondDerivedClass) 
+              (obj is SingleInheritanceFirstDerivedClass || obj is SingleInheritanceSecondDerivedClass)
                   && (((ISingleInheritancePersistentMixin) obj).PersistentProperty == "value 1")
           select obj;
       CheckQueryResult(queryWithSingleTableInheritance, singleInheritanceFirstDerivedClass1.ID, singleInheritanceSecondDerivedClass1.ID);

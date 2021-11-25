@@ -65,7 +65,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       Assert.That(path, Is.Not.Null);
       Assert.That(File.Exists(path), Is.True);
     }
-    
+
     [Test]
     public void VerifyPEFile_MSCorlib ()
     {

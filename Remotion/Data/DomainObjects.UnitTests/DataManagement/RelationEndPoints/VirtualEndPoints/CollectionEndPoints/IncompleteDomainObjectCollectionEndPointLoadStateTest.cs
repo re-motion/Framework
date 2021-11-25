@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
       _collectionEndPointMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPoint>();
-    
+
       _endPointLoaderMock = MockRepository.GenerateStrictMock<IncompleteDomainObjectCollectionEndPointLoadState.IEndPointLoader>();
       _dataManagerFactoryStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManagerFactory>();
-      
+
       var dataManagerStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManager>();
       dataManagerStub.Stub(stub => stub.HasDataChanged()).Return(false);
 
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _loadState.RegisterOriginalOppositeEndPoint(_collectionEndPointMock, _relatedEndPointStub);
       _loadState.RegisterOriginalOppositeEndPoint(_collectionEndPointMock, _relatedEndPointStub2);
-      
+
       _collectionEndPointMock.Stub(stub => stub.ID).Return(_endPointID);
       _collectionEndPointMock.Stub(stub => stub.GetCollectionEventRaiser()).Return(MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>());
       // ReSharper disable AccessToModifiedClosure
@@ -160,11 +160,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       oppositeEndPointForItem1Mock.Replay();
 
       _loadState.RegisterOriginalOppositeEndPoint(_collectionEndPointMock, oppositeEndPointForItem1Mock);
-      
+
       _collectionEndPointMock.Stub(stub => stub.ID).Return(_endPointID);
       _collectionEndPointMock.Stub(stub => stub.GetCollectionEventRaiser()).Return(MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>());
       _collectionEndPointMock.Replay();
-      
+
       var newManagerMock = MockRepository.GenerateMock<IDomainObjectCollectionEndPointDataManager>();
       using (newManagerMock.GetMockRepository().Ordered())
       {
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateRemoveCommand ()
     {
       CheckOperationDelegatesToCompleteState(
-          s => s.CreateRemoveCommand(_collectionEndPointMock, _relatedObject), 
+          s => s.CreateRemoveCommand(_collectionEndPointMock, _relatedObject),
           MockRepository.GenerateStub<IDataManagementCommand>());
     }
 
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateDeleteCommand ()
     {
       CheckOperationDelegatesToCompleteState(
-          s => s.CreateDeleteCommand(_collectionEndPointMock), 
+          s => s.CreateDeleteCommand(_collectionEndPointMock),
           MockRepository.GenerateStub<IDataManagementCommand>());
     }
 
@@ -253,7 +253,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateInsertCommand ()
     {
       CheckOperationDelegatesToCompleteState(
-          s => s.CreateInsertCommand(_collectionEndPointMock, _relatedObject, 0), 
+          s => s.CreateInsertCommand(_collectionEndPointMock, _relatedObject, 0),
           MockRepository.GenerateStub<IDataManagementCommand>());
     }
 
@@ -261,7 +261,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateAddCommand ()
     {
       CheckOperationDelegatesToCompleteState(
-          s => s.CreateAddCommand(_collectionEndPointMock, _relatedObject), 
+          s => s.CreateAddCommand(_collectionEndPointMock, _relatedObject),
           MockRepository.GenerateStub<IDataManagementCommand>());
     }
 
@@ -269,7 +269,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateReplaceCommand ()
     {
       CheckOperationDelegatesToCompleteState(
-          s => s.CreateReplaceCommand(_collectionEndPointMock, 0, _relatedObject), 
+          s => s.CreateReplaceCommand(_collectionEndPointMock, 0, _relatedObject),
           MockRepository.GenerateStub<IDataManagementCommand>());
     }
 
@@ -279,9 +279,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
       var endPointLoader = new SerializableVirtualEndPointLoaderFake<
-          IDomainObjectCollectionEndPoint, 
-          ReadOnlyDomainObjectCollectionDataDecorator, 
-          IDomainObjectCollectionEndPointDataManager, 
+          IDomainObjectCollectionEndPoint,
+          ReadOnlyDomainObjectCollectionDataDecorator,
+          IDomainObjectCollectionEndPointDataManager,
           IDomainObjectCollectionEndPointLoadState>();
       var dataManagerFactory = new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake();
 
@@ -298,7 +298,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(result.EndPointLoader, Is.Not.Null);
       Assert.That(result.DataManagerFactory, Is.Not.Null);
     }
-    
+
     private void CheckOperationDelegatesToCompleteState<T> (Func<IDomainObjectCollectionEndPointLoadState, T> operation, T fakeResult)
     {
       var newStateMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointLoadState>();
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       newStateMock
           .Expect(mock => operation(mock))
           .Return(fakeResult);
-      
+
       _endPointLoaderMock.Replay();
       newStateMock.Replay();
 

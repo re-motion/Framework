@@ -106,7 +106,7 @@ namespace Remotion.Reflection.UnitTests
 
       Assert.That(invoker(new object(), null), Is.EqualTo(0));
     }
-    
+
     [Test]
     public void GetFastInvoker_WithoutReturnType ()
     {

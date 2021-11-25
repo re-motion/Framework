@@ -81,10 +81,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var fakeResult = MockRepository.GenerateStub<IVirtualCollectionEndPoint>();
       _decoratorTestHelper.CheckDelegation(
-          f => f.CreateVirtualCollectionEndPoint(endPointID), 
+          f => f.CreateVirtualCollectionEndPoint(endPointID),
           fakeResult,
           result => Assert.That(
-              result, 
+              result,
               Is.TypeOf<StateUpdateRaisingVirtualCollectionEndPointDecorator>()
                   .With.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
                   .And.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));
@@ -97,10 +97,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var fakeResult = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
       _decoratorTestHelper.CheckDelegation(
-          f => f.CreateDomainObjectCollectionEndPoint(endPointID), 
+          f => f.CreateDomainObjectCollectionEndPoint(endPointID),
           fakeResult,
           result => Assert.That(
-              result, 
+              result,
               Is.TypeOf<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>()
                 .With.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
                 .And.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));

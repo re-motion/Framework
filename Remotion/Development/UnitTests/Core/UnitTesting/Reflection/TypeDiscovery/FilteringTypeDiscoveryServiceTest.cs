@@ -49,12 +49,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
-          filteredTypes.Cast<Type>().ToArray(), 
+          filteredTypes.Cast<Type>().ToArray(),
           Is.EqualTo(
-              new[] 
-              { 
-                typeof(Color), 
-                typeof(Brush) 
+              new[]
+              {
+                typeof(Color),
+                typeof(Brush)
               }));
     }
 
@@ -80,13 +80,13 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
-          filteredTypes.Cast<Type>().ToArray(), 
+          filteredTypes.Cast<Type>().ToArray(),
           Is.EqualTo(
               new[]
-              { 
-                typeof(Color), 
-                typeof(Brush), 
-                typeof(ImageFlags) 
+              {
+                typeof(Color),
+                typeof(Brush),
+                typeof(ImageFlags)
               }));
     }
 
@@ -146,11 +146,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
-          filteredTypes.Cast<Type>().ToArray(), 
+          filteredTypes.Cast<Type>().ToArray(),
           Is.EqualTo(
-              new[] 
-              { 
-                typeof(DateTime) 
+              new[]
+              {
+                typeof(DateTime)
               }));
     }
 
@@ -176,7 +176,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
-          filteredTypes.Cast<Type>().ToArray(), 
+          filteredTypes.Cast<Type>().ToArray(),
           Is.EqualTo(
               new[]
               {

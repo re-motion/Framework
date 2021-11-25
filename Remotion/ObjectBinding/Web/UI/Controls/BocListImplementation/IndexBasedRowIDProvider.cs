@@ -95,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
                 row.Index,
                 _rowIDs.Count));
       }
-      
+
       _rowIDs.RemoveAt(row.Index);
     }
 

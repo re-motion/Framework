@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [DBBidirectionalRelation ("PermissionsInternal")]
     [Mandatory]
     public abstract AccessControlEntry AccessControlEntry { get; }
-    
+
     [StorageClassNone]
     public SecurableClassDefinition Class
     {

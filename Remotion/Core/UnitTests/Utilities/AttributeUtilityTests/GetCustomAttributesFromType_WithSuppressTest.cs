@@ -29,7 +29,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseWithAttributesForSuppressed), typeof(Attribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
-        new BaseInheritedAttribute("BaseWithAttributesForSuppressed"), 
+        new BaseInheritedAttribute("BaseWithAttributesForSuppressed"),
         new DerivedInheritedAttribute("BaseWithAttributesForSuppressed")}));
     }
 
@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedWithAttributesAndSuppressed), typeof(Attribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
-        new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"), 
+        new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"),
         new DerivedInheritedAttribute("DerivedWithAttributesAndSuppressed")}));
     }
 
@@ -47,7 +47,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedWithAttributesAndSuppressed), typeof(Attribute), true);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
-        new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"), 
+        new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"),
         new DerivedInheritedAttribute("DerivedWithAttributesAndSuppressed")}));
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedDerivedWithAttributesForSuppressed), typeof(Attribute), true);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
-        new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"), 
+        new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"),
         new DerivedInheritedAttribute("DerivedWithAttributesAndSuppressed")}));
     }
 
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedDerivedWithAttributesForSuppressed), typeof(Attribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
-        new BaseInheritedAttribute("DerivedDerivedWithAttributesForSuppressed"), 
+        new BaseInheritedAttribute("DerivedDerivedWithAttributesForSuppressed"),
         new DerivedInheritedAttribute("DerivedDerivedWithAttributesForSuppressed")}));
     }
 

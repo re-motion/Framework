@@ -393,10 +393,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var discardedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       var nonDiscardedObject = DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>();
-      
+
       discardedObject.Delete();
       TestableClientTransaction.Commit();
-      
+
       Assert.That(discardedObject.State.IsInvalid, Is.True);
       Assert.That(nonDiscardedObject.State.IsInvalid, Is.False);
 
@@ -657,7 +657,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(customer.Orders[1].ID, Is.EqualTo(DomainObjectIDs.Order2));
     }
 
-    
+
     [Test]
     public void MultiplePropertiesWithSameShortName ()
     {

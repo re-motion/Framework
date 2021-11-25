@@ -81,7 +81,7 @@ public class FormGridRowInfo
   ///   <see cref="FormGridManager.FormGridRow"/>.
   /// </param>
   public FormGridRowInfo (
-      Control control, 
+      Control control,
       RowType newRowType,
       string relatedRowID,
       RowPosition positionInFormGrid)
@@ -116,7 +116,7 @@ public class FormGridRowInfo
   {
     get { return _releatedRowID; }
   }
- 
+
   /// <summary> 
   ///   Gets the <see cref="RowPosition"/> for inserting the new 
   ///   <see cref="FormGridManager.FormGridRow"/>.

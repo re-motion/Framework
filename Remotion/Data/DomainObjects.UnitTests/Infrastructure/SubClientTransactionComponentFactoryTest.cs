@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     private IClientTransactionEventSink _parentEventSink;
 
     private SubClientTransactionComponentFactory _factory;
-    
+
     private TestableClientTransaction _fakeConstructedTransaction;
 
     public override void SetUp ()
@@ -61,14 +61,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .Stub(stub => stub.TransactionHierarchy)
           .Return(MockRepository.GenerateStub<IClientTransactionHierarchy>());
       _parentEventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
-    
+
       _factory = SubClientTransactionComponentFactory.Create(
           _parentTransaction,
           _parentInvalidDomainObjectManagerStub,
           _parentEnlistedDomainObjectManagerStub,
           _parentTransactionHierarchyManagerStub,
           _parentEventSink);
-      
+
       _fakeConstructedTransaction = new TestableClientTransaction();
     }
 
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
 
       var transactionHierarchyManager = _factory.CreateTransactionHierarchyManager(_fakeConstructedTransaction, eventSink);
-      
+
       Assert.That(transactionHierarchyManager, Is.TypeOf<TransactionHierarchyManager>());
       Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ThisTransaction, Is.SameAs(_fakeConstructedTransaction));
       Assert.That(((TransactionHierarchyManager) transactionHierarchyManager).ThisEventSink, Is.SameAs(eventSink));
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       _parentInvalidDomainObjectManagerStub.Stub(stub => stub.InvalidObjectIDs).Return(new[] { objectInvalidInParent.ID });
       _parentInvalidDomainObjectManagerStub.Stub(stub => stub.GetInvalidObjectReference(objectInvalidInParent.ID)).Return(objectInvalidInParent);
-      
+
       _parentTransaction.Delete(objectDeletedInParent);
 
       var invalidOjectManager = _factory.CreateInvalidDomainObjectManager(
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(parentTransactionContext, Is.TypeOf<ParentTransactionContext>());
       Assert.That(((ParentTransactionContext) parentTransactionContext).ParentTransaction, Is.SameAs(_parentTransaction));
       Assert.That(
-          ((ParentTransactionContext) parentTransactionContext).ParentInvalidDomainObjectManager, 
+          ((ParentTransactionContext) parentTransactionContext).ParentInvalidDomainObjectManager,
           Is.SameAs(_parentInvalidDomainObjectManagerStub));
     }
 
@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(endPointFactory.LazyLoader, Is.SameAs(lazyLoader));
       Assert.That(endPointFactory.EndPointProvider, Is.SameAs(endPointProvider));
       Assert.That(endPointFactory.TransactionEventSink, Is.SameAs(eventSink));
-      
+
       Assert.That(endPointFactory.DomainObjectCollectionEndPointDataManagerFactory, Is.TypeOf(typeof(DomainObjectCollectionEndPointDataManagerFactory)));
       var domainObjectCollectionEndPointDataManagerFactory = ((DomainObjectCollectionEndPointDataManagerFactory) endPointFactory.DomainObjectCollectionEndPointDataManagerFactory);
       Assert.That(domainObjectCollectionEndPointDataManagerFactory.ChangeDetectionStrategy, Is.TypeOf<SubDomainObjectCollectionEndPointChangeDetectionStrategy>());
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var fakeBasicObjectLoader = MockRepository.GenerateStub<IObjectLoader>();
 
       var factoryPartialMock = MockRepository.GeneratePartialMock<SubClientTransactionComponentFactory>(
-          _parentTransaction, 
+          _parentTransaction,
           _parentInvalidDomainObjectManagerStub,
           _parentEnlistedDomainObjectManagerStub,
           _parentTransactionHierarchyManagerStub,

@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     private SimpleStoragePropertyDefinition _property1;
     private SimpleStoragePropertyDefinition _property2;
     private SimpleStoragePropertyDefinition _property3;
-    
+
     private UnitTestStorageProviderStubDefinition _storageProviderDefinition;
     private EntityNameDefinition[] _synonyms;
 
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void SetUp ()
     {
       _storageProviderDefinition = new UnitTestStorageProviderStubDefinition("SPID");
-      
+
       _timestampProperty = SimpleStoragePropertyDefinitionObjectMother.TimestampProperty;
       _objectIDProperty = ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty;
       _property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1");

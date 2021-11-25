@@ -134,7 +134,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary = new Dictionary<string, string>();
       dictionary.Add("data", "value");
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data\":\"value\"}"));
@@ -146,7 +146,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary = new Dictionary<string, string>();
       dictionary.Add("data", "");
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data\":\"\"}"));
@@ -158,7 +158,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary = new Dictionary<string, string>();
       dictionary.Add("data", null);
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data\":null}"));
@@ -188,7 +188,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       dictionary.Add("data1", "What\"ever");
       dictionary.Add("data2", "Some'thing");
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data1\":'What\"ever',\"data2\":\"Some'thing\"}"));
@@ -200,7 +200,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary = new Dictionary<string, IReadOnlyCollection<string>>();
       dictionary.Add("data", new[] { "value" });
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(new Dictionary<string, string>(), dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data\":[\"value\"]}"));
@@ -212,7 +212,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary = new Dictionary<string, IReadOnlyCollection<string>>();
       dictionary.Add("data", new string[0]);
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(new Dictionary<string, string>(), dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data\":[]}"));
@@ -224,7 +224,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary = new Dictionary<string, IReadOnlyCollection<string>>();
       dictionary.Add("data", null);
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(new Dictionary<string, string>(), dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data\":null}"));
@@ -254,7 +254,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary = new Dictionary<string, IReadOnlyCollection<string>>();
       dictionary.Add("data", new[] { "What\"ever",  "Some'thing" });
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(new Dictionary<string, string>(), dictionary);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data\":['What\"ever',\"Some'thing\"]}"));
@@ -269,7 +269,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var dictionary2 = new Dictionary<string, IReadOnlyCollection<string>>();
       dictionary2.Add("data2", new[] { "value2", "value3" });
       var stringBuilder = new StringBuilder();
-      
+
       stringBuilder.WriteDictionaryAsJson(dictionary1, dictionary2);
 
       Assert.That(stringBuilder.ToString(), Is.EqualTo("{\"data1\":\"value1\",\"data2\":[\"value2\",\"value3\"]}"));

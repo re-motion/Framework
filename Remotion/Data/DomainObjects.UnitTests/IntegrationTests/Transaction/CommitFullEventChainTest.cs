@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
 
       Transaction.Commit();
-      
+
       Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
       MockRepository.VerifyAll();
     }

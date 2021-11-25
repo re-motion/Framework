@@ -40,9 +40,9 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   // constants
 
   // types
-  
+
   // static members
-  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
+  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] {
       typeof(IBusinessObjectReferenceProperty) };
   private static readonly object s_menuItemClickEvent = new object();
 
@@ -88,7 +88,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     _dropDownMenu.EventCommandClick += new WebMenuItemClickEventHandler(DropDownMenu_EventCommandClick);
     _dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler(DropDownMenu_WxeFunctionCommandClick);
   }
- 
+
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
   /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
@@ -151,7 +151,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
           continue;
         if (string.IsNullOrEmpty(menuItem.ItemID))
           continue;
-        
+
         if (isSuffix)
         {
           if (menuItem.ItemID.Length == itemID.Length)
@@ -205,7 +205,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected virtual string GetTitleText (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull("businessObject", businessObject);
-    
+
     if (businessObject is IBusinessObjectWithIdentity)
       return ((IBusinessObjectWithIdentity) businessObject).GetAccessibleDisplayName();
     else
@@ -351,7 +351,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
   ///   <see cref="Control.ClientID"/>.
   /// </summary>
-  public override Control TargetControl 
+  public override Control TargetControl
   {
     get { return (Control) _dropDownMenu; }
   }
@@ -463,7 +463,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
           businessObjects = new IBusinessObject[] { Value };
         else
           businessObjects = new IBusinessObject[0];
-   
+
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction((IWxePage) Page, indices, businessObjects);
@@ -512,7 +512,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   [PersistenceMode (PersistenceMode.Attribute)]
   public string[] HiddenMenuItems
   {
-    get 
+    get
     {
       if (_hiddenMenuItems == null)
         return new string[0];

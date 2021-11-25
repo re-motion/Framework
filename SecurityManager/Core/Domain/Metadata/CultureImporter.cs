@@ -102,7 +102,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       string metadataID = nameNode.Attributes["ref"].Value;
       XmlAttribute commentAttribute = nameNode.Attributes["comment"];
-      
+
       MetadataObject metadataObject = MetadataObject.Find(metadataID);
       if (metadataObject == null)
       {

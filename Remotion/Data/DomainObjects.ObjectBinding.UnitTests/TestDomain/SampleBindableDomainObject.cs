@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     {
       PrivateInvoke.SetNonPublicField(this, "_implementation", implementation);
     }
-  
+
     public abstract string Name { get; set; }
     public abstract int Int32 { get; set; }
 

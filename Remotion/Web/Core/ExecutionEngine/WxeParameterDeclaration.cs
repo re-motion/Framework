@@ -51,7 +51,7 @@ public class WxeParameterDeclaration
     _direction = direction;
     _type = type;
   }
-  
+
   public string Name
   {
     get { return _name; }
@@ -85,7 +85,7 @@ public class WxeParameterDeclaration
     if (_direction == WxeParameterDirection.Out)
       throw new ApplicationException("Constant provided for output parameter.");
 
-    SetParameter(_name, parameterValue, calleeVariables); 
+    SetParameter(_name, parameterValue, calleeVariables);
   }
 
   /// <summary> Copy a single callee parameter back to a caller variable. </summary>

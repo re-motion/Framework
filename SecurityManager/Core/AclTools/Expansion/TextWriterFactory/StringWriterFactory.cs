@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
       NameToTextWriterData[name] = textWriterData;
       return textWriterData.TextWriter;
     }
-    
+
     public override TextWriter CreateTextWriter (string name)
     {
       ArgumentUtility.CheckNotNull("name", name);

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       var classDefinitions = new Dictionary<Type, ClassDefinition>();
       foreach (var type in leafTypes)
         GetClassDefinition(classDefinitions, type);
-      
+
       SetDerivedClasses(classDefinitions.Values);
 
       return classDefinitions.Values.ToArray();

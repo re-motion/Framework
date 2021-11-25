@@ -95,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
       var webTreeView = home.TreeViews().GetByLocalID("ContextMenu_Person");
-      
+
       var rootNode = webTreeView.GetNode().WithIndex(1);
       rootNode.Expand();
 

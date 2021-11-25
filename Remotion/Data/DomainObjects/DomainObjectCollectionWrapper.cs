@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects
       {
         var message = string.Format(
             "Cannot implement 'IList<{0}>' for a DomainObjectCollection with required item type '{1}'. The IList<T>'s item type must be assignable "
-            + "from the required item type.", 
-            typeof(T), 
+            + "from the required item type.",
+            typeof(T),
             requiredItemType);
         throw new ArgumentException(message, "wrappedCollection");
       }
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects
     {
       return _wrappedCollection.Remove(item);
     }
-    
+
     public void CopyTo (T[] array, int arrayIndex)
     {
       _wrappedCollection.CopyTo(array, arrayIndex);

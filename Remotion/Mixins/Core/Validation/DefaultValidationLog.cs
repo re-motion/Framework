@@ -51,8 +51,8 @@ namespace Remotion.Mixins.Validation
         if (currentResult.ValidatedDefinition.FullName != definition.FullName)
         {
           string message = string.Format(
-              "Cannot end validation for {0} while {1} is validated.", 
-              definition.FullName, 
+              "Cannot end validation for {0} while {1} is validated.",
+              definition.FullName,
               currentResult.ValidatedDefinition.FullName);
           throw new InvalidOperationException(message);
         }

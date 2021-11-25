@@ -25,6 +25,6 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
   [InheritedNotMultiple ("BaseClass")]
   public class BaseClassWithAttribute
   {
-    
+
   }
 }

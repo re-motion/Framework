@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.Collections
     public void Item_Set ()
     {
       _adapter[1] = "4";
-      
+
       Assert.That(_innerList, Is.EqualTo(new[] { 1, 4, 3 }));
     }
 
@@ -178,7 +178,7 @@ namespace Remotion.UnitTests.Collections
     public void CopyTo ()
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
-      
+
       _adapter.CopyTo(destArray, 2);
 
       Assert.That(destArray, Is.EqualTo(new[] { "x", "x", "1", "2", "3", "x" }));

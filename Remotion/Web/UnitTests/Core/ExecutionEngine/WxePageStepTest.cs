@@ -205,11 +205,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     {
       var executionStateContext = (IExecutionStateContext) _pageStep.Object;
       var newExecutionState = new Mock<IExecutionState>();
-      
+
       Assert.That(executionStateContext.ExecutionState, Is.SameAs(NullExecutionState.Null));
-      
+
       executionStateContext.SetExecutionState(newExecutionState.Object);
-      
+
       Assert.That(executionStateContext.ExecutionState, Is.SameAs(newExecutionState.Object));
     }
 

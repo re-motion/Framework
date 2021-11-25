@@ -56,7 +56,7 @@ namespace Remotion.Mixins.Validation.Rules
 		private void TargetClassMustBePublic (DelegateValidationRule<TargetClassDefinition>.Args args)
 		{
 			SingleMust(args.Definition.Type.IsVisible, args.Log, args.Self);
-		
+
 		}
   }
 }

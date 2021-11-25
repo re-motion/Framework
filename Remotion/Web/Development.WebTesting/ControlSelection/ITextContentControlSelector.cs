@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
     TControlObject? SelectOptionalPerTextContent ([NotNull] ControlSelectionContext context, [NotNull] string textContent);
-    
+
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="textContent"/> exists.
     /// </summary>

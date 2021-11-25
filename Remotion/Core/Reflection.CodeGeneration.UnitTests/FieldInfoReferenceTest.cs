@@ -81,7 +81,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Expression addressOfFieldExpression = fieldReference.ToAddressOfExpression();
       Reference indirectReference =
           new IndirectReference(new ExpressionReference(typeof(string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
-      
+
       methodEmitter
           .AddStatement(new AssignStatement(local, indirectReference.ToExpression()))
           .AddStatement(new AssignStatement(indirectReference, new ConstReference("Replacement").ToExpression()))

@@ -43,8 +43,8 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
 
       Assertion.IsTrue(requirement.Type.IsInterface);
 
-      return from interfaceMethod in requirement.Type.GetMethods() 
-             let implementingMethod = FindMethod(interfaceMethod, requirement) 
+      return from interfaceMethod in requirement.Type.GetMethods()
+             let implementingMethod = FindMethod(interfaceMethod, requirement)
              select new RequiredMethodDefinition(requirement, interfaceMethod, implementingMethod);
     }
 
@@ -61,8 +61,8 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
     }
 
     private IGrouping<int, MethodDefinition> ChooseCandidateGroup (
-        IEnumerable<IGrouping<int, MethodDefinition>> candidatesByInheritanceOffset, 
-        MethodInfo interfaceMethod, 
+        IEnumerable<IGrouping<int, MethodDefinition>> candidatesByInheritanceOffset,
+        MethodInfo interfaceMethod,
         RequirementDefinitionBase requirement)
     {
       try

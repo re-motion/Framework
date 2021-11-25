@@ -31,7 +31,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
       TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator(testSuitePage, testPage);
       rows.AddRange(testSuiteGenerator.CreateTestCases(testPrefix));
     }
-    
+
     private readonly Page _testSuitePage;
     private readonly string _testPage;
 

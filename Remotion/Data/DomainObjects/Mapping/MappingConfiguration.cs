@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("persistenceModelLoader", persistenceModelLoader);
 
       s_log.Info("Building mapping configuration...");
-      
+
       using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build and validate mapping configuration: {elapsed}."))
       {
         var mappingConfigurationValidationHelper = new MappingConfigurationValidationHelper(mappingLoader, persistenceModelLoader);
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         _typeDefinitions = new ReadOnlyDictionary<Type, ClassDefinition>(typeDefinitions.ToDictionary(td => td.ClassType));
         mappingConfigurationValidationHelper.ValidateDuplicateClassIDs(typeDefinitions.OfType<ClassDefinition>());
         _classDefinitions = new ReadOnlyDictionary<string, ClassDefinition>(typeDefinitions.ToDictionary(cd => cd.ID));
-        
+
         mappingConfigurationValidationHelper.ValidateClassDefinitions(_typeDefinitions.Values);
         mappingConfigurationValidationHelper.ValidatePropertyDefinitions(_typeDefinitions.Values);
 

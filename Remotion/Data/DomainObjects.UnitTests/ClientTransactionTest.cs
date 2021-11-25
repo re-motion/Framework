@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
             .WhenCalled(mi => Assert.That(ClientTransactionTestHelper.GetHierarchyManager(constructedTransaction) == _hierarchyManagerMock));
         componentFactoryMock
             .Expect(mock => mock.CreateInvalidDomainObjectManager(
-                Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction), 
+                Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
                 Arg.Is(_eventBrokerMock)))
             .Return(_invalidDomainObjectManagerMock)
             .WhenCalled(
@@ -162,9 +162,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
             .Expect(
                 mock =>
                 mock.CreateDataManager(
-                    Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction), 
+                    Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
                     Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock),
-                    Arg.Is(_invalidDomainObjectManagerMock), 
+                    Arg.Is(_invalidDomainObjectManagerMock),
                     Arg.Is(_persistenceStrategyMock),
                     Arg.Is(_hierarchyManagerMock)))
             .Return(_dataManagerMock)
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
                     Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock),
                     Arg.Is(_invalidDomainObjectManagerMock),
                     Arg.Is(_dataManagerMock),
-                    Arg.Is(_enlistedObjectManagerMock), 
+                    Arg.Is(_enlistedObjectManagerMock),
                     Arg.Is(_persistenceStrategyMock)))
             .Return(_objectLifetimeAgentMock)
             .WhenCalled(mi => Assert.That(ClientTransactionTestHelper.GetIDataManager(constructedTransaction), Is.SameAs(_dataManagerMock)));
@@ -187,9 +187,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
                 mock =>
                 mock.CreateQueryManager(
                     Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
-                    Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock), 
-                    Arg.Is(_invalidDomainObjectManagerMock), 
-                    Arg.Is(_persistenceStrategyMock), 
+                    Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock),
+                    Arg.Is(_invalidDomainObjectManagerMock),
+                    Arg.Is(_persistenceStrategyMock),
                     Arg.Is(_dataManagerMock),
                     Arg.Is(_hierarchyManagerMock)))
             .Return(_queryManagerMock)
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         _eventBrokerMock
             .Stub(mock => mock.Extensions)
             .Return(fakeExtensionCollection);
-        
+
         _hierarchyManagerMock
             .Expect(mock => mock.OnBeforeTransactionInitialize())
             .WhenCalled(mi => Assert.That(fakeExtensionCollection, Has.Member(fakeExtension)));
@@ -488,7 +488,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Expect(mock => mock.GetDataContainerWithLazyLoad(_objectID1, true))
           .Return(DataContainerObjectMother.Create());
       _mockRepository.ReplayAll();
-      
+
       _transactionWithMocks.EnsureDataAvailable(_objectID1);
 
       _mockRepository.VerifyAll();
@@ -602,7 +602,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
       _transaction.ExecuteInScope(() => DomainObjectIDs.Customer1.GetObject<Customer>().Orders);
-      
+
       var endPoint = (ICollectionEndPoint<ICollectionEndPointData>) _dataManager.GetRelationEndPointWithoutLoading(endPointID);
       Assert.That(endPoint, Is.Not.Null);
       endPoint.MarkDataIncomplete();
@@ -647,7 +647,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void CreateSubTransaction_WithDefaultFactory ()
     {
       Assert.That(_transaction.IsWriteable, Is.True);
-      
+
       var subTransaction = _transaction.CreateSubTransaction();
       Assert.That(subTransaction, Is.TypeOf(typeof(ClientTransaction)));
       Assert.That(subTransaction.ParentTransaction, Is.SameAs(_transaction));
@@ -656,7 +656,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       Assert.That(subTransaction.Extensions, Is.Empty);
       Assert.That(subTransaction.ApplicationData, Is.SameAs(_transaction.ApplicationData));
-      
+
       var enlistedObjectManager = ClientTransactionTestHelper.GetEnlistedDomainObjectManager(subTransaction);
       Assert.That(enlistedObjectManager, Is.SameAs(ClientTransactionTestHelper.GetEnlistedDomainObjectManager(_transaction)));
 
@@ -689,7 +689,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         };
 
       _mockRepository.ReplayAll();
-      
+
       var result = _transactionWithMocks.CreateSubTransaction(factoryMock);
 
       _hierarchyManagerMock.VerifyAllExpectations();
@@ -728,7 +728,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       _eventBrokerMock.Stub(stub => stub.RaiseTransactionDiscardEvent());
       _hierarchyManagerMock.Stub(mock => mock.OnTransactionDiscard());
-      
+
       _transactionWithMocks.Discard();
 
       _mockRepository.BackToRecordAll();
@@ -766,7 +766,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       var fakeSub = ClientTransactionObjectMother.Create();
       hierarchyMock.Stub(stub => stub.ActiveTransaction).Return(fakeSub);
-      
+
       var activatedScopeMock = MockRepository.GenerateStrictMock<IDisposable>();
       hierarchyMock.Expect(mock => mock.ActivateTransaction(_transactionWithMocks)).Return(activatedScopeMock);
 
@@ -848,7 +848,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         Assert.That(_transaction.ActiveTransaction, Is.Not.SameAs(_transaction));
       }
     }
-    
+
     [Test]
     public void GetRelatedObject ()
     {
@@ -856,7 +856,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       var endPointID = RelationEndPointID.Resolve(order, o => o.OrderTicket);
       _transaction.ExecuteInScope(() => order.OrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket>());
-      
+
       DomainObject orderTicket = ClientTransactionTestHelper.CallGetRelatedObject(_transaction, endPointID);
 
       Assert.That(orderTicket, Is.Not.Null);
@@ -909,7 +909,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Order order = _transaction.ExecuteInScope(() => _objectID1.GetObject<Order>());
       Assert.That(
           () => ClientTransactionTestHelper.CallGetRelatedObject(
-          _transaction, 
+          _transaction,
           RelationEndPointID.Create(order.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems")),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
@@ -1073,7 +1073,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _objectLifetimeAgentMock.VerifyAllExpectations();
       Assert.That(result, Is.EqualTo(new[] { _fakeDomainObject1, _fakeDomainObject2 }));
     }
-    
+
     [Test]
     public void Serialization ()
     {

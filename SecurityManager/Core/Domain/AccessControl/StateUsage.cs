@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [DBBidirectionalRelation ("StateUsages")]
     [Mandatory]
     protected abstract StateCombination StateCombination { get; }
-    
+
     [StorageClassNone]
     public SecurableClassDefinition Class
     {

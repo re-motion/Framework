@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
 
       // The relation contains the fetched result, disregarding the in-memory data. This makes it an unsynchronized relation.
       Assert.That(
-          order1.OrderItems, 
+          order1.OrderItems,
           Is.EquivalentTo(new[] { DomainObjectIDs.OrderItem1.GetObject<OrderItem>(), orderItem2 }));
 
       Assert.That(orderItem2.Order, Is.Not.SameAs(order1));
@@ -204,8 +204,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
     {
       var orderItem = (OrderItem) LifetimeService.GetObjectReference(TestableClientTransaction, objectID);
       var fakeDataContainer = DataContainer.CreateForExisting(
-          orderItem.ID, 
-          null, 
+          orderItem.ID,
+          null,
           pd => pd.PropertyName.EndsWith("Order") ? fakeOrderID : pd.DefaultValue);
       fakeDataContainer.SetDomainObject(orderItem);
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, fakeDataContainer);

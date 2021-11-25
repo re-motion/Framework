@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
       _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(null);
       _dataManagerMock.Replay();
-      
+
       _virtualObjectEndPointMock.Stub(mock => mock.GetDomainObject()).Return(_owningObject);
       _virtualObjectEndPointMock.Stub(mock => mock.GetOppositeObject()).Return(_relatedObject);
       _virtualObjectEndPointMock.Stub(mock => mock.IsNull).Return(false);

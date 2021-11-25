@@ -144,7 +144,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       {
         StatefulAccessControlList acl = CreateStatefulAcl(classDefinition, transaction, states);
         return acl.StateCombinations[0];
-      }    
+      }
     }
 
     public StatePropertyDefinition CreateStateProperty (string name)
@@ -604,7 +604,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         else if (allowAccess.Value)
           ace.AllowAccess(accessType);
         else
-          ace.DenyAccess(accessType);        
+          ace.DenyAccess(accessType);
       }
     }
 
@@ -732,7 +732,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         groupType.Name = name;
         return groupType;
       }
-    }      
+    }
 
 
     public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
@@ -784,7 +784,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       }
     }
 
-    
+
     private StateDefinition CreateState (string name, int value)
     {
       StateDefinition state = StateDefinition.NewObject(name, value);

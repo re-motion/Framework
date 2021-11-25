@@ -26,7 +26,7 @@ using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
-public class TestTabbedPersonJobsUserControl : 
+public class TestTabbedPersonJobsUserControl :
     DataEditUserControl, IControl, IFormGridRowProvider
 {
   protected BocList ListField;
@@ -78,7 +78,7 @@ public class TestTabbedPersonJobsUserControl :
     InitalizeListFieldMenuItems();
     InitializeListFieldViews();
   }
-	
+
   private void InitalizeListFieldMenuItems ()
   {
     BocMenuItem menuItem = null;
@@ -90,7 +90,7 @@ public class TestTabbedPersonJobsUserControl :
     menuItem.IsDisabled = true;
     menuItem.Command.Type = CommandType.Event;
     ListField.ListMenuItems.Add(menuItem);
-  
+
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
     menuItem.Text = "Delete";
@@ -166,7 +166,7 @@ public class TestTabbedPersonJobsUserControl :
   private void InitializeListFieldViews ()
   {
     IBusinessObjectProperty endDate = ListField.Property.ReferenceClass.GetPropertyDefinition("EndDate");
-    
+
     BocSimpleColumnDefinition endDateColumnDefinition = new BocSimpleColumnDefinition();
     endDateColumnDefinition.ColumnTitle = "EndDate";
     endDateColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { endDate }));
@@ -194,9 +194,9 @@ public class TestTabbedPersonJobsUserControl :
 
     //  A new row
     newRows.Add(new FormGridRowInfo(
-        incomeField, 
-        FormGridRowInfo.RowType.ControlInRowWithLabel, 
-        MultilineTextField.ID, 
+        incomeField,
+        FormGridRowInfo.RowType.ControlInRowWithLabel,
+        MultilineTextField.ID,
         FormGridRowInfo.RowPosition.AfterRowWithID));
 
   }

@@ -42,9 +42,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (!(oppositeEndPoint is T))
       {
         var message = String.Format(
-            "The opposite end point '{0}' is of type '{1}', not of type '{2}'.", 
-            oppositeEndPoint.ID, 
-            oppositeEndPoint.GetType(), 
+            "The opposite end point '{0}' is of type '{1}', not of type '{2}'.",
+            oppositeEndPoint.ID,
+            oppositeEndPoint.GetType(),
             typeof(T));
         throw new InvalidOperationException(message);
       }

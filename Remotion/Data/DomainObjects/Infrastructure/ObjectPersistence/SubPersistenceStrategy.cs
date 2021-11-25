@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
         throw new ArgumentException("ResolveCollectionRelationData can only be called for CollectionEndPoints.", "relationEndPointID");
-      
+
       var parentObjects = _parentTransactionContext.ResolveRelatedObjects(relationEndPointID);
       return parentObjects
           .Select(parentObject =>
@@ -253,7 +253,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       unlockedParentTransactionContext.MarkNotInvalid(dataContainer.ID);
 
       Assertion.IsNull(
-          _parentTransactionContext.GetDataContainerWithoutLoading(dataContainer.ID), 
+          _parentTransactionContext.GetDataContainerWithoutLoading(dataContainer.ID),
           "a new data container cannot be known to the parent");
       Assertion.IsFalse(dataContainer.State.IsDiscarded);
 

@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     private IEagerFetcher _eagerFetcherMock;
 
     private FetchEnabledObjectLoader _fetchEnabledObjectLoader;
-    
+
     private ILoadedObjectData _resultItem1;
     private ILoadedObjectData _resultItem2;
     private LoadedObjectDataWithDataSourceData _resultItemWithSourceData1;

@@ -178,8 +178,8 @@ namespace Remotion.Web.UI.Controls
           if (menuTab.Command != null && menuTab.Command.Type == CommandType.Event)
           {
             menuTab.Command.RegisterForSynchronousPostBackOnDemand(
-                _subMenuTabStrip, 
-                menuTab.ItemID, 
+                _subMenuTabStrip,
+                menuTab.ItemID,
                 string.Format("TabbedMenu '{0}', MainMenuTab '{1}', SubMenuTab '{2}'", ID, SelectedMainMenuTab.ItemID, menuTab.ItemID));
           }
         }
@@ -559,7 +559,7 @@ namespace Remotion.Web.UI.Controls
     {
       get { return SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(); }
     }
-    
+
     /// <summary> Gets the collection of <see cref="MainMenuTab"/> objects. </summary>
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [ListBindable (false)]

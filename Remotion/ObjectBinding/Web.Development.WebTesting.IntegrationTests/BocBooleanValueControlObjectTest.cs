@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsDisabled(), Is.True);
       Assert.That(
-          () => control.SetTo(false), 
+          () => control.SetTo(false),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SetTo").Message));
     }
 

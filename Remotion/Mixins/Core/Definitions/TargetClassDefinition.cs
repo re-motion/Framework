@@ -33,10 +33,10 @@ namespace Remotion.Mixins.Definitions
         new UniqueDefinitionCollection<Type, RequiredNextCallTypeDefinition>(t => t.Type);
     private readonly UniqueDefinitionCollection<Type, RequiredMixinTypeDefinition> _requiredMixinTypes =
         new UniqueDefinitionCollection<Type, RequiredMixinTypeDefinition>(t => t.Type);
-    
+
     private readonly UniqueDefinitionCollection<Type, ComposedInterfaceDependencyDefinition> _composedInterfaceDependencies =
         new UniqueDefinitionCollection<Type, ComposedInterfaceDependencyDefinition>(d => d.RequiredType.Type);
-    
+
     private readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> _receivedInterfaces =
         new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition>(i => i.InterfaceType);
     private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _receivedAttributes;
@@ -120,7 +120,7 @@ namespace Remotion.Mixins.Definitions
       ArgumentUtility.CheckNotNull("visitor", visitor);
 
       visitor.Visit(this);
-      
+
       _mixins.Accept(visitor);
       _requiredTargetCallTypes.Accept(visitor);
       _requiredNextCallTypes.Accept(visitor);

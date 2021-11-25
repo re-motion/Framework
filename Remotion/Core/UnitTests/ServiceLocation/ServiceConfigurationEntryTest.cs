@@ -121,7 +121,7 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That(entry.ImplementationInfos[1].ImplementationType, Is.EqualTo(typeof(TestMultipleConcreteImplementationAttributesType2)));
       Assert.That(entry.ImplementationInfos[1].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
     }
-    
+
     [Test]
     public void CreateFromAttributes_EqualPositions_DifferentRegistrationTypes ()
     {

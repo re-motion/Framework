@@ -50,11 +50,11 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
         var userNodes = aclExpansionTree.Tree;
         Assert.That(userNodes.Count, Is.EqualTo(1)); // # users
         Assert.That(userNodes[0].Key, Is.EqualTo(User));
-        
+
         var roleNodes = userNodes[0].Children;
         Assert.That(roleNodes.Count, Is.EqualTo(1)); // # roles
         Assert.That(roleNodes[0].Key, Is.EqualTo(User.Roles[0]));
-        
+
         var classNodes = roleNodes[0].Children;
         Assert.That(classNodes.Count, Is.EqualTo(1)); // # classes
         Assert.That(classNodes[0].Key.StatefulAccessControlLists, Has.Member(Acl));
@@ -82,7 +82,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       using (new CultureScope("de-DE"))
       {
         var users = ListObjectMother.New(User);
-        
+
         var statelessAcl = CreateStatelessAcl(Ace);
         var acls = ListObjectMother.New(Acl, statelessAcl);
 

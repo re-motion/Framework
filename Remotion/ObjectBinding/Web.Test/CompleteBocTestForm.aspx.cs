@@ -29,7 +29,7 @@ using Remotion.Web.UI.Controls;
 namespace OBWTest
 {
 
-  public class CompleteBocForm : 
+  public class CompleteBocForm :
       SingleBocTestWxeBasePage,
       IFormGridRowProvider //  Provides new rows and rows to hide to the FormGridManager
 {
@@ -77,9 +77,9 @@ namespace OBWTest
     }
 
     CurrentObject.BusinessObject = (IBusinessObject)person;
-    
+
     CurrentObject.LoadValues(IsPostBack);
-    
+
     if (! IsPostBack)
     {
       IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
@@ -98,7 +98,7 @@ namespace OBWTest
 
     if (!IsPostBack)
       XmlReflectionBusinessObjectStorageProvider.Current.Reset();
-  
+
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
 
     BocTextValue incomeField = new BocTextValue();
@@ -108,9 +108,9 @@ namespace OBWTest
 
     //  A new row
     newRows.Add(new FormGridRowInfo(
-        incomeField, 
-        FormGridRowInfo.RowType.ControlInRowWithLabel, 
-        BooleanField.ID, 
+        incomeField,
+        FormGridRowInfo.RowType.ControlInRowWithLabel,
+        BooleanField.ID,
         FormGridRowInfo.RowPosition.AfterRowWithID));
 
     InitalizeReferenceFieldMenuItems();
@@ -168,13 +168,13 @@ namespace OBWTest
 
 
     #region Web Form Designer generated code
-	
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
 	private void InitializeComponent ()
-	{    
+	{
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 

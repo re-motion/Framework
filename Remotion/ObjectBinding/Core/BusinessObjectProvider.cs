@@ -117,10 +117,10 @@ namespace Remotion.ObjectBinding
     {
       BusinessObjectProviderAttribute? attribute = CreateBusinessObjectProviderAttribute(businessObjectProviderAttributeType);
       IBusinessObjectProvider provider = CreateBusinessObjectProvider(attribute.BusinessObjectProviderType);
-      
+
       if (provider is BusinessObjectProvider)
         ((BusinessObjectProvider) provider)._providerAttribute = attribute;
-  
+
       return provider;
     }
 

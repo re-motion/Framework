@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _propertyInfo = typeof(SecurableObject).GetProperty("Parent");
 
       _setMethodInformation = MethodInfoAdapter.Create(_propertyInfo.GetSetMethod());
-      
+
       _testHelper.SetupSecurityIoCConfiguration();
     }
 
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       SecurableObject oldObject = _testHelper.CreateSecurableObject();
       var childrenPropertyInfo = typeof(SecurableObject).GetProperty("Children");
-      
+
       _testHelper.Transaction.ExecuteInScope(() => securableObject.Children.Add(oldObject));
       _testHelper.AddExtension(_extension);
       using (_testHelper.Ordered())

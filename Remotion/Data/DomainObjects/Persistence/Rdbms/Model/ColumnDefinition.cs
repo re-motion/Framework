@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
       ArgumentUtility.CheckNotNull("storageTypeInfo", storageTypeInfo);
-      
+
       _name = name;
       _storageTypeInfo = storageTypeInfo;
       _isPartOfPrimaryKey = isPartOfPrimaryKey;

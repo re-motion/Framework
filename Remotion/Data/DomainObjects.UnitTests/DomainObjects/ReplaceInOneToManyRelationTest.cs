@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       new RelationChangeState(_oldCustomerOfNewOrder, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "8. Changed event of oldCustomerOfNewOrder"),
       new CollectionChangeState(_oldCustomerOfNewOrder.Orders, _newOrder, "9. Removed event of new order from oldCustomerOfNewOrder.Orders"),
-      
+
       new RelationChangeState(_customer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "10. Changed event of customer"),
       new CollectionChangeState(_customer.Orders, _newOrder, "11. Added event of new order to orders"),
       new CollectionChangeState(_customer.Orders, _oldOrder, "12. Removed event of old order from orders"),

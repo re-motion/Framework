@@ -18,11 +18,11 @@ using System;
 using System.IO;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
-{  
+{
   /// <summary>
   /// Represents a file downloaded by the <see cref="Remotion.Web.Development.WebTesting.DownloadInfrastructure"/>.
   /// </summary>
-  public interface IDownloadedFile  
+  public interface IDownloadedFile
   {
     /// <summary>
     /// Returns the original file name of the downloaded file.
@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// Returns FileStream with FileMode.Open to the downloaded file.
     /// </summary>
     FileStream GetStream ();
-    
+
     /// <summary>
     /// Deletes the downloaded file. Normally used by the <see cref="WebTestHelper"/> to delete downloaded files on test TearDown.
     /// </summary>

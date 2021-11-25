@@ -24,7 +24,7 @@ using Remotion.Data.DomainObjects.Persistence;
 
 namespace Remotion.Data.DomainObjects
 {
-  
+
   /// <summary>
   /// Represents a collection of <see cref="DomainObject"/>s always populated from the current state of the <see cref="ClientTransaction"/>.
   /// </summary>

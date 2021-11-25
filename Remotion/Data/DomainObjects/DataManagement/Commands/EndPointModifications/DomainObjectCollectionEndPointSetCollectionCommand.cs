@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       // Now, replace end-point's data with the data that was held by NewCollection before it was associated.
       ModifiedCollectionData.ReplaceContents(oldDataStrategyOfNewCollection);
-      
+
       ModifiedEndPoint.Touch();
     }
 
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       var commandsForRemoved = from oldObject in RemovedObjects
                                let endPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(oldObject)
                                select endPoint.CreateRemoveCommand(domainObjectOfCollectionEndPoint); // oldOrder.Customer = null
-      
+
       var commandsForAdded = from newObject in AddedObjects
                              let endPointOfNewObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(newObject) // newOrder.Customer
                              let oldRelatedOfNewObject = endPointOfNewObject.GetOppositeObject() // newOrder.Customer

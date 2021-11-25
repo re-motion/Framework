@@ -235,7 +235,7 @@ namespace Remotion.Security
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodName, MemberAffiliation.Instance);
       return HasMethodAccess(securableObject, methodInformation, principal);
     }
-    
+
     public bool HasMethodAccess (ISecurableObject securableObject, MethodInfo methodInfo)
     {
       return HasMethodAccess(securableObject, methodInfo, _principalProvider.GetPrincipal());
@@ -255,7 +255,7 @@ namespace Remotion.Security
     {
       return HasMethodAccess(securableObject, methodInformation, _principalProvider.GetPrincipal());
     }
-    
+
     public virtual bool HasMethodAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableObject", securableObject);
@@ -457,7 +457,7 @@ namespace Remotion.Security
     {
       return HasPropertyWriteAccess(securableObject, propertyName, _principalProvider.GetPrincipal());
     }
-    
+
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableObject", securableObject);
@@ -472,7 +472,7 @@ namespace Remotion.Security
     {
       return HasPropertyWriteAccess(securableObject, methodInfo, _principalProvider.GetPrincipal());
     }
-    
+
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableObject", securableObject);
@@ -487,7 +487,7 @@ namespace Remotion.Security
     {
       return HasPropertyWriteAccess(securableObject, methodInformation, _principalProvider.GetPrincipal());
     }
-    
+
     public virtual bool HasPropertyWriteAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableObject", securableObject);
@@ -624,7 +624,7 @@ namespace Remotion.Security
     {
       return HasStaticMethodAccess(securableClass, methodInfo, _principalProvider.GetPrincipal());
     }
-    
+
     public bool HasStaticMethodAccess (Type securableClass, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableClass", securableClass);
@@ -735,13 +735,13 @@ namespace Remotion.Security
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodName, MemberAffiliation.Instance);
       return HasStatelessMethodAccess(securableClass, methodInformation, principal);
     }
-    
+
     [EditorBrowsable (EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, MethodInfo methodInfo)
     {
       return HasStatelessMethodAccess(securableClass, methodInfo, _principalProvider.GetPrincipal());
     }
-    
+
     [EditorBrowsable (EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
@@ -774,9 +774,9 @@ namespace Remotion.Security
 
 
     private bool HasAccess (
-        ISecurableObject securableObject, 
-        IMemberInformation memberInformation, 
-        IReadOnlyList<Enum> requiredAccessTypeEnums, 
+        ISecurableObject securableObject,
+        IMemberInformation memberInformation,
+        IReadOnlyList<Enum> requiredAccessTypeEnums,
         ISecurityPrincipal principal)
     {
       if (requiredAccessTypeEnums.Count == 0)

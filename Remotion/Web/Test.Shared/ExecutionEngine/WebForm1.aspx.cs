@@ -62,7 +62,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
       System.Text.StringBuilder sb = new System.Text.StringBuilder();
       for (WxeStep step = CurrentPageStep; step != null; step = step.ParentStep)
-        sb.AppendFormat("{0}<br>", step.ToString());      
+        sb.AppendFormat("{0}<br>", step.ToString());
       StackLabel.Text = sb.ToString();
 
       Var1Label.Text = Function.Var1;
@@ -84,13 +84,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       InitializeComponent();
       base.OnInit(e);
     }
-		
+
     /// <summary>
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent ()
-    {    
+    {
       this.ThrowText.Click += new System.EventHandler(this.ThrowText_Click);
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Next.Click += new System.EventHandler(this.Next_Click);
@@ -107,7 +107,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void Stay_Click (object sender, System.EventArgs e)
     {
-    
+
     }
 
     private void Next_Click (object sender, System.EventArgs e)
@@ -163,12 +163,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void SubNoReturnButton_Click (object sender, System.EventArgs e)
     {
-      this.ExecuteFunctionNoRepost(new SubFunction("v1", "button"), (Control) sender);    
+      this.ExecuteFunctionNoRepost(new SubFunction("v1", "button"), (Control) sender);
     }
 
     private void SubNoReturnField_TextChanged (object sender, System.EventArgs e)
     {
-      this.ExecuteFunctionNoRepost(new SubFunction("v1", "textbox"), (Control) sender);    
+      this.ExecuteFunctionNoRepost(new SubFunction("v1", "textbox"), (Control) sender);
     }
 
     private void Calendar1_SelectionChanged (object sender, System.EventArgs e)

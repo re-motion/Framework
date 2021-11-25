@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       if (_isRestrictedByParent && screenshotElement.ParentBounds.HasValue)
         return Rectangle.Intersect(area, screenshotElement.ParentBounds.Value);
-      
+
       return area;
     }
   }

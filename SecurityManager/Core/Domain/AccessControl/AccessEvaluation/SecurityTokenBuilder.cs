@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       ArgumentUtility.CheckNotNull("securityPrincipalRepository", securityPrincipalRepository);
       ArgumentUtility.CheckNotNull("securityContextRepository", securityContextRepository);
-      
+
       _securityPrincipalRepository = securityPrincipalRepository;
       _securityContextRepository = securityContextRepository;
     }

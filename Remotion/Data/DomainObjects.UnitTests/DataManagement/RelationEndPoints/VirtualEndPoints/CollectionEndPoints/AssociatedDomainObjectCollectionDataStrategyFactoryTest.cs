@@ -52,6 +52,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData>(checkingDecorator);
       Assert.That(delegator.AssociatedEndPointID, Is.EqualTo(ordersEndPointID));
       Assert.That(delegator.VirtualEndPointProvider, Is.SameAs(_virtualEndPointProviderStub));
-    } 
+    }
   }
 }

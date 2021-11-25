@@ -401,7 +401,7 @@ namespace Remotion.Security.UnitTests.Metadata
 
       classInfo.DerivedClasses.Add(derivedClassInfo);
       derivedClassInfo.BaseClass = classInfo;
-      
+
       StatePropertyInfo propertyInfo1 = new StatePropertyInfo();
       propertyInfo1.ID = "d81b1521-ea06-4338-af6f-ff8510394efd";
       propertyInfo1.Name = "Confidentiality";

@@ -59,7 +59,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     protected Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
       ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
-      
+
       using (MixinConfiguration.BuildNew().ForClass(targetType).AddMixins(mixinTypes).EnterScope())
       {
         return TypeFactory.GetConcreteType(targetType);

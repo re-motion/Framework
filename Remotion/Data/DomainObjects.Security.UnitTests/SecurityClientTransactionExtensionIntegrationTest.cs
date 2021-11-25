@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
 
     private ISecurityContext _securityContextStub;
     private ISecurityContextFactory _securityContextFactoryStub;
-    
+
     private ClientTransaction _clientTransaction;
     private ServiceLocatorScope _serviceLocatorScope;
 

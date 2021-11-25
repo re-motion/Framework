@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
       ArgumentUtility.CheckNotNull("objectLoader", objectLoader);
       ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      
+
       _persistenceStrategy = persistenceStrategy;
       _objectLoader = objectLoader;
       _transactionEventSink = transactionEventSink;

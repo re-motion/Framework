@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (interim)
         return false;
-      
+
       bool isValid = Validate();
       if (!isValid)
         return false;
@@ -308,7 +308,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         SetValue(value);
       }
     }
-        
+
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
@@ -355,7 +355,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return InternalValue != null; }
     }
-    
+
     /// <summary> Gets or sets the current value. </summary>
     /// <value> 
     ///   The <see cref="IEnumerationValueInfo.Identifier"/> object

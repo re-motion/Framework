@@ -101,7 +101,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (string id)
         : this(
-            (string?) null, 
+            (string?) null,
             ArgumentUtility.CheckNotNullOrEmpty("id", id))
     {
     }
@@ -116,7 +116,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (Type declaringType, string valueName)
         : this(
-            ArgumentUtility.CheckNotNull("declaringType", declaringType).GetFullNameChecked(), 
+            ArgumentUtility.CheckNotNull("declaringType", declaringType).GetFullNameChecked(),
             ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName))
     {
     }
@@ -140,11 +140,11 @@ namespace Remotion.ExtensibleEnums
     /// value by its <see cref="ID"/>.
     /// </summary>
     /// <value>The ID of this value. Once an <see cref="ExtensibleEnum{T}"/> instance is constructed, this value is guaranteed to never change.</value>
-    public string ID 
+    public string ID
     {
       get { return string.IsNullOrEmpty(DeclarationSpace) ? ValueName : DeclarationSpace + "." + ValueName; }
     }
-    
+
     /// <summary>
     /// Gets a string identifying the declaration space of the identifier of the value being created. This can be a 
     /// namespace, a type name, or anything else that helps in uniquely identifying the enum value. It is used as a prefix to the <see cref="ID"/>

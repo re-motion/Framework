@@ -82,7 +82,7 @@ public interface ISmartNavigablePage: IPage
   ///   </note>
   /// </remarks>
   string AppendNavigationUrlParameters (string url);
-  
+
   /// <summary> 
   ///   Evaluates the <see cref="INavigationControl.GetNavigationUrlParameters"/> methods of all controls registered
   ///   using <see cref="RegisterNavigationControl"/>.

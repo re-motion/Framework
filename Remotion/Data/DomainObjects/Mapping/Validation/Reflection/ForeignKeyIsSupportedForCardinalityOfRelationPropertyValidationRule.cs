@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   /// <summary>
   /// Validates that a foreign key is not defined for a virtual relation end point.
   /// </summary>
-  public class 
+  public class
     ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule : IRelationDefinitionValidatorRule
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
@@ -51,8 +51,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         return MappingValidationResult.CreateValidResult();
 
       var relationAttribute = propertyInfo.GetCustomAttribute<DBBidirectionalRelationAttribute>(true);
-      if (relationAttribute != null 
-          && relationAttribute.ContainsForeignKey 
+      if (relationAttribute != null
+          && relationAttribute.ContainsForeignKey
           && (ReflectionUtility.IsObjectList(propertyInfo.PropertyType) || ReflectionUtility.IsIObjectList(propertyInfo.PropertyType)))
       {
         return MappingValidationResult.CreateInvalidResultForProperty(

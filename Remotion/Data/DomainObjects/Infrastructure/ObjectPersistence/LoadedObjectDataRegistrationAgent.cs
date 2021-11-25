@@ -40,12 +40,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       private readonly List<ILoadedObjectData> _loadedObjectData = new List<ILoadedObjectData>();
 
       public RegisteredDataContainerGatheringVisitor (
-          LoadedObjectDataPendingRegistrationCollector dataPendingRegistrationCollector, 
+          LoadedObjectDataPendingRegistrationCollector dataPendingRegistrationCollector,
           ClientTransaction clientTransaction)
       {
         ArgumentUtility.CheckNotNull("dataPendingRegistrationCollector", dataPendingRegistrationCollector);
         ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-        
+
         _dataPendingRegistrationCollector = dataPendingRegistrationCollector;
         _clientTransaction = clientTransaction;
       }

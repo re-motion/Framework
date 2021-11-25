@@ -84,7 +84,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     {
       TestFunction2 function = new TestFunction2();
       function.SetExecutionListener(_executionListenerMock.Object);
-      
+
       var step1 = new Mock<WxeStep>();
       step1.Setup(mock => mock.Execute(_context)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
       function.Add(step1.Object);
@@ -152,14 +152,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
         Assert.That(actualException, Is.SameAs(fatalExecutionException));
         WxeThreadAbortHelper.ResetAbort();
       }
-    } 
+    }
 
     [Test]
     public void Test_FailAfterException ()
     {
       TestFunction2 function = new TestFunction2();
       function.SetExecutionListener(_executionListenerMock.Object);
-      
+
       var step1 = new Mock<WxeStep>();
       Exception stepException = new Exception("StepException");
       step1.Setup(mock => mock.Execute(_context)).Throws(stepException).Verifiable();
@@ -187,7 +187,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     {
       TestFunction2 function = new TestFunction2();
       function.SetExecutionListener(_executionListenerMock.Object);
-      
+
       var step1 = new Mock<WxeStep>();
       Exception stepException = new Exception("StepException");
       step1.Setup(mock => mock.Execute(_context)).Throws(stepException).Verifiable();

@@ -460,7 +460,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       return new ArgumentException(String.Format(format, args), argumentName);
     }
-    
+
     private ArgumentException CreateArgumentOutOfRangeException (string argumentName, object actualValue, string format, params object[] args)
     {
       return new ArgumentOutOfRangeException(argumentName, actualValue, String.Format(format, args));

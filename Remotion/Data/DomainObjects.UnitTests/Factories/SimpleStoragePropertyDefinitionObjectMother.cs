@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class SimpleStoragePropertyDefinitionObjectMother
   {
-    public static readonly SimpleStoragePropertyDefinition IDProperty = 
+    public static readonly SimpleStoragePropertyDefinition IDProperty =
         new SimpleStoragePropertyDefinition(typeof(object), ColumnDefinitionObjectMother.IDColumn);
 
     public static readonly SimpleStoragePropertyDefinition ClassIDProperty =

@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void SequenceOfForeignKeyIDs_ConstructedInMemory ()
     {
       var result =
-          (from o in QueryFactory.CreateLinqQuery<Order>() 
-           where o.OrderNumber == 1 
+          (from o in QueryFactory.CreateLinqQuery<Order>()
+           where o.OrderNumber == 1
            select new ObjectID(o.Customer.ID.ClassID, o.Customer.ID.Value)).ToArray();
 
       Assert.That(result, Is.EquivalentTo(new[] { DomainObjectIDs.Customer1 }));

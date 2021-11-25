@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     {
       LoadValueInternal(value, interim);
     }
-    
+
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
     protected virtual void LoadValueInternal (bool? value, bool interim)
     {
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
         SetValue(value);
       }
     }
-    
+
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
     /// <value>The control's current value, which is a nullable boolean.</value>
     protected override sealed object? ValueImplementation

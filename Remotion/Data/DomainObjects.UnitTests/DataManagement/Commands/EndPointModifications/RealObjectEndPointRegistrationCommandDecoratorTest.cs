@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     private IRealObjectEndPoint _realObjectEndPointStub;
     private IVirtualEndPoint _oldRelatedEndPointMock;
     private IVirtualEndPoint _newRelatedEndPointMock;
-    
+
     private RealObjectEndPointRegistrationCommandDecorator _decorator;
 
     private Exception _exception1;
@@ -50,9 +50,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _newRelatedEndPointMock = _mockRepository.StrictMock<IVirtualEndPoint>();
 
       _decorator = new RealObjectEndPointRegistrationCommandDecorator(
-          _decoratedCommandMock, 
-          _realObjectEndPointStub, 
-          _oldRelatedEndPointMock, 
+          _decoratedCommandMock,
+          _realObjectEndPointStub,
+          _oldRelatedEndPointMock,
           _newRelatedEndPointMock);
 
       _exception1 = new Exception("1");
@@ -112,11 +112,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var result = _decorator.ExpandToAllRelatedObjects();
 
       Assert.That(result, Is.Not.Null);
-      
+
       var nestedCommands = result.GetNestedCommands();
       Assert.That(nestedCommands.Count, Is.EqualTo(1));
       Assert.That(nestedCommands[0], Is.TypeOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
-      
+
       var innerExpandedCommand = (RealObjectEndPointRegistrationCommandDecorator) nestedCommands[0];
       Assert.That(innerExpandedCommand.DecoratedCommand, Is.SameAs(fakeExpandedCommand));
       Assert.That(innerExpandedCommand.RealObjectEndPoint, Is.SameAs(_realObjectEndPointStub));

@@ -39,7 +39,7 @@ public class SearchObjectPage : WxePage
   protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeValue2;
   protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
-  private SearchFunction MyFunction 
+  private SearchFunction MyFunction
   {
     get { return (SearchFunction) CurrentFunction; }
   }
@@ -61,13 +61,13 @@ public class SearchObjectPage : WxePage
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
 	private void InitializeComponent ()
-	{    
+	{
     this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
     this.ResultList.EditableRowChangesSaved += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventHandler(ResultList_EditableRowChangesSaved);
     this.Load += new System.EventHandler(this.Page_Load);
@@ -80,7 +80,7 @@ public class SearchObjectPage : WxePage
     if (SearchFormGridManager.Validate())
     {
       CurrentSearchObject.SaveValues(false);
-      
+
       MyFunction.Requery();
       ResultList.ValueAsList = MyFunction.Result;
       ResultList.LoadValue(false);

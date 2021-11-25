@@ -23,6 +23,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBas
   [DBTable]
   public class ClassWithMixinWithPersistentProperty : DomainObject
   {
-    
+
   }
 }

@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     }
 
     protected virtual void PerformSerialization (
-        KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems, 
+        KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems,
         Stream dataStream,
         BinaryFormatter formatter)
     {

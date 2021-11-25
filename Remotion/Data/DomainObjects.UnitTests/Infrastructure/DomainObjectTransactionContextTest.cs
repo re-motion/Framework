@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     private Order _loadedOrder1;
     private Order _notYetLoadedOrder2;
     private Order _newOrder;
-    
+
     private DomainObjectTransactionContext _loadedOrder1Context;
     private DomainObjectTransactionContext _notYetLoadedOrder2Context;
     private DomainObjectTransactionContext _newOrderContext;
-    
+
     private DomainObjectTransactionContext _referenceInitializationContext;
 
     public override void SetUp ()
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _newOrder.Delete();
 
       Assert.That(
-          () => _newOrderContext.RegisterForCommit(), 
+          () => _newOrderContext.RegisterForCommit(),
           Throws.TypeOf<ObjectInvalidException>().With.Message.Contains(_newOrder.ID.ToString()));
       Assert.That(_newOrderContext.State.IsInvalid, Is.True);
     }

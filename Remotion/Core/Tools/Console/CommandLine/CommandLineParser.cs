@@ -47,14 +47,14 @@ public class CommandLineParser
 
   public char Separator
   {
-    get 
-    { 
-      return _separator; 
+    get
+    {
+      return _separator;
     }
-    set 
-    { 
+    set
+    {
       if (char.IsWhiteSpace(value))  throw new ArgumentOutOfRangeException("value", value, "Whitespace is not supported as separator.");
-      _separator = value; 
+      _separator = value;
     }
   }
 
@@ -150,7 +150,7 @@ public class CommandLineParser
     if (current.Length > 0)
       argsArray.Add(current.ToString());
 
-    int copyStart = 0; 
+    int copyStart = 0;
     int copyCount = argsArray.Count;
     if (! includeFirstArgument)
     {
@@ -202,7 +202,7 @@ public class CommandLineParser
           name = arg.Substring(0, pos);
           value = arg.Substring(pos + 1);
         }
-        else 
+        else
         {
           pos = arg.IndexOfAny(new char[] { '+', '-' });
           if (pos >= 0)
@@ -305,7 +305,7 @@ public class CommandLineParser
   /// <returns>A syntax overview containing a short command line overview and a table of parameters and desciptions.</returns>
   public string GetAsciiSynopsis (string commandName, int maxWidth)
   {
-    StringBuilder sb = new StringBuilder(2048); 
+    StringBuilder sb = new StringBuilder(2048);
 
     sb.Append(commandName);
     int maxLength = 0;
@@ -329,7 +329,7 @@ public class CommandLineParser
 
         // append closing square brackets after last optional argument
         if (   nextArgument == null
-            || ! nextArgument.IsOptional 
+            || ! nextArgument.IsOptional
             || ! nextArgument.IsPositional)
         {
           for (int k = 0; k < openSquareBrackets; ++k)

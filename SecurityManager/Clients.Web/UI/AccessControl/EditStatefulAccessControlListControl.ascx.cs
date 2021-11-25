@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     // static members and constants
 
     // member fields
-    
+
     private readonly List<EditStateCombinationControl> _editStateCombinationControls = new List<EditStateCombinationControl>();
     private bool _isCreatingNewStateCombination;
 

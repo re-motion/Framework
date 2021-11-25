@@ -24,6 +24,6 @@ namespace Remotion.Globalization.ExtensibleEnums
   [AttributeUsage (AttributeTargets.Assembly)]
   public class EnsureGlobalizationSupportForExtensibleEnumsAttribute : Attribute
   {
-     
+
   }
 }

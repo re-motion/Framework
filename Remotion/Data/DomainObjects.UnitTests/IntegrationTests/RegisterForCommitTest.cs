@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var objectEventReceiverMock = MockRepository.GenerateMock<DomainObjectMockEventReceiver>(newObject);
       var transactionEventReceiverMock = MockRepository.GenerateMock<ClientTransactionMockEventReceiver>(TestableClientTransaction);
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
-      
+
       SetDatabaseModifyable();
       CommitTransactionAndCheckTimestamps(newObject, changedObject, unchangedObject);
 
@@ -423,7 +423,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         ClientTransaction.Current.Commit();
       }
     }
-    
+
     private void CheckMarkedAsChanged (ClassWithAllDataTypes domainObject)
     {
       Assert.That(domainObject.InternalDataContainer.HasBeenMarkedChanged, Is.True);

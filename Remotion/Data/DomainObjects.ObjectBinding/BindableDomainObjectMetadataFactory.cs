@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      
+
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }

@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
   {
     private readonly string _statement;
     private readonly QueryParameterWithType[] _parametersWithType;
-    
+
     public QueryDbCommandBuilder (string statement, IEnumerable<QueryParameterWithType> parameters, ISqlDialect sqlDialect)
         : base(sqlDialect)
     {

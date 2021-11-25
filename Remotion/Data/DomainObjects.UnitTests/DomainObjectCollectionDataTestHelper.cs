@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     public static void CheckAssociatedCollectionStrategy (
-        IDomainObjectCollectionData domainObjectCollectionData, 
-        Type expectedRequiredItemType, 
+        IDomainObjectCollectionData domainObjectCollectionData,
+        Type expectedRequiredItemType,
         RelationEndPointID expectedEndPointID)
     {
       Assert.That(domainObjectCollectionData, Is.TypeOf<ModificationCheckingDomainObjectCollectionDataDecorator>());
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       var eventRaisingDecorator = GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator>(checkingDecorator);
       var eventRaiserAsIndirectRaiser = eventRaisingDecorator.EventRaiser as IndirectDomainObjectCollectionEventRaiser;
-      
+
       if (eventRaiserAsIndirectRaiser == null)
         Assert.That(eventRaisingDecorator.EventRaiser, Is.SameAs(collection));
       else

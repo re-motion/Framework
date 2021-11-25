@@ -42,10 +42,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     public List<User> FindUsers ()
     {
       var findAllUsersQuery = from u in QueryFactory.CreateLinqQuery<User>()
-                              where 
-                                (_lastName == null || u.LastName == _lastName) && 
+                              where
+                                (_lastName == null || u.LastName == _lastName) &&
                                 (_firstName == null || u.FirstName == _firstName) &&
-                                (_userName == null || u.UserName == _userName) 
+                                (_userName == null || u.UserName == _userName)
                               orderby u.LastName , u.FirstName
                               select u;
       return findAllUsersQuery.ToList();

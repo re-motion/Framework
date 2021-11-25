@@ -59,7 +59,7 @@ public sealed class ResourceDispatcher
   {
     ArgumentUtility.CheckNotNull("control", control);
     ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
- 
+
     const string prefix = "auto:";
 
     IDictionary autoElements = ResourceDispatcher.GetResources(resourceManager, prefix);
@@ -121,7 +121,7 @@ public sealed class ResourceDispatcher
         IResourceDispatchTarget? resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
-          resourceDispatchTarget.Dispatch(values);       
+          resourceDispatchTarget.Dispatch(values);
         else
           ResourceDispatcher.DispatchGeneric(targetControl, values);
       }
@@ -145,7 +145,7 @@ public sealed class ResourceDispatcher
       PropertyInfo? property = obj.GetType().GetProperty(propertyName, typeof(string));
       if (property != null)
       {
-        property.SetValue(obj, propertyValue, new object[0]); 
+        property.SetValue(obj, propertyValue, new object[0]);
       }
       else if (obj is Control)
       {
@@ -180,7 +180,7 @@ public sealed class ResourceDispatcher
       prefix = String.Empty;
 
     // Hashtable<string elementID, IDictionary<string property, string value> elementValues>
-    IDictionary elements = new Hashtable(); 
+    IDictionary elements = new Hashtable();
 
     var resources = resourceManager.GetAllStrings(prefix);
     foreach (var resourceEntry in resources)
@@ -198,7 +198,7 @@ public sealed class ResourceDispatcher
       if (posColon >= 0)
       {
         //  If one is found, this indicates an argument attached to the elementID
-  
+
         string elementID = key.Substring(0, posColon);
         string property = key.Substring(posColon + 1);
 
@@ -226,7 +226,7 @@ public sealed class ResourceDispatcher
 
 
   //  construction and disposing
-  
+
   private ResourceDispatcher ()
   {
   }

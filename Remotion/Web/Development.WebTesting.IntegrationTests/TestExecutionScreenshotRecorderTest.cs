@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void SetUp ()
     {
       _tempSavePath = Path.GetTempPath() + Path.GetRandomFileName();
-     
+
       while (Directory.Exists(_tempSavePath))
         _tempSavePath = Path.GetTempPath() + Path.GetRandomFileName();
 
@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var tempFileNameWitCharReplaced = "_Random_File_Na_me_";
       var fullPathWitCharReplaced = CombineToFullPath(_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
-      
+
       Assert.That(File.Exists(fullPathWitCharReplaced), Is.False);
       testExecutionScreenshotRecorder.TakeBrowserScreenshot(tempFileName, new[] { Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
       Assert.That(File.Exists(fullPathWitCharReplaced), Is.True);
@@ -144,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                   fileName,
                   new[] { browserSession },
                   Helper.BrowserConfiguration.Locator),
-          Throws.Nothing); 
+          Throws.Nothing);
 
       Assert.That(File.Exists(fullPath), Is.False);
     }
@@ -169,7 +169,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                   fileName,
                   new[] { secondBrowserSession, Helper.MainBrowserSession},
                   Helper.BrowserConfiguration.Locator),
-          Throws.Nothing); 
+          Throws.Nothing);
 
       Assert.That(File.Exists(fullPath), Is.True);
     }
@@ -193,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrame");
       loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately());
       Thread.Sleep(TimeSpan.FromSeconds(1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
- 
+
       Assert.That(IsAlertDialogPresent((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
 
 
@@ -221,7 +221,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrame");
       loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately());
       Thread.Sleep(TimeSpan.FromSeconds(1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
- 
+
       Assert.That(IsAlertDialogPresent((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
 
       Assert.That(File.Exists(fullPath), Is.False);

@@ -107,7 +107,7 @@ namespace OBWTest.Validation
       person.Father = Person.CreateObject(Guid.NewGuid());
       person.Father.FirstName = "Father FirstName";
       person.Father.LastName = "Fahter LastName";
-      
+
       _person = person;
     }
 

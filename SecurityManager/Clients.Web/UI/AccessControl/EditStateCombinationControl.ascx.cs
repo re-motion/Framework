@@ -84,7 +84,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       RequiredStateCombinationValidator.ErrorMessage =
           GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
-      
+
       base.OnPreRender(e);
     }
 

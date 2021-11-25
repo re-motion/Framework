@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
       var setupDbFileName = GetFileName(script.StorageProviderDefinition, includeStorageProviderName , "SetupDB");
       var tearDownDbFileName = GetFileName(script.StorageProviderDefinition, includeStorageProviderName, "TearDownDB");
-      
+
       File.WriteAllText(setupDbFileName, script.SetUpScript);
       File.WriteAllText(tearDownDbFileName, script.TearDownScript);
     }

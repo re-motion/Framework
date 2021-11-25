@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   {
     public SortExpressionIsValidValidationRule ()
     {
-      
+
     }
 
     public MappingValidationResult Validate (RelationDefinition relationDefinition)

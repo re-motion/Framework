@@ -321,7 +321,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       var comparedColumnValues = columnValues.ToArray();
 
-      Assert.That(comparedColumnValues[0].Column, 
+      Assert.That(comparedColumnValues[0].Column,
           Is.SameAs(StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(tableDefinition.ObjectIDProperty)));
       Assert.That(comparedColumnValues[0].Value, Is.SameAs(dataContainer.ID.Value));
       if (dataContainer.ClassDefinition.GetPropertyDefinitions().All(propertyDefinition => !propertyDefinition.IsObjectID))
@@ -331,7 +331,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       }
       return true;
     }
-    
+
     private bool CheckUpdatedComputerColumns (
         IEnumerable<ColumnValue> columnValues,
         DataContainer dataContainer,

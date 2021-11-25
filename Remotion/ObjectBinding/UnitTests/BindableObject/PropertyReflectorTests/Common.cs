@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That(businessObjectProperty, Is.TypeOf(typeof(StringProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("String"));
     }
-    
+
     [Test]
     public void GetMetadata_WithIEnumerable ()
     {

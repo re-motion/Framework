@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
       if (windows.Length == 1)
         return ResolveBoundsFromWindow(windows[0].Value);
-      
+
       if (windows.Length == 0)
         throw new InvalidOperationException("Could not find a Chrome window in order to resolve the bounds of the content area.");
 

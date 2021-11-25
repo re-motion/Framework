@@ -21,6 +21,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   [Uses (typeof(MixinNonIntroducingSimpleAttribute))]
   public class TargetClassWithMixinNonIntroducingSimpleAttribute
   {
-    
+
   }
 }

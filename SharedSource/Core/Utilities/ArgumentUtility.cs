@@ -111,7 +111,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static T CheckNotNullOrEmpty<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
         where T: ICollection
     {
@@ -123,26 +123,26 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static void CheckNotNullOrEmpty<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
     {
       CheckNotNull(argumentName, collection);
-      CheckNotEmpty(argumentName, collection); 
+      CheckNotEmpty(argumentName, collection);
     }
 
     [AssertionMethod]
     public static void CheckNotNullOrEmpty<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
     {
       CheckNotNull(argumentName, collection);
-      CheckNotEmpty(argumentName, collection); 
+      CheckNotEmpty(argumentName, collection);
     }
 
     [Conditional ("DEBUG")]
     [AssertionMethod]
     public static void DebugCheckNotNullOrEmpty<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
         where T: ICollection
     {
@@ -152,7 +152,7 @@ namespace Remotion.Utilities
     [Conditional ("DEBUG")]
     [AssertionMethod]
     public static void DebugCheckNotNullOrEmpty<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
     {
       CheckNotNullOrEmpty(argumentName, collection);
@@ -161,7 +161,7 @@ namespace Remotion.Utilities
     [Conditional ("DEBUG")]
     [AssertionMethod]
     public static void DebugCheckNotNullOrEmpty<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
     {
       CheckNotNullOrEmpty(argumentName, collection);
@@ -169,7 +169,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static T CheckNotNullOrItemsNull<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
         where T: ICollection
     {
@@ -180,7 +180,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static void CheckNotNullOrItemsNull<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
     {
       CheckNotNullOrItemsNullImplementation(argumentName, collection);
@@ -188,7 +188,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static void CheckNotNullOrItemsNull<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
     {
       CheckNotNullOrItemsNullImplementation(argumentName, collection);
@@ -209,7 +209,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static T CheckNotNullOrEmptyOrItemsNull<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T collection)
         where T: ICollection
     {
@@ -221,7 +221,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static void CheckNotNullOrEmptyOrItemsNull<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
     {
       CheckNotNullOrItemsNull(argumentName, collection);
@@ -230,7 +230,7 @@ namespace Remotion.Utilities
 
     [AssertionMethod]
     public static void CheckNotNullOrEmptyOrItemsNull<T> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
     {
       CheckNotNullOrItemsNull(argumentName, collection);
@@ -412,8 +412,8 @@ namespace Remotion.Utilities
     /// <exception cref="ArgumentException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
     [return: NotNullIfNotNull ("actualType")]
     public static Type? CheckTypeIsAssignableFrom (
-        [InvokerParameterName] string argumentName, 
-        Type? actualType, 
+        [InvokerParameterName] string argumentName,
+        Type? actualType,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] Type expectedType)
     {
       CheckNotNull("expectedType", expectedType);
@@ -438,8 +438,8 @@ namespace Remotion.Utilities
     [Conditional ("DEBUG")]
     [AssertionMethod]
     public static void DebugCheckTypeIsAssignableFrom (
-        [InvokerParameterName] string argumentName, 
-        Type? actualType, 
+        [InvokerParameterName] string argumentName,
+        Type? actualType,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] Type expectedType)
     {
       CheckTypeIsAssignableFrom(argumentName, actualType, expectedType);

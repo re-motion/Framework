@@ -73,10 +73,10 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
     {
       if (configurationFile.StartsWith("~/"))
         return HttpContext.Current.Server.MapPath(configurationFile);
-      
+
       if (!Path.IsPathRooted(configurationFile))
         return Path.Combine(GetExecutingAssemblyPath(), configurationFile);
-      
+
       return configurationFile;
     }
 

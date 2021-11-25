@@ -88,7 +88,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
     {
       ControlCollection accessControlEntryControls = GetAccessControlEntryControls();
       accessControlEntryControls.Clear();
-      
+
       var collapsedStates = new Dictionary<ObjectID, bool>();
       foreach (var editAccessControlEntryControl in _editAccessControlEntryControls)
         collapsedStates.Add(((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, editAccessControlEntryControl.IsCollapsed);
@@ -118,13 +118,13 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         editAccessControlEntryControl.BusinessObject = accessControlEntry;
         editAccessControlEntryControl.Delete += EditAccessControlEntryControl_Delete;
         editAccessControlEntryControl.CssClass = ((i + 1 ) % 2 == 0) ? "even" : "odd";
-        
+
         table.Controls.Add(editAccessControlEntryControl);
 
         bool isCollapsed;
         if (collapsedStates.TryGetValue(((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, out isCollapsed))
           editAccessControlEntryControl.IsCollapsed = isCollapsed;
-        
+
         _editAccessControlEntryControls.Add(editAccessControlEntryControl);
       }
     }

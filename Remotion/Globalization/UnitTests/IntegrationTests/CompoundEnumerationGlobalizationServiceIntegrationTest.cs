@@ -29,7 +29,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     public void TryGetTypeDisplayName ()
     {
       var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
-      
+
       string resourceValue;
       Assert.That(
           service.TryGetEnumerationValueDisplayName(
@@ -72,7 +72,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       result = service.GetAvailableEnumDisplayNames(EnumWithResourcesAndAttribute.ValueWithResource).ToList();
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0].Value, Is.EqualTo("Resource"));
-    
+
       result = service.GetAvailableEnumDisplayNames(EnumWithResourcesAndAttribute.ValueWithResourceAndAttribute).ToList();
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0].Value, Is.EqualTo("Resource"));

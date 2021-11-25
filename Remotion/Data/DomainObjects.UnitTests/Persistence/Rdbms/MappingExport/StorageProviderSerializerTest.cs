@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
       Assert.That(actual.Attribute("name").Value, Is.EqualTo("SchemaGenerationFirstStorageProvider"));
     }
-  
+
     [Test]
     public void Serialize_AddsClassElements ()
     {

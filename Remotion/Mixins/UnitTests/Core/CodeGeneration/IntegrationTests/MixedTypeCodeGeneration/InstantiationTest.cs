@@ -112,7 +112,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void IntroducedMethodCalledFromCtor ()
     {
       var instance = CreateMixedObject<TargetClassCallingIntroducedMethodFromCtor>(typeof(MixinIntroducingMethodCalledFromCtor));
-      
+
       var mixin = Mixin.Get<MixinIntroducingMethodCalledFromCtor>(instance);
       Assert.That(instance.Result, Is.SameAs(mixin));
       Assert.That(mixin.MyThis, Is.SameAs(instance));

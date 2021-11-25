@@ -29,14 +29,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     private IDbConnection _connection;
     private IDbConnection _innerConnectionMock;
     private IPersistenceExtension _extensionMock;
-    
+
     [SetUp]
     public void SetUp ()
     {
       _mockRepository = new MockRepository();
       _innerConnectionMock = _mockRepository.StrictMock<IDbConnection>();
       _extensionMock = _mockRepository.StrictMock<IPersistenceExtension>();
-      
+
       _connection = new TracingDbConnection(_innerConnectionMock, _extensionMock);
     }
 
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 
       _innerConnectionMock.Expect(mock => mock.BeginTransaction()).Return(dbTransactionMock);
       _extensionMock.Expect(mock => mock.TransactionBegan(((TracingDbConnection) _connection).ConnectionID, isolationLevel));
-      
+
       _mockRepository.ReplayAll();
 
       var tracingDbTransaction = ((TracingDbConnection) _connection).BeginTransaction();
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       var isolationLevel = IsolationLevel.Chaos;
 
       var dbTransactionMock = _mockRepository.StrictMock<IDbTransaction>();
-      
+
       _innerConnectionMock.Expect(mock => mock.BeginTransaction(isolationLevel)).Return(dbTransactionMock);
       _extensionMock.Expect(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel));
 

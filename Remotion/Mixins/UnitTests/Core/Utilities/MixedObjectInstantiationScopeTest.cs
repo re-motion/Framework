@@ -34,7 +34,7 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     {
       MixedObjectInstantiationScope.SetCurrent(null);
     }
-    
+
     [Test]
     public void ScopeInitializedOnDemand ()
     {

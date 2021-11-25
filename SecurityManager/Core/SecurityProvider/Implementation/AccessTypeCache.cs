@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
         : base(revisionProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
-        
+
       _revisionKey = new UserRevisionKey(userName);
     }
 

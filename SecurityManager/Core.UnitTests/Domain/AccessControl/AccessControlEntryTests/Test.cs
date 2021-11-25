@@ -163,7 +163,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       ace.AddAccessType(accessType0);
       ace.AddAccessType(accessType1);
       ace.AddAccessType(accessType2);
-      
+
       ace.RemoveAccessType(accessType1);
 
       var permissions = ace.GetPermissions();

@@ -116,7 +116,7 @@ namespace Remotion.Web.Utilities
     public ScriptUtility (IInfrastructureResourceUrlFactory infrastructureResourceUrlFactory)
     {
       ArgumentUtility.CheckNotNull("infrastructureResourceUrlFactory", infrastructureResourceUrlFactory);
-      
+
       _infrastructureResourceUrlFactory = infrastructureResourceUrlFactory;
     }
 

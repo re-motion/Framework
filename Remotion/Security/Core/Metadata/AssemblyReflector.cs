@@ -33,7 +33,7 @@ namespace Remotion.Security.Metadata
     private IAccessTypeReflector _accessTypeReflector;
     private IClassReflector _classReflector;
     private IAbstractRoleReflector _abstractRoleReflector;
-    
+
     // construction and disposing
 
     public AssemblyReflector () : this(new AccessTypeReflector(), new ClassReflector(), new AbstractRoleReflector())
@@ -72,7 +72,7 @@ namespace Remotion.Security.Metadata
     {
       ArgumentUtility.CheckNotNull("assembly", assembly);
       ArgumentUtility.CheckNotNull("cache", cache);
-      
+
       Assembly securityAssembly = GetType().Assembly;
       _accessTypeReflector.GetAccessTypesFromAssembly(securityAssembly, cache);
       _accessTypeReflector.GetAccessTypesFromAssembly(assembly, cache);

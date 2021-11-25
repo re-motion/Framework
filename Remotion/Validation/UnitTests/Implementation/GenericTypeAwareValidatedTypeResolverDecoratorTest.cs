@@ -57,6 +57,6 @@ namespace Remotion.Validation.UnitTests.Implementation
       _decoratedResolverMock.Verify();
       Assert.That(result, Is.EqualTo(typeof(IPerson)));
     }
-    
+
   }
 }

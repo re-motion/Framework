@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
           PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassNone")),
-          "PropertyWithStorageClassNone", 
+          "PropertyWithStorageClassNone",
           false,
           true,
           20,
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
           PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassPersistent")),
-          "PropertyWithStorageClassPersistent", 
+          "PropertyWithStorageClassPersistent",
           false,
           true,
           20,
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
           PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
-          "PropertyWithTypeObjectWithStorageClassPersistent", 
+          "PropertyWithTypeObjectWithStorageClassPersistent",
           false,
           true,
           null,

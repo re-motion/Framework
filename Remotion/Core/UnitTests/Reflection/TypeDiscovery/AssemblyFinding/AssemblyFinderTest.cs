@@ -51,7 +51,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           .Setup(mock => mock.FindRootAssemblies())
           .Returns(new[] { new RootAssembly(_assembly1, true), new RootAssembly(_assembly2, true) })
           .Verifiable();
-      
+
       var finder = new AssemblyFinder(rootAssemblyFinderMock.Object, loaderStub.Object);
       var result = finder.FindAssemblies();
 
@@ -71,10 +71,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(_assembly2), _assembly3.FullName))
           .Returns(_assembly2)
           .Verifiable();
-      
+
       var rootAssemblyFinderStub = new Mock<IRootAssemblyFinder>();
       rootAssemblyFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(new[] { new RootAssembly(_assembly3, true) });
-      
+
       var finder = new AssemblyFinder(rootAssemblyFinderStub.Object, loaderMock.Object);
       var result = finder.FindAssemblies();
 
@@ -152,7 +152,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       loaderMock
           .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(_assembly1), _assembly2.FullName)) // _assembly1 already loaded, no second time
           .Verifiable();
-      
+
       var rootAssemblyFinderStub = new Mock<IRootAssemblyFinder>();
       rootAssemblyFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(new[] { new RootAssembly(_assembly3, true) });
 

@@ -401,7 +401,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             Arg.Is(_subTransaction.ParentTransaction),
             Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order3 })));
         _extensionMock.Expect(mock => mock.ObjectsLoaded(
-            Arg.Is(_subTransaction.ParentTransaction), 
+            Arg.Is(_subTransaction.ParentTransaction),
             Arg<ReadOnlyCollection<DomainObject>>.Matches(list => list.Count == 1)));
 
         _extensionMock.Expect(mock => mock.ObjectsLoading(
@@ -1015,7 +1015,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (_mockRepository.Ordered())
       {
         _extensionMock.RelationReading(
-            _subTransaction, 
+            _subTransaction,
             _order1,
             GetEndPointDefinition(typeof(Order), "OrderItems"),
             ValueAccess.Current);
@@ -1093,7 +1093,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.Expect(mock => mock.ObjectsLoading(
             Arg.Is(_subTransaction.ParentTransaction),
             Arg<ReadOnlyCollection<ObjectID>>.Matches(list => list.Count == 2)));
-        
+
         _extensionMock.Expect(mock => mock.ObjectsLoaded(
             Arg.Is(_subTransaction.ParentTransaction),
             Arg<IReadOnlyList<DomainObject>>.Matches(list => list.Count == 2)));
@@ -1131,7 +1131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.Expect(mock => mock.ObjectsLoading(
             Arg.Is(_subTransaction.ParentTransaction),
             Arg<ReadOnlyCollection<ObjectID>>.Matches(list => list.Count == 3)));
-        
+
         _extensionMock.Expect(mock => mock.ObjectsLoaded(
             Arg.Is(_subTransaction.ParentTransaction),
             Arg<IReadOnlyList<DomainObject>>.Matches(list => list.Count == 3)));
@@ -1175,7 +1175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       _extensionMock
           .Expect(mock => mock.FilterQueryResult(
-              Arg.Is(_subTransaction.ParentTransaction), 
+              Arg.Is(_subTransaction.ParentTransaction),
               Arg<QueryResult<DomainObject>>.Matches(qr => qr.Count == 2 && qr.Query == query)))
           .Return(parentFilteredQueryResult);
       _extensionMock
@@ -1218,7 +1218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             Arg<ReadOnlyCollection<DomainObject>>.Matches(list => list.Count == 2));
         _extensionMock
             .Expect(mock => mock.FilterQueryResult(
-                Arg.Is(_subTransaction.ParentTransaction), 
+                Arg.Is(_subTransaction.ParentTransaction),
                 Arg<QueryResult<DomainObject>>.Matches(qr => qr.Count == 2 && qr.Query == query)))
             .Return(parentFilteredQueryResult);
 
@@ -1261,7 +1261,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                 Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { computer }),
                 Arg<CommittingEventRegistrar>.Is.TypeOf));
         _extensionMock.Expect(mock => mock.CommitValidate(
-            Arg.Is(_subTransaction), 
+            Arg.Is(_subTransaction),
             Arg<ReadOnlyCollection<PersistableData>>.Matches(c => c.Select(d => d.DomainObject).SetEquals(new[] { computer }))));
         _extensionMock.Expect(mock => mock.Committed(Arg.Is(_subTransaction), Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { computer })));
       }
@@ -1293,7 +1293,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.Expect(
             mock =>
             mock.CommitValidate(
-                Arg.Is(_subTransaction), 
+                Arg.Is(_subTransaction),
                 Arg<ReadOnlyCollection<PersistableData>>.Matches(c => c.Select(d => d.DomainObject).SetEquals(new DomainObject[] { computer, employee }))));
         _extensionMock.Expect(
             mock =>
@@ -1326,7 +1326,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.Expect(
             mock =>
             mock.CommitValidate(
-                Arg.Is(_subTransaction), 
+                Arg.Is(_subTransaction),
                 Arg<ReadOnlyCollection<PersistableData>>.Matches(c => c.Select(d => d.DomainObject).SetEquals(new DomainObject[] { _order1, newCustomer, oldCustomer }))));
         _extensionMock.Expect(
             mock =>
@@ -1335,7 +1335,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       }
 
       _mockRepository.ReplayAll();
-      
+
       _subTransactionScope.Commit();
 
       _mockRepository.VerifyAll();
@@ -1368,7 +1368,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         computerEventReveiver.Expect(mock => mock.Committing());
 
         _extensionMock.Expect(mock => mock.CommitValidate(
-            Arg.Is(_subTransaction), 
+            Arg.Is(_subTransaction),
             Arg<ReadOnlyCollection<PersistableData>>.Matches(c => c.Select(d => d.DomainObject).SetEquals(new[] { computer }))));
 
         computerEventReveiver.Expect(mock => mock.Committed());
@@ -1425,7 +1425,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         _extensionMock.Expect(mock => mock.ObjectsLoading(
             Arg.Is(_subTransaction),
             Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order3, DomainObjectIDs.Order4 })));
-        
+
         _extensionMock.ObjectsLoaded(null, null);
         LastCall.Constraints(Mocks_Is.Same(_subTransaction), Mocks_List.Count(Mocks_Is.Equal(2)));
       }

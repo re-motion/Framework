@@ -42,7 +42,7 @@ namespace Remotion.Web.ExecutionEngine
       WxeVariableReference? other = obj as WxeVariableReference;
       if (other == null)
         return false;
-    
+
       return this._name == other._name;
     }
 

@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
 
       _underlyingCopiedData.Add(_domainObject3);
-      
+
       Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));
     }
 
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       _copyOnWriteData.CopyOnWrite();
       var data2 = DomainObjectCollectionDataTestHelper.GetWrappedData(_copyOnWriteData);
-      
+
       Assert.That(data1, Is.SameAs(data2));
     }
 
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       _copyOnWriteData.CopyOnWrite();
       _underlyingCopiedData.Remove(_domainObject1);
-      
+
       _copyOnWriteData.RevertToCopiedData();
 
       Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject2 }));

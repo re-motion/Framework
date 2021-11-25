@@ -125,7 +125,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 
       var builder = new MixinConfigurationBuilder(parentConfiguration);
       builder.ForClass<BaseType1>().AddMixin<BT1Mixin2>();
-      
+
       MixinConfiguration configuration = builder.BuildConfiguration();
       Assert.That(configuration.ClassContexts.Count, Is.EqualTo(1));
 
@@ -140,7 +140,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var existingClassContext = new ClassContext(typeof(BaseType3), new MixinContext[0], new[] { typeof(IBaseType31) });
       var parentConfiguration = new MixinConfiguration(new ClassContextCollection(existingClassContext));
-      
+
       var builder = new MixinConfigurationBuilder(parentConfiguration);
 
       MixinConfiguration configuration = builder.BuildConfiguration();
@@ -384,7 +384,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
         mixinBuilderMock.Expect(mock => mock.ReplaceMixins(suppressedMixins)).Return(mixinBuilderMock);
       }
       mockRepository.ReplayAll();
-      
+
       var returnedBuilder = builder.AddMixinToClass(
           MixinKind.Used, targetType, mixinType, MemberVisibility.Private, explicitDependencies, suppressedMixins, _mixinContextOrigin);
 

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       Dev.Null = DomainObjectIDs.Order1.GetObject<Order>().OrderItems;
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
-      _endPoint = (DomainObjectCollectionEndPoint) 
+      _endPoint = (DomainObjectCollectionEndPoint)
           ((StateUpdateRaisingDomainObjectCollectionEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID)).InnerEndPoint;
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
@@ -128,13 +128,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       var newOpposites = _endPoint.Collection.Clone();
       _endPoint.CreateSetCollectionCommand(newOpposites).ExpandToAllRelatedObjects().NotifyAndPerform();
-      
+
       DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
       Assert.That(deserializedEndPoint.HasChanged, Is.True);
 
       var deserializedNewOpposites = deserializedEndPoint.Collection;
       deserializedEndPoint.Rollback();
-      
+
       Assert.That(deserializedEndPoint.HasChanged, Is.False);
       var deserializedOldOpposites = deserializedEndPoint.Collection;
       Assert.That(deserializedOldOpposites, Is.Not.SameAs(deserializedNewOpposites));

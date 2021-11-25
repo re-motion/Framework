@@ -101,14 +101,14 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
-      
+
       var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof(TQueried), typeof(TFetch), typeof(TRelated));
       return CreateFluentFetchRequest<TQueried, TRelated>(methodInfo, query, relatedObjectSelector);
     }
 
     private static FluentFetchRequest<TOriginating, TRelated> CreateFluentFetchRequest<TOriginating, TRelated> (
-        MethodInfo currentFetchMethod, 
-        IQueryable<TOriginating> query, 
+        MethodInfo currentFetchMethod,
+        IQueryable<TOriginating> query,
         LambdaExpression relatedObjectSelector)
     {
       var queryProvider = ArgumentUtility.CheckNotNull("query.Provider", query.Provider);

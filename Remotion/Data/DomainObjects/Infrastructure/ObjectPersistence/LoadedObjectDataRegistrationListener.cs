@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// <see cref="ITransactionHierarchyManager"/> implementations.
   /// </summary>
   [Serializable]
-  public class LoadedObjectDataRegistrationListener : ILoadedObjectDataRegistrationListener 
+  public class LoadedObjectDataRegistrationListener : ILoadedObjectDataRegistrationListener
   {
     private readonly IClientTransactionEventSink _eventSink;
     private readonly ITransactionHierarchyManager _hierarchyManager;

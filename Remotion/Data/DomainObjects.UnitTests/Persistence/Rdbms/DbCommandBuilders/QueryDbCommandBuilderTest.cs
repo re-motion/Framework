@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       dataParameterCollectionStrictMock.Expect(mock => mock.Add(dbDataParameterStub)).Return(0);
       dataParameterCollectionStrictMock.Replay();
-      
+
       var result = _commandBuilder.Create(executionContextStub);
 
       dataParameterCollectionStrictMock.VerifyAllExpectations();

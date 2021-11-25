@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         writer.WriteAttributeString("Type", "ObjectID");
       else
         writer.WriteAttributeString("Type", valueType.GetAssemblyQualifiedNameChecked());
-      
+
       return valueType;
     }
 

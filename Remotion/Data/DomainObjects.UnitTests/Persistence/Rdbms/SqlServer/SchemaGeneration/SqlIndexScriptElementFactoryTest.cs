@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       _indexDefinitionElementFactoryMock
           .Stub(stub => stub.GetCreateElement(_indexDefinition, _entityNameDefinition))
           .Return(_fakeScriptElement);
-      
+
       var result = _factory.GetCreateElement(_indexDefinition, _entityNameDefinition);
 
       Assert.That(result, Is.SameAs(_fakeScriptElement));

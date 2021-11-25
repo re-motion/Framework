@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Create_WithDefinition ()
     {
       var endPointID = RelationEndPointID.Create(_objectID, _endPointDefinition);
-      
+
       Assert.That(endPointID.Definition, Is.EqualTo(_endPointDefinition));
       Assert.That(endPointID.ObjectID, Is.EqualTo(_objectID));
     }
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var sourceEndPointDefinition =
           Configuration.GetTypeDefinition(typeof(OrderItem)).GetRelationEndPointDefinition(typeof(OrderItem).FullName + ".Order");
-      
+
       var endPointID = RelationEndPointID.CreateOpposite(sourceEndPointDefinition, DomainObjectIDs.Order1);
 
       Assert.That(endPointID, Is.EqualTo(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems")));
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointID = RelationEndPointID.CreateOpposite(sourceEndPointDefinition, null);
 
       var expected = RelationEndPointID.Create(
-          null, 
+          null,
           Configuration.GetTypeDefinition(typeof(Order)).GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems"));
       Assert.That(endPointID, Is.EqualTo(expected));
     }
@@ -249,7 +249,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var anonymousDefinition = new AnonymousRelationEndPointDefinition(DomainObjectIDs.Client1.ClassDefinition);
       var anonymousEndPointID = RelationEndPointID.Create(DomainObjectIDs.Client1, anonymousDefinition);
-      
+
       int expectedHashCode = DomainObjectIDs.Client1.GetHashCode();
       Assert.That(anonymousEndPointID.GetHashCode(), Is.EqualTo(expectedHashCode));
     }

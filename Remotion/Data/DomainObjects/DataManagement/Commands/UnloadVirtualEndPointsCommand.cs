@@ -32,14 +32,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private readonly IVirtualEndPoint[] _virtualEndPoints;
 
     public UnloadVirtualEndPointsCommand (
-        IEnumerable<IVirtualEndPoint> virtualEndPoints, 
-        IRelationEndPointRegistrationAgent registrationAgent, 
+        IEnumerable<IVirtualEndPoint> virtualEndPoints,
+        IRelationEndPointRegistrationAgent registrationAgent,
         RelationEndPointMap relationEndPointMap)
     {
       ArgumentUtility.CheckNotNull("virtualEndPoints", virtualEndPoints);
       ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
       ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
-      
+
       _virtualEndPoints = virtualEndPoints.ToArray();
       _registrationAgent = registrationAgent;
       _relationEndPointMap = relationEndPointMap;

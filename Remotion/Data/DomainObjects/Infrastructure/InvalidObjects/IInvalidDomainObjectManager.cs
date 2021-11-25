@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
   public interface IInvalidDomainObjectManager
   {
     IEnumerable<ObjectID> InvalidObjectIDs { get; }
-    
+
     bool IsInvalid (ObjectID id);
     DomainObject GetInvalidObjectReference (ObjectID id);
 

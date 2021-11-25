@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain
     public abstract int Transaction { get; set; }
 
     [StorageClassNone]
-    public object None 
+    public object None
     { get { return null; }
       set { }
     }

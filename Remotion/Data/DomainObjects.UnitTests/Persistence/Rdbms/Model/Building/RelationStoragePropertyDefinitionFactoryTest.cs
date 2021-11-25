@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var endPointDefinition = GetNonVirtualEndPointDefinition(typeof(ClassWithManySideRelationProperties), "BidirectionalOneToOne");
       var oppositeClassDefinition = endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition;
       Assert.That(oppositeClassDefinition.IsPartOfInheritanceHierarchy, Is.False);
-      
+
       _storageTypeInformationProviderStrictMock
           .Expect(mock => mock.GetStorageTypeForID(true))
           .Return(_fakeStorageTypeInformation1);

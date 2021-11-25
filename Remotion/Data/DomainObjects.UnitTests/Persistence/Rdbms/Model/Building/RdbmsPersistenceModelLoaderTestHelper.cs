@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
   //                       DerivedDerivedDerived
   //
   // All Base classes are persisted as UnionViewDefinitions, all Tables as TableDefinitions, all Derived as FilterViewDefinitions.
-  
+
   public class RdbmsPersistenceModelLoaderTestHelper
   {
     private readonly ClassDefinition _baseBaseClassDefinition;
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _derivedClassDefinition2.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
       _derivedDerivedClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
       _derivedDerivedDerivedClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
-      
+
       _baseBasePropertyDefinition = CreateAndAddPropertyDefinition(_baseBaseClassDefinition, "BaseBaseProperty");
       _basePropertyDefinition = CreateAndAddPropertyDefinition(_baseClassDefinition, "BaseProperty");
       _tablePropertyDefinition1 = CreateAndAddPropertyDefinition(_tableClassDefinition1, "TableProperty1");

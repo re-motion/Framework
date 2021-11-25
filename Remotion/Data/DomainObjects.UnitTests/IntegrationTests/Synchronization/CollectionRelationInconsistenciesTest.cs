@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
       CheckSyncState(industrialSector, s => s.Companies, true);
       Assert.That(companiesOfIndustrialSector, Has.No.Member(company));
-      
+
       CheckActionWorks(() => industrialSector.Companies.Add(company));
     }
 
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       CheckActionWorks(() => company.IndustrialSector = null);
       CheckActionWorks(() => industrialSector.Companies.Add(company));
     }
-   
+
     [Test]
     public void VirtualEndPointQuery_OneMany_ObjectIncludedInTwoCollections ()
     {

@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   public interface IVirtualEndPointDataManager : IFlattenedSerializable
   {
     RelationEndPointID EndPointID { get; }
-    
+
     bool ContainsOriginalObjectID (ObjectID objectID);
 
     void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);

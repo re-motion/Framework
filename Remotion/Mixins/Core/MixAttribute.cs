@@ -92,7 +92,7 @@ namespace Remotion.Mixins
     {
       return TargetType.GetHashCode()
           ^ MixinType.GetHashCode()
-          ^ MixinKind.GetHashCode() 
+          ^ MixinKind.GetHashCode()
           ^ base.GetHashCode();
     }
 

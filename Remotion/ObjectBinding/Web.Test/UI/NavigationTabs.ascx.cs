@@ -49,7 +49,7 @@ namespace OBWTest.UI
     protected BocEnumValue WaiConformanceLevelField;
     protected TabbedMenu TabbedMenu;
     protected CheckBox MainContentScrollableCheckBox;
-    
+
     public WaiConformanceLevel ConformanceLevel
     {
       get { return (WaiConformanceLevel) WebConfiguration.Current.Wcag.ConformanceLevel; }

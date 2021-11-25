@@ -22,7 +22,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
     public TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute (TestConcreteImplementationAttributeType param)
     {
-      
+
     }
   }
 }

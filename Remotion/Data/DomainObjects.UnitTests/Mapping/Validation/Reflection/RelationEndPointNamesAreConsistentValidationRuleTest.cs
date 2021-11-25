@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     private RelationEndPointNamesAreConsistentValidationRule _validationRule;
     private ClassDefinition _classDefinition1;
     private ClassDefinition _classDefinition2;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var validationResult = _validationRule.Validate(relationDefinition);
 
-      var expectedMessage = 
+      var expectedMessage =
         "Opposite relation property 'RelationPopertyWithNonMatchingPropertyName' declared on type 'RelationEndPointPropertyClass2' "
         + "defines a 'DBBidirectionalRelationAttribute' whose opposite property does not match.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."

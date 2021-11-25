@@ -35,15 +35,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     public void TransactionIsCompletelyCleared_BothFromData_AndFromEndPoints ()
     {
       var unchangedObject = LoadOrderWithRelations(DomainObjectIDs.Order1);
-      
+
       var changedObjectDueToDataState = LoadOrderWithRelations(DomainObjectIDs.Order3);
       ++changedObjectDueToDataState.OrderNumber;
 
       var changedObjectDueToVirtualRelationState = LoadOrderWithRelations(DomainObjectIDs.Order4);
       changedObjectDueToVirtualRelationState.OrderTicket = null;
-      
+
       var newObject = Order.NewObject();
-      
+
       var deletedObject = LoadOrderWithRelations(DomainObjectIDs.Order5);
       deletedObject.Delete();
 
@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
         Assert.That(orderChangedInMiddle.OrderNumber, Is.EqualTo(3));
       }
-      
+
       Assert.That(orderChangedInRoot.OrderNumber, Is.EqualTo(1));
     }
 
@@ -311,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = LoadOrderWithRelations(DomainObjectIDs.Order1);
       var order3 = LoadOrderWithRelations(DomainObjectIDs.Order3);
-      
+
       var mockRepository = new MockRepository();
       // Actual events are more comprehensive, since all opposite objects are also unloaded. We only test for some of them, so use a dynamic mock.
       var clientTransactionListener = mockRepository.DynamicMock<IClientTransactionListener>();

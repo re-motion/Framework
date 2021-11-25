@@ -166,7 +166,7 @@ namespace Remotion.Mixins.Definitions.Building
                                select a;
       var potentialSuppressors = classDefinition.CustomAttributes.Concat(attributesOnMixins);
       builder.AddPotentialSuppressors(potentialSuppressors);
-      
+
       foreach (MixinDefinition mixin in classDefinition.Mixins)
         builder.Apply(mixin);
     }
@@ -176,7 +176,7 @@ namespace Remotion.Mixins.Definitions.Building
       // Check that SuppressAttributesAttribute cannot be applied to methods, properties, and fields.
       // As long as this holds, we don't need to deal with potential suppressors here.
       const AttributeTargets memberTargets = AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field;
-      Assertion.IsTrue((AttributeUtility.GetAttributeUsage(typeof(SuppressAttributesAttribute)).ValidOn & memberTargets) == 0, 
+      Assertion.IsTrue((AttributeUtility.GetAttributeUsage(typeof(SuppressAttributesAttribute)).ValidOn & memberTargets) == 0,
           "TargetClassDefinitionBuilder must be updated with AddPotentialSuppressors once SuppressAttributesAttribute supports members");
 
       foreach (MemberDefinitionBase member in classDefinition.GetAllMembers())

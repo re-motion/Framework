@@ -27,7 +27,7 @@ namespace Remotion.Reflection
   {
     public string Name
     {
-      get 
+      get
       {
         //TODO RM-7432: Implementation doesn’t match nullability of IMethodInformation
         return null!;

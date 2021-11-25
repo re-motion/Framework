@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
   [TestFixture]
   public class FindMetadataObjectQueryBuilderTest : DomainTest
   {
-    private readonly QueryableComparer _queryableComparer 
+    private readonly QueryableComparer _queryableComparer
         = new QueryableComparer((actual, exptected) => Assert.That(actual, Is.EqualTo(exptected)));
 
     private FindMetadataObjectQueryBuilder _queryBuilder;

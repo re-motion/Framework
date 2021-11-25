@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           classDefinition.BaseClass == null,
           true,
           _nameResolver,
-          classDefinition.PersistentMixinFinder, 
+          classDefinition.PersistentMixinFinder,
           _propertyMetadataProvider,
           _domainModelConstraintProvider,
           _sortExpressionDefinitionProvider);

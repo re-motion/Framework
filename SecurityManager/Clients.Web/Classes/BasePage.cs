@@ -27,7 +27,7 @@ using Remotion.Web.UI.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes
 {
-  public abstract class BasePage : WxePage, IObjectWithResources 
+  public abstract class BasePage : WxePage, IObjectWithResources
   {
     // types
     private const string c_globalStyleFileUrl = "Style.css";

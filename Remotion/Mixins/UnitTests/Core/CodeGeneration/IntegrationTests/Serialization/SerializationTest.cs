@@ -142,7 +142,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
 
       c.I = 15;
       Assert.That(c.I, Is.EqualTo(15));
-      
+
       ClassImplementingISerializable c2 = Serializer.SerializeAndDeserialize(c);
       Assert.That(c2, Is.Not.EqualTo(c));
       Assert.That(c2.I, Is.EqualTo(28));

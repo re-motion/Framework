@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls
     /// Interface exposure of <see cref="WebControl.ControlStyle"/>.
     /// </summary>
     Style ControlStyle { get; }
-    
+
     /// <summary>
     /// Interface exposure of <see cref="WebControl.Attributes"/>.
     /// </summary>

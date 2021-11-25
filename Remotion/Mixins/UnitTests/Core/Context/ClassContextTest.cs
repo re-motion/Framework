@@ -175,7 +175,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var mixins = new[] { CreateBT1Mixin1Context(), CreateBT2Mixin2Context() };
       var interfaces = new[] { typeof(ICBT6Mixin1), typeof(ICBT6Mixin2)};
       var source = new ClassContext(typeof(BaseType1), mixins, interfaces);
-      
+
       var clone = source.CloneForSpecificType(typeof(BaseType2));
 
       Assert.That(clone, Is.Not.EqualTo(source));
@@ -339,14 +339,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       ruleStub1
           .Stub(stub => stub.RemoveAffectedMixins(Arg<Dictionary<Type, MixinContext>>.Is.Anything))
           .WhenCalled(mi => ((Dictionary<Type, MixinContext>) mi.Arguments[0]).Remove(typeof(int)));
-      
+
       var ruleStub2 = MockRepository.GenerateStub<IMixinSuppressionRule>();
       ruleStub2
           .Stub(stub => stub.RemoveAffectedMixins(Arg<Dictionary<Type, MixinContext>>.Is.Anything))
           .WhenCalled(mi => ((Dictionary<Type, MixinContext>) mi.Arguments[0]).Remove(typeof(double)));
 
       var original = ClassContextObjectMother.Create(typeof(NullTarget), typeof(int), typeof(double), typeof(string));
-      
+
       var result = original.SuppressMixins(new[] { ruleStub1, ruleStub2 });
 
       Assert.That(result.Mixins.Select(mc => mc.MixinType).ToArray(), Is.EquivalentTo(new[] { typeof(string) }));
@@ -360,9 +360,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var originalMixinContext3 = MixinContextObjectMother.Create(mixinType: typeof(object), explicitDependencies: new[] { typeof(decimal) });
       var originalClassContext = ClassContextObjectMother.Create(typeof(NullTarget), originalMixinContext1, originalMixinContext2, originalMixinContext3);
 
-      var dependencies = 
-          new[] 
-          { 
+      var dependencies =
+          new[]
+          {
             new MixinDependencySpecification(typeof(string), new[] { typeof(int), typeof(float), typeof(long) }),
             new MixinDependencySpecification(typeof(object), new[] { typeof(byte) }),
             new MixinDependencySpecification(typeof(string), new[] { typeof(Enum) })
@@ -403,7 +403,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var dependencies = new[] { new MixinDependencySpecification(typeof(string), new[] { typeof(float) })};
 
       Assert.That(
-          () => originalClassContext.ApplyMixinDependencies(dependencies), 
+          () => originalClassContext.ApplyMixinDependencies(dependencies),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The mixin 'System.String' is not configured for class 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget'."));
     }
@@ -416,8 +416,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var originalClassContext = ClassContextObjectMother.Create(typeof(NullTarget), originalMixinContext1, originalMixinContext2);
 
       var dependencies =
-          new[] 
-          { 
+          new[]
+          {
             new MixinDependencySpecification(typeof(List<>), new[] { typeof(float) }),
             new MixinDependencySpecification(typeof(Dictionary<,>), new[] { typeof(byte) })
           };

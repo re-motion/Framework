@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     public string BaseDirectory = Environment.CurrentDirectory;
 
     [CommandLineStringArgument ("config", true,
-        Description = 
+        Description =
             "The config file holding the application's configuration. "
             + "Unless the path is rooted, the config file is located relative to the current directory.",
         Placeholder = "app.config")]

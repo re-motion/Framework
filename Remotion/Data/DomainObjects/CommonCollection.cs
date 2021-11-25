@@ -235,7 +235,7 @@ public class CommonCollection : ICollection
       return false;
 
     object objectInCollection = BaseGetObject(key);
-    return object.Equals(objectInCollection, value);    
+    return object.Equals(objectInCollection, value);
   }
 
   /// <summary>
@@ -338,8 +338,8 @@ public class CommonCollection : ICollection
     if (index < 0 || index > Count)
     {
       throw new ArgumentOutOfRangeException(
-          argumentName, 
-          index, 
+          argumentName,
+          index,
           "Index is out of range. Must be non-negative and less than or equal to the size of the collection.");
     }
   }
@@ -358,8 +358,8 @@ public class CommonCollection : ICollection
     if (index < 0 || index >= Count)
     {
       throw new ArgumentOutOfRangeException(
-          argumentName, 
-          index, 
+          argumentName,
+          index,
           "Index is out of range. Must be non-negative and less than the size of the collection.");
     }
   }

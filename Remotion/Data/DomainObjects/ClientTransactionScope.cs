@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects
   /// </remarks>
   public class ClientTransactionScope : IDisposable, ITransactionScope
   {
-    private static readonly SafeContextSingleton<ClientTransactionScope> s_scopeSingleton = 
+    private static readonly SafeContextSingleton<ClientTransactionScope> s_scopeSingleton =
         new SafeContextSingleton<ClientTransactionScope>(SafeContextKeys.DataDomainObjectsClientTransactionScope, () => null);
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects
 
         if (activeScope == null || activeScope.ScopedTransaction == null)
           throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
-        
+
         return activeScope.ScopedTransaction;
       }
     }

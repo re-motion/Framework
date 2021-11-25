@@ -25,6 +25,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
   /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocTextValueValidatorFactoryDecorator"/>
   public interface IBocTextValueValidatorFactory : IBocValidatorFactory<IBocTextValue>
   {
-     
+
   }
 }

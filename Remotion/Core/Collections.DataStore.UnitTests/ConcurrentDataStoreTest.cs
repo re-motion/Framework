@@ -603,7 +603,7 @@ namespace Remotion.Collections.DataStore.UnitTests
         Assert.That(() => enumerator.Reset(), Throws.Exception.TypeOf<NotSupportedException>());
       }
     }
-    
+
 #else
     [Test]
     public void GetEnumerator_Generic_Reset_ResetsEnumerator ()

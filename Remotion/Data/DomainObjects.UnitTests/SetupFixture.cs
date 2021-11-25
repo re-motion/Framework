@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         SqlConnection.ClearAllPools();
 
         var masterAgent = new DatabaseAgent(DatabaseTest.MasterConnectionString);
-        masterAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());  
+        masterAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
         var testDomainAgent = new DatabaseAgent(DatabaseTest.TestDomainConnectionString);
         testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_SetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
 

@@ -59,6 +59,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var validator2 = _serviceLocator.GetInstance<IPersistableDataValidator>();
 
       Assert.That(validator1, Is.SameAs(validator2));
-    } 
+    }
   }
 }

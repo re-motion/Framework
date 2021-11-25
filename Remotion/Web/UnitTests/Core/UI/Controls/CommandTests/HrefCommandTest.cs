@@ -65,14 +65,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess(command, true);
 
       command.Object.RenderBegin(
-          _testHelper.HtmlWriter, 
+          _testHelper.HtmlWriter,
           RenderingFeatures.Default,
-          _testHelper.PostBackEvent, 
-          parameters, 
-          _testHelper.OnClick, 
-          _testHelper.SecurableObject, 
-          additionalUrlParameters, 
-          true, 
+          _testHelper.PostBackEvent,
+          parameters,
+          _testHelper.OnClick,
+          _testHelper.SecurableObject,
+          additionalUrlParameters,
+          true,
           new Style(),
           new NameValueCollection());
 
@@ -104,14 +104,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess(command, false);
 
       command.Object.RenderBegin(
-          _testHelper.HtmlWriter, 
+          _testHelper.HtmlWriter,
           RenderingFeatures.Default,
-          _testHelper.PostBackEvent, 
-          parameters, 
-          _testHelper.OnClick, 
-          _testHelper.SecurableObject, 
-          additionalUrlParameters, 
-          true, 
+          _testHelper.PostBackEvent,
+          parameters,
+          _testHelper.OnClick,
+          _testHelper.SecurableObject,
+          additionalUrlParameters,
+          true,
           new Style(),
           new NameValueCollection());
 

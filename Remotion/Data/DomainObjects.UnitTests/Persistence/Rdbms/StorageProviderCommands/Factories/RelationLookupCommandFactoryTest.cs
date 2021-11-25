@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _fakeStorageProviderCommandFactory;
 
     private RelationLookupCommandFactory _factory;
-    
+
     private TableDefinition _tableDefinition;
     private UnionViewDefinition _unionViewDefinition;
     private ObjectID _foreignKeyValue;

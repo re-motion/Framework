@@ -45,7 +45,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   private readonly QueryType _queryType;
   private readonly Type _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
-  
+
   // Note: _ispartOfQueryConfiguration is used only during the deserialization process. 
   // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
   private readonly bool _ispartOfQueryConfiguration;
@@ -94,10 +94,10 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// </exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="queryType"/> is not a valid enum value.</exception>
   public QueryDefinition (
-      string queryID, 
+      string queryID,
       StorageProviderDefinition storageProviderDefinition,
-      string statement, 
-      QueryType queryType, 
+      string statement,
+      QueryType queryType,
       Type collectionType)
   {
     ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
@@ -111,8 +111,8 @@ public class QueryDefinition : ISerializable, IObjectReference
     if (queryType == QueryType.Collection && collectionType == null)
       collectionType = typeof(DomainObjectCollection);
 
-    if (collectionType != null 
-        && !collectionType.Equals(typeof(DomainObjectCollection)) 
+    if (collectionType != null
+        && !collectionType.Equals(typeof(DomainObjectCollection))
         && !collectionType.IsSubclassOf(typeof(DomainObjectCollection)))
     {
       throw new ArgumentException(string.Format(

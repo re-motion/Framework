@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       MockRepository mockRepository = new MockRepository();
 
-      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver = 
+      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver =
           mockRepository.StrictMock<ClientTransactionMockEventReceiver>(TestableClientTransaction);
 
       using (mockRepository.Ordered())

@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(rowIDProvider.GetItemRowID(new BocListRow(3, CreateObject())), Is.EqualTo("6"));
       Assert.That(rowIDProvider.GetItemRowID(new BocListRow(4, CreateObject())), Is.EqualTo("4"));
     }
-    
+
     [Test]
     public void GetItemRowID_GetRowFromItemRowID ()
     {

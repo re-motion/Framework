@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = StartToErrorPageSync("SyncPostbackWithSpecialCharactersInErrorMessage");
 
       var result = aspNetRequestErrorDetectionParser.Parse(home.Scope);
-      
+
       Assert.That(result.HasError, Is.EqualTo(true));
       Assert.That(result.Message, Is.EqualTo("ä&<\r\n'\""));
       Assert.That(result.Stacktrace, Does.StartWith("\r\n[Exception: ä&<\r\n'\"]\r\n"));
@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = StartToErrorPageAsync("AsyncPostbackError");
 
       var result = aspNetRequestErrorDetectionParser.Parse(home.Scope);
-      
+
       Assert.That(result.HasError, Is.EqualTo(true));
       Assert.That(result.Message, Is.EqualTo("AsyncPostbackError"));
       Assert.That(result.Stacktrace, Does.StartWith("\r\n[Exception: AsyncPostbackError]\r\n"));
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
 
       var home = Start();
-      
+
       Assert.That(
           () => aspNetRequestErrorDetectionParser.Parse(home.Scope),
           Throws.Nothing);
@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       return StartToErrorPage(localButtonId, "div.SmartPageErrorBody > div");
     }
-    
+
     private WxePageObject StartToErrorPage (string localButtonId, string startSelector)
     {
       var home = Start();
@@ -146,7 +146,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       //Call Exists workaround because scope is not updated properly
       home.Scope.FindCss(startSelector + " > span > h1").ExistsWorkaround();
-      
+
       //Wait for Message header to exist
       home.Scope.FindCss(startSelector + " > span > h1").Exists();
 

@@ -64,7 +64,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       Assert.That(typedInstance.MultipleService, Is.Not.Empty);
       Assert.That(typedInstance.MultipleService, Has.All.TypeOf<MultipleService>());
     }
-    
+
     [Test]
     public void GetInstance_ConstructorWithRecursiveParameter_PerformsIndirectResolutionCalls ()
     {
@@ -111,7 +111,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       Assert.That(typedInstance1.InstanceService1, Is.Not.SameAs(typedInstance2.InstanceService1));
     }
-    
+
     [Test]
     public void GetInstance_ConstructorWithParameterWithSingletonLifetime_UsesSameInstance ()
     {

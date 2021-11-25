@@ -22,6 +22,6 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
   [Simple (S = "whazzup2")]
   public class ClassWithCustomAttribute
   {
-    
+
   }
 }

@@ -120,7 +120,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
     if (Validate())
     {
       Save();
-      
+
       ClientTransactionScope.CurrentTransaction.Commit();
       if (Saved != null)
         Saved(this, EventArgs.Empty);
@@ -138,7 +138,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.

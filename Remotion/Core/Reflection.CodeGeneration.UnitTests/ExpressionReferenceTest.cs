@@ -29,7 +29,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void ExpressionReference ()
     {
       var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
-      
+
       var expressionReference = new ExpressionReference(typeof(string), new ConstReference("bla").ToExpression(), methodEmitter);
       methodEmitter.ImplementByReturning(new ReferenceExpression(expressionReference));
 
@@ -53,12 +53,12 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
       var expressionReference = new ExpressionReference(
-          typeof(StructWithMethod), 
-          new InitObjectExpression(methodEmitter, typeof(StructWithMethod)), 
+          typeof(StructWithMethod),
+          new InitObjectExpression(methodEmitter, typeof(StructWithMethod)),
           methodEmitter);
       var addressReference = new ExpressionReference(
-          typeof(StructWithMethod).MakeByRefType(), 
-          expressionReference.ToAddressOfExpression(), 
+          typeof(StructWithMethod).MakeByRefType(),
+          expressionReference.ToAddressOfExpression(),
           methodEmitter);
       var methodCall =
           new MethodInvocationExpression(addressReference, typeof(StructWithMethod).GetMethod("Method"));

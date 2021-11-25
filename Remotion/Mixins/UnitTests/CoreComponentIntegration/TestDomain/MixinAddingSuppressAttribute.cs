@@ -22,6 +22,6 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
   [BaseInherited("MixinAddingSuppressAttribute")]
   public class MixinAddingSuppressAttribute
   {
-    
+
   }
 }

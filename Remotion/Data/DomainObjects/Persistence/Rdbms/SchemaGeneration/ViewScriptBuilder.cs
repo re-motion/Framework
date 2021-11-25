@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
       ArgumentUtility.CheckNotNull("filterViewElementFactory", filterViewElementFactory);
       ArgumentUtility.CheckNotNull("emptyViewElementFactory", emptyViewElementFactory);
       ArgumentUtility.CheckNotNull("commentFactory", commentFactory);
-      
+
       _tableViewElementFactory = tableViewElementFactory;
       _unionViewElementFactory = unionViewElementFactory;
       _filterViewElementFactory = filterViewElementFactory;

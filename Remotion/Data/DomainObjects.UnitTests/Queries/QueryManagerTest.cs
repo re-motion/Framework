@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private IPersistenceStrategy _persistenceStrategyMock;
     private IObjectLoader _objectLoaderMock;
     private IClientTransactionEventSink _transactionEventSinkWithMock;
-    
+
     private IQuery _collectionQuery;
     private IQuery _scalarQuery;
 
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       _objectLoaderMock.Replay();
 
       Assert.That(
-          () => _queryManager.GetCollection<Customer>(_collectionQuery), 
+          () => _queryManager.GetCollection<Customer>(_collectionQuery),
           Throws.TypeOf<UnexpectedQueryResultException>().With.Message.EqualTo(
             "The query returned an object of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order', but a query result of type "
             + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' was expected."));

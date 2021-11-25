@@ -38,7 +38,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     public void CreateSucceeded ()
     {
       var result = TestResult.CreateSucceeded(_methodInfo);
-      
+
       Assert.That(result.MethodInfo, Is.SameAs(_methodInfo));
       Assert.That(result.Status, Is.EqualTo(SandboxTestStatus.Succeeded));
       Assert.That(result.Exception, Is.Null);
@@ -83,7 +83,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
       Assert.That(result.Status, Is.EqualTo(SandboxTestStatus.FailedInTearDown));
       Assert.That(result.Exception, Is.SameAs(_exception));
     }
-    
+
 
     [Test]
     public void EnsureNotFailed_Succeeded ()

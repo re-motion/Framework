@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_NonVirtualEndPoint_PropertyTypeIsNotObjectID ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithRealRelationEndPoints));
-      var propertyDefinition = 
+      var propertyDefinition =
           PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "Unidirectional", typeof(string));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_VirtualEndPoint_PropertyTypeIsNotCompatible ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithVirtualRelationEndPoints));
-      var propertyDefinition = 
+      var propertyDefinition =
           PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "BidirectionalOneToManyForDomainObjectCollection", typeof(string));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 

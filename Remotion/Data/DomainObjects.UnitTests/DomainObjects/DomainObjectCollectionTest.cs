@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       _collection = CreateCustomerCollection();
       _readOnlyCollection = DomainObjectCollectionFactory.Instance.CreateReadOnlyCollection(
-          typeof(DomainObjectCollection), 
+          typeof(DomainObjectCollection),
           new[] { _customer1, _customer2 });
 
       _dataStrategyMock = MockRepository.GenerateMock<IDomainObjectCollectionData>();
@@ -64,8 +64,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var dataStoreStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
       var eventRaiserStub = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
-      
-      var modificationCheckingDecorator = 
+
+      var modificationCheckingDecorator =
           DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStoreStub, typeof(Order), eventRaiserStub);
       Assert.That(modificationCheckingDecorator, Is.InstanceOf(typeof(ModificationCheckingDomainObjectCollectionDataDecorator)));
       Assert.That(modificationCheckingDecorator.RequiredItemType, Is.SameAs(typeof(Order)));
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var eventRaisingDecorator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator>(
           (ModificationCheckingDomainObjectCollectionDataDecorator) modificationCheckingDecorator);
       Assert.That(eventRaisingDecorator.EventRaiser, Is.SameAs(eventRaiserStub));
-      
+
       var dataStore = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<IDomainObjectCollectionData>(eventRaisingDecorator);
       Assert.That(dataStore, Is.SameAs(dataStoreStub));
     }
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
       _dataStrategyMock.Stub(stub => stub.AssociatedEndPointID).Return(endPointID);
-      
+
       Assert.That(_collectionWithDataStrategyMock.AssociatedEndPointID, Is.EqualTo(endPointID));
     }
 
@@ -360,7 +360,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo("Cannot add items to a read-only collection."));
     }
-    
+
     [Test]
     public void RemoveAt ()
     {

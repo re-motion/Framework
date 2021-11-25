@@ -49,7 +49,7 @@ public class SingleControlItemCollection
     get { return _controlItem; }
     set
     {
-      if (value != null && ! IsSupportedType(value)) 
+      if (value != null && ! IsSupportedType(value))
         throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), null);
       _controlItem = value;
       if (_controlItem != null)
@@ -78,7 +78,7 @@ public class SingleControlItemCollection
       if (type.IsAssignableFrom(controlItemType))
         return true;
     }
-    
+
     return false;
   }
 
@@ -92,18 +92,18 @@ public class SingleControlItemCollection
     throw new NotSupportedException();
   }
 
-  int ICollection.Count 
+  int ICollection.Count
   {
     get { return 1; }
   }
 
-  bool ICollection.IsSynchronized 
-  { 
+  bool ICollection.IsSynchronized
+  {
     get { return true; }
   }
 
   object ICollection.SyncRoot
-  { 
+  {
     get { return this; }
   }
 

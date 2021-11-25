@@ -76,7 +76,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       {
         if (_stepList == null)
           throw new WxeException("ExecutingStep must not be accessed outside of the WXE execution.");
-        else 
+        else
           return _stepList.ExecutingStep;
       }
     }

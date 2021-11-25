@@ -61,14 +61,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     [StorageClass (StorageClass.Persistent)]
     string IBindableDomainObjectWithProperties.RequiredStringPropertyExplicitInInterface
     {
-      get 
-      { 
-        return Properties[typeof(BindableDomainObjectWithProperties),
-            typeof(IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].GetValue<string>(); 
-      }
-      set 
+      get
       {
-        Properties[typeof(BindableDomainObjectWithProperties), 
+        return Properties[typeof(BindableDomainObjectWithProperties),
+            typeof(IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].GetValue<string>();
+      }
+      set
+      {
+        Properties[typeof(BindableDomainObjectWithProperties),
             typeof(IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].SetValue(value);
       }
     }
@@ -112,12 +112,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     [StorageClassNone]
     public IBusinessObject ReferencePropertyNotInMapping { get; set; }
-    
+
     [StringProperty (MaximumLength = 7)]
     public abstract string MaxLength7StringProperty { get; set; }
     public abstract string NoMaxLengthStringProperty { get; set; }
 
-    
+
 
 
     [StringProperty (MaximumLength = 33)]

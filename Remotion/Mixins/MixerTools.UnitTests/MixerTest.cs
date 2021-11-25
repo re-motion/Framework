@@ -40,7 +40,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     private IMixedTypeFinder _mixedTypeFinderStub;
     private IMixerPipelineFactory _mixerPipelineFactoryStub;
     private IPipeline _pipelineStub;
-    
+
     private Mixer _mixer;
 
     private IReflectionService _reflectionServiceDynamicMock;
@@ -55,7 +55,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     {
       _assemblyOutputDirectoy = Path.Combine(AppContext.BaseDirectory, "MixerTest");
       _modulePath = Path.Combine(_assemblyOutputDirectoy, "Signed.dll");
-      
+
       if (Directory.Exists(_assemblyOutputDirectoy))
         Directory.Delete(_assemblyOutputDirectoy, true);
 
@@ -158,7 +158,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
           .Return(typeof(FakeConcreteMixedType))
           .WhenCalled(mi => activeConfiguration = MixinConfiguration.ActiveConfiguration);
       _codeManagerDynamicMock.Stub(stub => stub.FlushCodeToDisk()).Return(new string[0]);
-      
+
       _mixer.Execute(_configuration);
 
       _reflectionServiceDynamicMock.VerifyAllExpectations();

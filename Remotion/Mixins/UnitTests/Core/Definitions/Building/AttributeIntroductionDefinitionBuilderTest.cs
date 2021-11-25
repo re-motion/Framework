@@ -220,7 +220,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       var mixinType = typeof(MixinIndirectlyAddingAttributeInheritedFromAttributeSourceBase);
       var target = DefinitionObjectMother.GetTargetClassDefinition(typeof(NullTarget), mixinType);
-      
+
       var mixin = target.Mixins[mixinType];
       Assert.That(mixin.CustomAttributes.Keys, Has.Member(typeof(InheritableAttribute)));
       Assert.That(mixin.CustomAttributes.Keys, Has.No.Member(typeof(NonInheritableAttribute)));
@@ -279,7 +279,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       {
         TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(TargetClassSuppressingBT1Attribute));
         Assert.That(definition.ReceivedAttributes.ContainsKey(typeof(BT1Attribute)), Is.False);
-        
+
         Assert.That(definition.Mixins[typeof(MixinAddingBT1Attribute)].SuppressedAttributeIntroductions.ContainsKey(typeof(BT1Attribute)), Is.True);
 
         SuppressedAttributeIntroductionDefinition[] suppressedAttributes =
@@ -327,7 +327,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
         Assert.That(suppressedAttributes[0].Target, Is.SameAs(definition));
       }
     }
-    
+
     [Test]
     public void IntroducedAttribute_NoSelfSuppress ()
     {

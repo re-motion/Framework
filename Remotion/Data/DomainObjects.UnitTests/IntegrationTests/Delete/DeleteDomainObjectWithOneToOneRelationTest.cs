@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       computer.Delete();
 
-      ChangeState[] expectedStates = new ChangeState[] 
+      ChangeState[] expectedStates = new ChangeState[]
     {
       new ObjectDeletionState(computer, "1. Deleting of computer"),
       new ObjectDeletionState(computer, "2. Deleted of computer")

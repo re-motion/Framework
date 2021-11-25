@@ -89,10 +89,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     public abstract string PropertyWithDefaultPermission { get; set; }
 
-    public abstract string PropertyWithCustomPermission 
-    { 
-      [DemandPermission (TestAccessTypes.First)] get; 
-      [DemandPermission (TestAccessTypes.Second)] set; 
+    public abstract string PropertyWithCustomPermission
+    {
+      [DemandPermission (TestAccessTypes.First)] get;
+      [DemandPermission (TestAccessTypes.Second)] set;
     }
 
     public string ReadOnlyProperty

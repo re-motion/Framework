@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.Infrastructure
       var aclExpansionEntryCreator = new AclExpansionEntryCreator();
       //AclProbe aclProbe;
       //AccessTypeStatistics accessTypeStatistics;
-      var accessTypesResult = 
+      var accessTypesResult =
         aclExpansionEntryCreator.GetAccessTypes(new UserRoleAclAceCombination(Role2, ace)); //, out aclProbe, out accessTypeStatistics);
 
       Assert.That(accessTypesResult.AccessInformation.AllowedAccessTypes, Is.EquivalentTo(new[] { ReadAccessType, DeleteAccessType }));

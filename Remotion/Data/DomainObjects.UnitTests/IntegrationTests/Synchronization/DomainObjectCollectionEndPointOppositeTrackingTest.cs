@@ -43,14 +43,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       base.SetUp();
 
       _folder1 = Folder.NewObject();
-      
+
       _fileSystemItem1 = FileSystemItem.NewObject();
       _fileSystemItem2 = FileSystemItem.NewObject();
       _fileSystemItem3 = FileSystemItem.NewObject();
 
       _folder1.FileSystemItems.Add(_fileSystemItem1);
       _folder1.FileSystemItems.Add(_fileSystemItem2);
-      
+
       TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope();
 
       _folder1.FileSystemItems.EnsureDataComplete();

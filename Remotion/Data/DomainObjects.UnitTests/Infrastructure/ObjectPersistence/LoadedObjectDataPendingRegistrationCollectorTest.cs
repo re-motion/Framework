@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var result1 = _collector.Add(_data1);
       Assert.That(_collector.DataPendingRegistration, Is.EquivalentTo(new[] { _data1 }));
       Assert.That(result1, Is.SameAs(_data1));
-      
+
       var result2 = _collector.Add(_data2);
       Assert.That(_collector.DataPendingRegistration, Is.EquivalentTo(new[] { _data1, _data2 }));
       Assert.That(result2, Is.SameAs(_data2));

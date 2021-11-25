@@ -121,7 +121,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(functionType, attribute);
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-     
+
       switch (helper.MethodType)
       {
         case MethodType.Instance:

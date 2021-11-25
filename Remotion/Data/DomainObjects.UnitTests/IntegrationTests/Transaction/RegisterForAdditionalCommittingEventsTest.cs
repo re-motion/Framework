@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       MockRepository.VerifyAll();
     }
-    
+
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObjectAndRegisterForAdditionalCommittingEvents ()
     {
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         // No more additional runs
         ExpectCommittingEvents(Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
-        
+
         ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject, UnchangedObject);
 
         ExpectCommittedEvents(

@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
                               { _orderTicketEndPointDefinition, _fetchQueryStub1 },
                               { _customerEndPointDefinition, _fetchQueryStub2 }
                           };
-      
+
       var originatingObjectsData = new[] { _originatingOrderData1, _originatingOrderData2 };
       var relatedObjectsData1 = new[] { _fetchedOrderItemData1, _fetchedOrderItemData2, _fetchedOrderItemData3 };
       var relatedObjectsData2 = new[] { _fetchedCustomerData };

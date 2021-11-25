@@ -20,6 +20,6 @@ namespace Remotion.Globalization.UnitTests.TestDomain
 {
   public class ClassWithoutMultiLingualResourcesAttributes
   {
-    
+
   }
 }

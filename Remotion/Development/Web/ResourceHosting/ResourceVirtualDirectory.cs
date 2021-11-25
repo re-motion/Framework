@@ -47,7 +47,7 @@ namespace Remotion.Development.Web.ResourceHosting
     {
       get { return _virtualPath;  }
     }
-    
+
     public virtual string? PhysicalPath
     {
       get

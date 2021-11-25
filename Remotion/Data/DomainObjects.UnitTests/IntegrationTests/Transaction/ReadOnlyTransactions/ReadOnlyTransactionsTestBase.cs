@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     {
       var expectedMessage = string.Format(
           "The operation cannot be executed because the ClientTransaction is read-only, probably because it has an open subtransaction. "
-          + "Offending transaction modification: {0}.", 
+          + "Offending transaction modification: {0}.",
           operation);
       Assert.That(() => func(), Throws.TypeOf<ClientTransactionReadOnlyException>().With.Message.EqualTo(expectedMessage));
     }

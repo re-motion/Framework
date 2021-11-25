@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       CollectionMockEventReceiver
           .Expect(mock => mock.Removed(_removedRelatedObject))
           .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
-      
+
       _command.End();
 
       TransactionEventSinkMock.VerifyAllExpectations();

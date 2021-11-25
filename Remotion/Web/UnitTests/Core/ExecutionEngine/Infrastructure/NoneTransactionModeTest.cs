@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
       WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
-      
+
       ITransactionMode transactionMode = new NoneTransactionMode();
       TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
 

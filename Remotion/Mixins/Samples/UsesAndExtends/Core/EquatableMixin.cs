@@ -39,7 +39,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
       {
         object thisFieldValue = s_targetFields[i].GetValue(Target);
         object otherFieldValue = s_targetFields[i].GetValue(other);
-        
+
         if (!Equals(thisFieldValue, otherFieldValue))
           return false;
       }
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
       var fieldValues = new object[s_targetFields.Length];
       for (int i = 0; i < fieldValues.Length; ++i)
         fieldValues[i] = s_targetFields[i].GetValue(Target);
-      
+
       return EqualityUtility.GetRotatedHashCode(fieldValues);
     }
   }

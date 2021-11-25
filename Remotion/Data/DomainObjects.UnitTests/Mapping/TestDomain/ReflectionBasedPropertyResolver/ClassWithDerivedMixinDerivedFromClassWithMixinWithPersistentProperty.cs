@@ -22,6 +22,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBas
   [Uses (typeof(MixinDerivedFromMixinWithPersistentProperty))]
   public class ClassWithDerivedMixinDerivedFromClassWithMixinWithPersistentProperty : ClassWithMixinWithPersistentProperty
   {
-    
+
   }
 }

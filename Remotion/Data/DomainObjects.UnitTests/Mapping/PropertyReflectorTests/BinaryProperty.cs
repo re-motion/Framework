@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
   [TestFixture]
   public class BinaryProperty: BaseTest
   {
-    
+
     [Test]
     public void GetMetadata_NoDomainObjectAndNoValueType_NullableTrue ()
     {
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(new byte[0]));
     }
-    
+
     [Test]
     public void GetMetadata_WithMaximumLength ()
     {

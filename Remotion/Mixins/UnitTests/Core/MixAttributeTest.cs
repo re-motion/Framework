@@ -245,7 +245,7 @@ namespace Remotion.Mixins.UnitTests.Core
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.EqualTo("Supper?"));
     }
-    
+
     [Test]
     public void Equals_True ()
     {

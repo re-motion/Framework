@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _childTransactionMock = new Mock<ITransaction>(MockBehavior.Strict);
       _executionContextStub = new Mock<IWxeFunctionExecutionContext>();
       _executionListenerStub = new Mock<IWxeFunctionExecutionListener>();
-     
+
       _executionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
       _parentTransactionMock.Setup(stub => stub.CreateChild()).Returns(_childTransactionMock.Object);
       _childTransactionMock.Setup(stub => stub.EnsureCompatibility(It.IsNotNull<IEnumerable>()));

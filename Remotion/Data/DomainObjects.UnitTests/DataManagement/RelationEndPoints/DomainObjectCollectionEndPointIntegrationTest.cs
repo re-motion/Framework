@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private Order _order3; // belongs to customer3
 
     private DomainObjectCollectionEndPoint _customerEndPoint;
-    
+
     public override void SetUp ()
     {
       base.SetUp();
@@ -44,10 +44,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _order2 = DomainObjectIDs.Order2.GetObject<Order>();
       _order3 = DomainObjectIDs.Order3.GetObject<Order>();
 
-      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingDomainObjectCollectionEndPointDecorator) 
+      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingDomainObjectCollectionEndPointDecorator)
           TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
-            RelationEndPointID.Create(DomainObjectIDs.Customer1, 
-            typeof(Customer), 
+            RelationEndPointID.Create(DomainObjectIDs.Customer1,
+            typeof(Customer),
             "Orders"));
       _customerEndPoint = (DomainObjectCollectionEndPoint) stateUpdateRaisingEndPointDecorator.InnerEndPoint;
     }
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var newOpposites = new OrderCollection { _order2, _order3};
 
       var customer3 = DomainObjectIDs.Customer3.GetObject<Customer>();
-      
+
       Assert.That(_order1.Customer, Is.SameAs(_customerEndPoint.GetDomainObject()));
       Assert.That(_order2.Customer, Is.SameAs(_customerEndPoint.GetDomainObject()));
       Assert.That(_order3.Customer, Is.SameAs(customer3));
@@ -497,7 +497,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _customerEndPoint.Touch();
       _customerEndPoint.MarkDataIncomplete();
-      
+
       var result = _customerEndPoint.HasBeenTouched;
 
       Assert.That(_customerEndPoint.IsDataComplete, Is.False);

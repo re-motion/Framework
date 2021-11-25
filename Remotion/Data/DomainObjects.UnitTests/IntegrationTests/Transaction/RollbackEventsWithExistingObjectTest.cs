@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         LastCall.IgnoreArguments();
         _clientTransactionExtensionMock.PropertyValueChanged(TestableClientTransaction, null, null, null, null);
         LastCall.IgnoreArguments();
-        
+
         _customer1MockEventReceiver.RollingBack(null, null);
         LastCall.Constraints(Is.Same(_customer1), Is.NotNull());
 

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
   {
     private ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule _validationRule;
     private ClassDefinition _classDefinition;
-    
+
     [SetUp]
     public void SetUp ()
     {

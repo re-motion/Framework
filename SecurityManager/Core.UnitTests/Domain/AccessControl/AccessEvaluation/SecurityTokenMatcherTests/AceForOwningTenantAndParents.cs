@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       _companyHelper = new CompanyStructureHelper(TestHelper.Transaction);
 
       _ace = TestHelper.CreateAceWithOwningTenant();
@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       User principal = CreateUser(_companyHelper.CompanyTenant, null);
       Tenant owningTenant = _companyHelper.CompanyTenant;
-      
+
       SecurityToken token = TestHelper.CreateTokenWithOwningTenant(principal, owningTenant);
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);

@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           () => control.SelectOption().WithItemID("ItemID4"),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption.WithItemID").Message));
       Assert.That(
-          () => control.SelectOption("ItemID4"), 
+          () => control.SelectOption("ItemID4"),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption(value)").Message));
     }
 

@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     }
 
     private ILookup<ObjectID, ILoadedObjectData> CorrelateRelatedObjects (
-        IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects, 
+        IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects,
         IRelationEndPointDefinition relationEndPointDefinition)
     {
       var relatedObjectsWithForeignKey = GetForeignKeysForVirtualEndPointDefinition(relatedObjects, relationEndPointDefinition);

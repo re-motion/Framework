@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public DomainObjectTypeIsNotGenericValidationRule ()
     {
-      
+
     }
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)

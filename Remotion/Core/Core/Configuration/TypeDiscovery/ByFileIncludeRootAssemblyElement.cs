@@ -40,7 +40,7 @@ namespace Remotion.Configuration.TypeDiscovery
     public override FilePatternSpecification CreateSpecification ()
     {
       return new FilePatternSpecification(
-          FilePattern, 
+          FilePattern,
           IncludeReferencedAssemblies ? FilePatternSpecificationKind.IncludeFollowReferences : FilePatternSpecificationKind.IncludeNoFollow);
     }
   }

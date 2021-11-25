@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       var order = DomainObjectIDs.OrderWithoutOrderItems.GetObject<Order>();
 
       Assert.That(
-          () => order.OrderItems.EnsureDataComplete(), 
+          () => order.OrderItems.EnsureDataComplete(),
           Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
               "Collection for mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' "
               + "on object 'Order|f7607cbc-ab34-465c-b282-0531d51f3b04|System.Guid' contains no items."));

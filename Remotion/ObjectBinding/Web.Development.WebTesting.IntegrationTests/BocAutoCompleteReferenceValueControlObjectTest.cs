@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => control.FillWith("text", FinishInput.Promptly),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "FillWith").Message));
       Assert.That(
-          () => control.SelectFirstMatch("DoesntMatter"), 
+          () => control.SelectFirstMatch("DoesntMatter"),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectFirstMatch").Message));
       Assert.That(
           () => control.SelectFirstMatch("DoesntMatter", FinishInput.WithTab),
@@ -334,13 +334,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(control.IsReadOnly(), Is.True);
       Assert.That(() => control.FillWith("text"), Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.FillWith("text", FinishInput.Promptly), 
+          () => control.FillWith("text", FinishInput.Promptly),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SelectFirstMatch("DoesntMatter"), 
+          () => control.SelectFirstMatch("DoesntMatter"),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SelectFirstMatch("DoesntMatter", FinishInput.WithTab), 
+          () => control.SelectFirstMatch("DoesntMatter", FinishInput.WithTab),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 

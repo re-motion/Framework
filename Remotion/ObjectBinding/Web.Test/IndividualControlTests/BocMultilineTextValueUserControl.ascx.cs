@@ -63,7 +63,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
- 
+
     this.CVField.TextChanged += new EventHandler(this.CVField_TextChanged);
     this.CVTestSetNullButton.Click += new EventHandler(this.CVTestSetNullButton_Click);
     this.CVTestSetNewValueButton.Click += new EventHandler(this.CVTestSetNewValueButton_Click);
@@ -91,7 +91,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
     UnboundReadOnlyCVField.LoadUnboundValue(person.CV, IsPostBack);
     DisabledUnboundCVField.LoadUnboundValue(person.CV, IsPostBack);
     DisabledUnboundReadOnlyCVField.LoadUnboundValue(person.CV, IsPostBack);
-    
+
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
@@ -160,7 +160,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.

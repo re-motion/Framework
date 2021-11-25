@@ -54,14 +54,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public bool IsIndexEnabled { get; set; }
     public bool IsSelectionEnabled { get; set; }
     public ICollection<BocListSortingOrderEntry>? SortingOrder { get; set; }
-    
+
     public BocColumnRenderer[] CreateColumnRenderers ()
     {
       var sortingDirections = new Dictionary<int, SortingDirection>();
       var sortingOrder = new List<int>();
-      
+
       PrepareSorting(sortingDirections, sortingOrder);
-      
+
       var firstValueColumnRendered = false;
       var bocColumnRenderers = new List<BocColumnRenderer>(_columnDefinitions.Length);
       var visibleColumnIndex = GetInitialVisibleColumnIndex();
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         {
           var columnRenderer = columnDefinition.GetRenderer(_serviceLocator);
           bocColumnRenderers.Add(new BocColumnRenderer(columnRenderer, columnDefinition, columnIndex, visibleColumnIndex, showIcon, sortingDirection, orderIndex));
-          
+
           visibleColumnIndex++;
         }
         else
@@ -142,7 +142,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var columnAsDropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
       if (columnAsDropDownMenuColumn != null)
         return IsColumnVisibleForBocDropDownMenuColumnDefinition(columnAsDropDownMenuColumn);
-      
+
       return true;
     }
 
@@ -172,6 +172,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return false;
       return IsBrowserCapableOfScripting;
     }
-    
+
   }
 }

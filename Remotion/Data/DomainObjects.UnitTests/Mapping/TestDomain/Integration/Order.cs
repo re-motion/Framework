@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
       [LinqPropertyRedirection (typeof(Order), "RedirectedOrderNumber")]
       get { return RedirectedOrderNumber; }
     }
-    
+
     public abstract DateTime DeliveryDate { get; set; }
 
     [Mandatory]

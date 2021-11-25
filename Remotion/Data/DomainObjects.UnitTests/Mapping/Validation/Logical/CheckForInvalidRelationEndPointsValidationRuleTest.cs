@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       AssertMappingValidationResult(validationResult, true, null);
     }
-    
+
     [Test]
     public void RelationDefinitionWithPropertyNotFoundRelationEndPointDefinition ()
     {

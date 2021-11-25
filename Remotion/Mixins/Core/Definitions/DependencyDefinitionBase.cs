@@ -105,7 +105,7 @@ namespace Remotion.Mixins.Definitions
       else if (TargetClass.ReceivedInterfaces.ContainsKey(RequiredType.Type))
         return TargetClass.ReceivedInterfaces[RequiredType.Type].Implementer;
       else if (!RequiredType.IsEmptyInterface) // duck interface
-        return TargetClass; 
+        return TargetClass;
       else
         return null; // empty interface that is neither introduced nor implemented
     }

@@ -86,8 +86,8 @@ public class ValidatableControlInitializer
             parentControl != null;
             parentControl = parentControl.Parent)
         {
-          if (   parentControl is IValidatableControl 
-              && parentControl is ISmartControl 
+          if (   parentControl is IValidatableControl
+              && parentControl is ISmartControl
               && ((ISmartControl)parentControl).TargetControl == validatedControl)
           {
             ((IValidatableControl)parentControl).RegisterValidator(validator);

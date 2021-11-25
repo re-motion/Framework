@@ -106,7 +106,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
           .Setup(mock => mock.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, _context))
           .Returns(fakeChildTransactionStrategy)
           .Verifiable();
-      
+
       TransactionStrategyBase actual = noneTransactionStrategy.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, _context);
       Assert.That(actual, Is.SameAs(fakeChildTransactionStrategy));
     }

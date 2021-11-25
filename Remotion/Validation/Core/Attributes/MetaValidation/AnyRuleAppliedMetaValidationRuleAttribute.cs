@@ -32,7 +32,7 @@ namespace Remotion.Validation.Attributes.MetaValidation
     public override IPropertyMetaValidationRule GetMetaValidationRule (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull("property", property);
-      
+
       return new AnyRuleAppliedPropertyMetaValidationRule(property);
     }
   }

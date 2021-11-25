@@ -55,7 +55,7 @@ public class EmailAddressValidator : BaseValidator
   protected override bool EvaluateIsValid ()
   {
     string text = base.GetControlValidationValue(base.ControlToValidate);
-    
+
     if (text == null)
       return true;
     if (_enableTrimming)
@@ -65,7 +65,7 @@ public class EmailAddressValidator : BaseValidator
 
     return IsMatchComplete(text);
   }
- 
+
   /// <summary> Tests the passed <paramref name="emailAddress"/> if it is valid. </summary>
   /// <param name="emailAddress"> The e-mail address to test. </param>
   /// <returns> 

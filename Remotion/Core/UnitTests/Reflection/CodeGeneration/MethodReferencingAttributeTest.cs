@@ -30,9 +30,9 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
     {
       var wrappedMethod = typeof(DateTime).GetMethod("get_Now");
       var attribute = new TestMethodReferencingAttribute(typeof(DateTime), "get_Now", wrappedMethod.ToString());
-      
+
       var resolvedMethod = attribute.ResolveReferencedMethod();
-      
+
       Assert.That(resolvedMethod, Is.EqualTo(wrappedMethod));
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
     {
       MethodInfo wrappedMethod = typeof(List<string>).GetMethod("Add");
       var attribute = new TestMethodReferencingAttribute(typeof(List<string>), "Add", wrappedMethod.ToString());
-      
+
       var resolvedMethod = attribute.ResolveReferencedMethod();
 
       Assert.That(resolvedMethod, Is.EqualTo(wrappedMethod));
@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
     {
       MethodInfo wrappedMethod = typeof(List<int>).GetMethod("Add");
       var attribute = new TestMethodReferencingAttribute(typeof(List<int>), "Add", wrappedMethod.ToString());
-      
+
       var resolvedMethod = attribute.ResolveReferencedMethod();
 
       Assert.That(resolvedMethod, Is.EqualTo(wrappedMethod));
@@ -63,7 +63,7 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
     {
       MethodInfo wrappedMethod = typeof(ClassWithConstrainedGenericMethod).GetMethod("GenericMethod");
       var attribute = new TestMethodReferencingAttribute(typeof(ClassWithConstrainedGenericMethod), "GenericMethod", wrappedMethod.ToString());
-      
+
       var resolvedMethod = attribute.ResolveReferencedMethod();
 
       Assert.That(resolvedMethod, Is.EqualTo(wrappedMethod));
@@ -75,7 +75,7 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
       var genericType = typeof(GenericClassWithGenericMethod<IConvertible, List<string>, DateTime, object, IConvertible,  List<List<IConvertible[]>>>);
       MethodInfo wrappedMethod = genericType.GetMethod("GenericMethod");
       var attribute = new TestMethodReferencingAttribute(genericType, "GenericMethod", wrappedMethod.ToString());
-      
+
       var resolvedMethod = attribute.ResolveReferencedMethod();
 
       Assert.That(resolvedMethod, Is.EqualTo(wrappedMethod));

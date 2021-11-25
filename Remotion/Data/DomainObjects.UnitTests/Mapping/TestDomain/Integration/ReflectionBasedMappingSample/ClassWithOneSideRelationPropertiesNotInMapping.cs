@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
       get { throw new NotImplementedException(); }
     }
-  
+
     [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
     private IObjectList<ClassWithRealRelationEndPoints> BasePrivateBidirectionalOneToManyForVirtualCollection
     {

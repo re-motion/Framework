@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       DomainModelConstraintProviderStub
         .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BaseUnidirectional")))
         .Return(true);
-      
+
       RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector("BaseUnidirectional");
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BaseBidirectionalOneToManyForVirtualCollection")));
       Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
     }
-    
+
     [Test]
     public void IsVirtualEndRelationEndpoint_Unidirectional ()
     {

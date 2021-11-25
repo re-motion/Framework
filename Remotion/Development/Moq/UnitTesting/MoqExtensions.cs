@@ -19,6 +19,6 @@ namespace Remotion.Development.Moq.UnitTesting
 {
   public static partial class MoqExtensions
   {
-    
+
   }
 }

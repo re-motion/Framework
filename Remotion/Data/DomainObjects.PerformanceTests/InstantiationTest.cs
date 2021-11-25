@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       bool found = true;
       var stopwatch = new Stopwatch();
-      
+
       var transaction = ClientTransaction.CreateRootTransaction();
       LifetimeService.GetObjectReference(transaction, new ObjectID(typeof(Person), Guid.NewGuid()));
 

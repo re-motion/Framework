@@ -50,7 +50,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
 
       classBuilderMock
           .Expect(mock => mock.AddComposedInterfaces(
-              typeof(ClassWithHasComposedInterfaces.IComposedInterface1), 
+              typeof(ClassWithHasComposedInterfaces.IComposedInterface1),
               typeof(ClassWithHasComposedInterfaces.IComposedInterface2)))
           .Return(null);
       classBuilderMock.Replay();

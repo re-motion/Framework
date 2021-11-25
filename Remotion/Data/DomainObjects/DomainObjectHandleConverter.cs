@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects
         var message = string.Format("This TypeConverter can only convert values of type '{0}'.", typeof(IDomainObjectHandle<IDomainObject>));
         throw new NotSupportedException(message);
       }
-      
+
       return domainObjectHandle.ObjectID.ToString();
     }
   }

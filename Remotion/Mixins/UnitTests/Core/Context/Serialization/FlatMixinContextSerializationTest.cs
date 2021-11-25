@@ -66,7 +66,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     public void AddExplicitDependencies ()
     {
       _serializer.AddExplicitDependencies(new[] {typeof(int), typeof(string)});
-      Assert.That(_serializer.Values[3], 
+      Assert.That(_serializer.Values[3],
           Is.EqualTo(new[] {typeof(int).AssemblyQualifiedName, typeof(string).AssemblyQualifiedName}));
 
       var deserializer = new FlatMixinContextDeserializer(_serializer.Values);

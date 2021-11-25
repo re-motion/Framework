@@ -305,7 +305,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void CreateForeignKeyConstraint ()
     {
       var referencedColumnDefinition = ColumnDefinitionObjectMother.CreateColumn("c2");
-      
+
       var referencedValuePropertyStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
       referencedValuePropertyStub.Stub(stub => stub.GetColumnsForComparison()).Return(new[] { referencedColumnDefinition });
 
@@ -316,7 +316,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _valuePropertyStub
           .Stub(stub => stub.GetColumnsForComparison())
           .Return(new[] { _valueColumnDefinition });
-      
+
       var result = _objectIDWithoutClassIDStoragePropertyDefinition.CreateForeignKeyConstraint(
           cols =>
           {

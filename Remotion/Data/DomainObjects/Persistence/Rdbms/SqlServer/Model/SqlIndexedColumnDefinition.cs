@@ -45,6 +45,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
     {
       get { return _indexOrder; }
     }
-    
+
   }
 }

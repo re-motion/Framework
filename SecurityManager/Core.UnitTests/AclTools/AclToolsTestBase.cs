@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
   {
     public StatefulAccessControlList Acl { get; private set; }
     public StatefulAccessControlList Acl2 { get; private set; }
-    
+
     public AccessTypeDefinition DeleteAccessType { get; private set; }
     public AccessTypeDefinition WriteAccessType { get; private set; }
     public AccessTypeDefinition ReadAccessType { get; private set; }
@@ -119,7 +119,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
       SecurableClassDefinition orderClass = SetUpFixture.OrderClassHandle.GetObject();
       var aclList = orderClass.StatefulAccessControlLists;
       Assert.That(aclList.Count, Is.GreaterThanOrEqualTo(2));
-      
+
       Acl = aclList[0];
       TestHelper.AttachAces(Acl, Ace, Ace2, Ace3);
 
@@ -150,7 +150,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
     }
 
 
-    protected List<AclExpansionEntry> GetAclExpansionEntryList (List<User> userList, List<AccessControlList> aclList, 
+    protected List<AclExpansionEntry> GetAclExpansionEntryList (List<User> userList, List<AccessControlList> aclList,
       bool sortedAndDistinct)
     {
       var userFinderStub = new Mock<IAclExpanderUserFinder>();
@@ -160,8 +160,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
       aclFinderStub.Setup(mock => mock.FindAccessControlLists()).Returns(aclList).Verifiable();
 
       var aclExpander = new AclExpander(userFinderStub.Object, aclFinderStub.Object);
-      
-      List<AclExpansionEntry> aclExpansionEntryList; 
+
+      List<AclExpansionEntry> aclExpansionEntryList;
 
       if (sortedAndDistinct)
       {

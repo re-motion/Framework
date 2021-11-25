@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IClientTransactionEventSink _transactionEventSinkStub;
     private IVirtualObjectEndPointDataManagerFactory _dataManagerFactory;
     private IVirtualObjectEndPointLoadState _loadStateMock;
-    
+
     private VirtualObjectEndPoint _endPoint;
 
     private IRealObjectEndPoint _oppositeEndPointStub;
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       base.SetUp();
 
       _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
-    
+
       _lazyLoaderMock = MockRepository.GenerateStrictMock<ILazyLoader>();
       _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
       _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
@@ -59,9 +59,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _loadStateMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPointLoadState>();
 
       _endPoint = new VirtualObjectEndPoint(
-          ClientTransaction.Current, 
-          _endPointID, 
-          _lazyLoaderMock, 
+          ClientTransaction.Current,
+          _endPointID,
+          _lazyLoaderMock,
           _endPointProviderStub,
           _transactionEventSinkStub,
           _dataManagerFactory);
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _loadStateMock.VerifyAllExpectations();
       Assert.That(result, Is.True);
     }
-    
+
     [Test]
     public void IsSynchronized ()
     {
@@ -295,7 +295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var dataManagerStub = MockRepository.GenerateStub<IVirtualObjectEndPointDataManager>();
       stateSetter(dataManagerStub);
-      
+
       var newLoadState = VirtualObjectEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.Not.SameAs(_loadStateMock));
       Assert.That(newLoadState, Is.TypeOf(typeof(CompleteVirtualObjectEndPointLoadState)));
@@ -440,7 +440,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(_endPoint.HasBeenTouched, Is.False);
 
       _endPoint.Touch();
-      
+
       Assert.That(_endPoint.HasBeenTouched, Is.True);
     }
 

@@ -149,7 +149,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void DynamicInvoke_ValueType_DefaultCtor ()
     {
       var info = new ConstructorLookupInfo(typeof(int));
-      
+
       var instance = info.DynamicInvoke(new Type[0], new object[0]);
 
       Assert.That(instance, Is.EqualTo(new int()));

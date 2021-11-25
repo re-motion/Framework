@@ -27,7 +27,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   public class WebTabRendererAdapterArrayBuilder
   {
     private readonly IWebTab[] _webTabs;
-    
+
     public WebTabRendererAdapterArrayBuilder (IWebTab[] webTabs, WebTabStyle tabStyle, WebTabStyle selectedTabStyle)
     {
       ArgumentUtility.CheckNotNull("webTabs", webTabs);
@@ -57,6 +57,6 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       }
       return rendererAdapters.ToArray();
     }
-    
+
   }
 }

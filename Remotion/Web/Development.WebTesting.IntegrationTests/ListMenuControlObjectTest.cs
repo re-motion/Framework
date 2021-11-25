@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var items = listMenu.GetItemDefinitions();
       Assert.That(items.Count, Is.EqualTo(6));
-      
+
       Assert.That(items[0].ItemID, Is.EqualTo("ItemID1"));
       Assert.That(items[0].Index, Is.EqualTo(1));
       Assert.That(items[0].Text, Is.EqualTo("EventItem"));

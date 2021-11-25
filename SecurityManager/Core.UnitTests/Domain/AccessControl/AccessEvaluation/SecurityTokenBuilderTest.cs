@@ -702,7 +702,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       ISecurityPrincipal principal = CreateTestPrincipal();
 
       using (ClientTransactionTestHelper.MakeInactive(ClientTransactionScope.CurrentTransaction))
-      {  
+      {
         SecurityToken token = _securityTokenBuilder.CreateToken(principal, context);
 
         Assert.That(token.Principal.IsNull, Is.False);

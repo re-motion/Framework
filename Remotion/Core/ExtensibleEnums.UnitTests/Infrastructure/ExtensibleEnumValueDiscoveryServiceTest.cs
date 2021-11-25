@@ -63,11 +63,11 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetStaticTypes ()
     {
-      var types = new[] { 
-          typeof(object), 
-          typeof(Color), 
-          typeof(ColorExtensions), 
-          typeof(DateTime), 
+      var types = new[] {
+          typeof(object),
+          typeof(Color),
+          typeof(ColorExtensions),
+          typeof(DateTime),
           typeof(CollectionBase),
           typeof(WrongColorValuesGeneric<>)
       };
@@ -84,9 +84,9 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
 
       var result = _service.GetValueInfosForTypes(_fakeColorDefinition, types).ToArray();
 
-      var expected = new[] { 
-          new { Value = Color.Values.Red(), DeclaringMethod = _redMethod }, 
-          new { Value = Color.Values.Green(), DeclaringMethod = _greenMethod }, 
+      var expected = new[] {
+          new { Value = Color.Values.Red(), DeclaringMethod = _redMethod },
+          new { Value = Color.Values.Green(), DeclaringMethod = _greenMethod },
           new { Value = (Color) Color.Values.RedMetallic(), DeclaringMethod = _redMetallicMethod }, };
 
       Assert.That(result.Select(info => new { info.Value, DeclaringMethod = info.DefiningMethod }).ToArray(), Is.EquivalentTo(expected));
@@ -97,8 +97,8 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     {
       var result = _service.GetValueInfosForType(_fakeColorDefinition, typeof(ColorExtensions)).ToArray();
 
-      var expected = new[] { 
-          new { Value = Color.Values.Red(), DeclaringMethod = _redMethod }, 
+      var expected = new[] {
+          new { Value = Color.Values.Red(), DeclaringMethod = _redMethod },
           new { Value = Color.Values.Green(), DeclaringMethod = _greenMethod }, };
 
       Assert.That(result.Select(info => new { info.Value, DeclaringMethod = info.DefiningMethod }).ToArray(), Is.EquivalentTo(expected));
@@ -198,7 +198,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
 
       var declaringMethodOfGreen = valueInfos.Where(info => info.Value.ID == "Green").Single().DefiningMethod;
       var declaringMethodOfRed = valueInfos.Where(info => info.Value.ID == "Red").Single().DefiningMethod;
-      
+
       Assert.That(declaringMethodOfGreen, Is.EqualTo(_greenMethod));
       Assert.That(declaringMethodOfRed, Is.EqualTo(_redMethod));
     }

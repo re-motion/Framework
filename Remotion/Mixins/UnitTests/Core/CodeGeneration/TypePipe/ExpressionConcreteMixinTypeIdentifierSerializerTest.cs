@@ -44,7 +44,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _simpleMethod1 = Assertion.IsNotNull(typeof(BT1Mixin1).GetMethod("VirtualMethod"));
       _simpleMethod2 = Assertion.IsNotNull(typeof(BT1Mixin2).GetMethod("VirtualMethod"));
       _genericMethod = Assertion.IsNotNull(typeof(BaseType7).GetMethod("One"));
-      
+
       _methodOnGenericClosedWithReferenceType = typeof(GenericClassWithAllKindsOfMembers<string>).GetMethod("Method");
       _methodOnGenericClosedWithValueType = typeof(GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
     }

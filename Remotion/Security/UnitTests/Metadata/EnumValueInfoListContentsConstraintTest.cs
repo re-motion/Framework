@@ -73,9 +73,9 @@ namespace Remotion.Security.UnitTests.Metadata
 
       var constraint = new EnumValueInfoListContentsConstraintResult(null, _list, "ExpectedName", false);
       constraint.WriteMessageTo(writerMock.Object);
-      
+
       writerMock.Verify();
     }
-    
+
   }
 }

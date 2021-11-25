@@ -82,13 +82,13 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     private void CheckClassDefinitionOfRelatedObject (
         IRelationEndPointDefinition relationEndPointDefinition,
-        IRelationEndPointDefinition oppositeEndPointDefinition, 
+        IRelationEndPointDefinition oppositeEndPointDefinition,
         ObjectID relatedObjectID)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
       ArgumentUtility.CheckNotNull("oppositeEndPointDefinition", oppositeEndPointDefinition);
       ArgumentUtility.CheckNotNull("relatedObjectID", relatedObjectID);
-      
+
 
       if (!oppositeEndPointDefinition.ClassDefinition.IsSameOrBaseClassOf(relatedObjectID.ClassDefinition))
       {
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     }
 
     protected IEnumerable<Tuple<ObjectID, LoadedObjectDataWithDataSourceData>> GetForeignKeysForVirtualEndPointDefinition (
-        IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData, 
+        IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData,
         IRelationEndPointDefinition relationEndPointDefinition)
     {
       ArgumentUtility.CheckNotNull("loadedObjectData", loadedObjectData);
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     private DataContainer CheckRelatedObjectAndGetDataContainer (
         LoadedObjectDataWithDataSourceData relatedObject,
-        IRelationEndPointDefinition relationEndPointDefinition, 
+        IRelationEndPointDefinition relationEndPointDefinition,
         IRelationEndPointDefinition oppositeEndPointDefinition)
     {
       CheckClassDefinitionOfRelatedObject(relationEndPointDefinition, oppositeEndPointDefinition, relatedObject.LoadedObjectData.ObjectID);

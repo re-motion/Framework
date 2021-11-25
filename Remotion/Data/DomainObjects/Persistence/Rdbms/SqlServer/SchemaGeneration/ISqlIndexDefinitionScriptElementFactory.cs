@@ -28,6 +28,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   public interface ISqlIndexDefinitionScriptElementFactory<in T> where T:SqlIndexDefinitionBase
   {
     IScriptElement GetCreateElement (T table, EntityNameDefinition ownerName);
-    IScriptElement GetDropElement (T table, EntityNameDefinition ownerName); 
+    IScriptElement GetDropElement (T table, EntityNameDefinition ownerName);
   }
 }

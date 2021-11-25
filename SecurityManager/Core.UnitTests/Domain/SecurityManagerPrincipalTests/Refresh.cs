@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       base.TearDown();
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
     }
-    
+
     [Test]
     public void SameDomainRevisionDoesNotChangeTransaction ()
     {

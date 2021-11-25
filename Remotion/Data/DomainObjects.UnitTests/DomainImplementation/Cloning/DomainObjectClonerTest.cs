@@ -124,13 +124,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     {
       var cloneTransaction = ClientTransaction.CreateRootTransaction();
       _cloner.CloneTransaction = cloneTransaction;
-      
+
       DomainObject clone = _cloner.CreateCloneHull(_classWithAllDataTypes);
 
       Assert.That(clone.RootTransaction, Is.SameAs(cloneTransaction));
       Assert.That(cloneTransaction.IsEnlisted(clone), Is.True);
     }
-    
+
     [Test]
     public void CreateCloneHull_TouchesNoProperties ()
     {
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Assert.That(clone.CallbackCurrentTransaction, Is.SameAs(ClientTransaction.Current));
       Assert.That(clone.PropertyValueInCallback, Is.EqualTo(42));
     }
-    
+
     [Test]
     public void SourceTransaction_IsRespected ()
     {
@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     {
       var strategyMock = _mockRepository.Stub<ICloneStrategy>();
       _mockRepository.ReplayAll();
-      
+
       Order clone = _cloner.CreateClone(_order1, strategyMock);
       Assert.That(clone.OrderNumber, Is.EqualTo(_order1.OrderNumber));
       Assert.That(clone.DeliveryDate, Is.EqualTo(_order1.DeliveryDate));
@@ -332,7 +332,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 
       var strategyMock = _mockRepository.StrictMock<ICloneStrategy>();
       var contextMock = _mockRepository.Stub<CloneContext>(_cloner);
-      
+
       Order source;
       using (sourceTransaction.EnterNonDiscardingScope())
         source = Order.NewObject();
@@ -380,7 +380,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     {
       var cloneTransaction = ClientTransaction.CreateRootTransaction();
       _cloner.CloneTransaction = cloneTransaction;
-      
+
       var referencedObject = (ClassWithClonerCallback) LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithClonerCallback), ParamList.Empty);
       referencedObject.Property = 42;
       _classWithClonerCallback.ReferencedObject = referencedObject;
@@ -432,7 +432,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       public DomainObject CallbackOriginal { get; private set; }
       [StorageClassNone]
       public int PropertyValueInCallback { get; private set; }
-      
+
       public void OnObjectCreatedAsClone (ClientTransaction cloneTransaction, DomainObject original)
       {
         CallbackInvoked = true;

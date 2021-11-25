@@ -30,9 +30,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     // Always remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any
     // nested objects to be deserialized in the right order
     public static void GetObjectDataForGeneratedTypes (
-        SerializationInfo info, 
-        StreamingContext context, 
-        object mixin, 
+        SerializationInfo info,
+        StreamingContext context,
+        object mixin,
         ConcreteMixinTypeIdentifier identifier,
         bool serializeBaseMembers,
         string pipelineIdentifier)
@@ -45,7 +45,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var identifierSerializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer(info, "__identifier");
       identifier.Serialize(identifierSerializer);
-      
+
       object?[]? baseMemberValues;
       if (serializeBaseMembers)
       {
@@ -90,8 +90,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         Assertion.IsTrue(typeof(ISerializable).IsAssignableFrom(mixinType));
         _deserializedObject = Activator.CreateInstance(
-            mixinType, 
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
+            mixinType,
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
             null,
             new object[] { info, context },
             null)!;
@@ -103,7 +103,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       return _deserializedObject;
     }
-    
+
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
       throw new NotImplementedException("This should never be called.");

@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetPropertyAccessorData_TypeAndShortName ()
     {
       var data = _orderCache.GetPropertyAccessorData(typeof(Order), "OrderNumber");
-      
+
       Assert.That(data, Is.Not.Null);
       Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyinformation = PropertyInfoAdapter.Create(typeof(IOrder).GetProperty("OrderNumber"));
       var data = _orderCache.ResolvePropertyAccessorData(propertyinformation);
-      
+
       Assert.That(data, Is.Not.Null);
       Assert.That(data, Is.EqualTo(_orderCache.GetPropertyAccessorData(typeof(Order).FullName + ".OrderNumber")));
     }
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyinformation = PropertyInfoAdapter.Create(typeof(OrderItem).GetProperty("Product"));
       var data = _orderCache.ResolvePropertyAccessorData(propertyinformation);
-      
+
       Assert.That(data, Is.Null);
     }
 
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyinformation = PropertyInfoAdapter.Create(typeof(Order).GetProperty("NotInMapping"));
       var data = _orderCache.ResolvePropertyAccessorData(propertyinformation);
-      
+
       Assert.That(data, Is.Null);
     }
 

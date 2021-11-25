@@ -32,9 +32,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var source = QueryFactory.CreateLinqQuery<Order>();
       Expression<Func<Order, Customer>> relatedObjectSelector = o => o.Customer;
-      
+
       var expression = (MethodCallExpression) source.FetchOne(relatedObjectSelector).Expression;
-      
+
       Assert.That(expression.Arguments.Count, Is.EqualTo(2));
       Assert.That(expression.Arguments[0], Is.SameAs(source.Expression));
       Assert.That(((UnaryExpression) expression.Arguments[1]).Operand, Is.SameAs(relatedObjectSelector));

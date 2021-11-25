@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void SetUp ()
     {
       _fakeResult = new object();
-     
+
       _dataReaderMock = MockRepository.GenerateStub<IDataReader>();
       _commandExecutionContextMock = MockRepository.GenerateStrictMock<IRdbmsProviderCommandExecutionContext>();
       _dbCommandMock = MockRepository.GenerateStrictMock<IDbCommand>();
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandMock.Expect(mock => mock.Dispose());
       _dbCommandMock.Replay();
-      
+
       var result = _command.Execute(_commandExecutionContextMock);
 
       _commandExecutionContextMock.VerifyAllExpectations();
@@ -104,6 +104,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock.VerifyAllExpectations();
       Assert.That(result, Is.Null);
     }
-    
+
   }
 }

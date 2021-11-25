@@ -30,7 +30,7 @@ namespace Remotion.Utilities
       public static bool IsAbbreviatedTypeName (string typeName)
       {
         ArgumentUtility.DebugCheckNotNull("typeName", typeName);
-        
+
         return typeName.Contains("::");
       }
 

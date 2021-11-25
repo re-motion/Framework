@@ -46,7 +46,7 @@ namespace Remotion.Logging
     {
       return SafeServiceLocator.Current.GetInstance<ILogManager>().GetLogger(type);
     }
-    
+
     /// <summary>
     /// Initializes the current logging framework.
     /// </summary>

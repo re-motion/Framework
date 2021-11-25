@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     {
       CheckCycleException(
           () => BuildMixedInstance<C>(
-            b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>(), 
+            b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>(),
             typeof(MixinB), typeof(MixinA), typeof(MixinC)),
           typeof(C),
           typeof(MixinA), typeof(MixinB));

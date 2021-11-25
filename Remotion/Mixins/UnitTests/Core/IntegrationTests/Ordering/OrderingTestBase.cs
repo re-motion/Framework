@@ -72,7 +72,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
           "The mixins applied to target class '{0}' cannot be ordered. The following mixin groups require a clear base call ordering, but do not "
           + "provide enough dependency information:{2}{1}.{2}"
           + "Please supply additional dependencies to the mixin definitions, use the AcceptsAlphabeticOrderingAttribute, or adjust the "
-          + "mixin configuration accordingly.", 
+          + "mixin configuration accordingly.",
           targetClass.FullName,
           BuildMixinListForExceptionMessage(conflictingMixinGroups),
           Environment.NewLine);
@@ -82,12 +82,12 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     protected void CheckCycleException<T> (ActualValueDelegate<T> action, Type targetClass, params Type[] mixinTypes)
     {
       var expectedMessage = String.Format(
-          "The mixins applied to target class '{0}' cannot be ordered. The following group of mixins contains circular dependencies:{2}{1}.", 
+          "The mixins applied to target class '{0}' cannot be ordered. The following group of mixins contains circular dependencies:{2}{1}.",
           targetClass.FullName,
           BuildMixinListForExceptionMessage(mixinTypes),
           Environment.NewLine);
       Assert.That(
-          action, 
+          action,
           Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(expectedMessage));
     }
 

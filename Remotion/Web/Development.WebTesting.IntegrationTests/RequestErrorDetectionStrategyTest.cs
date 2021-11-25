@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class RequestErrorDetectionStrategyTest : IntegrationTest
   {
     private DiagnosticInformationCollectioningRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -115,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Anchors().First();
 
       button.Context.CloneForControlSelection();
-      
+
       // Note: Does not call requestErrorDetection
       Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
@@ -150,9 +150,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
       var frameScope = home.Scope.FindFrame("frame");
-      
+
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      
+
       //Navigate to error page
       var url = Helper.TestInfrastructureConfiguration.WebApplicationRoot + "AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html";
       Helper.MainBrowserSession.Window.Visit(url);
@@ -199,10 +199,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      
-      
+
+
       home.Context.CloneForControlSelection(home);
-      
+
       // Note: Does not call requestErrorDetection
       Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }

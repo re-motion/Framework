@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => control.SetTime(TimeSpan.MinValue),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SetTime").Message));
       Assert.That(
-          () => control.SetTime(""), 
+          () => control.SetTime(""),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SetTime").Message));
     }
 
@@ -186,19 +186,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsReadOnly(), Is.True);
       Assert.That(
-          () => control.SetDate(DateTime.MinValue), 
+          () => control.SetDate(DateTime.MinValue),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SetDate(""), 
+          () => control.SetDate(""),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SetDateTime(DateTime.MinValue), 
+          () => control.SetDateTime(DateTime.MinValue),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SetTime(TimeSpan.MinValue), 
+          () => control.SetTime(TimeSpan.MinValue),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SetTime(""), 
+          () => control.SetTime(""),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 

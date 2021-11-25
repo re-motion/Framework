@@ -108,7 +108,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public ISecurableObject GetSecurableObject (WxeFunction function)
     {
       ArgumentUtility.CheckNotNullAndType("function", function, _functionType);
-      
+
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration(function.VariablesContainer.ParameterDeclarations);
       var tuple = GetActualParameterTypeAndValue(parameterDeclaration.Type, function.Variables[parameterDeclaration.Name]);
       var actualParameterType = tuple.Item1;
@@ -198,7 +198,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       var handleAttribute = GetHandleAttribute(declaredParameterType);
       if (handleAttribute != null)
         return handleAttribute.GetReferencedType(declaredParameterType);
-      
+
       return declaredParameterType;
     }
 
@@ -206,7 +206,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     {
       if (parameterValue == null)
         return Tuple.Create<Type, object?>(declaredParameterType, (object?) null);
-        
+
       var handleAttribute = GetHandleAttribute(declaredParameterType);
       if (handleAttribute != null)
         return Tuple.Create<Type, object?>(handleAttribute.GetReferencedType(declaredParameterType), handleAttribute.GetReferencedInstance(parameterValue));

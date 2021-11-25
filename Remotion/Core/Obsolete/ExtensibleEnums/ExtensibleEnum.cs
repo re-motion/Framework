@@ -60,7 +60,7 @@ namespace Remotion.ExtensibleEnums
     }
 
     public abstract string ID { get; }
-    
+
     public abstract string DeclarationSpace { get; }
 
     public abstract string ValueName { get;  }

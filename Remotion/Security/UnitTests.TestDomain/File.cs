@@ -23,7 +23,7 @@ namespace Remotion.Security.UnitTests.TestDomain
   {
     private Confidentiality _confidentiality;
     private SomeEnum _someEnum;
-	
+
     private string _id;
 
     public File ()

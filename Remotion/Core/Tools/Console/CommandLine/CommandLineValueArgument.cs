@@ -62,7 +62,7 @@ public class CommandLineStringArgument: CommandLineValueArgument
   {
     get { return Value; }
   }
-  
+
   public string? Value
   {
     get { return StringValue; }

@@ -26,7 +26,7 @@ using Remotion.Tools.Console.ConsoleApplication;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.AclTools.Expansion
-{ 
+{
   public class AclExpanderApplication : IApplicationRunner<AclExpanderApplicationSettings>
   {
     public const string CssFileName = "AclExpansion";
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       ArgumentUtility.CheckNotNull("settings", settings);
       ArgumentUtility.CheckNotNull("errorWriter", errorWriter);
       ArgumentUtility.CheckNotNull("logWriter", logWriter);
-      
+
       Init(settings);
 
       string cultureName = GetCultureName();
@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     public string GetCultureName ()
     {
       string cultureName = Settings.CultureName;
-      if (String.IsNullOrEmpty(cultureName)) 
+      if (String.IsNullOrEmpty(cultureName))
       {
         cultureName = null; // Passing null to CultureScope-ctor below means "keep current culture".
       }

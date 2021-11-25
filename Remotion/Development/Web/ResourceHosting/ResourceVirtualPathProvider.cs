@@ -38,14 +38,14 @@ namespace Remotion.Development.Web.ResourceHosting
   public class ResourceVirtualPathProvider : VirtualPathProvider
   {
     private static readonly IHttpHandler s_staticFileHandler;
-    
-  
+
+
     static ResourceVirtualPathProvider ()
     {
       var staticFileHandlerType = typeof(HttpApplication).Assembly.GetType("System.Web.StaticFileHandler", true)!;
       s_staticFileHandler = (IHttpHandler) Activator.CreateInstance(staticFileHandlerType, true)!;
     }
-    
+
     public static IHttpHandler StaticFileHandler
     {
       get { return s_staticFileHandler; }
@@ -99,7 +99,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
       if (checkPath.Equals(_resourceRoot, StringComparison.OrdinalIgnoreCase))
         return true;
-      
+
       if (!checkPath.StartsWith(_resourceRoot, StringComparison.OrdinalIgnoreCase))
         return false;
 

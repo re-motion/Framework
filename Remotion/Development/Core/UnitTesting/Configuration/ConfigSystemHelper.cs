@@ -58,7 +58,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
-      
+
       _connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, providerName));
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.Development.UnitTesting.Configuration
 
       _appSettings.Add(name, key);
     }
-    
+
     public void TearDownConfigSystem ()
     {
       PrivateInvoke.SetNonPublicStaticField(typeof(ConfigurationManager), "s_initState", _notStarted);

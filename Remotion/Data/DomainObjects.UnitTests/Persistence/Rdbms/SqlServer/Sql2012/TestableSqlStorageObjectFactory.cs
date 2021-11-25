@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       return _foreignKeyConstraintDefinitionFactory ?? base.CreateForeignKeyConstraintDefinitionsFactory(storageProviderDefinition, storageNameProvider, persistenceModelProvider, infrastructureStoragePropertyDefinitionProvider);
     }
-    
+
     protected override IStoragePropertyDefinitionResolver CreateStoragePropertyDefinitionResolver (RdbmsProviderDefinition storageProviderDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
       return _storagePropertyDefinitionResolver ?? base.CreateStoragePropertyDefinitionResolver(storageProviderDefinition, persistenceModelProvider);

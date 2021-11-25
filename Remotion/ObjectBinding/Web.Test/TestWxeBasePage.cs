@@ -36,7 +36,7 @@ public class TestWxeBasePage:
     Remotion.Web.UI.Controls.IControl,
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
     // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)
-{  
+{
   private Button _nextButton = new Button();
 
   protected override void OnInit (EventArgs e)
@@ -86,10 +86,10 @@ public class TestWxeBasePage:
     sb.Append("<br /><div>");
     sb.Append("<b>Stack:</b><br />");
     for (WxeStep step = CurrentPageStep; step != null; step = step.ParentStep)
-      sb.AppendFormat("{0}<br />", step.ToString());      
+      sb.AppendFormat("{0}<br />", step.ToString());
     sb.Append("</div>");
     stack.Text = sb.ToString();
-    
+
     WxeControls.Add(stack);
   }
 

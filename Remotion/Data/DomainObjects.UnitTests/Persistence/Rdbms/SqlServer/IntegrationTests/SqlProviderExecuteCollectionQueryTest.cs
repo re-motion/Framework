@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       query.Parameters.Add("@singleLowerBound", (float) 6789);
       query.Parameters.Add("@singleUpperBound", (float) 6790);
       query.Parameters.Add("@string", "abcdeföäü");
-      query.Parameters.Add("@stringWithoutMaxLength", 
+      query.Parameters.Add("@stringWithoutMaxLength",
           "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
       query.Parameters.Add("@binary", ResourceManager.GetImage1());
 
@@ -182,11 +182,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var orderContainerIDs = Provider.ExecuteCollectionQuery(query).Select(dc => dc.ID);
 
       Assert.That(orderContainerIDs.ToArray(), Is.EquivalentTo(
-          new[] { 
-              DomainObjectIDs.Order1, 
-              DomainObjectIDs.Order3, 
-              DomainObjectIDs.Order4, 
-              DomainObjectIDs.Order5, 
+          new[] {
+              DomainObjectIDs.Order1,
+              DomainObjectIDs.Order3,
+              DomainObjectIDs.Order4,
+              DomainObjectIDs.Order5,
               DomainObjectIDs.Order2}));
 
     }

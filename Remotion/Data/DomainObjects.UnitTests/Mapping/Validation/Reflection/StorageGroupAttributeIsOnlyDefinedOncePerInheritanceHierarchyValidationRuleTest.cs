@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     {
       var type = typeof(BaseClassWithoutStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
-      
+
       var validationResult = _validationRule.Validate(classDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     {
       var type = typeof(BaseClassWithStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
-      
+
       var validationResult = _validationRule.Validate(classDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);

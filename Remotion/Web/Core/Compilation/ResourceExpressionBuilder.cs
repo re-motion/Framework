@@ -66,7 +66,7 @@ namespace Remotion.Web.Compilation
 
       return expression;
     }
- 
+
     public override object? ParseExpression (string expression, Type propertyType, ExpressionBuilderContext context)
     {
       return new Tuple<string, Type>(expression, propertyType);

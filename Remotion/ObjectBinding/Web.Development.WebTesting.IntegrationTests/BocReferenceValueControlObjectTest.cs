@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsReadOnly(), Is.True);
       Assert.That(
-          () => control.GetOptionDefinitions(), 
+          () => control.GetOptionDefinitions(),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
           () => control.SelectOption().WithDisplayText("D, A"),
@@ -103,10 +103,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => control.SelectOption().WithIndex(1),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SelectOption().WithItemID(baValue), 
+          () => control.SelectOption().WithItemID(baValue),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
       Assert.That(
-          () => control.SelectOption(baValue), 
+          () => control.SelectOption(baValue),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 
@@ -206,10 +206,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string fValue = "ef898bb1-7095-46d2-872b-5f732a7c0036";
 
       var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
-      
+
       var options = bocReferenceValue.GetOptionDefinitions();
       Assert.That(options.Count, Is.EqualTo(17));
-      
+
       Assert.That(options[0].ItemID, Is.EqualTo("==null=="));
       Assert.That(options[0].Index, Is.EqualTo(1));
       Assert.That(options[0].Text, Is.Empty);

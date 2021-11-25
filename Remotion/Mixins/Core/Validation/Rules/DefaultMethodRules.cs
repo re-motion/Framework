@@ -81,7 +81,7 @@ namespace Remotion.Mixins.Validation.Rules
     [DelegateRuleDescription (Message = "A method overriding a target class or mixin method is neither public nor protected.")]
     private void OverridingMethodMustBePublicOrProtected (DelegateValidationRule<MethodDefinition>.Args args)
     {
-      Assertion.IsTrue(args.Definition.Base == null || args.Definition.MethodInfo.IsPublic || args.Definition.MethodInfo.IsFamily 
+      Assertion.IsTrue(args.Definition.Base == null || args.Definition.MethodInfo.IsPublic || args.Definition.MethodInfo.IsFamily
           || args.Definition.MethodInfo.IsFamilyOrAssembly, "Private and internal methods are ignored by the mixin engine");
     }
   }

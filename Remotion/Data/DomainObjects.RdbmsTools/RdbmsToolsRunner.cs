@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
       if ((_rdbmsToolsParameters.Mode & OperationMode.BuildSchema) != 0)
         BuildSchema();
-      
+
       if ((_rdbmsToolsParameters.Mode & OperationMode.ExportMappingXml) != 0)
         ExportMapping();
     }

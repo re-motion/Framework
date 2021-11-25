@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var fakeRelationEndPoint = new RelationEndPointDefinition(propertyDefinition, false);
 
       var expectedPropertyInfo = PropertyInfoAdapter.Create(typeof(OrderTicket).GetProperty("Order"));
-      
+
       _mappingObjectFactoryMock
           .Expect(
               mock =>

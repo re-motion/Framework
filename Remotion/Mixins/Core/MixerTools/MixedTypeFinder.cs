@@ -49,7 +49,7 @@ namespace Remotion.Mixins.MixerTools
 
       var types = _typeDiscoveryService.GetTypes(null, false);
       s_log.InfoFormat(
-          "Retrieving class contexts for {0} configured mixin targets and {1} loaded types.", 
+          "Retrieving class contexts for {0} configured mixin targets and {1} loaded types.",
           configuration.ClassContexts.Count,
           types.Count);
 

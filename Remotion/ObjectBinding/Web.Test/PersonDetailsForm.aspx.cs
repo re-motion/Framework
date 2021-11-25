@@ -145,7 +145,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.IsDisabled = true;
     menuItem.Command.Type = CommandType.Event;
     JobList.ListMenuItems.Add(menuItem);
-  
+
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
     menuItem.Text = "Delete";
@@ -219,13 +219,13 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   }
 
 	#region Web Form Designer generated code
-	
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
 	private void InitializeComponent ()
-	{    
+	{
     this.PartnerField.SelectionChanged += new System.EventHandler(this.PartnerField_SelectionChanged);
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);

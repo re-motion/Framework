@@ -56,11 +56,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
       SetupImporterMock(importerMock, expectedIdentifier, new Dictionary<MethodInfo, MethodInfo>(), new Dictionary<MethodInfo, MethodInfo>());
       importerMock.Replay();
-      
+
       var result = importerMock.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
 
       Assert.That(result.Identifier, Is.SameAs(expectedIdentifier));
-      
+
       importerMock.VerifyAllExpectations();
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var importerMock = new MockRepository().PartialMock<AttributeBasedMetadataImporter>();
       var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
-      
+
       SetupImporterMock(importerMock, expectedIdentifier, new Dictionary<MethodInfo, MethodInfo>(), new Dictionary<MethodInfo, MethodInfo>());
       importerMock.Replay();
 
@@ -124,9 +124,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var wrapper2 = typeof(DateTime).GetMethod("get_Year");
 
       SetupImporterMock(
-          importerMock, 
-          expectedIdentifier, 
-          new Dictionary<MethodInfo, MethodInfo>(), 
+          importerMock,
+          expectedIdentifier,
+          new Dictionary<MethodInfo, MethodInfo>(),
           new Dictionary<MethodInfo, MethodInfo> { { method1, wrapper1 }, { method2, wrapper2} });
       importerMock.Replay();
 
@@ -175,7 +175,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
       importerMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void GetMetadataForMixedType ()
     {
@@ -254,7 +254,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var wrapperMethod2 = builtType.GetMethod("Wrapper2");
       var nonWrapperMethod1 = builtType.GetMethod("NonWrapper1");
       var nonWrapperMethod2 = builtType.GetMethod("NonWrapper2");
-      
+
       // fake wrapped methods
       var wrappedMethod1 = typeof(DateTime).GetMethod("get_Now");
       var wrappedMethod2 = typeof(DateTime).GetMethod("get_Day");
@@ -281,7 +281,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var importer = new AttributeBasedMetadataImporter();
       var identifier = new ConcreteMixinTypeIdentifier(typeof(MixinWithAbstractMembers), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
-      
+
       var interfaceType = typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers.IOverriddenMethods);
       var result = importer.GetOverrideInterfaceMethodsByMixinMethod(interfaceType, identifier);
 
@@ -296,10 +296,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var ifcMethod5 = interfaceType.GetMethod("RaiseEvent");
       var mixinMethod5 = identifier.MixinType.GetMethod("RaiseEvent", BindingFlags.NonPublic | BindingFlags.Instance);
 
-      var expected = new Dictionary<MethodInfo, MethodInfo> { 
-        { mixinMethod1, ifcMethod1 }, 
-        { mixinMethod2, ifcMethod2 }, 
-        { mixinMethod3, ifcMethod3 }, 
+      var expected = new Dictionary<MethodInfo, MethodInfo> {
+        { mixinMethod1, ifcMethod1 },
+        { mixinMethod2, ifcMethod2 },
+        { mixinMethod3, ifcMethod3 },
         { mixinMethod4, ifcMethod4 },
         { mixinMethod5, ifcMethod5 },
       };

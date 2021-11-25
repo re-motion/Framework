@@ -40,11 +40,11 @@ namespace Remotion.Web.ExecutionEngine
     private readonly IWxeTemplateControl _control;
     /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
     private ResourceManagerSet? _cachedResourceManager;
-    
+
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
       ArgumentUtility.CheckNotNullAndType<TemplateControl>("control", control);
-      
+
       _control = control;
     }
 
@@ -126,7 +126,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public NameObjectCollection Variables
     {
-      get 
+      get
       {
         Assertion.IsNotNull(_currentPageStep);
         var variables = ((WxeStep?) _currentUserControlStep ?? _currentPageStep).Variables;

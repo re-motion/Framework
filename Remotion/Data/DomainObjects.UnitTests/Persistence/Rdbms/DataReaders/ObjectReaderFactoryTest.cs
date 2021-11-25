@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _infrastructureStoragePropertyDefinitionProviderStub.Stub(stub => stub.GetObjectIDStoragePropertyDefinition()).Return(_objectIDProperty);
       _infrastructureStoragePropertyDefinitionProviderStub.Stub(stub => stub.GetTimestampStoragePropertyDefinition()).Return(_timestampProperty);
-      
+
       var result = _factory.CreateDataContainerReader();
 
       Assert.That(result, Is.TypeOf(typeof(DataContainerReader)));

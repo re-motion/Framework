@@ -26,7 +26,7 @@ namespace OBWTest
 {
   [MultiLingualResources ("OBWTest.Globalization.TestBasePage")]
   public class TestBasePage<TFunction> :
-      WxePage, 
+      WxePage,
       Remotion.Web.UI.Controls.IControl,
       IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
       where TFunction : WxeFunction

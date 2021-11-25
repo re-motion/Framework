@@ -83,7 +83,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
       extensibleEnumInfo.Setup(_ => _.DefiningMethod).Returns(GetMethod("ValueWithMultiLingualNameAttributeForInvariantCulture"));
       var extensibleEnumStub = new Mock<IExtensibleEnum>();
       extensibleEnumStub.Setup(_ => _.GetValueInfo()).Returns(extensibleEnumInfo.Object);
-      
+
       string multiLingualName;
 
       var result = service.TryGetExtensibleEnumValueDisplayName(extensibleEnumStub.Object, out multiLingualName);
@@ -96,7 +96,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     public void TryGetEnumerationValueDisplayName_WithMultiLingualNameAttributesForDifferentCulturesAndCurrentUICultureMatchesSpecificCulture_ReturnsForTheSpecificCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
-      
+
       var extensibleEnumInfo = new Mock<IExtensibleEnumInfo>();
       extensibleEnumInfo.Setup(_ => _.DefiningMethod).Returns(GetMethod("ValueWithMultiLingualNameAttributes"));
       var extensibleEnumStub = new Mock<IExtensibleEnum>();
@@ -117,7 +117,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     public void TryGetEnumerationValueDisplayName_WithMultiLingualNameAttributesForDifferentCulturesAndCurrentUICultureOnlyMatchesNeutralCulture_ReturnsForTheNeutralCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
-      
+
       var extensibleEnumInfo = new Mock<IExtensibleEnumInfo>();
       extensibleEnumInfo.Setup(_ => _.DefiningMethod).Returns(GetMethod("ValueWithMultiLingualNameAttributes"));
       var extensibleEnumStub = new Mock<IExtensibleEnum>();
@@ -331,7 +331,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     public void TryGetEnumerationValueDisplayName_WithMultiLingualNameAttributesForDifferentCulturesAndCurrentUICultureOnlyMatchesInvariantCulture_ReturnsForTheInvariantCulture ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
-      
+
       var extensibleEnumInfo = new Mock<IExtensibleEnumInfo>();
       extensibleEnumInfo.Setup(_ => _.DefiningMethod).Returns(GetMethod("ValueWithMultiLingualNameAttributes"));
       var extensibleEnumStub = new Mock<IExtensibleEnum>();
@@ -352,7 +352,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
     public void Test_WithMultiLingualNameAttributesNotMatchingTheNeutralResourcesLanguageAttribute_ThrowsInvalidOperationException ()
     {
       var service = new MultiLingualNameBasedExtensibleEnumGlobalizationService();
-      
+
       var extensibleEnumInfo = new Mock<IExtensibleEnumInfo>();
       extensibleEnumInfo.Setup(_ => _.DefiningMethod).Returns(GetMethod("ValueWithoutInvariantCulture"));
       var extensibleEnumStub = new Mock<IExtensibleEnum>();
@@ -370,7 +370,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
                 + "has no MultiLingualNameAttribute for the assembly's neutral resource language ('') applied."));
       }
     }
-    
+
     [Test]
     public void TryGetEnumerationValueDisplayName_WithMultipleMultiLingualNameAttributesForSameCulture_ThrowsInvalidOperationException ()
     {

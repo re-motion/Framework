@@ -24,6 +24,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
   [Uses (typeof(MixinA))]
   public abstract class TargetClassD : TargetClassBase
   {
-    
+
   }
 }

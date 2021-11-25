@@ -106,7 +106,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
         Assert.That(
             () => _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInfo),
             Throws.ArgumentException
-                .With.ArgumentExceptionMessageEqualTo("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));  
+                .With.ArgumentExceptionMessageEqualTo("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
       }
 
       _testHelper.VerifyAll();

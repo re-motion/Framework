@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialization_ThrowsWhenTypeDoesntMatchID ()
     {
       Assert.That(
-          () => new DomainObjectHandle<OrderItem>(DomainObjectIDs.Order1), 
+          () => new DomainObjectHandle<OrderItem>(DomainObjectIDs.Order1),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The class type of ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' doesn't match the handle type "
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'.", "objectID"));

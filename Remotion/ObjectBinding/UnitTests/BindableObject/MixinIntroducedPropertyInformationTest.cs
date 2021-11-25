@@ -265,7 +265,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That(
           _mixinIntroducedPropertyInformation.GetHashCode(),
           Is.EqualTo(new MixinIntroducedPropertyInformation(_interfaceImplementationPropertyInformation).GetHashCode()));
-     
+
     }
 
     [Test]

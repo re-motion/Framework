@@ -197,12 +197,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public void RaiseTransactionInitializeEvent ()
     {
-    
+
     }
 
     public void RaiseTransactionDiscardEvent ()
     {
-      
+
     }
 
     public void RaiseRelationReadingEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
     public void RaiseRelationReadEvent (
         DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
     {
-    
+
     }
 
     public void RaiseRelationReadEvent (
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
         IReadOnlyCollectionData<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
-    
+
     }
   }
 }

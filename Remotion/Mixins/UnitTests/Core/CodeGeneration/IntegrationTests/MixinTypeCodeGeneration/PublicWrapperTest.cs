@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     public void NoPublicWrapperGeneratedForInfrastructureMembers ()
     {
       Type type = ((IMixinTarget) CreateMixedObject<BaseType1>(typeof(MixinWithProtectedOverrider))).Mixins[0].GetType();
-      IEnumerable<MethodInfo> wrappedMethods = 
+      IEnumerable<MethodInfo> wrappedMethods =
           from method in type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
           let attribute = AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute>(method, false)
           let declaringType = attribute != null ? attribute.ResolveReferencedMethod().DeclaringType : null

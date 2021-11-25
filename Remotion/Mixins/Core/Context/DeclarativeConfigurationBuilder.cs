@@ -218,7 +218,7 @@ namespace Remotion.Mixins.Context
       {
         var typeAnalyzers = new IMixinDeclarationAnalyzer<Type>[] { CreateAttributeAnalyzer<Type>(), new HasComposedInterfaceMarkerAnalyzer() };
         var assemblyAnalyzers = new IMixinDeclarationAnalyzer<Assembly>[] { CreateAttributeAnalyzer<Assembly>() };
-        
+
         var configurationAnalyzer = new DeclarativeConfigurationAnalyzer(typeAnalyzers, assemblyAnalyzers);
 
         var configurationBuilder = new MixinConfigurationBuilder(_parentConfiguration);
@@ -227,7 +227,7 @@ namespace Remotion.Mixins.Context
       }
     }
 
-    private static MixinConfigurationAttributeAnalyzer<T> CreateAttributeAnalyzer<T> () 
+    private static MixinConfigurationAttributeAnalyzer<T> CreateAttributeAnalyzer<T> ()
         where T : ICustomAttributeProvider
     {
       var handledAttributeContext = new HashSet<IMixinConfigurationAttribute<T>>();

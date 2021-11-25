@@ -333,7 +333,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
         }
       }
     }
-    
+
     [Test]
     public void NoAttributes ()
     {

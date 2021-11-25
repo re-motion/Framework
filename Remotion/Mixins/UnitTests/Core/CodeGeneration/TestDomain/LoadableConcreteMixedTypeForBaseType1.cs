@@ -21,22 +21,22 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
   [ConcreteMixedType (
-      new object[] 
+      new object[]
       {
-        typeof(BaseType1), 
-        new object[] 
-        { 
-          new object[] 
+        typeof(BaseType1),
+        new object[]
+        {
+          new object[]
           {
-              typeof(BT1Mixin1), 
-              MixinKind.Used, 
-              MemberVisibility.Private, 
+              typeof(BT1Mixin1),
+              MixinKind.Used,
+              MemberVisibility.Private,
               new Type[0],
               new object[] { "some kind", "nunit.framework", "some location" }
           }
-        }, 
-        new Type[0] 
-      }, 
+        },
+        new Type[0]
+      },
       new[] { typeof(BT1Mixin1) })]
   public class LoadableConcreteMixedTypeForBaseType1
   { }

@@ -80,6 +80,6 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
       return MappingValidationResult.CreateValidResult();
     }
-   
+
   }
 }

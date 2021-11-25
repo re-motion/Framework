@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     }
 
     public virtual ILoadedObjectData ResolveObjectRelationData (
-        RelationEndPointID relationEndPointID, 
+        RelationEndPointID relationEndPointID,
         ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
-      
+
       using (var persistenceManager = CreatePersistenceManager())
       {
         var dataContainers = persistenceManager.LoadRelatedDataContainers(relationEndPointID);
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public virtual IEnumerable<ILoadedObjectData> ExecuteCollectionQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
       ArgumentUtility.CheckNotNull("query", query);ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
-      
+
 
       if (query.QueryType != QueryType.Collection)
         throw new ArgumentException("Only collection queries can be used to load data containers.", "query");
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         foreach (var queryResultRow in provider.ExecuteCustomQuery(query))
         {
           yield return queryResultRow;
-        }  
+        }
       }
     }
 

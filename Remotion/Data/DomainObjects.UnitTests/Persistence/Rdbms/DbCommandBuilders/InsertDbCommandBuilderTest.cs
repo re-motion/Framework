@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       Assert.That(result.CommandText, Is.EqualTo("INSERT INTO [delimited customSchema].[delimited Table] ([Column1], [Column2], [Column3]) VALUES (5, 'test', true);"));
     }
 
-   
-   
+
+
   }
 }

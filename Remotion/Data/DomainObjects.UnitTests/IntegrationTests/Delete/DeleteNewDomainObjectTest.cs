@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       _newOrder.Delete();
       Assert.That(
           () => _newOrder.InternalDataContainer,
-          Throws.InstanceOf<ObjectInvalidException>()); 
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]

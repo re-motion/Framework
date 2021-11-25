@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       ArgumentUtility.CheckNotNull("internalControlMemberCaller", internalControlMemberCaller);
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
-      
+
       _internalControlMemberCaller = internalControlMemberCaller;
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;

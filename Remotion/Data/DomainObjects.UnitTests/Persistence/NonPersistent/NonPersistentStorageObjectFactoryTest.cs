@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 
       var result=  factory.CreateStorageProvider(_storageProviderDefinition, persistenceExtensionStub);
 
-     
+
      Assert.That(result, Is.InstanceOf<NonPersistentProvider>());
      var nonPersistentProvider = (NonPersistentProvider) result;
      Assert.That(nonPersistentProvider.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));

@@ -124,7 +124,7 @@ namespace Remotion.Utilities
 
       if (sourceType == typeof(DBNull))
         return NullableTypeUtility.IsNullableType(destinationType);
-      
+
       if (AreUnderlyingTypesEqual(destinationType, sourceType))
         return true;
 
@@ -150,7 +150,7 @@ namespace Remotion.Utilities
         throw new NotSupportedException(string.Format("Cannot convert value 'null' to non-nullable type '{0}'.", destinationType));
       else if (value != null && !sourceType.IsInstanceOfType(value))
         throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), sourceType);
-      
+
       if (AreUnderlyingTypesEqual(sourceType, destinationType))
         return GetValueOrEmptyString(destinationType, value);
 
@@ -238,7 +238,7 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull("sourceType", sourceType);
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
-      
+
       if (sourceType == typeof(string) && _stringConverter.CanConvertTo(destinationType))
         return new TypeConverterResult(TypeConverterType.SourceTypeConverter, _stringConverter);
 
@@ -258,7 +258,7 @@ namespace Remotion.Utilities
     protected TypeConverter? GetTypeConverterFromCache (Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
-     
+
       if (_typeConverters.TryGetValue(type, out var typeConverter))
         return typeConverter;
 

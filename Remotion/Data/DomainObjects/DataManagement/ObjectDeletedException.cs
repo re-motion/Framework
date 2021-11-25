@@ -33,19 +33,19 @@ public class ObjectDeletedException : DomainObjectException
 
   // construction and disposing
 
-  public ObjectDeletedException () : this("Object is already deleted.") 
+  public ObjectDeletedException () : this("Object is already deleted.")
   {
   }
 
-  public ObjectDeletedException (string message) : base(message) 
-  {
-  }
-  
-  public ObjectDeletedException (string message, Exception inner) : base(message, inner) 
+  public ObjectDeletedException (string message) : base(message)
   {
   }
 
-  protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base(info, context) 
+  public ObjectDeletedException (string message, Exception inner) : base(message, inner)
+  {
+  }
+
+  protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
     _id = (ObjectID) info.GetValue("ID", typeof(ObjectID));
   }
@@ -54,7 +54,7 @@ public class ObjectDeletedException : DomainObjectException
   {
   }
 
-  public ObjectDeletedException (string message, ObjectID id) : base(message) 
+  public ObjectDeletedException (string message, ObjectID id) : base(message)
   {
     ArgumentUtility.CheckNotNull("id", id);
 

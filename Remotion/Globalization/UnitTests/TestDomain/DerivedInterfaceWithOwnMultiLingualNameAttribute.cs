@@ -21,6 +21,6 @@ namespace Remotion.Globalization.UnitTests.TestDomain
   [MultiLingualName ("The en-US Derived Interface Name", "en-US")]
   public interface DerivedInterfaceWithOwnMultiLingualNameAttribute : InterfaceWithMultiLingualNameAttribute
   {
-     
+
   }
 }

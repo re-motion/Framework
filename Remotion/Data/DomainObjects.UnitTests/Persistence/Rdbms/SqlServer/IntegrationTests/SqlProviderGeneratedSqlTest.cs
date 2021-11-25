@@ -169,8 +169,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                   QueryType.Collection),
               new QueryParameterCollection
               {
-                  { "@p1", 1 }, 
-                  { "@p2", DomainObjectIDs.Order3 }, 
+                  { "@p1", 1 },
+                  { "@p2", DomainObjectIDs.Order3 },
                   { "@p3", DomainObjectIDs.Official1 },
                   { "@p4", null }
               });
@@ -200,8 +200,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                   QueryType.Scalar),
               new QueryParameterCollection
               {
-                  { "@p1", 1 }, 
-                  { "@p2", DomainObjectIDs.Order3 }, 
+                  { "@p1", 1 },
+                  { "@p2", DomainObjectIDs.Order3 },
                   { "@p3", DomainObjectIDs.Official1 },
                   { "@p4", null }
               });
@@ -255,7 +255,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "DELETE FROM [Employee] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value));
       _testHelper.Replay();
-      
+
       _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer});
 
       _testHelper.VerifyAllExpectations();
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@ID", DbType.Guid, dataContainer.ID.Value));
 
       _testHelper.Replay();
-      
+
       _testHelper.Provider.UpdateTimestamps(new[] { dataContainer });
 
       _testHelper.VerifyAllExpectations();
@@ -290,7 +290,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@ID", DbType.Xml, (object) "<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
 
       _testHelper.Replay();
-      
+
       _testHelper.Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2 });
 
       _testHelper.VerifyAllExpectations();
@@ -314,7 +314,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@ID", DbType.Xml, (object) "<L><I>55b52e75-514b-4e82-a91b-8f0bb59b80ad</I><I>5587a9c0-be53-477d-8c0a-4803c7fae1a9</I></L>"));
 
       _testHelper.Replay();
-      
+
       _testHelper.Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2, dataContainer3, dataContainer4 });
 
       _testHelper.VerifyAllExpectations();

@@ -154,7 +154,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
     {
       Assert.That(HotkeyParser.Escape("Foo & Bar && Foo Bar"), Is.EqualTo("Foo && Bar &&&& Foo Bar"));
     }
-    
+
     [Test]
     public void Escape_Empty ()
     {

@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       var oppositeEndPoint = _virtualEndPointProvider.GetOrCreateVirtualEndPoint(oppositeID);
       oppositeEndPoint.EnsureDataComplete();
     }
-    
+
     #region Serialization
 
     public UnknownRealObjectEndPointSyncState (FlattenedDeserializationInfo info)

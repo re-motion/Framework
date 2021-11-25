@@ -102,7 +102,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
 
         if (attribute != null)
           argument.Description = attribute.Description;
-      }      
+      }
     }
   }
 
@@ -118,8 +118,8 @@ public class CommandLineModeArgument: CommandLineGroupArgument
 
   public override object? ValueObject
   {
-    get 
-    { 
+    get
+    {
       if (_value != null)
         return _value.EnumValue;
       else
@@ -130,13 +130,13 @@ public class CommandLineModeArgument: CommandLineGroupArgument
   internal void SetValue (CommandLineModeFlagArgument value)
   {
     if (_value != null)
-      throw new ConflictCommandLineParameterException(_value, value); 
+      throw new ConflictCommandLineParameterException(_value, value);
     _value = value;
     SetStringValue(value.Name!);
   }
 
   public override void AppendSynopsis (StringBuilder sb)
-  {    
+  {
     sb.Append(Placeholder);
   }
 
@@ -178,8 +178,8 @@ public class CommandLineModeFlagArgument: CommandLineFlagArgument, ICommandLineP
     get { return _enumValue; }
   }
 
-  public CommandLineGroupArgument Group 
-  { 
+  public CommandLineGroupArgument Group
+  {
     get { return _modeFlagGroup; }
   }
 }

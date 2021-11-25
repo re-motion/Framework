@@ -28,7 +28,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
   {
     public const string LastClickFieldID = "LastClickField";
     public const string ServerDelayParameter = "ServerDelay";
-    
+
     public static int GetServerDelayUrlParameter (Page page)
     {
       ArgumentUtility.CheckNotNull("page", page);
@@ -45,7 +45,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
       foreach (Control control in sutGenerator.CreateSut())
         controls.Add(control);
     }
- 
+
     private readonly Page _sutPage;
     private TestControlGenerator _testControlGenerator;
     private readonly int _serverDelay;

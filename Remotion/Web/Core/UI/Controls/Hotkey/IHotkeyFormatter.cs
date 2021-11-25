@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls.Hotkey
     /// Formats the <see cref="TextWithHotkey.Hotkey"/>. This mainly includes transforming the hotkey to upper-case.
     /// </summary>
     string? FormatHotkey (TextWithHotkey textWithHotkey);
-    
+
     /// <summary>
     /// Formats the <see cref="TextWithHotkey.Text"/> and offers optional HTML encoding.
     /// </summary>

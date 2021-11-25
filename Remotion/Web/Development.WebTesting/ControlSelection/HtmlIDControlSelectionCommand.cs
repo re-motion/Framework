@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
   /// given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class HtmlIDControlSelectionCommand<TControlObject> 
+  public class HtmlIDControlSelectionCommand<TControlObject>
       : IControlSelectionCommand<TControlObject>,
         IControlOptionalSelectionCommand<TControlObject>,
         IControlExistsCommand

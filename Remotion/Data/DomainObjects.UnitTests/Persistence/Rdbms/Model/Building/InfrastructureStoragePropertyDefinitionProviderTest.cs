@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     private StorageTypeInformation _timestampStorageTypeInformation;
 
     private IStorageNameProvider _storageNameProviderStub;
-    
+
     private InfrastructureStoragePropertyDefinitionProvider _infrastructureStoragePropertyDefinitionProvider;
 
     [SetUp]
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _storageNameProviderStub.Stub(stub => stub.GetClassIDColumnName()).Return("ClassID");
       _storageNameProviderStub.Stub(stub => stub.GetTimestampColumnName()).Return("Timestamp");
 
-      _infrastructureStoragePropertyDefinitionProvider = 
+      _infrastructureStoragePropertyDefinitionProvider =
           new InfrastructureStoragePropertyDefinitionProvider(_storageTypeInformationProviderStub, _storageNameProviderStub);
     }
 

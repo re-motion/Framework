@@ -71,7 +71,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     public void Serialization ()
     {
       var principal = SecurityManagerPrincipal.Null;
-     
+
       var deserializedPrincipal = Serializer.SerializeAndDeserialize(principal);
 
       Assert.That(principal, Is.SameAs(deserializedPrincipal));

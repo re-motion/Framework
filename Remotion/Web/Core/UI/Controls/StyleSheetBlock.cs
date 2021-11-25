@@ -31,7 +31,7 @@ namespace Remotion.Web.UI.Controls
   {
     private static readonly string s_tagName = HtmlTextWriterTag.Style.ToString().ToLower();
     private static readonly string s_typeAttribute = HtmlTextWriterAttribute.Type.ToString().ToLower();
-   
+
     private readonly StyleSheetElement[] _styleSheetElements;
 
     public StyleSheetBlock (IEnumerable<StyleSheetElement> styleSheetElements)

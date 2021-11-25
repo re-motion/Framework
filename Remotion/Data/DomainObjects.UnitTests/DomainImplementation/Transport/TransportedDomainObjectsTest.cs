@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       extensionMock.Expect(mock => mock.Committing(
           Arg.Is(transportedObjects.DataTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(GetTransportedObjects(transportedObjects)), 
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(GetTransportedObjects(transportedObjects)),
           Arg<ICommittingEventRegistrar>.Is.Anything));
       extensionMock.Expect(mock => mock.CommitValidate(
           Arg.Is(transportedObjects.DataTransaction),
@@ -175,10 +175,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           DomainObjectIDs.ClassWithAllDataTypes1,
           DomainObjectIDs.ClassWithAllDataTypes2);
 
-      transportedObjects.FinishTransport(transportedObject => 
-          { 
-            Assert.That(transportedObject.State.IsNew); 
-            return ((ClassWithAllDataTypes) transportedObject).Int32Property < 0; 
+      transportedObjects.FinishTransport(transportedObject =>
+          {
+            Assert.That(transportedObject.State.IsNew);
+            return ((ClassWithAllDataTypes) transportedObject).Int32Property < 0;
           });
 
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())

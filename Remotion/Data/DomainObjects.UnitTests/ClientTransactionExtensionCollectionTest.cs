@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _mockRepository.ReplayAll();
 
       _collectionWithExtensions.RelationChanging(TestableClientTransaction, _order, relationEndPointDefinition, orderTicket, newOrderTicket);
-      
+
       _mockRepository.VerifyAll();
     }
 
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       OrderTicket orderTicket = _order.OrderTicket;
       OrderTicket newOrderTicket = OrderTicket.NewObject();
-      
+
       var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
 
       using (_mockRepository.Ordered())

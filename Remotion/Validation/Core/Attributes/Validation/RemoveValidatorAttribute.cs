@@ -57,6 +57,6 @@ namespace Remotion.Validation.Attributes.Validation
     {
       get { return _collectorTypeToRemoveFrom; }
     }
-    
+
   }
 }

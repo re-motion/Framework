@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       _valuePropertyStub.Stub(stub => stub.SplitValue(DomainObjectIDs.Order1.Value)).Return(new[] { columnValue1 });
       _classIDPropertyStub.Stub(stub => stub.SplitValue(DomainObjectIDs.Order1.ClassID)).Return(new[] { columnValue2 });
-      
+
       var result = _objectIDStoragePropertyDefinition.SplitValue(DomainObjectIDs.Order1);
 
       Assert.That(result, Is.EqualTo(new[] { columnValue1, columnValue2 }));

@@ -22,7 +22,7 @@ using NUnit.Framework.Constraints;
 namespace Remotion.Security.UnitTests.XmlAsserter
 {
   public class XmlElementConstraint : Constraint  {
-    
+
     private readonly string _expectedNamespace;
     private readonly string _expectedLocalName;
 
@@ -41,7 +41,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     private bool Matches (object actual)
     {
       var actualAsXmlNode = actual as XmlNode;
-      
+
       return actualAsXmlNode != null
           && actualAsXmlNode.NodeType == XmlNodeType.Element
           && actualAsXmlNode.NamespaceURI.Equals(_expectedNamespace)

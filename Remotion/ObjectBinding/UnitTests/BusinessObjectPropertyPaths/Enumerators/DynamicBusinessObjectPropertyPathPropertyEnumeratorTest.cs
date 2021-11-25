@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
 
       Assert.That(enumerator.MoveNext(secondClassStub.Object), Is.True);
       Assert.That(enumerator.Current, Is.SameAs(secondPropertyStub.Object));
-      
+
       Assert.That(enumerator.MoveNext(thirdClassStub.Object), Is.True);
       Assert.That(enumerator.Current, Is.SameAs(thirdPropertyStub.Object));
 

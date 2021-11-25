@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     [CanBeNull]
     public PropertyAccessorData ResolvePropertyAccessorData<TDomainObject, TResult> (
-        [NotNull] Expression<Func<TDomainObject, TResult>> propertyAccessExpression) 
+        [NotNull] Expression<Func<TDomainObject, TResult>> propertyAccessExpression)
         where TDomainObject : IDomainObject
     {
       ArgumentUtility.CheckNotNull("propertyAccessExpression", propertyAccessExpression);

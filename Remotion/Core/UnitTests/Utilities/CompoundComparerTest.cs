@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Utilities
       var stubComparer2 = new Mock<IComparer<int>>();
       var stubComparer3 = new Mock<IComparer<int>>();
       var stubComparer4 = new Mock<IComparer<int>>();
-      
+
       var compoundComparer = new CompoundComparer<int>(stubComparer1.Object, stubComparer2.Object, stubComparer3.Object, stubComparer4.Object);
 
       stubComparer1.Setup(stub => stub.Compare(1, 2)).Returns(0);
@@ -80,7 +80,7 @@ namespace Remotion.UnitTests.Utilities
     public void Serializable ()
     {
       var compoundComparer = new CompoundComparer<int>(Comparer<int>.Default);
-      
+
       var result = Serializer.SerializeAndDeserialize(compoundComparer);
 
       Assert.That(result.Compare(7, 4), Is.EqualTo(1));

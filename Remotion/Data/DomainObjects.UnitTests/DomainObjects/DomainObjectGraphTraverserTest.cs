@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That(graph, Is.EquivalentTo(expected));
     }
-     
+
     [Test]
     public void Traversal_NotAffectedByNotProcessingAnObject ()
     {

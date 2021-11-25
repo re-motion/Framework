@@ -58,13 +58,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void TransactionBegan ()
     {
-      _extension.TransactionBegan(_connectionID, IsolationLevel.Chaos);      
+      _extension.TransactionBegan(_connectionID, IsolationLevel.Chaos);
     }
 
     [Test]
     public void TransactionCommitted ()
     {
-      _extension.TransactionCommitted(_connectionID);      
+      _extension.TransactionCommitted(_connectionID);
     }
 
     [Test]

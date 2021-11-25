@@ -102,7 +102,7 @@ public abstract class CommandLineArgument
   }
 
   public abstract void AppendSynopsis (StringBuilder sb);
-  
+
   public string GetSynopsis ()
   {
     StringBuilder sb = new StringBuilder();

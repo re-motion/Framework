@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var stopwatch = Stopwatch.StartNew();
       var exists = webButton.ExistsWorkaround();
-      
+
       Assert.That(exists, Is.EqualTo(false));
       // 1 Minute should account for any slow timing issue while still assuring that not the full Timeout of 5 Minute was used.
       Assert.That(stopwatch.Elapsed, Is.LessThan(TimeSpan.FromMinutes(1)));
@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       toggleVisibilityButton.Click(Opt.ContinueWhen(Wxe.PostBackCompleted));
       Assert.That(visibilityButton.Scope.ExistsWorkaround(), Is.True);
-    
+
       toggleVisibilityButton.Click(Opt.ContinueWhen(Wxe.PostBackCompleted));
       Assert.That(visibilityButton.Scope.ExistsWorkaround(), Is.False);
     }

@@ -46,14 +46,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
       Assert.That(_order1LoadedInRootTransaction.RootTransaction, Is.SameAs(_rootTransaction));
       Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
     }
-    
+
     [Test]
     public void AccessingPropertiesAndState_AffectsAssociatedRootTransaction ()
     {
       Assert.That(_order1LoadedInRootTransaction.State.IsUnchanged, Is.True);
       Assert.That(_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo(1));
       Assert.That(_order1LoadedInRootTransaction.OrderItems, Has.Count.EqualTo(2));
-      
+
       Assert.That(_rootTransaction.HasChanged(), Is.False);
 
       _order1LoadedInRootTransaction.OrderNumber = 2;
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
         Assert.That(
-            () => _order1LoadedInRootTransaction.OrderTicket = OrderTicket.NewObject(), 
+            () => _order1LoadedInRootTransaction.OrderTicket = OrderTicket.NewObject(),
             Throws.InstanceOf<ClientTransactionsDifferException>());
       }
     }
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     public void IsInvalid_AffectsAssociatedRootTransaction ()
     {
       var order = (Order) LifetimeService.NewObject(_rootTransaction, typeof(Order), ParamList.Empty);
-      
+
       Assert.That(GetStateFromTransaction(order, _rootTransaction).IsNew, Is.True);
       Assert.That(order.State.IsInvalid, Is.False);
 

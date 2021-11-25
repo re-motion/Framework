@@ -127,9 +127,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Dev.Null = _endPoint.OppositeObjectID;
 
       listenerMock.AssertWasNotCalled(mock => mock.PropertyValueReading(
-          Arg<ClientTransaction>.Is.Anything, 
-          Arg<DomainObject>.Is.Anything, 
-          Arg<PropertyDefinition>.Is.Anything, 
+          Arg<ClientTransaction>.Is.Anything,
+          Arg<DomainObject>.Is.Anything,
+          Arg<PropertyDefinition>.Is.Anything,
           Arg<ValueAccess>.Is.Anything));
       listenerMock.AssertWasNotCalled(mock => mock.PropertyValueRead(
           Arg<ClientTransaction>.Is.Anything,
@@ -429,7 +429,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert.That(_endPoint.OppositeObjectID, Is.Not.EqualTo(DomainObjectIDs.Order3));
       var sourceDataContainer = DataContainer.CreateForExisting(_endPointID.ObjectID, null, pd => pd.DefaultValue);
-      
+
       var source = new RealObjectEndPoint(TestableClientTransaction, _endPointID, sourceDataContainer, _endPointProviderStub, _transactionEventSinkStub);
       RealObjectEndPointTestHelper.SetValueViaDataContainer(source, DomainObjectIDs.Order3);
 

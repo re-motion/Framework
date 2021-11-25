@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           sqlSynonymScriptElementFactory,
           new SqlCommentScriptElementFactory());
     }
- 
+
     protected PropertyDefinition GetPropertyDefinition<TSourceObject, TPropertyType> (Expression<Func<TSourceObject, TPropertyType>> expression)
         where TSourceObject : DomainObject
     {

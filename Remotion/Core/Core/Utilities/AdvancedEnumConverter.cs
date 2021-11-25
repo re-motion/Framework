@@ -82,7 +82,7 @@ namespace Remotion.Utilities
 
       if (sourceType == _underlyingType)
         return true;
-  
+
       if (_isNullable && Nullable.GetUnderlyingType(sourceType) == _underlyingType)
         return true;
 
@@ -151,13 +151,13 @@ namespace Remotion.Utilities
         return (destinationType == typeof(string)) ? string.Empty : null;
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
-      
+
       bool isMatchingDestinationType = !_isNullable && destinationType == _underlyingType;
       bool isMatchingNullableDestinationType = Nullable.GetUnderlyingType(destinationType) == _underlyingType;
-      
+
       if (value is Enum && (isMatchingDestinationType || isMatchingNullableDestinationType))
         return Convert.ChangeType(value, _underlyingType, culture);
-      
+
       return base.ConvertTo(context, culture, value, destinationType);
     }
   }

@@ -196,7 +196,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
                                                       new NonMultiInheritedAttribute()
                                                   }));
     }
-    
+
     [Test]
     public void AttributesOnDerivedEventsBehaveLikeMethods ()
     {

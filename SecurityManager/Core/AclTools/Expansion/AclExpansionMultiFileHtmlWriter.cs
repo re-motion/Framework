@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       set { _detailHtmlWriterSettings = value; }
     }
 
-    
+
     public void WriteAclExpansion (List<AclExpansionEntry> aclExpansion)
     {
       ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
@@ -74,7 +74,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     private void WriteTableHeaders ()
     {
       _implementation.HtmlTagWriter.Tags.tr();
-      _implementation.WriteHeaderCell(AclToolsExpansion.UserTableHeader);  
+      _implementation.WriteHeaderCell(AclToolsExpansion.UserTableHeader);
       _implementation.WriteHeaderCell(AclToolsExpansion.FirstNameTableHeader);
       _implementation.WriteHeaderCell(AclToolsExpansion.LastNameTableHeader);
       _implementation.WriteHeaderCell(AclToolsExpansion.AccessRightsNameTableHeader);
@@ -92,7 +92,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       {
         // Note: Due to HTML-table-cells using rowspan attribute it is not safe to assume that we are already in a table row here
         // (i.e. that a <tr>-tag has already been written).
-        _implementation.WriteTableRowBeginIfNotInTableRow(); 
+        _implementation.WriteTableRowBeginIfNotInTableRow();
         WriteTableBody_ProcessUser(user, aclExpansion);
         _implementation.WriteTableRowEnd();
       }
@@ -105,7 +105,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       _implementation.WriteTableData(user.FirstName);
       _implementation.WriteTableData(user.LastName);
 
-      string userDetailFileName = AclExpansionHtmlWriterImplementationBase.ToValidFileName(user.UserName); 
+      string userDetailFileName = AclExpansionHtmlWriterImplementationBase.ToValidFileName(user.UserName);
       using (var detailTextWriter = _textWriterFactory.CreateTextWriter(userDetailFileName))
       {
 
@@ -115,7 +115,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       }
 
       string relativePath = _textWriterFactory.GetRelativePath(MasterFileName, userDetailFileName);
-      _implementation.WriteTableRowBeginIfNotInTableRow(); 
+      _implementation.WriteTableRowBeginIfNotInTableRow();
       _implementation.HtmlTagWriter.Tags.td();
       _implementation.HtmlTagWriter.Tags.a();
       _implementation.HtmlTagWriter.Attribute("href", relativePath);

@@ -34,7 +34,7 @@ namespace Remotion.Validation.Implementation
     public CompoundValidatorBuilder (IEnumerable<IValidatorBuilder> builders)
     {
       ArgumentUtility.CheckNotNull("builders", builders);
-      
+
       _builders = builders.ToList().AsReadOnly();
     }
 

@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That(customer.Orders, Is.Empty);
       Assert.That(() => TestableClientTransaction.Commit(), Throws.Nothing);
     }
-    
+
     [Test]
     public void CommitWithMandatoryOneToOneRelationNotSet ()
     {

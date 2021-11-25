@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsDisabled(), Is.True);
       Assert.That(
-          () => control.Click(), 
+          () => control.Click(),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "Click").Message));
     }
 

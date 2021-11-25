@@ -27,7 +27,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Configuration
     [Test]
     public void Validate_ValidSchema ()
     {
-      var xsdContent = 
+      var xsdContent =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
           <xs:schema id=""typepipe""
               xmlns:xs=""http://www.w3.org/2001/XMLSchema""

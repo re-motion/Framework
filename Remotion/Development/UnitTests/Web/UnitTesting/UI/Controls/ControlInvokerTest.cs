@@ -35,7 +35,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
     // member fields
 
     private HttpContext _currentHttpContext;
-    
+
     private PageMock _page;
     private PlaceHolder _parent;
     private Literal _child;
@@ -43,7 +43,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
     private PageMock _pageAfterPostBack;
     private PlaceHolder _parentAfterPostBack;
     private Literal _childAfterPostBack;
-  
+
     private ControlInvoker _invoker;
     private ControlInvoker _invokerAfterPostBack;
 
@@ -115,7 +115,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
       _parent.Init -= new EventHandler(Control_Init);
       _parent.Load -= new EventHandler(Control_Load);
       _parent.PreRender -= new EventHandler(Control_PreRender);
-    
+
       _child.Init -= new EventHandler(Control_Init);
       _child.Load -= new EventHandler(Control_Load);
       _child.PreRender -= new EventHandler(Control_PreRender);

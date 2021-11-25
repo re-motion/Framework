@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
     TControlObject? SelectOptionalPerItemID ([NotNull] ControlSelectionContext context, [NotNull] string itemID);
-    
+
     /// <summary>
     /// Checks if a control within the given <paramref name="context"/> using the given <paramref name="itemID"/> exists.
     /// </summary>

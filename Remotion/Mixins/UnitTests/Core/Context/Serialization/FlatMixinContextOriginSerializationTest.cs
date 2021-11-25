@@ -36,7 +36,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     {
       _serializer.AddKind("some kind");
       Assert.That(_serializer.Values[0], Is.EqualTo("some kind"));
-      
+
       var deserializer = new FlatMixinContextOriginDeserializer(_serializer.Values);
       Assert.That(deserializer.GetKind(), Is.EqualTo("some kind"));
     }

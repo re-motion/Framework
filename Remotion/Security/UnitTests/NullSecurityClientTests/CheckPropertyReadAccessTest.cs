@@ -67,7 +67,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       {
         _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, "IsVisible");
       }
-    
+
       _testHelper.VerifyAll();
     }
 

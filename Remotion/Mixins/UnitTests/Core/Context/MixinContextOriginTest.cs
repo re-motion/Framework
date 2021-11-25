@@ -86,7 +86,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
 
       var expectedCodeBase = _someAssembly.GetName().CodeBase;
       var expected = string.Format(
-          "SomeKind, Location: 'some location' (Assembly: 'Remotion.Mixins.UnitTests', code base: {0})", 
+          "SomeKind, Location: 'some location' (Assembly: 'Remotion.Mixins.UnitTests', code base: {0})",
           expectedCodeBase);
       Assert.That(origin.ToString(), Is.EqualTo(expected));
     }

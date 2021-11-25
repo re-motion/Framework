@@ -105,7 +105,7 @@ namespace Remotion.Mixins.Definitions.Building.DependencySorting
             .Select(g => new { Text = string.Join(", ", g.Select(m => "'" + m.Mixin.FullName + "'")), Group = g })
             .GroupBy(g => g.Text, g => g.Group.Key)
             .Select(g => string.Format("{{{0}}} (overriding: {1})", g.Key, string.Join(", ", g.Select(m => "'" + m.Name + "'"))));
-        
+
         var message = string.Format(
             "The following mixin groups require a clear base call ordering, but do not provide enough dependency information:{1}{0}.{1}"
             + "Please supply additional dependencies to the mixin definitions, use the AcceptsAlphabeticOrderingAttribute, or adjust the mixin "

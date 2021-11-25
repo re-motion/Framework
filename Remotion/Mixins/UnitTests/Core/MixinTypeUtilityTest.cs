@@ -443,7 +443,7 @@ namespace Remotion.Mixins.UnitTests.Core
     public void GetMixinTypesExact_OnMixedTypes ()
     {
       Assert.That(
-          MixinTypeUtility.GetMixinTypesExact(typeof(BaseType7)), 
+          MixinTypeUtility.GetMixinTypesExact(typeof(BaseType7)),
           Is.EqualTo(BigTestDomainScenarioTest.ExpectedBaseType7OrderedMixinTypesSmall));
 
       Assert.That(MixinTypeUtility.GetMixinTypesExact(typeof(BaseType3)), Has.Member(typeof(BT3Mixin3<BaseType3, IBaseType33>)));

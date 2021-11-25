@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1");
       _property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2");
       _property3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column3");
-     
+
       _constraints = new[]
                      { new PrimaryKeyConstraintDefinition("PK_Table", true, new[] { ColumnDefinitionObjectMother.IDColumn }) };
       _indexes = new[] { MockRepository.GenerateStub<IIndexDefinition>() };
@@ -115,14 +115,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void CalculateAdjustedColumnList ()
     {
-      var fullColumnList = 
+      var fullColumnList =
           new[]
           {
               _property3.ColumnDefinition,
               _property1.ColumnDefinition,
               ColumnDefinitionObjectMother.CreateColumn()
           };
-      
+
       var adjustedColumnList = _tableDefinition.CalculateAdjustedColumnList(fullColumnList);
 
       Assert.That(adjustedColumnList, Is.EqualTo(new[] { _property3.ColumnDefinition, _property1.ColumnDefinition, null }));

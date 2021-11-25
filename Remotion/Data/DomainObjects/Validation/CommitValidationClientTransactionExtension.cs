@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Validation
     {
       get { return typeof(CommitValidationClientTransactionExtension).GetFullNameChecked(); }
     }
-    
+
     [NonSerialized]
     private IPersistableDataValidator _validator;
 

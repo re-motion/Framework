@@ -27,7 +27,7 @@ namespace Remotion.Utilities
     /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
     /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
     public static Enum CheckValidEnumValue (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] Enum enumValue)
     {
       if (enumValue == null)
@@ -72,7 +72,7 @@ namespace Remotion.Utilities
     /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
     /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
     public static TEnum CheckValidEnumValueAndTypeAndNotNull<TEnum> (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] object enumValue)
         where TEnum: struct
     {
@@ -87,7 +87,7 @@ namespace Remotion.Utilities
 
       return (TEnum) enumValue;
     }
- 
+
     [MustUseReturnValue]
     public static ArgumentOutOfRangeException CreateEnumArgumentOutOfRangeException ([InvokerParameterName] string argumentName, object actualValue)
     {

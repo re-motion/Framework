@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       _control.Setup(stub => stub.Value).Returns(_dateValue);
       _control.Setup(stub => stub.Enabled).Returns(true);
       _control.Setup(stub => stub.IsReadOnly).Returns(true);
-      
+
       BocDateTimeValueRenderer renderer;
       XmlNode container = GetAssertedContainer(out renderer, isDateOnly: true, isReadOnly: true);
 
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       _control.Setup(stub => stub.Value).Returns(_dateTimeValue);
       _control.Setup(stub => stub.Enabled).Returns(true);
       _control.Setup(stub => stub.IsReadOnly).Returns(true);
-      
+
       BocDateTimeValueRenderer renderer;
       XmlNode container = GetAssertedContainer(out renderer, isDateOnly: false, isReadOnly: true);
 
@@ -224,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
       renderer.Render(new BocDateTimeValueRenderingContext(HttpContext, Html.Writer, _control.Object));
-      
+
       var document = Html.GetResultDocument();
       var container = document.GetAssertedChildElement("span", 0);
       Html.AssertAttribute(container, DiagnosticMetadataAttributes.ControlType, "BocDateTimeValue");
@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         Assert.That(_dateTextBox.Attributes[StubLabelReferenceRenderer.LabelReferenceAttribute], Is.EqualTo(c_labelID));
         Assert.That(_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsIDAttribute], Is.EqualTo(c_dateValueID + "_DateValueValidationErrors"));
         Assert.That(_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute], Is.EqualTo(c_dateValidationErrors));
-        
+
         if (isDateOnly)
         {
 		  Assert.That(_dateTextBox.Attributes[StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute], Is.EqualTo(""));

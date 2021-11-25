@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
       try
       {
         BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
-        
+
         _dbFixtures = new DatabaseFixtures();
         _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
       }

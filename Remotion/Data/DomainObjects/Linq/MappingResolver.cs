@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.Linq
         var primaryKeyExpression = Expression.Constant(domainObject.ID);
         return new SqlEntityConstantExpression(constantExpression.Type, constantExpression.Value, primaryKeyExpression);
       }
-      
+
       return constantExpression;
     }
 

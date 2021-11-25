@@ -423,7 +423,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         }
       }
     }
-    
+
     [Test]
     public void RegisterForCommit_AfterDelete ()
     {

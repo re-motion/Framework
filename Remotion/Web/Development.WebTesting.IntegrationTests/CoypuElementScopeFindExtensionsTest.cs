@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(foundElement.Exists());
     }
-    
+
     [Test]
     public void FindTagWithAttribute_ShouldFindTagWithAttributeValue_ContainingSingleQuote ()
     {
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(foundElement.Exists());
     }
-    
+
     [Test]
     public void FindTagWithAttributeUsingOperator_ShouldFindTagWithAttributeValue ()
     {
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(foundElement.Exists());
     }
-    
+
     [Test]
     public void FindTagWithAttributeUsingOperator_ShouldFindTagWithAttributeValue_ContainingSingleQuote ()
     {
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(foundElement.Exists());
     }
-    
+
     [Test]
     public void FindTagWithAttributes_ShouldFindTagWithAttributeValue ()
     {
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(foundElement.Exists());
     }
-    
+
     [Test]
     public void FindTagWithAttributes_ShouldFindTagWithAttributeValue_ContainingSingleQuote ()
     {

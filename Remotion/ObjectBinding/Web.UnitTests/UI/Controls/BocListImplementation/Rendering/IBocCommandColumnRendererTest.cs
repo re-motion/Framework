@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       _serviceLocator = DefaultServiceLocator.Create();
     }
-    
+
     [Test]
     public void GetInstance_Once ()
     {

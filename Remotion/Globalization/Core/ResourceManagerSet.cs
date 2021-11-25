@@ -119,7 +119,7 @@ namespace Remotion.Globalization
       value = null;
       return false;
     }
-    
+
     private IEnumerable<IResourceManager> CreateFlatList (IEnumerable<IResourceManager> resourceManagers)
     {
       foreach (var resourceManager in resourceManagers)
@@ -152,7 +152,7 @@ namespace Remotion.Globalization
             result.Add(localization.Key, localization.Value);
         }
       }
-     
+
       return result;
     }
 

@@ -400,11 +400,11 @@ namespace Remotion.Web.Utilities
       int colonIndex = virtualPath.IndexOf(':');
       if (colonIndex == -1)
         return false;
-      
+
       int slashIndex = virtualPath.IndexOf('/');
       if (slashIndex != -1)
         return (colonIndex < slashIndex);
-      
+
       return true;
     }
 

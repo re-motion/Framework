@@ -316,7 +316,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Order order = _transaction.ExecuteInScope(() => Order.NewObject());
       order.OrderNumber = 10;
-      
+
       var otherTransaction = ClientTransaction.CreateRootTransaction();
       Assert.That(otherTransaction.IsEnlisted(order), Is.False);
       Assert.That(otherTransaction.ExecuteInScope(() => order.OrderNumber), Is.EqualTo(10));

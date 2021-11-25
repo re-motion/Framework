@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CommitAllEndPoints ()
     {
       StubEvents();
-      
+
       _map.AddEndPoint(_endPointMock1);
       _map.AddEndPoint(_endPointMock2);
 

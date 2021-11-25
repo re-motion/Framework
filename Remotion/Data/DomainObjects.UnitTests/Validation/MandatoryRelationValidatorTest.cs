@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       _validator = new MandatoryRelationValidator();
 
       _endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();

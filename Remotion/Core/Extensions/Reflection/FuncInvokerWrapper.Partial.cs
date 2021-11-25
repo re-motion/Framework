@@ -40,7 +40,7 @@ namespace Remotion.Reflection
 
     public TResult Invoke (Type[] valueTypes, object[] values)
     {
-      return PerformAfterAction(_invoker.Invoke(valueTypes, values));      
+      return PerformAfterAction(_invoker.Invoke(valueTypes, values));
     }
 
     public TResult Invoke (object[] values)

@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       var fakeResultDataContainer = CreateFakeResultData(transaction);
       StubQueryResult(queryID, new[] { fakeResultDataContainer });
-      
+
       return transaction;
     }
 

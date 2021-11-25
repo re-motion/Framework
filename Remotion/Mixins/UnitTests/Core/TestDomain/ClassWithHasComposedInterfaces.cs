@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  public class ClassWithHasComposedInterfaces : 
-      IHasComposedInterface<ClassWithHasComposedInterfaces.IComposedInterface1>, 
+  public class ClassWithHasComposedInterfaces :
+      IHasComposedInterface<ClassWithHasComposedInterfaces.IComposedInterface1>,
       IHasComposedInterface<ClassWithHasComposedInterfaces.IComposedInterface2>
   {
     public interface IComposedInterface1

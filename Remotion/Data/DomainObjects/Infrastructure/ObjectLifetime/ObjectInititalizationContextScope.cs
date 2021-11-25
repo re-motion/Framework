@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     public ObjectInititalizationContextScope (IObjectInitializationContext objectInitializationContext)
     {
       ArgumentUtility.CheckNotNull("objectInitializationContext", objectInitializationContext);
-      
+
       _previousObjectInitializationContext = s_currentObjectInitializationContext;
       s_currentObjectInitializationContext = objectInitializationContext;
     }

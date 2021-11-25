@@ -15,7 +15,7 @@ namespace Remotion.Validation.Globalization
     {
       ArgumentUtility.CheckNotNull("resourceIdentifier", resourceIdentifier);
       ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      
+
       ResourceManager = resourceManager;
       ResourceIdentifier = resourceIdentifier;
     }

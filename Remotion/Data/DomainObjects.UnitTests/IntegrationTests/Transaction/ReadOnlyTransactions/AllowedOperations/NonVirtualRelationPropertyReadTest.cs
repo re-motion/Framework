@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
       var customer = ExecuteInReadOnlyRootTransaction(() => _order1.Customer);
       ExecuteInReadOnlyRootTransaction(customer.EnsureDataAvailable);
-      
+
       Assert.That(customer.ID, Is.EqualTo(DomainObjectIDs.Customer1));
 
       CheckDataLoaded(ReadOnlyRootTransaction, _order1);

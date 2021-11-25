@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         propertyInfo = type.GetProperty(explicitName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         Assert.IsNotNull(propertyInfo, "Property '{0}' (or '{1}') was not found on type '{2}'.", propertyName, explicitName, type);
       }
-      
+
       var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), true);
       if (introducedMemberAttributes.Length > 0)
       {

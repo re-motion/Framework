@@ -47,15 +47,15 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     {
       _classDefinition1 = new TestClassDefinition(typeof(BaseType1));
       _classDefinition2 = new TestClassDefinition(typeof(BT1Mixin1));
-      
+
       _methodInfo1 = typeof(BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
       _methodInfo2 = typeof(BT1Mixin1).GetMethod("VirtualMethod");
       _methodInfo3 = typeof(BT1Mixin2).GetMethod("VirtualMethod");
       _methodInfoProtected = typeof(ClassWithDifferentMemberVisibilities).GetMethod(
-          "ProtectedMethod", 
+          "ProtectedMethod",
           BindingFlags.NonPublic | BindingFlags.Instance);
       _methodInfoProtectedInternal = typeof(ClassWithDifferentMemberVisibilities).GetMethod(
-          "ProtectedInternalMethod", 
+          "ProtectedInternalMethod",
           BindingFlags.NonPublic | BindingFlags.Instance);
 
       _propertyInfoWithGetAndSet = typeof(ClassWithDifferentPropertyKinds).GetProperty("PropertyWithGetAndSet");
@@ -160,10 +160,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var propertyDefinition2 = DefinitionObjectMother.CreatePropertyDefinition(_classDefinition1, _propertyInfoWithGet);
       var propertyDefinition3 = DefinitionObjectMother.CreatePropertyDefinition(_classDefinition1, _propertyInfoWithSet);
 
-      Assert.That(_classDefinition1.GetAllMethods().ToArray(), Is.EquivalentTo(new[] { 
-          propertyDefinition1.GetMethod, 
-          propertyDefinition1.SetMethod, 
-          propertyDefinition2.GetMethod, 
+      Assert.That(_classDefinition1.GetAllMethods().ToArray(), Is.EquivalentTo(new[] {
+          propertyDefinition1.GetMethod,
+          propertyDefinition1.SetMethod,
+          propertyDefinition2.GetMethod,
           propertyDefinition3.SetMethod }));
     }
 
@@ -173,10 +173,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var eventDefinition1 = DefinitionObjectMother.CreateEventDefinition(_classDefinition1, _eventInfo1);
       var eventDefinition2 = DefinitionObjectMother.CreateEventDefinition(_classDefinition1, _eventInfo2);
 
-      Assert.That(_classDefinition1.GetAllMethods().ToArray(), Is.EquivalentTo(new[] { 
-          eventDefinition1.AddMethod, 
-          eventDefinition1.RemoveMethod, 
-          eventDefinition2.AddMethod, 
+      Assert.That(_classDefinition1.GetAllMethods().ToArray(), Is.EquivalentTo(new[] {
+          eventDefinition1.AddMethod,
+          eventDefinition1.RemoveMethod,
+          eventDefinition2.AddMethod,
           eventDefinition2.RemoveMethod }));
     }
 
@@ -187,7 +187,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var propertyDefinition = DefinitionObjectMother.CreatePropertyDefinition(_classDefinition1, _propertyInfoWithGetAndSet);
       var eventDefinition = DefinitionObjectMother.CreateEventDefinition(_classDefinition1, _eventInfo1);
       var attributeDefinition = DefinitionObjectMother.CreateAttributeDefinition(_classDefinition1);
-      
+
       var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
       using (visitorMock.GetMockRepository().Ordered())
       {
@@ -265,7 +265,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var overrider2 = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfo1);
       var overridden1 = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfo2);
       var overridden2 = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfo3);
-      
+
       DefinitionObjectMother.DeclareOverride(overrider1, overridden1);
       DefinitionObjectMother.DeclareOverride(overrider2, overridden2);
 

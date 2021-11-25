@@ -165,7 +165,7 @@ namespace Remotion.Collections.DataStore
         string message = string.Format("There is no element with key '{0}' in the store.", key);
         throw new KeyNotFoundException(message);
       }
-      set 
+      set
       {
         ArgumentUtility.CheckNotNull("key", key);
 

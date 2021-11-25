@@ -89,7 +89,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       var overrideInterface = generatedType.GetNestedType("IOverriddenMethods");
 
       Assert.That(overrideInterface, Is.Not.Null);
-      
+
       var method = overrideInterface.GetMethod("AbstractMethod");
       Assert.That(method, Is.Not.Null);
       Assert.That(method.ReturnType, Is.SameAs(typeof(string)));

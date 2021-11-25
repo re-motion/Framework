@@ -60,6 +60,6 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorProvider>();
 
       Assert.That(factory1, Is.SameAs(factory2));
-    } 
+    }
   }
 }

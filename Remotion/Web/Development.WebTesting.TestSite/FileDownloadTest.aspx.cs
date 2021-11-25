@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private void DownloadPostbackButtonOnClick (object sender, EventArgs eventArgs)
     {
       string script = "window.open(\'FileDownloadHandler.ashx?testMode=txt\')";
-      
+
       ClientScriptManager clientScriptManager = Page.ClientScript;
       clientScriptManager.RegisterClientScriptBlock(GetType(), "WindowOpenScript", script, true);
     }

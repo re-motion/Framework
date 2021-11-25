@@ -52,7 +52,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.True);
     }
-    
+
     [Test]
     public void Test_AccessDenied ()
     {
@@ -65,7 +65,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.False);
     }
-    
+
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
@@ -81,20 +81,20 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.True);
     }
-    
+
     [Test]
     public void Test_WithoutRequiredPermissions_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectMemberResolverGetMethodInformation("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object);
-      
+
       Assert.That(
           () =>  _securityClient.HasMethodAccess(_testHelper.SecurableObject, "InstanceMethod"),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
       _testHelper.VerifyAll();
     }
-    
+
     [Test]
     public void Test_WithoutRequiredPermissionsAndWithinSecurityFreeSection_ShouldThrowArgumentException ()
     {
@@ -151,7 +151,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ExpectMemberResolverGetMethodInformation("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
-      
+
       Assert.That(
           () =>  _securityClient.HasMethodAccess(_testHelper.SecurableObject, "InstanceMethod"),
           Throws.InvalidOperationException

@@ -183,6 +183,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
                       GetProperty(typeof(MixinE), "P9"),
                   }));
     }
-    
+
   }
 }

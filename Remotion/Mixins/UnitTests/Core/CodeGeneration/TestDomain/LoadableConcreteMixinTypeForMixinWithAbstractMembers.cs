@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
       new object[] {
           typeof(MixinWithAbstractMembers),
           new object[0],
-          new object[] { 
+          new object[] {
               new object[] { typeof(MixinWithAbstractMembers), "AbstractMethod", "System.String AbstractMethod(Int32)" },
               new object[] { typeof(MixinWithAbstractMembers), "RaiseEvent", "System.String RaiseEvent()" },
               new object[] { typeof(MixinWithAbstractMembers), "get_AbstractProperty", "System.String get_AbstractProperty()" },

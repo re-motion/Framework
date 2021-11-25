@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
         var statisticsString = string.Join(Environment.NewLine, groupingsWithCount.Select(g => g.Key + ": " + g.Count));
         log.Debug(statisticsString);
       }
-      
+
     }
   }
 }

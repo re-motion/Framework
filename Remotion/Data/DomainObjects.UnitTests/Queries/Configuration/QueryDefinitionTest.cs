@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void InitializeWithDomainObjectCollectionType ()
     {
-      QueryDefinition definition = 
+      QueryDefinition definition =
           new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.Collection, typeof(DomainObjectCollection));
 
       Assert.That(definition.CollectionType, Is.EqualTo(typeof(DomainObjectCollection)));

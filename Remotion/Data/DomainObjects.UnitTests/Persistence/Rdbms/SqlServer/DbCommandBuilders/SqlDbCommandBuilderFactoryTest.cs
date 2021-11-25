@@ -87,8 +87,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
           new[] { _column1 },
           new[]
           {
-            new ColumnValueTable.Row(new object[] { 12 }), 
-            new ColumnValueTable.Row(new object[] { 13 }), 
+            new ColumnValueTable.Row(new object[] { 12 }),
+            new ColumnValueTable.Row(new object[] { 13 }),
           }
           );
       var result = _factory.CreateForSelect(_tableDefinition, new[] { _column1, _column2 }, columnValueTable, new[] { _orderColumn1, _orderColumn2 });
@@ -109,8 +109,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
           new[] { _column1, _column2 },
           new[]
           {
-            new ColumnValueTable.Row(new object[] { 12, 14 }), 
-            new ColumnValueTable.Row(new object[] { 13, 15 }), 
+            new ColumnValueTable.Row(new object[] { 12, 14 }),
+            new ColumnValueTable.Row(new object[] { 13, 15 }),
           }
           );
 

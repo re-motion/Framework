@@ -26,7 +26,7 @@ using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
-public class TestTabbedPersonDetailsUserControl : 
+public class TestTabbedPersonDetailsUserControl :
     DataEditUserControl, IControl, IFormGridRowProvider
 {
   protected BocTextValue FirstNameField;
@@ -73,7 +73,7 @@ public class TestTabbedPersonDetailsUserControl :
     InitalizePartnerFieldMenuItems();
 	  CreateExtraFormGrid("Init");
 	}
-	
+
   private void InitalizePartnerFieldMenuItems ()
   {
     BocMenuItem menuItem = null;

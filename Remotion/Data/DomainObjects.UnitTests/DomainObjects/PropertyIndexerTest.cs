@@ -215,7 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ShortNameAndTypeWithShadowedProperties ()
     {
-      var classWithDifferentProperties = (DerivedClassWithDifferentProperties) 
+      var classWithDifferentProperties = (DerivedClassWithDifferentProperties)
           LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
 
       var indexer = new PropertyIndexer(classWithDifferentProperties);
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var classWithDifferentProperties =
           (DerivedClassWithDifferentProperties) LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
       var indexer = new PropertyIndexer(classWithDifferentProperties);
-      
+
       var resultOnDerived = indexer.Find(classWithDifferentProperties, "String");
       Assert.That(resultOnDerived, Is.EqualTo(indexer[typeof(DerivedClassWithDifferentProperties).FullName + ".String"]));
 

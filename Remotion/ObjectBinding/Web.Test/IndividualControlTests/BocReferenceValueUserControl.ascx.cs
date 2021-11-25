@@ -202,7 +202,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     UnboundReadOnlyPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
     DisabledUnboundPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
     DisabledUnboundReadOnlyPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-  
+
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)

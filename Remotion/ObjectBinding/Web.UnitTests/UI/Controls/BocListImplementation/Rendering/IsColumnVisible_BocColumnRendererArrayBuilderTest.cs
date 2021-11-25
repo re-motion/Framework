@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(bocColumnRenderers[0].IsVisibleColumn, Is.True);
       Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.Not.TypeOf(typeof(NullColumnRenderer)));
     }
-    
+
 
     [Test]
     public void BocCommandColumnDefinition_IsWaiConformanceLevelARequired_True_And_CommandType_WxeFunction ()

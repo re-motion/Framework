@@ -61,6 +61,6 @@ namespace Remotion.Security.Metadata
     {
       get { return _derivedClasses; }
     }
-	
+
   }
 }

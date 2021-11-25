@@ -35,7 +35,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     public override void SetUp ()
     {
       base.SetUp();
-      
+
       _companyHelper = new CompanyStructureHelper(TestHelper.Transaction);
 
       _ace = TestHelper.CreateAceWithOwningGroup();
@@ -139,7 +139,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     [Test]
     public void TokenWithoutUser_DoesNotMatch ()
-    {     
+    {
       SecurityToken token = TestHelper.CreateTokenWithoutUser();
 
       SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);

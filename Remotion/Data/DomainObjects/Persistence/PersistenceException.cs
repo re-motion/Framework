@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 namespace Remotion.Data.DomainObjects.Persistence
 {
 [Serializable]
-public class PersistenceException : DomainObjectException 
+public class PersistenceException : DomainObjectException
 {
   // types
 

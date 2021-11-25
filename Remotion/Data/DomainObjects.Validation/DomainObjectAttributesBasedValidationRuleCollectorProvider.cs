@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.Validation
           _domainModelConstraintProvider,
           _validationMessageFactory);
 
-      return reflector.GetRemovablePropertyValidators().Any() 
+      return reflector.GetRemovablePropertyValidators().Any()
         || reflector.GetNonRemovablePropertyValidators().Any()
         || reflector.GetRemovingValidatorRegistrations().Any();
     }

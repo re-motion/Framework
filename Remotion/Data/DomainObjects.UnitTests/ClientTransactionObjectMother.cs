@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       return CreateWithComponents<T>(componentFactory);
     }
 
-    public static T CreateTransactionWithObjectLoaderDecorator<T> (TestComponentFactoryWithObjectLoaderDecorator.DecoratorFactory factory) 
+    public static T CreateTransactionWithObjectLoaderDecorator<T> (TestComponentFactoryWithObjectLoaderDecorator.DecoratorFactory factory)
         where T : ClientTransaction
     {
       var componentFactory = new TestComponentFactoryWithObjectLoaderDecorator(factory);
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       queryManager = queryManager ?? MockRepository.GenerateStub<IQueryManager>();
       commitRollbackAgent = commitRollbackAgent ?? MockRepository.GenerateStub<ICommitRollbackAgent>();
       extensions = extensions ?? Enumerable.Empty<IClientTransactionExtension>();
-      
+
       var componentFactoryStub = MockRepository.GenerateStub<IClientTransactionComponentFactory>();
       componentFactoryStub.Stub(stub => stub.CreateApplicationData(Arg<ClientTransaction>.Is.Anything)).Return(applicationData);
       componentFactoryStub
@@ -143,9 +143,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       componentFactoryStub
           .Stub(stub => stub.CreateDataManager(
               Arg<ClientTransaction>.Is.Anything,
-              Arg<IClientTransactionEventSink>.Is.Anything, 
-              Arg<IInvalidDomainObjectManager>.Is.Anything, 
-              Arg<IPersistenceStrategy>.Is.Anything, 
+              Arg<IClientTransactionEventSink>.Is.Anything,
+              Arg<IInvalidDomainObjectManager>.Is.Anything,
+              Arg<IPersistenceStrategy>.Is.Anything,
               Arg<ITransactionHierarchyManager>.Is.Anything))
           .Return(dataManager);
       componentFactoryStub
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
                   Arg<IClientTransactionEventSink>.Is.Anything,
                   Arg<IInvalidDomainObjectManager>.Is.Anything,
                   Arg<IDataManager>.Is.Anything,
-                  Arg<IEnlistedDomainObjectManager>.Is.Anything, 
+                  Arg<IEnlistedDomainObjectManager>.Is.Anything,
                   Arg<IPersistenceStrategy>.Is.Anything))
           .Return(objectLifetimeAgent);
       componentFactoryStub

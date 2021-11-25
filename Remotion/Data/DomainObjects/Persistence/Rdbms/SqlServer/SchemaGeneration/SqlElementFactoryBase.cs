@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected readonly string DefaultSchema = "dbo";
     private readonly string BatchDelimiter = "GO";
-    
+
     protected BatchDelimiterStatement CreateBatchDelimiterStatement ()
     {
       return new BatchDelimiterStatement(BatchDelimiter);

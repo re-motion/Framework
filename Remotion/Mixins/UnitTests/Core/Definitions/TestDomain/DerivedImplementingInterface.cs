@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain
 {
-  public class DerivedImplementingInterface 
+  public class DerivedImplementingInterface
       : BaseWithDerivedImplementingInterface, InterfaceImplementedByDerived, InterfaceWithGenericOverloadsImplementedByDerived
   {
     public void Bar ()

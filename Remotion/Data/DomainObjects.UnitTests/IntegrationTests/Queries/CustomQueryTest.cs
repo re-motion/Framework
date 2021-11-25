@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     public void InvokesFilterQueryResultEvent ()
     {
       var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-      
+
       var fakeResult = new[] { new object[0] };
       listenerMock
           .Expect(
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
           .Return(fakeResult);
 
       TestableClientTransaction.AddListener(listenerMock);
-      
+
       var result = QueryManager.GetCustom(_query, QueryResultRowTestHelper.ExtractRawValues);
 
       Assert.That(result, Is.SameAs(fakeResult));

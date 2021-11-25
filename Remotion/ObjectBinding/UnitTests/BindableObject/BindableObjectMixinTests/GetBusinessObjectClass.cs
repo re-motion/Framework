@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
       var providerBefore = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass));
 
       BindableObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
-      
+
       var providerAfter = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass));
       Assert.That(providerAfter, Is.Not.SameAs(providerBefore));
       var objectCreatedAfter = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);

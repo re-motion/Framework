@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo' on object "
               + "'Partner|a65b123a-6e17-498e-a28e-946217c0ae30|System.Guid' contains no related object."));
     }
-    
+
     [Test]
     public void FetchingMandatoryRealObjectEndPoint_WithNullValue_DoesNotThrow ()
     {

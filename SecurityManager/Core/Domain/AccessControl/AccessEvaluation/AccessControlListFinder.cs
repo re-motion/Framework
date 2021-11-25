@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     public AccessControlListFinder (ISecurityContextRepository securityContextRepository)
     {
       ArgumentUtility.CheckNotNull("securityContextRepository", securityContextRepository);
-      
+
       _securityContextRepository = securityContextRepository;
     }
 

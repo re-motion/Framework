@@ -47,14 +47,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new[] { column1, column2 },
           new[]
           {
-              new ColumnValueTable.Row(new[] { "a", "b" }), 
+              new ColumnValueTable.Row(new[] { "a", "b" }),
               new ColumnValueTable.Row(new[] { "c", "d" })
           });
       var two = new ColumnValueTable(
         new[] { column3, column4 },
         new[]
           {
-              new ColumnValueTable.Row(new[] { "e", "f" }), 
+              new ColumnValueTable.Row(new[] { "e", "f" }),
               new ColumnValueTable.Row(new[] { "g", "h" })
           });
 
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         new[] { column1, column2, column3, column4 },
           new[]
           {
-              new ColumnValueTable.Row(new[] { "a", "b", "e", "f" }), 
+              new ColumnValueTable.Row(new[] { "a", "b", "e", "f" }),
               new ColumnValueTable.Row(new[] { "c", "d", "g", "h" })
           });
       ColumnValueTableTestHelper.CheckTable(expected, result);
@@ -84,14 +84,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new[] { column1, column2 },
           new[]
           {
-              new ColumnValueTable.Row(new[] { "a", "b" }), 
+              new ColumnValueTable.Row(new[] { "a", "b" }),
               new ColumnValueTable.Row(new[] { "c", "d" })
           });
       var two = new ColumnValueTable(
         new[] { column3, column4 },
         new[]
           {
-              new ColumnValueTable.Row(new[] { "e", "f" }), 
+              new ColumnValueTable.Row(new[] { "e", "f" }),
               new ColumnValueTable.Row(new[] { "g", "h" })
           });
 
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         new[] { column5, column6 },
         new[]
           {
-              new ColumnValueTable.Row(new[] { "i", "j" }), 
+              new ColumnValueTable.Row(new[] { "i", "j" }),
               new ColumnValueTable.Row(new[] { "k", "l" })
           });
 
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         new[] { column1, column2, column3, column4, column5, column6 },
           new[]
           {
-              new ColumnValueTable.Row(new[] { "a", "b", "e", "f", "i", "j" }), 
+              new ColumnValueTable.Row(new[] { "a", "b", "e", "f", "i", "j" }),
               new ColumnValueTable.Row(new[] { "c", "d", "g", "h", "k", "l" })
           });
       ColumnValueTableTestHelper.CheckTable(expected, result);

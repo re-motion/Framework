@@ -511,7 +511,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.ListAsGrids().GetByLocalID("JobList_Empty");
       Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(1));
     }
-    
+
     [Test]
     public void TestGoToSpecificPage ()
     {

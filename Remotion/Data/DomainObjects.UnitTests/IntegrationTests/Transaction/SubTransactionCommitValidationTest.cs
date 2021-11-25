@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Assert.That(() => subTransaction.Commit(), Throws.Nothing);
       }
     }
-    
+
     [Test]
     public void CommitWithMandatoryOneToOneRelationNotSet ()
     {

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
-      
+
       ClassIDProviderStub = MockRepository.GenerateStub<IClassIDProvider>();
       DomainModelConstraintProviderStub = MockRepository.GenerateStub<IDomainModelConstraintProvider>();
       DomainObjectCreatorStub = MockRepository.GenerateStub<IDomainObjectCreator>();

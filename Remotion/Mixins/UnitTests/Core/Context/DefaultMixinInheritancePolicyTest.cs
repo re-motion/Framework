@@ -49,7 +49,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void GetTypesToInheritFrom_Interfaces ()
     {
-      Assert.That(_policy.GetTypesToInheritFrom(typeof(string)).ToArray(), 
+      Assert.That(_policy.GetTypesToInheritFrom(typeof(string)).ToArray(),
           Has.Member(typeof(IEnumerable<char>)));
     }
 

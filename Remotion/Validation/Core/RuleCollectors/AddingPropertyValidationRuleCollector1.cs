@@ -53,7 +53,7 @@ namespace Remotion.Validation.RuleCollectors
       ValidatedType = typeof(TValidatedType);
       Property = property;
       PropertyFunc = propertyFunc;
-      IsRemovable = false; 
+      IsRemovable = false;
     }
 
     IValidationRule IAddingPropertyValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)

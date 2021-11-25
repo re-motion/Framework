@@ -32,7 +32,7 @@ namespace Remotion.Configuration
     /// <summary>Gets the provider with the specified name.</summary>
     /// <param name="name">The key by which the provider is identified.</param>
     /// <returns>The provider with the specified name.</returns>
-    public new T this[string name] 
+    public new T this[string name]
     {
       get { return (T) (object) base[name]; }
     }
@@ -82,6 +82,6 @@ namespace Remotion.Configuration
 
       return value;
     }
-    
+
   }
 }

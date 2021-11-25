@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _persistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
       _resolver = new StoragePropertyDefinitionResolver(_persistenceModelProviderStub);
       _testModel = new RdbmsPersistenceModelLoaderTestHelper();
-      
+
       _fakeStorageProperyDefinition1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test1");
       _fakeStorageProperyDefinition2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test2");
       _fakeStorageProperyDefinition3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test3");
@@ -97,12 +97,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           Is.EqualTo(
               new[]
               {
-                  _fakeStorageProperyDefinition1, 
-                  _fakeStorageProperyDefinition2, 
-                  _fakeStorageProperyDefinition3, 
-                  _fakeStorageProperyDefinition4, 
+                  _fakeStorageProperyDefinition1,
+                  _fakeStorageProperyDefinition2,
+                  _fakeStorageProperyDefinition3,
+                  _fakeStorageProperyDefinition4,
                   _fakeStorageProperyDefinition5,
-                  _fakeStorageProperyDefinition6, 
+                  _fakeStorageProperyDefinition6,
                   _fakeStorageProperyDefinition7
               }));
     }

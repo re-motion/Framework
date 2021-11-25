@@ -42,7 +42,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
       if (x!.PositionalKey != y!.PositionalKey)
         return x.PositionalKey.CompareTo(y.PositionalKey);
-      else 
+      else
         return x.Value.ID.CompareTo(y.Value.ID);
     }
   }

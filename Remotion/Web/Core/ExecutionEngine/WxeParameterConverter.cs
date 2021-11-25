@@ -33,7 +33,7 @@ public class WxeParameterConverter
     ArgumentUtility.CheckNotNull("parameter", parameter);
     _parameter = parameter;
   }
-  
+
   protected WxeParameterDeclaration Parameter
   {
     get { return _parameter; }
@@ -82,20 +82,20 @@ public class WxeParameterConverter
       if (_parameter.Required)
       {
         throw new WxeException(string.Format(
-            "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
+            "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.",
             _parameter.Name));
       }
       return null;
     }
 
     object? value = callerVariables[_parameter.Name];
-    
+
     if (value is WxeVariableReference)
     {
       if (_parameter.Required)
       {
         throw new WxeException(string.Format(
-            "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
+            "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.",
             _parameter.Name));
       }
       return null;

@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _endPointPartialMock.Stub(stub => stub.Touch());
       _endPointPartialMock.Stub(stub => stub.HasChanged).Return(false);
       _endPointPartialMock.Replay();
-      
+
       _endPointPartialMock.SetDataFromSubTransaction(source);
 
       _endPointPartialMock.VerifyAllExpectations();
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
                   + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'; "
                   + "the end points do not have the same end point definition.", "source"));
     }
-    
+
     [Test]
     public void CreateRemoveCommand ()
     {
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _endPointPartialMock.Stub(mock => mock.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
       _endPointPartialMock.Replay();
       var relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>(_endPointPartialMock.OppositeObjectID);
-      
+
       var result = _endPointPartialMock.CreateRemoveCommand(relatedObject);
 
       _endPointPartialMock.VerifyAllExpectations();
@@ -241,6 +241,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var expectedID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
       Assert.That(oppositeEndPointIDs, Is.EqualTo(new[] { expectedID }));
     }
-    
+
   }
 }

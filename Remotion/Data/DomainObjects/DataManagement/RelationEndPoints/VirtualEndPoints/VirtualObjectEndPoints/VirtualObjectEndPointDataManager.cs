@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       _originalOppositeObject = null;
     }
-    
+
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);

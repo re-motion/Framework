@@ -125,8 +125,8 @@ namespace Remotion.Mixins.Definitions.Building
       if (requiredType.IsAssignableFrom(overriddenMemberType)) // same type or base type required
         return true;
 
-      if (requiredType.IsGenericTypeDefinition 
-          && overriddenMemberType.IsGenericType 
+      if (requiredType.IsGenericTypeDefinition
+          && overriddenMemberType.IsGenericType
           && overriddenMemberType.GetGenericTypeDefinition() == requiredType)
       {
         return true;

@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(C), typeof(M1), typeof(M2)));
 
       Assert.That(
-          () => ObjectFactory.Create<C>(), 
+          () => ObjectFactory.Create<C>(),
           Throws.TypeOf<ValidationException>().With.Message.Contains(
               "A mixin is configured with a dependency to another mixin, but that dependency is not satisfied."));
     }

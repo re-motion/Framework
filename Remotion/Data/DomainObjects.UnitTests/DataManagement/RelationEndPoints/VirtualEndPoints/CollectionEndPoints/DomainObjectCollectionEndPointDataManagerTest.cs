@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     private RelationEndPointID _endPointID;
     private IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategyMock;
-    
+
     private DomainObject _domainObject1;
     private DomainObject _domainObject2;
     private DomainObject _domainObject3;
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
       endPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
       endPointStub.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
-      
+
       Assert.That(_dataManager.CollectionData.ToArray(), Has.No.Member(_domainObject2));
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.No.Member(_domainObject2));
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
@@ -265,7 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
               .With.Message.EqualTo(
                   "The opposite end-point has not been registered."));
     }
-    
+
     [Test]
     public void ContainsOriginalItemWithoutEndPoint_True ()
     {
@@ -365,7 +365,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _changeDetectionStrategyMock
           .Expect(mock => mock.HasDataChanged(
-              Arg.Is(_dataManager.CollectionData), 
+              Arg.Is(_dataManager.CollectionData),
               Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
           .Return(true);
       _changeDetectionStrategyMock.Replay();
@@ -385,7 +385,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _changeDetectionStrategyMock
           .Expect(mock => mock.HasDataChanged(
-              Arg.Is(_dataManager.CollectionData), 
+              Arg.Is(_dataManager.CollectionData),
               Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
           .Return(true)
           .Repeat.Once();
@@ -394,7 +394,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
       _dataManager.CollectionData.Remove(_domainObject2);
- 
+
       var result1 = _dataManager.HasDataChanged();
       var result2 = _dataManager.HasDataChanged();
 
@@ -411,12 +411,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       {
         _changeDetectionStrategyMock
             .Expect(mock => mock.HasDataChanged(
-                Arg.Is(_dataManager.CollectionData), 
+                Arg.Is(_dataManager.CollectionData),
                 Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
             .Return(true).Repeat.Once();
         _changeDetectionStrategyMock
             .Expect(mock => mock.HasDataChanged(
-                Arg.Is(_dataManager.CollectionData), 
+                Arg.Is(_dataManager.CollectionData),
                 Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
             .Return(false).Repeat.Once();
       }
@@ -490,7 +490,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject3));
       _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1));
       _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject2));
-      
+
       _dataManager.SortCurrentAndOriginalData(_comparison123);
 
       Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));

@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         StorageClass storageClass)
     {
       Type declaringType = classDefinition.ClassType;
-      
+
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub.Stub(stub => stub.Name).Return(propertyName + "FakeProperty");
       propertyInformationStub.Stub(stub => stub.PropertyType).Return(propertyType);
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public static PropertyDefinition CreateForRealPropertyInfo (ClassDefinition classDefinition, Type declaringClassType, string propertyName)
     {
       var propertyInfo = declaringClassType.GetProperty(
-          propertyName, 
+          propertyName,
           BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
       Assert.IsNotNull(propertyInfo, "Property '" + propertyName + "' on type '" + declaringClassType + "'.");
 
@@ -166,11 +166,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     private static PropertyDefinition CreateForPropertyInformation (
-        ClassDefinition classDefinition, 
+        ClassDefinition classDefinition,
         string propertyName,
         bool isObjectID,
-        bool isNullable, 
-        int? maxLength, 
+        bool isNullable,
+        int? maxLength,
         StorageClass storageClass,
         IPropertyInformation propertyInformation)
     {

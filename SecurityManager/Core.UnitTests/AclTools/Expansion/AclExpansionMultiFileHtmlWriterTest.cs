@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
         var aclExpander = new AclExpander();
         var aclExpansionEntryList = aclExpander.GetAclExpansionEntryList();
         var stringWriterFactory = new StringWriterFactory();
-        
+
         stringWriterFactory.Directory = "";
         stringWriterFactory.Extension = "xYz";
 
@@ -89,7 +89,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       aclExpansionEntryList.Add(GetAclExpansionEntryWithUser(User3));
       aclExpansionEntryList.Add(aclExpansionEntry2);
       aclExpansionEntryList.Add(GetAclExpansionEntryWithUser(User2));
-      
+
       var aclExpansionEntryListResult = AclExpansionMultiFileHtmlWriter.GetAccessControlEntriesForUser(aclExpansionEntryList, User);
       Assert.That(aclExpansionEntryListResult, Is.EquivalentTo(ListObjectMother.New( aclExpansionEntry0, aclExpansionEntry1, aclExpansionEntry2 )));
       Assert.That(aclExpansionEntryListResult, Is.EquivalentTo(ListObjectMother.New(aclExpansionEntry0, aclExpansionEntry1, aclExpansionEntry2)));

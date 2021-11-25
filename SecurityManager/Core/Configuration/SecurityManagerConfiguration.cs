@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Configuration
 
     private readonly ConfigurationProperty _organizationalStructureFactoryProperty;
     private readonly DoubleCheckedLockingContainer<IOrganizationalStructureFactory> _organizationalStructureFactory;
-   
+
     private readonly ConfigurationProperty _accessControlProperty;
 
     public SecurityManagerConfiguration ()

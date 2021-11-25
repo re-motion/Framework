@@ -20,6 +20,6 @@ namespace Remotion.Extensions.UnitTests.Reflection.TestDomain
 {
   public abstract class AbstractClass
   {
-    
+
   }
 }

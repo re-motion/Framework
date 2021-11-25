@@ -158,7 +158,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       Assert.That(BuildTypeAndInvokeMethod(method, obj), Is.Null);
     }
-    
+
     [Test]
     public void EmitMethodBody_ForStaticMethodWithReferenceTypeReturnValue ()
     {

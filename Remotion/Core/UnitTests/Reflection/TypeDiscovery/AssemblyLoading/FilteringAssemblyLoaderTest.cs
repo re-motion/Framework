@@ -137,12 +137,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       {
         Assembly loadedAssembly = _loader.TryLoadAssembly(path);
         Assert.That(loadedAssembly, Is.Null);
-        
+
         CheckLog(
             "INFO : The file 'Invalid.dll' triggered a BadImageFormatException and will be ignored. Possible causes for this are:" + Environment.NewLine
             + "- The file is not a .NET assembly." + Environment.NewLine
             + "- The file was built for a newer version of .NET." + Environment.NewLine
-            + "- The file was compiled for a different platform (x86, x64, etc.) than the platform this process is running on." + Environment.NewLine 
+            + "- The file was compiled for a different platform (x86, x64, etc.) than the platform this process is running on." + Environment.NewLine
             + "- The file is damaged.");
       }
       finally
@@ -378,7 +378,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
       compiler.CompilerParameters.GenerateExecutable = generateExecutable;
       compiler.CompilerParameters.CompilerOptions = compilerOptions;
-      
+
       compiler.Compile();
       return compiler.OutputAssemblyPath;
     }
@@ -387,7 +387,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     {
       var loggingEvents = _memoryAppender.GetEvents();
       Assert.That(loggingEvents, Is.Not.Empty);
-      
+
       var fullLog = loggingEvents
           .Select(e => e.Level + " : " + e.RenderedMessage)
           .Aggregate((text, message) => text + Environment.NewLine + message);

@@ -167,13 +167,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
     public void DeleteConcreteSingle ()
     {
       var customer = DomainObjectIDs.Customer.GetObject<TICustomer>();
-      
-      
+
+
       foreach (var historyEntry in customer.HistoryEntries.Clone())
         historyEntry.Delete();
 
       customer.Delete();
-      
+
 
       ClientTransactionScope.CurrentTransaction.Commit();
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())

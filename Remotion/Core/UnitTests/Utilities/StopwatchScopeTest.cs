@@ -64,7 +64,7 @@ namespace Remotion.UnitTests.Utilities
         Wait(TimeSpan.FromMilliseconds(5.0));
       }
       Assert.That(times.Count, Is.EqualTo(3));
-      
+
       Assert.That(times[0].Item1, Is.EqualTo("One"));
       Assert.That(times[0].Item2, Is.GreaterThan(TimeSpan.FromMilliseconds(5.0))); // total
       Assert.That(times[0].Item3, Is.GreaterThan(TimeSpan.FromMilliseconds(5.0))); // since last checkpoint
@@ -166,7 +166,7 @@ namespace Remotion.UnitTests.Utilities
     {
       int counter = 0;
       var scope = StopwatchScope.CreateScope((context, s) => ++counter);
-      
+
       scope.Dispose();
       Assert.That(counter, Is.EqualTo(1));
 
@@ -182,7 +182,7 @@ namespace Remotion.UnitTests.Utilities
       var scope = StopwatchScope.CreateScope(writerMock.Object, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
       Wait(TimeSpan.FromMilliseconds(1.0));
-      
+
       scope.Pause();
 
       var firstElapsed = scope.ElapsedTotal;
@@ -198,21 +198,21 @@ namespace Remotion.UnitTests.Utilities
       var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
       scope.Dispose();
 
-      var expectedFirstArgs = new[] { 
-          "one", 
-          firstElapsed.ToString(), 
-          firstElapsed.TotalMilliseconds.ToString(), 
-          firstElapsedCP.ToString(), 
-          firstElapsedCP.TotalMilliseconds.ToString() 
+      var expectedFirstArgs = new[] {
+          "one",
+          firstElapsed.ToString(),
+          firstElapsed.TotalMilliseconds.ToString(),
+          firstElapsedCP.ToString(),
+          firstElapsedCP.TotalMilliseconds.ToString()
       };
       writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
 
-      var expectedSecondArgs = new[] { 
-          "end", 
-          secondElapsed.ToString(), 
-          secondElapsed.TotalMilliseconds.ToString(), 
-          secondElapsedCP.ToString(), 
-          secondElapsedCP.TotalMilliseconds.ToString() 
+      var expectedSecondArgs = new[] {
+          "end",
+          secondElapsed.ToString(),
+          secondElapsed.TotalMilliseconds.ToString(),
+          secondElapsedCP.ToString(),
+          secondElapsedCP.TotalMilliseconds.ToString()
       };
       writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
     }
@@ -241,12 +241,12 @@ namespace Remotion.UnitTests.Utilities
       var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
       scope.Dispose();
 
-      var expectedFirstArgs = new[] { 
-          "one", 
-          firstElapsed.ToString(), 
-          firstElapsed.TotalMilliseconds.ToString(), 
-          firstElapsedCP.ToString(), 
-          firstElapsedCP.TotalMilliseconds.ToString() 
+      var expectedFirstArgs = new[] {
+          "one",
+          firstElapsed.ToString(),
+          firstElapsed.TotalMilliseconds.ToString(),
+          firstElapsedCP.ToString(),
+          firstElapsedCP.TotalMilliseconds.ToString()
       };
       logMock.Verify(
           mock =>
@@ -258,12 +258,12 @@ namespace Remotion.UnitTests.Utilities
                   expectedFirstArgs),
           Times.AtLeastOnce());
 
-      var expectedSecondArgs = new[] { 
-          "end", 
-          secondElapsed.ToString(), 
-          secondElapsed.TotalMilliseconds.ToString(), 
-          secondElapsedCP.ToString(), 
-          secondElapsedCP.TotalMilliseconds.ToString() 
+      var expectedSecondArgs = new[] {
+          "end",
+          secondElapsed.ToString(),
+          secondElapsed.TotalMilliseconds.ToString(),
+          secondElapsedCP.ToString(),
+          secondElapsedCP.TotalMilliseconds.ToString()
       };
       logMock.Verify(
           mock => mock.LogFormat(

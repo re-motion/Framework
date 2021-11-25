@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
       property.ConvertFromNativePropertyType(EnumWithUndefinedValue.Value1);
       Assert.That(property.ConvertFromNativePropertyType(EnumWithUndefinedValue.Value1), Is.EqualTo(EnumWithUndefinedValue.Value1));
     }
-    
+
     private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
       return new EnumerationProperty(

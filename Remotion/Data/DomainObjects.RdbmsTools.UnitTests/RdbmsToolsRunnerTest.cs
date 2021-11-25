@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
 
       Assert.That(Path.IsPathRooted(configPath), configPath);
       Assert.That(File.Exists(configPath), configPath);
-      
+
       AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup(parameter);
       Assert.That(setup.ConfigurationFile, Is.EqualTo(configPath));
     }

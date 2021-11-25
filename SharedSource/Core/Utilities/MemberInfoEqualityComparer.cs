@@ -114,7 +114,7 @@ namespace Remotion.Utilities
     {
       if (memberInfo == null)
         throw new ArgumentNullException("memberInfo");
- 
+
       // DeclaringType can return null, even if ReSharper thinks otherwise.
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
       if (memberInfo.DeclaringType != null && memberInfo.DeclaringType.IsArray)

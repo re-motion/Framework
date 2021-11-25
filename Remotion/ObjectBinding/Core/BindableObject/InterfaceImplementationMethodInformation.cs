@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.BindableObject
     public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
       ArgumentUtility.CheckNotNull("implementationType", implementationType);
-      
+
       return _implementationMethodInfo.FindInterfaceImplementation(implementationType);
     }
 
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.BindableObject
     public object? Invoke (object? instance, object?[]? parameters)
     {
       ArgumentUtility.CheckNotNull("instance", instance!);
-      
+
       return _declarationMethodInfo.Invoke(instance, parameters);
     }
 
@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != GetType()) 
+      if (obj.GetType() != GetType())
         return false;
 
       var other = (InterfaceImplementationMethodInformation) obj;

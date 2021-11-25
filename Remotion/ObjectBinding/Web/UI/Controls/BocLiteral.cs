@@ -221,7 +221,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (DataSource == null)
         return;
-      
+
       string? value = null;
 
       if (DataSource.BusinessObject != null)

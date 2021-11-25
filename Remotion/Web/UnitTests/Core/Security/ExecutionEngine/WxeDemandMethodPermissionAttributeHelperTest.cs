@@ -103,7 +103,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void InitializeWithMethodTypeStaticAndMethodEnumFromBaseClass ()
     {
-      WxeDemandTargetStaticMethodPermissionAttribute attribute = 
+      WxeDemandTargetStaticMethodPermissionAttribute attribute =
           new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Search, typeof(DerivedSecurableObject));
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(

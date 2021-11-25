@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       dbParameterMock.Stub(_ => _.Value).Return(new string('a', upperLimit)).WhenCalled(mi => isValueRead = true);
       dbParameterMock.Expect(_ => _.Size = upperLimit).WhenCalled(mi => Assert.That(isValueRead));
 
-      var storageTypeInformation = 
+      var storageTypeInformation =
           new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
       var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
 
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
       dbParameterMock.Stub(_ => _.Value).Return(new string('a', upperLimit + 1));
 
-      var storageTypeInformation = 
+      var storageTypeInformation =
           new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
       var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
 
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       dbParameterMock.Stub(_ => _.Value).Return(new char[upperLimit]).WhenCalled(mi => isValueRead = true);
       dbParameterMock.Expect(_ => _.Size = upperLimit).WhenCalled(mi => Assert.That(isValueRead));
 
-      var storageTypeInformation = 
+      var storageTypeInformation =
           new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
       var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
 
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
       dbParameterMock.Stub(_ => _.Value).Return(new char[upperLimit + 1]);
 
-      var storageTypeInformation = 
+      var storageTypeInformation =
           new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
       var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
 
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       dbParameterMock.Stub(_ => _.Value).Return(null).WhenCalled(mi => isValueRead = true);
       dbParameterMock.Expect(_ => _.Size = upperLimit).WhenCalled(mi => Assert.That(isValueRead));
 
-      var storageTypeInformation = 
+      var storageTypeInformation =
           new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
       var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
 

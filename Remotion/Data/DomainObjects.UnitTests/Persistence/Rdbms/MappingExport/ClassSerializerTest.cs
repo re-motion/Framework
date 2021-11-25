@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("isAbstract"));
       Assert.That(actual.Attribute("isAbstract").Value, Is.EqualTo("false"));
     }
-    
+
     [Test]
     public void Serialize_AddsAbstractAttribute_AbstractClass ()
     {

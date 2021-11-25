@@ -70,7 +70,7 @@ public class BocListUserControl : BaseUserControl
     ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler(ChildrenList_MenuItemClick);
     ChildrenList.RowMenuItemClick += ChildrenList_RowMenuItemClick;
     ChildrenList.DataRowRender += new BocListDataRowRenderEventHandler(ChildrenList_DataRowRender);
-    
+
     ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler(ChildrenList_EditableRowChangesCanceling);
     ChildrenList.EditableRowChangesCanceled += new BocListItemEventHandler(ChildrenList_EditableRowChangesCanceled);
     ChildrenList.EditableRowChangesSaving += new BocListEditableRowChangesEventHandler(ChildrenList_EditableRowChangesSaving);
@@ -160,7 +160,7 @@ public class BocListUserControl : BaseUserControl
     menuItem.IsDisabled = true;
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.ListMenuItems.Add(menuItem);
-  
+
     menuItem = new BocMenuItem();
     menuItem.ItemID = c_deleteItemID;
     menuItem.Text = "Delete";
@@ -446,12 +446,12 @@ public class BocListUserControl : BaseUserControl
 
   private void ChildrenList_SortingOrderChanging (object sender, BocListSortingOrderChangeEventArgs e)
   {
-  
+
   }
 
   private void ChildrenList_SortingOrderChanged (object sender, BocListSortingOrderChangeEventArgs e)
   {
-  
+
   }
 }
 

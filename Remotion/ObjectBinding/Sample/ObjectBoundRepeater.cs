@@ -124,9 +124,9 @@ namespace Remotion.ObjectBinding.Sample
         set { Value = (IList) value; }
       }
 
-      public override bool HasValue 
+      public override bool HasValue
       {
-        get { return _value != null; } 
+        get { return _value != null; }
       }
 
         /// <summary>
@@ -252,11 +252,11 @@ namespace Remotion.ObjectBinding.Sample
       set { _repeaterInternal.Value = (IList) value; }
     }
 
-    public bool HasValue 
+    public bool HasValue
     {
-      get { return _repeaterInternal.HasValue; } 
+      get { return _repeaterInternal.HasValue; }
     }
-    
+
     [Browsable (false)]
     public bool IsDirty
     {

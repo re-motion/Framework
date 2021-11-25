@@ -66,6 +66,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return false; }
     }
   }
- 
+
 
 }

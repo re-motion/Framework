@@ -20,7 +20,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
   public interface ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType
-  { 
+  {
   }
 
   [ImplementationFor (typeof(ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType))]

@@ -152,8 +152,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     }
 
     public void ExpectOnceOnIsAccessible (
-        IBusinessObjectClass businessObjectClass, 
-        IBusinessObject businessObject, 
+        IBusinessObjectClass businessObjectClass,
+        IBusinessObject businessObject,
         Mock<IBusinessObjectProperty> property,
         bool returnValue)
     {

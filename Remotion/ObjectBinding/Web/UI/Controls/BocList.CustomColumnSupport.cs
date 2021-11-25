@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       Controls.Add(_customColumnsPlaceHolder);
     }
-    
+
     private void ResetCustomColumns ()
     {
       _customColumnControls.Clear();

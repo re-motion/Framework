@@ -49,13 +49,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       securableClassDefinition.AddAccessType(accessType2);
 
       securableClassDefinition.InsertAccessType(0, accessType3);
-      
+
       Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType3, accessType0, accessType1, accessType2 }));
       var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
       for (int i = 0; i < references.Count; i++)
         Assert.That(((AccessTypeReference) references[i]).Index, Is.EqualTo(i));
     }
-    
+
     [Test]
     public void Insert_Middle ()
     {
@@ -70,7 +70,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       securableClassDefinition.AddAccessType(accessType2);
 
       securableClassDefinition.InsertAccessType(1, accessType3);
-      
+
       Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType0, accessType3, accessType1, accessType2 }));
       var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
       for (int i = 0; i < references.Count; i++)
@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       securableClassDefinition.AddAccessType(accessType2);
 
       securableClassDefinition.InsertAccessType(3, accessType3);
-      
+
       Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType0, accessType1, accessType2, accessType3 }));
       var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
       for (int i = 0; i < references.Count; i++)
@@ -102,7 +102,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     public void TouchesSecurableClassDefinition ()
     {
       var securableClassDefinition = SecurableClassDefinition.NewObject();
-      
+
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         securableClassDefinition.EnsureDataAvailable();

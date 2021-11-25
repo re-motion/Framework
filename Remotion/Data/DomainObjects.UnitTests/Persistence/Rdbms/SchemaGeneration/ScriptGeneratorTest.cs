@@ -205,8 +205,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           _scriptGenerator.GetScripts(
               new[]
               {
-                  _classDefinitionForFirstStorageProvider1, 
-                  _classDefinitionForFirstStorageProvider2, 
+                  _classDefinitionForFirstStorageProvider1,
+                  _classDefinitionForFirstStorageProvider2,
                   _classDefinitionForSecondStorageProvider,
                   _classDefinitionForThirdStorageProvider
               }).ToList();

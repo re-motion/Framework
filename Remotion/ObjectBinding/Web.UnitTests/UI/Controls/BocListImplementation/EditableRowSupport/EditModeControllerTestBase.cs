@@ -223,7 +223,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       return "EndListEditModeCleanUp()";
     }
-    
+
     protected string FormatValidateEditableRows ()
     {
       return "ValidateEditableRows ()";

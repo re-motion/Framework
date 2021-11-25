@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     protected ClassWithoutRelatedClassIDColumn ()
     {
     }
-  
+
     public abstract Distributor Distributor { get; set; }
   }
 }

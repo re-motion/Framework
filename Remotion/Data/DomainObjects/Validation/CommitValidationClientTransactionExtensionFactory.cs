@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Validation
     public CommitValidationClientTransactionExtensionFactory (IPersistableDataValidator persistableDataValidator)
     {
       ArgumentUtility.CheckNotNull("persistableDataValidator", persistableDataValidator);
-      
+
       _persistableDataValidator = persistableDataValidator;
     }
 

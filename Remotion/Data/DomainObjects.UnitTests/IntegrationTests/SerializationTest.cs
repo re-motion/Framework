@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       base.OneTimeSetUp();
       SetDatabaseModifyable();
     }
-    
+
     public override void SetUp ()
     {
         base.SetUp();

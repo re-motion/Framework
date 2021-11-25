@@ -52,12 +52,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
         throw new HttpException("Test outer HTTP exception", ex);
       }
     }
-    
+
     protected void ThrowExceptionFromSubFunctionButton_Click (object sender, EventArgs e)
     {
       ExecuteFunction(new ThrowingFunction(), WxeCallArguments.Default);
     }
-    
+
     protected void ThrowExceptionForMissingPageButton_Click (object sender, EventArgs e)
     {
       ExecuteFunction(new MissingPageFunction(), WxeCallArguments.Default);

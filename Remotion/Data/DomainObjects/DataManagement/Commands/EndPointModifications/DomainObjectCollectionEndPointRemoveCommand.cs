@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly IRelationEndPointProvider _endPointProvider;
 
     public DomainObjectCollectionEndPointRemoveCommand (
-        IDomainObjectCollectionEndPoint modifiedEndPoint, 
-        DomainObject removedObject, 
+        IDomainObjectCollectionEndPoint modifiedEndPoint,
+        DomainObject removedObject,
         IDomainObjectCollectionData collectionData,
-        IRelationEndPointProvider endPointProvider, 
+        IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base(
             ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       var removedEndPoint = GetOppositeEndPoint(ModifiedEndPoint, OldRelatedObject, _endPointProvider);
       return new ExpandedCommand(
-          removedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()), 
+          removedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()),
           this);
     }
   }

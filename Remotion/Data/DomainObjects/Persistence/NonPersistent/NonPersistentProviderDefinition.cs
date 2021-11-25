@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       {
         var message = string.Format(
             "The factory type for the storage provider defined by '{0}' must implement the 'INonPersistentStorageObjectFactory' interface. "
-            + "'{1}' does not implement that interface.", 
+            + "'{1}' does not implement that interface.",
             name,
             base.Factory.GetType().Name);
         throw new ConfigurationErrorsException(message);

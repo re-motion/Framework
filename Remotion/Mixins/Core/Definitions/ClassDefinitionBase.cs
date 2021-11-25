@@ -79,7 +79,7 @@ namespace Remotion.Mixins.Definitions
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo targetMethod = mapping.TargetMethods[i];
-        
+
         if (targetMethod.DeclaringType != Type)
         {
           // The MethodInfo objects returned by the Methods property has the ReflectedType == DeclaringType; the interface map must reflect this.

@@ -38,7 +38,7 @@ namespace Remotion.Validation.Merging
     {
       ArgumentUtility.CheckNotNull("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
       ArgumentUtility.CheckNotNull("logContext", logContext);
-      
+
       return new PropertyValidatorExtractor(removingPropertyValidatorRegistrations, logContext);
     }
   }

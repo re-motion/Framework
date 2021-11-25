@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ITransaction transaction = transactionFactory.CreateRootTransaction();
       Assert.That(transaction, Is.InstanceOf(typeof(ClientTransactionWrapper)));
       Assert.That(transaction.To<ClientTransaction>(), Is.InstanceOf(typeof(ClientTransaction)));
-      
+
       var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(transaction.To<ClientTransaction>());
       Assert.That(persistenceStrategy, Is.InstanceOf(typeof(RootPersistenceStrategy)));
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       var extensionStub = MockRepository.GenerateStub<IClientTransactionExtension>();
       extensionStub.Stub(stub => stub.Key).Return("extension");
-      
+
       factory
           .Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull))
           .WhenCalled(invocation => ((ClientTransaction) invocation.Arguments[0]).Extensions.Add(extensionStub));

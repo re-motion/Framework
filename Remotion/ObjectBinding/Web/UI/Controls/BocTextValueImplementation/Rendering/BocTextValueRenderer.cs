@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     protected override Label GetLabel (BocRenderingContext<IBocTextValue> renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      
+
       Label label = new Label { Text = renderingContext.Control.Text, ClientIDMode = ClientIDMode.Static};
       label.ID = renderingContext.Control.GetValueName();
       label.EnableViewState = false;

@@ -35,7 +35,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private static readonly MethodInfo s_assemblyLoadMethod =
         MemberInfoFromExpressionUtility.GetMethod(() => Assembly.Load("assemblyName"));
-      
+
 
     public Expression CreateNewExpression ()
     {

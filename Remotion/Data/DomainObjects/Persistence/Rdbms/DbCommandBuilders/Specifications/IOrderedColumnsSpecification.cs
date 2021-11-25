@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
   {
     bool IsEmpty { get; }
     void AppendOrderings (StringBuilder stringBuilder, ISqlDialect sqlDialect);
-    
+
     ISelectedColumnsSpecification UnionWithSelectedColumns (ISelectedColumnsSpecification selectedColumns);
   }
 }

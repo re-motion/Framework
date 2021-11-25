@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects
     private readonly ClassDefinition _classDefinition;
     private int _cachedHashCode;
     private string _cachedSerializedValue;
-    
+
     /// <summary>
     /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
     /// </summary>
@@ -286,7 +286,7 @@ namespace Remotion.Data.DomainObjects
     public override int GetHashCode ()
     {
       // Use lazy initialization because of deserialization.
-      
+
       // Note: The following code is not completely thread-safe - the hash code might be calculated twice on different threads. 
       // However, we can assume that an int assignment is atomic (and the XOR operation is fully performed before the assignment takes place), 
       // so no half-calculated values should become visible.
@@ -297,7 +297,7 @@ namespace Remotion.Data.DomainObjects
       // ReSharper disable NonReadonlyFieldInGetHashCode
       if (_cachedHashCode == 0)
         _cachedHashCode = _classDefinition.GetHashCode() ^ _value.GetHashCode();
-      
+
       return _cachedHashCode;
       // ReSharper restore NonReadonlyFieldInGetHashCode
     }

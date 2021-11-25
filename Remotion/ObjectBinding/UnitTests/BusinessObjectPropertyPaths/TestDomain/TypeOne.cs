@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.TestDomai
     }
 
     public TypeTwo TypeTwoValue { get; set; }
- 
+
     public int IntValue { get; set; }
  }
 }

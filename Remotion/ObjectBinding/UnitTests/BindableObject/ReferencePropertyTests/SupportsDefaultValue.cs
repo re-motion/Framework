@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();
-      
+
       _bindableObjectProviderForDeclaringType.AddService(businessObjectClassServiceMock.Object);
 
       businessObjectClassServiceMock.Verify();

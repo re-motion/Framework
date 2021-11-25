@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <typeparam name="TEndPoint">The type of the end point whose state is managed by this class.</typeparam>
   /// <typeparam name="TData">The type of data held by the <typeparamref name="TDataManager"/>.</typeparam>
   /// <typeparam name="TDataManager">The type of <see cref="IVirtualEndPointDataManager"/> holding the data for the end-point.</typeparam>
-  public abstract class CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager> 
+  public abstract class CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>
       : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
       where TEndPoint : IVirtualEndPoint<TData>
       where TDataManager : IVirtualEndPointDataManager

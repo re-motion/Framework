@@ -26,7 +26,7 @@ namespace Remotion.Xml.UnitTests
   {
     public const string ElementName = "sampleClass";
     public const string SchemaUri = "http://www.re-motion.org/core/unitTests";
-  
+
     public static XmlReader GetSchemaReader ()
     {
       return new XmlTextReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(SampleClass), "SampleClass.xsd"));

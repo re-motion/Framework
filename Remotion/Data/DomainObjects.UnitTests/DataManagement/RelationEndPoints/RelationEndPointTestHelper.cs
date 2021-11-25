@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public static DataContainer CreateExistingForeignKeyDataContainer (RelationEndPointID id, ObjectID initialForeignKeyValue)
     {
       var foreignKeyDataContainer = DataContainer.CreateForExisting(
-          id.ObjectID, 
-          null, 
+          id.ObjectID,
+          null,
           pd => pd.PropertyName == id.Definition.PropertyName ? initialForeignKeyValue : pd.DefaultValue);
       return foreignKeyDataContainer;
     }

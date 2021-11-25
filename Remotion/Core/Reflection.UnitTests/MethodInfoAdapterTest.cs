@@ -38,7 +38,7 @@ namespace Remotion.Reflection.UnitTests
     private MethodInfoAdapter _adapter;
     private MethodInfoAdapter _explicitInterfaceAdapter;
     private MethodInfoAdapter _implicitInterfaceAdapter;
-    
+
     [SetUp]
     public void SetUp ()
     {

@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       PerformanceTestHelper.TimeAndOutput(100, message + "(QM+SQL+IQ+Execute)", linqHelper.GenerateAndExecuteQueryDBOnly);
       PerformanceTestHelper.TimeAndOutput(100, message + "(QM+SQL+IQ+Execute+re-store)", linqHelper.GenerateAndExecuteQuery);
     }
-    
+
     [Test]
     public void WithCustomProjectionAndLargeResultSet ()
     {
@@ -109,8 +109,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void WithComplexQuery_Subqueries ()
     {
-      var query = (from p in QueryFactory.CreateLinqQuery<Person>() 
-                   where (from c in QueryFactory.CreateLinqQuery<Client>() select c).Contains(p.Client) 
+      var query = (from p in QueryFactory.CreateLinqQuery<Person>()
+                   where (from c in QueryFactory.CreateLinqQuery<Client>() select c).Contains(p.Client)
                         && p.FirstName == (from sp in QueryFactory.CreateLinqQuery<Person>() select sp.FirstName).First()
                    select p).Distinct();
       Func<IQueryable<Person>> queryGenerator = () => (query);
@@ -147,9 +147,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void WithComplexQuery_JoinsAndSubquery ()
     {
-      var query = (from c in QueryFactory.CreateLinqQuery<Client>() 
+      var query = (from c in QueryFactory.CreateLinqQuery<Client>()
                     join p in QueryFactory.CreateLinqQuery<Person>() on c equals p.Client
-                    join co in QueryFactory.CreateLinqQuery<Company>() on c equals co.Client 
+                    join co in QueryFactory.CreateLinqQuery<Company>() on c equals co.Client
                   where p.FirstName== ((from sp in QueryFactory.CreateLinqQuery<Person>() select sp.FirstName).First())
                   select co).Distinct();
       Func<IQueryable<Company>> queryGenerator = () => (query);

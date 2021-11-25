@@ -37,7 +37,7 @@ namespace Remotion.Validation.MetaValidation
 
       return new MetaValidationRuleValidationResult(false, string.Format(messageFormat, args));
     }
-    
+
     private readonly bool _isValid;
     private readonly string? _message;
 

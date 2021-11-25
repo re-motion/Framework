@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   public class DomainObjectCollectionEndPointCollectionProvider : IDomainObjectCollectionEndPointCollectionProvider
   {
     private readonly IAssociatedDomainObjectCollectionDataStrategyFactory _dataStrategyFactory;
-    
+
     private readonly Dictionary<RelationEndPointID, DomainObjectCollection> _collections = new Dictionary<RelationEndPointID, DomainObjectCollection>();
     private readonly Func<RelationEndPointID, DomainObjectCollection> _getCollectionWithoutCacheFunc;
 

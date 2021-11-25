@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void CtorTest ()
     {
-      var comparer = 
+      var comparer =
         new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass>(x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
 
       var y = new CompoundValueEqualityComparerTestClass { Text = "changed1" };

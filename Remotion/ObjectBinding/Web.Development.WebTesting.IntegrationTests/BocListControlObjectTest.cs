@@ -697,7 +697,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith'SingleQuot");
       Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
     }
-    
+
     [Test]
     public void TestGetCellWhere_WithDoubleQuote ()
     {
@@ -820,7 +820,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID("JobList_ColumnsWithoutDiagnosticMetadata");
-      
+
       var cell = bocList.GetCellWhere("RowCmd", "With'SingleQuoteAndDouble\"Quote");
       Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
 
@@ -1401,7 +1401,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(4));
     }
 
-    
+
     [Test]
     public void TestGoToSpecificPage_FirstPage ()
     {

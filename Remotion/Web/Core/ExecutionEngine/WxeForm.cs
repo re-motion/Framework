@@ -187,7 +187,7 @@ namespace Remotion.Web.ExecutionEngine
 
       if (Page.MaintainScrollPositionOnPostBack)
         throw new WxeException("Enabling the ASP.NET smart navigation by setting System.Web.UI.Page.MaintainScrollPositionOnPostBack to true is not supported on WXE Pages. Use the smart navigation feature (SmartPage.EnableSmartScrolling, enabled by default) integrated into re-motion framework instead.");
-      
+
       base.Render(writer);
     }
 

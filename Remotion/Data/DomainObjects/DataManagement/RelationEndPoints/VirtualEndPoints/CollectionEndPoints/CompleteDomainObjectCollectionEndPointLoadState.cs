@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public override void Rollback (IDomainObjectCollectionEndPoint endPoint)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      
+
       base.Rollback(endPoint);
 
       RaiseReplaceDataEvent(endPoint);

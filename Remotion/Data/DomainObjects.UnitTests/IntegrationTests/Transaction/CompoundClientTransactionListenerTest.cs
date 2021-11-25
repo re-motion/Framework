@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       base.SetUp();
 
       _mockRepository = new MockRepository();
-      
+
       _listener1 = _mockRepository.StrictMock<IClientTransactionListener>();
       _listener2 = _mockRepository.StrictMock<IClientTransactionListener>();
 
@@ -118,34 +118,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo();
       CheckNotification(listener => listener.PropertyValueReading(
-          TestableClientTransaction, 
-          order, 
-          propertyDefinition, 
+          TestableClientTransaction,
+          order,
+          propertyDefinition,
           ValueAccess.Original));
       CheckNotification(listener => listener.PropertyValueRead(
-        TestableClientTransaction, 
+        TestableClientTransaction,
         order,
         propertyDefinition,
-        "Foo", 
+        "Foo",
         ValueAccess.Original));
 
       CheckNotification(listener => listener.PropertyValueChanging(
-          TestableClientTransaction, 
+          TestableClientTransaction,
           order,
-          propertyDefinition, 
-          "Foo", 
+          propertyDefinition,
+          "Foo",
           "Bar"));
       CheckNotification(listener => listener.PropertyValueChanged(
-          TestableClientTransaction, 
+          TestableClientTransaction,
           order,
-          propertyDefinition, 
-          "Foo", 
+          propertyDefinition,
+          "Foo",
           "Bar"));
 
       CheckNotification(listener => listener.RelationRead(TestableClientTransaction, order, realtionEndPointDefinitionMock, order, ValueAccess.Original));
       CheckNotification(listener => listener.RelationRead(TestableClientTransaction, order, realtionEndPointDefinitionMock, relatedObjects, ValueAccess.Original));
       CheckNotification(listener => listener.RelationReading(TestableClientTransaction, order, realtionEndPointDefinitionMock, ValueAccess.Current));
-      
+
       CheckNotification(listener => listener.RelationChanging(TestableClientTransaction, order, realtionEndPointDefinitionMock, order, order3));
       CheckNotification(listener => listener.RelationChanged(TestableClientTransaction, order, realtionEndPointDefinitionMock, order, order3));
 

@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
               .With.Message.EqualTo(@"No TextWriter with name ""yang"" registered => no relative path exists."));
 
       textWriterFactoryBaseMock.Verify();
-    }   
+    }
 
   }
 }

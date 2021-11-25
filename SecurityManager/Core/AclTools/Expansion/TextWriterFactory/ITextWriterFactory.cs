@@ -27,10 +27,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
   public interface ITextWriterFactory
   {
     TextWriter CreateTextWriter (string directory, string name, string extension);
-    TextWriter CreateTextWriter (string name); 
-    string GetRelativePath (string fromName, string toName); 
+    TextWriter CreateTextWriter (string name);
+    string GetRelativePath (string fromName, string toName);
 
-    string Directory { get; set; } 
+    string Directory { get; set; }
     string Extension { get; set; }
   }
 }

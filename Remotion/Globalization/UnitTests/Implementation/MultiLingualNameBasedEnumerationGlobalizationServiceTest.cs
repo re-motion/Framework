@@ -312,7 +312,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
                 + "has no MultiLingualNameAttribute for the assembly's neutral resource language ('') applied."));
       }
     }
-    
+
     [Test]
     public void TryGetEnumerationValueDisplayName_WithMultipleMultiLingualNameAttributesForSameCulture_ThrowsInvalidOperationException ()
     {

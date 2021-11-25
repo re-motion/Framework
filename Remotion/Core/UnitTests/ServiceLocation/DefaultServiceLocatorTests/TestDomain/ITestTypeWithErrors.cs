@@ -42,7 +42,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
     {
     }
   }
-  
+
   public class TestTypeWithConstructorThrowingSingleDependency : ITestType
   {
     public TestTypeWithConstructorThrowingSingleDependency (ITestTypeWithErrors param)

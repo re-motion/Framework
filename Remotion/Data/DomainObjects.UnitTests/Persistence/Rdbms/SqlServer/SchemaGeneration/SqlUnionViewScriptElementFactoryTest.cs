@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     private SqlUnionViewScriptElementFactory _factory;
     private UnionViewDefinition _unionViewDefinitionWithCustomSchema;
     private UnionViewDefinition _unionViewDefinitionWithDefaultSchema;
- 
+
     public override void SetUp ()
     {
       base.SetUp();

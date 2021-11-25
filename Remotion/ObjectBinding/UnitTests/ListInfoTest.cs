@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.UnitTests
     [Test]
     [Ignore ("TODO: implement and integrate with BocList")]
     public void InsertItem ()
-    {      
+    {
     }
 
     [Test]

@@ -51,8 +51,8 @@ public class BusinessObjectTreeNode: BocTreeNode
   string? _propertyIdentifier;
 
   public BusinessObjectTreeNode (
-      string itemID, 
-      string? text, 
+      string itemID,
+      string? text,
       string? toolTip,
       IconInfo? icon,
       IBusinessObjectReferenceProperty? property,
@@ -66,8 +66,8 @@ public class BusinessObjectTreeNode: BocTreeNode
   }
 
   public BusinessObjectTreeNode (
-      string itemID, 
-      string text, 
+      string itemID,
+      string text,
       IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity businessObject)
     : this(itemID, text, null, null, property, businessObject)
@@ -79,14 +79,14 @@ public class BusinessObjectTreeNode: BocTreeNode
   /// </summary>
   public IBusinessObjectWithIdentity? BusinessObject
   {
-    get 
+    get
     {
       EnsureBusinessObject();
-      return _businessObject; 
+      return _businessObject;
     }
-    set 
+    set
     {
-      _businessObject = value; 
+      _businessObject = value;
     }
   }
 
@@ -96,14 +96,14 @@ public class BusinessObjectTreeNode: BocTreeNode
   /// </summary>
   public IBusinessObjectReferenceProperty? Property
   {
-    get 
+    get
     {
       EnsureProperty();
-      return _property; 
+      return _property;
     }
     set
-    { 
-      _property = value; 
+    {
+      _property = value;
       if (value != null)
         _propertyIdentifier = value.Identifier;
       else
@@ -116,7 +116,7 @@ public class BusinessObjectTreeNode: BocTreeNode
     get { return _propertyIdentifier; }
     set
     {
-      _propertyIdentifier = value; 
+      _propertyIdentifier = value;
       _property = null;
     }
   }
@@ -159,8 +159,8 @@ public class BusinessObjectTreeNode: BocTreeNode
           throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is null.");
         if (! (BocTreeView.DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
           throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is of type '" + BocTreeView.DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
-        
-        BusinessObject = 
+
+        BusinessObject =
             ((IBusinessObjectClassWithIdentity) BocTreeView.DataSource.BusinessObjectClass).GetObject(ItemID);
         if (_businessObject == null) // This test could be omitted if graceful recovery is wanted.
           throw new InvalidOperationException("Could not find IBusinessObjectWithIdentity '" + ItemID + "' via the DataSource.");
@@ -181,13 +181,13 @@ public class BusinessObjectTreeNode: BocTreeNode
 
     BusinessObjectTreeNode? businessObjectParentNode = ParentNode as BusinessObjectTreeNode;
     BusinessObjectPropertyTreeNode? propertyParentNode = ParentNode as BusinessObjectPropertyTreeNode;
-    
+
     if (businessObjectParentNode != null)
     {
       Assertion.IsNotNull(businessObjectParentNode.BusinessObject, "businessObjectParentNode.BusinessObject is not null.");
       Assertion.IsNotNull(_propertyIdentifier, "_propertyIdentifier must not be null.");
 
-      IBusinessObjectProperty? property = 
+      IBusinessObjectProperty? property =
           businessObjectParentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition(_propertyIdentifier);
       Property = (IBusinessObjectReferenceProperty?) property;
 
@@ -206,8 +206,8 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   IBusinessObjectReferenceProperty? _property;
 
   public BusinessObjectPropertyTreeNode (
-      string itemID, 
-      string text, 
+      string itemID,
+      string text,
       string? toolTip,
       IconInfo? icon,
       IBusinessObjectReferenceProperty? property)
@@ -217,8 +217,8 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   }
 
   public BusinessObjectPropertyTreeNode (
-      string itemID, 
-      string text, 
+      string itemID,
+      string text,
       IBusinessObjectReferenceProperty property)
     : this(itemID, text, null, null, property)
   {
@@ -231,14 +231,14 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   public IBusinessObjectReferenceProperty Property
   {
     [MemberNotNull (nameof(_property))]
-    get 
+    get
     {
       EnsureProperty();
-      return _property; 
+      return _property;
     }
     set
     {
-      _property = value; 
+      _property = value;
     }
   }
 

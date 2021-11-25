@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     }
 
     protected abstract void HandleReference_OneMany_RealSide_Checks (Order sourceRelated, PropertyAccessor sourceReference, Order cloneRelated, PropertyAccessor cloneReference);
-    
+
     [Test]
     public void HandleReference_OneMany_RealSide_Null ()
     {
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     public void HandleReference_OneMany_VirtualSide ()
     {
       Cloner.CloneTransaction = CloneTransaction;
-      
+
       Order source = DomainObjectMother.CreateObjectInTransaction<Order>(SourceTransaction);
       Order clone = DomainObjectMother.CreateObjectInTransaction<Order>(CloneTransaction);
       OrderItem sourceRelated = DomainObjectMother.CreateObjectInTransaction<OrderItem>(SourceTransaction);

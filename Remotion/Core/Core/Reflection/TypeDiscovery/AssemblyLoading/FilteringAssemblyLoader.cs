@@ -104,11 +104,11 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       catch (BadImageFormatException ex)
       {
         s_log.Value.InfoFormat(
-            "The file {0} triggered a BadImageFormatException and will be ignored. Possible causes for this are:" + Environment.NewLine 
-            + "- The file is not a .NET assembly." + Environment.NewLine 
+            "The file {0} triggered a BadImageFormatException and will be ignored. Possible causes for this are:" + Environment.NewLine
+            + "- The file is not a .NET assembly." + Environment.NewLine
             + "- The file was built for a newer version of .NET." + Environment.NewLine
             + "- The file was compiled for a different platform (x86, x64, etc.) than the platform this process is running on." + Environment.NewLine
-            + "- The file is damaged.", 
+            + "- The file is damaged.",
             assemblyDescriptionText);
         s_log.Value.DebugFormat(ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
 
@@ -140,7 +140,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       }
       catch (Exception ex)
       {
-        string message = string.Format("The assembly {0} triggered an unexpected exception of type {1}.\r\nUnexpected exception message: {2}", 
+        string message = string.Format("The assembly {0} triggered an unexpected exception of type {1}.\r\nUnexpected exception message: {2}",
                                         assemblyDescriptionText, ex.GetType().GetFullNameSafe(), ex.Message);
         throw new AssemblyLoaderException(message, ex);
       }

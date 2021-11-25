@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void SuppressAttributeIsNotIgnored ()
     {
-      TargetClassDefinition classDefinition = 
+      TargetClassDefinition classDefinition =
           DefinitionObjectMother.GetActiveTargetClassDefinition_Force(typeof(ClassWithSuppressAttribute));
       Assert.That(classDefinition.CustomAttributes.ContainsKey(typeof(SuppressAttributesAttribute)), Is.True);
     }
@@ -310,7 +310,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.That(attribute2.DeclaringDefinition, Is.SameAs(attributableDefinition));
       Assert.That(attribute2.Parent, Is.SameAs(attributableDefinition));
     }
-  
+
     // ReSharper disable UnusedMember.Local
     // ReSharper disable UnusedParameter.Local
 

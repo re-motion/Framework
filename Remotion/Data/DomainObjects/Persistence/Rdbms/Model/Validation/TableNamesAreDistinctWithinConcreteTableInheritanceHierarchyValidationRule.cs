@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
   {
     public TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule ()
     {
-      
+
     }
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)

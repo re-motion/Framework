@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var dataManager = ClientTransactionTestHelper.GetDataManager(_transaction);
       _relationEndPointManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager(dataManager);
     }
-    
+
     [Test]
     public void IsSynchronized ()
     {

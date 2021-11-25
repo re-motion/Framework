@@ -126,6 +126,6 @@ namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
     {
       Assert.That(actualProperty.Name, Is.EqualTo(expectedName));
       Assert.That(actualProperty.DeclaringType, Is.SameAs(expectedDeclaringType));
-    } 
+    }
   }
 }

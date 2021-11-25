@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("loadedDataContainerProvider", loadedDataContainerProvider);
       ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
-      
+
       _loadedDataContainerProvider = loadedDataContainerProvider;
       _invalidDomainObjectManager = invalidDomainObjectManager;
     }

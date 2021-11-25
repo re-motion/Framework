@@ -126,7 +126,7 @@ namespace Remotion.Validation.UnitTests.Merging
       var extractor = new ObjectValidatorExtractor(
           new[]
           {
-              _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration2, _removingObjectValidatorRegistration3, _removingObjectValidatorRegistration4, 
+              _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration2, _removingObjectValidatorRegistration3, _removingObjectValidatorRegistration4,
               _removingObjectValidatorRegistration5, _removingObjectValidatorRegistration6, _removingObjectValidatorRegistration7
           },
           _logContextMock.Object);

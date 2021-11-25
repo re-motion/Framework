@@ -55,7 +55,7 @@ namespace Remotion.Validation.RuleBuilders
     /// <returns>An object to continue the fluent specification.</returns>
     IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddMetaValidationRule (
         Func<IEnumerable<IPropertyValidator>, MetaValidationRuleValidationResult> rule);
-    
+
     /// <summary>
     /// Registers a predicate expression which will be used for performing consistency checks on validators of type <typeparamref name="TValidator"/>.
     /// </summary>

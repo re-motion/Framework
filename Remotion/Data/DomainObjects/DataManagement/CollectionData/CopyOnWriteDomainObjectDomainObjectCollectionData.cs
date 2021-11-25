@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       if (!IsContentsCopied)
         WrappedData = new DomainObjectCollectionData(WrappedData);
     }
-    
+
     public void RevertToCopiedData ()
     {
       WrappedData = _copiedData;

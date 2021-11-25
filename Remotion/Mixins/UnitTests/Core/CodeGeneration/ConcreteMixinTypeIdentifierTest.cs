@@ -48,8 +48,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void Equals_True ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof(BT1Mixin1), 
-          new HashSet<MethodInfo> { _overrider1, _overrider2  }, 
+          typeof(BT1Mixin1),
+          new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
       var two = new ConcreteMixinTypeIdentifier(
           typeof(BT1Mixin1),
@@ -209,7 +209,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       deserializerMock.Replay();
 
       var identifier = ConcreteMixinTypeIdentifier.Deserialize(deserializerMock);
-      
+
       deserializerMock.VerifyAllExpectations();
       Assert.That(identifier.MixinType, Is.SameAs(typeof(BT1Mixin1)));
       Assert.That(identifier.Overriders, Is.SameAs(overriders));

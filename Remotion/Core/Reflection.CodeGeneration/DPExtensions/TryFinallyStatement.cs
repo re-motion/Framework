@@ -48,7 +48,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
         statement.Emit(member, gen);
 
       gen.BeginFinallyBlock();
-      
+
       foreach (Statement statement in _finallyStatements)
         statement.Emit(member, gen);
 

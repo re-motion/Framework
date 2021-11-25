@@ -55,7 +55,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
     public CustomClassEmitter UnsavedClassEmitter
     {
-      get { 
+      get {
         if (_unsavedClassEmitter == null)
           _unsavedClassEmitter = new CustomClassEmitter(UnsavedScope, GetType().Name + "Unsaved" + s_typeCount++, typeof(object), Type.EmptyTypes, TypeAttributes.Public, true);
         return _unsavedClassEmitter; }

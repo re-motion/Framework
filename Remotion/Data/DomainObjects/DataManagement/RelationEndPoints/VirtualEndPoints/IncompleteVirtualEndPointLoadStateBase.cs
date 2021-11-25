@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <typeparam name="TData">The type of data held by the <typeparamref name="TDataManager"/>.</typeparam>
   /// <typeparam name="TDataManager">The type of <see cref="IVirtualEndPointDataManager"/> holding the data for the end-point.</typeparam>
   /// <typeparam name="TLoadStateInterface">The type of the load state interface used by <typeparamref name="TEndPoint"/>.</typeparam>
-  public abstract class IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface> 
+  public abstract class IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>
       : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
       where TEndPoint : IVirtualEndPoint<TData>
       where TDataManager : IVirtualEndPointDataManager
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       var completeState = _endPointLoader.LoadEndPointAndGetNewState(endPoint);
       return completeState.GetOriginalData(endPoint);
     }
- 
+
     public virtual void RegisterOriginalOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool HasChanged ()
     {
-      return false; 
+      return false;
     }
 
     public void Commit (TEndPoint endPoint)
@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         s_log.InfoFormat("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);
 
       var dataManager = CreateEndPointDataManager(endPoint);
-      
+
       foreach (var item in items)
       {
         IRealObjectEndPoint oppositeEndPoint;

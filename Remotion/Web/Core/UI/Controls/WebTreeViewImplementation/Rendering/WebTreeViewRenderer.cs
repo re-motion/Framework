@@ -41,7 +41,7 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
-      
+
       string scriptFileKey = typeof(WebTreeViewRenderer).GetFullNameChecked() + "_Script";
       var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(WebTreeViewRenderer), ResourceType.Html, "TreeView.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptFileUrl);

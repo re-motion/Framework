@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
   [TestFixture]
   public class TableSerializerTest : SchemaGenerationTestBase
   {
- 
+
     [Test]
     public void Serialize_CreatesTableElement ()
     {

@@ -138,7 +138,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
       return button;
     }
-    
+
     private Control CreateAnchorWithTextAndJavascriptInOnClick (string prefix)
     {
       HyperLink hyperLink = CreateAnchorWithPostBackJavascriptInOnClick(prefix, "AnchorWithTextAndJavascriptInOnClick");

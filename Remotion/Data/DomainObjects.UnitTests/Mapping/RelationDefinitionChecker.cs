@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     // methods and properties
 
     public void Check (
-        IReadOnlyCollection<RelationDefinition> expectedDefinitions, 
+        IReadOnlyCollection<RelationDefinition> expectedDefinitions,
         IDictionary<string, RelationDefinition> actualDefinitions,
         bool ignoreUnknown)
     {
@@ -85,9 +85,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
         var endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
         endPointDefinitionChecker.Check(expectedEndPointDefinition, actualEndPointDefinition, true);
-        
+
         Assert.AreSame(
-            actualRelationDefinition, 
+            actualRelationDefinition,
             actualEndPointDefinition.RelationDefinition,
             "End point definition does not reference the correct relation definition (relation definition: '{0}', class: '{1}', property name: '{2}').",
             actualRelationDefinition.ID,

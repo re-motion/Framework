@@ -82,7 +82,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
 
       var nonGenericMixinType = typeof(BT3Mixin1);
       DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, nonGenericMixinType);
-      
+
       var closedMixinType =  targetClassDefinition.MixinTypeCloser.GetClosedMixinType(typeof(BT3Mixin3<,>));
       DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, closedMixinType);
 

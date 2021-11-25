@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       initializationContextMock.VerifyAllExpectations();
       Assert.That(instance, Is.SameAs(registeredObject));
     }
-    
+
     [Test]
     public void CreateObjectReference_ValidatesMixinConfiguration ()
     {

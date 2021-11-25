@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects
     {
       if (clientTransaction.Extensions[Key] != null)
         return false;
-      
+
       clientTransaction.Extensions.Add(this);
       return true;
     }

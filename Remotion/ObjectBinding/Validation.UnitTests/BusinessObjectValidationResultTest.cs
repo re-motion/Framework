@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       Assert.That(lastNameValidationFailures.Length, Is.EqualTo(1));
       Assert.That(lastNameValidationFailures[0].ValidatedObject, Is.SameAs(person1));
       Assert.That(lastNameValidationFailures[0].ValidatedProperty, Is.SameAs(_lastNameBusinessObjectProperty));
-      
+
       var phoneNumberValidationFailures =
           businessObjectValidationResult.GetValidationFailures(person1, _phoneNumberBusinessObjectProperty, markAsHandled: false).ToArray();
       Assert.That(phoneNumberValidationFailures.Length, Is.EqualTo(1));
@@ -260,7 +260,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       Assert.That(lastNameValidationFailures.Length, Is.EqualTo(1));
       Assert.That(lastNameValidationFailures[0].ValidatedObject, Is.SameAs(person1));
       Assert.That(lastNameValidationFailures[0].ValidatedProperty, Is.SameAs(_lastNameBusinessObjectProperty));
-      
+
       var phoneNumberValidationFailures =
           businessObjectValidationResult.GetValidationFailures(person1, _phoneNumberBusinessObjectProperty, markAsHandled: false).ToArray();
       Assert.That(phoneNumberValidationFailures.Length, Is.EqualTo(1));

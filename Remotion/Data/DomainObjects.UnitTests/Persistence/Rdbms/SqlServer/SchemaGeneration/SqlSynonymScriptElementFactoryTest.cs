@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var result = _factory.GetDropElement(_tableDefinition1, _synonymWithCustomSchema);
 
-      var expectedResult = 
+      var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
        +"  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
-    
+
     [Test]
     public void GetCreateElement_UnionViewDefinition_And_DefaultSchema ()
     {

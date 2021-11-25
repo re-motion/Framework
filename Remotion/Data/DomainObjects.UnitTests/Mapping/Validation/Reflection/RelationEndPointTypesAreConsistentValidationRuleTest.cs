@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           "RelationProperty1",
           false,
           PropertyInfoAdapter.Create(typeof(BaseRelationEndPointPropertyClass2).GetProperty("RelationProperty1")));
-      
+
       var relationDefinition = CreateRelationDefinitionAndSetBackReferences("Test", endPoint1, endPoint2);
 
       var validationResult = _validationRule.Validate(relationDefinition);

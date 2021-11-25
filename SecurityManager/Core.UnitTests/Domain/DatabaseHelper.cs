@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
 
     private IDbConnection GetConnection ()
     {
-      RdbmsProviderDefinition providerDefinition = 
+      RdbmsProviderDefinition providerDefinition =
           (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["SecurityManager"];
       IDbConnection connection = new SqlConnection(providerDefinition.ConnectionString);
       connection.Open();

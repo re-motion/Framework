@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void SerializeAndDeserialize ()
     {
       Assert.That(
-          Serializer.SerializeAndDeserialize(NullClientTransactionListener.Instance), 
+          Serializer.SerializeAndDeserialize(NullClientTransactionListener.Instance),
           Is.SameAs(NullClientTransactionListener.Instance));
     }
 
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void FilterCustomQueryResult ()
     {
-      var querResult = new List<object>();  
+      var querResult = new List<object>();
       Assert.That(_listener.FilterCustomQueryResult(TestableClientTransaction, MockRepository.GenerateStub<IQuery>(), querResult), Is.SameAs(querResult));
     }
 

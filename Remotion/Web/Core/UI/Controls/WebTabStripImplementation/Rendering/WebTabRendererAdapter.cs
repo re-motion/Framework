@@ -67,7 +67,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     public void Render (WebTabStripRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      
+
       _webTabRenderer.Render(renderingContext, _webTab, _isEnabled, _isLast, _webTabStyle);
     }
 

@@ -46,8 +46,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     {
       var factory1 = _serviceLocator.GetInstance<ISystemPropertyMetaValidationRuleProviderFactory>();
       var factory2 = _serviceLocator.GetInstance<ISystemPropertyMetaValidationRuleProviderFactory>();
-      
+
       Assert.That(factory1, Is.SameAs(factory2));
-    } 
+    }
   }
 }

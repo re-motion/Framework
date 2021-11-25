@@ -38,7 +38,7 @@ namespace Remotion.Web.Test.Shared.ErrorHandling
 
     void ScriptManager_AsyncPostBackError (object sender, AsyncPostBackErrorEventArgs e)
     {
-      
+
     }
     protected void SynchronousPostbackErrorButton_Click (object sender, EventArgs e)
     {

@@ -166,7 +166,7 @@ namespace Remotion.SecurityManager.PerformanceTests
         }
       }
     }
-    
+
     private static void TestSimpleLinqQueryWithCustomProjection_MappingInitialization ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
@@ -174,7 +174,7 @@ namespace Remotion.SecurityManager.PerformanceTests
         QueryFactory.CreateLinqQuery<Tenant>().Select(p => new { Value = p.ID, Key = p.UniqueIdentifier }).ToList();
       }
     }
-    
+
     private static void TestSimpleLinqQueryWithCustomProjection ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
@@ -185,7 +185,7 @@ namespace Remotion.SecurityManager.PerformanceTests
         }
       }
     }
-    
+
     private static void TestSimpleQueryAsString ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())

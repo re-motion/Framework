@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation.Rende
     {
       return control.DataSource != null && (control.DataSource.BusinessObject != null || control.DataSource.BusinessObjectClass != null);
     }
-    
+
     public override string GetCssClassBase (IBocTreeView control)
     {
       return "bocTreeView";

@@ -65,23 +65,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public Type RequiredItemType
     {
-      get 
+      get
       {
         // Currently, the data backing a CollectionEndPoint does not check the item type.
         // This is hard-coded (rather than delegating to _associatedEndPoint.GetData().RequiredItemType) to avoid lazy loading for
         // item type checks.
-        return null; 
+        return null;
       }
     }
 
     public bool IsReadOnly
     {
-      get 
-      { 
+      get
+      {
         // Currently, the data backing a CollectionEndPoint is never read-only.
         // This is hard-coded (rather than delegating to _associatedEndPoint.GetData().IsReadOnly) because that always returns a read-only
         // decorator.
-        return false; 
+        return false;
       }
     }
 
@@ -253,7 +253,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private void CheckClientTransaction (DomainObject domainObject, string exceptionFormatString)
     {
       Assertion.DebugAssert(domainObject != null);
-      
+
       var endPoint = GetAssociatedEndPoint();
 
       // This uses IsEnlisted rather than a RootTransaction check because the DomainObject reference is used inside the ClientTransaction, and we
@@ -261,9 +261,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (!endPoint.ClientTransaction.IsEnlisted(domainObject))
       {
         var formattedMessage = String.Format(
-            exceptionFormatString, 
-            domainObject.ID, 
-            endPoint.Definition.PropertyName, 
+            exceptionFormatString,
+            domainObject.ID,
+            endPoint.Definition.PropertyName,
             endPoint.ObjectID);
         throw new ClientTransactionsDifferException(formattedMessage + " The objects do not belong to the same ClientTransaction.");
       }

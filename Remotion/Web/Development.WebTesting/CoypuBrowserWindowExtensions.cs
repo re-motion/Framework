@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting
     public static IWebDriver GetWebDriver ([NotNull] this BrowserWindow window)
     {
       ArgumentUtility.CheckNotNull("window", window);
-      
+
       var driverFieldInfo = typeof(BrowserWindow).GetField("_driver", BindingFlags.NonPublic | BindingFlags.Instance);
       Assertion.IsNotNull(driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetWebDriver() method.");
 

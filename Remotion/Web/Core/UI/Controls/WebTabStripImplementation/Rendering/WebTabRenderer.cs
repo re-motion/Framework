@@ -115,7 +115,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
         if (!string.IsNullOrEmpty(tab.Text))
           renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(tab.Text));
-        
+
         renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (isDisabled).ToString().ToLower());
       }
 

@@ -42,7 +42,7 @@ public class BocMenuItemCommand: BocCommand
     ///   The URL to link to when the rendered command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
     [Description ("The hyperlink reference of the command.")]
-    public override string Href 
+    public override string Href
     {
       get { return base.Href; }
       set { base.Href = value; }
@@ -169,7 +169,7 @@ public class BocMenuItemCommand: BocCommand
   private NameObjectCollection PrepareWxeFunctionParameters (int[] listIndices, IBusinessObject[] businessObjects)
   {
     NameObjectCollection parameters = new NameObjectCollection();
-    
+
     parameters["indices"] = listIndices;
     parameters["objects"] = businessObjects;
     if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
       ArgumentUtility.CheckNotNullAndType<IRdbmsStorageObjectFactory>("factory", factory);
-      
+
       _connectionString = connectionString;
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       {
         var message = string.Format(
             "The factory type for the storage provider defined by '{0}' must implement the 'IRdbmsStorageObjectFactory' interface. "
-            + "'{1}' does not implement that interface.", 
+            + "'{1}' does not implement that interface.",
             name,
             base.Factory.GetType().Name);
         throw new ConfigurationErrorsException(message);

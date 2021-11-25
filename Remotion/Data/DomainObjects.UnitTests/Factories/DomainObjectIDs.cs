@@ -344,7 +344,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     {
       get { return CreateObjectID("Order", new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}")); }
     }
-    
+
     // OrderTicket: OrderTicket2
     // OrderItems: OrderItem6
     // Customer: Customer1
@@ -499,7 +499,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     }
 
     #endregion
-    
+
     #region Product
 
     // Reviews: ProductReview1, ProductReview2, ProductReview3
@@ -843,32 +843,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     {
       get { return CreateObjectID("EagerFetching_DerivedClass2", new Guid("{F6090162-7B12-4689-951B-B52EFD72C34F}")); }
     }
-    
+
     public ObjectID EagerFetching_RelationTarget_WithCollectionRealEndPoint1
     {
       get { return CreateObjectID("EagerFetching_RelationTarget", new Guid("{3DD744D2-91C7-463B-A5AF-01AD064B3821}")); }
     }
-    
+
     public ObjectID EagerFetching_RelationTarget_WithCollectionRealEndPoint2
     {
       get { return CreateObjectID("EagerFetching_RelationTarget", new Guid("{FF5709EB-2523-44B6-B0EA-92423AE705F5}")); }
     }
-    
+
     public ObjectID EagerFetching_RelationTarget_WithScalarRealEndPoint
     {
       get { return CreateObjectID("EagerFetching_RelationTarget", new Guid("{36381FD9-D454-4FCD-B860-3E30166BE092}")); }
     }
-    
+
     public ObjectID EagerFetching_RelationTarget_WithScalarVirtualEndPoint
     {
       get { return CreateObjectID("EagerFetching_RelationTarget", new Guid("{5DD64E95-5449-4345-8DE8-1D766BB23B17}")); }
     }
-    
+
     public ObjectID EagerFetching_RelationTarget_WithAnonymousEndPoint
     {
       get { return CreateObjectID("EagerFetching_RelationTarget", new Guid("{03CDC3BF-DA09-442D-A2C0-96567B48BC5D}")); }
     }
-    
+
     #endregion
 
     #region OrderViewModel

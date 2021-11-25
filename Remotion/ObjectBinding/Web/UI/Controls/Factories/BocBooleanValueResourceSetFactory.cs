@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
     public BocBooleanValueResourceSet CreateResourceSet (IBocBooleanValue control)
     {
       ArgumentUtility.CheckNotNull("control", control);
-      
+
       return control.CreateResourceSet() ?? CreateDefaultResourceSet(control);
     }
 

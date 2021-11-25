@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.AreEqual(orderClass.ID, newObjectID.ClassID, "ClassID of ObjectID.");
       Assert.AreEqual(typeof(Guid), newObjectID.Value.GetType(), "Type of ID value of ObjectID.");
     }
-    
+
     [Test]
     public void CreateNewObjectID_ClassDefinitionOfOtherStorageProvider ()
     {

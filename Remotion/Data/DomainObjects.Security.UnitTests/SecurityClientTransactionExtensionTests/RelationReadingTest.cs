@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _extension = new SecurityClientTransactionExtension();
       _propertyInfo = typeof(SecurableObject).GetProperty("Parent");
       _getMethodInformation = MethodInfoAdapter.Create(_propertyInfo.GetGetMethod());
-      
+
       _testHelper.SetupSecurityIoCConfiguration();
     }
 
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess(otherObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll();
 
-      
+
       _extension.RelationReading(_testHelper.Transaction, securableObject, securableEndPointDefintion, ValueAccess.Current);
 
       _testHelper.VerifyAll();
@@ -267,7 +267,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
         _testHelper.ExpectObjectSecurityStrategyHasAccessWithMatchingScope(securableObject, scope);
         _testHelper.ReplayAll();
 
-        var securableEndPointDefintion = 
+        var securableEndPointDefintion =
             securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
         _extension.RelationReading(_testHelper.Transaction, securableObject, securableEndPointDefintion, ValueAccess.Current);
       }

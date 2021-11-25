@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var queryStub = MockRepository.GenerateStub<IQuery>();
       queryStub.Stub(stub => stub.Statement).Return("statement");
       queryStub.Stub(stub => stub.Parameters).Return(new QueryParameterCollection { new QueryParameter("p1", Tuple.Create(1, "a")) });
-      
+
       var compoundProperty = CompoundStoragePropertyDefinitionObjectMother.CreateWithTwoProperties();
 
       _dataStoragePropertyDefinitionFactoryStrictMock
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dataStoragePropertyDefinitionFactoryStrictMock.Replay();
 
       Assert.That(
-          () => _factory.CreateForDataContainerQuery(queryStub), 
+          () => _factory.CreateForDataContainerQuery(queryStub),
           Throws.TypeOf<InvalidOperationException>()
               .With.Message.EqualTo(
                   "The query parameter 'p1' cannot be converted to a database value: This operation is not supported because the storage property is "

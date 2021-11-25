@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
       return entityDefinitions;
     }
-    
+
     private FilterViewDefinition CreateNewFilterViewDefinition (TableDefinition tableDefinition)
     {
       return new FilterViewDefinition(
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
       var nonClusteredUniqueIndex = new SqlIndexDefinition(
           "IDX_ClusteredUniqueIndex", new[] { new SqlIndexedColumnDefinition(column2) }, null, true, true, true, false);
-      
+
       return CreateCustomTable(
           storageProviderDefinition,
           tableName,

@@ -392,7 +392,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That(subDataManager.GetRelationEndPointWithoutLoading(_domainObjectCollectionEndPointID), Is.Not.Null);
       Assert.That(subDataManager.GetRelationEndPointWithoutLoading(_domainObjectCollectionEndPointID).IsDataComplete, Is.True);
       Assert.That(subDataManager.GetRelationEndPointWithoutLoading(_domainObjectCollectionEndPointID).HasChanged, Is.False);
-      
+
       Assert.That(parentDataManager.GetRelationEndPointWithoutLoading(_domainObjectCollectionEndPointID), Is.Not.Null);
       Assert.That(parentDataManager.GetRelationEndPointWithoutLoading(_domainObjectCollectionEndPointID).IsDataComplete, Is.True);
       Assert.That(parentDataManager.GetRelationEndPointWithoutLoading(_domainObjectCollectionEndPointID).HasChanged, Is.True);
@@ -538,7 +538,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       TestableClientTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
       Assert.That(TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1], Is.Not.Null);
       TestableClientTransaction.DataManager.DataContainers[DomainObjectIDs.Order1].MarkAsChanged();
-      
+
       var subTransaction = TestableClientTransaction.CreateSubTransaction();
       var subDataManager = ClientTransactionTestHelper.GetDataManager(subTransaction);
       var parentDataManager = TestableClientTransaction.DataManager;
@@ -550,7 +550,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       Assert.That(subDataManager.DataContainers[DomainObjectIDs.Order1].State.IsUnchanged, Is.True);
       Assert.That(parentDataManager.DataContainers[DomainObjectIDs.Order1].State.IsChanged, Is.True);
-      
+
       var result = UnloadService.TryUnloadData(subTransaction, DomainObjectIDs.Order1);
 
       Assert.That(result, Is.False);
@@ -742,10 +742,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       var orderA = (Order) ordersEndPoint.Collection[0];
       var orderB = (Order) ordersEndPoint.Collection[1];
-      
+
       // this will cause the orderB to be rejected for unload; orderA won't be unloaded either although it comes before orderB
       ++orderB.OrderNumber;
-      
+
       Assert.That(orderA.State.IsUnchanged, Is.True);
       Assert.That(orderB.State.IsChanged, Is.True);
 
@@ -929,7 +929,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var ordersEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(customer.Orders);
       Assert.That(ordersEndPoint.HasChanged, Is.True);
       Assert.That(orderA.State.IsUnchanged, Is.True);
-      
+
       var result = UnloadService.TryUnloadVirtualEndPointAndItemData(TestableClientTransaction, ordersEndPoint.ID);
 
       Assert.That(result, Is.False);

@@ -43,7 +43,7 @@ namespace Remotion.Xml
       throw new NotImplementedException();
     }
 
-   
+
     public static string GetNamespace (Type type)
     {
       throw new NotImplementedException();

@@ -41,9 +41,9 @@ public class IdentifierGenerator: ICloneable
   ///     (Note that C# allows a number of unicode characters too, including languages-specific letters.)
   ///   </para>
   /// </remarks>
-  public static IdentifierGenerator CStyle 
+  public static IdentifierGenerator CStyle
   {
-    get 
+    get
     {
       if (s_cStyle == null)
       {
@@ -79,9 +79,9 @@ public class IdentifierGenerator: ICloneable
   ///     See http://www.w3.org/TR/html4/types.html#type-id
   ///   </para>
   /// </remarks>
-  public static IdentifierGenerator HtmlStyle 
+  public static IdentifierGenerator HtmlStyle
   {
-    get 
+    get
     {
       if (s_htmlStyle == null)
       {
@@ -99,7 +99,7 @@ public class IdentifierGenerator: ICloneable
 
         idgen.IsCaseSensitive = false;
         idgen.UniqueSeparator = "_";
-        
+
         s_htmlStyle = idgen;
       }
       return s_htmlStyle;
@@ -116,9 +116,9 @@ public class IdentifierGenerator: ICloneable
   ///     See http://www.w3.org/TR/REC-xml#id
   ///   </para>
   /// </remarks>
-  public static IdentifierGenerator XmlStyle 
+  public static IdentifierGenerator XmlStyle
   {
-    get 
+    get
     {
       if (s_xmlStyle == null)
       {
@@ -145,7 +145,7 @@ public class IdentifierGenerator: ICloneable
   }
 
   /// <summary> Hashtable&lt;object uniqueObject, string uniqueIdentifier&gt; </summary>
-  private Hashtable? _uniqueIdentfiersByObject; 
+  private Hashtable? _uniqueIdentfiersByObject;
   /// <summary> Hashtable&lt;string uniqueIdentifier, null&gt; </summary>
   private Hashtable? _uniqueIdentifiers;
   /// <summary> Specifies that the IdentifierGenerator must be cloned and cannot be used directly. </summary>
@@ -232,15 +232,15 @@ public class IdentifierGenerator: ICloneable
       }
 
       if (   isValid
-          || (   allowLanguageSpecificLetters 
+          || (   allowLanguageSpecificLetters
               && char.IsLetter(c))
-          || (   ! allowLanguageSpecificLetters 
-              && allowEnglishLetters 
+          || (   ! allowLanguageSpecificLetters
+              && allowEnglishLetters
               && (    (c >= 'a' && c <= 'z')
                   || (c >= 'A' && c <= 'Z')))
-          || (   allowDigits 
+          || (   allowDigits
               && char.IsDigit(c))
-          || (   allowAdditionalCharacters != null 
+          || (   allowAdditionalCharacters != null
               && allowAdditionalCharacters.IndexOf(c) >= 0))
       {
         isValid = true;
@@ -456,11 +456,11 @@ public class IdentifierGenerator: ICloneable
   public bool IsCaseSensitive
   {
     get { return _isCaseSensitive; }
-    set 
-    { 
+    set
+    {
       if (_uniqueIdentifiers != null)
         throw new InvalidOperationException("Cannot change property IsCaseSensitive after unique identifiers have been produced.");
-      _isCaseSensitive = value; 
+      _isCaseSensitive = value;
     }
   }
 
@@ -474,11 +474,11 @@ public class IdentifierGenerator: ICloneable
   public bool UseCaseSensitiveNames
   {
     get { return _useCaseSensitiveNames; }
-    set 
-    { 
+    set
+    {
       if (_uniqueIdentfiersByObject != null)
         throw new InvalidOperationException("Cannot change property UseCaseSensitiveNames after unique identifiers have been produced.");
-      _useCaseSensitiveNames = value; 
+      _useCaseSensitiveNames = value;
     }
   }
 

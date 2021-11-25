@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   public class AclExpansionTree
   {
     private readonly Func<AclExpansionEntry, string> _orderbyForSecurableClass;
- 
+
     // IEqualityComparer which ignores differences in states (AclExpansionEntry.StateCombinations) to
     // group AclExpansionEntry|s together which only differ in state.
     private static readonly CompoundValueEqualityComparer<AclExpansionEntry> _aclExpansionEntryIgnoreStateEqualityComparer =
@@ -42,11 +42,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
             a.AccessConditions.OwningTenant,
             a.AccessConditions.TenantHierarchyCondition,
             ComponentwiseEqualsAndHashcodeWrapper.New(a.AllowedAccessTypes),
-            ComponentwiseEqualsAndHashcodeWrapper.New(a.DeniedAccessTypes) 
+            ComponentwiseEqualsAndHashcodeWrapper.New(a.DeniedAccessTypes)
           }
         );
 
-    private readonly List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, 
+    private readonly List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition,
       AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>> _aclExpansionTree;
 
     public AclExpansionTree (List<AclExpansionEntry> aclExpansion)
@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       _aclExpansionTree = CreateAclExpansionTree(aclExpansion);
     }
 
-    public List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, 
+    public List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition,
       AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>> Tree
     {
       get { return _aclExpansionTree; }
@@ -73,7 +73,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     }
 
     private List<AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition,
-      AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>> 
+      AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>>
       CreateAclExpansionTree (List<AclExpansionEntry> aclExpansion)
     {
       ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);

@@ -52,7 +52,7 @@ public class WorkContext: IDisposable
     /// </returns>
     public WorkContext[] ToArray ()
     {
-      return (WorkContext[]) _stack.ToArray(typeof(WorkContext)); 
+      return (WorkContext[]) _stack.ToArray(typeof(WorkContext));
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/EnableTracing/*' />
   public static bool EnableTracing
   {
-    get 
+    get
     {
       if (! s_enableTracingFlagInitialized)
       {
@@ -145,7 +145,7 @@ public class WorkContext: IDisposable
           }
         }
       }
-      return s_enableTracing;      
+      return s_enableTracing;
     }
 
     set
@@ -166,7 +166,7 @@ public class WorkContext: IDisposable
   /// </remarks>
   public static ContextStack Stack
   {
-    get 
+    get
     {
       ContextStack? stack = s_stack;
       if (stack == null)
@@ -175,7 +175,7 @@ public class WorkContext: IDisposable
         s_stack = stack;
       }
       return stack;
-    }    
+    }
   }
 
   /// <summary>

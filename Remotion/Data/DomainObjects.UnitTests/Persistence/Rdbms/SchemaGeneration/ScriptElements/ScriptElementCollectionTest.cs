@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _elementMock1.Replay();
       _elementMock2.Replay();
       _elementMock3.Replay();
-      
+
       _elementCollection.AppendToScript(script);
 
       _elementMock1.VerifyAllExpectations();
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _elementCollection.AddElement(_elementMock1);
       _elementCollection.AddElement(_elementMock2);
       _elementCollection.AddElement(_elementMock3);
-      
+
       Assert.That(_elementCollection.Elements, Is.EqualTo(new[] { _elementMock1, _elementMock2, _elementMock3 }));
     }
 

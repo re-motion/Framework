@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     {
       _validationRule = new RelationEndPointPropertyTypeIsSupportedValidationRule();
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass));
-    
+
       _validEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
           _classDefinition,
           "DomainObjectPropertyWithBidirectionalAttribute",
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass).GetProperty("DomainObjectPropertyWithoutBidirectionalAttribute")));
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
-      
+
       var validationResult = _validationRule.Validate(relationDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);

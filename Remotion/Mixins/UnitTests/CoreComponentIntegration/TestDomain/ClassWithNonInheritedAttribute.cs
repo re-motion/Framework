@@ -21,6 +21,6 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
   [BaseNonInherited ("ClassWithNonInheritedAttribute")]
   public class ClassWithNonInheritedAttribute
   {
-    
+
   }
 }

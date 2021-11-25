@@ -55,7 +55,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   private const string c_cssClassValidationMessage = "formGridValidationMessage";
-  
+
   /// <summary> CSS-Class applied to the validation notice. </summary>
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   private const string c_cssClassValidationNotice = "formGridValidationNotice";
@@ -173,7 +173,7 @@ public class ValidationStateViewer : WebControl, IControl
     {
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassValidationNotice);
       writer.RenderBeginTag(HtmlTextWriterTag.Div);
-      
+
       string noticeText;
       if (string.IsNullOrEmpty(_noticeText))
       {
@@ -182,7 +182,7 @@ public class ValidationStateViewer : WebControl, IControl
       }
       else
         noticeText = _noticeText;
-        
+
       // Do not HTML encode.
       writer.WriteLine(noticeText);
       writer.RenderEndTag();
@@ -241,7 +241,7 @@ public class ValidationStateViewer : WebControl, IControl
           writer.RenderBeginTag(HtmlTextWriterTag.Td);
           writer.RenderEndTag();
         }
-      
+
         writer.RenderBeginTag(HtmlTextWriterTag.Td);
         validationError.ToHyperLink(CssClassValidationMessage).RenderControl(writer);
         writer.RenderEndTag();
@@ -312,7 +312,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// </summary>
   /// <value> <see langword="true"/> to render the label. </value>
   [Category ("Apearance")]
-  [Description ("true to render the label associated with the erroneous control in front of the error message.")]  
+  [Description ("true to render the label associated with the erroneous control in front of the error message.")]
   [DefaultValue (true)]
   public bool ShowLabels
   {
@@ -334,7 +334,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   protected virtual string CssClassValidationNotice
   { get { return c_cssClassValidationNotice;} }
-}  
+}
 
 
 /// <summary> A list of possible ways to displau the validation messages. </summary>

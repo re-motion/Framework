@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyMetadataProvider propertyMetadataProvider)
         : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
-    
+
     }
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)

@@ -53,7 +53,7 @@ namespace Remotion.Security.Metadata
 
       XmlDeclaration declaration = document.CreateXmlDeclaration("1.0", string.Empty, string.Empty);
       document.AppendChild(declaration);
-      
+
       XmlElement rootElement = document.CreateElement("localizedNames", _schema.SchemaUri);
       XmlAttribute cultureAttribute = document.CreateAttribute("culture");
       cultureAttribute.Value = culture;
@@ -62,7 +62,7 @@ namespace Remotion.Security.Metadata
       foreach (LocalizedName localizedName in localizedNames)
       {
         XmlElement localizedNameElement = document.CreateElement("localizedName", _schema.SchemaUri);
-        
+
         XmlAttribute refAttribute = document.CreateAttribute("ref");
         refAttribute.Value = localizedName.ReferencedObjectID;
         XmlAttribute commentAttribute = document.CreateAttribute("comment");

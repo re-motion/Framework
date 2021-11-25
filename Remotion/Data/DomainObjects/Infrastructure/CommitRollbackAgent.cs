@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         // Reevaluate the commit set - it might have changed. Have all objects in it got the event? If yes, return the commit set.
         var changedItems = GetNewChangedDeletedData().ToList();
         committingEventNotRaised = changedItems.Where(item => !committingEventRaised.Contains(item.DomainObject.ID)).ToList();
-       
+
         if (!committingEventNotRaised.Any())
           return changedItems;
       }

@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(actual.Length, Is.EqualTo(1));
       Assert.That(actual[0], Is.EqualTo(((IBocCheckBox)_bocCheckBox).GetValueName()));
     }
-    
+
     [Test]
     public void SetValueToTrue ()
     {

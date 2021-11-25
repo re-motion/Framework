@@ -72,7 +72,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       Assert.That(result.NodeType, Is.EqualTo(ExpressionType.Convert));
       var inner = ((UnaryExpression) result).Operand;
-      
+
       // Must _not_ be a ConstantExpression containing the ClassContext, but instead a NewExpression constructing the ClassContext from scratch.
       Assert.That(inner.NodeType, Is.EqualTo(ExpressionType.New));
 

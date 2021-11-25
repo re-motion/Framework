@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
         return _enlistedObjectsList[index];
       return null;
     }
-    
+
     public bool IsEnlisted (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);

@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       _trueFilterStub = new Mock<IEnumerationValueFilter>();
       _trueFilterStub.Setup(stub => stub.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object)).Returns(true);
-      
+
       _falseFilterStub = new Mock<IEnumerationValueFilter>();
       _falseFilterStub.Setup(stub => stub.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object)).Returns(false);
     }

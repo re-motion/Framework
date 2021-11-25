@@ -91,7 +91,7 @@ namespace Remotion.Collections
   /// <summary>
   /// ComponentwiseEqualsAndHashcodeWrapper-factory: ComponentwiseEqualsAndHashcodeWrapper.New(<see cref="IEnumerable{T}"/>).
   /// </summary>
-  public static class ComponentwiseEqualsAndHashcodeWrapper 
+  public static class ComponentwiseEqualsAndHashcodeWrapper
   {
     public static ComponentwiseEqualsAndHashcodeWrapper<T> New<T> (IEnumerable<T> elements)
     {

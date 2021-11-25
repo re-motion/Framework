@@ -341,7 +341,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
           () => AbstractClass.NewObject(),
           NUnit.Framework.Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "Cannot instantiate type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.AbstractClass' because it is abstract. " 
+                  "Cannot instantiate type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.AbstractClass' because it is abstract. "
                   + "For classes with automatic properties, InstantiableAttribute must be used."));
     }
 

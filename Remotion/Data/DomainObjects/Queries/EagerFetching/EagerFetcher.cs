@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       ArgumentUtility.CheckNotNull("fetchQueries", fetchQueries);
       ArgumentUtility.CheckNotNull("fetchResultLoader", fetchResultLoader);
       ArgumentUtility.CheckNotNull("pendingRegistrationCollector", pendingRegistrationCollector);
-      
+
       if (originatingObjects.Count <= 0)
         return;
 

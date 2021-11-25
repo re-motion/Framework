@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Validation
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("persistableData", persistableData);
-      
+
       foreach (var validator in _validators)
         validator.Validate(clientTransaction, persistableData);
     }

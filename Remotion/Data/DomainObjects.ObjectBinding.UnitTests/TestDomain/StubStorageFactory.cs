@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     {
       throw new NotImplementedException();
     }
-    
+
     public IEnumSerializer CreateEnumSerializer ()
     {
       throw new NotImplementedException();

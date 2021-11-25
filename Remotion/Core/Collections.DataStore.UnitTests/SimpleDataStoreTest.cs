@@ -29,7 +29,7 @@ namespace Remotion.Collections.DataStore.UnitTests
   public class SimpleDataStoreTest
   {
     private SimpleDataStore<string, int?> _store;
-      
+
     [SetUp]
     public void SetUp ()
     {

@@ -249,6 +249,6 @@ namespace Remotion.Utilities
       else
         return a.Equals((object?) b);
     }
-   
+
   }
 }

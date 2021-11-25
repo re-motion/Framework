@@ -20,6 +20,6 @@ namespace Remotion.Extensions.UnitTests.Utilities.Singleton.TestDomain
 {
   public class SecondaryImplementationOfInterface : IInterfaceWithConcreteImplementation
   {
-    
+
   }
 }

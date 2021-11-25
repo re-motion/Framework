@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       : CompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager>, IVirtualObjectEndPointLoadState
   {
     public CompleteVirtualObjectEndPointLoadState (
-        IVirtualObjectEndPointDataManager dataManager, 
-        IRelationEndPointProvider endPointProvider, 
+        IVirtualObjectEndPointDataManager dataManager,
+        IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base(dataManager, endPointProvider, transactionEventSink)
     {

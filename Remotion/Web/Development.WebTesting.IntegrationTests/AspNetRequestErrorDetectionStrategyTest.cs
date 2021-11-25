@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
 
       var home = Start();
-      
+
       Assert.That(
           () => aspNetRequestErrorDetectionParser.Parse(home.Scope),
           Throws.Nothing);
@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(result.HasError, Is.EqualTo(false));
     }
-    
+
 
     private WxePageObject Start ()
     {
@@ -69,10 +69,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start( );
       var anchor = home.Anchors().GetByLocalID(localButtonId);
-      
+
       //Note: Normale completion detection does not work because of the Error Page
       anchor.Click(new WebTestActionOptions() { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
-      
+
       //Call Exists workaround because scope is not updated properly
       home.Scope.FindCss("body > span > h1").ExistsWorkaround();
 

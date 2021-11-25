@@ -26,7 +26,7 @@ namespace Remotion.Tools.Console.CommandLine
 public class CommandLineArgumentCollection: CollectionBase
 {
   private const string c_msgInvalidArgumentType = "Argument must be of type CommandLineArgument.";
-  
+
   private CommandLineParser? _parser = null;
 
   public CommandLineArgumentCollection (CommandLineParser parser)
@@ -49,22 +49,22 @@ public class CommandLineArgumentCollection: CollectionBase
     return List.Add(value);
   }
 
-  public int IndexOf (CommandLineArgument value)  
+  public int IndexOf (CommandLineArgument value)
   {
     return List.IndexOf(value);
   }
 
-  public void Insert (int index, CommandLineArgument value)  
+  public void Insert (int index, CommandLineArgument value)
   {
     List.Insert(index, value);
   }
 
-  public void Remove (CommandLineArgument value)  
+  public void Remove (CommandLineArgument value)
   {
     List.Remove(value);
   }
 
-  public bool Contains (CommandLineArgument value)   
+  public bool Contains (CommandLineArgument value)
   {
     return List.Contains(value);
   }
@@ -104,7 +104,7 @@ public class CommandLineArgumentCollection: CollectionBase
       newArgument.AttachParser(_parser);
   }
 
-  protected override void OnValidate (object value)   
+  protected override void OnValidate (object value)
   {
     if (! (value is CommandLineArgument))
       throw new ArgumentException(c_msgInvalidArgumentType, "value") ;

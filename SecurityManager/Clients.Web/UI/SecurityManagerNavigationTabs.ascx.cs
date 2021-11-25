@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       accessControlTab.Text = GlobalResourcesHelper.GetString(GlobalResources.AccessControl);
       accessControlTab.SubMenuTabs.Find("SecurableClassDefinitionTab").Text =
           GlobalResourcesHelper.GetString(GlobalResources.SecurableClassDefinition);
-      
+
       base.OnPreRender(e);
     }
   }

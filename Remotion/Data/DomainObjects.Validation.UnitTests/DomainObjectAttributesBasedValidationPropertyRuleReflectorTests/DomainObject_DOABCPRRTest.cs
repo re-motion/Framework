@@ -98,12 +98,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
           _domainObjectCollectionProperty,
           _domainObjectCollectionProperty,
           _domainModelConstraintProvider,
-          _validationMessageFactoryStub); 
+          _validationMessageFactoryStub);
       _virtualCollectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _virtualCollectionProperty,
           _virtualCollectionProperty,
           _domainModelConstraintProvider,
-          _validationMessageFactoryStub); 
+          _validationMessageFactoryStub);
     }
 
     [Test]

@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
       var getMethod = property.GetGetMethod(true);
       var setMethod = property.GetSetMethod(true);
-      
+
       if (getMethod != null)
         ValidateAccessor(property, getMethod, isMixinProperty, "get accessor");
 

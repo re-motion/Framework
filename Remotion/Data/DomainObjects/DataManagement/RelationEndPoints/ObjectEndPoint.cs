@@ -44,14 +44,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     protected abstract void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint);
 
     public abstract IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject);
-    
+
     public override void ValidateMandatory ()
     {
       if (OppositeObjectID == null)
       {
         throw new MandatoryRelationNotSetException(
-            GetDomainObjectReference(), 
-            PropertyName, 
+            GetDomainObjectReference(),
+            PropertyName,
             string.Format("Mandatory relation property '{0}' of domain object '{1}' cannot be null.", PropertyName, ObjectID));
       }
     }
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (sourceObjectEndPoint.HasBeenTouched || HasChanged)
         Touch();
     }
-    
+
     public RelationEndPointID GetOppositeRelationEndPointID ()
     {
       var oppositeEndPointDefinition = Definition.GetOppositeEndPointDefinition();

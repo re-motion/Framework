@@ -181,7 +181,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       get { return SafeServiceLocator.Current; }
     }
 
-    protected IGlobalizationService GlobalizationService 
+    protected IGlobalizationService GlobalizationService
     {
       get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }

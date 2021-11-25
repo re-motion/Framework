@@ -124,7 +124,7 @@ namespace Remotion.Security
       var result = PushSectionState(newIsActive: true);
       return new Scope(result.CurrentSectionCount, result.PreviousIsActive);
     }
-    
+
     /// <summary>
     /// Disables any active <see cref="SecurityFreeSection"/> until the <see cref="Scope"/> is disposed. 
     /// The <see cref="Scope"/> should always be used via a using-block, or if that is not possible, disposed inside a finally-block.

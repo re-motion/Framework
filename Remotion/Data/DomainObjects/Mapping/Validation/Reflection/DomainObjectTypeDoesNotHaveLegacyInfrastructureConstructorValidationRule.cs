@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule ()
     {
-      
+
     }
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)

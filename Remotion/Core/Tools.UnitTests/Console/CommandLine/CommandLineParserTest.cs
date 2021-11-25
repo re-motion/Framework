@@ -24,12 +24,12 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
 
 public enum IncrementalTestOptions { no, nor, normal, anything };
 public enum TestOption { yes, no, almost };
-public enum TestMode 
+public enum TestMode
 {
   [CommandLineMode ("m1", Description = "Primary mode")]
-  Mode1, 
+  Mode1,
   [CommandLineMode ("m2", Description = "Secondary mode")]
-  Mode2 
+  Mode2
 };
 
 
@@ -37,8 +37,8 @@ public enum TestMode
 public class CommandLineParserTest
 {
   private CommandLineParser CreateParser (
-      out CommandLineStringArgument argSourceDir, 
-      out CommandLineStringArgument argDestinationDir, 
+      out CommandLineStringArgument argSourceDir,
+      out CommandLineStringArgument argDestinationDir,
       out CommandLineFlagArgument argCopyBinary,
       out CommandLineEnumArgument argEnumOption)
   {
@@ -89,8 +89,8 @@ public class CommandLineParserTest
     CommandLineParser parser = CreateParser(out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
 
     parser.Parse(new string[] {
-        "source", 
-        "dest", 
+        "source",
+        "dest",
         "/B-",
         "/Re:y" });
 
@@ -141,8 +141,8 @@ public class CommandLineParserTest
     parser.IsCaseSensitive = true;
     Assert.That(
         () => parser.Parse(new string[] {
-        "source", 
-        "dest", 
+        "source",
+        "dest",
         "/B-",
         "/Re:y" }),
         Throws.InstanceOf<InvalidCommandLineArgumentNameException>());
@@ -155,8 +155,8 @@ public class CommandLineParserTest
     parser.IncrementalNameValidation = false;
     Assert.That(
         () => parser.Parse(new string[] {
-        "source", 
-        "dest", 
+        "source",
+        "dest",
         "/b-",
         "/re:y" }),
         Throws.InstanceOf<InvalidCommandLineArgumentNameException>());
@@ -172,8 +172,8 @@ public class CommandLineParserTest
     CommandLineParser parser = CreateParser(out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
 
     parser.Parse(new string[] {
-        "source", 
-        "dest", 
+        "source",
+        "dest",
         "/B-",
         "/Rep:y" });
 
@@ -190,8 +190,8 @@ public class CommandLineParserTest
     parser.IncrementalNameValidation = false;
     Assert.That(
         () => parser.Parse(new string[] {
-        "source", 
-        "dest", 
+        "source",
+        "dest",
         "another"} ),
         Throws.InstanceOf<InvalidNumberOfCommandLineArgumentsException>());
   }
@@ -201,18 +201,18 @@ public class CommandLineParserTest
   {
     CommandLineParser parser = CreateParser();
     string synopsis = parser.GetAsciiSynopsis("app.exe", 80);
-    
-    string expectedResult = 
-        "app.exe [source-directory [destination-directory]] [/b-] [/rep:{yes|no|almost}]" 
+
+    string expectedResult =
+        "app.exe [source-directory [destination-directory]] [/b-] [/rep:{yes|no|almost}]"
         + "\n[{/m1|/m2}]"
         + "\n"
-        + "\n  source-directory       Directory to copy from" 
-        + "\n  destination-directory  This is the directory to copy to. This is the directory" 
-        + "\n                         to copy to. This is the directory to copy to. This is" 
-        + "\n                         the directory to copy to. This is the directory to copy" 
-        + "\n                         to. This is the directory to copy to. This is the" 
-        + "\n                         directory to copy to. This is the directory to copy to." 
-        + "\n  /b                     binary copy on (+, default) or off (-)" 
+        + "\n  source-directory       Directory to copy from"
+        + "\n  destination-directory  This is the directory to copy to. This is the directory"
+        + "\n                         to copy to. This is the directory to copy to. This is"
+        + "\n                         the directory to copy to. This is the directory to copy"
+        + "\n                         to. This is the directory to copy to. This is the"
+        + "\n                         directory to copy to. This is the directory to copy to."
+        + "\n  /b                     binary copy on (+, default) or off (-)"
         + "\n  /rep                   replace target"
         + "\n  /m1                    Primary mode"
         + "\n  /m2                    Secondary mode";
@@ -223,7 +223,7 @@ public class CommandLineParserTest
   public void TestEnumValues ()
   {
     CommandLineEnumArgument enumArg;
-    
+
     enumArg = new CommandLineEnumArgument(false, typeof(TestOption));
     PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "yes");
     Assert.That((TestOption) enumArg.Value, Is.EqualTo(TestOption.yes));

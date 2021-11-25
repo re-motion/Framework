@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.BindableObject
       ArgumentUtility.CheckNotNull("mixinMethodInfo", mixinMethodInfo);
 
       _mixinMethodInfo = mixinMethodInfo;
-      _methodInterfaceDeclarationCache = 
+      _methodInterfaceDeclarationCache =
           new DoubleCheckedLockingContainer<ICollection<IMethodInformation>>(() => _mixinMethodInfo.FindInterfaceDeclarations().ConvertToCollection());
     }
 
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T) (object) GetFastInvoker(typeof(T)); 
+      return (T) (object) GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)

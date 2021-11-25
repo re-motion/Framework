@@ -71,7 +71,7 @@ namespace Remotion.Collections
 
       _collection.ToArray().CopyTo(array, arrayIndex);
     }
-    
+
     void ICollection<T>.Add (T item)
     {
       throw new NotSupportedException("'Add' ist not supported for read-only collections.");

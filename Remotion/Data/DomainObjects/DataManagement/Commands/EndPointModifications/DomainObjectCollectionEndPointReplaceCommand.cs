@@ -32,10 +32,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly IDomainObjectCollectionEventRaiser _modifiedCollectionEventRaiser;
 
     public DomainObjectCollectionEndPointReplaceCommand (
-        IDomainObjectCollectionEndPoint modifiedEndPoint, 
-        DomainObject replacedObject, 
-        int index, 
-        DomainObject replacementObject, 
+        IDomainObjectCollectionEndPoint modifiedEndPoint,
+        DomainObject replacedObject,
+        int index,
+        DomainObject replacementObject,
         IDomainObjectCollectionData collectionData,
         IClientTransactionEventSink transactionEventSink)
       : base(

@@ -61,10 +61,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
           new OrderedColumnsSpecification(orderedColumns),
           _sqlDialect);
     }
-    
+
     public IDbCommandBuilder CreateForSelect (
-        TableDefinition table, 
-        IEnumerable<ColumnDefinition> selectedColumns, 
+        TableDefinition table,
+        IEnumerable<ColumnDefinition> selectedColumns,
         ColumnValueTable comparedColumnValueTable,
         IEnumerable<OrderedColumn> orderedColumns)
     {

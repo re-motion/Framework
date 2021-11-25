@@ -19,7 +19,7 @@ using System.Collections;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
- 
+
 /// <summary> A collection of <see cref="PropertyPathBinding"/> objects. </summary>
 public class PropertyPathBindingCollection : BusinessObjectControlItemCollection
 {

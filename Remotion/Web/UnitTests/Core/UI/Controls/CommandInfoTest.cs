@@ -114,7 +114,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       htmlTextWriter.RenderEndTag();
 
       var result = stringWriter.ToString();
-      
+
       Assert.That(result, Is.EqualTo("<a></a>"));
     }
 
@@ -131,7 +131,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       htmlTextWriter.RenderEndTag();
 
       var result = stringWriter.ToString();
-      
+
       Assert.That(result, Is.EqualTo("<a tabindex=\"0\"></a>"));
     }
 

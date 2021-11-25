@@ -58,7 +58,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       get { return _valueInControlState; }
       set { _valueInControlState = value; }
     }
-    
+
     protected override void LoadViewState (object? savedState)
     {
       _valueInViewState = (string?) savedState;
@@ -73,7 +73,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     {
       _valueInControlState = (string?) savedState;
     }
-  
+
     protected override object? SaveControlState ()
     {
       return _valueInControlState;

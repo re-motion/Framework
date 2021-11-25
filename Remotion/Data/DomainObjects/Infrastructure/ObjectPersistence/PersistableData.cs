@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     private readonly IEnumerable<IRelationEndPoint> _associatedEndPointSequence;
 
     public PersistableData (
-        DomainObject domainObject, 
-        DomainObjectState domainObjectState, 
-        DataContainer dataContainer, 
+        DomainObject domainObject,
+        DomainObjectState domainObjectState,
+        DataContainer dataContainer,
         IEnumerable<IRelationEndPoint> associatedEndPointSequence)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);

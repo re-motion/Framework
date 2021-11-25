@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
     /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut,TExecutionContext}"/>'s constructor by hand.
     /// </summary>
     public static DelegateBasedCommand<TIn, TOut, TExecutionContext> Create<TIn, TOut, TExecutionContext> (
-        IStorageProviderCommand<TIn, TExecutionContext> command, 
+        IStorageProviderCommand<TIn, TExecutionContext> command,
         Func<TIn, TOut> operation)
     {
       return new DelegateBasedCommand<TIn, TOut, TExecutionContext>(command, operation);

@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private readonly ClientTransaction _clientTransaction;
     private readonly ILazyLoader _lazyLoader;
     private readonly IRelationEndPointFactory _endPointFactory;
-    
+
     private readonly RelationEndPointMap _map;
     private readonly IRelationEndPointRegistrationAgent _registrationAgent;
     private readonly DelegatingDataContainerEndPointsRegistrationAgent _dataContainerEndPointsRegistrationAgent;
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       if (virtualEndPoints.Count == 0)
         return new NopCommand();
-      
+
       return new UnloadVirtualEndPointsCommand(virtualEndPoints, _registrationAgent, _map);
     }
 
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       return (IVirtualEndPoint) GetRelationEndPointWithoutLoading(endPointID) ?? RegisterVirtualEndPoint(endPointID);
     }
-    
+
     public void CommitAllEndPoints ()
     {
       _map.CommitAllEndPoints();
@@ -246,7 +246,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         throw new ArgumentException(message, argumentName);
       }
     }
-    
+
     #region Serialization
 
     protected RelationEndPointManager (FlattenedDeserializationInfo info)

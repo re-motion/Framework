@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     #endregion
 
     protected const string c_nullIdentifier = "==null==";
-    
+
     /// <summary> The key identifying a options menu item resource entry. </summary>
     private const string c_resourceKeyOptionsMenuItems = "OptionsMenuItems";
 
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     protected abstract string ValueContainingControlID { get; }
-        
+
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
@@ -595,7 +595,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           InternalValue = null;
         else
           InternalValue = newValue;
-        
+
         IsDirty = true;
       }
       return isDataChanged;
@@ -836,7 +836,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       //var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
       //if (!string.IsNullOrEmpty (key))
       //  NullItemErrorMessage = resourceManager.GetString (key);
-  
+
       var key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle);
       if (! string.IsNullOrEmpty(key))
         OptionsTitle = resourceManager.GetString(key);

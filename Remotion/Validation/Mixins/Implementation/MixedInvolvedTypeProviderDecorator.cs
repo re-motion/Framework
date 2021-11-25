@@ -53,7 +53,7 @@ namespace Remotion.Validation.Mixins.Implementation
 
       //Note: if the type is a mixin type then the concrete type is passed to the InvolvedTypeProvider. 
       //That is the reason why no compound implementation is possible!
-      var concreteOrMixedType = MixinTypeUtility.GetConcreteMixedType(type); 
+      var concreteOrMixedType = MixinTypeUtility.GetConcreteMixedType(type);
 
       var involvedTypes = _involvedTypeProvider.GetTypes(concreteOrMixedType);
       var involvedMixins = GetMixins(type);

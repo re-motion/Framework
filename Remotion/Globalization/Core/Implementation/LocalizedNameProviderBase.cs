@@ -41,7 +41,7 @@ namespace Remotion.Globalization.Implementation
   {
     // ReSharper disable StaticMemberInGenericType
 
-    private static readonly IReadOnlyDictionary<CultureInfo, string> s_emptyDictionary = 
+    private static readonly IReadOnlyDictionary<CultureInfo, string> s_emptyDictionary =
         new ReadOnlyDictionary<CultureInfo, string>(new Dictionary<CultureInfo, string>());
 
     private static readonly Lazy<CultureInfo> s_invariantCulture = new Lazy<CultureInfo>(

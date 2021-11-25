@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
   [TestFixture]
   public class AclExpanderApplicationTest : AclToolsTestBase
   {
-    private const string c_cssFileContent = 
+    private const string c_cssFileContent =
     #region 
         @"table 
 {
@@ -210,7 +210,7 @@ th
       AssertFileExists(outputDirectory, "_AclExpansionMain_.html");
       AssertFileExists(outputDirectory, "AclExpansion.css");
 
-      AssertFileExists(outputDirectory, "test.user.html"); 
+      AssertFileExists(outputDirectory, "test.user.html");
     }
 
 
@@ -228,7 +228,7 @@ th
       // Multifile HTML output => expect at least 3 files (CSS, main HTML, detail HTML files)
       Assert.That(stringWriterFactory.Count, Is.GreaterThanOrEqualTo(3));
 
-      const string cssFileName = AclExpanderApplication.CssFileName;  
+      const string cssFileName = AclExpanderApplication.CssFileName;
       TextWriterData cssTextWriterData;
       bool cssFileExists = stringWriterFactory.NameToTextWriterData.TryGetValue(cssFileName,out cssTextWriterData);
       Assert.That(cssFileExists, Is.True);
@@ -339,7 +339,7 @@ th
     {
       var application = new AclExpanderApplication();
       application.Init(settings);
-      return application.GetAclExpansion(); 
+      return application.GetAclExpansion();
     }
 
     private static void AssertGetCultureName (string cultureNameIn, string cultureNameOut)

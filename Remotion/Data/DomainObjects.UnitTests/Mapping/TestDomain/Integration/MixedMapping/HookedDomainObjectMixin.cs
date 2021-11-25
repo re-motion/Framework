@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     public int OnLoadedCount;
     public LoadMode OnLoadedLoadMode;
     public bool OnCreatedCalled;
-    
+
     public bool OnDomainObjectReferenceInitializingCalled;
     public int OnDomainObjectReferenceInitializingCount;
 
@@ -60,9 +60,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
         InitializationHandler(this, EventArgs.Empty);
     }
 
-    public new Order Target 
-    { 
-      get { return base.Target; } 
+    public new Order Target
+    {
+      get { return base.Target; }
     }
   }
 }

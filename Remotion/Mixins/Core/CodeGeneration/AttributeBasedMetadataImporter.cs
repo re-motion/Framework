@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull("concreteMixedType", concreteMixedType);
 
-      var attribute = 
+      var attribute =
           (ConcreteMixedTypeAttribute?) concreteMixedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false).SingleOrDefault();
       if (attribute != null)
         return attribute.GetClassContext();
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
 
-      var attribute = 
+      var attribute =
           (ConcreteMixinTypeAttribute?) concreteMixinType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).SingleOrDefault();
       if (attribute != null)
         return attribute.GetIdentifier();
@@ -75,7 +75,7 @@ namespace Remotion.Mixins.CodeGeneration
     // Searches the mixin methods corresponding to the methods of the override interface based on a signature comparison and returns a mapping from
     // mixin method to interface method.
     public virtual Dictionary<MethodInfo, MethodInfo> GetOverrideInterfaceMethodsByMixinMethod (
-        Type interfaceType, 
+        Type interfaceType,
         ConcreteMixinTypeIdentifier identifier)
     {
       var mixinMethodsWithInterfaceMethods =
@@ -115,7 +115,7 @@ namespace Remotion.Mixins.CodeGeneration
       if (generatedOverrideInterface == null)
       {
         var message = string.Format(
-            "The given type '{0}' has a concrete mixin type identifier, but no IOverriddenMethods interface.", 
+            "The given type '{0}' has a concrete mixin type identifier, but no IOverriddenMethods interface.",
             concreteMixinType);
         throw new TypeImportException(message);
       }

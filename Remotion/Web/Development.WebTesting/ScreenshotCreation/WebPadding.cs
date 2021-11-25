@@ -86,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       get { return _right; }
     }
-    
+
     /// <summary>
     /// The padding value on the top side.
     /// </summary>
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       get { return _top; }
     }
-    
+
     /// <summary>
     /// The padding value <see cref="Left"/> and <see cref="Right"/> combined.
     /// </summary>
@@ -102,7 +102,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       get { return Left + Right; }
     }
-    
+
     /// <summary>
     /// The padding value <see cref="Top"/> and <see cref="Bottom"/> combined.
     /// </summary>

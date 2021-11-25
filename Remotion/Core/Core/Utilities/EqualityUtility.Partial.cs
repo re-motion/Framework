@@ -20,6 +20,6 @@ namespace Remotion.Utilities
 {
   public static partial class EqualityUtility
   {
-     
+
   }
 }

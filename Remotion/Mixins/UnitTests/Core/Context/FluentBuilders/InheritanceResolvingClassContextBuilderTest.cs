@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     private ClassContextBuilder _classContextBuilderWithoutParent;
 
     private Dictionary<Type, Tuple<ClassContextBuilder, ClassContext>> _buildersWithParentContexts;
-    
+
     private IMixinInheritancePolicy _inheritancePolicyMock;
     private ClassContext _inheritedContext;
 
@@ -51,7 +51,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       _parentContextWithBuilder = ClassContextObjectMother.Create(typeof(NullTarget), typeof(NullMixin));
 
       _classContextBuilderWithIndirectParent = new ClassContextBuilder(typeof(DerivedNullTarget));
-      
+
       _classContextBuilderWithoutParent = new ClassContextBuilder(typeof(BaseType4));
       _classContextBuilderWithParent.AddMixin(typeof(BT4Mixin1));
 
@@ -82,7 +82,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var BuildMethod = typeof(InheritanceResolvingClassContextBuilder).GetMethod("Build");
       _inheritancePolicyMock
           .Expect(mock => mock.GetClassContextsToInheritFrom(
-              Arg.Is(typeof(BaseType2)), 
+              Arg.Is(typeof(BaseType2)),
               Arg<Func<Type, ClassContext>>.Matches(func => func.Method.Equals(BuildMethod))))
           .Return(new ClassContext[0]);
 

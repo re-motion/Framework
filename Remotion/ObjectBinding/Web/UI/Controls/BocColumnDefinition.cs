@@ -42,12 +42,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public IBocColumnRenderer GetRenderer (IServiceLocator serviceLocator)
     {
       ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
-      
+
       return GetRendererInternal(serviceLocator);
     }
 
     protected abstract IBocColumnRenderer GetRendererInternal (IServiceLocator locator);
-    
+
 
     public override string ToString ()
     {
@@ -153,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-      
+
       base.LoadResources(resourceManager, globalizationService);
 
       string? key = ResourceManagerUtility.GetGlobalResourceKey(ColumnTitle);

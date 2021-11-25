@@ -67,7 +67,7 @@ namespace Remotion.Tools.UnitTests
     public void TearDown ()
     {
       AppDomain.Unload(_appDomain);
-      
+
       if (Directory.Exists(_domainBase))
         Directory.Delete(_domainBase, true);
     }

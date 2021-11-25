@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Sample
     {
       return XmlReflectionBusinessObjectStorageProvider.Current.CreateObject<T>(id);
     }
-  
+
     internal Guid _id;
 
     protected BindableXmlObject ()

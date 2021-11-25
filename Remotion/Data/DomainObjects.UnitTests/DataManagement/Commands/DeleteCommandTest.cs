@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       var endPointCommandMock = mockRepository.StrictMock<IDataManagementCommand>();
       endPointCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      
+
       using (mockRepository.Ordered())
       {
         _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectDeletingEvent( _order1));

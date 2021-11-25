@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(queryableWithOrder.Provider.Executor, Is.SameAs(_executorStub));
       Assert.That(queryableWithOrder.Provider.QueryParser, Is.SameAs(_queryParserStub));
     }
-    
+
     [Test]
     public void Provider_PassedIn ()
     {
@@ -61,11 +61,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           _queryParserStub, _executorStub);
 
       var queryable = new DomainObjectQueryable<Order>(expectedProvider, Expression.Constant(null, typeof(DomainObjectQueryable<Order>)));
-      
+
       Assert.That(queryable.Provider, Is.Not.Null);
       Assert.That(queryable.Provider, Is.SameAs(expectedProvider));
     }
 
-    
+
   }
 }

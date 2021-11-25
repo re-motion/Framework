@@ -164,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (interim)
         return false;
-      
+
       bool isValid = Validate();
       if (!isValid)
         return false;
@@ -222,7 +222,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         SetValue(value);
       }
     }
-    
+
     /// <summary> Gets or sets the string representation of the current value. </summary>
     /// <value> 
     ///   An empty <see cref="String"/> if the control's value is <see langword="null"/> or empty. 
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _text = value;
       }
     }
-    
+
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>

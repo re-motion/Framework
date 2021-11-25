@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Configuration
     private StorageConfiguration GetPersistenceConfiguration ()
     {
       return
-          (StorageConfiguration) ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + StoragePropertyName, false) 
+          (StorageConfiguration) ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + StoragePropertyName, false)
           ?? new StorageConfiguration();
     }
 

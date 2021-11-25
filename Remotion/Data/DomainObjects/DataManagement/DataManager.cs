@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     private object[] _deserializedData; // only used for deserialization
 
     public DataManager (
-        ClientTransaction clientTransaction, 
+        ClientTransaction clientTransaction,
         IClientTransactionEventSink transactionEventSink,
         IDataContainerEventListener dataContainerEventListener,
         IInvalidDomainObjectManager invalidDomainObjectManager,
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
           let domainObject = dataContainer.DomainObject
           let state = domainObject.TransactionContext[_clientTransaction].State
           where predicate(state)
-          let associatedEndPointSequence = 
+          let associatedEndPointSequence =
               dataContainer.AssociatedRelationEndPointIDs.Select(GetRelationEndPointWithoutLoading).Where(ep => ep != null)
           select new PersistableData(domainObject, state, dataContainer, associatedEndPointSequence);
       return matchingObjects;
@@ -473,7 +473,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       doInfo.AddValue(_domainObjectStateCache);
       doInfo.AddValue(_invalidDomainObjectManager);
       doInfo.AddHandle(_objectLoader);
-      
+
       info.AddValue("doInfo.GetData", doInfo.GetData());
     }
 

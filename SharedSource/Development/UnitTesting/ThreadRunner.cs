@@ -56,7 +56,7 @@ namespace Remotion.Development.UnitTesting
       Exception? lastException = null;
 
       // Use anonymous delegate to catch and store exceptions from the thread in the current scope.
-      Thread otherThread = 
+      Thread otherThread =
         new Thread((ThreadStart)
           delegate
           {

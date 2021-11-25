@@ -64,9 +64,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       DomainModelConstraintProviderStub
           .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "PrivateString")))
           .Return(true);
-      
+
       ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassWithDifferentProperties");
-      
+
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
       var expected = CreateClassWithDifferentPropertiesClassDefinition();
 
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var type = typeof(ClassWithoutStorageGroupWithDifferentProperties);
       ClassIDProviderStub.Stub(stub => stub.GetClassID(type)).Return("ClassID");
       Assert.That(type.IsDefined(typeof(DBStorageGroupAttribute), false), Is.False);
-  
+
       var classReflector = CreateClassReflector(type);
 
       var actual = classReflector.GetMetadata(null);
@@ -286,7 +286,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_PersistentMixinFinder_ForBaseClass ()
     {
-      
+
       ClassIDProviderStub.Stub(mock => mock.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassID");
 
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           MappingObjectFactory,
           Configuration.NameResolver,
           ClassIDProviderStub,
-          PropertyMetadataProvider, 
+          PropertyMetadataProvider,
           DomainModelConstraintProviderStub,
           SortExpressionDefinitionProviderStub,
           DomainObjectCreatorStub);

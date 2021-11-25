@@ -75,7 +75,7 @@ public class BocTextValueUserControl : BaseUserControl
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
- 
+
     this.FirstNameField.TextChanged += new EventHandler(this.FirstNameField_TextChanged);
     this.FirstNameTestSetNullButton.Click += new EventHandler(this.FirstNameTestSetNullButton_Click);
     this.FirstNameTestSetNewValueButton.Click += new EventHandler(this.FirstNameTestSetNewValueButton_Click);
@@ -102,7 +102,7 @@ public class BocTextValueUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.

@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(control.IsDisabled(), Is.True);
       Assert.That(
-          () => control.Click(), 
+          () => control.Click(),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "Click").Message));
     }
 
@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestGetText ()
     {
       var home = Start();
-      
+
       var webButton = home.WebButtons().GetByLocalID("MyWebButton1Sync");
       Assert.That(webButton.GetText(), Is.EqualTo("SyncButton"));
     }

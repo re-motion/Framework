@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
             sqlCommandBuilder.Append("TestTest");
             sqlCommandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
           });
-      
+
       var result = _sqlQueryGenerator.CreateSqlQuery(_queryModel);
 
       Assert.That(result.SelectedEntityType, Is.EqualTo(expectedSelectedEntityType));

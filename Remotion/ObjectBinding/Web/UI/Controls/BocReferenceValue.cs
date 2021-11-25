@@ -287,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (string.IsNullOrEmpty(NullItemErrorMessage))
         return;
-      
+
       UpdateValidtaorErrorMessages<RequiredFieldValidator>(NullItemErrorMessage);
     }
 

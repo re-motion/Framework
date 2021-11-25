@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public class ExistingDataContainerEndPointsRegistrationAgent : DataContainerEndPointsRegistrationAgentBase
   {
     public ExistingDataContainerEndPointsRegistrationAgent (
-        IRelationEndPointFactory endPointFactory, 
+        IRelationEndPointFactory endPointFactory,
         IRelationEndPointRegistrationAgent registrationAgent)
         : base(endPointFactory, registrationAgent)
     {

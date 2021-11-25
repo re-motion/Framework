@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.Write(c_whiteSpace);
 
-      availableViewsList.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive && 
+      availableViewsList.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive &&
                                    !renderingContext.Control.EditModeController.IsListEditModeActive;
       availableViewsList.CssClass = CssClasses.AvailableViewsListDropDownList;
       availableViewsList.RenderControl(renderingContext.Writer);

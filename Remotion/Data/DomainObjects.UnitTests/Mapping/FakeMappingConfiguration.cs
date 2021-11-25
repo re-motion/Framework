@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition company = CreateClassDefinition(
           "Company", "Company", typeof(Company), false, baseClass);
-      
+
       var properties = new List<PropertyDefinition>();
       properties.Add(
           CreatePersistentPropertyDefinition(
@@ -423,7 +423,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition client = CreateClassDefinition(
           "Client", "Client", typeof(Client), false, baseClass);
-       
+
       var properties = new List<PropertyDefinition>();
       properties.Add(
           CreatePersistentPropertyDefinition(client, typeof(Client), "ParentClient", "ParentClientID", true, null));
@@ -970,7 +970,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assertion.IsNotNull(propertyInfo);
       var propertyInformation = PropertyInfoAdapter.Create(propertyInfo);
       var fullName = declaringType.FullName + "." + propertyName;
- 
+
       // Don't use PropertyDefinitionObjectMother: since this configuration is compared with the actual configuration, we must exactly define 
       // the mapping objects
       return new PropertyDefinition(
@@ -982,7 +982,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           maxLength,
           storageClass);
     }
-    
+
     #endregion
 
     #region Methods for creating relation definitions
@@ -1041,7 +1041,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
         if (!relationsByClass.TryGetValue(classDefinition, out relationEndPointsDefinitionsForClass))
           relationEndPointsDefinitionsForClass = Enumerable.Empty<IRelationEndPointDefinition>();
-        
+
         classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(relationEndPointsDefinitionsForClass, true));
       }
     }
@@ -1229,7 +1229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Person.AssociatedPartnerCompany",
               false,
               typeof(Partner));
-      
+
       RelationDefinition relation =
           CreateExpectedRelationDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner"
             + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson->"
@@ -1434,7 +1434,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       RelationDefinition relation =
           CreateExpectedRelationDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company"
             +":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.IndustrialSector->"
-            + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.IndustrialSector.Companies", 
+            + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.IndustrialSector.Companies",
             endPoint1, endPoint2);
 
       return relation;
@@ -1497,8 +1497,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       RelationDefinition relation = CreateExpectedRelationDefinition(
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.TargetClassForPersistentMixin:"
-          + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.MixinAddingPersistentProperties.UnidirectionalRelationProperty", 
-          endPoint1, 
+          + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.MixinAddingPersistentProperties.UnidirectionalRelationProperty",
+          endPoint1,
           endPoint2);
 
       return relation;

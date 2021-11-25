@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
     private readonly ICollection<IMixinDeclarationAnalyzer<Assembly>> _assemblyAnalyzers;
 
     public DeclarativeConfigurationAnalyzer (
-        IEnumerable<IMixinDeclarationAnalyzer<Type>> typeAnalyzers, 
+        IEnumerable<IMixinDeclarationAnalyzer<Type>> typeAnalyzers,
         IEnumerable<IMixinDeclarationAnalyzer<Assembly>> assemblyAnalyzers)
     {
       ArgumentUtility.CheckNotNull("typeAnalyzers", typeAnalyzers);
@@ -41,7 +41,7 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
       _typeAnalyzers = typeAnalyzers.ConvertToCollection();
       _assemblyAnalyzers = assemblyAnalyzers.ConvertToCollection();
     }
-    
+
     public void Analyze (IEnumerable<Type> types, MixinConfigurationBuilder configurationBuilder)
     {
       ArgumentUtility.CheckNotNull("types", types);

@@ -72,7 +72,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
 
       labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
-          new string[0], 
+          new string[0],
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
       Assert.That(labelControl.Attributes.Count, Is.EqualTo(1));

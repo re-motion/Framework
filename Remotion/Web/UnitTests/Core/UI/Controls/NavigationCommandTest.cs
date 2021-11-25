@@ -95,7 +95,7 @@ public class NavigationCommandTest
 
   [TearDown]
   public virtual void TearDown ()
-  { 
+  {
     WebConfigurationMock.Current = null;
     Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent(null);
     HttpContextHelper.SetCurrent(null);
@@ -104,8 +104,8 @@ public class NavigationCommandTest
   [Test]
   public void RenderWxeFunctionCommand ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
-    
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
+
     NameValueCollection additionalUrlParameters = new NameValueCollection();
     additionalUrlParameters.Add("Parameter2", "Value2");
 
@@ -143,8 +143,8 @@ public class NavigationCommandTest
   [Test]
   public void GetWxeFunctionPermanentUrlWithDefaultWxeHandler ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
-    
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
+
     string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
 
     string expectedUrl = wxeHandler.TrimStart('~');
@@ -170,7 +170,7 @@ public class NavigationCommandTest
     string resource = "~/Test.wxe";
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, resource));
     string parameter1 = "Value1";
-    
+
     string expectedUrl = resource.TrimStart('~');
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add("Parameter1", parameter1);
@@ -219,7 +219,7 @@ public class NavigationCommandTest
     Type functionWithNestingType = typeof(TestFunctionWithNesting);
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, functionWithNestingType, resource));
     string parameter1 = "Value1";
-    
+
     NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.MappingID = mappingID;
@@ -233,10 +233,10 @@ public class NavigationCommandTest
   [Test]
   public void GetWxeFunctionPermanentUrlWithDefaultWxeHandlerAndAdditionalUrlParameters ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
-    
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
+
     string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
-    
+
     NameValueCollection additionalUrlParameters = new NameValueCollection();
     additionalUrlParameters.Add("Parameter2", "Value2");
 
@@ -290,7 +290,7 @@ public class NavigationCommandTest
   {
     WebConfigurationMock.Current = null;
     string parameter1 = "Hello World!";
-    
+
     NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;

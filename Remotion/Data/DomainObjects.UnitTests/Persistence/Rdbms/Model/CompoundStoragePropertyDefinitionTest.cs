@@ -145,10 +145,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = _compoundStoragePropertyDefinition.SplitValuesForComparison(new object[] { dateTime1, dateTime2 });
 
       var expectedTable = new ColumnValueTable(
-          new[] { _columnDefinition1, _columnDefinition2, _columnDefinition3 }, 
+          new[] { _columnDefinition1, _columnDefinition2, _columnDefinition3 },
           new[]
           {
-              new ColumnValueTable.Row(new object[] { "2011", "7", "18" }), 
+              new ColumnValueTable.Row(new object[] { "2011", "7", "18" }),
               new ColumnValueTable.Row(new object[] { "2012", "8", "19" })
           });
 
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var property2aStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
       var property2bStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
       var property2 = CreateDefinedCompoundStoragePropertyDefinition(property2aStub, property2bStub);
-      
+
       var property3aStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
       var property3bStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
       var property3 = CreateDefinedCompoundStoragePropertyDefinition(property3aStub, property3bStub);
@@ -255,7 +255,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       return new CompoundStoragePropertyDefinition(
           typeof(int),
-          CreateNestedPropertyInfos(propertyA, propertyB), 
+          CreateNestedPropertyInfos(propertyA, propertyB),
           values => 7);
     }
 

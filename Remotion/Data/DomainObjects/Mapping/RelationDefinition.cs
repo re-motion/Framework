@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationKindType RelationKind
     {
-      get 
+      get
       {
         if (_endPointDefinition1 is AnonymousRelationEndPointDefinition || _endPointDefinition2 is AnonymousRelationEndPointDefinition)
           return RelationKindType.Unidirectional;

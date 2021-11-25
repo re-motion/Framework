@@ -37,7 +37,7 @@ namespace Remotion.Validation.IntegrationTests
     [Test]
     public void BuildSpecialCustomer_RemoveLastNameHardConstraint_ThrowsException ()
     {
-      Assert.That(() => ValidationBuilder.BuildValidator<SpecialCustomer2>(), 
+      Assert.That(() => ValidationBuilder.BuildValidator<SpecialCustomer2>(),
         Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
         "Attempted to remove non-removable validator(s) 'LengthValidator' on property "
         + "'Remotion.Validation.IntegrationTests.TestDomain.ComponentA.Person.LastName'."));
@@ -64,7 +64,7 @@ namespace Remotion.Validation.IntegrationTests
       var address6 = new Address { Country = "Tschiputi" };
 
       var validator = ValidationBuilder.BuildValidator<Address>();
-    
+
       var result1 = validator.Validate(address1);
       Assert.That(result1.IsValid, Is.True);
 

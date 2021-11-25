@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private readonly RelationEndPointMap _map;
 
     public UnregisterEndPointsCommand (
-        IEnumerable<IRelationEndPoint> endPoints, 
-        IRelationEndPointRegistrationAgent registrationAgent, 
+        IEnumerable<IRelationEndPoint> endPoints,
+        IRelationEndPointRegistrationAgent registrationAgent,
         RelationEndPointMap map)
     {
       ArgumentUtility.CheckNotNull("endPoints", endPoints);

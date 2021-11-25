@@ -41,7 +41,7 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
           Is.EqualTo(typeof(Mixin<IBaseType32>).GetProperty("Target", BindingFlags.NonPublic | BindingFlags.Instance)));
 
       Assert.That(MixinReflector.GetTargetProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)), Is.Not.Null);
-      Assert.That(MixinReflector.GetTargetProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)), 
+      Assert.That(MixinReflector.GetTargetProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)),
           Is.Not.EqualTo(typeof(Mixin<,>).GetProperty("Target", BindingFlags.NonPublic | BindingFlags.Instance)));
 
       Assert.That(MixinReflector.GetTargetProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)),
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
       Assert.That(MixinReflector.GetNextProperty(typeof(BT3Mixin2)), Is.Null);
 
       Assert.That(MixinReflector.GetNextProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)), Is.Not.Null);
-      Assert.That(MixinReflector.GetNextProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)), 
+      Assert.That(MixinReflector.GetNextProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)),
           Is.Not.EqualTo(typeof(Mixin<,>).GetProperty("Next", BindingFlags.NonPublic | BindingFlags.Instance)));
       Assert.That(MixinReflector.GetNextProperty(typeof(BT3Mixin3<BaseType3, IBaseType33>)),
           Is.EqualTo(typeof(Mixin<BaseType3, IBaseType33>).GetProperty("Next", BindingFlags.NonPublic | BindingFlags.Instance)));
@@ -107,7 +107,7 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     {
       var concreteMixedType = MixinTypeUtility.GetConcreteMixedType(typeof(BaseType3));
 
-      Assert.That(MixinReflector.GetOrderedMixinTypesFromConcreteType(concreteMixedType), 
+      Assert.That(MixinReflector.GetOrderedMixinTypesFromConcreteType(concreteMixedType),
           Has.Member(typeof(BT3Mixin3<BaseType3, IBaseType33>)));
     }
   }

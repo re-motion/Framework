@@ -26,7 +26,7 @@ namespace OBWTest
   {
     public ReferenceDataSourceTestFunction ()
       : base(new NoneTransactionMode())
- 
+
     {
     }
 

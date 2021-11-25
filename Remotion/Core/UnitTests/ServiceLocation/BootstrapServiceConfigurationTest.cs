@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.ServiceLocation
       _configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute>();
 
       var entry = new ServiceConfigurationEntry(
-          typeof(IServiceWithAttribute), 
+          typeof(IServiceWithAttribute),
           new ServiceImplementationInfo(typeof(ServiceWithAttribute2), LifetimeKind.Singleton));
       Assert.That(() => _configuration.Register(entry), Throws.InvalidOperationException);
 

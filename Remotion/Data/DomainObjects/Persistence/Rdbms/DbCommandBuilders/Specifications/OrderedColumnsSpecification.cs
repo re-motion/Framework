@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
       if (!_columns.Any())
         return selectedColumns;
-      
+
       return selectedColumns.Union(_columns.Select(orderedColumn => orderedColumn.ColumnDefinition));
     }
   }

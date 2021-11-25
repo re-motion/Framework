@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       public DateTime LastWriteTimeUtc { get { return _lastWriteTimeUtc; } }
       public long Length { get { return _length; } }
     }
-    
+
 
     private static readonly TimeSpan s_minimalDownloadTimeout = TimeSpan.FromSeconds(1);
     private static readonly TimeSpan s_retryInterval = TimeSpan.FromMilliseconds(250);
@@ -179,7 +179,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       {
         var lastWriteTimeUtc = fileInfo.LastWriteTimeUtc;
         var length = fileInfo.Length;
-      
+
         fileInformation = new FileInformationTuple(lastWriteTimeUtc, length);
         return true;
       }

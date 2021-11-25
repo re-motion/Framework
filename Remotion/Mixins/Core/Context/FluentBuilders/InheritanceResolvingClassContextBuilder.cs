@@ -52,7 +52,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <param name="inheritancePolicy">The inheritance policy to use when resolving the inheritance hierarchy of the target types.</param>
     public InheritanceResolvingClassContextBuilder (
         IEnumerable<ClassContextBuilder> classContextBuilders,
-        ClassContextCollection parentContexts, 
+        ClassContextCollection parentContexts,
         IMixinInheritancePolicy inheritancePolicy)
     {
       ArgumentUtility.CheckNotNull("classContextBuilders", classContextBuilders);

@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
       _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order1Container, _order2Container, _order3Container });
 
       Assert.That(
-          () => command.Execute(_executionContext).ToList(), 
+          () => command.Execute(_executionContext).ToList(),
           Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
               "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
               + "Loaded DataContainer ID: Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, expected ObjectID(s): "

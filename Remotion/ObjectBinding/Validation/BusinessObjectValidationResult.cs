@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Validation
     }
 
     private static BusinessObjectValidationFailure CreateBusinessObjectValidationFailure (ValidationFailure validationFailure)
-    {      
+    {
       // TODO: RM-6056: Implementation: Find a way to not requiring a soft-cast to BindableProperty to get to the IPropertyInformation.
       // Instead, either support matching via visitor or some other good idea. Keep in mind to not clutter the
       // IBusinessObjectProperty interface to accomplish this design goal.

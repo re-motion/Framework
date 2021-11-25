@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Tracing
     public static readonly IPersistenceExtension Instance = new NullPersistenceExtension();
 
     private NullPersistenceExtension ()
-    {      
+    {
     }
 
     public bool IsNull

@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void FromAttributeApplication ()
     {
-      var attribute = ((ConcreteMixinTypeAttribute[]) 
+      var attribute = ((ConcreteMixinTypeAttribute[])
           typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers)
               .GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false))
               .Single();

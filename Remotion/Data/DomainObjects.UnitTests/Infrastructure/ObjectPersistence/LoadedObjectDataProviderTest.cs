@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _loadedDataContainerProviderMock.VerifyAllExpectations();
       Assert.That(
-          loadedObject, 
+          loadedObject,
           Is.TypeOf<AlreadyExistingLoadedObjectData>()
             .With.Property((AlreadyExistingLoadedObjectData obj) => obj.ExistingDataContainer).SameAs(dataContainer));
     }
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _invalidDomainObjectManagerMock.VerifyAllExpectations();
 
       Assert.That(
-          loadedObject, 
+          loadedObject,
           Is.TypeOf<InvalidLoadedObjectData>().With.Property((InvalidLoadedObjectData obj) => obj.InvalidObjectReference).SameAs(invalidObjectReference));
     }
 

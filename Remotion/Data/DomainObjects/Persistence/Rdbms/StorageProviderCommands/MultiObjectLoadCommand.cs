@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
     {
       get { return _dbCommandBuildersAndReaders; }
     }
-    
+
     public IEnumerable<T> Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);

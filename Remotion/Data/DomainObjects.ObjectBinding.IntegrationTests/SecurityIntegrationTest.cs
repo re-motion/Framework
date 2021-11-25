@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
 
       securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
       _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Edit) });
-      
+
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithDefaultPermission");
-      
+
       Assert.That(property.IsReadOnly(bindableSecurableObject), Is.False);
     }
 
@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       Assert.That(property.IsAccessible(bindableSecurableObject), Is.False);
     }
 
-    
+
     [Test]
     public void IsReadonly_ReadOnlyProperty_True ()
     {
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithDefaultPermission");
 
       Assert.That(property.IsAccessible(bindableSecurableObject), Is.True);
-    } 
+    }
 
     [Test]
     public void IsReadOnly_MixedPropertyWithReadPermission ()
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithReadPermission");
 
       Assert.That(property.IsReadOnly(bindableSecurableObject), Is.True);
-    } 
+    }
 
     [Test]
     public void IsAccessible_MixedPropertyWithReadPermission_False ()

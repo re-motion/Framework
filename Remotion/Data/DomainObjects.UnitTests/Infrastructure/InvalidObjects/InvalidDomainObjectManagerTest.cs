@@ -193,6 +193,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
       Assert.That(deserializedInstance.InvalidObjectIDs, Has.Member(order.ID));
     }
 
-    
+
   }
 }

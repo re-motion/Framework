@@ -80,14 +80,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public ConfigurationException CreateMissingDefaultProviderException (string context)
     {
       return new ConfigurationException(
-          "Missing default storage provider. " 
-          + context 
+          "Missing default storage provider. "
+          + context
           + Environment.NewLine
           + "Please add an application or Web configuration file to your application, declare the "
           + "remotion.data.domainObjects section group, and add the storage element to configure the default storage provider. Alternatively, "
-          + "explicitly assign all storage groups and queries to specific storage providers." 
+          + "explicitly assign all storage groups and queries to specific storage providers."
           + Environment.NewLine + Environment.NewLine
-          + "Configuration File Example:" 
+          + "Configuration File Example:"
           + Environment.NewLine +
           @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <configuration>

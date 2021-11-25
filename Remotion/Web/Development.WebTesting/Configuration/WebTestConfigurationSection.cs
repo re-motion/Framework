@@ -179,7 +179,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     {
       get { return (TimeSpan) this [_downloadUpdatedTimeoutProperty]; }
     }
-    
+
     /// <summary>
     /// Specifies how long the <see cref="WebTestSetUpFixtureHelper"/> should wait for the WebApplication to return a 200 on <see cref="WebApplicationRoot"/>.
     /// </summary>
@@ -231,7 +231,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     {
       get { return (bool) this [_closeBrowserWindowsOnSetUpAndTearDownProperty]; }
     }
-    
+
     /// <summary>
     /// Clean up the download folder on error.
     /// </summary>

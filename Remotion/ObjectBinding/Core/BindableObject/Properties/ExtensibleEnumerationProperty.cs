@@ -81,11 +81,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     public EnumerationValueInfo CreateEnumerationValueInfo (IExtensibleEnumInfo extensibleEnumInfo, IBusinessObject? businessObject)
     {
       ArgumentUtility.CheckNotNull("extensibleEnumInfo", extensibleEnumInfo);
-      
+
       return new EnumerationValueInfo(
-          extensibleEnumInfo.Value, 
-          extensibleEnumInfo.Value.ID, 
-          GetDisplayName(extensibleEnumInfo), 
+          extensibleEnumInfo.Value,
+          extensibleEnumInfo.Value.ID,
+          GetDisplayName(extensibleEnumInfo),
           IsEnabled(extensibleEnumInfo.Value, businessObject));
     }
 

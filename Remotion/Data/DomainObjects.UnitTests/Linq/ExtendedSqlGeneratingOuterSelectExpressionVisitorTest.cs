@@ -90,12 +90,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       Expression<Func<IDatabaseResultRow, ObjectID>> expectedInMemoryProjection =
           row => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull(
-              row.GetValue<string>(new ColumnID("m0", 0)), 
+              row.GetValue<string>(new ColumnID("m0", 0)),
               row.GetValue<object>(new ColumnID("m1", 1)));
       var expectedInMemoryProjectionBody = PartialEvaluatingExpressionVisitor.EvaluateIndependentSubtrees(
           expectedInMemoryProjection.Body,
           new TestEvaluatableExpressionFilter());
       SqlExpressionTreeComparer.CheckAreEqualTrees(expectedInMemoryProjectionBody, _commandBuilder.GetInMemoryProjectionBody());
-    } 
+    }
   }
 }

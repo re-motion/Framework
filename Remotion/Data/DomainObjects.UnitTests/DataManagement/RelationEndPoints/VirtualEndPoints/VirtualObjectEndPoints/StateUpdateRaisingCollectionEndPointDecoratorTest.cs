@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation(ep => ep.MarkDataComplete(orderTicket));
 
       _innerEndPointMock.BackToRecord();
-      
+
       _decoratorTestHelper.CheckDelegation(ep => ep.HasChanged, true);
       _decoratorTestHelper.CheckDelegation(ep => ep.HasChanged, false);
     }
@@ -240,7 +240,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation(action);
 
       _listenerMock.AssertWasNotCalled(mock => mock.VirtualEndPointStateUpdated(Arg<RelationEndPointID>.Is.Anything, Arg<bool?>.Is.Anything));
-      
+
       // Check with HasChanged returning true, then false; also check that listener is called _after_ delegation
       _innerEndPointMock.BackToRecord();
       _innerEndPointMock.Stub(stub => stub.ID).Return(_endPointID);

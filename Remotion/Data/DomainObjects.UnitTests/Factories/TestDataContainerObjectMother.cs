@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object>();
-      
+
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"], 3);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate"], new DateTime(2005, 3, 1));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official"], _domainObjectIDs.Official1);

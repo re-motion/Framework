@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         newOrder = DomainObjectIDs.Order4.GetObject<Order>();
         newOrder.OrderTicket.Delete(); // delete old ticket
         newOrder.OrderTicket = orderTicket;
-        
+
         originalItem.Delete(); // delete old item
         originalOrder.Delete();
         ClientTransaction.Current.Commit();
@@ -403,16 +403,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         order = Order.NewObject();
-        
+
         newOrderTicket = OrderTicket.NewObject();
         order.OrderTicket = newOrderTicket;
-        
+
         newOrderItem = OrderItem.NewObject();
         order.OrderItems.Add(newOrderItem);
-        
+
         newOfficial = Official.NewObject();
         order.Official = newOfficial;
-        
+
         newCustomer = Customer.NewObject();
         order.Customer = newCustomer;
 
@@ -595,7 +595,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
       Order oldOrder = orderTicket.Order;
-      
+
       Order newOrder = DomainObjectIDs.Order3.GetObject<Order>();
       OrderTicket oldOrderTicket = newOrder.OrderTicket;
 

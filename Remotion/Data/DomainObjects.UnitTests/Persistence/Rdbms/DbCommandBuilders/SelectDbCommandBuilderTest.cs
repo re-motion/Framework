@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private ISelectedColumnsSpecification _selectedColumnsStub;
     private IComparedColumnsSpecification _comparedColumnsStrictMock;
     private IOrderedColumnsSpecification _orderedColumnsStub;
-    
+
     private ISqlDialect _sqlDialectStub;
     private IDbCommand _dbCommandStub;
     private IDbDataParameter _dbDataParameterStub;

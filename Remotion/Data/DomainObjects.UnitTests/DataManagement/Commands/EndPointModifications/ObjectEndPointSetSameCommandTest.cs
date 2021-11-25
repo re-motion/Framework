@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _transactionEventSinkWithMock.AssertWasNotCalled(mock => mock.RaiseRelationChangedEvent(
           Arg<DomainObject>.Is.Anything,
-          Arg<IRelationEndPointDefinition>.Is.Anything, 
+          Arg<IRelationEndPointDefinition>.Is.Anything,
           Arg<DomainObject>.Is.Anything,
           Arg<DomainObject>.Is.Anything));
     }

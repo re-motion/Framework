@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     {
       // Safe assuming the subtransaction does not have a complete end-point for the same ID (subtransaction needs to be unloaded first)
       Assertion.IsTrue(
-          clientTransaction.SubTransaction == null 
+          clientTransaction.SubTransaction == null
           || IsNullOrIncomplete(clientTransaction.SubTransaction.DataManager.RelationEndPoints[endPointID]));
     }
 
@@ -258,7 +258,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // (or when it has been unlocked - during subtx.Commit)
       Assertion.IsTrue(
           clientTransaction.IsWriteable
-          || clientTransaction.SubTransaction == null 
+          || clientTransaction.SubTransaction == null
           || clientTransaction.SubTransaction.DataManager.DataContainers[container.ID] == null);
     }
 

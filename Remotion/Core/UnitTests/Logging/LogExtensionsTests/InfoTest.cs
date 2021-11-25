@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     {
       SetLoggingThreshold(Level.Info);
       Logger.Log(GetType(), Level.Info, "The message.", null);
-      
+
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       Assert.That(events[0].Level, Is.EqualTo(Level.Info));

@@ -149,7 +149,7 @@ namespace Remotion.Mixins
     /// <typeparam name="TTarget">The TTarget parameter of the mixin.</typeparam>
     /// <param name="mixin">The mixin to simulate deserialization with.</param>
     /// <param name="targetMock">The mock object to use for the mixin's <see cref="Mixin{TTarget}.Target"/> property.</param>
-    public static void MockMixinTargetAfterDeserialization<TTarget> (Mixin<TTarget> mixin, TTarget targetMock) 
+    public static void MockMixinTargetAfterDeserialization<TTarget> (Mixin<TTarget> mixin, TTarget targetMock)
         where TTarget : class
     {
       ArgumentUtility.CheckNotNull("mixin", mixin);

@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     public void ConnectionClosed (Guid connectionID)
     {
     }
-    
+
     #endregion
 
     private readonly LinqToSqlAppenderProxy _appenderProxy;

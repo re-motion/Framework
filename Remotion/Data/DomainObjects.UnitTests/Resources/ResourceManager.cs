@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Resources
     {
       return ResourceUtility.GetResource(typeof(ResourceManager), "MappingExportOutput.xml");
     }
-    
+
     public static byte[] GetRdbmsMappingSchema ()
     {
       return ResourceUtility.GetResource(typeof(ResourceManager), "RdbmsMapping.xsd");
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Resources
 
       if (expected == null)
         Assert.Fail("Expected array is null, but actual array is not null.");
-      
+
       Assert.That(actual, Is.EqualTo(expected));
     }
   }

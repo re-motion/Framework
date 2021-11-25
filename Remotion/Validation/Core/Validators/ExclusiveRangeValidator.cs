@@ -76,7 +76,7 @@ namespace Remotion.Validation.Validators
 
       if (Comparer != null)
         return Comparer.Compare(propertyValue, From) > 0 && Comparer.Compare(propertyValue, To) < 0;
-      
+
       if (propertyValue.GetType() != From.GetType())
         return true;
 

@@ -169,7 +169,7 @@ namespace Remotion.Logging
       ArgumentUtility.CheckNotNull("log", log);
       log.Log(LogLevel.Debug, eventID, message, (Exception?)  null);
     }
-    
+
     /// <summary>
     /// Log a message object with the <see cref="LogLevel.Debug"/> level,
     /// including the stack trace of <paramref name="exceptionObject"/>. 
@@ -266,7 +266,7 @@ namespace Remotion.Logging
       ArgumentUtility.CheckNotNull("log", log);
       log.Log(LogLevel.Info, eventID, message, (Exception?) null);
     }
-    
+
     /// <summary>
     /// Log a message object with the <see cref="LogLevel.Info"/> level,
     /// including the stack trace of <paramref name="exceptionObject"/>. 
@@ -315,7 +315,7 @@ namespace Remotion.Logging
       ArgumentUtility.CheckNotNull("log", log);
       log.LogFormat(LogLevel.Info, eventID, (Exception?) null, format, args);
     }
-    
+
     /// <summary>
     /// Log a formatted string with the <see cref="LogLevel.Info"/> level.
     /// </summary>
@@ -511,7 +511,7 @@ namespace Remotion.Logging
       ArgumentUtility.CheckNotNull("log", log);
       log.LogFormat(LogLevel.Error, eventID, (Exception?) null, format, args);
     }
-    
+
     /// <summary>
     /// Log a formatted string with the <see cref="LogLevel.Error"/> level.
     /// </summary>
@@ -560,7 +560,7 @@ namespace Remotion.Logging
       ArgumentUtility.CheckNotNull("log", log);
       log.Log(LogLevel.Fatal, eventID, message, (Exception?) null);
     }
-    
+
     /// <summary>
     /// Log a message object with the <see cref="LogLevel.Fatal"/> level,
     /// including the stack trace of <paramref name="exceptionObject"/>. 

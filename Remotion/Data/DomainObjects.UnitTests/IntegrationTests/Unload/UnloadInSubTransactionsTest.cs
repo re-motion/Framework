@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var orderTicket = order.OrderTicket;
 
       CheckVirtualEndPoint(_subTransaction, order, "OrderTicket", true);
-      
+
       UnloadService.UnloadVirtualEndPoint(_subTransaction, RelationEndPointID.Resolve(order, o => o.OrderTicket));
 
       CheckDataContainerExists(_subTransaction, order, true);
@@ -227,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       oldOrderTicket.Delete();
       var newOrderTicket = OrderTicket.NewObject();
       order.OrderTicket = newOrderTicket;
-      
+
       _subTransaction.Commit();
 
       Assert.That(order.State.IsUnchanged, Is.True);
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       Assert.That(order.OrderTicket, Is.SameAs(newOrderTicketID.GetObject<OrderTicket>()));
     }
-    
+
     [Test]
     public void UnloadData_Order ()
     {
@@ -691,9 +691,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     private void CheckVirtualEndPoint (
-        ClientTransaction clientTransaction, 
-        DomainObject owningObject, 
-        string shortPropertyName, 
+        ClientTransaction clientTransaction,
+        DomainObject owningObject,
+        string shortPropertyName,
         bool shouldDataBeComplete)
     {
       CheckEndPointExists(clientTransaction, owningObject, shortPropertyName, true);

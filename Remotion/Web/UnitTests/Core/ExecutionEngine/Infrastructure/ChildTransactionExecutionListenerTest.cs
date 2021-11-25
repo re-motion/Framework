@@ -80,7 +80,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       InvokeTransactionStrategyPlay();
 
       _transactionListener.OnExecutionPause(_wxeContext);
-      
+
       _transactionStrategyMock.Verify(mock => mock.OnExecutionPause(_wxeContext, _innerListenerMock.Object), Times.Never());
       _innerListenerMock.Verify(mock => mock.OnExecutionPause(_wxeContext), Times.AtLeastOnce());
     }

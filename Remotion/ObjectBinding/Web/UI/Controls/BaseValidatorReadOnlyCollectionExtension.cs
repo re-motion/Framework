@@ -17,6 +17,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return null;
 
       return value.OfType<T>().FirstOrDefault();
-    } 
+    }
   }
 }

@@ -65,7 +65,7 @@ namespace OBWTest.Validation
 
     protected void Page_Load (object sender, EventArgs e)
     {
-      
+
     }
 
     protected override void OnLoad (EventArgs e)
@@ -74,8 +74,8 @@ namespace OBWTest.Validation
       base.OnLoad(e);
       CurrentObject.BusinessObject = (IBusinessObject) ((BocValidationTestWxeFunction)CurrentFunction).Person;
       CurrentObject.LoadValues(IsPostBack);
-      
-      
+
+
       if (!IsPostBack)
       {
         GridBocList.SwitchListIntoEditMode();
@@ -84,7 +84,7 @@ namespace OBWTest.Validation
             typeof(IBusinessObjectWithIdentity));
         ReferenceField.SetBusinessObjectList(objects);
       }
-      
+
     }
 
     protected override void OnInit (EventArgs e)
@@ -112,7 +112,7 @@ namespace OBWTest.Validation
 
     private void SaveButton_Click (object sender, EventArgs e)
     {
-      
+
       PrepareValidation();
       //FormGridManager.Validate ();
       if (CurrentObject.SaveValues(false))
@@ -120,7 +120,7 @@ namespace OBWTest.Validation
         var person = (Person) CurrentObject.BusinessObject;
         var validationResult = ValidatorProvider.GetValidator(typeof(Person)).Validate(person);
         ValidationResult validationResultPartner = new ValidationResult();
-        
+
         if (person.Partner != null)
           validationResultPartner = ValidatorProvider.GetValidator(typeof(Person)).Validate(person.Partner);
         var validationResultFather = ValidatorProvider.GetValidator(typeof(Person)).Validate(person.Father);

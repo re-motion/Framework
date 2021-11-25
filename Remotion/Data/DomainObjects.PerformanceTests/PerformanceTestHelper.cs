@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 	      result &= operation();
 	    }
       stopwatch.Stop();
-	
+
 	    Console.WriteLine(result);
-	
+
 	    var elapsed = stopwatch.Elapsed;
 	    return elapsed;
     }

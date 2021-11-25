@@ -28,7 +28,7 @@ namespace Remotion.Tools.Console.CommandLine
 
     /// <summary> IDictionary &lt;CommandLineArgument, MemberInfo&gt; </summary>
     private readonly IDictionary _arguments;
-    
+
     public CommandLineClassParser (Type argumentClass)
     {
       _argumentClass = argumentClass;

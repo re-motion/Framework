@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       Assert.That(aclExpansionEntry.DeniedAccessTypes, Is.EqualTo(AccessTypeDefinitions2));
     }
 
-      
+
     [Test]
     public void StateCombinationsForStatelessAclThrowsTest ()
     {

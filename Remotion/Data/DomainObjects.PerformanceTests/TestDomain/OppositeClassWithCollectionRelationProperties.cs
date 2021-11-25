@@ -26,6 +26,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   {
     [DBBidirectionalRelation("Collection")]
     public abstract ClassWithRelationProperties EndOfCollection { get; set; }
-    
+
   }
 }

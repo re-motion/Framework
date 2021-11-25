@@ -45,7 +45,7 @@ namespace Remotion.Mixins.UnitTests.Core
       var attribute = new IgnoresMixinAttribute(typeof(string));
       Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
-    
+
     [Test]
     public void AnalyzeIgnoresMixinAttribute ()
     {

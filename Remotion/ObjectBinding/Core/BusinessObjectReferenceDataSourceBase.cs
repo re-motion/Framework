@@ -202,7 +202,7 @@ namespace Remotion.ObjectBinding
     public bool HasBusinessObjectChanged
     {
       get { return _hasBusinessObjectChanged; }
-      private set 
+      private set
       {
         if (value && HasValidBinding && IsReadOnlyInDomainModel)
         {

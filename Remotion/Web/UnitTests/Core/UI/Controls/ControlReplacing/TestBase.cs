@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       if (testPageHolder.Page.IsPostBack)
         new ControlInvoker(testPageHolder.NamingContainer).LoadControlState(null);
       Assertion.IsTrue(replacer.Controls.Count == 1);
-      
+
       testPageHolder.Page.SaveAllState();
 
       return testPageHolder.Page.GetPageStatePersister().ControlState;

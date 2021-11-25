@@ -169,7 +169,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
     private void RenderPlaceHolder (TabbedMultiViewRenderingContext renderingContext, Style style, PlaceHolder placeHolder, string defaultCssClass)
     {
       ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + placeHolder.ClientID);
-      
+
       string cssClass = defaultCssClass;
       if (!string.IsNullOrEmpty(style.CssClass))
         cssClass = style.CssClass;

@@ -49,6 +49,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       Assert.That(indexedColumn.IndexOrder, Is.Null);
     }
-    
+
   }
 }

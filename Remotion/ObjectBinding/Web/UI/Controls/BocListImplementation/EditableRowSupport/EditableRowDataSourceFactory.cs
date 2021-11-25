@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       BusinessObjectReferenceDataSource dataSource = new BusinessObjectReferenceDataSource();
       dataSource.BusinessObject = businessObject;
-    
+
       return dataSource;
     }
   }

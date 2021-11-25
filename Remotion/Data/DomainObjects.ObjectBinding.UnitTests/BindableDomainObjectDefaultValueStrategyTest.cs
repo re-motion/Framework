@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var property = GetProperty(instance);
       var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
       Assert.That(instance.State.IsNew, Is.False);
-      
+
       var result = strategy.IsDefaultValue(instance, property);
 
       Assert.That(result, Is.False);
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
       instance.Name = instance.Name;
       Assert.That(instance.State.IsNew, Is.True);
-      
+
       var result = strategy.IsDefaultValue(instance, property);
 
       Assert.That(result, Is.False);
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       Assert.That(result, Is.False);
     }
-    
+
     private PropertyBase GetProperty (IBusinessObject instance)
     {
       return (PropertyBase) instance.BusinessObjectClass.GetPropertyDefinition("Name");

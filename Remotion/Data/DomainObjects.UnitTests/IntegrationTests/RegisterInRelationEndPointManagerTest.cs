@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       Assert.AreEqual(2, _relationEndPointManager.RelationEndPoints.Count, "Count");
 
-      var expectedEndPointIDForOrderTicket = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, 
+      var expectedEndPointIDForOrderTicket = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1,
                                                     "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       Assert.AreEqual(expectedEndPointIDForOrderTicket,
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
           ((IObjectEndPoint) _relationEndPointManager.GetRelationEndPointWithoutLoading(expectedEndPointIDForOrderTicket)).OppositeObjectID,
           "OppositeObjectID for OrderTicket");
 
-      var expectedEndPointIDForOrder = RelationEndPointID.Create(DomainObjectIDs.Order1, 
+      var expectedEndPointIDForOrder = RelationEndPointID.Create(DomainObjectIDs.Order1,
                                               "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       Assert.AreEqual(expectedEndPointIDForOrder,
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.That(customerEndPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Customer1));
 
       var customerOrdersEndPointID = RelationEndPointID.Create(
-          DomainObjectIDs.Customer1, 
+          DomainObjectIDs.Customer1,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       var customerOrdersEndPoint = _relationEndPointManager.GetRelationEndPointWithoutLoading(customerOrdersEndPointID);
       Assert.That(customerOrdersEndPoint, Is.Not.Null);
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var officialEndPoint = (IObjectEndPoint) _relationEndPointManager.GetRelationEndPointWithoutLoading(officialEndPointID);
       Assert.That(officialEndPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Official1));
       var officialOrdersEndPointID = RelationEndPointID.Create(
-          DomainObjectIDs.Official1, 
+          DomainObjectIDs.Official1,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Official.Orders");
       var officialOrdersEndPoint = _relationEndPointManager.GetRelationEndPointWithoutLoading(officialOrdersEndPointID);
       Assert.That(officialOrdersEndPoint, Is.Not.Null);

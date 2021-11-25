@@ -42,8 +42,8 @@ namespace Remotion.Mixins.CodeGeneration
     private readonly Dictionary<MethodInfo, MethodInfo> _overrideInterfaceMethodsByMixinMethod;
 
     public ConcreteMixinType (
-        ConcreteMixinTypeIdentifier identifier, 
-        Type generatedType, 
+        ConcreteMixinTypeIdentifier identifier,
+        Type generatedType,
         Type generatedOverrideInterface,
         Dictionary<MethodInfo, MethodInfo> overrideInterfaceMethodsByMixinMethod,
         Dictionary<MethodInfo, MethodInfo> methodWrappers)

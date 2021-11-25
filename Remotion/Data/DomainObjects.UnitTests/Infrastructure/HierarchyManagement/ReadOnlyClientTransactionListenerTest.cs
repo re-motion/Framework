@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
         ExpectNoException(concreteMethod, arguments);
       }
     }
-    
+
     private void ExpectException (MethodInfo method, object[] arguments)
     {
       string message = string.Format(

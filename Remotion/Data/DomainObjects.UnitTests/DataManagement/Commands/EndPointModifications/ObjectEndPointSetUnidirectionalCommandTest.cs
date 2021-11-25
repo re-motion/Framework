@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     private RelationEndPointID _endPointID;
     private ObjectEndPoint _endPoint;
-    
+
     private ObjectEndPointSetCommand _command;
 
     public override void SetUp ()
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       TransactionEventSinkWithMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void ExpandToAllRelatedObjects_SetDifferent_Unidirectional ()
     {

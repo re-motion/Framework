@@ -43,7 +43,7 @@ namespace Remotion.Validation
     {
       return ruleBuilder.SetValidator(p => new LengthValidator(min, max, p.ValidationMessage));
     }
-    
+
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> MinLength<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder,
         int min)

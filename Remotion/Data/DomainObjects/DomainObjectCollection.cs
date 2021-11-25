@@ -140,8 +140,8 @@ namespace Remotion.Data.DomainObjects
     /// <param name="eventRaiser">The event raiser to use for raising events.</param>
     /// <returns>An instance of <see cref="IDomainObjectCollectionData"/> that can be used for stand-alone collections.</returns>
     public static IDomainObjectCollectionData CreateDataStrategyForStandAloneCollection (
-        IDomainObjectCollectionData dataStore, 
-        Type requiredItemType, 
+        IDomainObjectCollectionData dataStore,
+        Type requiredItemType,
         IDomainObjectCollectionEventRaiser eventRaiser)
     {
       ArgumentUtility.CheckNotNull("dataStore", dataStore);
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects
     public event EventHandler Deleted;
 
     private IDomainObjectCollectionData _dataStrategy; // holds the actual data represented by this collection
-    
+
     /// <summary>
     /// Initializes a new <see cref="DomainObjectCollection" />.
     /// </summary>
@@ -553,7 +553,7 @@ namespace Remotion.Data.DomainObjects
 
       _dataStrategy.Insert(index, domainObject);
     }
-   
+
     /// <inheritdoc />
     public void CopyTo (Array array, int index)
     {
@@ -567,7 +567,7 @@ namespace Remotion.Data.DomainObjects
     /// might affect the change state of the <see cref="DomainObjectCollectionEndPoint"/> and the owning object.
     /// </summary>
     /// <param name="comparison">The comparison.</param>
-    [Obsolete ("This member is meant exclusively for the implementation of indexed DomainObjectCollections. It will be removed when re-store " 
+    [Obsolete ("This member is meant exclusively for the implementation of indexed DomainObjectCollections. It will be removed when re-store "
         + "implements a base class for indexed DomainObjectCollections. Don't use this API for any other use case. (1.13.130)")]
     protected void Sort (Comparison<DomainObject> comparison)
     {
@@ -710,7 +710,7 @@ namespace Remotion.Data.DomainObjects
       if (Deleted != null)
         Deleted(this, EventArgs.Empty);
     }
-    
+
     /// <summary>
     /// Called when the data of this collection is changed due to an operation that is not covered by <see cref="OnAdded"/>, <see cref="OnRemoved"/>,
     /// or <see cref="OnDeleted"/>. For example, such an operation could be that the a collection associated with a relation is rolled back, reloaded, 

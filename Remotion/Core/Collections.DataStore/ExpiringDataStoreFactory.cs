@@ -106,7 +106,7 @@ namespace Remotion.Collections.DataStore
     [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
-        [NotNull] IEqualityComparer<TKey> comparer) 
+        [NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
         where TValue: class?
     {
@@ -115,7 +115,7 @@ namespace Remotion.Collections.DataStore
 
       return new LazyLockingDataStoreAdapter<TKey, TValue>(
           new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo>(
-              policy, 
+              policy,
               comparer));
     }
   }

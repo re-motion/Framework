@@ -680,7 +680,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       _commandMock.Expect(mock => mock.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo)).Throw(exception);
       _commandMock.Replay();
 
-      Assert.That(() => _provider.ExecuteReader(_commandMock, CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo), 
+      Assert.That(() => _provider.ExecuteReader(_commandMock, CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo),
           Throws.TypeOf<RdbmsProviderException>()
               .With.Message.EqualTo("Error while executing SQL command: Test")
               .And.InnerException.SameAs(exception));

@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
         _newIndustrialSector.Companies.Add(_newCompany1);
         _newIndustrialSector.Companies.Add(_newCompany2);
         ClientTransaction.Current.Rollback();
-        
+
         Assert.That(_newIndustrialSector.State.IsUnchanged, Is.True);
         Assert.That(_newIndustrialSector.Companies, Is.Empty);
         Assert.That(_newIndustrialSector.Companies, Is.SameAs(oldCompanies));

@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       var endPointDefinition = GetEndPointDefinition(typeof(OrderTicket), "Order");
 
       _agent.GroupAndRegisterRelatedObjects(
-          endPointDefinition, 
-          new[] { _originatingOrderTicketData1 }, 
+          endPointDefinition,
+          new[] { _originatingOrderTicketData1 },
           new[] { LoadedObjectDataObjectMother.CreateNullLoadedObjectDataWithDataSourceData() });
     }
 
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       var originatingPartner = DomainObjectMother.CreateFakeObject<Partner>();
       var originatingPartnerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingPartner);
-      
+
       var originatingCustomer = DomainObjectMother.CreateFakeObject<Customer>();
       var originatingCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCustomer);
 
@@ -157,11 +157,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       Assert.That(
           () => _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
-          new[] { _originatingOrderTicketData1 }, 
+          new[] { _originatingOrderTicketData1 },
           new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.OrderTicket2) }),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "Cannot associate object 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid' with the relation end-point " 
+                  "Cannot associate object 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid' with the relation end-point "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. An object of type "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected."));
     }
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
 
       Assert.That(
-          () => _agent.GroupAndRegisterRelatedObjects(endPointDefinition, new[] { _originatingOrderTicketData1 }, new[] { _fetchedOrderData1 }), 
+          () => _agent.GroupAndRegisterRelatedObjects(endPointDefinition, new[] { _originatingOrderTicketData1 }, new[] { _fetchedOrderData1 }),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Only non-virtual object-valued relation end-points can be handled by this registration agent.", "relationEndPointDefinition"));
     }

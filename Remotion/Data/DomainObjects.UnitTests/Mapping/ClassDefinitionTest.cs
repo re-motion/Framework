@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void InitializeWithNullStorageGroupType ()
     {
       ClassDefinition classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(TIDomainBase), storageGroupType: null);
-      
+
       Assert.That(classDefinition.StorageGroupType, Is.Null);
     }
 
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetStorageEntityDefinition ()
     {
       var tableDefinition = TableDefinitionObjectMother.Create(_storageProviderDefinition, new EntityNameDefinition(null, "Tablename"));
-      
+
       _domainBaseClass.SetStorageEntity(tableDefinition);
 
       Assert.That(_domainBaseClass.StorageEntityDefinition, Is.SameAs(tableDefinition));
@@ -1039,7 +1039,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order), mixins);
       Assert.That(classDefinition.PersistentMixins, Is.EqualTo(mixins));
     }
-    
+
     [Test]
     public void ResolveProperty ()
     {

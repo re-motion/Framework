@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         return CreateStateUpdateRaisingCommandDecorator(command);
       }
     }
-    
+
     #region Methods not affecting HasChanged
 
     public bool IsNull

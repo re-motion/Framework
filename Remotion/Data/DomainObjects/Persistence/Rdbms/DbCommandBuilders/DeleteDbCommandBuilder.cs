@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
   {
     private readonly TableDefinition _tableDefinition;
     private readonly IComparedColumnsSpecification _comparedColumnsSpecification;
-    
+
     public DeleteDbCommandBuilder (
         TableDefinition tableDefinition,
         IComparedColumnsSpecification comparedColumnsSpecification,
@@ -70,6 +70,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       command.CommandText = statement.ToString();
       return command;
     }
-    
+
   }
 }

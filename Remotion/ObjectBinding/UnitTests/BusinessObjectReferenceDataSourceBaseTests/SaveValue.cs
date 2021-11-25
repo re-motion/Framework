@@ -269,7 +269,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       referenceDataSource.Register(controlMock.Object);
 
       controlMock.Setup(mock => mock.SaveValue(false)).Returns(true).Verifiable();
-      
+
       var result = referenceDataSource.SaveValue(false);
 
       Assert.That(result, Is.True);
@@ -285,14 +285,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var firstControlMock = new Mock<IBusinessObjectBoundEditableControl>();
       firstControlMock.Setup(stub => stub.HasValidBinding).Returns(true);
       referenceDataSource.Register(firstControlMock.Object);
-      
+
       var secondControlMock = new Mock<IBusinessObjectBoundEditableControl>();
       secondControlMock.Setup(stub => stub.HasValidBinding).Returns(true);
       referenceDataSource.Register(secondControlMock.Object);
 
       firstControlMock.Setup(mock => mock.SaveValue(false)).Returns(false).Verifiable();
       secondControlMock.Setup(mock => mock.SaveValue(false)).Returns(true).Verifiable();
-      
+
       var result = referenceDataSource.SaveValue(false);
 
       Assert.That(result, Is.False);

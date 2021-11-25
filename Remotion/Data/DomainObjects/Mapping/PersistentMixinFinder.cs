@@ -63,9 +63,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("type", type);
       Type = type;
       _includeInherited = includeInherited;
-      
+
       _mixinConfiguration = GetMixinConfigurationForDomainObjectType(type); // never null
-       
+
       if (Type.BaseType != null)
         _parentClassContext = GetMixinConfigurationForDomainObjectType(Type.BaseType); // never null
 

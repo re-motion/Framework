@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void RegisterForAdditionalCommittingEvents_NonRegisterableObjects ()
     {
       Assert.That(
-          () => _registrar.RegisterForAdditionalCommittingEvents(_invalidObject), 
+          () => _registrar.RegisterForAdditionalCommittingEvents(_invalidObject),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               string.Format(
                   "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Invalid). Only objects that are part of the commit "

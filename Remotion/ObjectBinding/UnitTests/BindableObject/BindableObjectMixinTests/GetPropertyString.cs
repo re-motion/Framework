@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
       _mockStringFormatterService.Setup(_ => _.GetPropertyString(_businessObject, _property, "TheFormatString")).Returns("TheStringValue").Verifiable();
 
       string actual = _businessObject.GetPropertyString(_property, "TheFormatString");
-      
+
       _mockStringFormatterService.Verify();
       Assert.That(actual, Is.EqualTo("TheStringValue"));
     }

@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       oppositeEndPointMock.AssertWasNotCalled(mock => mock.MarkDataComplete(Arg<DomainObject[]>.Is.Anything));
       oppositeEndPointMock.VerifyAllExpectations();
-      
+
       Assert.That(_map, Has.Member(endPointMock));
     }
 
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var endPointMock = CreateRealObjectEndPointMock(DomainObjectIDs.OrderTicket1, "Order", DomainObjectIDs.Order1);
       endPointMock.Stub(stub => stub.GetDomainObjectReference()).Return(objectReference);
-      
+
       var oppositeEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
       oppositeEndPointMock.Stub(stub => stub.IsDataComplete).Return(false);
       oppositeEndPointMock.Expect(mock => mock.RegisterOriginalOppositeEndPoint(endPointMock));

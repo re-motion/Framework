@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderingContext.Writer.RenderBeginTag("tr");
       renderingContext.Writer.RenderEndTag();
     }
-    
+
     public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, int rowIndex)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);

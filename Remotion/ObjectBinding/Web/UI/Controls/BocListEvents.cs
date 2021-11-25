@@ -57,7 +57,7 @@ public class BocListItemEventArgs: EventArgs
   private IBusinessObject _businessObject;
 
   public BocListItemEventArgs (
-      int listIndex, 
+      int listIndex,
       IBusinessObject businessObject)
   {
     _listIndex = listIndex;
@@ -87,7 +87,7 @@ public class BocListEditableRowChangesEventArgs : BocListItemEventArgs
   private IBusinessObjectDataSource _dataSource;
 
   public BocListEditableRowChangesEventArgs (
-      int listIndex, 
+      int listIndex,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
       IBusinessObjectBoundEditableWebControl[] controls)

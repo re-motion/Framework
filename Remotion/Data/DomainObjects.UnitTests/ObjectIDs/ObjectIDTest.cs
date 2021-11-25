@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     public void GetHandle ()
     {
       var id = new ObjectID(_orderClassDefinition, new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}"));
-      
+
       var result = id.GetHandle<DomainObject>();
 
       Assert.That(result, Is.TypeOf<DomainObjectHandle<Order>>());
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
       Assert.That(id.Value.GetType(), Is.EqualTo(typeof(Guid)));
       Assert.That(id.Value, Is.EqualTo(new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
     }
-    
+
     [Test]
     public void HashCode ()
     {

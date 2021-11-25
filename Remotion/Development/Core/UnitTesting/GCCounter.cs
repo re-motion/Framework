@@ -30,7 +30,7 @@ namespace Remotion.Development.UnitTesting
 
     private readonly int[] _totalCollections = new int[s_generationCount];
     private int[] _oldCollections = new int[s_generationCount];
-    
+
     public GCCounter ()
     {
     }
@@ -63,7 +63,7 @@ namespace Remotion.Development.UnitTesting
         output[i] = string.Format("GC Gen {0}: {1}x", i, _totalCollections[i]);
 
       var combinedOutput = string.Join(", ", output);
-      
+
       outputWriter.WriteLine(combinedOutput);
     }
   }

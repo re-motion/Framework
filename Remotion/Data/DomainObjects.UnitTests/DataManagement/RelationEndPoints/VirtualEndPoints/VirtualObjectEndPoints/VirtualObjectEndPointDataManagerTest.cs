@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class VirtualObjectEndPointDataManagerTest : StandardMappingTest
   {
     private RelationEndPointID _endPointID;
-    
+
     private VirtualObjectEndPointDataManager _dataManager;
 
     private OrderTicket _oppositeObject;
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void RegisterOriginalOppositeEndPoint_PreviouslyItemWithoutEndPoint ()
     {
       _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
-      
+
       _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub);
 
       Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub));

@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That(bindableObjectClass.GetPropertyDefinitions().Length, Is.EqualTo(1));
       Assert.That(bindableObjectClass.GetPropertyDefinitions()[0].Identifier, Is.EqualTo("Public"));
       Assert.That(
-          ((PropertyBase) bindableObjectClass.GetPropertyDefinitions()[0]).PropertyInfo.DeclaringType, 
+          ((PropertyBase) bindableObjectClass.GetPropertyDefinitions()[0]).PropertyInfo.DeclaringType,
           Is.SameAs(TypeAdapter.Create(_type)));
       Assert.That(bindableObjectClass.GetPropertyDefinitions()[0].BusinessObjectProvider, Is.SameAs(_businessObjectProvider));
     }
@@ -276,7 +276,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         ((IMixinAddingProperty) derivedBusinessObject).MixedProperty = "p";
         var propertyDefinition = bindableObjectClass.GetPropertyDefinition("MixedProperty");
         Assert.That(propertyDefinition, Is.Not.Null);
-        
+
         var businessObject = (IBusinessObject) derivedBusinessObject;
         Assert.That(businessObject.GetProperty(propertyDefinition), Is.EqualTo("p"));
       }
@@ -301,7 +301,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
         derivedBusinessObject.Public = "p";
         Mixin.Get<MixinOverridingProperty>(derivedBusinessObject).Public += "q";
-        
+
         var propertyDefinition = bindableObjectClass.GetPropertyDefinition("Public");
         Assert.That(propertyDefinition, Is.Not.Null);
 

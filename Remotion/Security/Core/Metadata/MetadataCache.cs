@@ -182,7 +182,7 @@ namespace Remotion.Security.Metadata
     }
 
     public List<SecurableClassInfo> GetSecurableClassInfos ()
-    { 
+    {
       return new List<SecurableClassInfo>(_classes.Values);
     }
 

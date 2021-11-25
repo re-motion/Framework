@@ -42,10 +42,10 @@ namespace Remotion.Mixins.Validation.Rules
       if (args.Definition.Visibility == MemberVisibility.Public)
       {
         MethodInfo introducedMethod = args.Definition.InterfaceMember;
-        
+
         var targetMethodsWithSameNameAndSignature = from candidate in _memberLookupUtility.GetCachedMembersByName(
-                                                        args.Log.ContextStore, 
-                                                        args.Definition.DeclaringInterface.TargetClass, 
+                                                        args.Log.ContextStore,
+                                                        args.Definition.DeclaringInterface.TargetClass,
                                                         introducedMethod.Name)
                                                     where _signatureComparer.Equals(candidate.MethodInfo, introducedMethod)
                                                     select candidate;

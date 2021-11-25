@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       subordinate.Delete();
       computer.Delete();
 
-      IEnumerable<DataContainer> containers = new[] 
+      IEnumerable<DataContainer> containers = new[]
                                               {
                                                   supervisor.InternalDataContainer,
                                                   subordinate.InternalDataContainer,

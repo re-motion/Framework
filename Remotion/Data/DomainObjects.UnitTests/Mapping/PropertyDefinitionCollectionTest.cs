@@ -42,9 +42,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition);
-      
+
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      
+
       var propertyDefinitions = PropertyDefinitionCollection.CreateForAllProperties(classDefinition, false);
 
       Assert.That(propertyDefinitions.Count, Is.EqualTo(1));
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       baseClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInBaseClass }, true));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInDerivedClass }, true));
-      
+
       var propertyDefinitions = PropertyDefinitionCollection.CreateForAllProperties(classDefinition, false);
 
       Assert.That(propertyDefinitions.Count, Is.EqualTo(2));
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _collection.Add(_propertyDefinition);
 
       IEnumerator<PropertyDefinition> enumerator = _collection.GetEnumerator();
-      
+
       Assert.That(enumerator.MoveNext(), Is.True);
       Assert.That(enumerator.Current, Is.SameAs(_propertyDefinition));
       Assert.That(enumerator.MoveNext(), Is.False);

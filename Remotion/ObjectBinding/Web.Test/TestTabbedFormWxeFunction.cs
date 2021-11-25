@@ -50,7 +50,7 @@ public class TestTabbedFormWxeFunction: WxeFunction
 
   // parameters
 
-  public BindableXmlObject Object 
+  public BindableXmlObject Object
   {
     get { return (BindableXmlObject) Variables["Object"]; }
     set { Variables["Object"] = value; }
