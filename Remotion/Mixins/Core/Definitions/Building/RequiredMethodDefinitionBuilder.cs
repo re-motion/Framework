@@ -56,4 +56,3 @@ namespace Remotion.Mixins.Definitions.Building
     }
   }
 }
-

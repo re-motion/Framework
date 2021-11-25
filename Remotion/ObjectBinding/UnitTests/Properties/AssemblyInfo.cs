@@ -27,4 +27,3 @@ using Remotion.Globalization;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("")]
 [assembly: AssemblyCulture("")]
-

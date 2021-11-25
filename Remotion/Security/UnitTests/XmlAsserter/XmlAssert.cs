@@ -95,4 +95,3 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 }
 
 #pragma warning restore 612,618
-

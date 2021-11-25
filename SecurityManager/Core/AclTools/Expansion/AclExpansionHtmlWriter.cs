@@ -201,6 +201,3 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   }
 
 }
-
-
-

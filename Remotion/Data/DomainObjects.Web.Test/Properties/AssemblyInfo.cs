@@ -50,4 +50,3 @@ using Remotion.ObjectBinding.Security;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: AvailableResourcesLanguages ("")]
 [assembly: EnsureSecuritySupportForObjectBinding]
-
