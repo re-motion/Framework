@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// Combines one or more <see cref="IBindablePropertyWriteAccessStrategy"/>-instances and delegates checking if the property can be written to.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IBindablePropertyWriteAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IBindablePropertyWriteAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompundBindablePropertyWriteAccessStrategy : IBindablePropertyWriteAccessStrategy
   {
     // Using an array instead of IReadOnlyList to support performance critical loop
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        [MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);

@@ -25,7 +25,7 @@ namespace Remotion.Collections.Caching.UnitTests
   public class LockingInvalidationTokenTest
   {
 #if DEBUG
-    [Ignore ("Skipped if DEBUG build")]
+    [Ignore("Skipped if DEBUG build")]
 #endif
     [Test]
     public void GetCurrent_FromSameCacheInvalidationToken_ReturnsSameRevisionTwice ()
@@ -73,7 +73,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void IsCurrent_WithRevisionFromDifferentToken_ThrowsArgumentException ()
@@ -88,7 +88,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void IsCurrent_WithRevisionFromDefaultConstructor_ThrowsArgumentException ()

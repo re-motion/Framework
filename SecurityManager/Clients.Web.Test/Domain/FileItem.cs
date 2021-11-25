@@ -21,7 +21,7 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 {
-  [PermanentGuid ("DF0A8DB4-943C-4bd1-8B3B-276C8AA16BDB")]
+  [PermanentGuid("DF0A8DB4-943C-4bd1-8B3B-276C8AA16BDB")]
   [Instantiable]
   [DBTable]
   [DBStorageGroup]
@@ -42,10 +42,10 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
     [Mandatory]
     public abstract Tenant Tenant { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Files")]
+    [DBBidirectionalRelation("Files")]
     [Mandatory]
     public abstract File File { get; set; }
 

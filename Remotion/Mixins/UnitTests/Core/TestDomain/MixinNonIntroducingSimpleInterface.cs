@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [NonIntroduced (typeof(ISimpleInterface))]
+  [NonIntroduced(typeof(ISimpleInterface))]
   public class MixinNonIntroducingSimpleInterface : ISimpleInterface
   {
     public string Method ()

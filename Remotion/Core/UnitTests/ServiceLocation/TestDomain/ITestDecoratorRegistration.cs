@@ -23,17 +23,17 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof(ITestDecoratorRegistration), RegistrationType = RegistrationType.Single, Position = 1)]
+  [ImplementationFor(typeof(ITestDecoratorRegistration), RegistrationType = RegistrationType.Single, Position = 1)]
   public class TestDecoratorRegistrationDecoratedObject1 : ITestDecoratorRegistration
   {
   }
 
-  [ImplementationFor (typeof(ITestDecoratorRegistration), RegistrationType = RegistrationType.Single, Position = 2)]
+  [ImplementationFor(typeof(ITestDecoratorRegistration), RegistrationType = RegistrationType.Single, Position = 2)]
   public class TestDecoratorRegistrationDecoratedObject2 : ITestDecoratorRegistration
   {
   }
 
-  [ImplementationFor (typeof(ITestDecoratorRegistration), RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(ITestDecoratorRegistration), RegistrationType = RegistrationType.Decorator)]
   public class TestDecoratorRegistrationDecorator : ITestDecoratorRegistration
   {
     private readonly ITestDecoratorRegistration _decoratedObject;

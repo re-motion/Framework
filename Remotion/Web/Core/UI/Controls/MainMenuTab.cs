@@ -40,18 +40,18 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
     /// <exclude/>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public MainMenuTab ()
     {
       _subMenuTabs = new SubMenuTabCollection(OwnerControl);
       _subMenuTabs.SetParent(this);
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Behavior")]
-    [Description ("")]
-    [DefaultValue ((string?)null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Behavior")]
+    [Description("")]
+    [DefaultValue((string?)null)]
     public SubMenuTabCollection SubMenuTabs
     {
       get { return _subMenuTabs; }

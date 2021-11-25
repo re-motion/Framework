@@ -20,7 +20,7 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
-[ToolboxItem (false)]
+[ToolboxItem(false)]
 public class TabbedMenuMock: TabbedMenu
 {
   public new void EvaluateWaiConformity ()

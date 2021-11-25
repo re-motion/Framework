@@ -22,7 +22,7 @@ using Remotion.Web.UnitTests.Core.Security.Domain;
 
 namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 {
-  [WxeDemandTargetMethodPermission ("Show")]
+  [WxeDemandTargetMethodPermission("Show")]
   public class TestFunctionWithPermissionsFromInstanceMethod : WxeFunction
   {
     // types
@@ -40,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 
     // methods and properties
 
-    [WxeParameter (0, true, WxeParameterDirection.In)]
+    [WxeParameter(0, true, WxeParameterDirection.In)]
     public SecurableObject ThisObject
     {
       get

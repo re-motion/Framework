@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
   [TestFixture]
   public class ExtendsAnalysisTest
   {
-    [Extends (typeof(object))]
+    [Extends(typeof(object))]
     [IgnoreForMixinConfiguration]
     public class Extender
     {
@@ -47,13 +47,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(mixinContext.Origin, Is.EqualTo(expectedOrigin));
     }
 
-    [Extends (typeof(object))]
+    [Extends(typeof(object))]
     [IgnoreForMixinConfiguration]
     public class ExtenderWithoutDependencies
     {
     }
 
-    [Extends (typeof(object), AdditionalDependencies = new[] { typeof(string) })]
+    [Extends(typeof(object), AdditionalDependencies = new[] { typeof(string) })]
     [IgnoreForMixinConfiguration]
     public class ExtenderWithDependencies
     {
@@ -71,8 +71,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
 
     public class ExtendsTargetBase { }
 
-    [Extends (typeof(ExtendsTargetBase))]
-    [Extends (typeof(ExtendsTargetDerivedWithExtends))]
+    [Extends(typeof(ExtendsTargetBase))]
+    [Extends(typeof(ExtendsTargetDerivedWithExtends))]
     [IgnoreForMixinConfiguration]
     public class ExtendingMixin { }
 
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(ExtendsTargetDerivedWithExtends)).Mixins.Count, Is.EqualTo(1));
     }
 
-    [Extends (typeof(ExtendsTargetDerivedWithDerivedExtends))]
+    [Extends(typeof(ExtendsTargetDerivedWithDerivedExtends))]
     [IgnoreForMixinConfiguration]
     public class DerivedExtendingMixin : ExtendingMixin { }
 
@@ -119,7 +119,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(classContext.Mixins.Count, Is.EqualTo(1));
     }
 
-    [Extends (typeof(ExtendsTargetDerivedWithDerivedExtends))]
+    [Extends(typeof(ExtendsTargetDerivedWithDerivedExtends))]
     [IgnoreForMixinConfiguration]
     public class DerivedExtendingMixin2 : DerivedExtendingMixin { }
 
@@ -135,8 +135,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(ExtendsTargetDerivedWithDerivedExtends)).Mixins.Count, Is.EqualTo(2));
     }
 
-    [Extends (typeof(ExtendsTargetBase))]
-    [Extends (typeof(ExtendsTargetBase))]
+    [Extends(typeof(ExtendsTargetBase))]
+    [Extends(typeof(ExtendsTargetBase))]
     [IgnoreForMixinConfiguration]
     public class DoubleExtendingMixin { }
 
@@ -151,8 +151,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
                   + "configured for target type .*ExtendsTargetBase."));
     }
 
-    [Extends (typeof(ExtendsTargetBase))]
-    [Extends (typeof(ExtendsTargetDerivedWithoutExtends))]
+    [Extends(typeof(ExtendsTargetBase))]
+    [Extends(typeof(ExtendsTargetDerivedWithoutExtends))]
     [IgnoreForMixinConfiguration]
     public class MixinExtendingBaseAndDerived { }
 
@@ -165,7 +165,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(ExtendsTargetDerivedWithoutExtends)).Mixins.Count, Is.EqualTo(1));
     }
 
-    [Extends (typeof(ExtendsTargetBase), MixinTypeArguments = new[] { typeof(List<int>), typeof(IList<int>) })]
+    [Extends(typeof(ExtendsTargetBase), MixinTypeArguments = new[] { typeof(List<int>), typeof(IList<int>) })]
     [IgnoreForMixinConfiguration]
     public class GenericMixinWithSpecialization<TTarget, TNext> : Mixin<TTarget, TNext>
         where TTarget : class
@@ -184,7 +184,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(mixinContext.MixinType.GetGenericArguments(), Is.EqualTo(new[] {typeof(List<int>), typeof(IList<int>)}));
     }
 
-    [Extends (typeof(ExtendsTargetBase), MixinTypeArguments = new[] { typeof(List<int>) })]
+    [Extends(typeof(ExtendsTargetBase), MixinTypeArguments = new[] { typeof(List<int>) })]
     [IgnoreForMixinConfiguration]
     public class InvalidGenericMixin<TTarget, TNext> : Mixin<TTarget, TNext>
         where TTarget : class

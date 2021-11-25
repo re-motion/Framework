@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
       Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_WebTestException ()
     {
       Assert.That(
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
       Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements)]
     public void GetOrNull_Returns_Null ()
     {
       var control = Selector.FirstOrNull();

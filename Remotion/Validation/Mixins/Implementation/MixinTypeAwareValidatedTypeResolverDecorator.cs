@@ -25,7 +25,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithMixinAttribute"/>.
   /// </summary>
-  [ImplementationFor (typeof(IValidatedTypeResolver), Position = 2, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IValidatedTypeResolver), Position = 2, RegistrationType = RegistrationType.Decorator)]
   public class MixinTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;

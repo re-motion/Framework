@@ -41,8 +41,8 @@ public class FormGridLabel: Label, ISmartControl
   private string? _helpUrl = null;
 
   [Category("Behavior")]
-  [DefaultValue (false)]
-  [Description ("Specifies whether this row will be marked as 'required' in FormGrids.")]
+  [DefaultValue(false)]
+  [Description("Specifies whether this row will be marked as 'required' in FormGrids.")]
   public bool Required
   {
     get { return _required; }
@@ -50,15 +50,15 @@ public class FormGridLabel: Label, ISmartControl
   }
 
   [Category("Behavior")]
-  [DefaultValue (null)]
-  [Description ("Specifies the relative URL to the row's help text.")]
+  [DefaultValue(null)]
+  [Description("Specifies the relative URL to the row's help text.")]
   public string? HelpUrl
   {
     get { return _helpUrl; }
     set { _helpUrl = value ?? string.Empty; }
   }
 
-  [Browsable (false)]
+  [Browsable(false)]
   public bool IsRequired
   {
     get { return _required; }

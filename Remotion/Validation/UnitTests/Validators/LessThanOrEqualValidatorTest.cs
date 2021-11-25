@@ -64,7 +64,7 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [Ignore ("RM-5906")]
+    [Ignore("RM-5906")]
     public void Validate_WithIComparable_CallsCompareTo ()
     {
     }

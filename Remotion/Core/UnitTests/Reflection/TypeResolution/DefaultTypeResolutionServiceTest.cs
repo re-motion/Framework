@@ -206,7 +206,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
 #endif
     public void GetPathOfAssembly_WithHashInDirectoryName ()
     {

@@ -164,8 +164,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
     }
 
-    [Uses (typeof(MixinWithDependency), AdditionalDependencies = new Type[] { typeof(IMixinBeingDependedUpon) })]
-    [Uses (typeof(MixinBeingDependedUpon))]
+    [Uses(typeof(MixinWithDependency), AdditionalDependencies = new Type[] { typeof(IMixinBeingDependedUpon) })]
+    [Uses(typeof(MixinBeingDependedUpon))]
     public class MixinTargetWithExplicitDependencies { }
 
     [Test]

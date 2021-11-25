@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
   }
 
-  [Uses (typeof(MixinWithIndirectRequirements))]
+  [Uses(typeof(MixinWithIndirectRequirements))]
   public class ClassImplementingIndirectRequirements : IIndirectRequirement1, IIndirectRequirement3
   {
     public string Method1 ()

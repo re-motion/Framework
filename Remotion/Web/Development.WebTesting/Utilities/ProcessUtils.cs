@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Struct for the Interopt call to <see cref="NtQueryInformationProcess"/> in <see cref="GetParentProcessID"/>.
     /// </summary>
-    [StructLayout (LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     private struct ParentInfo
     {
       // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Retrieves information about the specified process. See https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280.aspx .
     /// </summary>
     /// <returns>The function returns an NTSTATUS success or error code.</returns>
-    [DllImport ("ntdll.dll")]
+    [DllImport("ntdll.dll")]
     private static extern int NtQueryInformationProcess (
         IntPtr processHandle,
         int processInformationClass,

@@ -20,7 +20,7 @@ using System.Web.UI.WebControls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public class EditModeValidator : CustomValidator
   {
     // types

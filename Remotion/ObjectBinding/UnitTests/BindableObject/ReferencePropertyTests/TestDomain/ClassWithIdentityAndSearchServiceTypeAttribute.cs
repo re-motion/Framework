@@ -21,7 +21,7 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain
 {
   [BindableObjectWithIdentity]
-  [SearchAvailableObjectsServiceType (typeof(ISearchServiceOnType))]
+  [SearchAvailableObjectsServiceType(typeof(ISearchServiceOnType))]
   public class ClassWithIdentityAndSearchServiceTypeAttribute
   {
     public ClassWithIdentityAndSearchServiceTypeAttribute ()

@@ -32,7 +32,7 @@ namespace Remotion.Mixins
   /// </para>
   /// </remarks>
   [MeansImplicitUse]
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
   public class OverrideTargetAttribute : Attribute, IOverrideAttribute
   {
     Type? IOverrideAttribute.OverriddenType

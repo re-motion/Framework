@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_Client")]
-  [DBTable ("TableInheritance_Client")]
+  [ClassID("TI_Client")]
+  [DBTable("TableInheritance_Client")]
   [Instantiable]
   [TableInheritanceTestDomain]
   public abstract class TIClient : DomainObject, ISupportsGetObject
@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [DBBidirectionalRelation ("Client", SortExpression = "CreatedAt asc")]
+    [DBBidirectionalRelation("Client", SortExpression = "CreatedAt asc")]
     public abstract ObjectList<TIDomainBase> AssignedObjects { get; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
   }
 }

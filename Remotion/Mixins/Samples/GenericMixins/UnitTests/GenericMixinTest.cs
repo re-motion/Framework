@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Samples.GenericMixins.UnitTests
     }
 
     [Test]
-    [Ignore ("Mixin's type parameter cannot be inferred when target type is already a closed type.")]
+    [Ignore("Mixin's type parameter cannot be inferred when target type is already a closed type.")]
     public void MixinClosedWithGenericTypeParameterFromClosedTargetClass ()
     {
       ObjectFactory.Create<DerivedTargetClassWithClosedParameter>(ParamList.Empty);

@@ -21,10 +21,10 @@ using Remotion.ObjectBinding;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.AccessControl.TenantHierarchyCondition")]
-  [UndefinedEnumValue (Undefined)]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.AccessControl.TenantHierarchyCondition")]
+  [UndefinedEnumValue(Undefined)]
   //[Flags] //Must not be official flags enum since business objects interface does not support this.
-  [DisableEnumValues (Parent)]
+  [DisableEnumValues(Parent)]
   public enum TenantHierarchyCondition
   {
     Undefined = 0,

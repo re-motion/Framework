@@ -27,8 +27,8 @@ using Remotion.SecurityManager.Domain.AccessControl;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
-  [PermanentGuid ("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
+  [PermanentGuid("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -53,8 +53,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
              select g;
     }
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
       throw new NotImplementedException("This method is only intended for framework support and should never be called.");
@@ -64,10 +64,10 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("GroupType")]
+    [DBBidirectionalRelation("GroupType")]
     public abstract ObjectList<GroupTypePosition> Positions { get; }
 
     protected override void OnDeleting (EventArgs args)

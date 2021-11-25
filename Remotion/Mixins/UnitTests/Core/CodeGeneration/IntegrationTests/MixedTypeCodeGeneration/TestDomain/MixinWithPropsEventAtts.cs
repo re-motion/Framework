@@ -18,24 +18,24 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain
 {
-  [Replicatable (4)]
+  [Replicatable(4)]
   public class MixinWithPropsEventAtts : IMixinWithPropsEventsAtts
   {
-    [Replicatable ("bla")]
+    [Replicatable("bla")]
     public int Property
     {
-      [Replicatable (5, Named2 = 1.0)]
+      [Replicatable(5, Named2 = 1.0)]
       get;
-      [Replicatable (5, Named2 = 2.0)]
+      [Replicatable(5, Named2 = 2.0)]
       set;
     }
 
-    [Replicatable ("blo")]
+    [Replicatable("blo")]
     public event EventHandler Event
     {
-      [Replicatable (1)]
+      [Replicatable(1)]
       add { }
-      [Replicatable (2)]
+      [Replicatable(2)]
       remove { }
     }
   }

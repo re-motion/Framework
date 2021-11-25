@@ -45,8 +45,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocAutoCompleteReferenceValue (bool isReadOnly)
     {
       var mock = new Mock<BusinessObjectReferenceDataSourceControl>();

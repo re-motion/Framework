@@ -19,7 +19,7 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
   internal static class ReflectionExtensions
   {
     public static bool IsOriginalDeclaration (this IMemberInformation memberInfo)

@@ -26,7 +26,7 @@ namespace Remotion.Mixins.Validation.Rules
       visitor.PropertyRules.Add(new DelegateValidationRule<PropertyDefinition>(NewMemberAddedByOverride));
     }
 
-    [DelegateRuleDescription (Message = "A property override adds a new accessor method to the property; this method won't be accessible from the "
+    [DelegateRuleDescription(Message = "A property override adds a new accessor method to the property; this method won't be accessible from the "
         + "mixed instance.")]
     private void NewMemberAddedByOverride (DelegateValidationRule<PropertyDefinition>.Args args)
     {

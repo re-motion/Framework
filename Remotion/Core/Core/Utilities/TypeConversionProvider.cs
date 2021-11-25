@@ -28,7 +28,7 @@ namespace Remotion.Utilities
   ///   Provides functionality to get the <see cref="TypeConverter"/> for a <see cref="Type"/> and to convert a value
   ///   from a source <see cref="Type"/> into a destination <see cref="Type"/>.
   /// </summary>
-  [ImplementationFor (typeof(ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
   public class TypeConversionProvider : ITypeConversionProvider
   {
     private readonly ConcurrentDictionary<Type, TypeConverter?> _typeConverters = new ConcurrentDictionary<Type, TypeConverter?>();
@@ -170,7 +170,7 @@ namespace Remotion.Utilities
       throw new NotSupportedException(string.Format("Cannot convert value '{0}' to type '{1}'.", value, destinationType));
     }
 
-    [return: NotNullIfNotNull ("value")]
+    [return: NotNullIfNotNull("value")]
     private object? GetValueOrEmptyString (Type destinationType, object? value)
     {
       if (destinationType == typeof(string) && value == null)

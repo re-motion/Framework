@@ -70,7 +70,7 @@ namespace Remotion.Validation.RuleCollectors
     /// <summary>
     /// Applies the <paramref name="propertyValidatorExtractor"/> to the registered <see cref="Validators"/>.
     /// </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     void ApplyRemoveValidatorRegistrations ([NotNull] IPropertyValidatorExtractor propertyValidatorExtractor);
 
     /// <summary>

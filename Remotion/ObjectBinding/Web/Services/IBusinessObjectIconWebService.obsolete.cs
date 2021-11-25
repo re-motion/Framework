@@ -19,7 +19,7 @@ using Remotion.Web.Services;
 
 namespace Remotion.ObjectBinding.Web.Services
 {
-  [Obsolete ("Use IBocAutoCompleteReferenceValueWebService and IBocReferenceValueWebService instead. (Version 3.0.0-alpha.3)", true)]
+  [Obsolete("Use IBocAutoCompleteReferenceValueWebService and IBocReferenceValueWebService instead. (Version 3.0.0-alpha.3)", true)]
   public interface IBusinessObjectIconWebService
   {
     IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments);

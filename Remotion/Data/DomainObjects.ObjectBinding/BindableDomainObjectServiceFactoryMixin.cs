@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   ///   </item>
   /// </list>
   /// </remarks>
-  [Extends (typeof(BindableObjectServiceFactory))]
+  [Extends(typeof(BindableObjectServiceFactory))]
   public class BindableDomainObjectServiceFactoryMixin
       : Mixin<BindableObjectServiceFactory, IBusinessObjectServiceFactory>, IBusinessObjectServiceFactory
   {

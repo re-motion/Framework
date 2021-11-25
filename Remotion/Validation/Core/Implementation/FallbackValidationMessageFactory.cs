@@ -22,7 +22,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
-  [ImplementationFor (typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class FallbackValidationMessageFactory : IValidationMessageFactory
   {
     public const int Position = Int32.MaxValue;

@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBas
 {
   public class MixinWithPersistentPropertyExplicitImplementation : DomainObjectMixin<DomainObject>, IInterfaceWithProperty
   {
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     int IInterfaceWithProperty.Property
     {
       get { throw new NotImplementedException(); }

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_AbstractClassWithoutDerivations")]
+  [ClassID("TI_AbstractClassWithoutDerivations")]
   [TableInheritanceTestDomain]
   public abstract class AbstractClassWithoutDerivations : DomainObject
   {
@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [DBBidirectionalRelation ("AbstractClassesWithoutDerivations")]
+    [DBBidirectionalRelation("AbstractClassesWithoutDerivations")]
     public abstract TIDomainBase DomainBase { get; }
   }
 }

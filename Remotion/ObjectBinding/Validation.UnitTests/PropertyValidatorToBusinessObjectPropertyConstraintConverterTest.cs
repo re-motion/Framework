@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
   public class PropertyValidatorToBusinessObjectPropertyConstraintConverterTest
   {
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void Convert ()
     {
     }

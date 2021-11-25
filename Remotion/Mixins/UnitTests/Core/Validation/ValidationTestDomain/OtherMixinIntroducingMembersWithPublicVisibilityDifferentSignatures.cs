@@ -28,19 +28,19 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 
   public class OtherMixinIntroducingMembersWithPublicVisibilityDifferentSignatures : IOtherMixinIntroducingMembersWithPublicVisibilityDifferentSignatures
   {
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public void MethodWithPublicVisibility (int i)
     {
     }
 
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public string PropertyWithPublicVisibility
     {
       get { return ""; }
       set { Dev.Null = value; }
     }
 
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public event Action EventWithPublicVisibility;
   }
 }

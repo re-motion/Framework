@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     Bidirectional_WithBidirectionalRelationAttributeOnOneSite
 {
   [DBTable]
-  [ClassID ("Bidirectional_WithBidirectionalRelationAttributeOnOneSite_InvalidRelationClass1")]
+  [ClassID("Bidirectional_WithBidirectionalRelationAttributeOnOneSite_InvalidRelationClass1")]
   public class InvalidRelationClass1 : DomainObject
   {
     public InvalidRelationClass2 RelationProperty1 { get; set; }

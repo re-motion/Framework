@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
   public static class DataStoreFactory
   {
     public static IDataStore<TKey, TValue> Create<TKey, TValue> ()
@@ -42,25 +42,25 @@ namespace Remotion.Collections
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ()
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ( IEqualityComparer<TKey> comparer)
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue: class
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ( IEqualityComparer<TKey> comparer) where TValue: class
     {
       throw new NotImplementedException();

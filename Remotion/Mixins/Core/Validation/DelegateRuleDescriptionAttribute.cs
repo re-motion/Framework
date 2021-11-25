@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.Validation
 {
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   public class DelegateRuleDescriptionAttribute : Attribute
   {
     private string? _ruleName = null;

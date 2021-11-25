@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
       return NewObject<TestDomainObject>();
     }
 
-    [DBBidirectionalRelation ("BidirectionalPropertyWithMandatoryAttribute", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("BidirectionalPropertyWithMandatoryAttribute", ContainsForeignKey = true)]
     public virtual MixinTarget_AnnotatedPropertiesPartOfInterface OppositeRequiredObject { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute")]
+    [DBBidirectionalRelation("BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute")]
     public virtual MixinTarget_AnnotatedPropertiesPartOfInterface OppositeObjectForDomainObjectCollectionProperty { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalVirtualCollectionPropertyWithMandatoryAttribute")]
+    [DBBidirectionalRelation("BidirectionalVirtualCollectionPropertyWithMandatoryAttribute")]
     public virtual MixinTarget_AnnotatedPropertiesPartOfInterface OppositeObjectForVirtualCollectionProperty { get; set; }
   }
 }

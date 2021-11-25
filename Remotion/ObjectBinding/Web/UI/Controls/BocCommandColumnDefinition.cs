@@ -61,11 +61,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the text representing the command in the rendered page. </summary>
     /// <value> A <see cref="string"/> representing the command. </value>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The text representing the command in the rendered page. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The text representing the command in the rendered page. The value will not be HTML encoded.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string Text
     {
       get { return _text; }
@@ -76,11 +76,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the image representing the  command in the rendered page. Must not be <see langword="null"/>. 
     /// </summary>
     /// <value> An <see cref="IconInfo"/> representing the command. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The image representing the command in the rendered page.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The image representing the command in the rendered page.")]
+    [NotifyParentProperty(true)]
     public IconInfo Icon
     {
       get { return _icon; }

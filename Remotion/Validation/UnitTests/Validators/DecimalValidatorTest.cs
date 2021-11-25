@@ -211,7 +211,7 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCaseSource (typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueIntegerPlacesValidAndDecimalPlacesZero))]
+    [TestCaseSource(typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueIntegerPlacesValidAndDecimalPlacesZero))]
     public void Validate_WithPropertyValueIntegerPlacesValidAndDecimalPlacesZero (int integerPlaces, decimal value)
     {
       Assert.That(Math.Abs(value).ToString().Length, Is.EqualTo(integerPlaces), "Test specification mismatch");
@@ -351,7 +351,7 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCaseSource (typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueIntegerPlacesValidAndDecimalPlacesValid))]
+    [TestCaseSource(typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueIntegerPlacesValidAndDecimalPlacesValid))]
     public void Validate_WithPropertyValueIntegerPlacesValidAndDecimalPlacesValid (int integerPlaces, int decimalPlaces, decimal value)
     {
       Assert.That(Math.Abs(value).ToString().Length, Is.EqualTo(integerPlaces + 1 + decimalPlaces), "Test specification mismatch");
@@ -381,7 +381,7 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCaseSource (typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueIntegerPlacesInvalidAndDecimalPlacesValid))]
+    [TestCaseSource(typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueIntegerPlacesInvalidAndDecimalPlacesValid))]
     public void Validate_WithPropertyValueIntegerPlacesInvalidAndDecimalPlacesValid (int integerPlaces, int decimalPlaces, decimal value)
     {
       Assert.That(Math.Abs(value).ToString().Length, Is.EqualTo(integerPlaces + 1 + decimalPlaces + 1), "Test specification mismatch");
@@ -411,7 +411,7 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCaseSource (typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueDecimalPlacesValidAndIntegerPlacesZero))]
+    [TestCaseSource(typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueDecimalPlacesValidAndIntegerPlacesZero))]
     public void Validate_WithPropertyValueDecimalPlacesValidAndIntegerPlacesZero (int decimalPlaces, decimal value)
     {
       Assert.That(Math.Abs(value).ToString().Length, Is.EqualTo(decimalPlaces + 2), "Test specification mismatch");
@@ -493,7 +493,7 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCaseSource (typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueDecimalPlacesValidAndIntegerPlacesZeroAndIgnoresTrailingZeroes))]
+    [TestCaseSource(typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueDecimalPlacesValidAndIntegerPlacesZeroAndIgnoresTrailingZeroes))]
     public void Validate_WithPropertyValueDecimalPlacesValidAndIntegerPlacesZeroAndIgnoresTrailingZeroes (int decimalPlaces, decimal value)
     {
       Assert.That(Math.Abs(value).ToString().Length, Is.EqualTo(decimalPlaces + 3), "Test specification mismatch");
@@ -573,7 +573,7 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCaseSource (typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueMaxIntegerPlacesNotValidAndScaleZero))]
+    [TestCaseSource(typeof(DecimalValidatorTest), nameof(TestCaseSource_Validate_WithPropertyValueMaxIntegerPlacesNotValidAndScaleZero))]
     public void Validate_WithPropertyValueMaxIntegerPlacesNotValidAndScaleZero (int integerPlaces, decimal value)
     {
       Assert.That(Math.Abs(value).ToString().Length, Is.EqualTo(integerPlaces + 1), "Test specification mismatch");

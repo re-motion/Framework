@@ -24,31 +24,31 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   public class AxeRuleResult
   {
     /// <summary>Description of the rule.</summary>
-    [DataMember (Name = "description")]
+    [DataMember(Name = "description")]
     public string Description { get; set; } = null!;
 
     /// <summary>ID of the rule.</summary>
-    [DataMember (Name = "id")]
+    [DataMember(Name = "id")]
     public string ID { get; set; } = null!;
 
     /// <summary>Impact of the rule.</summary>
-    [DataMember (Name = "impact")]
+    [DataMember(Name = "impact")]
     public string Impact { get; set; } = null!;
 
     /// <summary>Tags of the rule.</summary>
-    [DataMember (Name = "tags")]
+    [DataMember(Name = "tags")]
     public string[] Tags { get; set; } = null!;
 
     /// <summary>Help information about the rule.</summary>
-    [DataMember (Name = "help")]
+    [DataMember(Name = "help")]
     public string Help { get; set; } = null!;
 
     /// <summary>Help url for the rule.</summary>
-    [DataMember (Name = "helpUrl")]
+    [DataMember(Name = "helpUrl")]
     public string HelpUrl { get; set; } = null!;
 
     /// <summary>Tested nodes of the rule.</summary>
-    [DataMember (Name = "nodes")]
+    [DataMember(Name = "nodes")]
     public AxeHtmlElementResult[] Nodes { get; set; } = null!;
   }
 }

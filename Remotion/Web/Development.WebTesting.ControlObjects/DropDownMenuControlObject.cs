@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return (ButtonType)Enum.Parse(typeof(ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
     }
 
-    [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]
+    [Obsolete("Use the Open() method instead. (Version 1.17.15.0)", false)]
     protected void OpenDropDownMenu ()
     {
       Open();

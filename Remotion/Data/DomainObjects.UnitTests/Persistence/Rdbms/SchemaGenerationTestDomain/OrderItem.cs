@@ -34,14 +34,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
     public abstract int Position { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Product { get; set; }
 
-    [DBBidirectionalRelation ("OrderItems")]
+    [DBBidirectionalRelation("OrderItems")]
     [Mandatory]
     public abstract Order Order { get; set; }
 
-    [DBBidirectionalRelation ("TransactionOrderItems")]
+    [DBBidirectionalRelation("TransactionOrderItems")]
     [StorageClassTransaction]
     [Mandatory]
     public abstract Order TransactionOrder { get; set; }

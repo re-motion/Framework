@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes.PropertyTypeOfNetEnum_WithoutValues_Mandatory
 {
   [DBTable]
-  [ClassID ("PropertyTypeOfNetEnum_WithoutValues_Mandatory_ClassWithInvalidPropertyType")]
+  [ClassID("PropertyTypeOfNetEnum_WithoutValues_Mandatory_ClassWithInvalidPropertyType")]
   public class ClassWithInvalidPropertyType : DomainObject
   {
     public NetEnumNotDefiningAnyValues InvalidProperty { get; set; }

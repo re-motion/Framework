@@ -35,12 +35,12 @@ namespace Remotion.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public new void Send ()
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Create)]
+    [DemandPermission(GeneralAccessTypes.Create)]
     public override void Print ()
     {
       base.Print();

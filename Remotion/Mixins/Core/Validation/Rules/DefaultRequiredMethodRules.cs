@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Validation.Rules
       visitor.RequiredMethodRules.Add(new DelegateValidationRule<RequiredMethodDefinition>(RequiredNextCallMethodMustBePublicOrProtected));
     }
 
-    [DelegateRuleDescription (Message = "One of the methods specified via the TNext type parameter of a mixin is not implemented as a public "
+    [DelegateRuleDescription(Message = "One of the methods specified via the TNext type parameter of a mixin is not implemented as a public "
         + "or protected method.")]
     private void RequiredNextCallMethodMustBePublicOrProtected (DelegateValidationRule<RequiredMethodDefinition>.Args args)
     {

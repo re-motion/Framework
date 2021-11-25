@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// a derived type, you also have to apply the <see cref="DefaultValueServiceTypeAttribute"/> to the bindable object for which the service is intended.
   /// </remarks>
   /// <seealso cref="DefaultValueServiceTypeAttribute"/>
-  [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
+  [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
   public interface IDefaultValueService : IBusinessObjectService
   {
     /// <summary>

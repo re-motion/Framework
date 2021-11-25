@@ -27,7 +27,7 @@ namespace Remotion.Web.Infrastructure
   /// depending on whether a hosted environment is detected.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IBuildManager), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBuildManager), Lifetime = LifetimeKind.Singleton)]
   public class BuildManagerWrapper : IBuildManager
   {
     private readonly IBuildManager _innerBuildManager;

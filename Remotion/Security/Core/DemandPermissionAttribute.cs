@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
   public class DemandPermissionAttribute : Attribute
   {
     // HACK: Cannot store an Enum[] because that causes CustomAttributeData to throw an undocumented and unexpected exception 

@@ -24,7 +24,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.ObjectBinding.Validation
 {
-  [ImplementationFor (typeof(IPropertyValidatorToBusinessObjectPropertyConstraintConverter), Position = Position, RegistrationType = RegistrationType.Multiple, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPropertyValidatorToBusinessObjectPropertyConstraintConverter), Position = Position, RegistrationType = RegistrationType.Multiple, Lifetime = LifetimeKind.Singleton)]
   public class PropertyValidatorToBusinessObjectPropertyConstraintConverter : IPropertyValidatorToBusinessObjectPropertyConstraintConverter
   {
     public const int Position = 0;

@@ -24,17 +24,17 @@ namespace Remotion.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandPermission (TestAccessTypes.First)]
+    [DemandPermission(TestAccessTypes.First)]
     public void InstanceMethod ()
     {
     }
 
-    [DemandPermission (TestAccessTypes.Second)]
+    [DemandPermission(TestAccessTypes.Second)]
     public void InstanceMethod (string value)
     {
     }
 
-    [DemandPermission (TestAccessTypes.Third)]
+    [DemandPermission(TestAccessTypes.Third)]
     public void OtherInstanceMethod (string value)
     {
     }

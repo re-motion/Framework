@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_SpecificFolder")]
+  [ClassID("TI_SpecificFolder")]
   [Instantiable]
   public abstract class TISpecificFolder : TIFolder
   {

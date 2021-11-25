@@ -77,7 +77,7 @@ namespace Remotion.Mixins.Definitions.Building
       }
     }
 
-    [MemberNotNull (nameof(_baseMembersByNameCache))]
+    [MemberNotNull(nameof(_baseMembersByNameCache))]
     private void EnsureMembersCached ()
     {
       if (_baseMembersByNameCache == null)

@@ -26,7 +26,7 @@ namespace Remotion.Web.UI
     /// <summary> Raised when the document has finished loading. Signature: <c>void Function (hasSubmitted, isCached, isAsynchronous)</c> </summary>
     OnLoaded,
     /// <summary> Raised when the document has finished loading. Signature: <c>void Function (hasSubmitted, isCached, isAsynchronous)</c> </summary>
-    [Obsolete ("Use OnLoaded instead. (Version 1.21.8)", false)]
+    [Obsolete("Use OnLoaded instead. (Version 1.21.8)", false)]
     OnLoad,
     /// <summary> Raised when the user posts back to the server. Signature: <c>void Function (eventTargetID, eventArgs)</c> </summary>
     OnPostBack,

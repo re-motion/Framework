@@ -19,7 +19,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain
 {
-  [ClassID ("CustomDataType_ClassWithCustomDataType")]
+  [ClassID("CustomDataType_ClassWithCustomDataType")]
   [DBTable]
   public class ClassWithCustomDataType : DomainObject
   {
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public virtual CompoundDataType CompoundDataTypeValue { get; set; }
 
-    [SimpleDataTypeProperty (MaximumLength = 100)]
+    [SimpleDataTypeProperty(MaximumLength = 100)]
     public virtual SimpleDataType SimpleDataTypeValue { get; set; }
   }
 }

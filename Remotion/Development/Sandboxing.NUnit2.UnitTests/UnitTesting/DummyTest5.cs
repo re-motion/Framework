@@ -22,7 +22,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 {
   public class DummyTest5
   {
-    [Ignore ("Ignored Test")]
+    [Ignore("Ignored Test")]
     public void TestIgnored ()
     {
       throw new TestFailedException(typeof(DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
@@ -38,13 +38,13 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
       Assert.That(1, Is.EqualTo(0));
     }
 
-    [ExpectedException (typeof(TestFailedException))]
+    [ExpectedException(typeof(TestFailedException))]
     public void TestExpectedExceptionSucceeded ()
     {
       throw new TestFailedException(typeof(DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
     }
 
-    [ExpectedException (typeof(TestFailedException))]
+    [ExpectedException(typeof(TestFailedException))]
     public void TestExpectedExceptionFailed ()
     {
       Assert.That(1, Is.EqualTo(1));

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithInvalidRelation")]
+  [DBTable("TableWithInvalidRelation")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithInvalidRelation : TestDomainBase
@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
-    [DBBidirectionalRelation ("ClassWithInvalidRelation", ContainsForeignKey = true)]
-    [DBColumn ("TableWithGuidKeyID")]
+    [DBBidirectionalRelation("ClassWithInvalidRelation", ContainsForeignKey = true)]
+    [DBColumn("TableWithGuidKeyID")]
     public abstract ClassWithGuidKey ClassWithGuidKey { get; set; }
   }
 }

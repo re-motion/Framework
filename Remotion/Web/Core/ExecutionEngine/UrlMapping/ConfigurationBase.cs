@@ -47,7 +47,7 @@ public class ConfigurationBase
   // methods and properties
 
   /// <summary> Gets the application name that is specified in the XML configuration file.  </summary>
-  [XmlAttribute ("application")]
+  [XmlAttribute("application")]
   public string? ApplicationName
   {
     get { return _applicationName; }

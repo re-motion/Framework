@@ -24,29 +24,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
     }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToOne")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToOne")]
     public abstract ClassWithRealRelationEndPoints BaseBidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
     public abstract ObjectList<ClassWithRealRelationEndPoints> BaseBidirectionalOneToManyForDomainObjectCollection { get; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
     public abstract IObjectList<ClassWithRealRelationEndPoints> BaseBidirectionalOneToManyForVirtualCollection { get; }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToOne")]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToOne")]
     private ClassWithRealRelationEndPoints BasePrivateBidirectionalOneToOne
     {
       get { throw new NotImplementedException(); }
       set { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
     private ObjectList<ClassWithRealRelationEndPoints> BasePrivateBidirectionalOneToManyForDomainObjectCollection
     {
       get { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
     private IObjectList<ClassWithRealRelationEndPoints> BasePrivateBidirectionalOneToManyForVirtualCollection
     {
       get { throw new NotImplementedException(); }

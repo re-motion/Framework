@@ -35,7 +35,7 @@ namespace Remotion.Mixins
   /// referencing the other side of the relationship.
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
   public class MixAttribute : MixinRelationshipAttribute, IMixinConfigurationAttribute<Assembly>
   {
     private readonly Type _targetType;

@@ -33,7 +33,7 @@ namespace Remotion.Web.Security.ExecutionEngine
   //[WxeDemandObjectPermission (AccessTypes.Edit, ParameterName = "obj")]
   //[WxeDemandClassPermission (AccessTypes.Search, typeof (Akt))]
 
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
   public abstract class WxeDemandTargetPermissionAttribute : Attribute
   {
     // types

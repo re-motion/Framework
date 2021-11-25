@@ -65,7 +65,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _type.AddInterface(typeof(IGeneratedMixinType));
     }
 
-    [MemberNotNull (nameof(_identifierField))]
+    [MemberNotNull(nameof(_identifierField))]
     public void AddFields ()
     {
       var field = _type.AddField("__identifier", FieldAttributes.Public | FieldAttributes.Static, typeof(ConcreteMixinTypeIdentifier));

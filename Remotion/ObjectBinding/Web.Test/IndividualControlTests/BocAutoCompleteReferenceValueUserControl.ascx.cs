@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 namespace OBWTest.IndividualControlTests
 {
 
-[WebMultiLingualResources ("OBWTest.Globalization.IndividualControlTests.BocAutoCompleteReferenceValueUserControl")]
+[WebMultiLingualResources("OBWTest.Globalization.IndividualControlTests.BocAutoCompleteReferenceValueUserControl")]
 public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
 {
   protected HtmlGenericControl NonVisualControls;

@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Returns <see cref="Value"/> if <see cref="HasValue"/> == <see langword="true" />, otherwise <paramref name="defaultValue"/>.
     /// </summary>
     [CanBeNull]
-    [return: NotNullIfNotNull ("defaultValue")]
+    [return: NotNullIfNotNull("defaultValue")]
     public T? GetValueOrDefault (T? defaultValue)
     {
       if (_hasValue)

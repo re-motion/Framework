@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
   [Serializable]
   public sealed class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
   {

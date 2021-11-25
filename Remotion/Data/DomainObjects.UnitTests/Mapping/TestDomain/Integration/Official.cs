@@ -28,10 +28,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Official")]
+    [DBBidirectionalRelation("Official")]
     public abstract ObjectList<Order> Orders { get; }
   }
 }

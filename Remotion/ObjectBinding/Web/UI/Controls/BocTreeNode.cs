@@ -31,8 +31,8 @@ public abstract class BocTreeNode: WebTreeNode
   {
   }
 
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
   public override WebTreeNodeCollection Children
   {
     get { return base.Children; }
@@ -230,7 +230,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   [AllowNull]
   public IBusinessObjectReferenceProperty Property
   {
-    [MemberNotNull (nameof(_property))]
+    [MemberNotNull(nameof(_property))]
     get
     {
       EnsureProperty();
@@ -248,7 +248,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
     get { return "PropertyNode"; }
   }
 
-  [MemberNotNull (nameof(_property))]
+  [MemberNotNull(nameof(_property))]
   private void EnsureProperty ()
   {
     if (_property != null)

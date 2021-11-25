@@ -27,7 +27,7 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
   /// Implements <see cref="IWebTreeViewRenderer"/> for standard mode rendering of <see cref="WebTreeView"/> controls.
   /// <seealso cref="IWebTreeView"/>
   /// </summary>
-  [ImplementationFor (typeof(IWebTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IWebTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTreeViewRenderer : RendererBase<IWebTreeView>, IWebTreeViewRenderer
   {
     public WebTreeViewRenderer (

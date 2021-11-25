@@ -66,7 +66,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     }
 
     [Test]
-    [Ignore ("TODO: Implement support for static methods.")]
+    [Ignore("TODO: Implement support for static methods.")]
     public void GetStaticMethodDelegate_WithExactMatchFromBase ()
     {
       MethodLookupInfo lookupInfo = new MethodLookupInfo("StaticMethod");

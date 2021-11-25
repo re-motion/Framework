@@ -33,7 +33,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     {
     }
 
-    [DelegateRuleDescription (RuleName = "Fritz", Message = "Echo?")]
+    [DelegateRuleDescription(RuleName = "Fritz", Message = "Echo?")]
     private void DescribedSampleRule_Changes (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
     }

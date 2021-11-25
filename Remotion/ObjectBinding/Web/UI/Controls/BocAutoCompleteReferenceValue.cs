@@ -41,9 +41,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or select references as the value of a property using an auto-completing text box. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocAutoCompleteReferenceValue.xml' path='BocAutoCompleteReferenceValue/Class/*' />
-  [ValidationProperty ("ValidationValue")]
-  [DefaultEvent ("SelectionChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("ValidationValue")]
+  [DefaultEvent("SelectionChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocAutoCompleteReferenceValue
       :
           BocReferenceValueBase<IBocAutoCompleteReferenceValueWebService>,
@@ -52,16 +52,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     #region Obsolete
 
-    [Obsolete ("Use ControlServicePath instead. (Version 1.21.3)", true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete("Use ControlServicePath instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string SearchServicePath
     {
       get { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
       set { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
     }
 
-    [Obsolete ("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string Args
     {
       get { throw new NotSupportedException("Use ControlServiceArguments instead. (Version 1.21.3)"); }
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValue")]
     public enum ResourceIdentifier
     {
       /// <summary> Label displayed in the OptionsMenu. </summary>
@@ -147,9 +147,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if the value is not set but the control is required.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if the value is not set but the control is required.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
@@ -264,7 +264,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       renderer.Render(CreateRenderingContext(writer));
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");
@@ -493,8 +493,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="DropDownList"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string? FocusID
     {
       get { return IsReadOnly ? null : GetTextValueName(); }
@@ -502,11 +502,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="BocReferenceValueBase.CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the TextBox (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the TextBox (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle TextBoxStyle
     {
       get { return _textBoxStyle; }
@@ -517,9 +517,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if the entered text does not identify an item.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if the entered text does not identify an item.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? InvalidItemErrorMessage
     {
       get { return _invalidItemErrorMessage; }
@@ -530,8 +530,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue (10)]
+    [Category("AutoComplete")]
+    [DefaultValue(10)]
     public int CompletionSetCount
     {
       get { return _completionSetCount; }
@@ -543,9 +543,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue (1000)]
-    [Description ("Time in milliseconds before the drop down is shown for the first time.")]
+    [Category("AutoComplete")]
+    [DefaultValue(1000)]
+    [Description("Time in milliseconds before the drop down is shown for the first time.")]
     public int DropDownDisplayDelay
     {
       get { return _dropDownDisplayDelay; }
@@ -557,9 +557,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue (2000)]
-    [Description ("Time in milliseconds before the contents of the drop down is refreshed.")]
+    [Category("AutoComplete")]
+    [DefaultValue(2000)]
+    [Description("Time in milliseconds before the contents of the drop down is refreshed.")]
     public int DropDownRefreshDelay
     {
       get { return _dropDownRefreshDelay; }
@@ -571,9 +571,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue (200)]
-    [Description ("Time in milliseconds before the user's input is used to select the best match in the drop down list.")]
+    [Category("AutoComplete")]
+    [DefaultValue(200)]
+    [Description("Time in milliseconds before the user's input is used to select the best match in the drop down list.")]
     public int SelectionUpdateDelay
     {
       get { return _selectionUpdateDelay; }
@@ -592,9 +592,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <para>If the expression is <see langword="null" /> or empty, the <see cref="BocAutoCompleteReferenceValue"/> defaults to matching all input. </para>
     /// <para>The expression does not constrain the search for an exact match via <see cref="IBocAutoCompleteReferenceValueWebService.SearchExact"/>.</para>
     /// </remarks>
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description ("A Javascript regular expression the user input must match in order for the search to performed upon input. "
+    [Category("AutoComplete")]
+    [DefaultValue("")]
+    [Description("A Javascript regular expression the user input must match in order for the search to performed upon input. "
                   + "If the expression is empty, the control defaults to matching all input. "
                   + "Note: The expression does not constrain the search for an exact match.")]
     public string? ValidSearchStringRegex
@@ -615,9 +615,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   If the <see cref="ValidSearchStringRegex"/> is also <see langword="null" /> or empty, the <see cref="BocAutoCompleteReferenceValue"/> 
     ///   always opens the drop-down list when clicking the button or using the keyboard to open the drop-down list. </para>
     /// </remarks>
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description (
+    [Category("AutoComplete")]
+    [DefaultValue("")]
+    [Description(
         "A Javascript regular expression the user input must match in order for the search to performed when manually opening the drop-down-list. "
         + "If the expression is empty, the ValidSearchStringRegex is used. "
         + "If the fallback is also empty the control defaults to always openng the drop-down list.")]
@@ -630,9 +630,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     /// The message displayed when the user input does not match the required format when manually opening the drop-down-list.
     /// </summary>
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description ("The message displayed when the user input does not match the required format when manually opening the drop-down-list.")]
+    [Category("AutoComplete")]
+    [DefaultValue("")]
+    [Description("The message displayed when the user input does not match the required format when manually opening the drop-down-list.")]
     public string? SearchStringForDropDownDoesNotMatchRegexMessage
     {
       get { return _searchStringForDropDownDoesNotMatchRegexMessage; }
@@ -642,9 +642,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     /// If the flag is set and the current input represents a valid value, manually opening the drop-down-list will use an empty search string when retrieving the list of values.
     /// </summary>
-    [Category ("AutoComplete")]
-    [DefaultValue (false)]
-    [Description (
+    [Category("AutoComplete")]
+    [DefaultValue(false)]
+    [Description(
         "If the flag is set and the current input represents a valid value, manually opening the drop-down-list will use an empty search string when retrieving the list of values."
         )]
     public bool IgnoreSearchStringForDropDownUponValidInput

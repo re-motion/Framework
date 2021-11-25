@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects
   /// <see cref="Mixin{TTarget,TNext}.Next"/> property via the <typeparamref name="TNextCallRequirements"/> type parameter; the target object does not
   /// have to actually implement this interface.</para>
   /// <para>Use <see cref="DomainObjectMixin{TDomainObject}"/> if the mixin does not need to call any base implementations of overridden members.</para></remarks>
-  [NonIntroduced (typeof(IDomainObjectMixin))]
+  [NonIntroduced(typeof(IDomainObjectMixin))]
   [Serializable]
   public class DomainObjectMixin<TDomainObject, TNextCallRequirements>
       : Mixin<TDomainObject, TNextCallRequirements>, IDomainObjectMixin
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets a value indicating whether this mixin's target object is invalid in its default transaction.
     /// </summary>
     /// <value><see langword="true" /> if this mixin's target object is invalid; otherwise, <see langword="false" />.</value>
-    [Obsolete ("Use State.IsInvalid instead. (Version: 1.21.8)", false)]
+    [Obsolete("Use State.IsInvalid instead. (Version: 1.21.8)", false)]
     [StorageClassNone]
     protected bool IsInvalid
     {

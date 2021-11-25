@@ -30,15 +30,15 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   public class AxeRelatedHtmlElement
   {
     /// <summary>Html snippet of the related node.</summary>
-    [DataMember (Name = "html")]
+    [DataMember(Name = "html")]
     public string Html { get; set; } = null!;
 
     /// <summary>Target of the related node.</summary>
-    [DataMember (Name = "target")]
+    [DataMember(Name = "target")]
     public string[] Target { get; set; } = null!;
 
     /// <summary>XPath to the related node.</summary>
-    [DataMember (Name = "xpath")]
+    [DataMember(Name = "xpath")]
     public string[] XPath { get; set; } = null!;
   }
 }

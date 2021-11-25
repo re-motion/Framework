@@ -27,7 +27,7 @@ namespace Remotion.Globalization
   /// localizations for this assembly, resulting in a significant performance penality. The <see cref="AvailableResourcesLanguagesAttribute"/> is
   /// only required when working with the <see cref="MultiLingualResourcesAttribute"/>.
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Assembly, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
   public class AvailableResourcesLanguagesAttribute : Attribute
   {
     private readonly string[] _cultureNames;

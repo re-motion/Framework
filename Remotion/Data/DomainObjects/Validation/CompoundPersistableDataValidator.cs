@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// delegates the validation to them.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundPersistableDataValidator : IPersistableDataValidator
   {
     private readonly IReadOnlyList<IPersistableDataValidator> _validators;

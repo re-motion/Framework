@@ -107,7 +107,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [Ignore ("TODO 1370: Throw.")]
+    [Ignore("TODO 1370: Throw.")]
     public void GetConcreteMixedType_OpenGeneric ()
     {
       Assert.That(
@@ -159,7 +159,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [Ignore ("TODO 1370: Throw.")]
+    [Ignore("TODO 1370: Throw.")]
     public void IsAssignableFromOpenGenericInterface ()
     {
       Assert.That(

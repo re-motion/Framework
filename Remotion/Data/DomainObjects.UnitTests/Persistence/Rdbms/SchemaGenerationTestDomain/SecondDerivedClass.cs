@@ -20,7 +20,7 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain
 {
   [Instantiable]
-  [Uses (typeof(PersistentMixin))]
+  [Uses(typeof(PersistentMixin))]
   public abstract class SecondDerivedClass : ConcreteClass
   {
     public new static SecondDerivedClass NewObject ()
@@ -32,10 +32,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string PropertyInSecondDerivedClass { get; set; }
 
-    [DBColumn ("ClassWithRelationsInSecondDerivedClassID")]
+    [DBColumn("ClassWithRelationsInSecondDerivedClassID")]
     public abstract ClassWithRelations ClassWithRelationsToSecondDerivedClass { get; set; }
   }
 }

@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
-  [BaseInherited ("DerivedDerivedWithAttributesForSuppressed")]
-  [DerivedInherited ("DerivedDerivedWithAttributesForSuppressed")]
+  [BaseInherited("DerivedDerivedWithAttributesForSuppressed")]
+  [DerivedInherited("DerivedDerivedWithAttributesForSuppressed")]
   public class DerivedDerivedWithAttributesForSuppressed : DerivedWithAttributesAndSuppressed
   {
 

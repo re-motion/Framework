@@ -21,7 +21,7 @@ namespace Remotion.Integration.Web
   /// <summary>
   /// Apply this <see cref="Attribute"/> to a web assembly to force the inclusing of all web-relevant features of re-motion.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Assembly)]
+  [AttributeUsage(AttributeTargets.Assembly)]
   public class EnsureWebIntegrationAttribute : Attribute
   {
   }

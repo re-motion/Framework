@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion
 {
-  [Obsolete ("Dummy declaration for DependDB.", true)]
+  [Obsolete("Dummy declaration for DependDB.", true)]
   public interface INullObject
   {
     bool IsNull {get;}

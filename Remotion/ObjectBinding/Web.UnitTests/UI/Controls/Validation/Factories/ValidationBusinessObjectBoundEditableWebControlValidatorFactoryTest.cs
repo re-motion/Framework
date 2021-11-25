@@ -36,14 +36,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (typeof(IBocTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocTextValue>), new[] { typeof(BocTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase (typeof(IBocReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocReferenceValue>), new[] { typeof(BocReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase (typeof(IBocAutoCompleteReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocAutoCompleteReferenceValue>), new[] { typeof(BocAutoCompleteReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase (typeof(IBocBooleanValueValidatorFactory), typeof(CompoundValidatorFactory<IBocBooleanValue>), new[] { typeof(BocBooleanValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase (typeof(IBocCheckBoxValidatorFactory), typeof(CompoundValidatorFactory<IBocCheckBox>), new[] { typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase (typeof(IBocDateTimeValueValidatorFactory), typeof(CompoundValidatorFactory<IBocDateTimeValue>), new[] { typeof(BocDateTimeValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase (typeof(IBocEnumValueValidatorFactory), typeof(CompoundValidatorFactory<IBocEnumValue>), new[] { typeof(BocEnumValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase (typeof(IBocMultilineTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocMultilineTextValue>), new[] { typeof(BocMultilineTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocTextValue>), new[] { typeof(BocTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocReferenceValue>), new[] { typeof(BocReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocAutoCompleteReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocAutoCompleteReferenceValue>), new[] { typeof(BocAutoCompleteReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocBooleanValueValidatorFactory), typeof(CompoundValidatorFactory<IBocBooleanValue>), new[] { typeof(BocBooleanValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocCheckBoxValidatorFactory), typeof(CompoundValidatorFactory<IBocCheckBox>), new[] { typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocDateTimeValueValidatorFactory), typeof(CompoundValidatorFactory<IBocDateTimeValue>), new[] { typeof(BocDateTimeValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocEnumValueValidatorFactory), typeof(CompoundValidatorFactory<IBocEnumValue>), new[] { typeof(BocEnumValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(typeof(IBocMultilineTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocMultilineTextValue>), new[] { typeof(BocMultilineTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
     //[TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>), new[] { typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
     public void GetInstance_Once (Type serviceType, Type targetType, Type[] expectedInnerFactoryTypesOrdered)
     {
@@ -60,14 +60,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (typeof(IBocTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocTextValue>))]
-    [TestCase (typeof(IBocReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocReferenceValue>))]
-    [TestCase (typeof(IBocAutoCompleteReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocAutoCompleteReferenceValue>))]
-    [TestCase (typeof(IBocBooleanValueValidatorFactory), typeof(CompoundValidatorFactory<IBocBooleanValue>))]
-    [TestCase (typeof(IBocCheckBoxValidatorFactory), typeof(CompoundValidatorFactory<IBocCheckBox>))]
-    [TestCase (typeof(IBocDateTimeValueValidatorFactory), typeof(CompoundValidatorFactory<IBocDateTimeValue>))]
-    [TestCase (typeof(IBocEnumValueValidatorFactory), typeof(CompoundValidatorFactory<IBocEnumValue>))]
-    [TestCase (typeof(IBocMultilineTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocMultilineTextValue>))]
+    [TestCase(typeof(IBocTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocTextValue>))]
+    [TestCase(typeof(IBocReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocReferenceValue>))]
+    [TestCase(typeof(IBocAutoCompleteReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocAutoCompleteReferenceValue>))]
+    [TestCase(typeof(IBocBooleanValueValidatorFactory), typeof(CompoundValidatorFactory<IBocBooleanValue>))]
+    [TestCase(typeof(IBocCheckBoxValidatorFactory), typeof(CompoundValidatorFactory<IBocCheckBox>))]
+    [TestCase(typeof(IBocDateTimeValueValidatorFactory), typeof(CompoundValidatorFactory<IBocDateTimeValue>))]
+    [TestCase(typeof(IBocEnumValueValidatorFactory), typeof(CompoundValidatorFactory<IBocEnumValue>))]
+    [TestCase(typeof(IBocMultilineTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocMultilineTextValue>))]
    // [TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>))]
     public void GetInstance_Twice_ReturnsSameInstance (Type serviceType, Type targetType)
     {
@@ -79,8 +79,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocTextValue (bool isReadOnly)
     {
       var mock = new Mock<IBocTextValue>();
@@ -92,8 +92,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocReferenceValue (bool isReadOnly)
     {
       var mock = new Mock<IBocReferenceValue>();
@@ -105,8 +105,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocAutoCompleteReferenceValue (bool isReadOnly)
     {
       var mock = new Mock<IBocAutoCompleteReferenceValue>();
@@ -118,8 +118,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocBooleanValue (bool isReadOnly)
     {
       var mock = new Mock<IBocBooleanValue>();
@@ -131,8 +131,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocCheckBox (bool isReadOnly)
     {
       var mock = new Mock<IBocCheckBox>();
@@ -144,8 +144,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocDateTimeValue (bool isReadOnly)
     {
       var mock = new Mock<IBocDateTimeValue>();
@@ -157,8 +157,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocEnumValue (bool isReadOnly)
     {
       var mock = new Mock<IBocEnumValue>();
@@ -170,8 +170,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocMultilineTextValue (bool isReadOnly)
     {
       var mock = new Mock<IBocMultilineTextValue>();

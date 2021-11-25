@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_Person")]
-  [DBTable ("TableInheritance_Person")]
+  [ClassID("TI_Person")]
+  [DBTable("TableInheritance_Person")]
   [Instantiable]
   public abstract class TIPerson: TIDomainBase, ISupportsGetObject
   {
@@ -32,15 +32,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string FirstName { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string LastName { get; set; }
 
     public abstract DateTime DateOfBirth { get; set; }
 
-    [DBBidirectionalRelation ("Person")]
+    [DBBidirectionalRelation("Person")]
     public abstract TIAddress Address { get; }
 
     [BinaryProperty]

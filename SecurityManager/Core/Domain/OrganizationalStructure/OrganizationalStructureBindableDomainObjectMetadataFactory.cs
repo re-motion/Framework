@@ -26,7 +26,7 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [Extends (typeof(BindableDomainObjectMetadataFactory))]
+  [Extends(typeof(BindableDomainObjectMetadataFactory))]
   public class OrganizationalStructureBindableDomainObjectMetadataFactoryMixin
       : Mixin<BindableDomainObjectMetadataFactory, OrganizationalStructureBindableDomainObjectMetadataFactoryMixin.INext>
   {

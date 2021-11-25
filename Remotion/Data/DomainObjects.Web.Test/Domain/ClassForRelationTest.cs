@@ -26,9 +26,9 @@ using Remotion.Security;
 
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [MultiLingualResources ("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
+  [MultiLingualResources("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
   [Serializable]
-  [DBTable ("TableForRelationTest")]
+  [DBTable("TableForRelationTest")]
   [Instantiable]
   [DBStorageGroup]
   public abstract class ClassForRelationTest : BindableDomainObject, ISecurableObject, IDomainObjectSecurityContextFactory
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
     public override string DisplayName
@@ -59,30 +59,30 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       get { return ClassWithAllDataTypes.EnumType.Value3; }
     }
 
-    [ItemType (typeof(ClassWithAllDataTypes))]
-    [ObjectBinding (ReadOnly = true)]
+    [ItemType(typeof(ClassWithAllDataTypes))]
+    [ObjectBinding(ReadOnly = true)]
     [StorageClassNone]
     public DomainObjectCollection ComputedList
     {
       get { return new DomainObjectCollection(); }
     }
 
-    [DBColumn ("TableWithAllDataTypesMandatory")]
-    [DBBidirectionalRelation ("ClassesForRelationTestMandatoryNavigateOnly")]
+    [DBColumn("TableWithAllDataTypesMandatory")]
+    [DBBidirectionalRelation("ClassesForRelationTestMandatoryNavigateOnly")]
     [Mandatory]
     public abstract ClassWithAllDataTypes ClassWithAllDataTypesMandatory {get; set;}
 
-    [DBColumn ("TableWithAllDataTypesOptional")]
-    [DBBidirectionalRelation ("ClassesForRelationTestOptionalNavigateOnly")]
+    [DBColumn("TableWithAllDataTypesOptional")]
+    [DBBidirectionalRelation("ClassesForRelationTestOptionalNavigateOnly")]
     public abstract ClassWithAllDataTypes ClassWithAllDataTypesOptional { get; set;}
 
-    [DBBidirectionalRelation ("ClassForRelationTestMandatory")]
+    [DBBidirectionalRelation("ClassForRelationTestMandatory")]
     [Mandatory]
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesMandatoryNavigateOnly { get; }
 
-    [DBBidirectionalRelation ("ClassForRelationTestOptional")]
-    [ObjectBinding (ReadOnly = true)]
+    [DBBidirectionalRelation("ClassForRelationTestOptional")]
+    [ObjectBinding(ReadOnly = true)]
     public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesOptionalNavigateOnly { get; }
 
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()

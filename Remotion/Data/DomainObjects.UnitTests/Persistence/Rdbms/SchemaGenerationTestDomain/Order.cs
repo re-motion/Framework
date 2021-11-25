@@ -36,19 +36,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
     public abstract OrderPriority Priority { get; set; }
 
-    [DBBidirectionalRelation ("Orders")]
+    [DBBidirectionalRelation("Orders")]
     [Mandatory]
     public abstract Customer Customer { get; set; }
 
-    [DBBidirectionalRelation ("Orders")]
+    [DBBidirectionalRelation("Orders")]
     [Mandatory]
     public abstract Official Official { get; set; }
 
-    [DBBidirectionalRelation ("Order")]
+    [DBBidirectionalRelation("Order")]
     [Mandatory]
     public abstract ObjectList<OrderItem> OrderItems { get; set; }
 
-    [DBBidirectionalRelation ("TransactionOrder")]
+    [DBBidirectionalRelation("TransactionOrder")]
     [StorageClassTransaction]
     [Mandatory]
     public abstract ObjectList<OrderItem> TransactionOrderItems { get; set; }

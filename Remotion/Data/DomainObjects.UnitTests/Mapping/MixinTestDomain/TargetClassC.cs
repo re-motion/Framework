@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof(DerivedMixinNotOnBase))]
+  [Uses(typeof(DerivedMixinNotOnBase))]
   public class TargetClassC : DomainObject
   {
 

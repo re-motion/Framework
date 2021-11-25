@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 
     // methods and properties
 
-    [WxeParameter (0, true, WxeParameterDirection.In)]
+    [WxeParameter(0, true, WxeParameterDirection.In)]
     public SecurableObject ThisObject
     {
       get
@@ -51,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       }
     }
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public object SomeObject
     {
       get

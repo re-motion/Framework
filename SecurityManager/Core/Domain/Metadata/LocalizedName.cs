@@ -44,13 +44,13 @@ namespace Remotion.SecurityManager.Domain.Metadata
       MetadataObject = metadataObject;
     }
 
-    [StringProperty (IsNullable = false)]
+    [StringProperty(IsNullable = false)]
     public abstract string Text { get; set; }
 
     [Mandatory]
     public abstract Culture Culture { get; protected set; }
 
-    [DBBidirectionalRelation ("LocalizedNames")]
+    [DBBidirectionalRelation("LocalizedNames")]
     [Mandatory]
     public abstract MetadataObject MetadataObject { get; protected set; }
   }

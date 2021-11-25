@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     DomainObjectWithLegacyInfrastructureConstructor
 {
   [DBTable]
-  [ClassID ("NotSupportedDomainObjectTypes_DomainObjectWithLegacyInfrastructureConstructor")]
+  [ClassID("NotSupportedDomainObjectTypes_DomainObjectWithLegacyInfrastructureConstructor")]
   public class DomainObjectWithLegacyConstructor : DomainObject
   {
     protected DomainObjectWithLegacyConstructor (DataContainer dataContainer)

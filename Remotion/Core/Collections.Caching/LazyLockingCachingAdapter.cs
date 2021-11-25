@@ -37,7 +37,7 @@ namespace Remotion.Collections.Caching
   /// instances. This leads to the effect that the lock used for the synchronization of the data store is always held for a very short time only,
   /// even if the factory delegate for a specific value takes a long time to execute.
   /// </remarks>
-  [Obsolete ("This type is only used in conjunction by obsolete factory method CacheFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
+  [Obsolete("This type is only used in conjunction by obsolete factory method CacheFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
   [Serializable]
   public class LazyLockingCachingAdapter<TKey, TValue> : ICache<TKey, TValue>
       where TKey : notnull
@@ -90,7 +90,7 @@ namespace Remotion.Collections.Caching
       return result.Value;
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
 

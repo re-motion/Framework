@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     // methods and properties
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public ObjectID ObjectWithAllDataTypes
     {
       get { return (ObjectID)Variables["ObjectWithAllDataTypes"]; }

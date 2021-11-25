@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// Test methods can be marked with NUnit attributes <see cref="CategoryAttribute"/>, <see cref="IgnoreAttribute"/>
     /// or <see cref="ExplicitAttribute"/>.
     /// </remarks>
-    [AttributeUsage (AttributeTargets.Method, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     protected class TestMethodAttribute : Attribute
     {
       public TestMethodAttribute ()

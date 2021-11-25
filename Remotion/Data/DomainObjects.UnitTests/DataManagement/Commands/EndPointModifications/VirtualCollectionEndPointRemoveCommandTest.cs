@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
   public class VirtualCollectionEndPointRemoveCommandTest
   {
     [Test]
-    [Ignore ("TODO RM-7294: Implement test fixture for VirtualCollectionEndPointRemoveCommand")]
+    [Ignore("TODO RM-7294: Implement test fixture for VirtualCollectionEndPointRemoveCommand")]
     public void Implement_For_VirtualCollection ()
     {
     }

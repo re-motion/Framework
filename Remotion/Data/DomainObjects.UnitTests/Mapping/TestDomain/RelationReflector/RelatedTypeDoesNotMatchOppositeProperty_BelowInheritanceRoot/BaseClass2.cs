@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.RelationRefle
 {
   public abstract class BaseClass2 : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty")]
+    [DBBidirectionalRelation("RelationProperty")]
     public Class1 RelationPropertyOnBaseClass { get; set; }
   }
 }

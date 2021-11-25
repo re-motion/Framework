@@ -45,7 +45,7 @@ namespace Remotion.Tools.Console.CommandLine
   /// ]]>
   /// </code>
   /// </example>
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public abstract class CommandLineArgumentAttribute : Attribute
   {
     private readonly CommandLineArgument _argument;
@@ -57,7 +57,7 @@ namespace Remotion.Tools.Console.CommandLine
     ///   This constructor is necessary because, even in <see langword="abstract"/> attribute classes, one constructor 
     ///   must have arguments that meet the constraints of attribute declarations. 
     /// </remarks>
-    [Obsolete ("Do not use this constructor.", true)]
+    [Obsolete("Do not use this constructor.", true)]
     protected CommandLineArgumentAttribute (int doNotUseThisConstructor)
     {
       throw new NotSupportedException();
@@ -145,7 +145,7 @@ namespace Remotion.Tools.Console.CommandLine
   /// </example>
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineStringArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineStringArgumentAttribute (bool isOptional)
@@ -159,7 +159,7 @@ namespace Remotion.Tools.Console.CommandLine
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineFlagArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineFlagArgumentAttribute (string name)
@@ -174,7 +174,7 @@ namespace Remotion.Tools.Console.CommandLine
   }
 
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineInt32ArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineInt32ArgumentAttribute (string name, bool isOptional)
@@ -188,7 +188,7 @@ namespace Remotion.Tools.Console.CommandLine
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineEnumArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineEnumArgumentAttribute (bool isOptional)
@@ -214,7 +214,7 @@ namespace Remotion.Tools.Console.CommandLine
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineModeArgumentAttribute : CommandLineArgumentAttribute
   {
     private Type? _enumType;
@@ -257,7 +257,7 @@ namespace Remotion.Tools.Console.CommandLine
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
   public class CommandLineModeAttribute : Attribute
   {
     public static CommandLineModeAttribute? GetAttribute (FieldInfo field)

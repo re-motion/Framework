@@ -196,14 +196,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       {
       }
 
-      [WxeParameter (1, true, WxeParameterDirection.InOut)]
+      [WxeParameter(1, true, WxeParameterDirection.InOut)]
       public string Var1
       {
         get { return (string)Variables["Var1"]; }
         set { Variables["Var1"] = value; }
       }
 
-      [WxeParameter (2, WxeParameterDirection.InOut)]
+      [WxeParameter(2, WxeParameterDirection.InOut)]
       public string Var2
       {
         get { return (string)Variables["Var2"]; }

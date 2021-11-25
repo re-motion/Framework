@@ -59,11 +59,11 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public abstract Guid MetadataItemID { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 200)]
+    [StringProperty(IsNullable = false, MaximumLength = 200)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("MetadataObject")]
-    [ObjectBinding (ReadOnly = true)]
+    [DBBidirectionalRelation("MetadataObject")]
+    [ObjectBinding(ReadOnly = true)]
     public abstract ObjectList<LocalizedName> LocalizedNames { get; }
 
     public override string DisplayName

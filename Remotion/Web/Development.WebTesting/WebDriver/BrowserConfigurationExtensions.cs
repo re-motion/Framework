@@ -79,8 +79,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// Gets a flag indicating if <paramref name="browser"/> represents <b>Internet Explorer</b> by testing if the passed instance 
     /// is <see cref="Browser.InternetExplorer"/>.
     /// </summary>
-    [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22, 1.21.7)")]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [Obsolete("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22, 1.21.7)")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static bool IsInternetExplorer ([NotNull] this Browser browser)
     {
       ArgumentUtility.CheckNotNull("browser", browser);

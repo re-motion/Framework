@@ -26,7 +26,7 @@ namespace Remotion.Reflection
   /// Default implementation of the <see cref="IMemberInformationNameResolver"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberInformationNameResolver : IMemberInformationNameResolver
   {
     private readonly ConcurrentDictionary<IPropertyInformation, string> s_propertyNameCache = new ConcurrentDictionary<IPropertyInformation, string>();

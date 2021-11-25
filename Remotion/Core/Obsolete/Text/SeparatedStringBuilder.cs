@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Text
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
   internal abstract class SeparatedStringBuilder
   {
     public static string Build<T> (string separator, IEnumerable<T> list, Func<T, string> selector)

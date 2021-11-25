@@ -20,7 +20,7 @@ using Remotion.Data.DomainObjects.ObjectBinding;
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
-  [DBTable ("TableWithUndefinedEnum")]
+  [DBTable("TableWithUndefinedEnum")]
   [Instantiable]
   [DBStorageGroup]
   public abstract class ClassWithUndefinedEnum : BindableDomainObject, ISupportsGetObject

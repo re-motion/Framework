@@ -175,7 +175,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Ignore ("BindableObjectGlobalizationService currently does not support dynamic changes to the mixin configuration. (TODO: change that)")]
+    [Ignore("BindableObjectGlobalizationService currently does not support dynamic changes to the mixin configuration. (TODO: change that)")]
     public void GetPropertyDisplayName_WithTwoMixins_WithDependency_IntegrationTest ()
     {
       using (MixinConfiguration.BuildFromActive()

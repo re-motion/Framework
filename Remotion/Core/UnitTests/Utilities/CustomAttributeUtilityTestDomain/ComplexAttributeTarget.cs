@@ -20,42 +20,42 @@ namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
 {
   public class ComplexAttributeTarget
   {
-    [Complex ()]
+    [Complex()]
     public void DefaultCtor ()
     {
     }
 
-    [Complex (S = "foo")]
+    [Complex(S = "foo")]
     public void DefaultCtorWithProperty ()
     {
     }
 
-    [Complex (T = typeof(object))]
+    [Complex(T = typeof(object))]
     public void DefaultCtorWithField ()
     {
     }
 
-    [Complex (typeof(void), S = "string")]
+    [Complex(typeof(void), S = "string")]
     public void CtorWithTypeAndProperty ()
     {
     }
 
-    [Complex ("s", 1, 2, 3, "4")]
+    [Complex("s", 1, 2, 3, "4")]
     public void CtorWithStringAndParamsArray ()
     {
     }
 
-    [Complex (typeof(double), typeof(int), typeof(string))]
+    [Complex(typeof(double), typeof(int), typeof(string))]
     public void CtorWithStringAndTypeParamsArray ()
     {
     }
 
-    [Complex (new int[] {1, 2, 3})]
+    [Complex(new int[] {1, 2, 3})]
     public void CtorWithIntArray ()
     {
     }
 
-    [Complex (new DayOfWeek[] { DayOfWeek.Monday, DayOfWeek.Tuesday })]
+    [Complex(new DayOfWeek[] { DayOfWeek.Monday, DayOfWeek.Tuesday })]
     public void CtorWithEnumArray ()
     {
     }

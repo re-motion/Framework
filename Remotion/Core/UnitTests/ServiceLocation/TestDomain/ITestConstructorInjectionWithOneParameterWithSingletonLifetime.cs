@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof(ITestConstructorInjectionWithOneParameterWithSingletonLifetime))]
+  [ImplementationFor(typeof(ITestConstructorInjectionWithOneParameterWithSingletonLifetime))]
   public class TestConstructorInjectionWithOneParameterWithSingletonLifetime : ITestConstructorInjectionWithOneParameterWithSingletonLifetime
   {
     public readonly ITestSingletonConcreteImplementationAttributeType Param;

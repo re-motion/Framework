@@ -24,10 +24,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     {
     }
 
-    [DBBidirectionalRelation ("InvalidOppositePropertyTypeRightSide")]
+    [DBBidirectionalRelation("InvalidOppositePropertyTypeRightSide")]
     public abstract ClassWithInvalidBidirectionalRelationRightSide InvalidOppositePropertyTypeLeftSide { get; set; }
 
-    [DBBidirectionalRelation ("InvalidOppositeCollectionPropertyTypeRightSide")]
+    [DBBidirectionalRelation("InvalidOppositeCollectionPropertyTypeRightSide")]
     public abstract ClassWithInvalidBidirectionalRelationRightSide InvalidOppositeCollectionPropertyTypeLeftSide { get; set; }
   }
 }

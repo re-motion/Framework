@@ -26,8 +26,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     string? BackedUpUserControlState { get; }
     string UserControlID { get; }
 
-    [MemberNotNullWhen (true, nameof(BackedUpUserControl))]
-    [MemberNotNullWhen (true, nameof(BackedUpUserControlState))]
+    [MemberNotNullWhen(true, nameof(BackedUpUserControl))]
+    [MemberNotNullWhen(true, nameof(BackedUpUserControlState))]
     bool IsReturningPostBack { get; }
     string? BackedUpUserControl { get; }
     WxeStep? ExecutingStep { get; }

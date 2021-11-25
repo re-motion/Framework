@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{RequiredType.Type}, Depender = {Depender}")]
+  [DebuggerDisplay("{RequiredType.Type}, Depender = {Depender}")]
   public abstract class DependencyDefinitionBase : IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<Type, DependencyDefinitionBase> _aggregatedDependencies;

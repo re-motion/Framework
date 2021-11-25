@@ -63,8 +63,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/Class/*' />
   // TODO: see "Doc\Bugs and ToDos.txt"
-  [DefaultEvent ("CommandClick")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [DefaultEvent("CommandClick")]
+  [ToolboxItemFilter("System.Web.UI")]
   public partial class BocList :
       BusinessObjectBoundEditableWebControl,
       IBocList,
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>
     /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
-    [Obsolete ("Style via CSS instead. (Version 3.0.0)", true)]
+    [Obsolete("Style via CSS instead. (Version 3.0.0)", true)]
     public Unit MenuBlockItemOffset
     {
       get => throw new NotSupportedException("Style via CSS instead.");
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the offset between the table and the menu block. </summary>
-    [Obsolete ("Style via CSS instead. (Version 3.0.0)", true)]
+    [Obsolete("Style via CSS instead. (Version 3.0.0)", true)]
     public Unit MenuBlockOffset
     {
       get => throw new NotSupportedException("Style via CSS instead.");
@@ -92,14 +92,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the width reserved for the menu block. </summary>
-    [Obsolete ("Use " + nameof(MenuBlockMinWidth) + " and " + nameof(MenuBlockMaxWidth) + " instead. (Version 3.0.0)", true)]
+    [Obsolete("Use " + nameof(MenuBlockMinWidth) + " and " + nameof(MenuBlockMaxWidth) + " instead. (Version 3.0.0)", true)]
     public Unit MenuBlockWidth
     {
       get => throw new NotSupportedException($"Use {nameof(MenuBlockMinWidth)} and {nameof(MenuBlockMaxWidth)} instead.");
       set => throw new NotSupportedException($"Use {nameof(MenuBlockMinWidth)} and {nameof(MenuBlockMaxWidth)} instead.");
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");
@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="M:Remotion.Globalization.IResourceManager.TryGetString(string, out string)"/>.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocList")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocList")]
     public enum ResourceIdentifier
     {
       EmptyListMessage,
@@ -913,8 +913,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Is raised when the sorting order of the <see cref="BocList"/> is about to change. </summary>
     /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
-    [Category ("Action")]
-    [Description ("Occurs when the sorting order of the BocList is about to change.")]
+    [Category("Action")]
+    [Description("Occurs when the sorting order of the BocList is about to change.")]
     public event BocListSortingOrderChangeEventHandler SortingOrderChanging
     {
       add { Events.AddHandler(s_sortingOrderChangingEvent, value); }
@@ -923,8 +923,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Is raised when the sorting order of the <see cref="BocList"/> has changed. </summary>
     /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
-    [Category ("Action")]
-    [Description ("Occurs when the sorting order of the BocList has to changed.")]
+    [Category("Action")]
+    [Description("Occurs when the sorting order of the BocList has to changed.")]
     public event BocListSortingOrderChangeEventHandler SortingOrderChanged
     {
       add { Events.AddHandler(s_sortingOrderChangedEvent, value); }
@@ -1797,7 +1797,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     ///   Gets a flag set <see langword="true"/> if the <see cref="Value"/> is sorted before it is displayed.
     /// </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasSortingKeys
     {
       get { return _sortingOrder.Any(entry => !entry.IsEmpty); }
@@ -2120,8 +2120,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised when a data row is rendered. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a data row is rendered.")]
+    [Category("Action")]
+    [Description("Occurs when a data row is rendered.")]
     public event BocListDataRowRenderEventHandler DataRowRender
     {
       add { Events.AddHandler(s_dataRowRenderEvent, value); }
@@ -2130,8 +2130,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
     /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectReferenceProperty? Property
     {
       get { return (IBusinessObjectReferenceProperty?)base.Property; }
@@ -2141,7 +2141,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the current value. </summary>
     /// <value> An object implementing <see cref="IList"/>. </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public new IReadOnlyList<IBusinessObject>? Value
     {
       get { return GetValue(); }
@@ -2155,7 +2155,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the current value. </summary>
     /// <value> A list of <see cref="IBusinessObject"/> implementations or <see langword="null"/>. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public IList? ValueAsList
     {
       get
@@ -2246,8 +2246,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocList"/> contains a value. </summary>
-    [MemberNotNullWhen (true, nameof(_value))]
-    [MemberNotNullWhen (true, nameof(Value))]
+    [MemberNotNullWhen(true, nameof(_value))]
+    [MemberNotNullWhen(true, nameof(Value))]
     public override bool HasValue
     {
       get { return _value != null && _value.Count > 0; }
@@ -2323,11 +2323,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the user independent column definitions. </summary>
     /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
     //  Default category
-    [Description ("The user independent column definitions.")]
-    [DefaultValue ((string?)null)]
+    [Description("The user independent column definitions.")]
+    [DefaultValue((string?)null)]
     public BocColumnDefinitionCollection FixedColumns
     {
       get { return _fixedColumns; }
@@ -2340,8 +2340,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     //  //  Default category
     //  [Description ("The predefined column definition sets that the user can choose from at run-time.")]
     //  [DefaultValue ((string) null)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocListViewCollection AvailableViews
     {
       get { return _availableViews; }
@@ -2351,8 +2351,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the selected <see cref="BocListView"/> used to
     ///   supplement the <see cref="FixedColumns"/>.
     /// </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocListView? SelectedView
     {
       get
@@ -2859,7 +2859,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Queried where the rendering depends on whether the list is in edit mode. 
     ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
     /// </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsRowEditModeActive
     {
       get { return _editModeController.IsRowEditModeActive; }
@@ -2870,7 +2870,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Queried where the rendering depends on whether the list is in edit mode. 
     ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
     /// </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsListEditModeActive
     {
       get { return _editModeController.IsListEditModeActive; }
@@ -2880,9 +2880,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to show the asterisks in the title row for columns having 
     ///   edit mode controls.
     /// </summary>
-    [Description ("Set false to hide the asterisks in the title row for columns having edit mode control.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (true)]
+    [Description("Set false to hide the asterisks in the title row for columns having edit mode control.")]
+    [Category("Edit Mode")]
+    [DefaultValue(true)]
     public bool ShowEditModeRequiredMarkers
     {
       get { return _showEditModeRequiredMarkers; }
@@ -2893,9 +2893,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to show an exclamation mark in front of each control with 
     ///   an validation error.
     /// </summary>
-    [Description ("Set true to show an exclamation mark in front of each control with an validation error.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (false)]
+    [Description("Set true to show an exclamation mark in front of each control with an validation error.")]
+    [Category("Edit Mode")]
+    [DefaultValue(false)]
     public bool ShowEditModeValidationMarkers
     {
       get { return _showEditModeValidationMarkers; }
@@ -2905,10 +2905,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     ///   Gets or sets a flag that determines whether to render validation messages and client side validators.
     /// </summary>
-    [Description ("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")
+    [Description("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")
     ]
-    [Category ("Edit Mode")]
-    [DefaultValue (false)]
+    [Category("Edit Mode")]
+    [DefaultValue(false)]
     public bool DisableEditModeValidationMessages
     {
       get { return _disableEditModeValidationMessages; }
@@ -2920,9 +2920,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="false"/> to prevent the <see cref="EditModeValidator"/> from being created by
     ///   <see cref="CreateValidators(bool)"/>.
     /// </remarks>
-    [Description ("Enables the EditModeValidator.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (true)]
+    [Description("Enables the EditModeValidator.")]
+    [Category("Edit Mode")]
+    [DefaultValue(true)]
     public bool EnableEditModeValidator
     {
       get { return _enableEditModeValidator; }
@@ -2933,9 +2933,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   <see langword="false"/> to prevent the focus from getting set by <see cref="SwitchRowIntoEditMode"/> or <see cref="SwitchListIntoEditMode"/>.
     /// </remarks>
-    [Description ("Enables automatically setting the focus when switching to edit mode.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (true)]
+    [Description("Enables automatically setting the focus when switching to edit mode.")]
+    [Category("Edit Mode")]
+    [DefaultValue(true)]
     public bool EnableAutoFocusOnSwitchToEditMode
     {
       get { return _enableAutoFocusOnSwitchToEditMode; }
@@ -2943,8 +2943,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised before the changes to the editable row are saved. </summary>
-    [Category ("Action")]
-    [Description ("Is raised before the changes to the editable row are saved.")]
+    [Category("Action")]
+    [Description("Is raised before the changes to the editable row are saved.")]
     public event BocListEditableRowChangesEventHandler EditableRowChangesSaving
     {
       add { Events.AddHandler(s_editableRowChangesSavingEvent, value); }
@@ -2952,8 +2952,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised after the changes to the editable row have been saved. </summary>
-    [Category ("Action")]
-    [Description ("Is raised after the changes to the editable row have been saved.")]
+    [Category("Action")]
+    [Description("Is raised after the changes to the editable row have been saved.")]
     public event BocListItemEventHandler EditableRowChangesSaved
     {
       add { Events.AddHandler(s_editableRowChangesSavedEvent, value); }
@@ -2961,8 +2961,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised before the changes to the editable row are canceled. </summary>
-    [Category ("Action")]
-    [Description ("Is raised before the changes to the editable row are canceled.")]
+    [Category("Action")]
+    [Description("Is raised before the changes to the editable row are canceled.")]
     public event BocListEditableRowChangesEventHandler EditableRowChangesCanceling
     {
       add { Events.AddHandler(s_editableRowChangesCancelingEvent, value); }
@@ -2970,8 +2970,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised after the changes to the editable row have been canceled. </summary>
-    [Category ("Action")]
-    [Description ("Is raised after the changes to the editable row have been canceled.")]
+    [Category("Action")]
+    [Description("Is raised after the changes to the editable row have been canceled.")]
     public event BocListItemEventHandler EditableRowChangesCanceled
     {
       add { Events.AddHandler(s_editableRowChangesCanceledEvent, value); }
@@ -2982,8 +2982,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the <see cref="EditableRowDataSourceFactory"/> used to create the data souce for the edit mode
     ///   controls.
     /// </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public EditableRowDataSourceFactory EditModeDataSourceFactory
     {
       get { return _editModeDataSourceFactory; }
@@ -2997,8 +2997,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> 
     ///   Gets or sets the <see cref="EditableRowControlFactory"/> used to create the controls for the edit mode.
     /// </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public EditableRowControlFactory EditModeControlFactory
     {
       get { return _editModeControlFactory; }
@@ -3176,10 +3176,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   and the additonal column sets  (read-only mode only). 
     /// </summary>
     /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
-    [Category ("Appearance")]
-    [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (read-only mode only).")
+    [Category("Appearance")]
+    [Description("Determines whether the list headers and the additional column sets will be rendered if no data is provided (read-only mode only).")
     ]
-    [DefaultValue (false)]
+    [DefaultValue(false)]
     public virtual bool ShowEmptyListReadOnlyMode
     {
       get { return _showEmptyListReadOnlyMode; }
@@ -3191,9 +3191,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   and the additonal column sets (edit mode only). 
     /// </summary>
     /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
-    [Category ("Appearance")]
-    [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (edit mode only).")]
-    [DefaultValue (true)]
+    [Category("Appearance")]
+    [Description("Determines whether the list headers and the additional column sets will be rendered if no data is provided (edit mode only).")]
+    [DefaultValue(true)]
     public virtual bool ShowEmptyListEditMode
     {
       get { return _showEmptyListEditMode; }
@@ -3205,9 +3205,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (read-only mode only).
     /// </summary>
     /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
-    [Category ("Menu")]
-    [Description ("Determines whether the options and list menus will be rendered if no data is provided (read-only mode only).")]
-    [DefaultValue (false)]
+    [Category("Menu")]
+    [Description("Determines whether the options and list menus will be rendered if no data is provided (read-only mode only).")]
+    [DefaultValue(false)]
     public virtual bool ShowMenuForEmptyListReadOnlyMode
     {
       get { return _showMenuForEmptyListReadOnlyMode; }
@@ -3219,9 +3219,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (edit mode only).
     /// </summary>
     /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
-    [Category ("Menu")]
-    [Description ("Determines whether the options and list menus will be rendered if no data is provided (edit mode only).")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Determines whether the options and list menus will be rendered if no data is provided (edit mode only).")]
+    [DefaultValue(true)]
     public virtual bool ShowMenuForEmptyListEditMode
     {
       get { return _showMenuForEmptyListEditMode; }
@@ -3233,9 +3233,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   for each property of the bound object.
     /// </summary>
     /// <value> <see langword="true"/> show all properties of the bound business object. </value>
-    [Category ("Appearance")]
-    [Description ("Indicates whether the control automatically generates a column for each property of the bound object.")]
-    [DefaultValue (false)]
+    [Category("Appearance")]
+    [Description("Indicates whether the control automatically generates a column for each property of the bound object.")]
+    [DefaultValue(false)]
     public virtual bool ShowAllProperties
     {
       get { return _showAllProperties; }
@@ -3247,9 +3247,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   column.
     /// </summary>
     /// <value> <see langword="true"/> to enable the icon. </value>
-    [Category ("Appearance")]
-    [Description ("Enables the icon in front of the first value column.")]
-    [DefaultValue (true)]
+    [Category("Appearance")]
+    [Description("Enables the icon in front of the first value column.")]
+    [DefaultValue(true)]
     public virtual bool EnableIcon
     {
       get { return _enableIcon; }
@@ -3260,9 +3260,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to to enable cleint side sorting.
     /// </summary>
     /// <value> <see langword="true"/> to enable the sorting buttons. </value>
-    [Category ("Behavior")]
-    [Description ("Enables the sorting button in front of each value column's header.")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description("Enables the sorting button in front of each value column's header.")]
+    [DefaultValue(true)]
     public virtual bool EnableSorting
     {
       get { return _enableSorting; }
@@ -3290,9 +3290,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="NaBooleanEnum.True"/> to show the sorting order index after the button. 
     ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
     /// </value>
-    [Category ("Appearance")]
-    [Description ("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
-    [DefaultValue (typeof(bool?), "")]
+    [Category("Appearance")]
+    [Description("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
+    [DefaultValue(typeof(bool?), "")]
     public virtual bool? ShowSortingOrder
     {
       get { return _showSortingOrder; }
@@ -3309,9 +3309,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsShowSortingOrderEnabled; }
     }
 
-    [Category ("Behavior")]
-    [Description ("Enables sorting by multiple columns. Undefined is interpreted as true.")]
-    [DefaultValue (typeof(bool?), "")]
+    [Category("Behavior")]
+    [Description("Enables sorting by multiple columns. Undefined is interpreted as true.")]
+    [DefaultValue(typeof(bool?), "")]
     public virtual bool? EnableMultipleSorting
     {
       get { return _enableMultipleSorting; }
@@ -3337,9 +3337,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to display the options menu.
     /// </summary>
     /// <value> <see langword="true"/> to show the options menu. </value>
-    [Category ("Menu")]
-    [Description ("Enables the options menu.")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Enables the options menu.")]
+    [DefaultValue(true)]
     public virtual bool ShowOptionsMenu
     {
       get { return _showOptionsMenu; }
@@ -3350,9 +3350,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to display the list menu.
     /// </summary>
     /// <value> <see langword="true"/> to show the list menu. </value>
-    [Category ("Menu")]
-    [Description ("Enables the list menu.")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Enables the list menu.")]
+    [DefaultValue(true)]
     public virtual bool ShowListMenu
     {
       get { return _showListMenu; }
@@ -3361,9 +3361,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a value that determines if the row menu is being displayed. </summary>
     /// <value> <see cref="Controls.RowMenuDisplay.Undefined"/> is interpreted as <see cref="Controls.RowMenuDisplay.Disabled"/>. </value>
-    [Category ("Menu")]
-    [Description ("Enables the row menu. Undefined is interpreted as Disabled.")]
-    [DefaultValue (RowMenuDisplay.Undefined)]
+    [Category("Menu")]
+    [Description("Enables the row menu. Undefined is interpreted as Disabled.")]
+    [DefaultValue(RowMenuDisplay.Undefined)]
     public RowMenuDisplay RowMenuDisplay
     {
       get { return _rowMenuDisplay; }
@@ -3377,9 +3377,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   If row selection is enabled, the control displays a checkbox in front of each row
     ///   and highlights selected data rows.
     /// </remarks>
-    [Category ("Behavior")]
-    [Description ("Indicates whether row selection is enabled.")]
-    [DefaultValue (RowSelection.Undefined)]
+    [Category("Behavior")]
+    [Description("Indicates whether row selection is enabled.")]
+    [DefaultValue(RowSelection.Undefined)]
     public virtual RowSelection Selection
     {
       get { return _selection; }
@@ -3398,9 +3398,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Defaults to <see cref="RowIndex.Undefined"/>, which is interpreted as <see langword="RowIndex.Disabled"/>.
     /// </value>
     /// <remarks> If row selection is enabled, the control displays an index in front of each row. </remarks>
-    [Category ("Appearance")]
-    [Description ("Indicates whether the row index is enabled. Undefined is interpreted as Disabled.")]
-    [DefaultValue (RowIndex.Undefined)]
+    [Category("Appearance")]
+    [Description("Indicates whether the row index is enabled. Undefined is interpreted as Disabled.")]
+    [DefaultValue(RowIndex.Undefined)]
     public virtual RowIndex Index
     {
       get { return _index; }
@@ -3419,9 +3419,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the offset for the rendered index. </summary>
     /// <value> Defaults to <see langword="null"/>. </value>
-    [Category ("Appearance")]
-    [Description ("The offset for the rendered index.")]
-    [DefaultValue (typeof(int?), "")]
+    [Category("Appearance")]
+    [Description("The offset for the rendered index.")]
+    [DefaultValue(typeof(int?), "")]
     public int? IndexOffset
     {
       get { return _indexOffset; }
@@ -3431,9 +3431,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    [Category ("Appearance")]
-    [Description ("The text that is displayed in the index column's title row. The value will not be HTML encoded.")]
-    [DefaultValue (null)]
+    [Category("Appearance")]
+    [Description("The text that is displayed in the index column's title row. The value will not be HTML encoded.")]
+    [DefaultValue(null)]
     public string? IndexColumnTitle
     {
       get { return _indexColumnTitle; }
@@ -3457,9 +3457,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   An integer greater than zero to limit the number of rows per page to the specified value,
     ///   or zero, less than zero or <see langword="null"/> to show all rows.
     /// </value>
-    [Category ("Appearance")]
-    [Description ("The number of rows displayed per page. Set PageSize to null/0 to show all rows.")]
-    [DefaultValue (typeof(int?), "")]
+    [Category("Appearance")]
+    [Description("The number of rows displayed per page. Set PageSize to null/0 to show all rows.")]
+    [DefaultValue(typeof(int?), "")]
     public virtual int? PageSize
     {
       get { return _pageSize; }
@@ -3476,8 +3476,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [MemberNotNullWhen (true, nameof(_pageSize))]
-    [MemberNotNullWhen (true, nameof(PageSize))]
+    [MemberNotNullWhen(true, nameof(_pageSize))]
+    [MemberNotNullWhen(true, nameof(PageSize))]
     protected bool IsPagingEnabled
     {
       get { return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && _pageSize != null && _pageSize.Value != 0; }
@@ -3496,9 +3496,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="true"/> to force showing the page info, even if the rows fit onto a single 
     ///   page.
     /// </value>
-    [Category ("Behavior")]
-    [Description ("Indicates whether to the show the page count even when there is just one page.")]
-    [DefaultValue (false)]
+    [Category("Behavior")]
+    [Description("Indicates whether to the show the page count even when there is just one page.")]
+    [DefaultValue(false)]
     public bool AlwaysShowPageInfo
     {
       get { return _alwaysShowPageInfo; }
@@ -3507,9 +3507,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    [Category ("Appearance")]
-    [Description ("The text if the list is empty. The value will not be HTML encoded.")]
-    [DefaultValue (null)]
+    [Category("Appearance")]
+    [Description("The text if the list is empty. The value will not be HTML encoded.")]
+    [DefaultValue(null)]
     public string? EmptyListMessage
     {
       get { return _emptyListMessage; }
@@ -3517,9 +3517,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag whether to render the <see cref="EmptyListMessage"/>. </summary>
-    [Category ("Appearance")]
-    [Description ("A flag that determines whether the EmpryListMessage is rendered.")]
-    [DefaultValue (false)]
+    [Category("Appearance")]
+    [Description("A flag that determines whether the EmpryListMessage is rendered.")]
+    [DefaultValue(false)]
     public bool ShowEmptyListMessage
     {
       get { return _showEmptyListMessage; }
@@ -3529,9 +3529,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
     /// <remarks> Effects only advanced scripts used for selcting data rows. </remarks>
     /// <value> <see langref="true"/> to enable the client script. </value>
-    [Category ("Behavior")]
-    [Description (" True to enable the client script for BocList features. ")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description(" True to enable the client script for BocList features. ")]
+    [DefaultValue(true)]
     public bool EnableClientScript
     {
       get { return _enableClientScript; }
@@ -3539,8 +3539,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised when a column type <see cref="BocCustomColumnDefinition"/> is clicked on. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a custom column is clicked on.")]
+    [Category("Action")]
+    [Description("Occurs when a custom column is clicked on.")]
     public event BocCustomCellClickEventHandler CustomCellClick
     {
       add { Events.AddHandler(s_customCellClickEvent, value); }
@@ -3548,8 +3548,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised when a column with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a column with a command of type Event is clicked inside an column.")]
+    [Category("Action")]
+    [Description("Occurs when a column with a command of type Event is clicked inside an column.")]
     public event BocListItemCommandClickEventHandler ListItemCommandClick
     {
       add { Events.AddHandler(s_listItemCommandClickEvent, value); }
@@ -3557,8 +3557,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Is raised when a menu item with a command of type Event is clicked.")]
+    [Category("Action")]
+    [Description("Is raised when a menu item with a command of type Event is clicked.")]
     public event WebMenuItemClickEventHandler MenuItemClick
     {
       add { Events.AddHandler(s_menuItemClickEvent, value); }
@@ -3566,46 +3566,46 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Menu")]
-    [Description ("The menu items displayed by options menu.")]
-    [DefaultValue ((string?)null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Menu")]
+    [Description("The menu items displayed by options menu.")]
+    [DefaultValue((string?)null)]
     public WebMenuItemCollection OptionsMenuItems
     {
       get { return _optionsMenu.MenuItems; }
     }
 
     /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s menu area. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Menu")]
-    [Description ("The menu items displayed in the list's menu area.")]
-    [DefaultValue ((string?)null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Menu")]
+    [Description("The menu items displayed in the list's menu area.")]
+    [DefaultValue((string?)null)]
     public WebMenuItemCollection ListMenuItems
     {
       get { return _listMenu.MenuItems; }
     }
 
     /// <inheritdoc />
-    [Category ("Menu")]
-    [Description ("The minimum width reserved for the menu block.")]
-    [DefaultValue (typeof(Unit), "")]
+    [Category("Menu")]
+    [Description("The minimum width reserved for the menu block.")]
+    [DefaultValue(typeof(Unit), "")]
     public Unit MenuBlockMinWidth { get; set; }
 
     /// <inheritdoc />
-    [Category ("Menu")]
-    [Description ("The maximum width reserved for the menu block.")]
-    [DefaultValue (typeof(Unit), "")]
+    [Category("Menu")]
+    [Description("The maximum width reserved for the menu block.")]
+    [DefaultValue(typeof(Unit), "")]
     public Unit MenuBlockMaxWidth { get; set; }
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>
     /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
-    [Category ("Menu")]
-    [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-    [DefaultValue ((string?)null)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [TypeConverter (typeof(StringArrayConverter))]
+    [Category("Menu")]
+    [Description("The list of menu items to be hidden, identified by their ItemIDs.")]
+    [DefaultValue((string?)null)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [TypeConverter(typeof(StringArrayConverter))]
     public string[] HiddenMenuItems
     {
       get
@@ -3621,9 +3621,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a value that indicates whether the control displays a drop down list 
     ///   containing the available column definition sets.
     /// </summary>
-    [Category ("Menu")]
-    [Description ("Indicates whether the control displays a drop down list containing the available views.")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Indicates whether the control displays a drop down list containing the available views.")]
+    [DefaultValue(true)]
     public bool ShowAvailableViewsList
     {
       get { return _showAvailableViewsList; }
@@ -3632,9 +3632,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    [Category ("Menu")]
-    [Description ("The text that is rendered as a title for the list of available views. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
+    [Category("Menu")]
+    [Description("The text that is rendered as a title for the list of available views. The value will not be HTML encoded.")]
+    [DefaultValue("")]
     public string? AvailableViewsListTitle
     {
       get { return _availableViewsListTitle; }
@@ -3642,9 +3642,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
-    [Category ("Menu")]
-    [Description ("The text that is rendered as a label for the options menu.")]
-    [DefaultValue ("")]
+    [Category("Menu")]
+    [Description("The text that is rendered as a label for the options menu.")]
+    [DefaultValue("")]
     public string? OptionsTitle
     {
       get { return _optionsTitle; }
@@ -3652,9 +3652,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the rendering option for the <c>list menu</c>. </summary>
-    [Category ("Menu")]
-    [Description ("Defines how the items will be rendered.")]
-    [DefaultValue (ListMenuLineBreaks.All)]
+    [Category("Menu")]
+    [Description("Defines how the items will be rendered.")]
+    [DefaultValue(ListMenuLineBreaks.All)]
     public ListMenuLineBreaks ListMenuLineBreaks
     {
       get { return _listMenu.LineBreaks; }
@@ -3666,9 +3666,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }
@@ -3679,17 +3679,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Category ("Behavior")]
-    [DefaultValue ("")]
+    [Category("Behavior")]
+    [DefaultValue("")]
     public string? ControlServicePath
     {
       get { return _controlServicePath; }
       set { _controlServicePath = value ?? string.Empty; }
     }
 
-    [Category ("Behavior")]
-    [DefaultValue ("")]
-    [Description ("Additional arguments passed to the control service.")]
+    [Category("Behavior")]
+    [DefaultValue("")]
+    [Description("Additional arguments passed to the control service.")]
     public string? ControlServiceArguments
     {
       get { return _controlServiceArguments; }

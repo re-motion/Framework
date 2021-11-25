@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [Ignore ("TODO RM-4105: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4105: Extend fallback behavior to include property type.")]
     public void WithoutSearchServiceAttribute_AndDefaultSearchService_FromPropertyType ()
     {
       var searchAvailableObjectsServiceMock = new Mock<ISearchAvailableObjectsService>(MockBehavior.Strict);
@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [Ignore ("TODO RM-4105: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4105: Extend fallback behavior to include property type.")]
     public void WithoutSearchServiceAttribute_AndNoDefaultSearchService_FromPropertyType ()
     {
       var businessObjectClassServiceMock = new Mock<IBusinessObjectClassService>(MockBehavior.Strict);

@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return (ButtonType)Enum.Parse(typeof(ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
     }
 
-    [Obsolete ("Use IsDisabled instead. (Version 1.17.5)")]
+    [Obsolete("Use IsDisabled instead. (Version 1.17.5)")]
     public bool IsEnabled ()
     {
       return !IsDisabled();

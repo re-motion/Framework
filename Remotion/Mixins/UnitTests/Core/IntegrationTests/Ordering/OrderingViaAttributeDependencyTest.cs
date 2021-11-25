@@ -46,7 +46,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       public string Method1 () { return "MixinA.Method1 - " + Next.Method1(); }
     }
 
-    [Extends (typeof(C), AdditionalDependencies = new[] { typeof(MixinA) })]
+    [Extends(typeof(C), AdditionalDependencies = new[] { typeof(MixinA) })]
     public class MixinB : Mixin<object, IC>
     {
       [OverrideTarget]

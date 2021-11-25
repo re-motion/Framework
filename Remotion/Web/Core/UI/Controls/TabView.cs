@@ -20,9 +20,9 @@ using System.Web.UI;
 
 namespace Remotion.Web.UI.Controls
 {
-  [PersistChildren (true)]
-  [ParseChildren (true, "LazyControls")]
-  [ToolboxData ("<{0}:TabView runat=\"server\"></{0}:TabView>")]
+  [PersistChildren(true)]
+  [ParseChildren(true, "LazyControls")]
+  [ToolboxData("<{0}:TabView runat=\"server\"></{0}:TabView>")]
   public class TabView : System.Web.UI.WebControls.View
   {
     //  constants
@@ -57,8 +57,8 @@ namespace Remotion.Web.UI.Controls
 
     #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    [Obsolete ("Use LazyControls instead", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Use LazyControls instead", true)]
     public override ControlCollection Controls
     {
       get
@@ -70,8 +70,8 @@ namespace Remotion.Web.UI.Controls
 
 		#pragma warning restore 809
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public ControlCollection LazyControls
     {
       get
@@ -87,9 +87,9 @@ namespace Remotion.Web.UI.Controls
       _lazyContainer.Ensure();
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public bool IsLazyLoadingEnabled
     {
       get { return _lazyContainer.IsLazyLoadingEnabled; }
@@ -110,10 +110,10 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the title displayed in the tab for this view. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The title displayed in this view's tab.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The title displayed in this view's tab.")]
+    [NotifyParentProperty(true)]
     public virtual string? Title
     {
       get { return _title; }
@@ -121,11 +121,11 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the icon displayed in the tab for this view. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The icon displayed in this view's tab.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The icon displayed in this view's tab.")]
+    [NotifyParentProperty(true)]
     public virtual IconInfo Icon
     {
       get { return _icon; }
@@ -172,7 +172,7 @@ namespace Remotion.Web.UI.Controls
   }
 
 
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public class EmptyTabView : TabView
   {
     public EmptyTabView ()

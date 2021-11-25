@@ -23,7 +23,7 @@ namespace Remotion.Validation.Attributes.Validation
   /// Apply the <see cref="RemoveValidatorAttribute"/> to remove a validator introduced to the property via its base type. For instance, this can be used to 
   /// redefine the length contraint for a property in a derived type.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property)]
+  [AttributeUsage(AttributeTargets.Property)]
   public class RemoveValidatorAttribute : Attribute
   {
     private readonly Type _validatorType;

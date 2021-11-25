@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain
 {
-  [Extends (typeof(ClassWithMixins), SuppressedMixins = new[] { typeof(GenericMixinWithSpecialization<List<int>, IList<int>>) })]
+  [Extends(typeof(ClassWithMixins), SuppressedMixins = new[] { typeof(GenericMixinWithSpecialization<List<int>, IList<int>>) })]
   [IgnoreForMixinConfiguration]
   public class MixinSuppressingClosedGenericMixin
   {

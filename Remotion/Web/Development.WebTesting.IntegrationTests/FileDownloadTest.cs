@@ -136,7 +136,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void TestDownloadOpensInNewWindow_DownloadTimeoutExceeded_WithUnknownFileName ()
     {
       var downloadStartedTimout = TimeSpan.FromSeconds(10);
@@ -172,7 +172,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void TestDownloadOpensInNewWindow_DownloadTimeoutExceeded ()
     {
       var downloadStartedTimeout = TimeSpan.FromSeconds(10);

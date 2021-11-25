@@ -32,28 +32,28 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     {
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public SampleObject InParameter
     {
       get { return (SampleObject)Variables["InParameter"]; }
       set { Variables["InParameter"] = value; }
     }
 
-    [WxeParameter (2, false, WxeParameterDirection.In)]
+    [WxeParameter(2, false, WxeParameterDirection.In)]
     public SampleObject[] InParameterArray
     {
       get { return (SampleObject[])Variables["InParameterArray"]; }
       set { Variables["InParameterArray"] = value; }
     }
 
-    [WxeParameter (3, false, WxeParameterDirection.Out)]
+    [WxeParameter(3, false, WxeParameterDirection.Out)]
     public SampleObject OutParameter
     {
       get { return (SampleObject)Variables["OutParameter"]; }
       set { Variables["OutParameter"] = value; }
     }
 
-    [WxeParameter (4, false, WxeParameterDirection.Out)]
+    [WxeParameter(4, false, WxeParameterDirection.Out)]
     public SampleObject[] OutParameterArray
     {
       get { return (SampleObject[])Variables["OutParameterArray"]; }

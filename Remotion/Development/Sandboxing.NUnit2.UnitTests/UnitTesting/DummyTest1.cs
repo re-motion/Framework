@@ -52,7 +52,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     }
 
     [Test]
-    [Ignore ("Ignored test")]
+    [Ignore("Ignored test")]
     public void IgnoreTest ()
     {
       Assert.Fail("IgnoredTest");

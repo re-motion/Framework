@@ -28,11 +28,11 @@ using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  [TypeConverter (typeof(ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class BocCommand : Command
   {
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class BocHrefCommandInfo : HrefCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       /// <value> 
       ///   The URL to link to when the rendered command is clicked. The default value is an empty <see cref="String"/>. 
       /// </value>
-      [Description ("The hyperlink reference of the command. Use {0} to insert the Business Object's ID.")]
+      [Description("The hyperlink reference of the command. Use {0} to insert the Business Object's ID.")]
       public override string Href
       {
         get { return base.Href; }
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class BocWxeFunctionCommandInfo : WxeFunctionCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
       ///   command is clicked. The default value is an empty <see cref="String"/>. 
       /// </value>
-      [Description (
+      [Description(
           "A comma separated list of parameters for the command. The following reference parameters are available: id, object, parent, parentproperty."
           )]
       public override string Parameters
@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public new BocCommandClickEventHandler? Click;
 
     private bool _hasClickFired;
@@ -229,8 +229,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public new IBusinessObjectBoundWebControl? OwnerControl
     {
       get { return (IBusinessObjectBoundWebControl?)base.OwnerControlImplementation; }

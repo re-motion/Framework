@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> Validates a <see cref="BocDateTimeValue"/> control. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValueValidatorBase.xml' path='BocDateTimeValueValidatorBase/Class/*' />
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public abstract class BocDateTimeValueValidatorBase : BaseValidator
   {
     protected abstract void RefreshBaseErrorMessage ();
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the text for the error message. </summary>
     /// <remarks> Will be set to one of the more specific error messages, if they are provided. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     [AllowNull]
     public new string ErrorMessage
     {

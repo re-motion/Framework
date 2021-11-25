@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
   [BindableDomainObject]
   [Instantiable]
   [DBTable]
-  [Uses (typeof(BindableSecurableObjectMixin))]
+  [Uses(typeof(BindableSecurableObjectMixin))]
   public abstract class BindableSecurableObject : DomainObject, ISecurableObject, ISecurityContextFactory
   {
     public static BindableSecurableObject NewObject (ClientTransaction clientTransaction, IObjectSecurityStrategy securityStrategy)
@@ -75,24 +75,24 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     public abstract string OtherStringProperty { get; set; }
 
-    [DBBidirectionalRelation ("Children")]
+    [DBBidirectionalRelation("Children")]
     public abstract BindableSecurableObject Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<BindableSecurableObject> Children { get; /*no setter*/ }
 
-    [DBBidirectionalRelation ("OtherChildren")]
+    [DBBidirectionalRelation("OtherChildren")]
     public abstract BindableSecurableObject OtherParent { get; set; }
 
-    [DBBidirectionalRelation ("OtherParent")]
+    [DBBidirectionalRelation("OtherParent")]
     public abstract ObjectList<BindableSecurableObject> OtherChildren { get; }
 
     public abstract string PropertyWithDefaultPermission { get; set; }
 
     public abstract string PropertyWithCustomPermission
     {
-      [DemandPermission (TestAccessTypes.First)] get;
-      [DemandPermission (TestAccessTypes.Second)] set;
+      [DemandPermission(TestAccessTypes.First)] get;
+      [DemandPermission(TestAccessTypes.Second)] set;
     }
 
     public string ReadOnlyProperty
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
     public virtual string PropertyToOverride
     {
       get { return _propertyToOverride; }
-      [DemandPermission (TestAccessTypes.Second)]
+      [DemandPermission(TestAccessTypes.Second)]
       set { _propertyToOverride = value; }
     }
 

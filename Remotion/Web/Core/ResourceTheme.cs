@@ -29,7 +29,7 @@ namespace Remotion.Web
       }
     }
 
-    [ImplementationFor (typeof(ResourceTheme), Lifetime = LifetimeKind.Singleton)]
+    [ImplementationFor(typeof(ResourceTheme), Lifetime = LifetimeKind.Singleton)]
     public class NovaViso : ResourceTheme
     {
       public NovaViso ()

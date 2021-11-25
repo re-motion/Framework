@@ -57,7 +57,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Ignore ("TODO RM-7961: Test fails because MixinArrayInitializer uses a hardcoded reference to ObjectFactory, which is incompatible with replacing the IoC container.")]
+    [Ignore("TODO RM-7961: Test fails because MixinArrayInitializer uses a hardcoded reference to ObjectFactory, which is incompatible with replacing the IoC container.")]
     [Test]
     public void MixedMixin_Serialization ()
     {
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Assert.That(deserialized.StringMethod(3), Is.EqualTo("MixinMixingMixin-MixinMixingClass-ClassWithMixedMixin.StringMethod (3)"));
     }
 
-    [Ignore ("TODO 5812")]
+    [Ignore("TODO 5812")]
     [Test]
     public void MixedDerivedMixin_Serialization ()
     {

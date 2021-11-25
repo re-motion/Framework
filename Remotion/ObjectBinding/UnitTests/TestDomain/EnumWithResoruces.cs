@@ -19,7 +19,7 @@ using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.EnumWithResources")]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.Globalization.EnumWithResources")]
   public enum EnumWithResources
   {
     Value1 = 1,

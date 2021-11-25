@@ -125,7 +125,7 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Processes the requests associated with the <see cref="WxeHandler"/>. </summary>
     /// <param name="context"> The <see cref="HttpContext"/> of the request. Must not be <see langword="null"/>. </param>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual void ProcessRequest (HttpContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);

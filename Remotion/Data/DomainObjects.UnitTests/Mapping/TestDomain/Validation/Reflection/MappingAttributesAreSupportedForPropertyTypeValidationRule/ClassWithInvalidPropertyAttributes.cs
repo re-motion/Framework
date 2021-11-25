@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Re
     [Mandatory]
     public string StringPropertyWithMandatoryPropertyAttribute { get; set; }
 
-    [DBBidirectionalRelation ("Property")]
+    [DBBidirectionalRelation("Property")]
     public string StringPropertyWithBidirectionalRelationAttribute { get; set; }
   }
 }

@@ -72,7 +72,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       Assert.That(hasAccess, Is.False);
     }
 
-    [DemandTargetWxeFunctionPermission (typeof(TestFunctionWithThisObject))]
+    [DemandTargetWxeFunctionPermission(typeof(TestFunctionWithThisObject))]
     private void TestEventHandler (object sender, EventArgs args)
     {
     }

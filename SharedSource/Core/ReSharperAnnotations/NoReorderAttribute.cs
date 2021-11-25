@@ -71,7 +71,7 @@ namespace JetBrains.Annotations
   /// <remarks>
   /// The attribute must be mentioned in your member reordering patterns
   /// </remarks>
-  [AttributeUsage (
+  [AttributeUsage(
       AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Enum)]
   sealed partial class NoReorderAttribute : Attribute
   {

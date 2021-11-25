@@ -26,7 +26,7 @@ namespace Remotion.Validation.MetaValidation
   /// <summary>
   /// Default implementation of the <see cref="IPropertyMetaValidationRuleValidatorFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof(IPropertyMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPropertyMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
   public class PropertyMetaValidationRuleValidatorFactory : IPropertyMetaValidationRuleValidatorFactory
   {
     private readonly ISystemPropertyMetaValidationRuleProviderFactory _systemPropertyMetaValidationRuleProviderFactory;

@@ -23,22 +23,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Re
   {
     public string PropertyWithNoDbBidirectionalRelationAttribute { get; set; }
 
-    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("OppositeProperty", ContainsForeignKey = true)]
     public string NoCollectionProperty_ContainsForeignKey { get; set; }
 
-    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("OppositeProperty", ContainsForeignKey = true)]
     public ObjectList<OtherDerivedValidationHierarchyClass> DomainObjectCollectionProperty_ContainsForeignKey { get; set; }
 
-    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("OppositeProperty", ContainsForeignKey = true)]
     public IObjectList<OtherDerivedValidationHierarchyClass> VirtualCollectionProperty_ContainsForeignKey { get; set; }
 
-    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("OppositeProperty", ContainsForeignKey = false)]
     public string NoCollectionProperty_ContainsNoForeignKey { get; set; }
 
-    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("OppositeProperty", ContainsForeignKey = false)]
     public ObjectList<OtherDerivedValidationHierarchyClass> DomainObjectCollectionProperty_ContainsNoForeignKey { get; set; }
 
-    [DBBidirectionalRelation ("OppositeProperty", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("OppositeProperty", ContainsForeignKey = false)]
     public ObjectList<OtherDerivedValidationHierarchyClass> VirtualCollectionProperty_ContainsNoForeignKey { get; set; }
   }
 }

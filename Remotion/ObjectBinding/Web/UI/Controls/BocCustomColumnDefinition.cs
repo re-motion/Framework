@@ -55,8 +55,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the <see cref="BocCustomColumnDefinitionCell"/> to be used for rendering. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocCustomColumnDefinitionCell CustomCell
     {
       get
@@ -83,11 +83,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Format")]
-    [Description ("The BocCustomColumnDefinitionCell to be used for rendering.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Format")]
+    [Description("The BocCustomColumnDefinitionCell to be used for rendering.")]
     //  No default value
-    [NotifyParentProperty (true)]
+    [NotifyParentProperty(true)]
     public string CustomCellType
     {
       get { return _customCellType; }
@@ -98,11 +98,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the comma seperated name/value pairs to set the <see cref="BocCustomColumnDefinitionCell"/>'s 
     ///   properties. 
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Format")]
-    [Description ("The comma seperated name/value pairs to set the BocCustomColumnDefinitionCell's properties (property=value).")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Format")]
+    [Description("The comma seperated name/value pairs to set the BocCustomColumnDefinitionCell's properties (property=value).")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string CustomCellArgument
     {
       get { return _customCellArgument; }
@@ -120,8 +120,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _propertyPathBinding.SetPropertyPath(propertyPath);
     }
 
-    [DefaultValue (false)]
-    [Category ("Data")]
+    [DefaultValue(false)]
+    [Category("Data")]
     public bool IsDynamic
     {
       get { return _propertyPathBinding.IsDynamic; }
@@ -133,11 +133,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Must not be <see langword="null"/> or emtpy.
     /// </summary>
     /// <value> A <see cref="string"/> representing the <see cref="IBusinessObjectPropertyPath"/>. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("The string representation of the Property Path. Must not be emtpy.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("The string representation of the Property Path. Must not be emtpy.")]
     //  No default value
-    [NotifyParentProperty (true)]
+    [NotifyParentProperty(true)]
     public string? PropertyPathIdentifier
     {
       get { return _propertyPathBinding.PropertyPathIdentifier; }
@@ -146,11 +146,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Gets or sets a flag that determines whether to enable sorting for this columns. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("A flag determining whether to enable sorting for this columns.")]
-    [DefaultValue (false)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to enable sorting for this columns.")]
+    [DefaultValue(false)]
+    [NotifyParentProperty(true)]
     public bool IsSortable
     {
       get { return _isSortable; }
@@ -160,11 +160,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> 
     ///   Gets or sets the <see cref="BocCustomColumnDefinitionMode"/> that determines how the cells are rendered.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("Determines how the cells are rendered.")]
-    [DefaultValue (BocCustomColumnDefinitionMode.NoControls)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("Determines how the cells are rendered.")]
+    [DefaultValue(BocCustomColumnDefinitionMode.NoControls)]
+    [NotifyParentProperty(true)]
     public BocCustomColumnDefinitionMode Mode
     {
       get { return _mode; }

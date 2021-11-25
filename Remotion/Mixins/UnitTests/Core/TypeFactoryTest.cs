@@ -71,7 +71,7 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That(mixin.Target, Is.SameAs(target), "Mixin must have been initialized");
     }
 
-    [Uses (typeof(DeserializationMixin))]
+    [Uses(typeof(DeserializationMixin))]
     [Serializable]
     public class TargetType { }
 

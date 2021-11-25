@@ -76,8 +76,8 @@ namespace JetBrains.Annotations
   /// [Component] // ComponentAttribute requires implementing IComponent interface
   /// class MyComponent : IComponent { }
   /// </code></example>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true)]
-  [BaseTypeRequired (typeof(Attribute))]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+  [BaseTypeRequired(typeof(Attribute))]
   sealed partial class BaseTypeRequiredAttribute : Attribute
   {
     public BaseTypeRequiredAttribute ([NotNull] Type baseType)

@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>Returns the property name scoped for a specific <paramref name="originalDeclaringType"/>.</summary>
-    [Obsolete ("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).", true)]
+    [Obsolete("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).", true)]
     public static string GetPropertyName (Type originalDeclaringType, string propertyName)
     {
       throw new NotSupportedException("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).");

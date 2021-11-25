@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     {
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public IDomainObjectHandle<SampleObject> InParameter
     {
       get { return (IDomainObjectHandle<SampleObject>)Variables["InParameter"]; }
       set { Variables["InParameter"] = value; }
     }
 
-    [WxeParameter (2, false, WxeParameterDirection.Out)]
+    [WxeParameter(2, false, WxeParameterDirection.Out)]
     public IDomainObjectHandle<SampleObject> OutParameter
     {
       get { return (IDomainObjectHandle<SampleObject>)Variables["OutParameter"]; }

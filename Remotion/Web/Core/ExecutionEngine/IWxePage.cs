@@ -108,7 +108,7 @@ namespace Remotion.Web.ExecutionEngine
     string GetPermanentUrl (Type functionType, NameValueCollection queryString);
 
     /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     WxeHandler WxeHandler { get; }
   }
 }

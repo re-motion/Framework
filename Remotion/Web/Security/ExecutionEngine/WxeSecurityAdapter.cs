@@ -22,7 +22,7 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Security.ExecutionEngine
 {
-  [ImplementationFor (typeof(IWxeSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IWxeSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class WxeSecurityAdapter : IWxeSecurityAdapter
   {
     // types

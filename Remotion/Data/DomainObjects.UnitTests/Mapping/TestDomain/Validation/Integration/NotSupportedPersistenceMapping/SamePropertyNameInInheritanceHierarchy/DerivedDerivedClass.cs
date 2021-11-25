@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping.
     SamePropertyNameInInheritanceHierarchy
 {
-  [ClassID ("SamePropertyNameInInheritanceHierarchy_DerivedDerivedClass")]
+  [ClassID("SamePropertyNameInInheritanceHierarchy_DerivedDerivedClass")]
   public class DerivedDerivedClass : DerivedClass
   {
     public new string DuplicatedPropertyInTree { get; set; }

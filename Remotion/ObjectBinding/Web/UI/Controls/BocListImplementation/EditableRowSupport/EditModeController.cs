@@ -29,7 +29,7 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public class EditModeController : PlaceHolder, IEditModeController
   {
     // types

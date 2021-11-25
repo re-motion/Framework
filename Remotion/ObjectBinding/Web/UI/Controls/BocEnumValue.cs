@@ -39,9 +39,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit enumeration values. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
-  [ValidationProperty ("Value")]
-  [DefaultEvent ("SelectionChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("Value")]
+  [DefaultEvent("SelectionChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocEnumValue : BusinessObjectBoundEditableWebControl, IBocEnumValue, IPostBackDataHandler, IFocusableControl
   {
     // constants
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocEnumValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocEnumValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The text rendered for the null item in the list. </summary>
@@ -197,7 +197,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return false;
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");
@@ -275,8 +275,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> This event is fired when the selection is changed between postbacks. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value of the control has changed.")]
+    [Category("Action")]
+    [Description("Fires when the value of the control has changed.")]
     public event EventHandler SelectionChanged
     {
       add { Events.AddHandler(s_selectionChangedEvent, value); }
@@ -285,8 +285,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectEnumerationProperty"/> object this control is bound to. </summary>
     /// <value> An <see cref="IBusinessObjectEnumerationProperty"/> object. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectEnumerationProperty? Property
     {
       get { return (IBusinessObjectEnumerationProperty?)base.Property; }
@@ -295,7 +295,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the current value. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Value/*' />
-    [Browsable (false)]
+    [Browsable(false)]
     public new object? Value
     {
       get
@@ -430,8 +430,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the list control if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
@@ -447,11 +447,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   attributes (Bold, Italic etc.) to <see langword="true"/>, this cannot be overridden using 
     ///   <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/>  properties.
     /// </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the ListControl (edit mode) and the Label (read-only mode).")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the ListControl (edit mode) and the Label (read-only mode).")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style CommonStyle
     {
       get { return _commonStyle; }
@@ -459,11 +459,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="ListControl"/> (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the ListControl (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the ListControl (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public ListControlStyle ListControlStyle
     {
       get { return _listControlStyle; }
@@ -471,11 +471,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the Label (read-only mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the Label (read-only mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style LabelStyle
     {
       get { return _labelStyle; }
@@ -486,9 +486,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed for the undefined item.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed for the undefined item.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string UndefinedItemText
     {
       get { return _undefinedItemText; }
@@ -500,9 +500,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }
@@ -513,7 +513,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public string NullIdentifier
     {
       get { return c_nullIdentifier; }

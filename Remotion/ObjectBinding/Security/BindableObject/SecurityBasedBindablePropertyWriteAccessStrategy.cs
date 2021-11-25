@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Security.BindableObject
   /// Checks if the current <see cref="ISecurityPrincipal"/> can access the property's setter.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IBindablePropertyWriteAccessStrategy),
+  [ImplementationFor(typeof(IBindablePropertyWriteAccessStrategy),
       Lifetime = LifetimeKind.Singleton,
       RegistrationType = RegistrationType.Multiple,
       Position = Position)]
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Security.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        [MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);

@@ -19,10 +19,10 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests.Mixins.IntroducedRelations
 {
-  [Extends (typeof(Derived))]
+  [Extends(typeof(Derived))]
   public class MixinAddingRelation : DomainObjectMixin<Derived>
   {
-    [DBBidirectionalRelation ("Derived")]
+    [DBBidirectionalRelation("Derived")]
     public virtual RelationTarget RelationTarget
     {
       get { return Properties[typeof(MixinAddingRelation), "RelationTarget"].GetValue<RelationTarget>(); }

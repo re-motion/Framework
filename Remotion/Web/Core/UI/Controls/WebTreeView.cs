@@ -42,8 +42,8 @@ namespace Remotion.Web.UI.Controls
 {
   /// <summary> A tree view. </summary>
   /// <include file='..\..\doc\include\UI\Controls\WebTreeView.xml' path='WebTreeView/Class/*' />
-  [ToolboxData ("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
-  [DefaultEvent ("Click")]
+  [ToolboxData("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
+  [DefaultEvent("Click")]
   public class WebTreeView : WebControl, IWebTreeView, IPostBackEventHandler, IResourceDispatchTarget
   {
     // constants
@@ -87,7 +87,7 @@ namespace Remotion.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Web.Globalization.WebTreeView")]
+    [MultiLingualResources("Remotion.Web.Globalization.WebTreeView")]
     public enum ResourceIdentifier
     {
       /// <summary> Additional text for improved screen reader support in Internet Explorer.</summary>
@@ -1040,22 +1040,22 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Resolves the URLs for the node icons. </summary>
-    [MemberNotNull (nameof(_resolvedNodeIconF))]
-    [MemberNotNull (nameof(_resolvedNodeIconFMinus))]
-    [MemberNotNull (nameof(_resolvedNodeIconFPlus))]
-    [MemberNotNull (nameof(_resolvedNodeIconI))]
-    [MemberNotNull (nameof(_resolvedNodeIconL))]
-    [MemberNotNull (nameof(_resolvedNodeIconLMinus))]
-    [MemberNotNull (nameof(_resolvedNodeIconLPlus))]
-    [MemberNotNull (nameof(_resolvedNodeIconMinus))]
-    [MemberNotNull (nameof(_resolvedNodeIconPlus))]
-    [MemberNotNull (nameof(_resolvedNodeIconR))]
-    [MemberNotNull (nameof(_resolvedNodeIconRMinus))]
-    [MemberNotNull (nameof(_resolvedNodeIconRPlus))]
-    [MemberNotNull (nameof(_resolvedNodeIconT))]
-    [MemberNotNull (nameof(_resolvedNodeIconTMinus))]
-    [MemberNotNull (nameof(_resolvedNodeIconTPlus))]
-    [MemberNotNull (nameof(_resolvedNodeIconWhite))]
+    [MemberNotNull(nameof(_resolvedNodeIconF))]
+    [MemberNotNull(nameof(_resolvedNodeIconFMinus))]
+    [MemberNotNull(nameof(_resolvedNodeIconFPlus))]
+    [MemberNotNull(nameof(_resolvedNodeIconI))]
+    [MemberNotNull(nameof(_resolvedNodeIconL))]
+    [MemberNotNull(nameof(_resolvedNodeIconLMinus))]
+    [MemberNotNull(nameof(_resolvedNodeIconLPlus))]
+    [MemberNotNull(nameof(_resolvedNodeIconMinus))]
+    [MemberNotNull(nameof(_resolvedNodeIconPlus))]
+    [MemberNotNull(nameof(_resolvedNodeIconR))]
+    [MemberNotNull(nameof(_resolvedNodeIconRMinus))]
+    [MemberNotNull(nameof(_resolvedNodeIconRPlus))]
+    [MemberNotNull(nameof(_resolvedNodeIconT))]
+    [MemberNotNull(nameof(_resolvedNodeIconTMinus))]
+    [MemberNotNull(nameof(_resolvedNodeIconTPlus))]
+    [MemberNotNull(nameof(_resolvedNodeIconWhite))]
     private void ResolveNodeIcons ()
     {
       _resolvedNodeIconF = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconF).GetUrl());
@@ -1111,12 +1111,12 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the tree nodes displayed by this tree view. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [MergableProperty (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [MergableProperty(false)]
     //  Default category
-    [Description ("The tree nodes displayed by this tree view.")]
-    [DefaultValue ((string?)null)]
+    [Description("The tree nodes displayed by this tree view.")]
+    [DefaultValue((string?)null)]
     public virtual WebTreeNodeCollection Nodes
     {
       get
@@ -1131,10 +1131,10 @@ namespace Remotion.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to show the top level expander and automatically expand the 
     ///   child nodes if the expander is hidden.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If cleared, the top level expender will be hidden and the child nodes expanded for the top level nodes.")]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If cleared, the top level expender will be hidden and the child nodes expanded for the top level nodes.")]
+    [DefaultValue(true)]
     public bool EnableTopLevelExpander
     {
       get { return _enableTopLevelExpander; }
@@ -1142,10 +1142,10 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to evaluate the child nodes when expanding a tree node. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If set, the child nodes will be evaluated when a node is expanded.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If set, the child nodes will be evaluated when a node is expanded.")]
+    [DefaultValue(false)]
     public bool EnableLookAheadEvaluation
     {
       get { return _enableLookAheadEvaluation; }
@@ -1153,10 +1153,10 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to group the root nodes by their category. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If set, the root nodes will be grouped by their category attribute. The order of the child nodes will remains unchanged.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If set, the root nodes will be grouped by their category attribute. The order of the child nodes will remains unchanged.")]
+    [DefaultValue(false)]
     public bool EnableTopLevelGrouping
     {
       get { return _enableTopLevelGrouping; }
@@ -1166,10 +1166,10 @@ namespace Remotion.Web.UI.Controls
     /// <summary> 
     ///   Gets or sets a flag that determines whether to show scroll bars. Requires also a width for the tree view.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If set, the tree view shows srcoll bars. Requires a witdh in addition to this setting to actually enable the scrollbars.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If set, the tree view shows srcoll bars. Requires a witdh in addition to this setting to actually enable the scrollbars.")]
+    [DefaultValue(false)]
     public bool EnableScrollBars
     {
       get { return _enableScrollBars; }
@@ -1177,10 +1177,10 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to enable word wrapping. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("If set, word wrap will be enabled for the tree node's text.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("If set, word wrap will be enabled for the tree node's text.")]
+    [DefaultValue(false)]
     public bool EnableWordWrap
     {
       get { return _enableWordWrap; }
@@ -1188,10 +1188,10 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to show the connection lines between the nodes. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("If cleared, the tree nodes will not be connected by lines.")]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("If cleared, the tree nodes will not be connected by lines.")]
+    [DefaultValue(true)]
     public bool ShowLines
     {
       get { return _showLines; }
@@ -1205,8 +1205,8 @@ namespace Remotion.Web.UI.Controls
     ///   If cleared, the tree view's owner control will have to save the <see cref="WebTreeNode.IsEvaluated"/> and
     ///   <see cref="WebTreeNode.IsExpanded"/> flags to provide a consistent user expierence.
     /// </remarks>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public bool EnableTreeNodeControlState
     {
       get { return _enableTreeNodeControlState; }
@@ -1217,10 +1217,10 @@ namespace Remotion.Web.UI.Controls
     /// Gets or sets a flag that determines whether the post back from a node click must be executed synchronously when the tree is rendered within 
     /// an <see cref="UpdatePanel"/>.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("True to require a synchronous postback for node clicks within Ajax Update Panels.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("True to require a synchronous postback for node clicks within Ajax Update Panels.")]
+    [DefaultValue(false)]
     public bool RequiresSynchronousPostBack
     {
       get { return _requiresSynchronousPostBack; }
@@ -1228,8 +1228,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Occurs when a node is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a node is clicked.")]
+    [Category("Action")]
+    [Description("Occurs when a node is clicked.")]
     public event WebTreeNodeClickEventHandler Click
     {
       add { Events.AddHandler(s_clickEvent, value); }
@@ -1237,8 +1237,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Occurs when the selected node is changed. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when the selected node is changed.")]
+    [Category("Action")]
+    [Description("Occurs when the selected node is changed.")]
     public event WebTreeNodeEventHandler SelectionChanged
     {
       add { Events.AddHandler(s_selectionChangedEvent, value); }
@@ -1246,8 +1246,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the currently selected tree node. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public WebTreeNode? SelectedNode
     {
       get
@@ -1258,8 +1258,8 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public WebTreeViewMenuItemProvider? MenuItemProvider
     {
       get { return _menuItemProvider; }

@@ -77,11 +77,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="BusinessObjectPropertyPath"/> to be displayed. The indices must match the 
     ///   order of the <see cref="BusinessObjectPropertyPath"/> objects to be formatted.
     /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Format")]
-    [Description ("A format string describing how the values accessed through the Property Path are merged.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Format")]
+    [Description("A format string describing how the values accessed through the Property Path are merged.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string FormatString
     {
       get { return _formatString; }
@@ -93,10 +93,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="GetStringValue"/> to access the values of an <see cref="IBusinessObject"/>.
     /// </summary>
     /// <value> A collection of <see cref="PropertyPathBinding"/> objects. </value>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Category ("Data")]
-    [Description ("The Property Paths used to access the values of Business Object.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Category("Data")]
+    [Description("The Property Paths used to access the values of Business Object.")]
+    [NotifyParentProperty(true)]
     public PropertyPathBindingCollection PropertyPathBindings
     {
       get { return _propertyPathBindings; }
@@ -111,9 +111,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the text displayed in the column title. Must not be empty or <see langword="null"/>. </summary>
     /// <value> A <see cref="string"/> representing the title of this column. </value>
-    [Description ("The assigned value of the column title, must not be empty.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [Description("The assigned value of the column title, must not be empty.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public override string ColumnTitle
     {
       get { return base.ColumnTitle; }

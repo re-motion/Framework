@@ -48,7 +48,7 @@ namespace Remotion.Globalization
     bool TryGetTypeDisplayName (
         [NotNull] ITypeInformation typeInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result);
+        [MaybeNullWhen(false)] out string result);
 
     /// <summary>
     ///   Tries to get the human-readable property name of the spefified reflection object.
@@ -67,7 +67,7 @@ namespace Remotion.Globalization
     bool TryGetPropertyDisplayName (
         [NotNull] IPropertyInformation propertyInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result);
+        [MaybeNullWhen(false)] out string result);
 
     /// <summary>
     /// Returns all human-readable localized representations of the <paramref name="propertyInformation"/>.

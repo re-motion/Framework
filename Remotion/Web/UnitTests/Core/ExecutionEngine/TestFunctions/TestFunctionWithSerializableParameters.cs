@@ -42,21 +42,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     {
     }
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public string StringValue
     {
       get { return (string)Variables["StringValue"]; }
       set { Variables["StringValue"] = value; }
     }
 
-    [WxeParameter (2, true, WxeParameterDirection.In)]
+    [WxeParameter(2, true, WxeParameterDirection.In)]
     public int? NaInt32Value
     {
       get { return (int?)Variables["NaInt32Value"]; }
       set { Variables["NaInt32Value"] = value; }
     }
 
-    [WxeParameter (3, false, WxeParameterDirection.In)]
+    [WxeParameter(3, false, WxeParameterDirection.In)]
     public int IntValue
     {
       get { return (int)Variables["IntValue"]; }

@@ -24,7 +24,7 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 {
-  [PermanentGuid ("C9FC9EC0-9F41-4636-9A4C-4927A9B47E85")]
+  [PermanentGuid("C9FC9EC0-9F41-4636-9A4C-4927A9B47E85")]
   public abstract class BaseSecurableObject : BaseObject, ISecurableObject, ISecurityContextFactory
   {
     private IObjectSecurityStrategy _objectSecurityStrategy;

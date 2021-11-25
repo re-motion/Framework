@@ -108,7 +108,7 @@ namespace Remotion.Collections.DataStore
       return value;
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.CheckNotNull("key", key);
 

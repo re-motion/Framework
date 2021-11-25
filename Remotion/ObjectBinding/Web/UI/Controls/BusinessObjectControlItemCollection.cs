@@ -29,8 +29,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public new IBusinessObjectBoundWebControl? OwnerControl
     {
       get { return (IBusinessObjectBoundWebControl?)base.OwnerControl; }
@@ -54,8 +54,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this item belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IBusinessObjectBoundWebControl? OwnerControl
     {
       get { return _ownerControl; }
@@ -76,8 +76,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Not supported by base implementation. </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public virtual string? ItemID
     {
       get { return null; }

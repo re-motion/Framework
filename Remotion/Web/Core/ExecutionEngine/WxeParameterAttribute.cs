@@ -21,7 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
   public class WxeParameterAttribute : Attribute
   {
     public static WxeParameterAttribute? GetAttribute (PropertyInfo property)

@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
     public string MixedPropertyWithWritePermission
     {
       get { return Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithWritePermission"].GetValue<string>(); }
-      [DemandPermission (TestAccessTypes.First)]
+      [DemandPermission(TestAccessTypes.First)]
       set { Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithWritePermission"].SetValue(value); }
     }
 
@@ -51,9 +51,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     public string CustomPermissionMixedProperty
     {
-      [DemandPermission (TestAccessTypes.First)]
+      [DemandPermission(TestAccessTypes.First)]
       get { return Properties[typeof(BindableSecurableObjectMixin), "CustomPermissionMixedProperty"].GetValue<string>(); }
-      [DemandPermission (TestAccessTypes.Second)]
+      [DemandPermission(TestAccessTypes.Second)]
       set { Properties[typeof(BindableSecurableObjectMixin), "CustomPermissionMixedProperty"].SetValue(value); }
     }
   }

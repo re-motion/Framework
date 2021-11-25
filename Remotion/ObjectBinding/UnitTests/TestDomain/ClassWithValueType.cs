@@ -60,14 +60,14 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       protected set { _readOnlyNonPublicSetterScalar = value; }
     }
 
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public T NotVisibleScalar
     {
       get { return _notVisibleScalar; }
       set { _notVisibleScalar = value; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public T ReadOnlyAttributeScalar
     {
       get { return _readOnlyAttributeScalar; }

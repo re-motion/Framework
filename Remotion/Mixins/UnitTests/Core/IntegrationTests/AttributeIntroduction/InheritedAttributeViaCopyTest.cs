@@ -36,10 +36,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AttributeIntroduction
       Assert.That(obj.GetType().IsDefined(typeof(InheritableAttribute), true), Is.True);
     }
 
-    [AttributeUsage (AttributeTargets.All, Inherited = true)]
+    [AttributeUsage(AttributeTargets.All, Inherited = true)]
     public class InheritableAttribute : Attribute { }
 
-    [CopyCustomAttributes (typeof(AttributeSource))]
+    [CopyCustomAttributes(typeof(AttributeSource))]
     public class BaseMixinType
     {
       public class AttributeSource : AttributeSourceBase
@@ -55,11 +55,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AttributeIntroduction
     public class DerivedMixinType : BaseMixinType
     { }
 
-    [Uses (typeof(BaseMixinType))]
+    [Uses(typeof(BaseMixinType))]
     public class TargetTypeWithBaseMixin
     { }
 
-    [Uses (typeof(DerivedMixinType))]
+    [Uses(typeof(DerivedMixinType))]
     public class TargetTypeWithDerivedMixin
     { }
   }

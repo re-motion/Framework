@@ -24,7 +24,7 @@ using Remotion.Web.UI;
 
 namespace Remotion.Web.Security.UI
 {
-  [ImplementationFor (typeof(IWebSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IWebSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class WebSecurityAdapter : IWebSecurityAdapter
   {
     // types

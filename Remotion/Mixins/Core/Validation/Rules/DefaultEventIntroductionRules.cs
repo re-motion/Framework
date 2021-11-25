@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Validation.Rules
       visitor.EventIntroductionRules.Add(new DelegateValidationRule<EventIntroductionDefinition>(PublicEventNameMustBeUniqueInOtherMixins));
     }
 
-    [DelegateRuleDescription (Message = "An event introduced by a mixin cannot be public if the target class already has an event of the same name.")]
+    [DelegateRuleDescription(Message = "An event introduced by a mixin cannot be public if the target class already has an event of the same name.")]
     private void PublicEventNameMustBeUniqueInTargetClass (DelegateValidationRule<EventIntroductionDefinition>.Args args)
     {
       if (args.Definition.Visibility == MemberVisibility.Public)
@@ -50,7 +50,7 @@ namespace Remotion.Mixins.Validation.Rules
       args.Log.Succeed(args.Self);
     }
 
-    [DelegateRuleDescription (Message = "An event introduced by a mixin cannot be public if another mixin also introduces a public event of the same name.")]
+    [DelegateRuleDescription(Message = "An event introduced by a mixin cannot be public if another mixin also introduces a public event of the same name.")]
     private void PublicEventNameMustBeUniqueInOtherMixins (DelegateValidationRule<EventIntroductionDefinition>.Args args)
     {
       if (args.Definition.Visibility == MemberVisibility.Public)

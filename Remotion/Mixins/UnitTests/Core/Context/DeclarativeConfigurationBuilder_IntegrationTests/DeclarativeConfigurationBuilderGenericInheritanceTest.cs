@@ -32,19 +32,19 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public class DerivedDerivedGenericClassFromOpen<T> : DerivedGenericClassFromOpen<T> { }
 // ReSharper restore UnusedTypeParameter
 
-    [Extends (typeof(GenericClass<>))]
+    [Extends(typeof(GenericClass<>))]
     public class MixinForOpenGeneric { }
 
-    [Extends (typeof(GenericClass<int>))]
+    [Extends(typeof(GenericClass<int>))]
     public class MixinForClosedGeneric { }
 
-    [Extends (typeof(DerivedGenericClassFromOpen<>))]
+    [Extends(typeof(DerivedGenericClassFromOpen<>))]
     public class MixinForDerivedOpenGeneric { }
 
-    [Extends (typeof(DerivedGenericClassFromOpen<int>))]
+    [Extends(typeof(DerivedGenericClassFromOpen<int>))]
     public class MixinForDerivedClosedGeneric { }
 
-    [Extends (typeof(DerivedDerivedGenericClassFromOpen<int>))]
+    [Extends(typeof(DerivedDerivedGenericClassFromOpen<int>))]
     public class MixinForDerivedDerivedClosedGeneric { }
 
     [Test]

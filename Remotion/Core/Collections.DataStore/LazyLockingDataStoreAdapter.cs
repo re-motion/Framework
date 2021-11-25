@@ -34,7 +34,7 @@ namespace Remotion.Collections.DataStore
   /// instances. This leads to the effect that the lock used for the synchronization of the data store is always held for a very short time only,
   /// even if the factory delegate for a specific value takes a long time to execute.
   /// </remarks>
-  [Obsolete ("This type is only used in conjunction by obsolete factory method DataStoreFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
+  [Obsolete("This type is only used in conjunction by obsolete factory method DataStoreFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
   [Serializable]
   public class LazyLockingDataStoreAdapter<TKey, TValue> : IDataStore<TKey, TValue>
       where TKey : notnull
@@ -109,7 +109,7 @@ namespace Remotion.Collections.DataStore
       return result != null ? result.Value.Value : null!;
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
 

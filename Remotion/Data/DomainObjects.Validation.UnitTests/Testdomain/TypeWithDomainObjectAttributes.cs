@@ -26,13 +26,13 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     [Mandatory]
     public virtual TestDomainObject PropertyWithMandatoryAttribute { get; set; }
 
-    [StringProperty (IsNullable = true, MaximumLength = 10)]
+    [StringProperty(IsNullable = true, MaximumLength = 10)]
     public virtual string PropertyWithNullableStringPropertyAttribute { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
     public virtual string PropertyWithMandatoryStringPropertyAttribute { get; set; }
 
-    [BinaryProperty (IsNullable = false)]
+    [BinaryProperty(IsNullable = false)]
     public virtual byte[] BinaryProperty { get; set; }
 
     [StorageClassNone]

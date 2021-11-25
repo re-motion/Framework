@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Re
 
     public DerivedValidationDomainObjectClass DomainObjectPropertyWithoutBidirectionalAttribute { get; set; }
 
-    [BidirectionalRelation ("OppositeProperty")]
+    [BidirectionalRelation("OppositeProperty")]
     public DerivedValidationDomainObjectClass DomainObjectPropertyWithBidirectionalAttribute { get; set; }
   }
 }

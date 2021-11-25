@@ -207,7 +207,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Ignore ("Is currently not working. See RM-6837 for Details.")]
+    [Ignore("Is currently not working. See RM-6837 for Details.")]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesCreateScreenshotWhenAlertWindowIsOpen ()
     {
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);

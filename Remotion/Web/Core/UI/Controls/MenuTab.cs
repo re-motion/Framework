@@ -45,7 +45,7 @@ namespace Remotion.Web.UI.Controls
       Initialize();
     }
 
-    [MemberNotNull (nameof(_command))]
+    [MemberNotNull(nameof(_command))]
     private void Initialize ()
     {
       _command = new SingleControlItemCollection(new NavigationCommand(), new[] { typeof(NavigationCommand) });
@@ -68,10 +68,10 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Gets or sets the <see cref="NavigationCommand"/> rendered for this menu item. </summary>
     /// <value> A <see cref="NavigationCommand"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Behavior")]
-    [Description ("The command rendered for this menu item.")]
-    [NotifyParentProperty (true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Category("Behavior")]
+    [Description("The command rendered for this menu item.")]
+    [NotifyParentProperty(true)]
     public virtual NavigationCommand? Command
     {
       get { return (NavigationCommand?)_command.ControlItem; }
@@ -103,8 +103,8 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Browsable(false)]
     public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }
@@ -189,10 +189,10 @@ namespace Remotion.Web.UI.Controls
       return true;
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (MissingPermissionBehavior.Invisible)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(MissingPermissionBehavior.Invisible)]
     public MissingPermissionBehavior MissingPermissionBehavior
     {
       get { return _missingPermissionBehavior; }

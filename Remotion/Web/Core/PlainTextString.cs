@@ -27,7 +27,7 @@ namespace Remotion.Web
   /// <summary>
   /// The <see cref="PlainTextString"/> structure represents strings that are encoded before being rendered onto a web page.
   /// </summary>
-  [TypeConverter (typeof(PlainTextStringConverter))]
+  [TypeConverter(typeof(PlainTextStringConverter))]
   public readonly struct PlainTextString : IEquatable<PlainTextString>
   {
     private static readonly string[] s_newlineSplitSeparators = { "\r\n", "\r", "\n" };

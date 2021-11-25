@@ -134,9 +134,9 @@ public class EmailAddressValidator : BaseValidator
   ///   Gets or sets a flag that determines whether to ignore leading and trailing whitespaces during validation. 
   /// </summary>
   /// <value> <see langword="true"/> to ignore whitespaces. Defaults to <see langword="false"/>. </value>
-  [Category ("Behavior")]
-  [Description ("Set this flag to ignore leading and trailing whitespaces during validation. Otherwise, no whitespace is allowed in the input field.")]
-  [DefaultValue (false)]
+  [Category("Behavior")]
+  [Description("Set this flag to ignore leading and trailing whitespaces during validation. Otherwise, no whitespace is allowed in the input field.")]
+  [DefaultValue(false)]
   public bool EnableTrimming
   {
     get { return _enableTrimming; }

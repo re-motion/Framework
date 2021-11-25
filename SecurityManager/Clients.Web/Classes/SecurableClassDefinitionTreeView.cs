@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
   public class SecurableClassDefinitionTreeView : BocTreeView
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.SecurityManager.Clients.Web.Globalization.Classes.SecurableClassDefinitionTreeViewResources")]
+    [MultiLingualResources("Remotion.SecurityManager.Clients.Web.Globalization.Classes.SecurableClassDefinitionTreeViewResources")]
     public enum ResourceIdentifier
     {
       NoAclsText,

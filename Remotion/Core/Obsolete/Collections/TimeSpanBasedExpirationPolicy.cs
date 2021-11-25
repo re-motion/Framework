@@ -19,7 +19,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
   public class TimeSpanBasedExpirationPolicy<TValue> : IExpirationPolicy<TValue, DateTime, DateTime>
   {
     public TimeSpanBasedExpirationPolicy (TimeSpan period, IUtcNowProvider utcNowProvider)

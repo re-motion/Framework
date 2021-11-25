@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> <see langword="true"/> if this sorting order entry is empty. </summary>
-    [MemberNotNullWhen (false, nameof(Column))]
+    [MemberNotNullWhen(false, nameof(Column))]
     public bool IsEmpty
     {
       get { return _isEmpty; }

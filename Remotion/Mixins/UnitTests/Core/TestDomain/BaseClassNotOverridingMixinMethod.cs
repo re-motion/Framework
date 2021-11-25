@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof(MixinWithMethodsOverriddenByDifferentClasses))]
+  [Uses(typeof(MixinWithMethodsOverriddenByDifferentClasses))]
   public class BaseClassNotOverridingMixinMethod
   {
   }

@@ -47,6 +47,6 @@ using Remotion.ObjectBinding.Security;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("")]
 [assembly: EnsureSecuritySupportForObjectBinding]

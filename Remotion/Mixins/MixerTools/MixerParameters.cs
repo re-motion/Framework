@@ -22,35 +22,35 @@ namespace Remotion.Mixins.MixerTools
   [Serializable]
   public class MixerParameters
   {
-    [CommandLineStringArgument ("baseDirectory", true,
+    [CommandLineStringArgument("baseDirectory", true,
         Description = "The base directory to use for looking up the files to be processed (default: current).",
         Placeholder = "directory")]
     public string BaseDirectory = Environment.CurrentDirectory;
 
-    [CommandLineStringArgument ("config", true,
+    [CommandLineStringArgument("config", true,
         Description =
             "The config file holding the application's configuration. "
             + "Unless the path is rooted, the config file is located relative to the baseDirectory.",
         Placeholder = "app.config")]
     public string ConfigFile = string.Empty;
 
-    [CommandLineStringArgument ("assemblyDirectory", true,
+    [CommandLineStringArgument("assemblyDirectory", true,
         Description = "Create assembly file(s) in this directory (default: current).",
         Placeholder = "directory")]
     public string AssemblyOutputDirectory = Environment.CurrentDirectory;
 
-    [CommandLineStringArgument ("assemblyName", true,
+    [CommandLineStringArgument("assemblyName", true,
         Description = "The simple name of the assembly generated (without extension; default: Remotion.Mixins.Persistent.{counter}).",
         Placeholder = "simpleName")]
     public string AssemblyName = "Remotion.Mixins.Persistent.{counter}";
 
-    [CommandLineStringArgument ("degreeOfParallelism", true,
+    [CommandLineStringArgument("degreeOfParallelism", true,
         Description = "The maximum number of threads on which the code generation will be distributed. "
                       + "If a number greater than 1 is specified, the AssemblyName parameter must contain the {counter} placeholder. (default: 1).",
         Placeholder = "1")]
     public int DegreeOfParallelism = 1;
 
-    [CommandLineFlagArgument ("verbose", false,
+    [CommandLineFlagArgument("verbose", false,
         Description = "Enables verbose output. Verbose output will include all messages from all loggers in the framework.")]
     public bool Verbose;
   }

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// relation is not set. Only complete relations are validated, no data is loaded by the validation.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
+  [ImplementationFor(typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
   public class MandatoryRelationValidator : IPersistableDataValidator
   {
     public const int PersistableDataValidatorPosition = BinaryPropertyMaxLengthValidator.PersistableDataValidatorPosition + 1;

@@ -31,11 +31,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: functionality is integration tested via BocTreeViewControlObject in BocTreeViewControlObjectTest.
 
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<WebTreeViewSelector, WebTreeViewControlObject> testAction)
     {
       testAction(Helper, e => e.WebTreeViews(), "webTreeView");

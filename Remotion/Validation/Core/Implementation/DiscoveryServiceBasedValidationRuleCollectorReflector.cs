@@ -31,7 +31,7 @@ namespace Remotion.Validation.Implementation
   /// of the <see cref="IValidationRuleCollector"/> interface. The <see cref="IValidatedTypeResolver"/> is the used to associate the 
   /// collector types to the validated type. 
   /// </summary>
-  [ImplementationFor (typeof(IValidationRuleCollectorReflector), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(IValidationRuleCollectorReflector), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class DiscoveryServiceBasedValidationRuleCollectorReflector : IValidationRuleCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;

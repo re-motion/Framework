@@ -350,7 +350,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
 
-    [GeneratedMethodWrapper (typeof(DateTime), "get_Now", "System.DateTime get_Now()")]
+    [GeneratedMethodWrapper(typeof(DateTime), "get_Now", "System.DateTime get_Now()")]
     public void FakeWrapperMethod ()
     {
     }
@@ -375,12 +375,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
     }
 
-    [ConcreteMixedType (new object[] { typeof(object), new object[0], new Type[0] }, new Type[0])]
+    [ConcreteMixedType(new object[] { typeof(object), new object[0], new Type[0] }, new Type[0])]
     private class ClassWithConcreteMixedTypeAttribute
     {
     }
 
-    [ConcreteMixinType (new object[] { typeof(object), new object[0], new object[0] })]
+    [ConcreteMixinType(new object[] { typeof(object), new object[0], new object[0] })]
     private class ClassWithConcreteMixinTypeAttribute
     {
     }

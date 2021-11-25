@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   /// Responsible for rendering <see cref="BocEnumValue"/> controls.
   /// <seealso cref="IBocEnumValue"/>
   /// </summary>
-  [ImplementationFor (typeof(IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocEnumValueRenderer : BocRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
     private readonly IInternalControlMemberCaller _internalControlMemberCaller;

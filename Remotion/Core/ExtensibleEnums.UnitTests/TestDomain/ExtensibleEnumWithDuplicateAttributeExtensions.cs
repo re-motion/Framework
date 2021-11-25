@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 {
-  [Sample (Value = "A")]
-  [Sample (Value = "B")]
+  [Sample(Value = "A")]
+  [Sample(Value = "B")]
   public static class ExtensibleEnumWithDuplicateAttributeExtensions
   {
     public static ExtensibleEnumWithDuplicateAttribute Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithDuplicateAttribute> definition)

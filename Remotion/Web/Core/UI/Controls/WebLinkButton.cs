@@ -27,8 +27,8 @@ namespace Remotion.Web.UI.Controls
 {
   /// <summary> A <c>LinkButton</c> using <c>&amp;</c> as access key prefix in <see cref="LinkButton.Text"/>. </summary>
   /// <include file='..\..\doc\include\UI\Controls\WebLinkButton.xml' path='WebLinkButton/Class/*' />
-  [ToolboxData ("<{0}:WebLinkButton runat=server></{0}:WebLinkButton>")]
-  [ToolboxItem (false)]
+  [ToolboxData("<{0}:WebLinkButton runat=server></{0}:WebLinkButton>")]
+  [ToolboxItem(false)]
   public class WebLinkButton : LinkButton, IControl
   {
     private TextWithHotkey? _textWithHotkey;

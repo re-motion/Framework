@@ -24,8 +24,8 @@ namespace Remotion.Web.Test.Shared
   /// <summary>
   /// Summary description for $codebehindclassname$
   /// </summary>
-  [WebService (Namespace = "http://tempuri.org/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [WebService(Namespace = "http://tempuri.org/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
   public class CssHandler : IHttpHandler
   {
     public void ProcessRequest (HttpContext context)

@@ -24,7 +24,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
-  [Explicit ("Performance tests")]
+  [Explicit("Performance tests")]
   public class MixinTypeUtilityPerformanceTest
   {
     private Type _unmixedType;

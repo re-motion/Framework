@@ -52,9 +52,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     /// <value> <see cref="DataSourceMode.Search"/>. </value>
     /// <exception cref="NotSupportedException"> Thrown upon an attempt to set a value other than <see cref="DataSourceMode.Search"/>. </exception>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [DefaultValue (DataSourceMode.Search)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [DefaultValue(DataSourceMode.Search)]
     public override DataSourceMode Mode
     {
       get { return DataSourceMode.Search; }

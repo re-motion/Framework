@@ -35,9 +35,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a list of strings. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
-  [ValidationProperty ("Text")]
-  [DefaultEvent ("TextChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("Text")]
+  [DefaultEvent("TextChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocMultilineTextValue : BocTextValueBase, IBocMultilineTextValue
   {
     // types
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when no text is entered but input is required. </summary>
@@ -176,8 +176,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectStringProperty"/> object this control is bound to. </summary>
     /// <value> An <see cref="IBusinessObjectStringProperty"/> object. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectStringProperty? Property
     {
       get { return (IBusinessObjectStringProperty?)base.Property; }
@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the current value. </summary>
     /// <value> The <see cref="String"/> array currently displayed or <see langword="null"/> if no text is entered. </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public new string[]? Value
     {
       get
@@ -204,9 +204,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the string representation of the current value. </summary>
     /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. The default value is an empty <see cref="String"/>. </remarks>
-    [Description ("The string representation of the current value.")]
-    [Category ("Data")]
-    [DefaultValue ("")]
+    [Description("The string representation of the current value.")]
+    [Category("Data")]
+    [DefaultValue("")]
     public override sealed string Text
     {
       get { return string.Join("\r\n", _text ?? Enumerable.Empty<string>()); }
@@ -225,9 +225,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }
@@ -338,7 +338,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         ErrorMessage = resourceManager.GetString(key);
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");

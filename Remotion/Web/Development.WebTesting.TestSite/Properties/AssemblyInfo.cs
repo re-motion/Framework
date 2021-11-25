@@ -23,5 +23,5 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Remotion WebTesting Framework TestSite For Integration Tests")]
-[assembly: AssemblyCulture ("")]
+[assembly: AssemblyTitle("Remotion WebTesting Framework TestSite For Integration Tests")]
+[assembly: AssemblyCulture("")]

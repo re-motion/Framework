@@ -27,10 +27,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
     }
 
-    [DBBidirectionalRelation ("Children")]
+    [DBBidirectionalRelation("Children")]
     public abstract ClassWithBothEndPointsOnSameClass Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<ClassWithBothEndPointsOnSameClass> Children { get; }
   }
 }

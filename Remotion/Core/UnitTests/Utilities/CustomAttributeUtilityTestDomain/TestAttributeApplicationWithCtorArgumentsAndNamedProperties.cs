@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.UnitTests.Utilities.CustomAttributeUtilityTestDomain
 {
-  [AttributeWithPropertyParams (
+  [AttributeWithPropertyParams(
       1,
       "1",
       null,

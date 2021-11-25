@@ -18,12 +18,12 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualName ("The Invariant Enum Name", "")]
-  [EnUS ("The en-US Enum Name")]
+  [MultiLingualName("The Invariant Enum Name", "")]
+  [EnUS("The en-US Enum Name")]
   public enum EnumWithMultiLingualNameAttribute
   {
-    [MultiLingualName ("The Invariant Name", "")]
-    [EnUS ("The en-US Name")]
+    [MultiLingualName("The Invariant Name", "")]
+    [EnUS("The en-US Name")]
     ValueWithLocalizedName,
     ValueWithoutLocalizedName
   }

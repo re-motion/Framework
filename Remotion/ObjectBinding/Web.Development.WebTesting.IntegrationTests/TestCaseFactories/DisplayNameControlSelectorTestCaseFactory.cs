@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_WebTestException ()
     {
       Assert.That(

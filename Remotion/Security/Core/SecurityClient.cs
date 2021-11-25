@@ -719,13 +719,13 @@ namespace Remotion.Security
     }
 
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, string methodName)
     {
       return HasStatelessMethodAccess(securableClass, methodName, _principalProvider.GetPrincipal());
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, string methodName, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableClass", securableClass);
@@ -736,13 +736,13 @@ namespace Remotion.Security
       return HasStatelessMethodAccess(securableClass, methodInformation, principal);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, MethodInfo methodInfo)
     {
       return HasStatelessMethodAccess(securableClass, methodInfo, _principalProvider.GetPrincipal());
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableClass", securableClass);
@@ -753,13 +753,13 @@ namespace Remotion.Security
       return HasStatelessMethodAccess(securableClass, methodInformation, principal);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, IMethodInformation methodInformation)
     {
       return HasStatelessMethodAccess(securableClass, methodInformation, _principalProvider.GetPrincipal());
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual bool HasStatelessMethodAccess (Type securableClass, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull("securableClass", securableClass);

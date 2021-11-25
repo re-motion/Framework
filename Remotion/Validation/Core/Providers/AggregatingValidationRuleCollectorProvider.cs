@@ -27,7 +27,7 @@ namespace Remotion.Validation.Providers
   /// Use this class to retrieve the combined <see cref="IValidationRuleCollector"/>s for a <see cref="Type"/> 
   /// provided by the individual <see cref="IValidationRuleCollectorProvider"/>s registered with the application's IoC container.
   /// </summary>
-  [ImplementationFor (typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class AggregatingValidationRuleCollectorProvider : IValidationRuleCollectorProvider
   {
     private readonly IInvolvedTypeProvider _involvedTypeProvider;

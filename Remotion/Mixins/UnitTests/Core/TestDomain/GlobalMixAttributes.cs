@@ -18,9 +18,9 @@ using System;
 using Remotion.Mixins;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-[assembly: Mix (typeof(TargetClassForGlobalMix), typeof(MixinForGlobalMix),
+[assembly: Mix(typeof(TargetClassForGlobalMix), typeof(MixinForGlobalMix),
     AdditionalDependencies = new Type[] {typeof(AdditionalDependencyForGlobalMix)},
     SuppressedMixins = new Type[] {typeof(SuppressedMixinForGlobalMix)})]
 
-[assembly: Mix (typeof(TargetClassForGlobalMix), typeof(SuppressedMixinForGlobalMix))]
-[assembly: Mix (typeof(TargetClassForGlobalMix), typeof(AdditionalDependencyForGlobalMix))]
+[assembly: Mix(typeof(TargetClassForGlobalMix), typeof(SuppressedMixinForGlobalMix))]
+[assembly: Mix(typeof(TargetClassForGlobalMix), typeof(AdditionalDependencyForGlobalMix))]

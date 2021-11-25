@@ -234,7 +234,7 @@ namespace Remotion.Collections.DataStore
     /// <returns>
     /// true if an element with the specified key was found; otherwise, false.
     /// </returns>
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
 
@@ -322,8 +322,8 @@ namespace Remotion.Collections.DataStore
       get { return false; }
     }
 
-    [MethodImpl (MethodImplOptions.AggressiveInlining)]
-    private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       if (_innerDictionary.TryGetValue(key, out var synchronizedValue))
       {

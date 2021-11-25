@@ -281,7 +281,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   /// <summary> Gets or sets the current value. </summary>
   /// <value> An object implementing <see cref="IBusinessObject"/>. </value>
-  [Browsable (false)]
+  [Browsable(false)]
   public new IBusinessObject? Value
   {
     get { return _value; }
@@ -312,8 +312,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   the <see cref="BusinessObjectBoundWebControl.DataSource"/>'s <see cref="IBusinessObject"/> 
   ///   itself will be used as the control's value.
   /// </value>
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectReferenceProperty? Property
   {
     get { return (IBusinessObjectReferenceProperty?)base.Property; }
@@ -356,34 +356,34 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     get { return (Control)_dropDownMenu; }
   }
 
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [ListBindable (false)]
-  [Category ("Menu")]
-  [Description ("The menu items displayed by the menu.")]
-  [DefaultValue ((string?)null)]
+  [PersistenceMode(PersistenceMode.InnerProperty)]
+  [ListBindable(false)]
+  [Category("Menu")]
+  [Description("The menu items displayed by the menu.")]
+  [DefaultValue((string?)null)]
   public WebMenuItemCollection MenuItems
   {
     get { return _dropDownMenu.MenuItems; }
   }
 
-  [DefaultValue (true)]
+  [DefaultValue(true)]
   public bool EnableGrouping
   {
     get { return _dropDownMenu.EnableGrouping; }
     set { _dropDownMenu.EnableGrouping = value; }
   }
 
-  [Category ("Behavior")]
-  [DefaultValue ("")]
+  [Category("Behavior")]
+  [DefaultValue("")]
   public string? ControlServicePath
   {
     get { return _controlServicePath; }
     set { _controlServicePath = value ?? string.Empty; }
   }
 
-  [Category ("Behavior")]
-  [DefaultValue ("")]
-  [Description ("Additional arguments passed to the control service.")]
+  [Category("Behavior")]
+  [DefaultValue("")]
+  [Description("Additional arguments passed to the control service.")]
   public string? ControlServiceArguments
   {
     get { return _controlServiceArguments; }
@@ -425,8 +425,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-  [Category ("Action")]
-  [Description ("Is raised when a menu item with a command of type Event is clicked.")]
+  [Category("Action")]
+  [Description("Is raised when a menu item with a command of type Event is clicked.")]
   public event WebMenuItemClickEventHandler MenuItemClick
   {
     add { Events.AddHandler(s_menuItemClickEvent, value); }
@@ -494,10 +494,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   provides an instance of type <see cref="IBusinessObjectWebUIService"/> and 
   ///   <see cref="IBusinessObjectWebUIService.GetIcon"/> returns not <see langword="null"/>.
   /// </remarks>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Appearance")]
-  [Description ("Flag that determines whether to show the icon in front of the value.")]
-  [DefaultValue (true)]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Appearance")]
+  [Description("Flag that determines whether to show the icon in front of the value.")]
+  [DefaultValue(true)]
   public bool EnableIcon
   {
     get { return _enableIcon; }
@@ -506,10 +506,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   /// <summary> Gets or sets the list of menu items to be hidden. </summary>
   /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
-  [Category ("Menu")]
-  [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-  [DefaultValue ((string?)null)]
-  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category("Menu")]
+  [Description("The list of menu items to be hidden, identified by their ItemIDs.")]
+  [DefaultValue((string?)null)]
+  [PersistenceMode(PersistenceMode.Attribute)]
   public string[] HiddenMenuItems
   {
     get

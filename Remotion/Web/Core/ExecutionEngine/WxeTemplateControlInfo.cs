@@ -48,8 +48,8 @@ namespace Remotion.Web.ExecutionEngine
       _control = control;
     }
 
-    [MemberNotNull (nameof(_wxeHandler))]
-    [MemberNotNull (nameof(_currentPageFunction))]
+    [MemberNotNull(nameof(_wxeHandler))]
+    [MemberNotNull(nameof(_currentPageFunction))]
     public virtual void Initialize (HttpContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);

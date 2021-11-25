@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebTestHelperTest
   {
     [Test]
-    public void WebTestHelper_OnTestFixtureTearDown_ClosesMainBrowserSessionProcesses ([Values (true, false)] bool testSuccess)
+    public void WebTestHelper_OnTestFixtureTearDown_ClosesMainBrowserSessionProcesses ([Values(true, false)] bool testSuccess)
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void WebTestHelper_OnTestFixtureTearDown_ClosesAllBrowserSessionsProcesses ([Values (true, false)] bool testSuccess)
+    public void WebTestHelper_OnTestFixtureTearDown_ClosesAllBrowserSessionsProcesses ([Values(true, false)] bool testSuccess)
     {
       // Create a uninitialized WebTestHelper
       var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
@@ -123,7 +123,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void WebTestHelper_OnTestFixtureTearDown_CleansUserDirectory_Chromium ([Values (true, false)] bool testSuccess)
+    public void WebTestHelper_OnTestFixtureTearDown_CleansUserDirectory_Chromium ([Values(true, false)] bool testSuccess)
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 

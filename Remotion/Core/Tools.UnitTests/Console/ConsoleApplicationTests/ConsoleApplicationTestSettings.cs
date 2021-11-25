@@ -22,10 +22,10 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
 {
   public class ConsoleApplicationTestSettings : ConsoleApplicationSettings
   {
-    [CommandLineStringArgument ("stringArg", true, Placeholder = "string_arg_sample", Description = "stringArg description.")]
+    [CommandLineStringArgument("stringArg", true, Placeholder = "string_arg_sample", Description = "stringArg description.")]
     public string StringArg;
 
-    [CommandLineFlagArgument ("flagArg", false, Description = "flagArg description.")]
+    [CommandLineFlagArgument("flagArg", false, Description = "flagArg description.")]
     public bool FlagArg;
   }
 }

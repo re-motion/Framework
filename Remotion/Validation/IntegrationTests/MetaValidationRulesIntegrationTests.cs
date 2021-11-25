@@ -124,7 +124,7 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void BuildValidator_WithObjectValidationRule ()
     {
       //possibly integrate with existing tests.

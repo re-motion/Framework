@@ -24,7 +24,7 @@ using System.Resources;
 
 namespace Remotion.Globalization.Implementation
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
   internal abstract class ResourceManagerWrapper
   {
     public static ResourceManagerSet CreateWrapperSet (IEnumerable<ResourceManager> resourceManagers)

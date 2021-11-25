@@ -57,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       Value = value;
     }
 
-    [DBBidirectionalRelation ("AccessType")]
+    [DBBidirectionalRelation("AccessType")]
     protected abstract ObjectList<AccessTypeReference> AccessTypeReferences { get; }
 
     protected override void OnDeleting (EventArgs args)

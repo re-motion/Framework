@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [SuppressAttributes(typeof(BT1Attribute))]
-  [Uses (typeof(MixinAddingBT1Attribute))]
+  [Uses(typeof(MixinAddingBT1Attribute))]
   public class TargetClassSuppressingBT1Attribute
   {
 

@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlIgnore]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid ID
     {
       get { return _id; }
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Sample
 
     [XmlIgnore]
     [OverrideMixin]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public string UniqueIdentifier
     {
       get { return _id.ToString(); }

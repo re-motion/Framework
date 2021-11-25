@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof(C))]
+    [Extends(typeof(C))]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]

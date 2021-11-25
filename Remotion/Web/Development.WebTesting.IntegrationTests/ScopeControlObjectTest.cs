@@ -28,8 +28,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ScopeControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ScopeSelector, ScopeControlObject> testAction)
     {
       testAction(Helper, e => e.Scopes(), "scope");

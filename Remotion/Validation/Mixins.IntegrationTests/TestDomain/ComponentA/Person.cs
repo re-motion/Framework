@@ -19,7 +19,7 @@ using Remotion.Globalization;
 
 namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
-  [MultiLingualResources ("Remotion.Validation.Mixins.IntegrationTests.TestDomain.Resources.Person")]
+  [MultiLingualResources("Remotion.Validation.Mixins.IntegrationTests.TestDomain.Resources.Person")]
   public class Person : IPerson
   {
     public virtual string FirstName { get; set; }

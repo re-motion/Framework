@@ -21,10 +21,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject
 {
   [NonPersistentTestDomain]
-  [ClassID ("PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject_NonPersistentRelationClass")]
+  [ClassID("PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject_NonPersistentRelationClass")]
   public class NonPersistentRelationClass : DomainObject
   {
-    [DBBidirectionalRelation ("PersistentRelationProperty")]
+    [DBBidirectionalRelation("PersistentRelationProperty")]
     public PersistentRelationClass NonPersistentRelationProperty { get; set; }
   }
 }

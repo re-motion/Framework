@@ -20,10 +20,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     OneToOne_ContainsForeignKeyIsFalseOnBothSites
 {
   [DBTable]
-  [ClassID ("OneToOne_ContainsForeignKeyIsFalseOnBothSites_InvalidRelationClass2")]
+  [ClassID("OneToOne_ContainsForeignKeyIsFalseOnBothSites_InvalidRelationClass2")]
   public class InvalidRelationClass2 : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty2", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("RelationProperty2", ContainsForeignKey = false)]
     public InvalidRelationClass1 RelationProperty1 { get; set; }
   }
 }

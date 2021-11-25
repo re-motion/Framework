@@ -53,9 +53,9 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
       return (UrlMappingConfiguration)LoadConfiguration(_configurationFile!, _type!, _schemas!);
     }
 
-    [MemberNotNull (nameof(_configurationFile))]
-    [MemberNotNull (nameof(_type))]
-    [MemberNotNull (nameof(_schemas))]
+    [MemberNotNull(nameof(_configurationFile))]
+    [MemberNotNull(nameof(_type))]
+    [MemberNotNull(nameof(_schemas))]
     protected void Initialize (string configurationFile, Type type, params SchemaLoaderBase[] schemas)
     {
       ArgumentUtility.CheckNotNullOrEmpty("configurationFile", configurationFile);

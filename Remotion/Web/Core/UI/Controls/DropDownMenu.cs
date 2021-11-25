@@ -31,7 +31,7 @@ namespace Remotion.Web.UI.Controls
   {
     #region Obsolete
 
-    [Obsolete ("This feature has removed. (Version 3.0.0)", true)]
+    [Obsolete("This feature has removed. (Version 3.0.0)", true)]
     public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
     {
       throw new NotSupportedException("This feature has removed. (Version 3.0.0)");
@@ -170,17 +170,17 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     /// Gets or sets the button type that determines how the <see cref="DropDownMenu"/>'s button is displayed on the page.
     /// </summary>
-    [Description ("Determines how the button is displayed on the page.")]
-    [Category ("Appearance")]
-    [DefaultValue (ButtonType.Standard)]
+    [Description("Determines how the button is displayed on the page.")]
+    [Category("Appearance")]
+    [DefaultValue(ButtonType.Standard)]
     public ButtonType ButtonType
     {
       get { return _buttonType; }
       set { _buttonType = value; }
     }
 
-    [Description ("Set false to remove the title from the DropDownMenu's button when it is rendered.")]
-    [DefaultValue (true)]
+    [Description("Set false to remove the title from the DropDownMenu's button when it is rendered.")]
+    [DefaultValue(true)]
     public bool ShowTitle
     {
       get { return _showTitle; }
@@ -212,7 +212,7 @@ namespace Remotion.Web.UI.Controls
       get { return _isBrowserCapableOfScripting; }
     }
 
-    [DefaultValue (true)]
+    [DefaultValue(true)]
     public bool EnableGrouping
     {
       get { return _enableGrouping; }
@@ -221,7 +221,7 @@ namespace Remotion.Web.UI.Controls
 
     public MenuMode Mode { get; set; }
 
-    [DefaultValue ("")]
+    [DefaultValue("")]
     public string GetSelectionCount
     {
       get { return _getSelectionCount; }

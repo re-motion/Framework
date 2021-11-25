@@ -34,12 +34,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
   /// <summary>
   /// Abstract base class for <see cref="BocTextValue"/> and <see cref="BocMultilineTextValue"/>, both of which handle text input.
   /// </summary>
-  [ControlValueProperty ("Text")]
-  [DefaultProperty ("Text")]
-  [ValidationProperty ("Text")]
-  [ParseChildren (true, "Text")]
-  [DefaultEvent ("TextChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ControlValueProperty("Text")]
+  [DefaultProperty("Text")]
+  [ValidationProperty("Text")]
+  [ParseChildren(true, "Text")]
+  [DefaultEvent("TextChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public abstract class BocTextValueBase : BusinessObjectBoundEditableWebControl, IBocTextValueBase, IPostBackDataHandler, IFocusableControl
   {
     private const string c_textboxIDPostfix = "_Value";
@@ -90,8 +90,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="TextBox"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
@@ -108,11 +108,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ///   <see langword="true"/>, this cannot be overridden using <see cref="TextBoxStyle"/> and <see cref="LabelStyle"/> 
     ///   properties.
     /// </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the TextBox (edit mode) and the Label (read-only mode).")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style CommonStyle
     {
       get { return _commonStyle; }
@@ -121,11 +121,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <summary> Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
     /// <value>The <see cref="Style"/> object applied to edit mode UI.</value>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the TextBox (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the TextBox (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public TextBoxStyle TextBoxStyle
     {
       get { return _textBoxStyle; }
@@ -134,11 +134,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
     /// <value>The <see cref="Style"/> object applied read-only mode UI.</value>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the Label (read-only mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the Label (read-only mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style LabelStyle
     {
       get { return _labelStyle; }
@@ -147,9 +147,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <summary> Gets or sets the string representation of the current value. </summary>
     /// <value>The text contents of the input field in edit mode and the displayed text in read-only mode.</value>
     /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. The default value is an empty <see cref="String"/>. </remarks>
-    [Description ("The string representation of the current value.")]
-    [Category ("Data")]
-    [DefaultValue ("")]
+    [Description("The string representation of the current value.")]
+    [Category("Data")]
+    [DefaultValue("")]
     public abstract string Text { get; set; }
 
     /// <summary>
@@ -253,8 +253,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     }
 
     /// <summary> This event is fired when the text is changed between postbacks. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value of the control has changed.")]
+    [Category("Action")]
+    [Description("Fires when the value of the control has changed.")]
     public event EventHandler TextChanged
     {
       add { Events.AddHandler(s_textChangedEvent, value); }
@@ -302,7 +302,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
       return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct().Distinct();
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");

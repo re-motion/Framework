@@ -315,7 +315,7 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void TryGetPropertyDisplayName_WithPropertiesDeclaredInAssemblyWithDifferentNeutralLanguage ()
     {

@@ -209,8 +209,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IndividualControlTests\BocDropDownMenuUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>BocDropDownMenuUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="IndividualControlTests\BocAutoCompleteReferenceValueWebService.asmx.cs">
       <DependentUpon>BocAutoCompleteReferenceValueWebService.asmx</DependentUpon>

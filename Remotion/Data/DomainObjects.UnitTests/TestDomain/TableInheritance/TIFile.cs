@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_File")]
-  [DBTable ("TableInheritance_File")]
+  [ClassID("TI_File")]
+  [DBTable("TableInheritance_File")]
   [Instantiable]
   public abstract class TIFile: TIFileSystemItem
   {
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 
     public abstract int Size { get; set; }
 
-    [DBColumn ("FileCreatedAt")]
+    [DBColumn("FileCreatedAt")]
     public abstract DateTime CreatedAt { get; set; }
   }
 }

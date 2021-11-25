@@ -395,7 +395,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    [Ignore ("RM-7294: Reorder elements when sort property changes its value")]
+    [Ignore("RM-7294: Reorder elements when sort property changes its value")]
     public void SortPropertyChangesValue_UpdatesElementsOrder ()
     {
     }

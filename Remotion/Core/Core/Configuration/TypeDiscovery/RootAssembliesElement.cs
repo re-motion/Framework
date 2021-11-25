@@ -31,7 +31,7 @@ namespace Remotion.Configuration.TypeDiscovery
     /// Gets a <see cref="ByNameRootAssemblyElementCollection"/> allowing to specify assemblies by <see cref="AssemblyName"/>.
     /// </summary>
     /// <value>A <see cref="ByNameRootAssemblyElementCollection"/> allowing to specify assemblies by <see cref="AssemblyName"/>.</value>
-    [ConfigurationProperty ("byName")]
+    [ConfigurationProperty("byName")]
     public ByNameRootAssemblyElementCollection ByName
     {
       get { return (ByNameRootAssemblyElementCollection)this["byName"]; }
@@ -41,7 +41,7 @@ namespace Remotion.Configuration.TypeDiscovery
     /// Gets a <see cref="ByFileRootAssemblyElementCollection"/> allowing to specify assemblies by file name patterns.
     /// </summary>
     /// <value>A <see cref="ByFileRootAssemblyElementCollection"/> allowing to specify assemblies by file name patterns.</value>
-    [ConfigurationProperty ("byFile")]
+    [ConfigurationProperty("byFile")]
     public ByFileRootAssemblyElementCollection ByFile
     {
       get { return (ByFileRootAssemblyElementCollection)this["byFile"]; }

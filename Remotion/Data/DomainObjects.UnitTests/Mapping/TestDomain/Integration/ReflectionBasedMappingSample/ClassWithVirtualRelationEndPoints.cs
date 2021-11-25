@@ -27,27 +27,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
     }
 
-    [DBBidirectionalRelation ("NoAttributeForDomainObjectCollection")]
+    [DBBidirectionalRelation("NoAttributeForDomainObjectCollection")]
     public abstract ObjectList<ClassWithRealRelationEndPoints> NoAttributeForDomainObjectCollection { get; set; }
 
-    [DBBidirectionalRelation ("NoAttributeForVirtualCollection")]
+    [DBBidirectionalRelation("NoAttributeForVirtualCollection")]
     public abstract IObjectList<ClassWithRealRelationEndPoints> NoAttributeForVirtualCollection { get; set; }
 
-    [DBBidirectionalRelation ("NotNullableForDomainObjectCollection")]
+    [DBBidirectionalRelation("NotNullableForDomainObjectCollection")]
     [Mandatory]
     public abstract ObjectList<ClassWithRealRelationEndPoints> NotNullableForDomainObjectCollection { get; set; }
 
-    [DBBidirectionalRelation ("NotNullableForVirtualCollection")]
+    [DBBidirectionalRelation("NotNullableForVirtualCollection")]
     [Mandatory]
     public abstract IObjectList<ClassWithRealRelationEndPoints> NotNullableForVirtualCollection { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToOne")]
+    [DBBidirectionalRelation("BidirectionalOneToOne")]
     public abstract ClassWithRealRelationEndPoints BidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
+    [DBBidirectionalRelation("BidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
     public abstract ObjectList<ClassWithRealRelationEndPoints> BidirectionalOneToManyForDomainObjectCollection { get; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
+    [DBBidirectionalRelation("BidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
     public abstract IObjectList<ClassWithRealRelationEndPoints> BidirectionalOneToManyForVirtualCollection { get; }
   }
 }

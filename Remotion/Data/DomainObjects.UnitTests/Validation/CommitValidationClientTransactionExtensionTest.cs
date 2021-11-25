@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    [Ignore ("TODO: RM-6265")]
+    [Ignore("TODO: RM-6265")]
     public void Serialization ()
     {
       var extension = new CommitValidationClientTransactionExtension(new CompoundPersistableDataValidator(new IPersistableDataValidator[0]));

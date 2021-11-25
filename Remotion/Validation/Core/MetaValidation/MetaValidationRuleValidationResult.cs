@@ -29,7 +29,7 @@ namespace Remotion.Validation.MetaValidation
       return new MetaValidationRuleValidationResult(true, null);
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MetaValidationRuleValidationResult CreateInvalidResult (string messageFormat, params object?[] args)
     {
       ArgumentUtility.CheckNotNullOrEmpty("messageFormat", messageFormat);

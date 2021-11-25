@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
   public sealed class ConcurrentCache<TKey, TValue> : ICache<TKey, TValue>
   {
     public ConcurrentCache ()

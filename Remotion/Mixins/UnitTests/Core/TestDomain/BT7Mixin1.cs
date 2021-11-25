@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     string BT7Mixin1Specific ();
   }
 
-  [Extends (typeof(BaseType7))]
+  [Extends(typeof(BaseType7))]
   public class BT7Mixin1 : Mixin<BaseType7, IBaseType7> , IBT7Mixin1
   {
     [OverrideTarget]

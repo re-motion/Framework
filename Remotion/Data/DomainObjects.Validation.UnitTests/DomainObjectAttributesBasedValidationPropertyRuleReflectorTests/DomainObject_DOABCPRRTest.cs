@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetRemovablePropertyValidators_MandatoryAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetRemovablePropertyValidators_NullableStringPropertyAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetRemovablePropertyValidators_MandatoryStringPropertyAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetRemovablePropertyValidators_BinaryPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
@@ -304,13 +304,13 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetRemovablePropertyValidators_DomainObjectCollectionPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetRemovablePropertyValidators_VirtualCollectionPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
     }

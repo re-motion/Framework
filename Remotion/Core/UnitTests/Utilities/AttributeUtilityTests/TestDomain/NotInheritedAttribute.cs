@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
-  [AttributeUsage (AttributeTargets.All, Inherited = false)]
+  [AttributeUsage(AttributeTargets.All, Inherited = false)]
   public class NotInheritedAttribute : Attribute, ICustomAttribute
   { }
 }

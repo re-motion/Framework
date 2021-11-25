@@ -21,13 +21,13 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 {
   public static class DwarfPlanetExtensions
   {
-    [ExtensibleEnumPosition (4.0)]
+    [ExtensibleEnumPosition(4.0)]
     public static Planet Pluto (this ExtensibleEnumDefinition<Planet> definition)
     {
       return new Planet(MethodBase.GetCurrentMethod());
     }
 
-    [ExtensibleEnumPosition (5.0)]
+    [ExtensibleEnumPosition(5.0)]
     public static Planet Eris (this ExtensibleEnumDefinition<Planet> definition)
     {
       return new Planet(MethodBase.GetCurrentMethod());

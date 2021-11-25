@@ -49,7 +49,7 @@ namespace Remotion.Web.ExecutionEngine
         get { return Item2; }
       }
 
-      [Obsolete ("Use LifetimeInMinutes instead. (Version 1.21.8)", false)]
+      [Obsolete("Use LifetimeInMinutes instead. (Version 1.21.8)", false)]
       public int Lifetime
       {
         get { return Item2; }
@@ -60,7 +60,7 @@ namespace Remotion.Web.ExecutionEngine
         get { return Item3; }
       }
 
-      [Obsolete ("Use LastAccessUtc instead. LastAccess now also returns the value as UTC. (Version 1.21.8)", false)]
+      [Obsolete("Use LastAccessUtc instead. LastAccess now also returns the value as UTC. (Version 1.21.8)", false)]
       public DateTime LastAccess
       {
         get { return Item3; }

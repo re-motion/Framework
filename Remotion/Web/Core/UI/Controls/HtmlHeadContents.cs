@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls
   ///   When added to the webform (inside the head element), the <see cref="HtmlHeadContents"/> 
   ///   control renderes the controls registered with <see cref="HtmlHeadAppender"/>.
   /// </summary>
-  [ToolboxData ("<{0}:HtmlHeadContents runat=\"server\" id=\"HtmlHeadContents\"></{0}:HtmlHeadContents>")]
+  [ToolboxData("<{0}:HtmlHeadContents runat=\"server\" id=\"HtmlHeadContents\"></{0}:HtmlHeadContents>")]
   public class HtmlHeadContents : Control, IHtmlHeadContents
   {
     public HtmlHeadContents ()

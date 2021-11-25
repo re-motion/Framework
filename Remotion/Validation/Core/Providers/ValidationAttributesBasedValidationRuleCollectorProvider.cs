@@ -28,7 +28,7 @@ namespace Remotion.Validation.Providers
   /// <summary>
   /// Uses attributes derived from the <see cref="AddingValidationAttributeBase"/> type to build constraints for the properties.
   /// </summary>
-  [ImplementationFor (typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Multiple)]
   public class ValidationAttributesBasedValidationRuleCollectorProvider : AttributeBasedValidationRuleCollectorProviderBase
   {
     private const BindingFlags PropertyBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;

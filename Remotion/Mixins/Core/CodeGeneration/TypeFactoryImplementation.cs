@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration
 {
-  [ImplementationFor (typeof(ITypeFactoryImplementation), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ITypeFactoryImplementation), Lifetime = LifetimeKind.Singleton)]
   public class TypeFactoryImplementation : ITypeFactoryImplementation
   {
     private readonly IPipelineRegistry _pipelineRegistry;

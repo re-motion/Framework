@@ -40,9 +40,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit date/time values. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
-  [ValidationProperty ("ValidationValue")]
-  [DefaultEvent ("TextChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("ValidationValue")]
+  [DefaultEvent("TextChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocDateTimeValue : BusinessObjectBoundEditableWebControl, IBocDateTimeValue, IPostBackDataHandler, IFocusableControl
   {
     // types
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocDateTimeValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocDateTimeValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when both the date and the time component missing. </summary>
@@ -411,7 +411,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         ErrorMessage = resourceManager.GetString(key);
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");
@@ -497,7 +497,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="null"/> is returned.
     /// </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public new DateTime? Value
     {
       get { return GetValue(); }
@@ -636,8 +636,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectDateTimeProperty"/> object this control is bound to. </summary>
     /// <value> An instance of type <see cref="IBusinessObjectDateTimeProperty"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectDateTimeProperty? Property
     {
       get { return (IBusinessObjectDateTimeProperty?)base.Property; }
@@ -732,8 +732,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the date text box if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string? FocusID
     {
       get { return IsReadOnly ? null : GetDateValueName(); }
@@ -744,11 +744,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (edit mode) as well as the label (read-only mode).
     /// </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the date and the time TextBoxes (edit mode) and the Label (read-only mode).")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the date and the time TextBoxes (edit mode) and the Label (read-only mode).")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style CommonStyle
     {
       get { return _commonStyle; }
@@ -759,11 +759,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (edit mode) only.
     /// </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/DateTimeTextBoxStyle/*' />
-    [Category ("Style")]
-    [Description ("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle DateTimeTextBoxStyle
     {
       get { return _dateTimeTextBoxStyle; }
@@ -771,11 +771,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the date text box (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to only the date TextBox (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to only the date TextBox (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle DateTextBoxStyle
     {
       get { return _dateTextBoxStyle; }
@@ -783,11 +783,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the time text box (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to only the time TextBox (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to only the time TextBox (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle TimeTextBoxStyle
     {
       get { return _timeTextBoxStyle; }
@@ -795,11 +795,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the Label (read-only mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the Label (read-only mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style LabelStyle
     {
       get { return _labelStyle; }
@@ -807,11 +807,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="DatePickerButton"/> (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the Button (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the Button (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style ButtonStyle
     {
       get { return _datePickerButton.DatePickerButtonStyle; }
@@ -819,9 +819,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that determines whether to display the seconds. </summary>
     /// <value> <see langword="true"/> to enable the seconds. The default value is <see langword="false"/>. </value>
-    [Category ("Appearance")]
-    [Description ("True to display the seconds. ")]
-    [DefaultValue (false)]
+    [Category("Appearance")]
+    [Description("True to display the seconds. ")]
+    [DefaultValue(false)]
     public bool ShowSeconds
     {
       get { return _showSeconds; }
@@ -830,9 +830,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that determines whether to apply an automatic maximum length to the text boxes. </summary>
     /// <value> <see langword="true"/> to enable the maximum length. The default value is <see langword="true"/>. </value>
-    [Category ("Behavior")]
-    [Description (" True to automatically limit the maxmimum length of the date and time input fields. ")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description(" True to automatically limit the maxmimum length of the date and time input fields. ")]
+    [DefaultValue(true)]
     public bool ProvideMaxLength
     {
       get { return _provideMaxLength; }
@@ -841,9 +841,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
     /// <value> <see langword="true"/> to enable the client script. The default value is <see langword="true"/>. </value>
-    [Category ("Behavior")]
-    [Description (" True to enable the client script for the pop-up calendar. ")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description(" True to enable the client script for the pop-up calendar. ")]
+    [DefaultValue(true)]
     public bool EnableClientScript
     {
       get { return _enableClientScript; }
@@ -859,9 +859,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The externally set <see cref="BocDateTimeValueType"/>. The default value is 
     ///   <see cref="BocDateTimeValueType.Undefined"/>. 
     /// </value>
-    [Description ("Gets or sets a fixed value type.")]
-    [Category ("Data")]
-    [DefaultValue (BocDateTimeValueType.Undefined)]
+    [Description("Gets or sets a fixed value type.")]
+    [Category("Data")]
+    [DefaultValue(BocDateTimeValueType.Undefined)]
     public BocDateTimeValueType ValueType
     {
       get { return _valueType; }
@@ -916,7 +916,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the <see cref="BocDateTimeValueType"/> actually used by the cotnrol. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public BocDateTimeValueType ActualValueType
     {
       get
@@ -927,7 +927,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the <see cref="IDatePickerButton"/> used in edit mode for opening the date picker. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public IDatePickerButton DatePickerButton
     {
       get { return _datePickerButton; }
@@ -937,7 +937,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the entered date and time, seperated by a newline character.
     /// </summary>
     /// <remarks> This property is used for validation. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public string ValidationValue
     {
       get
@@ -952,8 +952,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> This event is fired when the date or time is changed between postbacks. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value of the control has changed.")]
+    [Category("Action")]
+    [Description("Fires when the value of the control has changed.")]
     public event EventHandler DateTimeChanged
     {
       add { Events.AddHandler(s_dateTimeChangedEvent, value); }
@@ -965,9 +965,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }

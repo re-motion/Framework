@@ -25,34 +25,34 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   /// </summary>
   public enum AccessControlEntryValidationError
   {
-    [En ("The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned.")]
+    [En("The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned.")]
     IsSpecificTenantMissing,
 
-    [En ("The GroupCondition property is set to SpecificGroup, but no SpecificGroup is assigned.")]
+    [En("The GroupCondition property is set to SpecificGroup, but no SpecificGroup is assigned.")]
     IsSpecificGroupMissing,
 
-    [En ("The GroupCondition property is set to BranchOfOwningGroup or AnyGroupWithSpecificGroupType, but no SpecificGroupType is assigned.")]
+    [En("The GroupCondition property is set to BranchOfOwningGroup or AnyGroupWithSpecificGroupType, but no SpecificGroupType is assigned.")]
     IsSpecificGroupTypeMissing,
 
-    [En ("The UserCondition property is set to SpecificUser, but no SpecificUser is assigned.")]
+    [En("The UserCondition property is set to SpecificUser, but no SpecificUser is assigned.")]
     IsSpecificUserMissing,
 
-    [En ("The UserCondition property is set to SpecificPosition, but no SpecificPosition is assigned.")]
+    [En("The UserCondition property is set to SpecificPosition, but no SpecificPosition is assigned.")]
     IsSpecificPositionMissing,
 
-    [En ("The TenantCondition property is set to SpecificTenant or OwningTenant, but the TenantHierarchyCondition is not set.")]
+    [En("The TenantCondition property is set to SpecificTenant or OwningTenant, but the TenantHierarchyCondition is not set.")]
     IsTenantHierarchyConditionMissing,
 
-    [En ("The TenantCondition property is set to SpecificTenant or OwningTenant, but the TenantHierarchyCondition is set to 'Parent', which is not supported.")]
+    [En("The TenantCondition property is set to SpecificTenant or OwningTenant, but the TenantHierarchyCondition is set to 'Parent', which is not supported.")]
     IsTenantHierarchyConditionOnlyParent,
 
-    [En ("The GroupCondition property is set to SpecificGroup or OwningGroup, but the GroupHierarchyCondition is not set.")]
+    [En("The GroupCondition property is set to SpecificGroup or OwningGroup, but the GroupHierarchyCondition is not set.")]
     IsGroupHierarchyConditionMissing,
 
-    [En ("The GroupCondition property is set to SpecificGroup or OwningGroup, but the GroupHierarchyCondition is set to 'Parent', which is not supported.")]
+    [En("The GroupCondition property is set to SpecificGroup or OwningGroup, but the GroupHierarchyCondition is set to 'Parent', which is not supported.")]
     IsGroupHierarchyConditionOnlyParent,
 
-    [En ("The GroupCondition property is set to SpecificGroup or OwningGroup, but the GroupHierarchyCondition is set to 'Children', which is not supported.")]
+    [En("The GroupCondition property is set to SpecificGroup or OwningGroup, but the GroupHierarchyCondition is set to 'Children', which is not supported.")]
     IsGroupHierarchyConditionOnlyChildren,
   }
 }

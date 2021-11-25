@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       CultureName = cultureName;
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 10)]
+    [StringProperty(IsNullable = false, MaximumLength = 10)]
     public abstract string CultureName { get; protected set; }
   }
 }

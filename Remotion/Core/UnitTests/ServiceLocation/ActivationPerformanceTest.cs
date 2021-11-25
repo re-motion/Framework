@@ -24,7 +24,7 @@ using Remotion.Utilities;
 namespace Remotion.UnitTests.ServiceLocation
 {
   [TestFixture]
-  [Explicit ("Performance tests")]
+  [Explicit("Performance tests")]
   public class ActivationPerformanceTest
   {
     [Test]

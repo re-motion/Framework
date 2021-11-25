@@ -20,12 +20,12 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [Uses (typeof(MixnWithProviderAttribute))]
+  [Uses(typeof(MixnWithProviderAttribute))]
   [Serializable]
   public class DerivedBusinessObjectClassWithSpecificBusinessObjectProviderAttributeFromMixin : BaseBusinessObjectClass
   {
     [BindableObjectWithIdentityProvider]
-    [SuppressAttributes (typeof(BusinessObjectProviderAttribute))]
+    [SuppressAttributes(typeof(BusinessObjectProviderAttribute))]
     public class MixnWithProviderAttribute
     { }
 

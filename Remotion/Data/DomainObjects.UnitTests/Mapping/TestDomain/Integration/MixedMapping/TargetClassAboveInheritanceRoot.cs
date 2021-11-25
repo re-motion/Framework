@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping
 {
-  [Uses (typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot))]
+  [Uses(typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot))]
   public class TargetClassAboveInheritanceRoot : DomainObject
   {
   }

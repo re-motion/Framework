@@ -23,7 +23,7 @@ namespace Remotion
   /// Supplies an identifier that should remain constant even accross refactorings. 
   /// Can be applied to reference types, value types, interfaces, enums, properties, methods, and fields.
   /// </summary>
-  [AttributeUsage (
+  [AttributeUsage(
       AttributeTargets.Class
       | AttributeTargets.Struct
       | AttributeTargets.Interface

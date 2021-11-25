@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 
 namespace Remotion.Xml.UnitTests
 {
-  [XmlType (ElementName, Namespace = SchemaUri)]
+  [XmlType(ElementName, Namespace = SchemaUri)]
   public class SampleClass
   {
     public const string ElementName = "sampleClass";
@@ -38,7 +38,7 @@ namespace Remotion.Xml.UnitTests
     {
     }
 
-    [XmlElement ("value")]
+    [XmlElement("value")]
     public int Value
     {
       get { return _value; }

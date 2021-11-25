@@ -29,7 +29,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain
     string IntroducedProperty1 { get; }
   }
 
-  [Extends (typeof(BaseConcreteTypeForMixin))]
+  [Extends(typeof(BaseConcreteTypeForMixin))]
   public class MixinForBaseType : Mixin<IBaseConcreteTypeForMixin, IMixinForBaseTypeNext>, IIntroducedFromMixinForBaseType
   {
     [OverrideTarget]

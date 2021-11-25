@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests cropping without a border.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ElementCroppingTest ()
     {
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests cropping with a different padding on each side.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ElementCroppingWithPaddingTest ()
     {
@@ -107,7 +107,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that a the box annotation is drawing a box around the target.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ElementBoxAnnotationTest ()
     {
@@ -130,7 +130,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that box annotations with different widths do not intersect with the element bounds.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ElementBoxAnnotationWithWidthTest ()
     {
@@ -177,7 +177,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is drawn correctly.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void DrawTooltip ()
     {
@@ -196,7 +196,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void DrawCursorTooltip ()
     {
@@ -224,7 +224,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void DrawTooltip_WithFollowingBoxAnnotation ()
     {
@@ -244,7 +244,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void DrawCursorTooltip_WithFollowingBoxAnnotation ()
     {
@@ -286,7 +286,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the text annotation is drawing text correctly.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ElementTextAnnotations ()
     {
@@ -320,7 +320,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// <see cref="ControlObjectResolver"/>) is capable of resolving an elements position if the element is
     /// contained in one or more frames.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ResolveElementInFrame ()
     {
@@ -337,7 +337,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ResolveAbsolutePositionedElement ()
     {
@@ -355,7 +355,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ResolveBorderElementA ()
     {
@@ -375,7 +375,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           2);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ResolveBorderElementB ()
     {
@@ -395,7 +395,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           2);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void DropDownList ()
     {
@@ -447,7 +447,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(() => fluentControlObject.Open(), Throws.Nothing);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void DropDownMenu ()
     {
@@ -487,7 +487,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(fluentControlObject.SelectItem(), Is.Not.Null);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ListMenu ()
     {
@@ -523,7 +523,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(fluentControlObject.SelectItem(), Is.Not.Null);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void TabbedMenu ()
     {
@@ -572,7 +572,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(derivedSubMenu.SelectItem(), Is.Not.Null);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void WebTabStrip ()
     {
@@ -608,7 +608,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(fluentControlObject.SelectItem(), Is.Not.Null);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void WebTreeView ()
     {
@@ -651,7 +651,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// Tests using an implementation of <see cref="IScreenshotTransformation{T}"/>, drawing three overlapping ellipses with specified Z indices
     /// and manipulating the height of the resolved element.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTransformationTest ()
     {

@@ -19,8 +19,8 @@ using Remotion.TypePipe;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof(Mixin1))]
-  [Uses (typeof(Mixin2))]
+  [Uses(typeof(Mixin1))]
+  [Uses(typeof(Mixin2))]
   public class ClassDerivedFromComposedObject : ComposedObject<ClassDerivedFromComposedObject.IClassDerivedFromComposedObject>
   {
     public interface IClassDerivedFromComposedObject : IMixin1, IMixin2

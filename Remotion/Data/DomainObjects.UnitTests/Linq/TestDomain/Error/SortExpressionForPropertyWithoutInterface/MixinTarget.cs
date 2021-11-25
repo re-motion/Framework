@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpressionForPropertyWithoutInterface
 {
   [DBTable]
-  [ClassID ("Error_SortExpressionForPropertyWithoutInterface_MixinTarget")]
+  [ClassID("Error_SortExpressionForPropertyWithoutInterface_MixinTarget")]
   public class MixinTarget : DomainObject
   {
   }

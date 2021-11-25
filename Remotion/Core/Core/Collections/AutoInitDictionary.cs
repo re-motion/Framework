@@ -29,7 +29,7 @@ namespace Remotion.Collections
   ///   the indexer or removing items. Getting values through the indexer will assign a new object to the specified key if none exists.
   /// </remarks>
   [Serializable]
-  [DebuggerDisplay ("Count={Count}")]
+  [DebuggerDisplay("Count={Count}")]
   public class AutoInitDictionary<TKey, TValue> : IDictionary<TKey, TValue>
       where TKey : notnull
   {

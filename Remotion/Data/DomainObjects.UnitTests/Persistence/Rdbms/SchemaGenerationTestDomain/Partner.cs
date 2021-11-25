@@ -29,10 +29,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    [StringProperty(IsNullable = false, MaximumLength = 255)]
     public abstract string Description { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     [DBColumn("PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches")]
     public abstract string PropertyWithIdenticalNameInDifferentInheritanceBranches { get; set; }
   }

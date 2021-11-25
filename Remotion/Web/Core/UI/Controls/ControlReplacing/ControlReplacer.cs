@@ -123,7 +123,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
       return writer.ToString();
     }
 
-    [MemberNotNull (nameof(_stateModificationStrategy))]
+    [MemberNotNull(nameof(_stateModificationStrategy))]
     public void ReplaceAndWrap<T> (T controlToReplace, T controlToWrap, IStateModificationStrategy stateModificationStrategy)
         where T : Control, IReplaceableControl
     {

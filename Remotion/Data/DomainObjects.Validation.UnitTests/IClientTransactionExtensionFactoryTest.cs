@@ -22,7 +22,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
 {
-  [Ignore ("TODO RM-6055")]
+  [Ignore("TODO RM-6055")]
   [TestFixture]
   public class IClientTransactionExtensionFactoryTest
   {

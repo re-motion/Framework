@@ -25,7 +25,7 @@ namespace Remotion.Web.Utilities
 {
   public class HtmlUtility
   {
-    [Obsolete ("HtmlUtility.Format(string, params string[]) is obsolete. (Version 3.0.0)")]
+    [Obsolete("HtmlUtility.Format(string, params string[]) is obsolete. (Version 3.0.0)")]
     public static string Format (string htmlFormatString, params object[] nonHtmlParameters)
     {
       string[] htmlParameters = new string[nonHtmlParameters.Length];
@@ -35,7 +35,7 @@ namespace Remotion.Web.Utilities
     }
 
 #if !NETFRAMEWORK
-    [Obsolete (
+    [Obsolete(
         "HtmlUtility.HtmlEncode(string) is obsolete. Use WebString.CreateFromText(string).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks) instead. (Version 3.0.0)",
         DiagnosticId = ObsoleteDiagnosticIDs.HtmlUtility)]
 #endif
@@ -44,7 +44,7 @@ namespace Remotion.Web.Utilities
       return WebString.CreateFromText(nonHtmlString).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
     }
 
-    [Obsolete ("HtmlUtility.HtmlEncode(string, HtmlTextWriter) is obsolete. Use WebString.CreateFromText(string).Write(HtmlTextWriter) instead. (Version 3.0.0)")]
+    [Obsolete("HtmlUtility.HtmlEncode(string, HtmlTextWriter) is obsolete. Use WebString.CreateFromText(string).Write(HtmlTextWriter) instead. (Version 3.0.0)")]
     public static void HtmlEncode (string nonHtmlString, HtmlTextWriter writer)
     {
       WebString.CreateFromText(nonHtmlString).Write(writer);

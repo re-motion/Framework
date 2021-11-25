@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
   [DBTable]
   public class InvalidRelationClass : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("RelationProperty", ContainsForeignKey = true)]
     public Derived RelationPropertyPointingToDerived { get; set; }
   }
 }

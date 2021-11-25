@@ -86,8 +86,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       remove { Events.RemoveHandler(s_deleteEvent, value); }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string CssClass { get; set; }
 
     public bool IsCollapsed

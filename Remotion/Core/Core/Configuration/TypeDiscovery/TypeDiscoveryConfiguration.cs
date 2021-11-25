@@ -74,7 +74,7 @@ namespace Remotion.Configuration.TypeDiscovery
     /// Gets or sets the <see cref="TypeDiscoveryMode"/> to be used for type discovery.
     /// </summary>
     /// <value>The <see cref="TypeDiscoveryMode"/> to be used for type discovery.</value>
-    [ConfigurationProperty ("mode", DefaultValue = TypeDiscoveryMode.Automatic, IsRequired = false)]
+    [ConfigurationProperty("mode", DefaultValue = TypeDiscoveryMode.Automatic, IsRequired = false)]
     public TypeDiscoveryMode Mode
     {
       get { return (TypeDiscoveryMode)this["mode"]; }
@@ -88,7 +88,7 @@ namespace Remotion.Configuration.TypeDiscovery
     /// employed for finding the root assemblies used for type discovery. The given type must have a default constructor.
     /// </summary>
     /// <value>A <see cref="TypeElement{TBase}"/> describing the custom <see cref="IRootAssemblyFinder"/> type to be used.</value>
-    [ConfigurationProperty ("customRootAssemblyFinder", IsRequired = false)]
+    [ConfigurationProperty("customRootAssemblyFinder", IsRequired = false)]
     public TypeElement<IRootAssemblyFinder> CustomRootAssemblyFinder
     {
       get { return (TypeElement<IRootAssemblyFinder>)this["customRootAssemblyFinder"]; }
@@ -102,7 +102,7 @@ namespace Remotion.Configuration.TypeDiscovery
     /// still apply even for that assembly.
     /// </summary>
     /// <value>A <see cref="RootAssembliesElement"/> describing specific root assemblies to be used.</value>
-    [ConfigurationProperty ("specificRootAssemblies", IsRequired = false)]
+    [ConfigurationProperty("specificRootAssemblies", IsRequired = false)]
     public RootAssembliesElement SpecificRootAssemblies
     {
       get { return (RootAssembliesElement)this["specificRootAssemblies"]; }
@@ -115,7 +115,7 @@ namespace Remotion.Configuration.TypeDiscovery
     /// employed for type discovery. The given type must have a default constructor.
     /// </summary>
     /// <value>A <see cref="TypeElement{TBase}"/> describing the custom <see cref="ITypeDiscoveryService"/> type to be used.</value>
-    [ConfigurationProperty ("customTypeDiscoveryService", IsRequired = false)]
+    [ConfigurationProperty("customTypeDiscoveryService", IsRequired = false)]
     public TypeElement<ITypeDiscoveryService> CustomTypeDiscoveryService
     {
       get { return (TypeElement<ITypeDiscoveryService>)this["customTypeDiscoveryService"]; }

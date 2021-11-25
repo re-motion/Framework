@@ -32,7 +32,7 @@ using Remotion.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
 {
-  [WebMultiLingualResources ("OBWTest.Globalization.SingleBocTestBasePage")]
+  [WebMultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")]
   public partial class Form : TestBasePage<TestFunction>
   {
     private IDataEditControl _dataEditControl;

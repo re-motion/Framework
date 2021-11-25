@@ -17,8 +17,8 @@
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualName ("The Invariant Struct Name", "")]
-  [MultiLingualName ("The en-US Struct Name", "en-US")]
+  [MultiLingualName("The Invariant Struct Name", "")]
+  [MultiLingualName("The en-US Struct Name", "en-US")]
   public struct StructWithMultiLingualNameAttribute
   {
 

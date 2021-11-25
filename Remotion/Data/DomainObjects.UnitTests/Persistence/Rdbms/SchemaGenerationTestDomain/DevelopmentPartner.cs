@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof(ProductLicenseMixin))]
+  [Uses(typeof(ProductLicenseMixin))]
   public abstract class DevelopmentPartner : Partner
   {
     public new static DevelopmentPartner NewObject ()
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    [StringProperty(IsNullable = false, MaximumLength = 255)]
     public abstract string Competences { get; set; }
   }
 }

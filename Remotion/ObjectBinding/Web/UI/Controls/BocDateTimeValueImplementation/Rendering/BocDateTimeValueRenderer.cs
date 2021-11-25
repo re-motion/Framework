@@ -33,7 +33,7 @@ using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
-  [ImplementationFor (typeof(IBocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocDateTimeValueRenderer : BocRendererBase<IBocDateTimeValue>, IBocDateTimeValueRenderer
   {
     public enum DateTimeValuePart

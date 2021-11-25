@@ -45,123 +45,123 @@ namespace Remotion.Utilities
     private const string c_msgIsNotNull = "Assertion failed: Expression does not evaluate to a null reference.";
     private static readonly object[] s_emptyArguments = new object[0];
 
-    [Conditional ("DEBUG")]
+    [Conditional("DEBUG")]
     [AssertionMethod]
-    public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message)
+    public static void DebugAssert ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion, string message)
     {
       IsTrue(assertion, message);
     }
 
-    [Conditional ("DEBUG")]
+    [Conditional("DEBUG")]
     [AssertionMethod]
     [StringFormatMethod("message")]
-    public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object?[] arguments)
+    public static void DebugAssert ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion, string message, params object?[] arguments)
     {
       IsTrue(assertion, message, arguments);
     }
 
-    [Conditional ("DEBUG")]
+    [Conditional("DEBUG")]
     [AssertionMethod]
-    public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion)
+    public static void DebugAssert ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion)
     {
       IsTrue(assertion);
     }
 
-    [Conditional ("TRACE")]
+    [Conditional("TRACE")]
     [AssertionMethod]
-    public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message)
+    public static void TraceAssert ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion, string message)
     {
       IsTrue(assertion, message);
     }
 
-    [Conditional ("TRACE")]
+    [Conditional("TRACE")]
     [AssertionMethod]
-    [StringFormatMethod ("message")]
-    public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object?[] arguments)
+    [StringFormatMethod("message")]
+    public static void TraceAssert ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion, string message, params object?[] arguments)
     {
       IsTrue(assertion, message, arguments);
     }
 
-    [Conditional ("TRACE")]
+    [Conditional("TRACE")]
     [AssertionMethod]
-    public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion)
+    public static void TraceAssert ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion)
     {
       IsTrue(assertion);
     }
 
     [AssertionMethod]
-    public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message)
+    public static void IsTrue ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion, string message)
     {
       IsTrue(assertion, message, s_emptyArguments);
     }
 
     [AssertionMethod]
     [StringFormatMethod("message")]
-    public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion, string message, params object?[] arguments)
+    public static void IsTrue ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion, string message, params object?[] arguments)
     {
       if (!assertion)
         throw new InvalidOperationException(string.Format(message, arguments));
     }
 
     [AssertionMethod]
-    public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE), DoesNotReturnIf (false)] bool assertion)
+    public static void IsTrue ([AssertionCondition(AssertionConditionType.IS_TRUE), DoesNotReturnIf(false)] bool assertion)
     {
       IsTrue(assertion, c_msgIsFalse);
     }
 
     [AssertionMethod]
-    public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE), DoesNotReturnIf (true)] bool expression, string message)
+    public static void IsFalse ([AssertionCondition(AssertionConditionType.IS_FALSE), DoesNotReturnIf(true)] bool expression, string message)
     {
       IsFalse(expression, message, s_emptyArguments);
     }
 
     [AssertionMethod]
-    public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE), DoesNotReturnIf (true)] bool expression)
+    public static void IsFalse ([AssertionCondition(AssertionConditionType.IS_FALSE), DoesNotReturnIf(true)] bool expression)
     {
       IsFalse(expression, c_msgIsTrue);
     }
 
     [AssertionMethod]
-    [StringFormatMethod ("message")]
-    public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE), DoesNotReturnIf (true)] bool expression, string message, params object?[] arguments)
+    [StringFormatMethod("message")]
+    public static void IsFalse ([AssertionCondition(AssertionConditionType.IS_FALSE), DoesNotReturnIf(true)] bool expression, string message, params object?[] arguments)
     {
       if (expression)
         throw new InvalidOperationException(string.Format(message, arguments));
     }
 
-    [Conditional ("DEBUG")]
+    [Conditional("DEBUG")]
     [AssertionMethod]
-    public static void DebugIsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message)
+    public static void DebugIsNotNull<T> ([AssertionCondition(AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message)
     {
       IsNotNull(obj, message, s_emptyArguments);
     }
 
-    [Conditional ("DEBUG")]
+    [Conditional("DEBUG")]
     [AssertionMethod]
-    [StringFormatMethod ("message")]
-    public static void DebugIsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
+    [StringFormatMethod("message")]
+    public static void DebugIsNotNull<T> ([AssertionCondition(AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
     {
       IsNotNull(obj, message, arguments);
     }
 
     [AssertionMethod]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message)
+    public static T IsNotNull<T> ([AssertionCondition(AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message)
     {
       return IsNotNull(obj, message, s_emptyArguments);
     }
 
     [AssertionMethod]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj)
+    public static T IsNotNull<T> ([AssertionCondition(AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj)
     {
       return IsNotNull(obj, c_msgIsNull);
     }
 
     [AssertionMethod]
-    [StringFormatMethod ("message")]
+    [StringFormatMethod("message")]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
+    public static T IsNotNull<T> ([AssertionCondition(AssertionConditionType.IS_NOT_NULL), System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
     {
       // ReSharper disable CompareNonConstrainedGenericWithNull
       if (obj == null)
@@ -172,20 +172,20 @@ namespace Remotion.Utilities
     }
 
     [AssertionMethod]
-    public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object? obj, string message)
+    public static void IsNull ([AssertionCondition(AssertionConditionType.IS_NULL)] object? obj, string message)
     {
       IsNull(obj, message, s_emptyArguments);
     }
 
     [AssertionMethod]
-    public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object? obj)
+    public static void IsNull ([AssertionCondition(AssertionConditionType.IS_NULL)] object? obj)
     {
       IsNull(obj, c_msgIsNotNull);
     }
 
     [AssertionMethod]
     [StringFormatMethod("message")]
-    public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object? obj, string message, params object?[] arguments)
+    public static void IsNull ([AssertionCondition(AssertionConditionType.IS_NULL)] object? obj, string message, params object?[] arguments)
     {
       if (obj != null)
         throw new InvalidOperationException(string.Format(message, arguments));

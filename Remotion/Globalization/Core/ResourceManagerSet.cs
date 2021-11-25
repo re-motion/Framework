@@ -103,7 +103,7 @@ namespace Remotion.Globalization
     /// <summary>
     ///   Tries to get the value of the specified string resource. If the resource is not found, <see langword="false" /> is returned.
     /// </summary>
-    public bool TryGetString (string id, [MaybeNullWhen (false)] out string value)
+    public bool TryGetString (string id, [MaybeNullWhen(false)] out string value)
     {
       //FOR-loop for performance reasons
       // ReSharper disable ForCanBeConvertedToForeach

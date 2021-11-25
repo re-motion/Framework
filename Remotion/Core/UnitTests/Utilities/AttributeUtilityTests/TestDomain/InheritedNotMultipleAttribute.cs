@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
-  [AttributeUsage (AttributeTargets.All, Inherited = true, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = false)]
   public class InheritedNotMultipleAttribute : Attribute, ICustomAttribute
   {
     private readonly string _context;

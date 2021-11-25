@@ -20,7 +20,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof(HookedDomainObjectMixin))]
+  [Uses(typeof(HookedDomainObjectMixin))]
   [DBTable]
   [TestDomain]
   public class HookedTargetClass : DomainObject, ISupportsGetObject

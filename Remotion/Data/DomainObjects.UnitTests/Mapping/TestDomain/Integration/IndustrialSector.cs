@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public virtual string Name
     {
       get
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
       }
     }
 
-    [DBBidirectionalRelation ("IndustrialSector")]
+    [DBBidirectionalRelation("IndustrialSector")]
     [Mandatory]
     public virtual ObjectList<Company> Companies
     {

@@ -38,7 +38,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.Web.UI.Controls
 {
   /// <include file='..\..\doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
-  [ToolboxData ("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
+  [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
   public class WebTabStrip
       :
           WebControl,
@@ -415,8 +415,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the currently selected tab. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public WebTab? SelectedTab
     {
       get
@@ -432,19 +432,19 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the tabs displayed by this tab strip. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [MergableProperty (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [MergableProperty(false)]
     //  Default category
-    [Description ("The tabs displayed by this tab strip.")]
-    [DefaultValue ((string?)null)]
+    [Description("The tabs displayed by this tab strip.")]
+    [DefaultValue((string?)null)]
     public WebTabCollection Tabs
     {
       get { return _tabs; }
     }
 
-    [Description ("Determines whether to enable the selected tab.")]
-    [DefaultValue (false)]
+    [Description("Determines whether to enable the selected tab.")]
+    [DefaultValue(false)]
     public bool EnableSelectedTab
     {
       get { return _enableSelectedTab; }
@@ -452,8 +452,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Occurs when a node is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when the selected tab has been changed.")]
+    [Category("Action")]
+    [Description("Occurs when the selected tab has been changed.")]
     public event EventHandler SelectedIndexChanged
     {
       add { Events.AddHandler(s_selectedIndexChangedEvent, value); }
@@ -461,39 +461,39 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Is raised when a tab is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Is raised when a tab is clicked.")]
+    [Category("Action")]
+    [Description("Is raised when a tab is clicked.")]
     public event WebTabClickEventHandler Click
     {
       add { Events.AddHandler(s_clickEvent, value); }
       remove { Events.RemoveHandler(s_clickEvent, value); }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to a tab that is not selected.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to a tab that is not selected.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle TabStyle
     {
       get { return _tabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the selected tab.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the selected tab.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle SelectedTabStyle
     {
       get { return _selectedTabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to a disabled tab.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to a disabled tab.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle DisabledTabStyle
     {
       get { return _disabledTabStyle; }

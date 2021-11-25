@@ -19,7 +19,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  [ImplementationFor (typeof(StubService))]
+  [ImplementationFor(typeof(StubService))]
   public class StubService
   {
     public StubService ()

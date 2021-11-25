@@ -30,52 +30,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Order>();
     }
 
-    [DBColumn ("OrderNo")]
+    [DBColumn("OrderNo")]
     public abstract int OrderNumber { get; set; }
 
     [StorageClassNone]
     public int RedirectedOrderNumber
     {
-      [LinqPropertyRedirection (typeof(Order), "OrderNumber")]
+      [LinqPropertyRedirection(typeof(Order), "OrderNumber")]
       get { return OrderNumber; }
     }
 
     [StorageClassNone]
     public int RedirectedRedirectedOrderNumber
     {
-      [LinqPropertyRedirection (typeof(Order), "RedirectedOrderNumber")]
+      [LinqPropertyRedirection(typeof(Order), "RedirectedOrderNumber")]
       get { return RedirectedOrderNumber; }
     }
 
     public abstract DateTime DeliveryDate { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Orders")]
+    [DBBidirectionalRelation("Orders")]
     public abstract Official Official { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Order")]
+    [DBBidirectionalRelation("Order")]
     public abstract OrderTicket OrderTicket { get; set; }
 
     [StorageClassNone]
     public OrderTicket RedirectedOrderTicket
     {
-      [LinqPropertyRedirection (typeof(Order), "OrderTicket")]
+      [LinqPropertyRedirection(typeof(Order), "OrderTicket")]
       get { return OrderTicket; }
     }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Orders")]
+    [DBBidirectionalRelation("Orders")]
     public abstract Customer Customer { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Order")]
+    [DBBidirectionalRelation("Order")]
     public virtual ObjectList<OrderItem> OrderItems { get; set; }
 
     [StorageClassNone]
     public ObjectList<OrderItem> RedirectedOrderItems
     {
-      [LinqPropertyRedirection (typeof(Order), "OrderItems")]
+      [LinqPropertyRedirection(typeof(Order), "OrderItems")]
       get { return OrderItems; }
     }
 

@@ -56,19 +56,19 @@ namespace Remotion.Data.DomainObjects.Configuration
     private readonly DoubleCheckedLockingContainer<StorageConfiguration> _persistenceConfiguration;
     private readonly DoubleCheckedLockingContainer<QueryConfiguration> _queryConfiguration;
 
-    [ConfigurationProperty (MappingLoaderPropertyName)]
+    [ConfigurationProperty(MappingLoaderPropertyName)]
     public MappingLoaderConfiguration MappingLoader
     {
       get { return _mappingLoaderConfiguration.Value; }
     }
 
-    [ConfigurationProperty (StoragePropertyName)]
+    [ConfigurationProperty(StoragePropertyName)]
     public StorageConfiguration Storage
     {
       get { return _persistenceConfiguration.Value; }
     }
 
-    [ConfigurationProperty (QueryPropertyName)]
+    [ConfigurationProperty(QueryPropertyName)]
     public QueryConfiguration Query
     {
       get { return _queryConfiguration.Value; }

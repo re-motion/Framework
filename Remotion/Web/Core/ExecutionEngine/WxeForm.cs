@@ -28,7 +28,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.Web.ExecutionEngine
 {
 
-  [DesignTimeVisible (false)]
+  [DesignTimeVisible(false)]
   public class WxeForm : HtmlForm, IPostBackDataHandler, IControl
   {
     private static readonly object s_loadPostDataEvent = new object();
@@ -104,7 +104,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Occurs during the load post data phase. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public event EventHandler LoadPostData
     {
       add { Events.AddHandler(s_loadPostDataEvent, value); }

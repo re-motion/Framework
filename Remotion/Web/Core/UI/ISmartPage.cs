@@ -137,7 +137,7 @@ namespace Remotion.Web.UI
     void RegisterControlForSynchronousPostBack ([NotNull] Control control);
 
     /// <summary> Saves the ControlState and the ViewState of the ASP.NET page. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     void SaveAllState ();
   }
 }

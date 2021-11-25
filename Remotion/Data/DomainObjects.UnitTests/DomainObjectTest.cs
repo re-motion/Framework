@@ -570,7 +570,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [DBTable]
-    [ClassID ("DomainObjectTest_DomainObjectWithPublicCtor")]
+    [ClassID("DomainObjectTest_DomainObjectWithPublicCtor")]
     public class DomainObjectWithPublicCtor : DomainObject
     {
       public DomainObjectWithPublicCtor ()

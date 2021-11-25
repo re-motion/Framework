@@ -19,7 +19,7 @@ using System;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [PermanentGuid (c_permanentGuid)]
+  [PermanentGuid(c_permanentGuid)]
   public sealed class RevisionKey : IRevisionKey
   {
     private const string c_permanentGuid = "{446DF534-DBEA-420E-9AC1-0B19D51B0ED3}";

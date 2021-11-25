@@ -44,9 +44,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     private const string InvalidTimeErrorMessage = "InvalidTimeErrorMessage";
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { MissingDateOrTimeErrorMessage })]
-    [TestCase (BocDateTimeValueType.Date, new[] { MissingDateErrorMessage })]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { MissingDateAndTimeErrorMessage })]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { MissingDateOrTimeErrorMessage })]
+    [TestCase(BocDateTimeValueType.Date, new[] { MissingDateErrorMessage })]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { MissingDateAndTimeErrorMessage })]
     public void Validate_Required_DateAndTimeMissing (BocDateTimeValueType valueType, string[] expectedError)
     {
       using (new CultureScope("de-AT"))
@@ -63,9 +63,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new string[0], true)]
-    [TestCase (BocDateTimeValueType.Date, new[] { MissingDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { MissingDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new string[0], true)]
+    [TestCase(BocDateTimeValueType.Date, new[] { MissingDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { MissingDateErrorMessage }, false)]
     public void Validate_Required_DateMissing (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -82,9 +82,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new string[0], true)]
-    [TestCase (BocDateTimeValueType.Date, new[] { MissingDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { MissingDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new string[0], true)]
+    [TestCase(BocDateTimeValueType.Date, new[] { MissingDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { MissingDateErrorMessage }, false)]
     public void Validate_NotRequired_DateMissing (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -101,9 +101,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new string[0], true)]
-    [TestCase (BocDateTimeValueType.Date, new string[0], true)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { MissingTimeErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new string[0], true)]
+    [TestCase(BocDateTimeValueType.Date, new string[0], true)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { MissingTimeErrorMessage }, false)]
     public void Validate_Required_TimeMissing (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -120,9 +120,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { InvalidDateAndTimeErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateAndTimeErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { InvalidDateAndTimeErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { InvalidDateAndTimeErrorMessage }, false)]
     public void Validate_InvalidDateAndTime (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -139,10 +139,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (-2, new string[0], true)]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(-2, new string[0], true)]
     public void Validate_InvalidDate (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -159,9 +159,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
     public void Validate_InvalidDate2 (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -179,9 +179,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
     public void Validate_InvalidDate3 (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -198,9 +198,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { InvalidTimeErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.Date, new string[0], true)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidTimeErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { InvalidTimeErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Date, new string[0], true)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { InvalidTimeErrorMessage }, false)]
     public void Validate_InvalidTime (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -217,9 +217,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { InvalidTimeErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.Date, new string[0], true)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidTimeErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { InvalidTimeErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Date, new string[0], true)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { InvalidTimeErrorMessage }, false)]
     public void Validate_InvalidTime2 (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))
@@ -246,9 +246,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     }
 
     [Test]
-    [TestCase (BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
-    [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Undefined, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.Date, new[] { InvalidDateErrorMessage }, false)]
+    [TestCase(BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
     public void Validate_EmptyDate (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
       using (new CultureScope("de-AT"))

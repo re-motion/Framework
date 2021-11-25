@@ -44,7 +44,7 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
 
     // methods and properties
 
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public void ShowSpecial ()
     {
     }

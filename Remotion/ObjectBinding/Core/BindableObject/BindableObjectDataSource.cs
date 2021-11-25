@@ -50,9 +50,9 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return GetBindableObjectClass(); }
     }
 
-    [Category ("Data")]
-    [DefaultValue (null)]
-    [TypeConverter (typeof(TypeNameConverter))]
+    [Category("Data")]
+    [DefaultValue(null)]
+    [TypeConverter(typeof(TypeNameConverter))]
     public Type? Type
     {
       get

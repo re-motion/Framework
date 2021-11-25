@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     public abstract int Int32 { get; set; }
 
     [StorageClassTransaction]
-    [DBBidirectionalRelation ("OppositeSampleObject")]
+    [DBBidirectionalRelation("OppositeSampleObject")]
     public abstract OppositeBidirectionalBindableDomainObject RelatedObjectProperty1 { get; set; }
     [StorageClassTransaction]
-    [DBBidirectionalRelation ("OppositeSampleObjects")]
+    [DBBidirectionalRelation("OppositeSampleObjects")]
     public abstract OppositeBidirectionalBindableDomainObject RelatedObjectProperty2 { get; set; }
 
     public new void Delete ()

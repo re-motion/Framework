@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     public abstract DateTime? CustomerSince { get; set; }
 
-    [DBColumn ("CustomerType")]
+    [DBColumn("CustomerType")]
     public abstract CustomerType Type { get; set; }
 
-    [DBBidirectionalRelation ("Customer", SortExpression = "OrderNumber asc")]
+    [DBBidirectionalRelation("Customer", SortExpression = "OrderNumber asc")]
     public abstract OrderCollection Orders { get; set;  }
 
     public void OnDeserialization (object sender)

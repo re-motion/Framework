@@ -19,7 +19,7 @@ using System.Reflection;
 using System.Security;
 
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant (true)]
+[assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers] // required for sandboxing
 
 [assembly: SecurityRules(SecurityRuleSet.Level1)]

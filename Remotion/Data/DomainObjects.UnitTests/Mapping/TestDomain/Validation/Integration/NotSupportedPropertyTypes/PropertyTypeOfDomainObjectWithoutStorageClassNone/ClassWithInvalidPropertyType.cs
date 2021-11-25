@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes.PropertyTypeOfDomainObjectWithoutStorageClassNone
 {
   [DBTable]
-  [ClassID ("PropertyTypeOfDomainObjectWithoutStorageClassNone_ClassWithInvalidPropertyType")]
+  [ClassID("PropertyTypeOfDomainObjectWithoutStorageClassNone_ClassWithInvalidPropertyType")]
   public class ClassWithInvalidPropertyType : DomainObject
   {
     public DomainObject InvalidProperty { get; set; }

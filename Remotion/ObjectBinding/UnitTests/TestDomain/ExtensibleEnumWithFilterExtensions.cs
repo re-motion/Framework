@@ -20,7 +20,7 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [DisableExtensibleEnumValues ("Value1")]
+  [DisableExtensibleEnumValues("Value1")]
   public static class ExtensibleEnumWithFilterExtensions1
   {
     public static ExtensibleEnumWithFilter Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithFilter> definition)

@@ -31,8 +31,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     IExecutionStateParameters? Parameters { get; }
 
     /// <summary> Gets a flag that informs the observer whether the state is executing. This value is typically constant for a state implementation. </summary>
-    [MemberNotNullWhen (true, nameof(ExecutionStateContext))]
-    [MemberNotNullWhen (true, nameof(Parameters))]
+    [MemberNotNullWhen(true, nameof(ExecutionStateContext))]
+    [MemberNotNullWhen(true, nameof(Parameters))]
     bool IsExecuting { get; }
 
     /// <summary>

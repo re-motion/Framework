@@ -19,7 +19,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [DBTable ("MixedDomains_RelationTarget")]
+  [DBTable("MixedDomains_RelationTarget")]
   [Instantiable]
   [TestDomain]
   public abstract class RelationTargetForPersistentMixin : DomainObject
@@ -29,20 +29,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
       return NewObject<RelationTargetForPersistentMixin>();
     }
 
-    [DBBidirectionalRelation ("RelationProperty")]
+    [DBBidirectionalRelation("RelationProperty")]
     public abstract TargetClassForPersistentMixin RelationProperty1 { get; set; }
 
-    [DBBidirectionalRelation ("VirtualRelationProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("VirtualRelationProperty", ContainsForeignKey = true)]
     public abstract TargetClassForPersistentMixin RelationProperty2 { get; set; }
 
-    [DBBidirectionalRelation ("CollectionProperty1Side")]
+    [DBBidirectionalRelation("CollectionProperty1Side")]
     public abstract TargetClassForPersistentMixin RelationProperty3 { get; set; }
 
-    [DBBidirectionalRelation ("CollectionPropertyNSide", SortExpression =
+    [DBBidirectionalRelation("CollectionPropertyNSide", SortExpression =
         "Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.MixinAddingPersistentProperties.PersistentProperty ASC")]
     public abstract ObjectList<TargetClassForPersistentMixin> RelationProperty4 { get; }
 
-    [DBBidirectionalRelation ("PrivateBaseRelationProperty", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("PrivateBaseRelationProperty", ContainsForeignKey = false)]
     public abstract TargetClassForPersistentMixin RelationProperty5 { get; set; }
   }
 }

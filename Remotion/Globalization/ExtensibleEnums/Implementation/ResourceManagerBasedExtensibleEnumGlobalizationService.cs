@@ -29,7 +29,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
   /// Retrieves the human-readable localized representation of extensible-enumeration objects.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor(typeof(IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class ResourceManagerBasedExtensibleEnumGlobalizationService : IExtensibleEnumGlobalizationService
   {
@@ -44,7 +44,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
       _globalizationService = globalizationService;
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen (false)] out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("value", value);
 

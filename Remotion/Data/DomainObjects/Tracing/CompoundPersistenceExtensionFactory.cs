@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
-  [ImplementationFor (typeof(IPersistenceExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IPersistenceExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundPersistenceExtensionFactory : IPersistenceExtensionFactory
   {
     private readonly IReadOnlyCollection<IPersistenceExtensionFactory> _persistenceExtensionFactories;

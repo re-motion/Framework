@@ -40,10 +40,10 @@ namespace Remotion.Web.UI.Controls
 {
   //  TODO: Command: Move long comment blocks to xml-file
   /// <summary> A <see cref="Command"/> defines an action the user can invoke. </summary>
-  [TypeConverter (typeof(ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class Command : IControlItem
   {
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class NoneCommandInfo
     {
       private bool _enableFocus;
@@ -52,11 +52,11 @@ namespace Remotion.Web.UI.Controls
       {
       }
 
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behavior")]
-      [Description ("True to allow keyboard focus for the command.")]
-      [DefaultValue (false)]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behavior")]
+      [Description("True to allow keyboard focus for the command.")]
+      [DefaultValue(false)]
+      [NotifyParentProperty(true)]
       public bool EnableFocus
       {
         get { return _enableFocus; }
@@ -74,7 +74,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class EventCommandInfo
     {
       //  EventPermissionProvider; //None, EventHandler, Properties
@@ -91,11 +91,11 @@ namespace Remotion.Web.UI.Controls
       {
       }
 
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behavior")]
-      [Description ("True to require a synchronous postback within Ajax Update Panels.")]
-      [DefaultValue (false)]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behavior")]
+      [Description("True to require a synchronous postback within Ajax Update Panels.")]
+      [DefaultValue(false)]
+      [NotifyParentProperty(true)]
       public bool RequiresSynchronousPostBack
       {
         get { return _requiresSynchronousPostBack; }
@@ -114,7 +114,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class HrefCommandInfo
     {
       private string _href = string.Empty;
@@ -154,11 +154,11 @@ namespace Remotion.Web.UI.Controls
       ///   The URL to link to when the rendered command is clicked. The default value is 
       ///   an empty <see cref="String"/>. 
       /// </value>
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behavior")]
-      [Description ("The hyperlink reference of the command.")]
-      [DefaultValue ("")]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behavior")]
+      [Description("The hyperlink reference of the command.")]
+      [DefaultValue("")]
+      [NotifyParentProperty(true)]
       public virtual string Href
       {
         get { return _href; }
@@ -173,11 +173,11 @@ namespace Remotion.Web.UI.Controls
       ///   The target window or frame to load the web page specified by <see cref="Href"/> when the rendered command
       ///   is clicked.  The default value is an empty <see cref="String"/>. 
       /// </value>
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behavior")]
-      [Description ("The target window or frame of the command. Leave it blank for no target.")]
-      [DefaultValue ("")]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behavior")]
+      [Description("The target window or frame of the command. Leave it blank for no target.")]
+      [DefaultValue("")]
+      [NotifyParentProperty(true)]
       public virtual string Target
       {
         get { return _target; }
@@ -186,7 +186,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class WxeFunctionCommandInfo
     {
       private string _mappingID = string.Empty;
@@ -226,11 +226,11 @@ namespace Remotion.Web.UI.Controls
       ///   In ASP.NET 2.0, it is possible to use functions located in the <b>App_Code</b> assembly by not specifying an
       ///   assembly name.
       /// </remarks>
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behavior")]
-      [Description ("The complete type name (type[, assembly]) of the WxeFunction used for the command.")]
-      [DefaultValue ("")]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behavior")]
+      [Description("The complete type name (type[, assembly]) of the WxeFunction used for the command.")]
+      [DefaultValue("")]
+      [NotifyParentProperty(true)]
       public virtual string TypeName
       {
         get { return _typeName; }
@@ -245,11 +245,11 @@ namespace Remotion.Web.UI.Controls
       ///   The <see cref="UrlMappingEntry.ID"/> associated with the <see cref="WxeFunction"/> to call when the 
       ///   rendered command is clicked. The default value is an empty <see cref="String"/>. 
       /// </value>
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behavior")]
-      [Description ("The Url-Mapping ID associated with the WxeFunction used for the command.")]
-      [DefaultValue ("")]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behavior")]
+      [Description("The Url-Mapping ID associated with the WxeFunction used for the command.")]
+      [DefaultValue("")]
+      [NotifyParentProperty(true)]
       public string MappingID
       {
         get { return _mappingID; }
@@ -264,11 +264,11 @@ namespace Remotion.Web.UI.Controls
       ///   The comma separated list of parameters passed to the <see cref="WxeFunction"/> when the rendered command 
       ///   is clicked. The default value is an empty <see cref="String"/>. 
       /// </value>
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behavior")]
-      [Description ("A comma separated list of parameters for the command.")]
-      [DefaultValue ("")]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behavior")]
+      [Description("A comma separated list of parameters for the command.")]
+      [DefaultValue("")]
+      [NotifyParentProperty(true)]
       public virtual string Parameters
       {
         get { return _parameters; }
@@ -283,11 +283,11 @@ namespace Remotion.Web.UI.Controls
       ///   The target window or frame to open the Wxe <see cref="WxeFunction"/> when the rendered command is clicked. 
       ///   The default value is an empty <see cref="String"/>. 
       /// </value>
-      [PersistenceMode (PersistenceMode.Attribute)]
-      [Category ("Behaviour")]
-      [Description ("The target window or frame of the command. Leave it blank for no target.")]
-      [DefaultValue ("")]
-      [NotifyParentProperty (true)]
+      [PersistenceMode(PersistenceMode.Attribute)]
+      [Category("Behaviour")]
+      [Description("The target window or frame of the command. Leave it blank for no target.")]
+      [DefaultValue("")]
+      [NotifyParentProperty(true)]
       public string Target
       {
         get { return _target; }
@@ -351,7 +351,7 @@ namespace Remotion.Web.UI.Controls
 
     private IControl? _ownerControl;
 
-    [Browsable (false)]
+    [Browsable(false)]
     public CommandClickEventHandler? Click;
 
     private readonly IWxeSecurityAdapter? _wxeSecurityAdapter;
@@ -803,32 +803,32 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
     /// <value> One of the <see cref="CommandType"/> enumeration values. The default is <see cref="CommandType.None"/>. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The type of command generated.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The type of command generated.")]
+    [NotifyParentProperty(true)]
     public CommandType Type
     {
       get { return _type; }
       set { _type = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The ToolTip/Title rendered in the anchor tag.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The ToolTip/Title rendered in the anchor tag.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue("")]
     public string ToolTip
     {
       get { return _toolTip; }
       set { _toolTip = (value ?? string.Empty).Trim(); }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The AccessKey rendered in the anchor tag.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The AccessKey rendered in the anchor tag.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue("")]
     [AllowNull]
     public string AccessKey
     {
@@ -836,8 +836,8 @@ namespace Remotion.Web.UI.Controls
       set { _accessKey = (value ?? string.Empty).Trim(); }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public bool IsDefaultType
     {
       get { return _type == _defaultType; }
@@ -861,11 +861,11 @@ namespace Remotion.Web.UI.Controls
     /// <value> 
     ///   One of the <see cref="CommandShow"/> enumeration values. The default is <see cref="CommandShow.Always"/>.
     /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("Determines when to show the item command to the user in regard to the parent control's read-only setting.")]
-    [DefaultValue (CommandShow.Always)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("Determines when to show the item command to the user in regard to the parent control's read-only setting.")]
+    [DefaultValue(CommandShow.Always)]
+    [NotifyParentProperty(true)]
     public CommandShow Show
     {
       get { return _show; }
@@ -879,12 +879,12 @@ namespace Remotion.Web.UI.Controls
     ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.None"/>.
     /// </remarks>
     /// <value> A <see cref="EventCommandInfo"/> object. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The properties when there is no command. Interpreted if Type is set to None.")]
-    [DefaultValue ((string?)null)]
-    [NotifyParentProperty (true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The properties when there is no command. Interpreted if Type is set to None.")]
+    [DefaultValue((string?)null)]
+    [NotifyParentProperty(true)]
     public virtual NoneCommandInfo NoneCommand
     {
       get { return _noneCommand; }
@@ -898,12 +898,12 @@ namespace Remotion.Web.UI.Controls
     ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Event"/>.
     /// </remarks>
     /// <value> A <see cref="EventCommandInfo"/> object. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The properties of the event. Interpreted if Type is set to Event.")]
-    [DefaultValue ((string?)null)]
-    [NotifyParentProperty (true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The properties of the event. Interpreted if Type is set to Event.")]
+    [DefaultValue((string?)null)]
+    [NotifyParentProperty(true)]
     public virtual EventCommandInfo EventCommand
     {
       get { return _eventCommand; }
@@ -917,12 +917,12 @@ namespace Remotion.Web.UI.Controls
     ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>.
     /// </remarks>
     /// <value> A <see cref="HrefCommandInfo"/> object. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The properties of the hyperlink. Interpreted if Type is set to Href.")]
-    [DefaultValue ((string?)null)]
-    [NotifyParentProperty (true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The properties of the hyperlink. Interpreted if Type is set to Href.")]
+    [DefaultValue((string?)null)]
+    [NotifyParentProperty(true)]
     public virtual HrefCommandInfo HrefCommand
     {
       get { return _hrefCommand; }
@@ -936,12 +936,12 @@ namespace Remotion.Web.UI.Controls
     ///   Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.WxeFunction"/>.
     /// </remarks>
     /// <value> A <see cref="WxeFunctionCommandInfo"/> object. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The properties of the WxeFunction. Interpreted if Type is set to WxeFunction.")]
-    [DefaultValue ((string?)null)]
-    [NotifyParentProperty (true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The properties of the WxeFunction. Interpreted if Type is set to WxeFunction.")]
+    [DefaultValue((string?)null)]
+    [NotifyParentProperty(true)]
     public virtual WxeFunctionCommandInfo WxeFunctionCommand
     {
       get { return _wxeFunctionCommand; }
@@ -949,8 +949,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the control to which this object belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IControl? OwnerControl
     {
       get { return OwnerControlImplementation; }
@@ -967,9 +967,9 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    [EditorBrowsable (EditorBrowsableState.Advanced)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public string ItemID
     {
       get { return _itemID; }

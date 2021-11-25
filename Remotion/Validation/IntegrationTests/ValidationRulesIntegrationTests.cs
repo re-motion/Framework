@@ -164,7 +164,7 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That(result3.IsValid, Is.True);
     }
 
-    [Ignore ("RM-5906: Obsolete due to default value removal on NotEmptyValidator.")]
+    [Ignore("RM-5906: Obsolete due to default value removal on NotEmptyValidator.")]
     [Test]
     public void BuildOrderItemValidator_SetValueTypeToDefaulValue_ValidationFails ()
     {

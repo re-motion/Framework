@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
       _callerUrlParameters = callerUrlParameters;
     }
 
-    [MemberNotNullWhen (true, nameof(CallerUrlParameters))]
+    [MemberNotNullWhen(true, nameof(CallerUrlParameters))]
     public bool IsReturning
     {
       get { return _isReturning; }

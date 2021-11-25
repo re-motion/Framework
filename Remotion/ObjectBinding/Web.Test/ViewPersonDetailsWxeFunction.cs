@@ -31,7 +31,7 @@ public class ViewPersonDetailsWxeFunction: WxeFunction
 
   // parameters and local variables
 
-  [WxeParameter (1, true, WxeParameterDirection.In)]
+  [WxeParameter(1, true, WxeParameterDirection.In)]
   public string ID
   {
     get { return (string)Variables["ID"]; }

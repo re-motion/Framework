@@ -23,7 +23,7 @@ using System.Collections.Specialized;
 
 namespace Remotion.Globalization
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
   internal abstract class ResourceManagerSet : IResourceManager
   {
     public static ResourceManagerSet Create (params IResourceManager[] resourceManagers)

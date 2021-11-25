@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.V
   /// </summary>
   /// <seealso cref="IBocCheckBoxValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
-  [ImplementationFor (typeof(IBocCheckBoxValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IBocCheckBoxValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocCheckBoxValidatorFactory : CompoundValidatorFactory<IBocCheckBox>, IBocCheckBoxValidatorFactory
   {
     public CompoundBocCheckBoxValidatorFactory (IEnumerable<IBocCheckBoxValidatorFactory> innerFactories)

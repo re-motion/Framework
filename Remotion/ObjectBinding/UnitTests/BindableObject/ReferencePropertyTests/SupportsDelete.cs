@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [Ignore ("TODO RM-4144: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4144: Extend fallback behavior to include property type.")]
     public void WithoutDeleteObjectServiceAttribute_AndDefaultDeleteObjectService_FromPropertyType ()
     {
       var deleteObjectServiceMock = new Mock<IDeleteObjectService>(MockBehavior.Strict);
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [Ignore ("TODO RM-4144: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4144: Extend fallback behavior to include property type.")]
     public void WithoutDeleteObjectServiceAttribute_AndNoDefaultDeleteObjectService_FromPropertyType ()
     {
       var businessObjectClassServiceMock = new Mock<IBusinessObjectClassService>(MockBehavior.Strict);

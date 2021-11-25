@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.OverriddenProperties.TestDomain
 {
-  [Extends (typeof(TargetClass))]
+  [Extends(typeof(TargetClass))]
   public class MixinClass : Mixin<TargetClass, MixinClass.ITarget>
   {
     public interface ITarget

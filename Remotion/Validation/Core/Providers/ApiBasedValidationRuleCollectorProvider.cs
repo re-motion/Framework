@@ -27,7 +27,7 @@ namespace Remotion.Validation.Providers
   /// <summary>
   /// Use this class to retrieve the <see cref="IValidationRuleCollector{TValidatedType}"/>s for a <see cref="Type"/> based on reflection metadata.
   /// </summary>
-  [ImplementationFor (typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 2, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class ApiBasedValidationRuleCollectorProvider : IValidationRuleCollectorProvider
   {
     private readonly IValidationRuleCollectorReflector _validationRuleCollectorReflector;

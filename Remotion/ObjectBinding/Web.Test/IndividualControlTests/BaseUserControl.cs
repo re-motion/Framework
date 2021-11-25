@@ -29,7 +29,7 @@ namespace OBWTest.IndividualControlTests
           DataEditUserControl,
           IObjectWithResources //  Provides the UserControl's ResourceManager via GetResourceManager() 
   {
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public abstract BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator { get; }
 
     protected virtual void RegisterEventHandlers ()

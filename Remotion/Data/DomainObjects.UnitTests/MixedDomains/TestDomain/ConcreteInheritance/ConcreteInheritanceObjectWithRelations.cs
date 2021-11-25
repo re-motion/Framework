@@ -27,10 +27,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.Concrete
       return NewObject<ConcreteInheritanceObjectWithRelations>();
     }
 
-    [DBBidirectionalRelation ("ScalarOpposingProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("ScalarOpposingProperty", ContainsForeignKey = true)]
     public virtual ConcreteInheritanceBaseClass ScalarProperty { get; set; }
 
-    [DBBidirectionalRelation ("VectorOpposingProperty")]
+    [DBBidirectionalRelation("VectorOpposingProperty")]
     public virtual ObjectList<ConcreteInheritanceBaseClass> VectorProperty { get; set; }
   }
 }

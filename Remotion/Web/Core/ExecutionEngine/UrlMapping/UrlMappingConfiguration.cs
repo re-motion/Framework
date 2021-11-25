@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
 /// <summary> Contains the configuration data for the URL mapping system of the execution engine. </summary>
 /// <include file='..\..\doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml' path='UrlMappingConfiguration/Class/*' />
-[XmlType (UrlMappingConfiguration.ElementName, Namespace = UrlMappingConfiguration.SchemaUri)]
+[XmlType(UrlMappingConfiguration.ElementName, Namespace = UrlMappingConfiguration.SchemaUri)]
 public class UrlMappingConfiguration: ConfigurationBase
 {
   /// <summary> The name of the root element. </summary>
@@ -75,14 +75,14 @@ public class UrlMappingConfiguration: ConfigurationBase
   {
   }
 
-  [XmlElement ("add")]
+  [XmlElement("add")]
   public UrlMappingCollection Mappings
   {
     get { return _mappings; }
   }
 }
 
-[XmlType ("add", Namespace = UrlMappingConfiguration.SchemaUri)]
+[XmlType("add", Namespace = UrlMappingConfiguration.SchemaUri)]
 public class UrlMappingEntry
 {
   private string? _id  = null;
@@ -119,7 +119,7 @@ public class UrlMappingEntry
   }
 
   /// <summary> An optional ID for the <see cref="UrlMappingEntry"/>. </summary>
-  [XmlAttribute ("id")]
+  [XmlAttribute("id")]
   public string? ID
   {
     get
@@ -143,7 +143,7 @@ public class UrlMappingEntry
   ///   In ASP.NET 2.0, it is possible to use functions located in the <b>App_Code</b> assembly by not specifying an
   ///   assembly name.
   /// </remarks>
-  [XmlAttribute ("type")]
+  [XmlAttribute("type")]
   public string FunctionTypeName
   {
     get
@@ -183,7 +183,7 @@ public class UrlMappingEntry
   ///   The path associated with the <see cref="FunctionType"/>. Must not be <see langword="null"/> or empty. 
   /// </summary>
   /// <value> A virtual path, relative to the application root. Will always start with <c>~/</c>. </value>
-  [XmlAttribute ("resource")]
+  [XmlAttribute("resource")]
   public string Resource
   {
     get

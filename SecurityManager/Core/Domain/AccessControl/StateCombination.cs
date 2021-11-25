@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public abstract int Index { get; set; }
 
-    [DBBidirectionalRelation ("StateCombination")]
+    [DBBidirectionalRelation("StateCombination")]
     protected abstract ObjectList<StateUsage> StateUsages { get; }
 
     [StorageClassNone]
@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       get { return AccessControlList != null ? AccessControlList.Class : null; }
     }
 
-    [DBBidirectionalRelation ("StateCombinationsInternal")]
+    [DBBidirectionalRelation("StateCombinationsInternal")]
     [Mandatory]
     public abstract StatefulAccessControlList AccessControlList { get; }
 

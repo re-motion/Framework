@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Represents the many-side of a bidirectional one-to-many relationship based on <see cref="IObjectList{TDomainObject}"/>.
   /// </summary>
-  [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
+  [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
   public class VirtualCollectionRelationEndPointDefinition : IRelationEndPointDefinition
   {
     private readonly string _propertyName;

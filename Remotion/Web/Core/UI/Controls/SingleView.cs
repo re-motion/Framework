@@ -28,7 +28,7 @@ using Remotion.Web.UI.Controls.SingleViewImplementation.Rendering;
 
 namespace Remotion.Web.UI.Controls
 {
-  [ToolboxData ("<{0}:SingleView id=\"SingleView\" runat=\"server\">\r\n\t<View>\r\n\t</View>\r\n</{0}:SingleView>")]
+  [ToolboxData("<{0}:SingleView id=\"SingleView\" runat=\"server\">\r\n\t<View>\r\n\t</View>\r\n</{0}:SingleView>")]
   //[Designer( typeof (SingleViewDesigner))]
   public class SingleView : WebControl, ISingleView
   {
@@ -50,9 +50,9 @@ namespace Remotion.Web.UI.Controls
       _bottomControlsStyle = new Style();
     }
 
-    [MemberNotNull (nameof(_view))]
-    [MemberNotNull (nameof(_topControl))]
-    [MemberNotNull (nameof(_bottomControl))]
+    [MemberNotNull(nameof(_view))]
+    [MemberNotNull(nameof(_topControl))]
+    [MemberNotNull(nameof(_bottomControl))]
     private void CreateControls ()
     {
       _view = new PlaceHolder();
@@ -168,7 +168,7 @@ namespace Remotion.Web.UI.Controls
       get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override ControlCollection Controls
     {
       get
@@ -193,9 +193,9 @@ namespace Remotion.Web.UI.Controls
       get { return _bottomControl; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     //[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     //[Browsable (false)]
     public ControlCollection View
@@ -246,31 +246,31 @@ namespace Remotion.Web.UI.Controls
     //  }
     //}
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the active view.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the active view.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style ViewStyle
     {
       get { return _viewStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to the top section. The height cannot be provided in percent.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to the top section. The height cannot be provided in percent.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style TopControlsStyle
     {
       get { return _topControlsStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the bottom section. The height cannot be provided in percent.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the bottom section. The height cannot be provided in percent.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style BottomControlsStyle
     {
       get { return _bottomControlsStyle; }
@@ -281,17 +281,17 @@ namespace Remotion.Web.UI.Controls
       get { return ViewClientID; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public ControlCollection TopControls
     {
       get { return _topControl.Controls; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public ControlCollection BottomControls
     {
       get { return _bottomControl.Controls; }

@@ -31,7 +31,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
   /// applied to the respective <see cref="IExtensibleEnum"/> value.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor(typeof(IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class MultiLingualNameBasedExtensibleEnumGlobalizationService : IExtensibleEnumGlobalizationService
   {
@@ -67,7 +67,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
     {
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen (false)] out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("value", value);
 

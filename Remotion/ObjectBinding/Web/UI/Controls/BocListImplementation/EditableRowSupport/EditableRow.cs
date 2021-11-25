@@ -32,7 +32,7 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public class EditableRow : PlaceHolder, INamingContainer, IEditableRow
   {
     // types
@@ -159,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
     }
 
-    protected bool IsColumnEditable ([NotNullWhen (true)] BocSimpleColumnDefinition? column)
+    protected bool IsColumnEditable ([NotNullWhen(true)] BocSimpleColumnDefinition? column)
     {
       if (column == null)
         return false;
@@ -222,7 +222,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
     }
 
-    [MemberNotNullWhen (true, nameof(_editControls))]
+    [MemberNotNullWhen(true, nameof(_editControls))]
     public bool HasEditControls ()
     {
       return _editControls != null;
@@ -259,7 +259,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         return null;
     }
 
-    [MemberNotNullWhen (true, nameof(_validatorControls))]
+    [MemberNotNullWhen(true, nameof(_validatorControls))]
     public bool HasValidators ()
     {
       return _validatorControls != null;

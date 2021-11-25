@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 
 namespace Remotion.Web.UI.Controls
 {
-  [TypeConverter (typeof(IconInfoConverter))]
+  [TypeConverter(typeof(IconInfoConverter))]
   public sealed class IconInfo
   {
     public static IconInfo CreateSpacer (IResourceUrlFactory resourceUrlFactory)
@@ -96,20 +96,20 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     [AllowNull]
     public string Url
     {
       get { return _url; }
-      [MemberNotNull (nameof(_url))]
+      [MemberNotNull(nameof(_url))]
       set { _url = value ?? string.Empty; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     [AllowNull]
     public string AlternateText
     {
@@ -117,9 +117,9 @@ namespace Remotion.Web.UI.Controls
       set { _alternateText = value ?? string.Empty; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     [AllowNull]
     public string ToolTip
     {
@@ -127,18 +127,18 @@ namespace Remotion.Web.UI.Controls
       set { _toolTip = value ?? string.Empty; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue (typeof(Unit), "")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DefaultValue(typeof(Unit), "")]
+    [NotifyParentProperty(true)]
     public Unit Width
     {
       get { return _width; }
       set { _width = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue (typeof(Unit), "")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DefaultValue(typeof(Unit), "")]
+    [NotifyParentProperty(true)]
     public Unit Height
     {
       get { return _height; }
@@ -177,8 +177,8 @@ namespace Remotion.Web.UI.Controls
       writer.RenderEndTag();
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool HasRenderingInformation
     {
       get { return ! string.IsNullOrEmpty(_url); }

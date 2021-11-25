@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
   /// Implements <see cref="ITabbedMultiViewRenderer"/> for standard mode rendering of <see cref="TabbedMultiView"/> controls.
   /// <seealso cref="ITabbedMultiView"/>
   /// </summary>
-  [ImplementationFor (typeof(ITabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ITabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMultiViewRenderer : RendererBase<ITabbedMultiView>, ITabbedMultiViewRenderer
   {
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;

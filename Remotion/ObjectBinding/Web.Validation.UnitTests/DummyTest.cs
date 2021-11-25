@@ -6,7 +6,7 @@ namespace Remotion.ObjectBinding.Web.Validation.UnitTests
   public class DummyTest
   {
     [Test]
-    [Ignore ("Dmummy test to prevent empty test results")]
+    [Ignore("Dmummy test to prevent empty test results")]
     public void IgnoredDummyTest ()
     {
     }

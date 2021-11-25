@@ -183,10 +183,10 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    [TestCase (1, 5800)]
-    [TestCase (2, 12500)]
-    [TestCase (3, 19000)]
-    [TestCase (4, 26000)]
+    [TestCase(1, 5800)]
+    [TestCase(2, 12500)]
+    [TestCase(3, 19000)]
+    [TestCase(4, 26000)]
     [Explicit]
     public void Performance (int threadCount, int timeTakenExpected)
     {

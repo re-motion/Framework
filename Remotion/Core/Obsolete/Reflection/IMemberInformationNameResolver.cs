@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
   internal interface IMemberInformationNameResolver
   {
     string GetPropertyName (IPropertyInformation propertyInformation);

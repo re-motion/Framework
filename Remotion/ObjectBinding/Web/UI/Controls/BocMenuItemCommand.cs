@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 public class BocMenuItemCommand: BocCommand
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-  [TypeConverter (typeof(ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class MenuItemHrefCommandInfo: BocCommand.BocHrefCommandInfo
   {
     /// <summary> Initalizes a new instance </summary>
@@ -41,7 +41,7 @@ public class BocMenuItemCommand: BocCommand
     /// <value> 
     ///   The URL to link to when the rendered command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
-    [Description ("The hyperlink reference of the command.")]
+    [Description("The hyperlink reference of the command.")]
     public override string Href
     {
       get { return base.Href; }
@@ -50,7 +50,7 @@ public class BocMenuItemCommand: BocCommand
   }
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-  [TypeConverter (typeof(ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class MenuItemWxeFunctionCommandInfo: BocCommand.BocWxeFunctionCommandInfo
   {
     /// <summary> Create a new instance. </summary>
@@ -95,7 +95,7 @@ public class BocMenuItemCommand: BocCommand
     ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
-    [Description ("A comma separated list of parameters for the command. The following reference parameters are available: indices, ids, objects, parent, parentproperty.")]
+    [Description("A comma separated list of parameters for the command. The following reference parameters are available: indices, ids, objects, parent, parentproperty.")]
     public override string Parameters
     {
       get { return base.Parameters; }
@@ -107,7 +107,7 @@ public class BocMenuItemCommand: BocCommand
   private MenuItemHrefCommandInfo _hrefCommand;
   private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
-  [Browsable (false)]
+  [Browsable(false)]
   public new WebMenuItemClickEventHandler? Click;
 
   public BocMenuItemCommand ()

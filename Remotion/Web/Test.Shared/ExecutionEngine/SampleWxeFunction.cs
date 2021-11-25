@@ -78,14 +78,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     // parameters and local variables
 
-    [WxeParameter (1, true, WxeParameterDirection.InOut)]
+    [WxeParameter(1, true, WxeParameterDirection.InOut)]
     public string Var1
     {
       get { return (string)Variables["Var1"]; }
       set { Variables["Var1"] = value; }
     }
 
-    [WxeParameter (2, true, WxeParameterDirection.In)]
+    [WxeParameter(2, true, WxeParameterDirection.In)]
     public string Var2
     {
       get { return (string)Variables["Var2"]; }
@@ -126,7 +126,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
 
       [Serializable]
-      [WxeException (typeof(ApplicationException))]
+      [WxeException(typeof(ApplicationException))]
       private class Catch1 : WxeCatchBlock
       {
         private SampleWxeSubFunction Function

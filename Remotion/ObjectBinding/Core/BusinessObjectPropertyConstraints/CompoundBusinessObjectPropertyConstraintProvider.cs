@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 {
-  [ImplementationFor (typeof(IBusinessObjectPropertyConstraintProvider), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBusinessObjectPropertyConstraintProvider), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundBusinessObjectPropertyConstraintProvider : IBusinessObjectPropertyConstraintProvider
   {
     public IReadOnlyCollection<IBusinessObjectPropertyConstraintProvider> BusinessObjectConstraintProviders { get; }

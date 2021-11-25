@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding
   /// Allows to disable specific enum values in the context of business object properties. This attribute can be applied
   /// either to the enum or to a business object property with an enum type.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Enum | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class DisableEnumValuesAttribute : Attribute, IDisableEnumValuesAttribute
   {
     private readonly IEnumerationValueFilter _filter;

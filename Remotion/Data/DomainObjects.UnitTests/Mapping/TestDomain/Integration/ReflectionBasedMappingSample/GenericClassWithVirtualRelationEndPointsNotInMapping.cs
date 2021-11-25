@@ -24,10 +24,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
     }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToOne")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToOne")]
     public abstract T BaseBidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToMany", SortExpression = "BaseUnidirectional")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToMany", SortExpression = "BaseUnidirectional")]
     public abstract ObjectList<T> BaseBidirectionalOneToMany { get; }
   }
 }

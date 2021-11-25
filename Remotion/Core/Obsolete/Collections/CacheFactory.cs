@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
   public static class CacheFactory
   {
     public static ICache<TKey, TValue> Create<TKey, TValue> ()
@@ -68,26 +68,26 @@ namespace Remotion.Collections
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static LockingCacheDecorator<TKey, TValue> CreateWithLocking<TKey, TValue> ()
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         LockingInvalidationToken invalidationToken)
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (IEqualityComparer<TKey> comparer)
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         LockingInvalidationToken invalidationToken,
         IEqualityComparer<TKey> comparer)
@@ -95,13 +95,13 @@ namespace Remotion.Collections
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () where TValue : class
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         LockingInvalidationToken invalidationToken)
         where TValue : class
@@ -109,14 +109,14 @@ namespace Remotion.Collections
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (IEqualityComparer<TKey> comparer)
         where TValue : class
     {
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         LockingInvalidationToken invalidationToken,
         IEqualityComparer<TKey> comparer)

@@ -21,8 +21,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   // In this class, the mixin property must not be nullable in the database because the property is not nullable, and there is no reason to make it so.
   [DBTable]
-  [Uses (typeof(PersistentMixinAddedTwice))]
-  [ClassID ("MixinAddedTwiceWithDifferentNullability_TargetClassWithDBTable")]
+  [Uses(typeof(PersistentMixinAddedTwice))]
+  [ClassID("MixinAddedTwiceWithDifferentNullability_TargetClassWithDBTable")]
   public class TargetClassWithDBTable : LayerSupertype
   {
 

@@ -508,7 +508,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [Ignore ("RM-7236")]
+    [Ignore("RM-7236")]
     public void UnloadCollectionEndPointAndData_ForObject_WithReferencingObjectBeingLoadedViaGetObject ()
     {
       // It is required to load the OrderTicket via GetObject and then the Order via OrderTicket.Order to trigger the error.

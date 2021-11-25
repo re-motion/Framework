@@ -95,7 +95,7 @@ namespace JetBrains.Annotations
   /// }
   /// </code>
   /// </example>
-  [AttributeUsage (AttributeTargets.Parameter | AttributeTargets.Method, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method, AllowMultiple = true)]
   sealed partial class MacroAttribute : Attribute
   {
     /// <summary>

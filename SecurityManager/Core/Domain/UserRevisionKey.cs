@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [PermanentGuid (c_permanentGuid)]
+  [PermanentGuid(c_permanentGuid)]
   public sealed class UserRevisionKey : IRevisionKey
   {
     public static readonly UserRevisionKey Global = new UserRevisionKey();

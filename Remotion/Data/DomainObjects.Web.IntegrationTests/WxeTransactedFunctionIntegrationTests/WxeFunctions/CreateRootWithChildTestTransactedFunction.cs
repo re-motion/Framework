@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     // methods and properties
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public ClientTransaction PreviousClientTransaction
     {
       get { return (ClientTransaction)Variables["PreviousClientTransaction"]; }

@@ -360,7 +360,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
   }
 
-  [CopyCustomAttributes (typeof(AttributeSourceWithInheritance))]
+  [CopyCustomAttributes(typeof(AttributeSourceWithInheritance))]
   public class MixinIndirectlyAddingAttributeInheritedFromAttributeSourceBase
   {
     public class AttributeSourceWithInheritance : AttributeSourceBase
@@ -382,7 +382,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [OverrideTarget]
-    [CopyCustomAttributes (typeof(AttributeSourceWithInheritance), "AttributeSourceMethod")]
+    [CopyCustomAttributes(typeof(AttributeSourceWithInheritance), "AttributeSourceMethod")]
     public new string ToString ()
     {
       return "";

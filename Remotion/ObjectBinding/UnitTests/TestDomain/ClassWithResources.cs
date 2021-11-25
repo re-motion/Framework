@@ -20,7 +20,7 @@ using Remotion.Globalization;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObject]
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.ClassWithResources")]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.Globalization.ClassWithResources")]
   public class ClassWithResources
   {
     private string _value1;

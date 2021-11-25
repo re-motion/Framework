@@ -28,7 +28,7 @@ namespace Remotion.Globalization.Implementation
   /// Retrieves the human-readable localized representation of enumeration objects.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor(typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class ResourceManagerBasedEnumerationGlobalizationService : IEnumerationGlobalizationService
   {
@@ -48,7 +48,7 @@ namespace Remotion.Globalization.Implementation
       _memberInformationNameResolver = memberInformationNameResolver;
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen (false)] out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("value", value);
 

@@ -27,13 +27,13 @@ namespace Remotion.Mixins.Validation.Rules
       visitor.RequiredTargetCallTypeRules.Add(new DelegateValidationRule<RequiredTargetCallTypeDefinition>(RequiredTargetCallTypeMustBePublic));
     }
 
-    [DelegateRuleDescription (Message = "A class specified as the TTarget type parameter of a mixin is not assignable from the target type.")]
+    [DelegateRuleDescription(Message = "A class specified as the TTarget type parameter of a mixin is not assignable from the target type.")]
     private void FaceClassMustBeAssignableFromTargetType (DelegateValidationRule<RequiredTargetCallTypeDefinition>.Args args)
     {
       SingleMust(args.Definition.Type.IsClass ? args.Definition.Type.IsAssignableFrom(args.Definition.TargetClass.Type) : true, args.Log, args.Self);
     }
 
-    [DelegateRuleDescription (Message = "A type specified as the TTarget type parameter of a mixin does not have public visibility.")]
+    [DelegateRuleDescription(Message = "A type specified as the TTarget type parameter of a mixin does not have public visibility.")]
     private void RequiredTargetCallTypeMustBePublic (DelegateValidationRule<RequiredTargetCallTypeDefinition>.Args args)
     {
       SingleMust(args.Definition.Type.IsVisible, args.Log, args.Self);

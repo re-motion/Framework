@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           ResourceUrlFactory.CreateResourceUrl(typeof(BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
     }
 
-    [Obsolete ("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
+    [Obsolete("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
     protected void Render (BocRenderingContext<TControl> renderingContext)
     {
       throw new NotSupportedException("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return jsonBuilder.ToString();
     }
 
-    [Obsolete ("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
+    [Obsolete("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
     protected void RenderContents (BocRenderingContext<TControl> renderingContext)
     {
       throw new NotSupportedException("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");

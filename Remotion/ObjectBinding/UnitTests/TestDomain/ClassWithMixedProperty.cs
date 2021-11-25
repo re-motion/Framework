@@ -20,7 +20,7 @@ using Remotion.Mixins;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObject]
-  [Uses (typeof(MixinAddingProperty))]
+  [Uses(typeof(MixinAddingProperty))]
   public class ClassWithMixedProperty : IInterfaceWithProperty
   {
     public string PublicExistingProperty { get; set; }

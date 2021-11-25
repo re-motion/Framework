@@ -43,7 +43,7 @@ namespace Remotion.Web.UI
     /// <summary>
     /// Registers jquery.IFrameShim.js in non-themed HTML folder of Remotion.Web.dll.
     /// </summary>
-    [Obsolete ("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)", true)]
+    [Obsolete("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)", true)]
     public static void RegisterJQueryIFrameShimJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);

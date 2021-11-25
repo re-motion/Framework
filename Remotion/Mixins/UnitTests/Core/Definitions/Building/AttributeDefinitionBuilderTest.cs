@@ -314,7 +314,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     // ReSharper disable UnusedMember.Local
     // ReSharper disable UnusedParameter.Local
 
-    [AttributeUsage (AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class TagAttribute : Attribute
     {
       public TagAttribute () { }
@@ -324,11 +324,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Tag]
-    [Tag ("Class!", Named = 5)]
+    [Tag("Class!", Named = 5)]
     private class ClassWithManyAttributes
     {
       [Tag]
-      [Tag ("Class!", Named = 5)]
+      [Tag("Class!", Named = 5)]
       public void Foo ()
       {
       }
@@ -346,7 +346,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       private void Source (int i) { }
 
       [OverrideTarget]
-      [CopyCustomAttributes (typeof(MixinWithAmbiguousSource), "Source")]
+      [CopyCustomAttributes(typeof(MixinWithAmbiguousSource), "Source")]
       protected new string ToString ()
       {
         return "";
@@ -354,7 +354,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [IgnoreForMixinConfiguration]
-    [CopyCustomAttributes (typeof(MixinWithSelfSource))]
+    [CopyCustomAttributes(typeof(MixinWithSelfSource))]
     public class MixinWithSelfSource
     {
     }
@@ -363,7 +363,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public class MixinWithInvalidSourceType
     {
       [OverrideTarget]
-      [CopyCustomAttributes (typeof(MixinWithInvalidSourceType))]
+      [CopyCustomAttributes(typeof(MixinWithInvalidSourceType))]
       protected new string ToString ()
       {
         return "";
@@ -374,7 +374,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public class MixinWithUnknownSource
     {
       [OverrideTarget]
-      [CopyCustomAttributes (typeof(MixinWithUnknownSource), "Source")]
+      [CopyCustomAttributes(typeof(MixinWithUnknownSource), "Source")]
       protected new string ToString ()
       {
         return "";

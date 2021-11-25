@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
       set { Properties[s_type, "PropertyWithMandatoryAttribute"].SetValue(value); }
     }
 
-    [DBBidirectionalRelation ("OppositeRequiredObject")]
+    [DBBidirectionalRelation("OppositeRequiredObject")]
     [Mandatory]
     public virtual TestDomainObject BidirectionalPropertyWithMandatoryAttribute
     {
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeObjectForDomainObjectCollectionProperty")]
+    [DBBidirectionalRelation("OppositeObjectForDomainObjectCollectionProperty")]
     public virtual ObjectList<TestDomainObject> BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute
     {
       get { return Properties[s_type, "BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute"].GetValue<ObjectList<TestDomainObject>>(); }
@@ -72,21 +72,21 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeObjectForVirtualCollectionProperty")]
+    [DBBidirectionalRelation("OppositeObjectForVirtualCollectionProperty")]
     public virtual IObjectList<TestDomainObject> BidirectionalVirtualCollectionPropertyWithMandatoryAttribute
     {
       get { return Properties[s_type, "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute"].GetValue<IObjectList<TestDomainObject>>(); }
       set { Properties[s_type, "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute"].SetValue(value); }
     }
 
-    [StringProperty (IsNullable = true, MaximumLength = 10)]
+    [StringProperty(IsNullable = true, MaximumLength = 10)]
     public virtual string PropertyWithNullableStringPropertyAttribute
     {
       get { return Properties[s_type, "PropertyWithNullableStringPropertyAttribute"].GetValue<string>(); }
       set { Properties[s_type, "PropertyWithNullableStringPropertyAttribute"].SetValue(value); }
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
     public virtual string PropertyWithMandatoryStringPropertyAttribute
     {
       get { return Properties[s_type, "PropertyWithMandatoryStringPropertyAttribute"].GetValue<string>(); }

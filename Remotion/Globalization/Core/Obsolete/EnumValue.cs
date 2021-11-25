@@ -21,20 +21,20 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
 {
-  [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
+  [Obsolete("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
   public struct EnumValue
   {
     public readonly Enum Value;
 
     public readonly string Description;
 
-    [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
+    [Obsolete("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
     public long NumericValue
     {
       get { throw new NotSupportedException("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)"); }
     }
 
-    [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
+    [Obsolete("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)", true)]
     public EnumValue (Enum value, string description)
     {
       throw new NotSupportedException("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)");

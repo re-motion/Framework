@@ -328,7 +328,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasValidBinding
     {
       get

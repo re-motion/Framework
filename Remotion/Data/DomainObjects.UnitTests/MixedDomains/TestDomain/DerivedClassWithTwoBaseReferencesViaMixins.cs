@@ -25,9 +25,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
       return NewObject<DerivedClassWithTwoBaseReferencesViaMixins>();
     }
 
-    [DBBidirectionalRelation ("MyDerived1")]
+    [DBBidirectionalRelation("MyDerived1")]
     public virtual TargetClassReceivingTwoReferencesToDerivedClass MyBase1 { get; set; }
-    [DBBidirectionalRelation ("MyDerived2")]
+    [DBBidirectionalRelation("MyDerived2")]
     public virtual TargetClassReceivingTwoReferencesToDerivedClass MyBase2 { get; set; }
   }
 }

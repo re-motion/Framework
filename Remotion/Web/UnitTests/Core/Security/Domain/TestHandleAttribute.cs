@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace Remotion.Web.UnitTests.Core.Security.Domain
 {
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
   public class TestHandleAttribute : Attribute, IHandleAttribute
   {
     public Type GetReferencedType (Type handleType)

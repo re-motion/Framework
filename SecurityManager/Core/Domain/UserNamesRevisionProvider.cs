@@ -21,7 +21,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.SecurityManager.Domain
 {
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IUserNamesRevisionProvider), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IUserNamesRevisionProvider), Lifetime = LifetimeKind.Singleton)]
   public class UserNamesRevisionProvider : RevisionProviderBase<UserNamesRevisionKey>, IUserNamesRevisionProvider
   {
     public UserNamesRevisionProvider ()

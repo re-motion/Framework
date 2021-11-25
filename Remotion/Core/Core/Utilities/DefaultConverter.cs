@@ -65,7 +65,7 @@ namespace Remotion.Utilities
       return destinationType == _type || Nullable.GetUnderlyingType(destinationType) == _type;
     }
 
-    [return: NotNullIfNotNull ("value")]
+    [return: NotNullIfNotNull("value")]
     public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -87,7 +87,7 @@ namespace Remotion.Utilities
       }
     }
 
-    [return: NotNullIfNotNull ("value")]
+    [return: NotNullIfNotNull("value")]
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);

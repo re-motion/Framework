@@ -29,32 +29,32 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       ValueWithoutMultiLingualNameAttribute,
 
-      [MultiLingualNameAttribute ("The Name", "")]
+      [MultiLingualNameAttribute("The Name", "")]
       ValueWithMultiLingualNameAttributeForInvariantCulture,
 
-      [MultiLingualNameAttribute ("The Name invariant", "")]
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
-      [MultiLingualNameAttribute ("The Name en", "en")]
-      [MultiLingualNameAttribute ("The Name en-US", "en-US")]
+      [MultiLingualNameAttribute("The Name invariant", "")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name en", "en")]
+      [MultiLingualNameAttribute("The Name en-US", "en-US")]
       ValueWithMultiLingualNameAttributes,
 
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
       ValueWithoutInvariantCulture,
 
-      [MultiLingualNameAttribute ("The Name invariant", "")]
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
-      [MultiLingualNameAttribute ("The Name en-US", "en-US")]
+      [MultiLingualNameAttribute("The Name invariant", "")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name en-US", "en-US")]
       ValueWithDuplicateMultiLingualNameAttributes
     }
 
     [Flags]
     private enum FlagsEnum
     {
-      [MultiLingualNameAttribute ("The Value 1", "")]
+      [MultiLingualNameAttribute("The Value 1", "")]
       Value1 = 1,
 
-      [MultiLingualNameAttribute ("The Value 2", "")]
+      [MultiLingualNameAttribute("The Value 2", "")]
       Value2 = 2
     }
 
@@ -105,7 +105,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithoutNeutralResourcesLanguageAttribute_UsesInvariantCultureForNeutralCulture ()
     {
@@ -127,7 +127,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_ReturnsTheSpecifiedCultureAsFallbackForInvariantCulture ()
     {
@@ -149,7 +149,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_DoesNotOverrideExistingInvariantCulture ()
     {
@@ -171,7 +171,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_ReturnsTheNeutralCultureAsFallbackForSpecificCulture ()
     {
@@ -193,7 +193,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_DoesNotOverrideExistingSpecificCulture ()
     {
@@ -215,7 +215,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_ReturnsTheSpecifiedCultureAsFallbackForInvariantCulture ()
     {
@@ -237,7 +237,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_ReturnsTheNeutralCultureAsFallbackForSpecficCulture ()
     {
@@ -259,7 +259,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_DoesNotOverrideExistingSpecificCulture ()
     {

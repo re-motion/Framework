@@ -415,7 +415,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That(member, Is.EqualTo(expected));
     }
 
-    [Ignore ("TODO: normalizing interfaces")]
+    [Ignore("TODO: normalizing interfaces")]
     [Test]
     public void GetMethod_FromCastedInstance ()
     {
@@ -651,7 +651,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
       Assert.That(member, Is.EqualTo(expected));
     }
 
-    [Ignore ("TODO: normalizing interfaces")]
+    [Ignore("TODO: normalizing interfaces")]
     [Test]
     public void GetProperty_FromCastedInstance ()
     {

@@ -20,7 +20,7 @@ using Remotion.Data.DomainObjects.ObjectBinding;
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
-  [DBTable ("TableWithoutColumns")]
+  [DBTable("TableWithoutColumns")]
   [Instantiable]
   [DBStorageGroup]
   public abstract class ClassWithoutProperties: BindableDomainObject

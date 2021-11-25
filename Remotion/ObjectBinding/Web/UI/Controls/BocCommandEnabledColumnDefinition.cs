@@ -40,10 +40,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the <see cref="BocListItemCommand"/> rendered in this column. </summary>
     /// <value> A <see cref="BocListItemCommand"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Behavior")]
-    [Description ("The command rendered in this column.")]
-    [NotifyParentProperty (true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Category("Behavior")]
+    [Description("The command rendered in this column.")]
+    [NotifyParentProperty(true)]
     public BocListItemCommand? Command
     {
       get { return (BocListItemCommand?)_command.ControlItem; }
@@ -75,8 +75,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Browsable(false)]
     public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }

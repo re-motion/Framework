@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
   public class CascadedDeleteForVirtualCollectionTest : ClientTransactionBaseTest
   {
     [Test]
-    [Ignore ("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
+    [Ignore("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
     public void BidirectionalRelation_CascadeWithinDeleting ()
     {
       var product = Product.NewObject();
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    [Ignore ("TODO: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
+    [Ignore("TODO: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
     public void BidirectionalRelation_CascadeWithinDeleting_SubTransaction ()
     {
       var product = Product.NewObject();

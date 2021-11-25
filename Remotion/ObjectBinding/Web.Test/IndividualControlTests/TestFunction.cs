@@ -36,7 +36,7 @@ public class TestFunction: WxeFunction
 
   }
 
-  [WxeParameter (1, false, WxeParameterDirection.In)]
+  [WxeParameter(1, false, WxeParameterDirection.In)]
   public string UserControl
   {
     get
@@ -50,7 +50,7 @@ public class TestFunction: WxeFunction
     }
   }
 
-  [WxeParameter (2, false, WxeParameterDirection.In)]
+  [WxeParameter(2, false, WxeParameterDirection.In)]
   public int? Delay
   {
     get

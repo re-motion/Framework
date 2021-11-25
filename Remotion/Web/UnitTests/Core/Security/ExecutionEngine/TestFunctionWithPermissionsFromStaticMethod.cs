@@ -22,7 +22,7 @@ using Remotion.Web.UnitTests.Core.Security.Domain;
 
 namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 {
-  [WxeDemandTargetStaticMethodPermission ("Search", typeof(SecurableObject))]
+  [WxeDemandTargetStaticMethodPermission("Search", typeof(SecurableObject))]
   public class TestFunctionWithPermissionsFromStaticMethod : WxeFunction
   {
     // types

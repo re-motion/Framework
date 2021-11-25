@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualResources ("MissingResources")]
+  [MultiLingualResources("MissingResources")]
   public class ClassWithMissingResources
   {
     public string Value1 { get; set; }

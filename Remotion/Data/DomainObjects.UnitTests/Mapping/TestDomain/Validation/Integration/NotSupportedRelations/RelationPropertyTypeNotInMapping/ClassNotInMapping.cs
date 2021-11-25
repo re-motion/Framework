@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
 {
   public abstract class ClassNotInMapping : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty")]
+    [DBBidirectionalRelation("RelationProperty")]
     public InvalidRelationClass1 RelationProperty { get; set; }
   }
 }

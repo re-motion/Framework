@@ -31,7 +31,7 @@ using Remotion.Web.UI.Controls.Rendering;
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   [TestFixture]
-  [SetUICulture ("en-US")]
+  [SetUICulture("en-US")]
   public class BocListRendererTest : BocListRendererTestBase
   {
     private static readonly Unit s_menuBlockOffset = new Unit(12, UnitType.Pixel);

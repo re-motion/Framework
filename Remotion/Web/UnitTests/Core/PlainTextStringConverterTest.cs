@@ -25,7 +25,7 @@ namespace Remotion.Web.UnitTests.Core
   public class PlainTextStringConverterTest
   {
     [Test]
-    [TestCaseSource (nameof(TestCaseSource_ConvertFromString))]
+    [TestCaseSource(nameof(TestCaseSource_ConvertFromString))]
     public void ConvertFromString (string input, PlainTextString? expectedOutput)
     {
       var converter = new PlainTextStringConverter();
@@ -46,7 +46,7 @@ namespace Remotion.Web.UnitTests.Core
     };
 
     [Test]
-    [TestCaseSource (nameof(TestCaseSource_ConvertToString))]
+    [TestCaseSource(nameof(TestCaseSource_ConvertToString))]
     public void ConvertToString (PlainTextString? input, string expectedOutput)
     {
       var converter = new PlainTextStringConverter();

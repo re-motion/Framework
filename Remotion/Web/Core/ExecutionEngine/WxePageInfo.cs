@@ -44,7 +44,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Web.Globalization.WxePageInfo")]
+    [MultiLingualResources("Remotion.Web.Globalization.WxePageInfo")]
     public enum ResourceIdentifier
     {
       /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>

@@ -26,11 +26,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   public class AxeExecutionConstraint
   {
     /// <summary>Either <c>tag</c> or <c>rule</c>.</summary>
-    [DataMember (Name = "type")]
+    [DataMember(Name = "type")]
     public string Type { get; set; } = null!;
 
     /// <summary>Defined tag or rule names.</summary>
-    [DataMember (Name = "values")]
+    [DataMember(Name = "values")]
     public string[] Values { get; set; } = { };
   }
 }

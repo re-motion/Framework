@@ -264,8 +264,8 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Gets the ID used for reading and persisting the selected tab IDs. </summary>
     /// <remarks> Value: <c>TabbedMenuSelection</c>. </remarks>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public virtual string SelectionID
     {
       get { return "TabbedMenuSelection"; }
@@ -561,10 +561,10 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the collection of <see cref="MainMenuTab"/> objects. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Description ("")]
-    [DefaultValue ((string?)null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Description("")]
+    [DefaultValue((string?)null)]
     public MainMenuTabCollection Tabs
     {
       get
@@ -579,8 +579,8 @@ namespace Remotion.Web.UI.Controls
     /// <remarks>
     ///   The value will not be HTML encoded.
     /// </remarks>
-    [Description ("The text displayed in the status area. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
+    [Description("The text displayed in the status area. The value will not be HTML encoded.")]
+    [DefaultValue("")]
     public string? StatusText
     {
       get { return _statusText; }
@@ -588,8 +588,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Is raised when a tab with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Is raised when a tab with a command of type Event is clicked.")]
+    [Category("Action")]
+    [Description("Is raised when a tab with a command of type Event is clicked.")]
     public event MenuTabClickEventHandler EventCommandClick
     {
       add { Events.AddHandler(s_eventCommandClickEvent, value); }
@@ -597,8 +597,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the selected <see cref="MainMenuTab"/>. </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public MainMenuTab? SelectedMainMenuTab
     {
       get
@@ -608,8 +608,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the selected <see cref="SubMenuTab"/>. </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public SubMenuTab? SelectedSubMenuTab
     {
       get
@@ -631,82 +631,82 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets the style applied to the status area. </summary>
-    [Category ("Style")]
-    [Description ("The style applied to the status area.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style applied to the status area.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style StatusStyle
     {
       get { return _statusStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to a main menu tab that is not selected.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to a main menu tab that is not selected.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle MainMenuTabStyle
     {
       get { return _mainMenuTabStrip.TabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the selected main menu tab.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the selected main menu tab.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle MainMenuSelectedTabStyle
     {
       get { return _mainMenuTabStrip.SelectedTabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to a disabled main menu tab.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to a disabled main menu tab.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle MainMenuDisabledTabStyle
     {
       get { return _mainMenuTabStrip.DisabledTabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to a sub menu tab that is not selected.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to a sub menu tab that is not selected.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle SubMenuTabStyle
     {
       get { return _subMenuTabStrip.TabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the selected sub menu tab.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the selected sub menu tab.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle SubMenuSelectedTabStyle
     {
       get { return _subMenuTabStrip.SelectedTabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to a disabled sub menu tab.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to a disabled sub menu tab.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle SubMenuDisabledTabStyle
     {
       get { return _subMenuTabStrip.DisabledTabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The background color that you want to apply to the sub menu area.")]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [NotifyParentProperty (true)]
-    [TypeConverter (typeof(WebColorConverter))]
-    [DefaultValue (typeof(Color), "")]
+    [Category("Style")]
+    [Description("The background color that you want to apply to the sub menu area.")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [NotifyParentProperty(true)]
+    [TypeConverter(typeof(WebColorConverter))]
+    [DefaultValue(typeof(Color), "")]
     public Color SubMenuBackgroundColor
     {
       get { return _subMenuBackgroundColor; }

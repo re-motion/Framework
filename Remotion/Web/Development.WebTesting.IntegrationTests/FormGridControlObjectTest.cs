@@ -28,12 +28,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class FormGridControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof(TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<FormGridSelector, FormGridControlObject> testAction)
     {
       testAction(Helper, e => e.FormGrids(), "formGrid");

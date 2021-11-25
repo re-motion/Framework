@@ -28,10 +28,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
     public abstract string SerialNumber { get; set; }
 
-    [DBBidirectionalRelation ("Computer", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Computer", ContainsForeignKey = true)]
     public abstract Employee Employee { get; set; }
 
     [StorageClassTransaction]
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     public abstract DateTime DateTimeTransactionProperty { get; set; }
 
     [StorageClassTransaction]
-    [DBBidirectionalRelation ("ComputerTransactionProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("ComputerTransactionProperty", ContainsForeignKey = true)]
     public abstract Employee EmployeeTransactionProperty { get; set; }
   }
 }

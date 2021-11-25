@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
   public interface ICache<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, INullObject
   {
     TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory);

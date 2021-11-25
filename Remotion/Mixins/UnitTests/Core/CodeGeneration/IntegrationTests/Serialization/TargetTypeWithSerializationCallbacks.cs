@@ -21,7 +21,7 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization
 {
   [Serializable]
-  [Uses (typeof(MixinWithSerializationCallbacks))]
+  [Uses(typeof(MixinWithSerializationCallbacks))]
   public class TargetTypeWithSerializationCallbacks : ClassWithSerializationCallbacksBase
   {
     private static ISerializationEventReceiver s_receiver;

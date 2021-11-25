@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_FileSystemItem")]
+  [ClassID("TI_FileSystemItem")]
   [TableInheritanceTestDomain]
   public abstract class TIFileSystemItem : DomainObject, ISupportsGetObject
   {
@@ -26,10 +26,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("FileSystemItems")]
+    [DBBidirectionalRelation("FileSystemItems")]
     public abstract TIFolder ParentFolder { get; set; }
   }
 }

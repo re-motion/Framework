@@ -111,13 +111,13 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void RegisterValidator_ValidatorTypeDoesNotImplementIObjectValidator_ThrowsArgumentException ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void RegisterValidator_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
     {
     }

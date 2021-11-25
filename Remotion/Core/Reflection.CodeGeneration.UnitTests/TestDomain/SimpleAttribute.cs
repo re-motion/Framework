@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
 {
-  [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true)]
   public class SimpleAttribute : Attribute
   {
     public string S;

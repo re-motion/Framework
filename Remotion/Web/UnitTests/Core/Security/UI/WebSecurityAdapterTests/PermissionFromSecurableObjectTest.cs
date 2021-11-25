@@ -118,7 +118,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       Assert.That(hasAccess, Is.False);
     }
 
-    [DemandTargetMethodPermission (SecurableObject.Method.Show)]
+    [DemandTargetMethodPermission(SecurableObject.Method.Show)]
     private void TestEventHandler (object sender, EventArgs args)
     {
     }

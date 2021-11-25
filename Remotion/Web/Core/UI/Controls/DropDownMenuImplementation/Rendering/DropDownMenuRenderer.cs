@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
   /// Responsible for rendering <see cref="DropDownMenu"/> controls in standard mode.
   /// <seealso cref="IDropDownMenu"/>
   /// </summary>
-  [ImplementationFor (typeof(IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DropDownMenuRenderer : RendererBase<IDropDownMenu>, IDropDownMenuRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Web.Globalization.DropDownMenuRenderer")]
+    [MultiLingualResources("Remotion.Web.Globalization.DropDownMenuRenderer")]
     public enum ResourceIdentifier
     {
       /// <summary> The error message displayed when the menu items could not be loaded from the server. </summary>

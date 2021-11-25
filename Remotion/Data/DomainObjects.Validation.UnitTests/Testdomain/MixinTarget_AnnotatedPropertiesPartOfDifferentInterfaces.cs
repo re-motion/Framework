@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
   [Serializable]
   [DBTable]
-  [Uses (typeof(MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces))]
+  [Uses(typeof(MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces))]
   public class MixinTarget_AnnotatedPropertiesPartOfDifferentInterfaces : DomainObject
   {
     public static MixinTarget_AnnotatedPropertiesPartOfDifferentInterfaces NewObject ()

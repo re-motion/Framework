@@ -29,7 +29,7 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.CodeGeneration
 {
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IConcreteTypeMetadataImporter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(IConcreteTypeMetadataImporter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class AttributeBasedMetadataImporter : IConcreteTypeMetadataImporter
   {
     public AttributeBasedMetadataImporter ()

@@ -88,7 +88,7 @@ namespace JetBrains.Annotations
   /// }
   /// </code>
   /// </example>
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   sealed partial class SourceTemplateAttribute : Attribute
   {
   }

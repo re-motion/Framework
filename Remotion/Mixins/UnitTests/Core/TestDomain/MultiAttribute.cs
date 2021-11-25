@@ -18,6 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
   public class MultiAttribute : Attribute { }
 }

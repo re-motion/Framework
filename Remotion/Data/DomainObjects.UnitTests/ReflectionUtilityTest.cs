@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
 #endif
     public void GetAssemblyPath_WithHashInDirectoryName ()
     {

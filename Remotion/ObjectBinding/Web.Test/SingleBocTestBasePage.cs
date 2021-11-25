@@ -26,7 +26,7 @@ using Remotion.Web.UI.Globalization;
 namespace OBWTest
 {
 
-[MultiLingualResources ("OBWTest.Globalization.SingleBocTestBasePage")]
+[MultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")]
 public class SingleBocTestBasePage:
     SmartPage,
     IControl,

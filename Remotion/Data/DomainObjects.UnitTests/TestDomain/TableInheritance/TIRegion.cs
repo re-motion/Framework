@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_Region")]
-  [DBTable ("TableInheritance_Region")]
+  [ClassID("TI_Region")]
+  [DBTable("TableInheritance_Region")]
   [Instantiable]
   [TableInheritanceTestDomain]
   public abstract class TIRegion : DomainObject, ISupportsGetObject
@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Region")]
+    [DBBidirectionalRelation("Region")]
     public abstract ObjectList<TICustomer> Customers { get; }
   }
 }

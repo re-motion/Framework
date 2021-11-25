@@ -43,9 +43,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> This control can be used to display or select references as the value of a property using a drop-down list. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
   // TODO: see "Doc\Bugs and ToDos.txt"
-  [ValidationProperty ("ValidationValue")]
-  [DefaultEvent ("SelectionChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("ValidationValue")]
+  [DefaultEvent("SelectionChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocReferenceValue
       :
           BocReferenceValueBase<IBocReferenceValueWebService>,
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocReferenceValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocReferenceValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The text rendered for the null item in the list. </summary>
@@ -123,9 +123,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed for the undefined item.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed for the undefined item.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string NullItemText
     {
       get { return _nullItemText; }
@@ -137,9 +137,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if the value is not set but the control is required.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if the value is not set but the control is required.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
@@ -582,8 +582,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="DropDownList"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
@@ -591,11 +591,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="DropDownList"/> (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="BocReferenceValueBase.CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the DropDownList (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the DropDownList (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public DropDownListStyle DropDownListStyle
     {
       get { return _dropDownListStyle; }
@@ -604,9 +604,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The search expression used to populate the selection list in edit mode. </summary>
     /// <value> A <see cref="String"/> with a valid search expression. The default value is an empty <see cref="String"/>. </value>
     /// <remarks> A valid <see cref="BocReferenceValueBase.Property"/> is required in order to populate the list using the search statement. </remarks>
-    [Category ("Data")]
-    [Description ("Set the search expression for populating the selection list.")]
-    [DefaultValue ("")]
+    [Category("Data")]
+    [Description("Set the search expression for populating the selection list.")]
+    [DefaultValue("")]
     public string? Select
     {
       get { return _select; }
@@ -627,9 +627,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///   Use <see cref="IsSelectStatementEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("The flag that determines whether to evaluate the Select statement. Undefined is interpreted as true.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("The flag that determines whether to evaluate the Select statement. Undefined is interpreted as true.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? EnableSelectStatement
     {
       get { return _enableSelectStatement; }

@@ -28,31 +28,31 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       return NewObject<OppositeBidirectionalBindableDomainObject>();
     }
 
-    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("RequiredBidirectionalRelatedObjectProperty", ContainsForeignKey = true)]
     public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObject { get; set; }
-    [DBBidirectionalRelation ("NonRequiredBidirectionalRelatedObjectProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("NonRequiredBidirectionalRelatedObjectProperty", ContainsForeignKey = true)]
     public abstract BindableDomainObjectWithProperties OppositeNonRequiredRelatedObject { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection")]
+    [DBBidirectionalRelation("RequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection")]
     public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObjectsForDomainObjectCollection { get; set; }
-    [DBBidirectionalRelation ("NonRequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection")]
+    [DBBidirectionalRelation("NonRequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection")]
     public abstract BindableDomainObjectWithProperties OppositeNonRequiredRelatedObjectsForDomainObjectCollection { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsPropertyForVirtualCollection")]
+    [DBBidirectionalRelation("RequiredBidirectionalRelatedObjectsPropertyForVirtualCollection")]
     public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObjectsForVirtualCollection { get; set; }
-    [DBBidirectionalRelation ("NonRequiredBidirectionalRelatedObjectsPropertyForVirtualCollection")]
+    [DBBidirectionalRelation("NonRequiredBidirectionalRelatedObjectsPropertyForVirtualCollection")]
     public abstract BindableDomainObjectWithProperties OppositeNonRequiredRelatedObjectsForVirtualCollection { get; set; }
 
-    [DBBidirectionalRelation ("RelatedObjectProperty1", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("RelatedObjectProperty1", ContainsForeignKey = true)]
     public abstract SampleBindableDomainObject OppositeSampleObject { get; set; }
-    [DBBidirectionalRelation ("RelatedObjectProperty2")]
+    [DBBidirectionalRelation("RelatedObjectProperty2")]
     public abstract ObjectList<SampleBindableDomainObject> OppositeSampleObjects { get; set; }
 
-    [DBBidirectionalRelation ("List")]
+    [DBBidirectionalRelation("List")]
     public abstract SampleBindableMixinDomainObject OppositeSampleObjectWithMixin1 { get; set;  }
-    [DBBidirectionalRelation ("Relation")]
+    [DBBidirectionalRelation("Relation")]
     public abstract SampleBindableMixinDomainObject OppositeSampleObjectWithMixin2 { get; set; }
   }
 }

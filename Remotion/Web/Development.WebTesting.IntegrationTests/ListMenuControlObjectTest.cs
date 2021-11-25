@@ -32,18 +32,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ListMenuControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(DisabledTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     public void GenericTests (GenericSelectorTestAction<ListMenuSelector, ListMenuControlObject> testAction)
     {
       testAction(Helper, e => e.ListMenus(), "listMenu");
     }
 
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ListMenuSelector, ListMenuControlObject> testAction)
     {
       testAction(Helper, e => e.ListMenus(), "listMenu");

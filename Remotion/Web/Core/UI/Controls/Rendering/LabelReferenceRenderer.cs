@@ -29,7 +29,7 @@ namespace Remotion.Web.UI.Controls.Rendering
   /// Default implementation of the <see cref="ILabelReferenceRenderer" /> interface.
   /// </summary>
   /// <seealso cref="ILabelReferenceRenderer"/>
-  [ImplementationFor (typeof(ILabelReferenceRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ILabelReferenceRenderer), Lifetime = LifetimeKind.Singleton)]
   public class LabelReferenceRenderer : ILabelReferenceRenderer
   {
     private readonly IRenderingFeatures _renderingFeatures;

@@ -32,11 +32,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   //  TODO: BocListItemCommand: Move long comment blocks to xml-file
   /// <summary> A <see cref="BocListItemCommand"/> defines an action the user can invoke on a datarow. </summary>
-  [TypeConverter (typeof(ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class BocListItemCommand : BocCommand
   {
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class ListItemHrefCommandInfo : BocHrefCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ///   The URL to link to when the rendered command is clicked. The default value is 
       ///   an empty <see cref="String"/>. 
       /// </value>
-      [Description (
+      [Description(
           "The hyperlink reference of the command. Use {0} to insert the Business Object's index in the list and {1} to insert the Business Object's ID."
           )]
       public override string Href
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-    [TypeConverter (typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class ListItemWxeFunctionCommandInfo : BocWxeFunctionCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
       ///   command is clicked. The default value is an empty <see cref="String"/>. 
       /// </value>
-      [Description (
+      [Description(
           "A comma separated list of parameters for the command. The following reference parameters are available: index, id, object, parent, parentproperty."
           )]
       public override string Parameters
@@ -248,8 +248,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> The <see cref="IBocListItemCommandState"/> to be used for evaluating whether to render the command. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IBocListItemCommandState? CommandState
     {
       get
@@ -271,11 +271,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The IBocListItemCommandState to be used for evaluating whether to render the command.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The IBocListItemCommandState to be used for evaluating whether to render the command.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string CommandStateType
     {
       get { return _commandStateType; }

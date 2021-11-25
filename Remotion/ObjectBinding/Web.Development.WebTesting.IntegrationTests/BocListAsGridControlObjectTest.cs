@@ -40,29 +40,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocListAsGridControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(DisabledTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(ReadOnlyTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(LabelTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(ValidationErrorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
       testAction(Helper, e => e.ListAsGrids(), "listAsGrid");
     }
 
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(DomainPropertyControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
-    [TestCaseSource (typeof(DisplayNameControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
       testAction(Helper, e => e.ListAsGrids(), "listAsGrid");
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DerivedType ()
     {
@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DerivedTypeGeneric ()
     {

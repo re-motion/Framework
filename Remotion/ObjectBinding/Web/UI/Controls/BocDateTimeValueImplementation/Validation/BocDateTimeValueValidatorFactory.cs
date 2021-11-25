@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
   /// Implements the <see cref="IBocDateTimeValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
-  [ImplementationFor (typeof(IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple,
+  [ImplementationFor(typeof(IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple,
       Position = Position)]
   public class BocDateTimeValueValidatorFactory : IBocDateTimeValueValidatorFactory
   {

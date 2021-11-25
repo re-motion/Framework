@@ -64,7 +64,7 @@ namespace Remotion.Collections
       return ((IReadOnlyDictionary<TKey, TValue>)dictionary).GetValueOrDefault(key);
     }
 
-    [return: MaybeNull, NotNullIfNotNull ("defaultValue")]
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
     public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
         where TKey : notnull
     {
@@ -79,7 +79,7 @@ namespace Remotion.Collections
         return defaultValue;
     }
 
-    [return: MaybeNull, NotNullIfNotNull ("defaultValue")]
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
     public static TValue GetValueOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
         where TKey : notnull
     {
@@ -94,14 +94,14 @@ namespace Remotion.Collections
         return defaultValue;
     }
 
-    [return: MaybeNull, NotNullIfNotNull ("defaultValue")]
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
     public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
         where TKey : notnull
     {
       return ((IDictionary<TKey, TValue>)dictionary).GetValueOrDefault<TKey, TValue>(key, defaultValue);
     }
 
-    [return: MaybeNull, NotNullIfNotNull ("defaultValue")]
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
     public static TValue GetValueOrDefault<TKey, TValue> (this ReadOnlyDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
         where TKey : notnull
     {

@@ -262,7 +262,7 @@ namespace Remotion.Utilities
       return string.IsNullOrEmpty(str);
     }
 
-    [return: NotNullIfNotNull ("list")]
+    [return: NotNullIfNotNull("list")]
     public static string[]? ListToStringArray (IList? list)
     {
       if (list == null)
@@ -282,7 +282,7 @@ namespace Remotion.Utilities
 #pragma warning restore 618
     }
 
-    [Obsolete ("Use ConcatWithSeperator (IList, string) instead. Parameter 'format' is no longer used. (Version 1.21.8)")]
+    [Obsolete("Use ConcatWithSeperator (IList, string) instead. Parameter 'format' is no longer used. (Version 1.21.8)")]
     public static string ConcatWithSeparator (IList list, string separator, string? format, IFormatProvider? formatProvider)
     {
       if (list == null)

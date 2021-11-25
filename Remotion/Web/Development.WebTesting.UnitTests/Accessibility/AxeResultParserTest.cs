@@ -42,8 +42,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     }
 
     [Test]
-    [TestCase ("<violations>test</violations>")]
-    [TestCase ("{[[}")]
+    [TestCase("<violations>test</violations>")]
+    [TestCase("{[[}")]
     public void Parse_WithInvalidFormat_ThrowsException (string jsonResponse)
     {
       var parser = new AxeResultParser();
@@ -227,8 +227,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     }
 
     [Test]
-    [TestCase (null, typeof(ArgumentNullException))]
-    [TestCase ("", typeof(ArgumentException))]
+    [TestCase(null, typeof(ArgumentNullException))]
+    [TestCase("", typeof(ArgumentException))]
     public void Parse_WithNullOrEmptyJson_ThrowsException (string rawJson, Type exceptionType)
     {
       var parser = new AxeResultParser();

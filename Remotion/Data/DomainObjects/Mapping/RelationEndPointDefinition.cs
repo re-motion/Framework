@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Represents the non-anonymous, foreign-key side of a bidirectional or unidirectional relationship.
   /// </summary>
-  [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
+  [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
   public class RelationEndPointDefinition : IRelationEndPointDefinition
   {
     private RelationDefinition _relationDefinition;

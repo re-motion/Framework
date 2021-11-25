@@ -26,7 +26,7 @@ namespace Remotion.Validation.Mixins.UnitTests.TestDomain
     string Title { get; set; }
   }
 
-  [Extends (typeof(Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
+  [Extends(typeof(Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
   public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
   {
     public interface IBaseMethods

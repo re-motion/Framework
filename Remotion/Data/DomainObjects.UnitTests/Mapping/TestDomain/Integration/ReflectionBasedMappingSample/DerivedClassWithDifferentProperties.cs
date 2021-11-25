@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
 
     public abstract string OtherString { get; set; }
 
-    [DBColumn ("NewString")]
+    [DBColumn("NewString")]
     public new abstract string String { get; set; }
 
-    [DBColumn ("DerivedPrivateString")]
+    [DBColumn("DerivedPrivateString")]
     private string PrivateString
     {
       get {

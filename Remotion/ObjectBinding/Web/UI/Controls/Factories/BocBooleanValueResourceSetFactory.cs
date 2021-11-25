@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
   /// <summary>
   /// Responsible for creating the <see cref="BocBooleanValue"/> <see cref="BocBooleanValueResourceSet"/>.
   /// </summary>
-  [ImplementationFor (typeof(IBocBooleanValueResourceSetFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocBooleanValueResourceSetFactory), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueResourceSetFactory : IBocBooleanValueResourceSetFactory
   {
     private const string c_trueIcon = "sprite.svg#CheckBoxTrue";

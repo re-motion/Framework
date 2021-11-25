@@ -43,8 +43,8 @@ namespace Remotion.SecurityManager.Domain
   ///   </item>
   /// </list>
   /// </remarks>
-  [CLSCompliant (false)]
-  [Extends (typeof(BindableObjectServiceFactory), AdditionalDependencies = new[] { typeof(BindableDomainObjectServiceFactoryMixin) })]
+  [CLSCompliant(false)]
+  [Extends(typeof(BindableObjectServiceFactory), AdditionalDependencies = new[] { typeof(BindableDomainObjectServiceFactoryMixin) })]
   public class SecurityManagerObjectServiceFactoryMixin
       : Mixin<BindableObjectServiceFactory, IBusinessObjectServiceFactory>, IBusinessObjectServiceFactory
   {

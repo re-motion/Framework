@@ -27,19 +27,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
     {
     }
 
-    [DBBidirectionalRelation ("NoAttribute")]
+    [DBBidirectionalRelation("NoAttribute")]
     public abstract ClassWithOneSideRelationProperties NoAttribute { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("NotNullable")]
+    [DBBidirectionalRelation("NotNullable")]
     public abstract ClassWithOneSideRelationProperties NotNullable { get; set; }
 
     public abstract ClassWithOneSideRelationProperties Unidirectional { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToOne", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("BidirectionalOneToOne", ContainsForeignKey = true)]
     public abstract ClassWithOneSideRelationProperties BidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToMany")]
+    [DBBidirectionalRelation("BidirectionalOneToMany")]
     public abstract ClassWithOneSideRelationProperties BidirectionalOneToMany { get; set; }
   }
 }

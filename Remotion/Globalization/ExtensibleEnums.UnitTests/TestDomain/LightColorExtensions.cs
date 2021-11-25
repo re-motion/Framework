@@ -19,7 +19,7 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.LightColorExtensions")]
+  [MultiLingualResources("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.LightColorExtensions")]
   public static class LightColorExtensions
   {
     public static Color LightRed (this ExtensibleEnumDefinition<Color> definition)

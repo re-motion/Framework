@@ -549,7 +549,7 @@ namespace Remotion.Web.Infrastructure
     /// <param name="key">The key of the client script include to register. 
     /// </param><param name="url">The URL of the client script include to register. 
     /// </param>
-    [Obsolete ("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
     public void RegisterClientScriptInclude (string key, string url)
     {
       _clientScriptManager.RegisterClientScriptInclude(key, url);

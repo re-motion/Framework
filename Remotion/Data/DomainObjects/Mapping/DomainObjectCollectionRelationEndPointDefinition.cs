@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Represents the many-side of a bidirectional one-to-many relationship based on <see cref="DomainObjectCollection"/>.
   /// </summary>
-  [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
+  [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
   public class DomainObjectCollectionRelationEndPointDefinition : IRelationEndPointDefinition
   {
     private readonly string _propertyName;
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return false; }
     }
 
-    [Obsolete ("Use GetSortExpression().ToString() instead. (Version: 1.21.8)", false)]
+    [Obsolete("Use GetSortExpression().ToString() instead. (Version: 1.21.8)", false)]
     public string SortExpressionText
     {
       get { return _sortExpression.Value?.ToString(); }

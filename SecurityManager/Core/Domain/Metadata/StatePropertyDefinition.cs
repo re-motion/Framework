@@ -53,10 +53,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
       Name = name;
     }
 
-    [DBBidirectionalRelation ("StateProperty")]
+    [DBBidirectionalRelation("StateProperty")]
     protected abstract ObjectList<StatePropertyReference> StatePropertyReferences { get; }
 
-    [DBBidirectionalRelation ("StateProperty")]
+    [DBBidirectionalRelation("StateProperty")]
     [Mandatory]
     protected abstract ObjectList<StateDefinition> DefinedStatesInternal { get; }
 

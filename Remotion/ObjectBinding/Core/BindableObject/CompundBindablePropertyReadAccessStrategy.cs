@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// Combines one or more <see cref="IBindablePropertyReadAccessStrategy"/>-instances and delegates checking if the property can be read from.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IBindablePropertyReadAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IBindablePropertyReadAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompundBindablePropertyReadAccessStrategy : IBindablePropertyReadAccessStrategy
   {
     // Using an array instead of IReadOnlyList to support performance critical loop
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        [MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);

@@ -48,7 +48,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     }
 
     [Test]
-    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
     public void SavesMixedTypes ()
     {
       AppDomainRunner.Run(

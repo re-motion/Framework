@@ -68,7 +68,7 @@ namespace Remotion
   /// Do not suppress instances of <see cref="SuppressAttributesAttribute"/>.
   /// </example>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)]
   public class SuppressAttributesAttribute : Attribute
   {
     private readonly Type _attributeBaseType;

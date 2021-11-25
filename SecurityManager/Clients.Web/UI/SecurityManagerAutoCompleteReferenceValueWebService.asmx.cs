@@ -39,9 +39,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
   /// The <see cref="SecurityManagerAutoCompleteReferenceValueWebService"/> is used as an interface between <see cref="BocAutoCompleteReferenceValue"/> controls and the 
   /// <see cref="ISearchAvailableObjectsService"/> implementation.
   /// </summary>
-  [WebService (Namespace = "http://www.re-motion.org/SecurityManager/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://www.re-motion.org/SecurityManager/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class SecurityManagerAutoCompleteReferenceValueWebService : WebService, IBocAutoCompleteReferenceValueWebService
   {
@@ -57,15 +57,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI
           .GetUrl();
     }
 
-    [WebMethod (EnableSession = true)]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
       return null;
     }
 
-    [WebMethod (EnableSession = true)]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
         string controlType,
@@ -78,8 +78,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
 
-    [WebMethod (EnableSession = true)]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy[] Search (
         string searchString,
         int? completionSetCount,
@@ -104,8 +104,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       }
     }
 
-    [WebMethod (EnableSession = true)]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy SearchExact (
         string searchString,
         string businessObjectClass,

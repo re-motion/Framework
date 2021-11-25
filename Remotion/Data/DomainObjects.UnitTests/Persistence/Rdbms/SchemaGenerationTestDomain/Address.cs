@@ -32,19 +32,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Street { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 10)]
+    [StringProperty(IsNullable = false, MaximumLength = 10)]
     public abstract string Zip { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string City { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Country { get; set; }
 
-    [DBBidirectionalRelation ("Address")]
+    [DBBidirectionalRelation("Address")]
     [Mandatory]
     public abstract Company Company { get; set; }
   }

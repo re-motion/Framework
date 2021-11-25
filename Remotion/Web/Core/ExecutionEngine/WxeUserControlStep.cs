@@ -85,7 +85,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     //TODO: Remove CodeDuplication with WxePageStep
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
       ArgumentUtility.CheckNotNull("userControl", userControl);
@@ -124,7 +124,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _userControlExecutor; }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
       ArgumentUtility.CheckNotNull("userControlExecutor", userControlExecutor);

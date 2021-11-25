@@ -21,7 +21,7 @@ using Remotion.Globalization;
 
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [MultiLingualResources ("Remotion.Data.DomainObjects.Web.Test.Globalization.MetallicColorExtensions")]
+  [MultiLingualResources("Remotion.Data.DomainObjects.Web.Test.Globalization.MetallicColorExtensions")]
   public static class MetallicColorExtensions
   {
     public static Color RedMetallic (this ExtensibleEnumDefinition<Color> definition)

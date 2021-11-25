@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
   [DBStorageGroup]
   public class Base : DomainObject
   {
-    [DBBidirectionalRelation ("RelationPropertyPointingToDerived")]
+    [DBBidirectionalRelation("RelationPropertyPointingToDerived")]
     public virtual InvalidRelationClass RelationProperty { get; set; }
   }
 }

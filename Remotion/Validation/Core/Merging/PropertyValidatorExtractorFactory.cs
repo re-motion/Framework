@@ -26,7 +26,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Default implementation of the <see cref="IPropertyValidatorExtractorFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof(IPropertyValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPropertyValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
   public class PropertyValidatorExtractorFactory : IPropertyValidatorExtractorFactory
   {
     public PropertyValidatorExtractorFactory ()

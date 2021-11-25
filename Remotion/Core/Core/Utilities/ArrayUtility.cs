@@ -31,12 +31,12 @@ namespace Remotion.Utilities
       return Array.IndexOf(array, value) >= 0;
     }
 
-    public static bool IsNullOrEmpty ([NotNullWhen (false)] Array? array)
+    public static bool IsNullOrEmpty ([NotNullWhen(false)] Array? array)
     {
       return (array == null) || (array.Length == 0);
     }
 
-    public static bool IsNullOrEmpty ([NotNullWhen (false)] ICollection? collection)
+    public static bool IsNullOrEmpty ([NotNullWhen(false)] ICollection? collection)
     {
       return (collection == null) || (collection.Count == 0);
     }
@@ -81,7 +81,7 @@ namespace Remotion.Utilities
       return result;
     }
 
-    [return: NotNullIfNotNull ("collection")]
+    [return: NotNullIfNotNull("collection")]
     public static TResult[]? Convert<TSource, TResult> (ICollection<TSource>? collection)
         where TResult: TSource
     {
@@ -119,7 +119,7 @@ namespace Remotion.Utilities
       return result;
     }
 
-    [return: NotNullIfNotNull ("collection")]
+    [return: NotNullIfNotNull("collection")]
     public static T[]? Convert<T> (ICollection<T> collection)
     {
       return Convert<T, T>(collection);

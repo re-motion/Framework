@@ -31,22 +31,22 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
     }
 
-    [AttributeUsage (AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     private class NotMultipleAttribute : Attribute
     {
     }
 
-    [AttributeUsage (AttributeTargets.Method, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     private class NotInheritedAttribute : Attribute
     {
     }
 
-    [AttributeUsage (AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
     private class InheritedAttribute : Attribute
     {
     }
 
-    [AttributeUsage (AttributeTargets.Assembly, Inherited = true, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly, Inherited = true, AllowMultiple = true)]
     private class MultipleAttribute : Attribute
     {
     }

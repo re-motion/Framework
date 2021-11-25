@@ -29,7 +29,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to them to retrieve localized name for a specified <see cref="Enum"/> value.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundEnumerationGlobalizationService : IEnumerationGlobalizationService
   {
     private readonly IReadOnlyCollection<IEnumerationGlobalizationService> _enumerationGlobalizationServices;
@@ -50,7 +50,7 @@ namespace Remotion.Globalization.Implementation
       get { return _enumerationGlobalizationServices; }
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen (false)] out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("value", value);
 

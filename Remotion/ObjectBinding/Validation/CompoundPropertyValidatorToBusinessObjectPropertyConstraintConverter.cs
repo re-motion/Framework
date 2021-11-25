@@ -24,7 +24,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.ObjectBinding.Validation
 {
-  [ImplementationFor (typeof(IPropertyValidatorToBusinessObjectPropertyConstraintConverter), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPropertyValidatorToBusinessObjectPropertyConstraintConverter), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter : IPropertyValidatorToBusinessObjectPropertyConstraintConverter
   {
     public IReadOnlyCollection<IPropertyValidatorToBusinessObjectPropertyConstraintConverter> Converters { get; }

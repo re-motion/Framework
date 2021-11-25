@@ -20,7 +20,7 @@ using Remotion.Globalization;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.AccessControl.UserCondition")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.AccessControl.UserCondition")]
   public enum UserCondition
   {
     None = 0,

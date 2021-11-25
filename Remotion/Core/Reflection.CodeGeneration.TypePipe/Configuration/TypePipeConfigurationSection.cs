@@ -30,19 +30,19 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
         "  <enableSerializationWithoutAssemblySaving/>" + Environment.NewLine +
         "</remotion.reflection.codeGeneration.typePipe>";
 
-    [ConfigurationProperty ("xmlns")]
+    [ConfigurationProperty("xmlns")]
     public string XmlNamespace
     {
       get { return c_xmlNamespace; }
     }
 
-    [ConfigurationProperty ("forceStrongNaming")]
+    [ConfigurationProperty("forceStrongNaming")]
     public ForceStrongNamingConfigurationElement ForceStrongNaming
     {
       get { return (ForceStrongNamingConfigurationElement)this["forceStrongNaming"]; }
     }
 
-    [ConfigurationProperty ("enableSerializationWithoutAssemblySaving")]
+    [ConfigurationProperty("enableSerializationWithoutAssemblySaving")]
     public EnableSerializationWithoutAssemblySavingConfigurationElement EnableSerializationWithoutAssemblySaving
     {
       get { return (EnableSerializationWithoutAssemblySavingConfigurationElement)this["enableSerializationWithoutAssemblySaving"]; }

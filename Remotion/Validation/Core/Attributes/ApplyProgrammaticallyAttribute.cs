@@ -24,7 +24,7 @@ namespace Remotion.Validation.Attributes
   /// automatic discovery. Collectors annotated with this attribute must be registered 
   /// via a custom implemenation of the <see cref="IValidationRuleCollectorProvider"/> interface.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class)]
+  [AttributeUsage(AttributeTargets.Class)]
   public class ApplyProgrammaticallyAttribute : Attribute
   {
   }

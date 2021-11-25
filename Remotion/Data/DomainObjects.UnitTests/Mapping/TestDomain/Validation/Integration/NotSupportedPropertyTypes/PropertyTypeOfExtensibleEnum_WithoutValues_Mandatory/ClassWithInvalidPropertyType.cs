@@ -20,10 +20,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory
 {
   [DBTable]
-  [ClassID ("PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory_ClassWithInvalidPropertyType")]
+  [ClassID("PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory_ClassWithInvalidPropertyType")]
   public class ClassWithInvalidPropertyType : DomainObject
   {
-    [ExtensibleEnumProperty (IsNullable = false)]
+    [ExtensibleEnumProperty(IsNullable = false)]
     public ExtensibleEnumNotDefiningAnyValues InvalidProperty { get; set; }
   }
 }

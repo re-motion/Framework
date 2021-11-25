@@ -41,7 +41,7 @@ namespace Remotion.Validation.UnitTests.Providers
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetValidationRuleCollectors_TODO_RM_5906 ()
     {
     }

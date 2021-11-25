@@ -46,7 +46,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _locaction; }
     }
 
-    [MemberNotNull (nameof(_kind))]
+    [MemberNotNull(nameof(_kind))]
     public void AddKind (string kind)
     {
       ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _kind = kind;
     }
 
-    [MemberNotNull (nameof(_assembly))]
+    [MemberNotNull(nameof(_assembly))]
     public void AddAssembly (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull("assembly", assembly);
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _assembly = assembly;
     }
 
-    [MemberNotNull (nameof(_locaction))]
+    [MemberNotNull(nameof(_locaction))]
     public void AddLocation (string location)
     {
       ArgumentUtility.CheckNotNullOrEmpty("location", location);

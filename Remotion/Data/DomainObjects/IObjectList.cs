@@ -136,19 +136,19 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <see cref="DomainObject"/> for the <paramref name="objectID"/> or <see langword="null" /> of the <see cref="DomainObject"/> was not found.</returns>
     TDomainObject GetObject (ObjectID objectID);
 
-    [Obsolete ("IObjectList is readonly.", true)]
+    [Obsolete("IObjectList is readonly.", true)]
     new int Add (object value);
 
-    [Obsolete ("IObjectList is readonly.", true)]
+    [Obsolete("IObjectList is readonly.", true)]
     new void Clear ();
 
-    [Obsolete ("IObjectList is readonly.", true)]
+    [Obsolete("IObjectList is readonly.", true)]
     new void Insert (int index, object value);
 
-    [Obsolete ("IObjectList is readonly.", true)]
+    [Obsolete("IObjectList is readonly.", true)]
     new void Remove (object value);
 
-    [Obsolete ("IObjectList is readonly.", true)]
+    [Obsolete("IObjectList is readonly.", true)]
     new void RemoveAt (int index);
   }
 }

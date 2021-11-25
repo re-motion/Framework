@@ -35,7 +35,7 @@ namespace Remotion.Mixins
   /// </para>
   /// </remarks>
   [MeansImplicitUse]
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
   public class OverrideMixinAttribute : Attribute, IOverrideAttribute
   {
     private readonly Type? _mixinType;

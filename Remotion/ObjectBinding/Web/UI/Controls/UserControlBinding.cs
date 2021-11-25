@@ -45,8 +45,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _userControlPath = value; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IDataEditControl? UserControl
     {
       get { return _userControl; }

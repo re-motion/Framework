@@ -82,8 +82,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> used to evaluate the 
     ///   <see cref="PropertyPathIdentifier"/>. 
     /// </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IBusinessObjectDataSource? DataSource
     {
       get
@@ -133,8 +133,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _isDynamic = (propertyPath == null) ? false : propertyPath.IsDynamic;
     }
 
-    [DefaultValue (false)]
-    [Category ("Data")]
+    [DefaultValue(false)]
+    [Category("Data")]
     public bool IsDynamic
     {
       get { return _isDynamic; }
@@ -155,9 +155,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> 
     ///   A <see cref="string"/> formatted as a valid property path. 
     /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("A string representing a valid property path.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("A string representing a valid property path.")]
     //  No default value
     public string? PropertyPathIdentifier
     {
@@ -172,8 +172,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IBusinessObjectClass? BusinessObjectClass
     {
       get

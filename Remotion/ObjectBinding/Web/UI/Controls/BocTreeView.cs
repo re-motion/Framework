@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> Object bound tree view. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/Class/*' />
-  [DefaultEvent ("Click")]
+  [DefaultEvent("Click")]
   public class BocTreeView : BusinessObjectBoundWebControl, IBocRenderableControl, IBocTreeView
   {
     // constants
@@ -746,8 +746,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
     /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectReferenceProperty? Property
     {
       get { return (IBusinessObjectReferenceProperty?)base.Property; }
@@ -762,7 +762,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the current value. </summary>
     /// <value> A list of <see cref="IBusinessObjectWithIdentity"/> implementations or <see langword="null"/>. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public new IReadOnlyList<IBusinessObjectWithIdentity>? Value
     {
       get
@@ -780,7 +780,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the current value. </summary>
     /// <value> A list of <see cref="IBusinessObjectWithIdentity"/> implementations or <see langword="null"/>. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public IList? ValueAsList
     {
       get
@@ -855,31 +855,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the tree nodes displayed by this tree view. </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public WebTreeNodeCollection Nodes
     {
       get { return _treeView.Nodes; }
     }
 
     /// <summary>Gets the <see cref="WebTreeView"/> used by this <see cref="BocTreeView"/> to render the tree.</summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public WebTreeView TreeView
     {
       get { return _treeView; }
     }
 
-    [Category ("Behavior")]
-    [DefaultValue ("")]
+    [Category("Behavior")]
+    [DefaultValue("")]
     public string? ControlServicePath
     {
       get { return _controlServicePath; }
       set { _controlServicePath = value ?? string.Empty; }
     }
 
-    [Category ("Behavior")]
-    [DefaultValue ("")]
-    [Description ("Additional arguments passed to the control service.")]
+    [Category("Behavior")]
+    [DefaultValue("")]
+    [Description("Additional arguments passed to the control service.")]
     public string? ControlServiceArguments
     {
       get { return _controlServiceArguments; }
@@ -890,10 +890,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to show the top level expander and automatically expand the 
     ///   child nodes if the expander is hidden.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If cleared, the top level expender will be hidden and the child nodes expanded for the top level nodes.")]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If cleared, the top level expender will be hidden and the child nodes expanded for the top level nodes.")]
+    [DefaultValue(true)]
     public bool EnableTopLevelExpander
     {
       get { return _treeView.EnableTopLevelExpander; }
@@ -901,10 +901,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to evaluate the child nodes when expanding a tree node. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If set, the child nodes will be evaluated when a node is expanded.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If set, the child nodes will be evaluated when a node is expanded.")]
+    [DefaultValue(false)]
     public bool EnableLookAheadEvaluation
     {
       get { return _treeView.EnableLookAheadEvaluation; }
@@ -914,10 +914,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> 
     ///   Gets or sets a flag that determines whether to show scroll bars. Requires also a width for the tree view.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If set, the tree view shows srcoll bars. Requires a witdh in addition to this setting to actually enable the scrollbars.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If set, the tree view shows srcoll bars. Requires a witdh in addition to this setting to actually enable the scrollbars.")]
+    [DefaultValue(false)]
     public bool EnableScrollBars
     {
       get { return _treeView.EnableScrollBars; }
@@ -925,10 +925,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to group the root nodes by their category. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If set, the root nodes will be grouped by their category attribute. The order of the child nodes remians unchanged.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If set, the root nodes will be grouped by their category attribute. The order of the child nodes remians unchanged.")]
+    [DefaultValue(false)]
     public bool EnableTopLevelGrouping
     {
       get { return _treeView.EnableTopLevelGrouping; }
@@ -936,10 +936,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to enable word wrapping. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("If set, word wrap will be enabled for the tree node's text.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("If set, word wrap will be enabled for the tree node's text.")]
+    [DefaultValue(false)]
     public bool EnableWordWrap
     {
       get { return _treeView.EnableWordWrap; }
@@ -947,10 +947,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to show the connection lines between the nodes. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("If cleared, the tree nodes will not be connected by lines.")]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("If cleared, the tree nodes will not be connected by lines.")]
+    [DefaultValue(true)]
     public bool ShowLines
     {
       get { return _treeView.ShowLines; }
@@ -963,10 +963,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   This could be required if the tree must show only the current nodes instead of the nodes that have 
     ///   been in the tree during the first evaluation.
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("If cleared, the evaluated tree nodes will be reloaded during each postback.")]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("If cleared, the evaluated tree nodes will be reloaded during each postback.")]
+    [DefaultValue(true)]
     public bool EnableTreeNodeCaching
     {
       get { return _enableTreeNodeCaching; }
@@ -981,10 +981,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets or sets a flag that determines whether the post back from a node click must be executed synchronously when the tree is rendered within 
     /// an <see cref="System.Web.UI.UpdatePanel"/>.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("True to require a synchronous postback for node clicks within Ajax Update Panels.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("True to require a synchronous postback for node clicks within Ajax Update Panels.")]
+    [DefaultValue(false)]
     public bool RequiresSynchronousPostBack
     {
       get { return _treeView.RequiresSynchronousPostBack; }
@@ -992,8 +992,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Occurs when a node is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a node is clicked.")]
+    [Category("Action")]
+    [Description("Occurs when a node is clicked.")]
     public event BocTreeNodeClickEventHandler Click
     {
       add { Events.AddHandler(s_clickEvent, value); }
@@ -1004,8 +1004,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Occurs when the selected node is changed. Fires for both client side changes or change by the 
     ///   <see cref="RefreshTreeNodes"/> method.
     /// </summary>
-    [Category ("Action")]
-    [Description ("Occurs when the selected node is changed. Fires for both client side changes and a change by the RefreshTreeNodes method.")]
+    [Category("Action")]
+    [Description("Occurs when the selected node is changed. Fires for both client side changes and a change by the RefreshTreeNodes method.")]
     public event BocTreeNodeEventHandler SelectionChanged
     {
       add { Events.AddHandler(s_selectionChangedEvent, value); }
@@ -1013,15 +1013,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the currently selected tree node. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocTreeNode? SelectedNode
     {
       get { return (BocTreeNode?)_treeView.SelectedNode; }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocTreeViewMenuItemProvider? MenuItemProvider
     {
       get { return (BocTreeViewMenuItemProvider?)_treeView.MenuItemProvider; }

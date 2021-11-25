@@ -28,7 +28,7 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
       Search
     }
 
-    [DemandPermission (GeneralAccessTypes.Search)]
+    [DemandPermission(GeneralAccessTypes.Search)]
     public static void Search ()
     {
     }
@@ -40,12 +40,12 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
       _securityStrategy = securityStrategy;
     }
 
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public void Show ()
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Delete)]
+    [DemandPermission(GeneralAccessTypes.Delete)]
     public void Delete ()
     {
     }

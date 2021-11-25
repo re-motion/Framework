@@ -21,7 +21,7 @@ using Remotion.Utilities;
 namespace Remotion.Globalization
 {
 
-[AttributeUsage (AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]
+[AttributeUsage(AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]
 public class ResourceIdentifiersAttribute: Attribute
 {
   public static string GetResourceIdentifier (Enum enumValue)

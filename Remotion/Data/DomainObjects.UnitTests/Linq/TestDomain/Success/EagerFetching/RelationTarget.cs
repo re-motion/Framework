@@ -18,17 +18,17 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching
 {
-  [DBTable ("EagerFetching_RelationTarget")]
-  [ClassID ("EagerFetching_RelationTarget")]
+  [DBTable("EagerFetching_RelationTarget")]
+  [ClassID("EagerFetching_RelationTarget")]
   public class RelationTarget : DomainObject
   {
-    [DBBidirectionalRelation ("CollectionPropertyManySide")]
+    [DBBidirectionalRelation("CollectionPropertyManySide")]
     public virtual DerivedClass1 CollectionPropertyOneSide { get; set; }
 
-    [DBBidirectionalRelation ("ScalarProperty1VirtualSide", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("ScalarProperty1VirtualSide", ContainsForeignKey = true)]
     public virtual DerivedClass1 ScalarProperty1RealSide { get; set; }
 
-    [DBBidirectionalRelation ("ScalarProperty2RealSide")]
+    [DBBidirectionalRelation("ScalarProperty2RealSide")]
     public virtual DerivedClass2 ScalarProperty2VirtualSide { get; set; }
   }
 }

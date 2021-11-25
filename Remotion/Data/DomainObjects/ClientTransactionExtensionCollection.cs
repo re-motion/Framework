@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects
 
     #region Notification methods
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {
       ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects
         this[i].TransactionInitialize(clientTransaction);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void TransactionDiscard (ClientTransaction clientTransaction)
     {
       ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects
         this[i].TransactionDiscard(clientTransaction);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SubTransactionCreating (ClientTransaction parentClientTransaction)
     {
       ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects
         this[i].SubTransactionCreating(parentClientTransaction);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SubTransactionInitialize (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
       ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects
         this[i].SubTransactionInitialize(parentClientTransaction, subTransaction);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SubTransactionCreated (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
       ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects
         this[i].SubTransactionCreated(parentClientTransaction, subTransaction);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       ArgumentUtility.DebugCheckNotNull("type", type);
@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects
         this[i].NewObjectCreating(clientTransaction, type);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
       ArgumentUtility.DebugCheckNotNull("objectIDs", objectIDs);
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsLoading(clientTransaction, objectIDs);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> loadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNullOrEmpty("loadedDomainObjects", loadedDomainObjects);
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsUnloaded(clientTransaction, unloadedDomainObjects);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectDeleting(clientTransaction, domainObject);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -246,7 +246,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectDeleted(clientTransaction, domainObject);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -256,7 +256,7 @@ namespace Remotion.Data.DomainObjects
         this[i].PropertyValueReading(clientTransaction, domainObject, propertyDefinition, valueAccess);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects
         this[i].PropertyValueRead(clientTransaction, domainObject, propertyDefinition, value, valueAccess);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects
         this[i].PropertyValueChanging(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -286,7 +286,7 @@ namespace Remotion.Data.DomainObjects
         this[i].PropertyValueChanged(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -296,7 +296,7 @@ namespace Remotion.Data.DomainObjects
         this[i].RelationReading(clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects
         this[i].RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObject, valueAccess);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -317,7 +317,7 @@ namespace Remotion.Data.DomainObjects
         this[i].RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObjects, valueAccess);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -327,7 +327,7 @@ namespace Remotion.Data.DomainObjects
         this[i].RelationChanging(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
@@ -337,7 +337,7 @@ namespace Remotion.Data.DomainObjects
         this[i].RelationChanged(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
     {
       ArgumentUtility.CheckNotNull("queryResult", queryResult);
@@ -347,7 +347,7 @@ namespace Remotion.Data.DomainObjects
           .Aggregate(queryResult, (current, extension) => extension.FilterQueryResult(clientTransaction, current));
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void Committing (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
@@ -356,7 +356,7 @@ namespace Remotion.Data.DomainObjects
         this[i].Committing(clientTransaction, changedDomainObjects, eventRegistrar);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
       ArgumentUtility.DebugCheckNotNull("committedData", committedData);
@@ -365,7 +365,7 @@ namespace Remotion.Data.DomainObjects
         this[i].CommitValidate(clientTransaction, committedData);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
@@ -374,7 +374,7 @@ namespace Remotion.Data.DomainObjects
         this[i].Committed(clientTransaction, changedDomainObjects);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
@@ -383,7 +383,7 @@ namespace Remotion.Data.DomainObjects
         this[i].RollingBack(clientTransaction, changedDomainObjects);
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);

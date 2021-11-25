@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// This method needs additional memory to hold up to <see cref="Count"/> elements to check for duplicates, and it iterates over the result 
     /// elements, visiting each at most once.
     /// </remarks>
-    [Obsolete ("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
+    [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
     public bool ContainsDuplicates ()
     {
       var visitedElements = new HashSet<T>();

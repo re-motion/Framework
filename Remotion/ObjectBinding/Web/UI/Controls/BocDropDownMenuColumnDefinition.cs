@@ -53,11 +53,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag to show/hide the menu's title. </summary>
     /// <value> <see langword="false" /> to hide the menu's title. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("Set false to hide the menu's title")]
-    [DefaultValue (true)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("Set false to hide the menu's title")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
     public bool ShowMenuTitle
     {
       get { return _showMenuTitle; }
@@ -66,11 +66,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the text displayed as the menu title. </summary>
     /// <value> A <see cref="string"/> displayed as the menu's title. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The menu title, can be empty.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The menu title, can be empty.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string MenuTitleText
     {
       get { return _menuTitleText; }
@@ -79,12 +79,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the icon displayed in the menu's title field. </summary>
     /// <value> An <see cref="IconInfo"/> displayed in the menu's title field. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("An icon displayed in the menu's title field, can be empty.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("An icon displayed in the menu's title field, can be empty.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public IconInfo MenuTitleIcon
     {
       get { return _menuTitleIcon; }

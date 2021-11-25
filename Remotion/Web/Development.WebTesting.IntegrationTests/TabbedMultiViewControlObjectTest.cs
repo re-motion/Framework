@@ -29,11 +29,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TabbedMultiViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<TabbedMultiViewSelector, TabbedMultiViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<TabbedMultiViewSelector, TabbedMultiViewControlObject> testAction)
     {
       testAction(Helper, e => e.TabbedMultiViews(), "tabbedMultiView");

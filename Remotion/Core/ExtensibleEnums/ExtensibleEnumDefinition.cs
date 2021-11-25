@@ -148,7 +148,7 @@ namespace Remotion.ExtensibleEnums
     /// <returns>
     /// <see langword="true" /> if a value with the given <paramref name="id"/> could be found; <see langword="false" /> otherwise.
     /// </returns>
-    public bool TryGetValueInfoByID (string id, [MaybeNullWhen (false)] out ExtensibleEnumInfo<T> value)
+    public bool TryGetValueInfoByID (string id, [MaybeNullWhen(false)] out ExtensibleEnumInfo<T> value)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
@@ -194,7 +194,7 @@ namespace Remotion.ExtensibleEnums
       return GetValueInfoByID(id);
     }
 
-    bool IExtensibleEnumDefinition.TryGetValueInfoByID (string id, [MaybeNullWhen (false)] out IExtensibleEnumInfo valueInfo)
+    bool IExtensibleEnumDefinition.TryGetValueInfoByID (string id, [MaybeNullWhen(false)] out IExtensibleEnumInfo valueInfo)
     {
       ExtensibleEnumInfo<T>? typedValue;
       var success = TryGetValueInfoByID(id, out typedValue);

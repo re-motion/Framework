@@ -21,7 +21,7 @@ namespace Remotion.Context
   /// <summary>
   /// Implements <see cref="ISafeContextStorageProvider"/> by storing data in the thread-local <see cref="T:System.Runtime.Remoting.Messaging.CallContext"/>.
   /// </summary>
-  [Obsolete ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)", true)]
+  [Obsolete("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)", true)]
   public class CallContextStorageProvider : ISafeContextStorageProvider
   {
     public object GetData (string key)

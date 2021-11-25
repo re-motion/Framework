@@ -25,7 +25,7 @@ namespace Remotion.Configuration.TypeDiscovery
   /// </summary>
   public class ByFileIncludeRootAssemblyElement : ByFileRootAssemblyElementBase
   {
-    [ConfigurationProperty ("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
+    [ConfigurationProperty("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
     public bool IncludeReferencedAssemblies
     {
       get { return (bool)this["includeReferencedAssemblies"]; }

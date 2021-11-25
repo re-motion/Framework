@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_OrganizationalUnit")]
-  [DBTable ("TableInheritance_OrganizationalUnit")]
+  [ClassID("TI_OrganizationalUnit")]
+  [DBTable("TableInheritance_OrganizationalUnit")]
   [Instantiable]
   public abstract class TIOrganizationalUnit: TIDomainBase
   {
@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
   }
 }

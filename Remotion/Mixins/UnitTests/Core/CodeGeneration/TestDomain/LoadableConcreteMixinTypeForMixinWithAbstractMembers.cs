@@ -21,7 +21,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [ConcreteMixinType (
+  [ConcreteMixinType(
       new object[] {
           typeof(MixinWithAbstractMembers),
           new object[0],
@@ -37,15 +37,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
   {
     public interface IOverriddenMethods
     {
-      [OverrideInterfaceMapping (typeof(MixinWithAbstractMembers), "AbstractMethod", "System.String AbstractMethod(Int32)")]
+      [OverrideInterfaceMapping(typeof(MixinWithAbstractMembers), "AbstractMethod", "System.String AbstractMethod(Int32)")]
       string AbstractMethod (int i);
-      [OverrideInterfaceMapping (typeof(MixinWithAbstractMembers), "RaiseEvent", "System.String RaiseEvent()")]
+      [OverrideInterfaceMapping(typeof(MixinWithAbstractMembers), "RaiseEvent", "System.String RaiseEvent()")]
       string RaiseEvent ();
-      [OverrideInterfaceMapping (typeof(MixinWithAbstractMembers), "get_AbstractProperty", "System.String get_AbstractProperty()")]
+      [OverrideInterfaceMapping(typeof(MixinWithAbstractMembers), "get_AbstractProperty", "System.String get_AbstractProperty()")]
       string get_AbstractProperty ();
-      [OverrideInterfaceMapping (typeof(MixinWithAbstractMembers), "add_AbstractEvent", "Void add_AbstractEvent(System.Func`1[System.String])")]
+      [OverrideInterfaceMapping(typeof(MixinWithAbstractMembers), "add_AbstractEvent", "Void add_AbstractEvent(System.Func`1[System.String])")]
       void add_AbstractEvent (Func<String> handler);
-      [OverrideInterfaceMapping (typeof(MixinWithAbstractMembers), "remove_AbstractEvent", "Void remove_AbstractEvent(System.Func`1[System.String])")]
+      [OverrideInterfaceMapping(typeof(MixinWithAbstractMembers), "remove_AbstractEvent", "Void remove_AbstractEvent(System.Func`1[System.String])")]
       void remove_AbstractEvent (Func<String> handler);
     }
   }

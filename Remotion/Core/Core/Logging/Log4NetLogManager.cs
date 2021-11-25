@@ -30,7 +30,7 @@ namespace Remotion.Logging
   /// <summary>
   /// Implementation of <see cref="ILogManager"/> for <b>log4net</b>.
   /// </summary>
-  [ImplementationFor (typeof(ILogManager), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ILogManager), Lifetime = LifetimeKind.Singleton)]
   public class Log4NetLogManager : ILogManager
   {
     private readonly WrapperMap _wrapperMap = new WrapperMap(logger => new Log4NetLog(logger));

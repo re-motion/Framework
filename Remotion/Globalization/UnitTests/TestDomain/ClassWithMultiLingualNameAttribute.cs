@@ -18,23 +18,23 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualName ("Invariant Type Name", "")]
-  [DeAT ("de-AT Type Name")]
-  [De ("de Type Name")]
-  [En ("en Type Name")]
+  [MultiLingualName("Invariant Type Name", "")]
+  [DeAT("de-AT Type Name")]
+  [De("de Type Name")]
+  [En("en Type Name")]
   public class ClassWithMultiLingualNameAttribute
   {
-    [MultiLingualName ("Invariant Property Name", "")]
-    [DeAT ("de-AT Property Name")]
-    [De ("de Property Name")]
+    [MultiLingualName("Invariant Property Name", "")]
+    [DeAT("de-AT Property Name")]
+    [De("de Property Name")]
     public virtual int PropertyWithMultiLingualNameAttribute { get; set; }
 
-    [MultiLingualName ("Invariant Property Name", "")]
+    [MultiLingualName("Invariant Property Name", "")]
     public virtual int PropertyWithMultiLingualNameAttributeOnOverride { get; set; }
 
-    [MultiLingualName ("Invariant Property Name", "")]
-    [DeAT ("de-AT Property Name")]
-    [De ("de Property Name")]
+    [MultiLingualName("Invariant Property Name", "")]
+    [DeAT("de-AT Property Name")]
+    [De("de Property Name")]
     public virtual int OverriddenPropertyWithMultiLingualNameAttribute { get; set; }
   }
 }

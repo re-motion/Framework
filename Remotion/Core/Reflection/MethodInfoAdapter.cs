@@ -31,7 +31,7 @@ namespace Remotion.Reflection
   /// <summary>
   /// Implements the <see cref="IMethodInformation"/> to wrap a <see cref="MethodInfo"/> instance.
   /// </summary>
-  [TypeConverter (typeof(MethodInfoAdapterConverter))]
+  [TypeConverter(typeof(MethodInfoAdapterConverter))]
   public sealed class MethodInfoAdapter : IMethodInformation
   {
     private static readonly ConcurrentDictionary<MethodInfo, MethodInfoAdapter> s_dataStore =
@@ -46,8 +46,8 @@ namespace Remotion.Reflection
       return s_dataStore.GetOrAdd(methodInfo, s_ctorFunc);
     }
 
-    [ContractAnnotation ("null => null; notnull => notnull")]
-    [return: NotNullIfNotNull ("methodInfo")]
+    [ContractAnnotation("null => null; notnull => notnull")]
+    [return: NotNullIfNotNull("methodInfo")]
     public static MethodInfoAdapter? CreateOrNull (MethodInfo? methodInfo)
     {
       if (methodInfo == null)

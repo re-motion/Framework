@@ -25,14 +25,14 @@ using Remotion.Web.Services;
 
 namespace OBWTest.IndividualControlTests
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class BocListWebService : WebService, IBocListWebService
   {
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
 
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
@@ -53,7 +53,7 @@ namespace OBWTest.IndividualControlTests
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForRowMenu (
         string controlID,
         string controlType,

@@ -22,7 +22,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
 
 /// <summary> Exposes non-public members of the <see cref="EmailAddressValidator"/> type. </summary>
-[ToolboxItem (false)]
+[ToolboxItem(false)]
 public class EmailAddressValidatorMock: EmailAddressValidator
 {
 	public new bool IsMatchComplete (string text)

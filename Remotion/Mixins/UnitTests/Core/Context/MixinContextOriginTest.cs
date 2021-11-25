@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void CreateForStackFrame ()
     {
       var stackFrame = GetCallerStackFrame();
@@ -160,7 +160,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That(origin1.GetHashCode(), Is.EqualTo(origin2.GetHashCode()));
     }
 
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private StackFrame GetCallerStackFrame ()
     {
       return new StackFrame(1);

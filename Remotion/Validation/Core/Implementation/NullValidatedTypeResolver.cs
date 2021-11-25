@@ -23,7 +23,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements the <seealso cref="IValidatedTypeResolver"/> interface and returns <see langword="null" />.
   /// </summary>
-  [ImplementationFor (typeof(IValidatedTypeResolver), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(IValidatedTypeResolver), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class NullValidatedTypeResolver : IValidatedTypeResolver
   {
     public Type? GetValidatedType (Type collectorType)

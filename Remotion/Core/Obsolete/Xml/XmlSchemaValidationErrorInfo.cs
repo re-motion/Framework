@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Xml
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Xml.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Xml.dll", true)]
   public class XmlSchemaValidationErrorInfo
   {
   }

@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocTextValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocTextValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when no text is entered but input is required. </summary>
@@ -207,8 +207,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <exception cref="FormatException"> 
     ///   The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.
     /// </exception>
-    [Description ("Gets or sets the current value.")]
-    [Browsable (false)]
+    [Description("Gets or sets the current value.")]
+    [Browsable(false)]
     public new object? Value
     {
       get
@@ -228,9 +228,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   An empty <see cref="String"/> if the control's value is <see langword="null"/> or empty. 
     ///   The default value is an empty <see cref="String"/>. 
     /// </value>
-    [Description ("Gets or sets the string representation of the current value.")]
-    [Category ("Data")]
-    [DefaultValue ("")]
+    [Description("Gets or sets the string representation of the current value.")]
+    [Category("Data")]
+    [DefaultValue("")]
     public override sealed string Text
     {
       get { return _text ?? string.Empty; }
@@ -340,7 +340,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="FormatException"/> or <see cref="OverflowException"/>) to read the contents of <see cref="Value"/>.
     /// </summary>
     /// <remarks> Valid values include <see langword="null"/>. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsValidValue
     {
       get
@@ -369,9 +369,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The externally set <see cref="BocTextValueType"/>. The default value is 
     ///   <see cref="BocTextValueType.Undefined"/>. 
     /// </value>
-    [Description ("Gets or sets a fixed value type.")]
-    [Category ("Data")]
-    [DefaultValue (BocTextValueType.Undefined)]
+    [Description("Gets or sets a fixed value type.")]
+    [Category("Data")]
+    [DefaultValue(BocTextValueType.Undefined)]
     public BocTextValueType ValueType
     {
       get { return _valueType; }
@@ -391,8 +391,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the controls fixed <see cref="ValueType"/> or, if <see cref="BocTextValueType.Undefined"/>, 
     ///   the <see cref="BusinessObjectBoundWebControl.Property"/>'s value type.
     /// </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocTextValueType ActualValueType
     {
       get
@@ -412,10 +412,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="IFormattable"/> is used to format the value using this string. The default is "d" for date-only
     ///   values and "g" for date/time values (use "G" to display seconds too). 
     /// </remarks>
-    [Description ("Gets or sets the format string used to create the string value. " +
+    [Description("Gets or sets the format string used to create the string value. " +
                   "Format must be parsable by the value's type if the control is in edit mode.")]
-    [Category ("Style")]
-    [DefaultValue ("")]
+    [Category("Style")]
+    [DefaultValue("")]
     public string? Format
     {
       get { return StringUtility.EmptyToNull(_format); }
@@ -427,9 +427,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }
@@ -525,7 +525,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         ErrorMessage = resourceManager.GetString(key);
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");
