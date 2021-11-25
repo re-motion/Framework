@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -31,9 +31,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     private IBusinessObjectServiceFactory _serviceFactory;
     private BindableDomainObjectServiceFactoryMixin _serviceMixin;
-    private IBusinessObjectProviderWithIdentity _bindableDomainObjectProvider;
-    private IBusinessObjectProviderWithIdentity _bindableObjectProvider;
-    private MockRepository _mockRepository;
+    private Mock<IBusinessObjectProviderWithIdentity> _bindableDomainObjectProvider;
+    private Mock<IBusinessObjectProviderWithIdentity> _bindableObjectProvider;
 
     [SetUp]
     public void SetUp ()
@@ -41,12 +40,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _serviceFactory = BindableObjectServiceFactory.Create();
       _serviceMixin = Mixin.Get<BindableDomainObjectServiceFactoryMixin>(_serviceFactory);
 
-      _mockRepository = new MockRepository();
-      _bindableDomainObjectProvider = _mockRepository.Stub<IBusinessObjectProviderWithIdentity>();
-      _bindableObjectProvider = _mockRepository.Stub<IBusinessObjectProviderWithIdentity>();
-      SetupResult.For(_bindableDomainObjectProvider.ProviderAttribute).Return(new BindableDomainObjectProviderAttribute());
-      SetupResult.For(_bindableObjectProvider.ProviderAttribute).Return(new BindableObjectProviderAttribute());
-      _mockRepository.ReplayAll();
+      _bindableDomainObjectProvider = new Mock<IBusinessObjectProviderWithIdentity>();
+      _bindableObjectProvider = new Mock<IBusinessObjectProviderWithIdentity>();
+      _bindableDomainObjectProvider.Setup(_ => _.ProviderAttribute).Returns(new BindableDomainObjectProviderAttribute());
+      _bindableObjectProvider.Setup(_ => _.ProviderAttribute).Returns(new BindableObjectProviderAttribute());
     }
 
     [Test]
@@ -60,7 +57,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void GetService_FromIBusinessObjectStringFormatterService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(IBusinessObjectStringFormatterService)),
+          _serviceFactory.CreateService(_bindableDomainObjectProvider.Object, typeof(IBusinessObjectStringFormatterService)),
           Is.InstanceOf(typeof(BusinessObjectStringFormatterService)));
     }
 
@@ -68,7 +65,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void GetService_FromIGetObjectService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(IGetObjectService)),
+          _serviceFactory.CreateService(_bindableDomainObjectProvider.Object, typeof(IGetObjectService)),
           Is.InstanceOf(typeof(BindableDomainObjectGetObjectService)));
     }
 
@@ -76,7 +73,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void GetService_FromISearchAvailableObjectsService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(ISearchAvailableObjectsService)),
+          _serviceFactory.CreateService(_bindableDomainObjectProvider.Object, typeof(ISearchAvailableObjectsService)),
           Is.InstanceOf(typeof(BindableDomainObjectCompoundSearchService)));
     }
 
@@ -84,7 +81,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void GetService_FromIGetObjectServiceWithBindableObjectProvider ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider, typeof(IGetObjectService)),
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(IGetObjectService)),
           Is.Null);
     }
 
@@ -92,7 +89,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void GetService_FromISearchAvailableObjectsServiceWithBindableObjectProvider ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableObjectProvider, typeof(ISearchAvailableObjectsService)),
+          _serviceFactory.CreateService(_bindableObjectProvider.Object, typeof(ISearchAvailableObjectsService)),
           Is.Null);
     }
 
@@ -100,7 +97,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void GetService_FromUnknownService ()
     {
       Assert.That(
-          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(IStubService)),
+          _serviceFactory.CreateService(_bindableDomainObjectProvider.Object, typeof(IStubService)),
           Is.Null);
     }
   }

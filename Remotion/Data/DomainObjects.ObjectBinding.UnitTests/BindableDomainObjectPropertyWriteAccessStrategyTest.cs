@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -24,7 +25,6 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -160,11 +160,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void CanWrite_NotADomainObject_ReturnsTrue ()
     {
-      var instance = MockRepository.GenerateStub<IBusinessObject>();
+      var instance = new Mock<IBusinessObject>();
       var property = GetProperty(SampleBindableDomainObject.NewObject());
 
       var strategy = (IBindablePropertyWriteAccessStrategy)new BindableDomainObjectPropertyWriteAccessStrategy();
-      var result = strategy.CanWrite(instance, property);
+      var result = strategy.CanWrite(instance.Object, property);
 
       Assert.That(result, Is.True);
     }

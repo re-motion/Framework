@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
@@ -24,7 +25,6 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
-using Rhino.Mocks;
 using ParamList = Remotion.TypePipe.ParamList;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
@@ -115,12 +115,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void GetProperty_CustomIPropertyInformationImplementation ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
-      propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
-      propertyInformationStub.Stub(stub => stub.GetGetMethod(true)).Return(MethodInfoAdapter.Create(typeof(object).GetMethod("ToString")));
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(MethodInfoAdapter.Create(typeof(object).GetMethod("ToString")));
 
-      var booleanProperty = CreateProperty(propertyInformationStub);
+      var booleanProperty = CreateProperty(propertyInformationStub.Object);
 
       var result = _newBusinessOrder.GetProperty(booleanProperty);
 
@@ -130,12 +130,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void PropertyWithNoGetter ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
-      propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
-      propertyInformationStub.Stub(stub => stub.GetGetMethod(true)).Return(null);
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation)null);
 
-      var booleanProperty = CreateProperty(propertyInformationStub);
+      var booleanProperty = CreateProperty(propertyInformationStub.Object);
       Assert.That(
           () => _newBusinessOrder.GetProperty(booleanProperty),
           Throws.InvalidOperationException
@@ -145,12 +145,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void PropertyWithNoSetter ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
-      propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
-      propertyInformationStub.Stub(stub => stub.GetSetMethod(true)).Return(null);
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
 
-      var booleanProperty = CreateProperty(propertyInformationStub);
+      var booleanProperty = CreateProperty(propertyInformationStub.Object);
       Assert.That(
           () => _newBusinessOrder.SetProperty(booleanProperty, new object()),
           Throws.InvalidOperationException
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
 
     private BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
     {
-      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(), MockRepository.GenerateStub<IBusinessObjectServiceFactory>());
+      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(), new Mock<IBusinessObjectServiceFactory>().Object);
     }
 
     private PropertyBase.Parameters GetPropertyParameters (IPropertyInformation property, BindableObjectProvider provider)
