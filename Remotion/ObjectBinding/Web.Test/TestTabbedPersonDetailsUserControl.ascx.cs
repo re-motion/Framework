@@ -56,12 +56,12 @@ public class TestTabbedPersonDetailsUserControl :
 
   public virtual StringCollection GetHiddenRows (HtmlTable table)
   {
-    return (StringCollection) _listOfHiddenRows[table];
+    return (StringCollection)_listOfHiddenRows[table];
   }
 
   public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
   {
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
   }
 
 	override protected void OnInit (EventArgs e)
@@ -126,7 +126,7 @@ public class TestTabbedPersonDetailsUserControl :
 
   protected void ShowExtraFormGridButton_Click (object sender, EventArgs e)
   {
-    var textField = (BocTextValue) ((HtmlTable) ExtraFormGridPlaceHolder.Controls[0]).Rows[1].Cells[2].Controls[0];
+    var textField = (BocTextValue)((HtmlTable)ExtraFormGridPlaceHolder.Controls[0]).Rows[1].Cells[2].Controls[0];
     Assertion.IsTrue(DataSource.GetAllBoundControls().Contains(textField));
 
     CreateExtraFormGrid("Button");

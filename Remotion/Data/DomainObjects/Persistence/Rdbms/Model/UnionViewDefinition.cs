@@ -90,10 +90,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       foreach (var entityDefinition in _unionedEntities)
       {
         if (entityDefinition is TableDefinition)
-          yield return (TableDefinition) entityDefinition;
+          yield return (TableDefinition)entityDefinition;
         else
         {
-          foreach (var derivedTable in ((UnionViewDefinition) entityDefinition).GetAllTables())
+          foreach (var derivedTable in ((UnionViewDefinition)entityDefinition).GetAllTables())
             yield return derivedTable;
         }
       }

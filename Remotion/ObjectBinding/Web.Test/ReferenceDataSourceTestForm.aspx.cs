@@ -25,7 +25,7 @@ namespace OBWTest
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad(e);
-      LevelOneDataSource.BusinessObject =(IBusinessObject) CurrentFunction.RootObject;
+      LevelOneDataSource.BusinessObject =(IBusinessObject)CurrentFunction.RootObject;
       LevelOneDataSource.LoadValues(IsPostBack);
     }
 

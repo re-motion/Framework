@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
   {
     public static WxeExceptionAttribute? GetAttribute (Type type)
     {
-      WxeExceptionAttribute[] attributes = (WxeExceptionAttribute[]) type.GetCustomAttributes(typeof(WxeExceptionAttribute), false);
+      WxeExceptionAttribute[] attributes = (WxeExceptionAttribute[])type.GetCustomAttributes(typeof(WxeExceptionAttribute), false);
       if (attributes == null || attributes.Length == 0)
         return null;
       return attributes[0];
@@ -70,19 +70,19 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("tryStepListType", tryStepListType, typeof(WxeStepList));
       ArgumentUtility.CheckTypeIsAssignableFrom("finallyStepListType", finallyStepListType, typeof(WxeStepList));
 
-      _trySteps = (WxeStepList) Activator.CreateInstance(tryStepListType)!;
+      _trySteps = (WxeStepList)Activator.CreateInstance(tryStepListType)!;
       _trySteps.SetParentStep(this);
 
       _catchBlocks = new ArrayList();
       if (catchBlockTypes != null)
       {
         foreach (Type catchBlockType in catchBlockTypes)
-          Add((WxeCatchBlock) Activator.CreateInstance(catchBlockType)!);
+          Add((WxeCatchBlock)Activator.CreateInstance(catchBlockType)!);
       }
 
       if (finallyStepListType != null)
       {
-        _finallySteps = (WxeStepList) Activator.CreateInstance(finallyStepListType)!; // TODO RM-8118: Add debug assertion
+        _finallySteps = (WxeStepList)Activator.CreateInstance(finallyStepListType)!; // TODO RM-8118: Add debug assertion
         _finallySteps.SetParentStep(this);
       }
       else
@@ -105,7 +105,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         throw new WxeException("Try/catch block type " + type.FullName + " has no nested type named \"Try\".");
       if (! typeof(WxeStepList).IsAssignableFrom(tryBlockType))
         throw new WxeException("Type " + tryBlockType.FullName + " must be derived from WxeTryBlock.");
-      _trySteps = (WxeStepList) Activator.CreateInstance(tryBlockType)!;
+      _trySteps = (WxeStepList)Activator.CreateInstance(tryBlockType)!;
       _trySteps.SetParentStep(this);
 
       Type? finallyBlockType = type.GetNestedType("Finally", BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
@@ -113,7 +113,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       {
         if (! typeof(WxeStepList).IsAssignableFrom(finallyBlockType))
           throw new WxeException("Type " + finallyBlockType.FullName + " must be derived from WxeFinallyBlock.");
-        _finallySteps = (WxeStepList) Activator.CreateInstance(finallyBlockType)!;
+        _finallySteps = (WxeStepList)Activator.CreateInstance(finallyBlockType)!;
         _finallySteps.SetParentStep(this);
       }
       else
@@ -130,7 +130,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       {
         if (! typeof(WxeCatchBlock).IsAssignableFrom(catchBlockType))
           throw new WxeException("Type " + catchBlockType.FullName + " must be derived from WxeCatchBlock.");
-        Add((WxeCatchBlock) Activator.CreateInstance(catchBlockType)!);
+        Add((WxeCatchBlock)Activator.CreateInstance(catchBlockType)!);
       }
     }
 
@@ -151,7 +151,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
 
           for (int i = 0; i < _catchBlocks.Count; ++i)
           {
-            WxeCatchBlock catchBlock = (WxeCatchBlock) _catchBlocks[i]!;
+            WxeCatchBlock catchBlock = (WxeCatchBlock)_catchBlocks[i]!;
             if (catchBlock.ExceptionType.IsInstanceOfType(ex))
             {
               _executingCatchBlock = i;
@@ -207,7 +207,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
           case -2:
             return _finallySteps;
           default:
-            return (WxeCatchBlock) _catchBlocks[_executingCatchBlock]!;
+            return (WxeCatchBlock)_catchBlocks[_executingCatchBlock]!;
         }
       }
     }
@@ -225,7 +225,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
 
     public WxeCatchBlock[] CatchBlocks
     {
-      get { return (WxeCatchBlock[]) _catchBlocks.ToArray(typeof(WxeCatchBlock)); }
+      get { return (WxeCatchBlock[])_catchBlocks.ToArray(typeof(WxeCatchBlock)); }
     }
 
     protected override void AbortRecursive ()

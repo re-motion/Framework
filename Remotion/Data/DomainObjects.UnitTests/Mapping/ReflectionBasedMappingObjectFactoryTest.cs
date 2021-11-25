@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var result = _factory.CreateRelationEndPointDefinition(classDefinition, propertyInfo);
 
       Assert.That(result, Is.TypeOf(typeof(DomainObjectCollectionRelationEndPointDefinition)));
-      Assert.That(((DomainObjectCollectionRelationEndPointDefinition) result).PropertyInfo, Is.SameAs(propertyInfo));
+      Assert.That(((DomainObjectCollectionRelationEndPointDefinition)result).PropertyInfo, Is.SameAs(propertyInfo));
     }
 
     [Test]
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(
-          ((RelationEndPointDefinition) result[0]).PropertyName,
+          ((RelationEndPointDefinition)result[0]).PropertyName,
           Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"));
     }
   }

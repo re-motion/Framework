@@ -74,10 +74,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
               let referencedClassDefinition = endPointDefinition.ClassDefinition
                   .GetMandatoryRelationEndPointDefinition(endPointDefinition.PropertyName)
                   .GetOppositeClassDefinition()
-              let propertyDefinition = ((RelationEndPointDefinition) endPointDefinition).PropertyDefinition
+              let propertyDefinition = ((RelationEndPointDefinition)endPointDefinition).PropertyDefinition
               where propertyDefinition.StorageClass == StorageClass.Persistent
               let referencingStorageProperty =
-                  (IObjectIDStoragePropertyDefinition) _persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition)
+                  (IObjectIDStoragePropertyDefinition)_persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition)
               where referencingStorageProperty.CanCreateForeignKeyConstraint
               let referencedTableName = FindTableName(referencedClassDefinition)
               where referencedTableName != null

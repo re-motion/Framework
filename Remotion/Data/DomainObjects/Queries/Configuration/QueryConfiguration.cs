@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     public ConfigurationElementCollection<QueryFileElement> QueryFiles
     {
-      get { return (ConfigurationElementCollection<QueryFileElement>) this[_queryFilesProperty]; }
+      get { return (ConfigurationElementCollection<QueryFileElement>)this[_queryFilesProperty]; }
     }
 
     protected override ConfigurationPropertyCollection Properties

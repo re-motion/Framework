@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocBooleanValue>>());
 
-      var factories = ((CompoundValidatorFactory<IBocBooleanValue>) instance).VlidatorFactories;
+      var factories = ((CompoundValidatorFactory<IBocBooleanValue>)instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
           Is.EqualTo(new[] { typeof(BocBooleanValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));

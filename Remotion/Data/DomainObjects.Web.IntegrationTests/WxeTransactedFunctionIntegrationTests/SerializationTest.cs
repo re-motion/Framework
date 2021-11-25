@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       Assert.That(function.SecondStepExecuted, Is.True);
 
       var deserializedFunction =
-          (SerializationTestTransactedFunction) Serializer.Deserialize(function.SerializedSelf);
+          (SerializationTestTransactedFunction)Serializer.Deserialize(function.SerializedSelf);
       Assert.That(deserializedFunction.FirstStepExecuted, Is.True);
       Assert.That(deserializedFunction.SecondStepExecuted, Is.False);
 

@@ -54,9 +54,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
       _serializer.AddMixins(new[] {mixinContext1, mixinContext2});
 
       // Check that the chain of serializers correctly sets up the AttributeMixinContextOriginSerializer
-      var serializedMixinContexts = ((object[]) _serializer.Values[1]);
-      var serializedMixinContext1 = (object[]) serializedMixinContexts[1];
-      var serializedMixinOrigin = (object[]) serializedMixinContext1[4];
+      var serializedMixinContexts = ((object[])_serializer.Values[1]);
+      var serializedMixinContext1 = (object[])serializedMixinContexts[1];
+      var serializedMixinOrigin = (object[])serializedMixinContext1[4];
       var serializedMixinOriginAssembly = serializedMixinOrigin[1];
       Assert.That(serializedMixinOriginAssembly, Is.EqualTo(GetType().Assembly.FullName));
 

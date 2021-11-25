@@ -211,15 +211,15 @@ public class BidirectionalStringConverterTest
   {
     Type destinationType = typeof(short);
 
-    Assert.That(_converter.ConvertTo("0", destinationType), Is.EqualTo((short) 0));
-    Assert.That(_converter.ConvertTo("1", destinationType), Is.EqualTo((short) 1));
+    Assert.That(_converter.ConvertTo("0", destinationType), Is.EqualTo((short)0));
+    Assert.That(_converter.ConvertTo("1", destinationType), Is.EqualTo((short)1));
   }
 
   [Test]
   public void ConvertFromByte ()
   {
-    Assert.That(_converter.ConvertFrom((byte) 0), Is.EqualTo("0"));
-    Assert.That(_converter.ConvertFrom((byte) 1), Is.EqualTo("1"));
+    Assert.That(_converter.ConvertFrom((byte)0), Is.EqualTo("0"));
+    Assert.That(_converter.ConvertFrom((byte)1), Is.EqualTo("1"));
   }
 
   [Test]
@@ -227,15 +227,15 @@ public class BidirectionalStringConverterTest
   {
     Type destinationType = typeof(byte);
 
-    Assert.That(_converter.ConvertTo("0", destinationType), Is.EqualTo((byte) 0));
-    Assert.That(_converter.ConvertTo("1", destinationType), Is.EqualTo((byte) 1));
+    Assert.That(_converter.ConvertTo("0", destinationType), Is.EqualTo((byte)0));
+    Assert.That(_converter.ConvertTo("1", destinationType), Is.EqualTo((byte)1));
   }
 
   [Test]
   public void ConvertFromInt16 ()
   {
-    Assert.That(_converter.ConvertFrom((short) 0), Is.EqualTo("0"));
-    Assert.That(_converter.ConvertFrom((short) 1), Is.EqualTo("1"));
+    Assert.That(_converter.ConvertFrom((short)0), Is.EqualTo("0"));
+    Assert.That(_converter.ConvertFrom((short)1), Is.EqualTo("1"));
   }
 
   [Test]
@@ -412,9 +412,9 @@ public class BidirectionalStringConverterTest
   [Test]
   public void ConvertFromNullableInt32 ()
   {
-    Assert.That(_converter.ConvertFrom((int?) 0), Is.EqualTo("0"));
-    Assert.That(_converter.ConvertFrom((int?) 1), Is.EqualTo("1"));
-    Assert.That(_converter.ConvertFrom((int?) null), Is.EqualTo(string.Empty));
+    Assert.That(_converter.ConvertFrom((int?)0), Is.EqualTo("0"));
+    Assert.That(_converter.ConvertFrom((int?)1), Is.EqualTo("1"));
+    Assert.That(_converter.ConvertFrom((int?)null), Is.EqualTo(string.Empty));
   }
 
   [Test]

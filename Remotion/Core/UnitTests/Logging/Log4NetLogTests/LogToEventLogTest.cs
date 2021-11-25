@@ -101,7 +101,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     {
       _logger.Repository.Threshold = Level.Info;
 
-      _log.Log(LogLevel.Info, 1, (object) "The message.", (Exception) null);
+      _log.Log(LogLevel.Info, 1, (object)"The message.", (Exception)null);
       Assert.That(_testEventLog.Entries.Count, Is.EqualTo(1));
       EventLogEntry eventLogEntry = _testEventLog.Entries[0];
       Assert.That(eventLogEntry.EntryType, Is.EqualTo(EventLogEntryType.Information));
@@ -115,7 +115,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       _logger.Repository.Threshold = Level.Info;
 
       Assert.That(
-          () => _log.Log(LogLevel.Info, 0x10000, (object) "The message.", (Exception) null),
+          () => _log.Log(LogLevel.Info, 0x10000, (object)"The message.", (Exception)null),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
               .With.ArgumentExceptionMessageEqualTo(
                   "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.", "eventID"));
@@ -132,7 +132,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       _logger.Repository.Threshold = Level.Info;
 
       Assert.That(
-          () => _log.Log(LogLevel.Info, -1, (object) "The message.", (Exception) null),
+          () => _log.Log(LogLevel.Info, -1, (object)"The message.", (Exception)null),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
               .With.ArgumentExceptionMessageEqualTo(
                   "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.", "eventID"));

@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
       _searchService = new GroupPropertyTypeSearchService();
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      _property = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Group");
+      _property = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Group");
       Assert.That(_property, Is.Not.Null);
 
       var group = Group.FindByUnqiueIdentifier("UID: group0");

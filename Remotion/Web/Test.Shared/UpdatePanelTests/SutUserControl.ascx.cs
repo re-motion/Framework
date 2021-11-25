@@ -56,7 +56,7 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
           Page.ClientScript.GetPostBackEventReference(_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID) + ";return false;";
 
       string syncPostBackCommandInsideUpdatePanelID = "SyncPostBackCommandInsideUpdatePanel";
-      ((ISmartPage) Page).RegisterCommandForSynchronousPostBack(_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
+      ((ISmartPage)Page).RegisterCommandForSynchronousPostBack(_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
       SyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
       SyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
           Page.ClientScript.GetPostBackEventReference(_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID) + ";return false;";
@@ -76,7 +76,7 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
 
     protected int PostBackCount
     {
-      get { return (int?) ViewState["PostBackCount"] ?? 0; }
+      get { return (int?)ViewState["PostBackCount"] ?? 0; }
       set { ViewState["PostBackCount"] = value; }
     }
 
@@ -94,7 +94,7 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
 
       string lastPostBack = "undefined";
       if (sender != null)
-        lastPostBack = ((Control) sender).ID;
+        lastPostBack = ((Control)sender).ID;
       LastPostBackInsideUpdatePanelLabel.Text = lastPostBack;
       LastPostBackOutsideUpdatePanelLabel.Text = lastPostBack;
     }

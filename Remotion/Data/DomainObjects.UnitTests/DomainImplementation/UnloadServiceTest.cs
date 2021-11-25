@@ -594,7 +594,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var subDataManager = ClientTransactionTestHelper.GetDataManager(subTransaction);
       var parentDataManager = TestableClientTransaction.DataManager;
 
-      var orderNew = (Order) LifetimeService.NewObject(subTransaction, typeof(Order), ParamList.Empty);
+      var orderNew = (Order)LifetimeService.NewObject(subTransaction, typeof(Order), ParamList.Empty);
       Assert.That(subDataManager.DataContainers[orderNew.ID].State.IsNew, Is.True);
 
 
@@ -740,8 +740,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       var ordersEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(customer.Orders);
 
-      var orderA = (Order) ordersEndPoint.Collection[0];
-      var orderB = (Order) ordersEndPoint.Collection[1];
+      var orderA = (Order)ordersEndPoint.Collection[0];
+      var orderB = (Order)ordersEndPoint.Collection[1];
 
       // this will cause the orderB to be rejected for unload; orderA won't be unloaded either although it comes before orderB
       ++orderB.OrderNumber;
@@ -943,8 +943,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       var ordersEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(customer.Orders);
 
-      var orderA = (Order) ordersEndPoint.Collection[0];
-      var orderB = (Order) ordersEndPoint.Collection[1];
+      var orderA = (Order)ordersEndPoint.Collection[0];
+      var orderB = (Order)ordersEndPoint.Collection[1];
 
       // this will cause the orderB to be rejected for unload; orderA won't be unloaded either although it comes before orderB
       ++orderB.OrderNumber;
@@ -997,7 +997,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       var subTransaction = TestableClientTransaction.CreateSubTransaction();
       var subTransactionDataManager = ClientTransactionTestHelper.GetDataManager(subTransaction);
-      var subOrdersEndPoint = (IDomainObjectCollectionEndPoint) subTransactionDataManager.GetRelationEndPointWithLazyLoad(parentOrdersEndPoint.ID);
+      var subOrdersEndPoint = (IDomainObjectCollectionEndPoint)subTransactionDataManager.GetRelationEndPointWithLazyLoad(parentOrdersEndPoint.ID);
       EnsureEndPointLoadedAndComplete(subTransactionDataManager, subOrdersEndPoint.ID);
 
       Assert.That(subOrdersEndPoint.Collection[0].TransactionContext[subTransaction].State.IsUnchanged, Is.True);

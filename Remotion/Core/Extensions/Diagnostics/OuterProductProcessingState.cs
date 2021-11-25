@@ -126,7 +126,7 @@ namespace Remotion.Diagnostics
     /// </summary>
     public int[] GetDimensionIndicesCopy ()
     {
-      return (int[]) DimensionIndices.Clone();
+      return (int[])DimensionIndices.Clone();
     }
   }
 }

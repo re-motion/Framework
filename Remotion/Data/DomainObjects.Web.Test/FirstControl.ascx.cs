@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
     {
       get
       {
-        return (WxeUserControlTestPageFunction) CurrentPageStep.ParentFunction;
+        return (WxeUserControlTestPageFunction)CurrentPageStep.ParentFunction;
       }
     }
 
@@ -59,13 +59,13 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected void RootTransactionUserControlStepButton_Click (object sender, EventArgs e)
     {
-      MyFunction.ObjectReadFromSecondControl = SecondControl.Call(WxePage, this, (Control) sender, WxeTransactionMode.CreateRoot, MyFunction.ObjectPassedIntoSecondControl);
+      MyFunction.ObjectReadFromSecondControl = SecondControl.Call(WxePage, this, (Control)sender, WxeTransactionMode.CreateRoot, MyFunction.ObjectPassedIntoSecondControl);
       RefreshText();
     }
 
     protected void SubTransactionUserControlStepButton_Click (object sender, EventArgs e)
     {
-      MyFunction.ObjectReadFromSecondControl = SecondControl.Call(WxePage, this, (Control) sender, WxeTransactionMode.CreateChildIfParent, MyFunction.ObjectPassedIntoSecondControl);
+      MyFunction.ObjectReadFromSecondControl = SecondControl.Call(WxePage, this, (Control)sender, WxeTransactionMode.CreateChildIfParent, MyFunction.ObjectPassedIntoSecondControl);
       RefreshText();
     }
 

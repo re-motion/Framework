@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected new EditTenantFormFunction CurrentFunction
     {
-      get { return (EditTenantFormFunction) base.CurrentFunction; }
+      get { return (EditTenantFormFunction)base.CurrentFunction; }
     }
 
     protected override FormGridManager GetFormGridManager ()
@@ -90,7 +90,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = IsParentHierarchyValid((Tenant) _parentField.Value);
+      args.IsValid = IsParentHierarchyValid((Tenant)_parentField.Value);
     }
 
     private bool IsParentHierarchyValid (Tenant group)

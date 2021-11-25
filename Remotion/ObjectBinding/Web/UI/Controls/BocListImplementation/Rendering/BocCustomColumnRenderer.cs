@@ -173,11 +173,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       isControlWidthEmpty = true;
       if (control is WebControl)
       {
-        controlStyle = ((WebControl) control).Style;
-        isControlWidthEmpty = ((WebControl) control).Width.IsEmpty;
+        controlStyle = ((WebControl)control).Style;
+        isControlWidthEmpty = ((WebControl)control).Width.IsEmpty;
       }
       else if (control is HtmlControl)
-        controlStyle = ((HtmlControl) control).Style;
+        controlStyle = ((HtmlControl)control).Style;
       return controlStyle;
     }
 

@@ -138,7 +138,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression CreateBaseCallToMixinStatement (MethodBodyContextBase ctx, MethodDefinition target)
     {
-      var mixin = (MixinDefinition) target.DeclaringClass;
+      var mixin = (MixinDefinition)target.DeclaringClass;
       var baseCallMethod = GetMixinMethodToCall(mixin.MixinIndex, target);
       var mixinReference = GetMixinReference(mixin, baseCallMethod.DeclaringType!);
 

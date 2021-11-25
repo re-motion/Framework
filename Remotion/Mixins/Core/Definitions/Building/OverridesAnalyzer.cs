@@ -49,7 +49,7 @@ namespace Remotion.Mixins.Definitions.Building
 
       foreach (TMember member in overriderMembers)
       {
-        var overrideAttribute = (IOverrideAttribute?) AttributeUtility.GetCustomAttribute(member.MemberInfo, _attributeType, true);
+        var overrideAttribute = (IOverrideAttribute?)AttributeUtility.GetCustomAttribute(member.MemberInfo, _attributeType, true);
         if (overrideAttribute != null)
         {
           TMember? baseMember = FindOverriddenMember(overrideAttribute, member);

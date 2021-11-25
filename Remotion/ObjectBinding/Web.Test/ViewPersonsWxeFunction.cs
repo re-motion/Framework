@@ -38,7 +38,7 @@ public class ViewPersonsWxeFunction: WxeFunction
   [WxeParameter (1, true, WxeParameterDirection.In)]
   public IBusinessObject[] Objects
   {
-    get { return (IBusinessObject[]) Variables["objects"]; }
+    get { return (IBusinessObject[])Variables["objects"]; }
     set { Variables["objects"] = value; }
   }
 

@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects
           case PropertyKind.RelatedObject:
             if (strategy.ShouldFollowLink(_rootObject, current, currentDepth, property))
             {
-              var relatedObject = (DomainObject) property.GetValueWithoutTypeCheck();
+              var relatedObject = (DomainObject)property.GetValueWithoutTypeCheck();
               if (relatedObject != null)
                 yield return Tuple.Create(relatedObject, currentDepth + 1);
             }
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects
           case PropertyKind.RelatedObjectCollection:
             if (strategy.ShouldFollowLink(_rootObject, current, currentDepth, property))
             {
-              foreach (DomainObject relatedObject in (IEnumerable) property.GetValueWithoutTypeCheck())
+              foreach (DomainObject relatedObject in (IEnumerable)property.GetValueWithoutTypeCheck())
               {
                 if (relatedObject != null)
                   yield return Tuple.Create(relatedObject, currentDepth + 1);

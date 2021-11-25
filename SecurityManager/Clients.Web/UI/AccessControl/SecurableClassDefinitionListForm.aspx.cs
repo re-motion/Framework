@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected new SecurableClassDefinitionListFormFunction CurrentFunction
     {
-      get { return (SecurableClassDefinitionListFormFunction) base.CurrentFunction; }
+      get { return (SecurableClassDefinitionListFormFunction)base.CurrentFunction; }
     }
 
     protected override void OnLoad (EventArgs e)
@@ -82,13 +82,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       if (!IsReturningPostBack)
       {
-        var classDefinition = (SecurableClassDefinition) e.BusinessObjectTreeNode.BusinessObject;
+        var classDefinition = (SecurableClassDefinition)e.BusinessObjectTreeNode.BusinessObject;
         var function = new EditPermissionsFormFunction(WxeTransactionMode.CreateRootWithAutoCommit , classDefinition.GetHandle());
         var options = new WxeCallOptionsExternal(
             "_blank", "width=1000, height=700, resizable=yes, menubar=no, toolbar=no, location=no, status=no", true);
         try
         {
-          ExecuteFunction(function, new WxeCallArguments((Control) sender, options));
+          ExecuteFunction(function, new WxeCallArguments((Control)sender, options));
         }
         catch (WxeCallExternalException)
         {
@@ -96,7 +96,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       }
       else
       {
-        var classDefinition = ((EditPermissionsFormFunction) ReturningFunction).CurrentObjectHandle.GetObject();
+        var classDefinition = ((EditPermissionsFormFunction)ReturningFunction).CurrentObjectHandle.GetObject();
         UnloadService.UnloadVirtualEndPoint(
             ClientTransaction.Current,
             RelationEndPointID.Resolve(classDefinition, c => c.StatelessAccessControlList));

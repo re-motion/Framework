@@ -155,7 +155,7 @@ namespace Remotion.Utilities
     private static MemberInfo GetMemberInfoFromExpression (Expression expression)
     {
       if (expression is MemberExpression)
-        if (((MemberExpression) expression).Member is PropertyInfo)
+        if (((MemberExpression)expression).Member is PropertyInfo)
           return GetPropertyInfoFromMemberExpression(expression);
         else
           return GetFieldInfoFromMemberExpression(expression);

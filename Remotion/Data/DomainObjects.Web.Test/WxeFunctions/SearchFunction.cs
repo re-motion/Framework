@@ -44,13 +44,13 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public ClassWithAllDataTypesSearch SearchObject
     {
-      get { return (ClassWithAllDataTypesSearch) Variables["SearchObject"]; }
+      get { return (ClassWithAllDataTypesSearch)Variables["SearchObject"]; }
       set { Variables["SearchObject"] = value; }
     }
 
     public IList Result
     {
-      get { return (IList) Variables["Result"]; }
+      get { return (IList)Variables["Result"]; }
       set { Variables["Result"] = value; }
     }
 

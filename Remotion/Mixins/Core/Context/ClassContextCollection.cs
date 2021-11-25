@@ -46,7 +46,7 @@ namespace Remotion.Mixins.Context
     }
 
     public ClassContextCollection (params ClassContext[] classContexts)
-        : this((IEnumerable<ClassContext>) classContexts)
+        : this((IEnumerable<ClassContext>)classContexts)
     {
     }
 
@@ -68,13 +68,13 @@ namespace Remotion.Mixins.Context
     public void CopyTo (ClassContext[] array, int arrayIndex)
     {
       ArgumentUtility.CheckNotNull("array", array);
-      ((ICollection) this).CopyTo(array, arrayIndex);
+      ((ICollection)this).CopyTo(array, arrayIndex);
     }
 
     void ICollection.CopyTo (Array array, int index)
     {
       ArgumentUtility.CheckNotNull("array", array);
-      ((ICollection) _values.Values).CopyTo(array, index);
+      ((ICollection)_values.Values).CopyTo(array, index);
     }
 
     public ClassContext? GetExact (Type type)

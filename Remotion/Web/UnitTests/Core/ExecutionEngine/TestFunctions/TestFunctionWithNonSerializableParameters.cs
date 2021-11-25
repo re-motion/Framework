@@ -40,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     [WxeParameter (1, true, WxeParameterDirection.In)]
     public string StringValue
     {
-      get { return (string) Variables["StringValue"]; }
+      get { return (string)Variables["StringValue"]; }
       set { Variables["StringValue"] = value; }
     }
 

@@ -42,8 +42,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       var proxy = UserProxy.Create(user);
 
       Assert.That(proxy.ID, Is.EqualTo(user.ID));
-      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity) user).UniqueIdentifier));
-      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity) user).DisplayName));
+      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity)user).UniqueIdentifier));
+      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity)user).DisplayName));
     }
 
     [Test]

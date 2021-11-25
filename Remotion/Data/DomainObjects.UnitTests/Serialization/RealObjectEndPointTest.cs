@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       DomainObjectIDs.Computer1.GetObject<Computer>();
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof(Computer), "Employee"));
-      _endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      _endPoint = (RealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
       var id = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, typeof(OrderTicket) + ".Order");
-      var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
+      var endPoint = (RealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
       Assert.That(endPoint.PropertyDefinition, Is.Not.Null);
 
       var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(endPoint);
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       var deserializedDataManager = Serializer.SerializeAndDeserialize(TestableClientTransaction.DataManager);
 
-      var deserializedEndPoint = (RealObjectEndPoint) deserializedDataManager.GetRelationEndPointWithLazyLoad(id);
+      var deserializedEndPoint = (RealObjectEndPoint)deserializedDataManager.GetRelationEndPointWithLazyLoad(id);
 
       Assert.That(deserializedEndPoint.ForeignKeyDataContainer, Is.Not.Null);
       Assert.That(deserializedEndPoint.ForeignKeyDataContainer, Is.SameAs(deserializedDataManager.DataContainers[DomainObjectIDs.OrderTicket1]));

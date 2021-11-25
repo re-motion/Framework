@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       var validatorsMatchingToControls = controlsWithValidBinding.Join(
           validators,
           c => c.ID,
-          v => ((BaseValidator) v).ControlToValidate,
+          v => ((BaseValidator)v).ControlToValidate,
           (c, v) => v);
 
       foreach (var validator in validatorsMatchingToControls)

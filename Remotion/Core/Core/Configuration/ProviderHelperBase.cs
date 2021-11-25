@@ -104,12 +104,12 @@ namespace Remotion.Configuration
 
     protected ProviderSettingsCollection ProviderSettings
     {
-      get { return (ProviderSettingsCollection) _configurationSection[_providerSettingsProperty]; }
+      get { return (ProviderSettingsCollection)_configurationSection[_providerSettingsProperty]; }
     }
 
     protected string DefaultProviderName
     {
-      get { return (string) _configurationSection[DefaultProviderNameProperty]; }
+      get { return (string)_configurationSection[DefaultProviderNameProperty]; }
     }
 
     protected ConfigurationProperty DefaultProviderNameProperty
@@ -276,7 +276,7 @@ namespace Remotion.Configuration
           throw new ArgumentException(string.Format("Provider must implement the interface '{0}'.", interfaceType.GetFullNameSafe()));
       }
 
-      return (ExtendedProviderBase) Activator.CreateInstance(actualType, new object[] {name, collection})!;
+      return (ExtendedProviderBase)Activator.CreateInstance(actualType, new object[] {name, collection})!;
     }
 
     private TProvider? GetProviderFromConfiguration ()
@@ -294,7 +294,7 @@ namespace Remotion.Configuration
             DefaultProviderNameProperty.Name);
       }
 
-      return (TProvider) (object) Providers[DefaultProviderName];
+      return (TProvider)(object)Providers[DefaultProviderName];
     }
 
     private ProviderCollection<TProvider> GetProvidersFromConfiguration ()

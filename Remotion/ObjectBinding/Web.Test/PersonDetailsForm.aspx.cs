@@ -58,12 +58,12 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
       partner = person.Partner;
 #pragma warning restore 219
 
-    CurrentObject.BusinessObject = (IBusinessObjectWithIdentity) person;
+    CurrentObject.BusinessObject = (IBusinessObjectWithIdentity)person;
     CurrentObject.LoadValues(IsPostBack);
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[])ArrayUtility.Convert(
           XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)), typeof(IBusinessObjectWithIdentity));
       PartnerField.SetBusinessObjectList(objects);
     }
@@ -239,7 +239,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     if (isValid)
     {
       CurrentObject.SaveValues(false);
-      Person person = (Person) CurrentObject.BusinessObject;
+      Person person = (Person)CurrentObject.BusinessObject;
       person.SaveObject();
       if (person.Partner != null)
         person.Partner.SaveObject();

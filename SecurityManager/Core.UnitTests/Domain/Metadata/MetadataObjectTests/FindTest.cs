@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       MetadataObject metadataObject = MetadataObject.Find(metadataObjectID);
 
       Assert.IsInstanceOf(typeof(StateDefinition), metadataObject);
-      StateDefinition state = (StateDefinition) metadataObject;
+      StateDefinition state = (StateDefinition)metadataObject;
       Assert.That(state.Name, Is.EqualTo("Reaccounted"));
       Assert.That(state.Value, Is.EqualTo(2));
     }

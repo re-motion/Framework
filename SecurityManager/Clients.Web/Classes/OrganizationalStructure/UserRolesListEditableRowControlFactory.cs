@@ -71,13 +71,13 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       var control = base.CreateFromPropertyPath(propertyPath);
       if (control is BocAutoCompleteReferenceValue)
       {
-        var referenceValue = (BocAutoCompleteReferenceValue) control;
+        var referenceValue = (BocAutoCompleteReferenceValue)control;
         referenceValue.TextBoxStyle.AutoPostBack = true;
         return referenceValue;
       }
       else if (control is BocReferenceValue)
       {
-        var referenceValue = (BocReferenceValue) control;
+        var referenceValue = (BocReferenceValue)control;
         referenceValue.DropDownListStyle.AutoPostBack = true;
         return referenceValue;
       }
@@ -101,7 +101,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
       var groupReferenceValue = GetGroupReferenceValue(positionReferenceValue.DataSource);
 
-      var group = (Group) groupReferenceValue.Value;
+      var group = (Group)groupReferenceValue.Value;
       if (group == null)
       {
         positionReferenceValue.ClearBusinessObjectList();

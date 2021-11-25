@@ -529,9 +529,9 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override void LoadControlState (object? savedState)
   {
-    object?[] values = (object?[]) savedState!;
+    object?[] values = (object?[])savedState!;
     base.LoadControlState(values[0]);
-    _isDirty = (bool) values[1]!;
+    _isDirty = (bool)values[1]!;
   }
 
   protected override object? SaveControlState ()

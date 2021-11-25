@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (GetType() != obj.GetType())
         return false;
 
-      var other = (RelationEndPointID) obj;
+      var other = (RelationEndPointID)obj;
       if (!Equals(_objectID, other._objectID))
         return false;
       if (!Equals(_definition, other._definition))
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("info", info);
 
-      var objectID = (ObjectID) info.GetValue("ObjectID", typeof(ObjectID));
+      var objectID = (ObjectID)info.GetValue("ObjectID", typeof(ObjectID));
       var classDefinitionID = info.GetString("ClassID");
       var propertyName = info.GetString("PropertyName");
 

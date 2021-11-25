@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ImplicitPropertyWithGetter_IsReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
       var property = businessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetter");
@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ImplicitPropertyWithGetter_GetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
       obj.SetImplicitPropertyWithGetter("value");
       Assert.That(businessObject.GetProperty("ImplicitPropertyWithGetter"), Is.EqualTo("value"));
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ImplicitPropertyWithGetterAndSetter_IsNotReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
       var property = businessObject.BusinessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetterAndSetter");
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ImplicitPropertyWithGetterAndSetter_SetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
       businessObject.SetProperty("ImplicitPropertyWithGetterAndSetter", "value");
       Assert.That(obj.ImplicitPropertyWithGetterAndSetter, Is.EqualTo("value"));
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ImplicitPropertyWithGetterAndImplementationOnlySetter_IsNotReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
       var property = businessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetterAndImplementationOnlySetter");
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ImplicitPropertyWithGetterAndImplementationOnlySetter_SetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
       businessObject.SetProperty("ImplicitPropertyWithGetterAndImplementationOnlySetter", "value");
       Assert.That(obj.ImplicitPropertyWithGetterAndImplementationOnlySetter, Is.EqualTo("value"));
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ExplicitPropertyWithGetter_IsReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
       var property = businessObjectClass.GetPropertyDefinition("ExplicitPropertyWithGetter");
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ExplicitPropertyWithGetter_GetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
       obj.SetExplicitPropertyWithGetter("value");
       Assert.That(businessObject.GetProperty("ExplicitPropertyWithGetter"), Is.EqualTo("value"));
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ExplicitPropertyWithGetterAndSetter_IsNotReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
       var property = businessObjectClass.GetPropertyDefinition("ExplicitPropertyWithGetterAndSetter");
@@ -123,10 +123,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ExplicitPropertyWithGetterAndSetter_SetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
       businessObject.SetProperty("ExplicitPropertyWithGetterAndSetter", "value");
-      Assert.That(((IInterface) obj).ExplicitPropertyWithGetterAndSetter, Is.EqualTo("value"));
+      Assert.That(((IInterface)obj).ExplicitPropertyWithGetterAndSetter, Is.EqualTo("value"));
     }
   }
 }

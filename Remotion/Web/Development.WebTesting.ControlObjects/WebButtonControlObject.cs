@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ButtonType GetButtonType ()
     {
-      return (ButtonType) Enum.Parse(typeof(ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
+      return (ButtonType)Enum.Parse(typeof(ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
     }
 
     [Obsolete ("Use IsDisabled instead. (Version 1.17.5)")]

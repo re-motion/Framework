@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     public void AddValue<T> (T value)
     {
       if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
-        AddFlattenedSerializable((IFlattenedSerializable) value);
+        AddFlattenedSerializable((IFlattenedSerializable)value);
       else
         _objectWriter.AddSimpleValue(value);
     }

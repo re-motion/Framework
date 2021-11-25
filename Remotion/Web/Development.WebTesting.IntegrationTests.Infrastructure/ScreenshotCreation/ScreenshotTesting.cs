@@ -233,7 +233,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
     {
       var stringBuilder = new StringBuilder();
 
-      using (var source = (Bitmap) Image.FromFile(sourcePath))
+      using (var source = (Bitmap)Image.FromFile(sourcePath))
       {
         foreach (var resourceName in resourceNames)
         {
@@ -245,7 +245,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
             if (resourceStream == null)
               Assert.Fail("Could not open saved resource image: '{0}'", resourceName);
 
-            var resource = (Bitmap) Image.FromStream(resourceStream);
+            var resource = (Bitmap)Image.FromStream(resourceStream);
 
             if (resource.Size != source.Size)
             {
@@ -271,7 +271,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
                 }
               }
 
-            var unequalPixelRatio = pixelOverLimit / (double) totalPixel;
+            var unequalPixelRatio = pixelOverLimit / (double)totalPixel;
             if (unequalPixelRatio > maxRatio)
             {
               stringBuilder.AppendLine("Images are not considered identical.");
@@ -296,8 +296,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
     /// </summary>
     private static bool AreSameColor (Color source, Color resource, out int variance, int allowedVariance = 0)
     {
-      var sourceArgb = (uint) source.ToArgb();
-      var resourceArgb = (uint) resource.ToArgb();
+      var sourceArgb = (uint)source.ToArgb();
+      var resourceArgb = (uint)resource.ToArgb();
 
       if (sourceArgb == resourceArgb || (resourceArgb & 0xFF000000u) == 0)
       {
@@ -314,8 +314,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
       var total = 0;
       for (var i = 0; i < 4; i++)
       {
-        var sourceValue = (byte) ((sourceArgb >> (8 * i)) & 0xFF);
-        var resourceValue = (byte) ((resourceArgb >> (8 * i)) & 0xFF);
+        var sourceValue = (byte)((sourceArgb >> (8 * i)) & 0xFF);
+        var resourceValue = (byte)((resourceArgb >> (8 * i)) & 0xFF);
         if (sourceValue < resourceValue)
           total += resourceValue - sourceValue;
         else

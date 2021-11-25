@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       person.FirstName = null;
       person.LastName = "";
       person.PhoneNumber = null;
-      ((ICustomer) person).CustomerNumber = "";
+      ((ICustomer)person).CustomerNumber = "";
 
       var validationResult = _personValidator.Validate(person);
       Assert.That(validationResult.IsValid, Is.False);
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       person.FirstName = null;
       person.LastName = "";
       person.PhoneNumber = null;
-      ((ICustomer) person).CustomerNumber = "";
+      ((ICustomer)person).CustomerNumber = "";
 
       var validationResult = _personValidator.Validate(person);
       Assert.That(validationResult.IsValid, Is.False);
@@ -137,13 +137,13 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       person1.FirstName = null;
       person1.LastName = "";
       person1.PhoneNumber = null;
-      ((ICustomer) person1).CustomerNumber = "";
+      ((ICustomer)person1).CustomerNumber = "";
 
       var person2 = new Person();
       person2.FirstName = null;
       person2.LastName = "LastName";
       person2.PhoneNumber = "PhoneNumber";
-      ((ICustomer) person2).CustomerNumber = "CustomerNumber";
+      ((ICustomer)person2).CustomerNumber = "CustomerNumber";
 
       var validationResult1 = _personValidator.Validate(person1);
       Assert.That(validationResult1.IsValid, Is.False);
@@ -199,7 +199,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       person.FirstName = null;
       person.LastName = "";
       person.PhoneNumber = null;
-      ((ICustomer) person).CustomerNumber = "";
+      ((ICustomer)person).CustomerNumber = "";
 
       var validationResult = _personValidator.Validate(person);
       Assert.That(validationResult.IsValid, Is.False);
@@ -226,13 +226,13 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       person1.FirstName = null;
       person1.LastName = "";
       person1.PhoneNumber = null;
-      ((ICustomer) person1).CustomerNumber = "";
+      ((ICustomer)person1).CustomerNumber = "";
 
       var person2 = new Person();
       person2.FirstName = null;
       person2.LastName = "LastName";
       person2.PhoneNumber = "PhoneNumber";
-      ((ICustomer) person2).CustomerNumber = "CustomerNumber";
+      ((ICustomer)person2).CustomerNumber = "CustomerNumber";
 
       var validationResult1 = _personValidator.Validate(person1);
       Assert.That(validationResult1.IsValid, Is.False);

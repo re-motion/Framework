@@ -41,7 +41,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string)null).Verifiable();
       typeInformation.Setup(_ => _.FullName).Returns(id).Verifiable();
 
       var result = typeInformation.Object.GetAssemblyQualifiedNameSafe();
@@ -55,8 +55,8 @@ namespace Remotion.Reflection.UnitTests
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string) null).Verifiable();
-      typeInformation.Setup(_ => _.FullName).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string)null).Verifiable();
+      typeInformation.Setup(_ => _.FullName).Returns((string)null).Verifiable();
       typeInformation.Setup(_ => _.Name).Returns(id).Verifiable();
 
       var result = typeInformation.Object.GetAssemblyQualifiedNameSafe();
@@ -83,7 +83,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string)null).Verifiable();
       typeInformation.Setup(_ => _.FullName).Returns(id).Verifiable();
 
       Assert.That(
@@ -98,8 +98,8 @@ namespace Remotion.Reflection.UnitTests
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string) null).Verifiable();
-      typeInformation.Setup(_ => _.FullName).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.AssemblyQualifiedName).Returns((string)null).Verifiable();
+      typeInformation.Setup(_ => _.FullName).Returns((string)null).Verifiable();
       typeInformation.Setup(_ => _.Name).Returns(id).Verifiable();
 
       Assert.That(
@@ -127,7 +127,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.FullName).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.FullName).Returns((string)null).Verifiable();
       typeInformation.Setup(_ => _.Name).Returns(id).Verifiable();
 
       var result = typeInformation.Object.GetFullNameSafe();
@@ -154,7 +154,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.FullName).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.FullName).Returns((string)null).Verifiable();
       typeInformation.Setup(_ => _.Name).Returns(id).Verifiable();
 
       Assert.That(
@@ -182,7 +182,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var fallback = "<undefined>";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.Namespace).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.Namespace).Returns((string)null).Verifiable();
 
       var result = typeInformation.Object.GetNamespaceSafe();
 
@@ -208,7 +208,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var id = "7EFC8044-EEAB-4F2B-9A77-2B331C13D7F5";
       var typeInformation = new Mock<ITypeInformation>(MockBehavior.Strict);
-      typeInformation.Setup(_ => _.Namespace).Returns((string) null).Verifiable();
+      typeInformation.Setup(_ => _.Namespace).Returns((string)null).Verifiable();
       typeInformation.Setup(_ => _.Name).Returns(id).Verifiable();
 
       Assert.That(

@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull("frame", frame);
       ArgumentUtility.CheckNotNull("elementCssSelector", elementCssSelector);
 
-      var webDriver = ((IWrapsDriver) frame).WrappedDriver;
+      var webDriver = ((IWrapsDriver)frame).WrappedDriver;
       var webDriverWait = new WebDriverWait(webDriver, timeout)
                           {
                               PollingInterval = TimeSpan.FromMilliseconds(timeout.TotalMilliseconds / 100)

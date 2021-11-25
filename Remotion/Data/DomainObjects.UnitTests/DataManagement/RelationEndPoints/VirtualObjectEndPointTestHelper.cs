@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public static IVirtualObjectEndPointLoadState GetLoadState (VirtualObjectEndPoint endPoint)
     {
-      return (IVirtualObjectEndPointLoadState) PrivateInvoke.GetNonPublicField(endPoint, "_loadState");
+      return (IVirtualObjectEndPointLoadState)PrivateInvoke.GetNonPublicField(endPoint, "_loadState");
     }
 
     public static void SetLoadState (VirtualObjectEndPoint endPoint, IVirtualObjectEndPointLoadState loadState)

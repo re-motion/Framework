@@ -79,7 +79,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
 
-      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition((ClassContext) id);
+      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition((ClassContext)id);
       if (targetClassDefinition == null)
         return;
 

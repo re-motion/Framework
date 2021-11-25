@@ -25,10 +25,10 @@ namespace Remotion.Data.DomainObjects
     bool IList.Contains (object value)
     {
       if (value is DomainObject)
-        return ContainsObject((DomainObject) value);
+        return ContainsObject((DomainObject)value);
 
       if (value is ObjectID)
-        return Contains((ObjectID) value);
+        return Contains((ObjectID)value);
 
       return false;
     }
@@ -36,10 +36,10 @@ namespace Remotion.Data.DomainObjects
     int IList.IndexOf (object value)
     {
       if (value is DomainObject)
-        return IndexOf((DomainObject) value);
+        return IndexOf((DomainObject)value);
 
       if (value is ObjectID)
-        return IndexOf((ObjectID) value);
+        return IndexOf((ObjectID)value);
 
       return -1;
     }
@@ -58,10 +58,10 @@ namespace Remotion.Data.DomainObjects
     void IList.Remove (object value)
     {
       if (value is DomainObject)
-        Remove((DomainObject) value);
+        Remove((DomainObject)value);
 
       if (value is ObjectID)
-        Remove((ObjectID) value);
+        Remove((ObjectID)value);
     }
 
     void IList.Insert (int index, object value)

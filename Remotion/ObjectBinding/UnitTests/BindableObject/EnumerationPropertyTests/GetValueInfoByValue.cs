@@ -72,8 +72,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
       IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
       CheckEnumerationValueInfo(
-          new EnumerationValueInfo((TestEnum) (-1), "-1", "-1", false),
-          property.GetValueInfoByValue((TestEnum) (-1), null));
+          new EnumerationValueInfo((TestEnum)(-1), "-1", "-1", false),
+          property.GetValueInfoByValue((TestEnum)(-1), null));
     }
 
     [Test]

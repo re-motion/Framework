@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     public virtual SqlStatement ResolveSqlStatement (SqlStatement sqlStatement, IMappingResolutionContext context)
     {
       Assert.That(sqlStatement.SelectProjection, Is.TypeOf(typeof(ConstantExpression)));
-      Assert.That(((ConstantExpression) sqlStatement.SelectProjection).Value, Is.EqualTo("Value added by preparation mixin"));
+      Assert.That(((ConstantExpression)sqlStatement.SelectProjection).Value, Is.EqualTo("Value added by preparation mixin"));
 
       var builder = new SqlStatementBuilder
                     {

@@ -35,9 +35,9 @@ namespace Remotion.ObjectBinding.Sample
     public IBusinessObject[] Search (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments searchArguments)
     {
       ReferenceProperty referenceProperty = ArgumentUtility.CheckNotNullAndType<ReferenceProperty>("property", property);
-      BindableObjectClass bindableObjectClass = (BindableObjectClass) referenceProperty.ReferenceClass;
+      BindableObjectClass bindableObjectClass = (BindableObjectClass)referenceProperty.ReferenceClass;
 
-      return (IBusinessObject[]) ArrayUtility.Convert(
+      return (IBusinessObject[])ArrayUtility.Convert(
                                      XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(bindableObjectClass.TargetType),
                                      typeof(IBusinessObject));
     }

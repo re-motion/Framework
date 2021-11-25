@@ -65,11 +65,11 @@ namespace Remotion.UnitTests.Utilities
       Assert.That(EqualityUtility.GetRotatedHashCode(array1), Is.EqualTo(EqualityUtility.GetRotatedHashCode(array2)));
       Assert.That(EqualityUtility.GetRotatedHashCode(array1), Is.Not.EqualTo(EqualityUtility.GetRotatedHashCode(array3)));
 
-      Assert.That(EqualityUtility.GetRotatedHashCode((IEnumerable) array1), Is.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable) array2)));
-      Assert.That(EqualityUtility.GetRotatedHashCode((IEnumerable) array1), Is.Not.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable) array3)));
+      Assert.That(EqualityUtility.GetRotatedHashCode((IEnumerable)array1), Is.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable)array2)));
+      Assert.That(EqualityUtility.GetRotatedHashCode((IEnumerable)array1), Is.Not.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable)array3)));
 
-      Assert.That(EqualityUtility.GetRotatedHashCode(array1), Is.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable) array1)));
-      Assert.That(EqualityUtility.GetRotatedHashCode(array3), Is.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable) array3)));
+      Assert.That(EqualityUtility.GetRotatedHashCode(array1), Is.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable)array1)));
+      Assert.That(EqualityUtility.GetRotatedHashCode(array3), Is.EqualTo(EqualityUtility.GetRotatedHashCode((IEnumerable)array3)));
     }
   }
 }

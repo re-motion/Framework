@@ -76,7 +76,7 @@ namespace Remotion.Web.ExecutionEngine
       WxeStep executingStep = _wxeHandler.RootFunction.ExecutingStep;
       if (executingStep is WxeUserControlStep)
       {
-        _currentUserControlStep = (WxeUserControlStep) executingStep;
+        _currentUserControlStep = (WxeUserControlStep)executingStep;
         _currentUserControlFunction = WxeStep.GetFunction(_currentUserControlStep);
         _currentPageStep = _currentUserControlStep.PageStep;
       }
@@ -84,7 +84,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         _currentUserControlStep = null;
         _currentUserControlFunction = null;
-        _currentPageStep = (WxePageStep) executingStep;
+        _currentPageStep = (WxePageStep)executingStep;
       }
 
       _currentPageFunction = WxeStep.GetFunction(_currentPageStep)!; // TODO RM-8118: not null assertion
@@ -129,7 +129,7 @@ namespace Remotion.Web.ExecutionEngine
       get
       {
         Assertion.IsNotNull(_currentPageStep);
-        var variables = ((WxeStep?) _currentUserControlStep ?? _currentPageStep).Variables;
+        var variables = ((WxeStep?)_currentUserControlStep ?? _currentPageStep).Variables;
         return Assertion.IsNotNull(variables, "Variables of _currentUserControlStep or _currentPageStep must not be null.");
       }
     }
@@ -158,7 +158,7 @@ namespace Remotion.Web.ExecutionEngine
       //  Get the resource managers
 
       var localResourceManager = GlobalizationService.GetResourceManager(localResourcesType);
-      var namingContainer = _control.NamingContainer ?? (Control) _control;
+      var namingContainer = _control.NamingContainer ?? (Control)_control;
       var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(namingContainer, true);
 
       _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);

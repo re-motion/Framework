@@ -53,10 +53,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject = TypeWithString.Create();
 
       _propertyStringArray =
-          (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("StringArray");
+          (IBusinessObjectStringProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("StringArray");
 
-      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.Length, Is.EqualTo(1));
-      Assert.That(actual[0], Is.EqualTo(((IBocTextValueBase) _bocMultilineTextValue).GetValueName()));
+      Assert.That(actual[0], Is.EqualTo(((IBocTextValueBase)_bocMultilineTextValue).GetValueName()));
     }
 
     [Test]

@@ -52,10 +52,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _invalidDomainObjectManagerMock = MockRepository.GenerateStrictMock<IInvalidDomainObjectManager>();
 
       _existingDataContainer = CreateExistingDataContainer();
-      _existingDomainObject = (TestDomainBase) _existingDataContainer.DomainObject;
+      _existingDomainObject = (TestDomainBase)_existingDataContainer.DomainObject;
 
       _newDataContainer = CreateNewDataContainer();
-      _newDomainObject = (TestDomainBase) _newDataContainer.DomainObject;
+      _newDomainObject = (TestDomainBase)_newDataContainer.DomainObject;
 
       _unloadCommand = new UnloadAllCommand(_endPointManagerMock, _dataContainerMap, _invalidDomainObjectManagerMock, _transactionEventSinkWithMock);
     }

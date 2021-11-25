@@ -37,7 +37,7 @@ public class PersonsForm : SingleBocTestWxeBasePage
 
 	private void Page_Load (object sender, EventArgs e)
 	{
-    PersonList.Value = (IBusinessObject[]) Variables["objects"];
+    PersonList.Value = (IBusinessObject[])Variables["objects"];
   }
 
 	override protected void OnInit (EventArgs e)

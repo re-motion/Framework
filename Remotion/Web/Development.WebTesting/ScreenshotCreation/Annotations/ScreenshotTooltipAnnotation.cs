@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       }
 
       // Calculate the maximum size of the tooltip
-      var border = (int) Math.Round(_style.Border.Width);
+      var border = (int)Math.Round(_style.Border.Width);
       var maximumSize = new Size(
           2 * border + _style.ContentPadding.Horizontal + _style.MaximumSize.Width,
           2 * border + _style.ContentPadding.Vertical + _style.MaximumSize.Height);
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
       // Measure how much space the text needs
       var contentSizeF = graphics.MeasureString(_content, _style.Font, layoutArea, stringFormat);
-      var contentSize = new Size((int) Math.Ceiling(contentSizeF.Width) + 1, (int) Math.Ceiling(contentSizeF.Height));
+      var contentSize = new Size((int)Math.Ceiling(contentSizeF.Width) + 1, (int)Math.Ceiling(contentSizeF.Height));
 
       // Calculate the bounds of the tooltip with border
       var desktopOffset = new Size(1 + _style.ContentPadding.Left, 1 + _style.ContentPadding.Top);

@@ -198,9 +198,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object[]?) savedState!;
+      object?[] values = (object[]?)savedState!;
       base.LoadControlState(values[0]);
-      _mode = (LiteralMode) values[1]!;
+      _mode = (LiteralMode)values[1]!;
     }
 
     protected override object SaveControlState ()
@@ -225,7 +225,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string?) DataSource.BusinessObject.GetProperty(Property);
+        value = (string?)DataSource.BusinessObject.GetProperty(Property);
 
       LoadValueInternal(value, interim);
     }
@@ -271,7 +271,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected virtual object? ValueImplementation
     {
       get { return Value; }
-      set { Value = (string?) value; }
+      set { Value = (string?)value; }
     }
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
@@ -331,7 +331,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     Control ISmartControl.TargetControl
     {
-      get { return (Control) this; }
+      get { return (Control)this; }
     }
 
     bool ISmartControl.IsRequired

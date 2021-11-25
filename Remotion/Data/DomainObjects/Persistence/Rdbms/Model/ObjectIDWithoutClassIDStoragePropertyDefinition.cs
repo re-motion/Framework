@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       var innerValues = values.Select(
           v =>
           {
-            var objectID = (ObjectID) v;
+            var objectID = (ObjectID)v;
             CheckClassDefinition(objectID, "values");
             return GetValueOrNull(objectID);
           });

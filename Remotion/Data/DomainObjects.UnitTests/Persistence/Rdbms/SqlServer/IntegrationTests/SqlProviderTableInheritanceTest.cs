@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var sortExpression = new SortExpressionDefinition(new[] { new SortedPropertySpecification(createdAtProperty, SortOrder.Ascending) });
 
       var loadedDataContainers = _provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           sortExpression,
           DomainObjectIDs.Client).ToList();
 
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var relationEndPointDefinition = GetEndPointDefinition(typeof(AbstractClassWithoutDerivations), "DomainBase");
 
       var result = _provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           null,
           DomainObjectIDs.Customer);
       Assert.That(result, Is.Not.Null);

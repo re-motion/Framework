@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       IBusinessObjectEnumerationProperty property =
           new EnumerationProperty(
               new PropertyBase.Parameters(
-                  (BindableObjectProvider) businessObjectProvider,
+                  (BindableObjectProvider)businessObjectProvider,
                   propertyInfo,
                   typeof(TestEnum),
                   new Lazy<Type>(() => typeof(TestEnum)),

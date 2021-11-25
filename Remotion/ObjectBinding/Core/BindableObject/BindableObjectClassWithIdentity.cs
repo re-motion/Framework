@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     private IGetObjectService GetGetObjectService ()
     {
-      var service = (IGetObjectService?) BusinessObjectProvider.GetService(_getObjectServiceType);
+      var service = (IGetObjectService?)BusinessObjectProvider.GetService(_getObjectServiceType);
       if (service == null)
       {
         throw new InvalidOperationException(

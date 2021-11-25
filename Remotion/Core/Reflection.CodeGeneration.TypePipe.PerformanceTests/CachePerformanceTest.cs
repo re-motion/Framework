@@ -52,9 +52,9 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
       var pipelineFactory = new RemotionPipelineFactory();
 
       var pipeline = pipelineFactory.Create("CachePerformanceTest", participants);
-      var typeCache = (ITypeCache) PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_typeCache");
-      var constructorCallCache = (IConstructorCallCache) PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_constructorCallCache");
-      var typeAssembler = (ITypeAssembler) PrivateInvoke.GetNonPublicField(pipeline, "_typeAssembler");
+      var typeCache = (ITypeCache)PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_typeCache");
+      var constructorCallCache = (IConstructorCallCache)PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_constructorCallCache");
+      var typeAssembler = (ITypeAssembler)PrivateInvoke.GetNonPublicField(pipeline, "_typeAssembler");
       var typeID = typeAssembler.ComputeTypeID(typeof(DomainType));
 
       Func<Type> typeCacheFunc = () => typeCache.GetOrCreateType(typeID);
@@ -81,7 +81,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
         GC.WaitForPendingFinalizers();
         GC.Collect(2, GCCollectionMode.Forced);
 
-        long requestedInstanceCount = (long) Math.Pow(10, i);
+        long requestedInstanceCount = (long)Math.Pow(10, i);
 
         StopwatchScope.MeasurementAction measurementAction =
             (c, s) => Console.WriteLine(

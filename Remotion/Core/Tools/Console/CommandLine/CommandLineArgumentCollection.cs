@@ -40,7 +40,7 @@ public class CommandLineArgumentCollection: CollectionBase
 
   public CommandLineArgument this[int index]
   {
-    get { return (CommandLineArgument) List[index]!; }
+    get { return (CommandLineArgument)List[index]!; }
     set { List[index] = value; }
   }
 
@@ -95,7 +95,7 @@ public class CommandLineArgumentCollection: CollectionBase
     if (newValue == null) throw new ArgumentNullException("value");
     CommandLineArgument? newArgument = newValue as CommandLineArgument;
     if (newArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, "newValue") ;
-    CommandLineArgument? oldArgument = (CommandLineArgument?) oldValue;
+    CommandLineArgument? oldArgument = (CommandLineArgument?)oldValue;
     if (oldArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, "oldValue") ;
 
     if (oldArgument.Parser == _parser)

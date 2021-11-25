@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void NotLoadedYetObject_LoadedToUnchanged ()
     {
-      var domainObject = (ClassWithAllDataTypes) LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
+      var domainObject = (ClassWithAllDataTypes)LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
       Assert.That(TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
       Assert.That(domainObject.State.IsNotLoadedYet, Is.True);
 
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void NotLoadedYetObject_LoadedToChanged ()
     {
-      var domainObject = (ClassWithAllDataTypes) LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
+      var domainObject = (ClassWithAllDataTypes)LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
       domainObject.ProtectedLoaded += (sender, args) => ++domainObject.Int32Property;
       Assert.That(TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
       Assert.That(domainObject.State.IsNotLoadedYet, Is.True);

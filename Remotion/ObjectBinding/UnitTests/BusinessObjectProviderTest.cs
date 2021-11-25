@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests
     [Test]
     public void Initialize ()
     {
-      Assert.That(((BusinessObjectProvider) _provider).ServiceFactory, Is.SameAs(_serviceFactoryStub.Object));
+      Assert.That(((BusinessObjectProvider)_provider).ServiceFactory, Is.SameAs(_serviceFactoryStub.Object));
     }
 
     [Test]
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.UnitTests
     {
       BusinessObjectProvider.SetProvider(typeof(StubBusinessObjectProviderAttribute), _provider);
       Assert.That(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute)), Is.SameAs(_provider));
-      Assert.That(((BusinessObjectProvider) _provider).ProviderAttribute, Is.TypeOf(typeof(StubBusinessObjectProviderAttribute)));
+      Assert.That(((BusinessObjectProvider)_provider).ProviderAttribute, Is.TypeOf(typeof(StubBusinessObjectProviderAttribute)));
     }
 
     [Test]
@@ -163,7 +163,7 @@ namespace Remotion.ObjectBinding.UnitTests
       var expectedService = new Mock<IBusinessObjectService>();
       Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.Null);
 
-      ((BusinessObjectProvider) _provider).AddService(expectedService.Object.GetType(), expectedService.Object);
+      ((BusinessObjectProvider)_provider).AddService(expectedService.Object.GetType(), expectedService.Object);
 
       Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.SameAs(expectedService.Object));
     }
@@ -174,8 +174,8 @@ namespace Remotion.ObjectBinding.UnitTests
       var expectedService = new Mock<IBusinessObjectService>();
       Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.Null);
 
-      ((BusinessObjectProvider) _provider).AddService(expectedService.Object.GetType(), new Mock<IBusinessObjectService>().Object);
-      ((BusinessObjectProvider) _provider).AddService(expectedService.Object.GetType(), expectedService.Object);
+      ((BusinessObjectProvider)_provider).AddService(expectedService.Object.GetType(), new Mock<IBusinessObjectService>().Object);
+      ((BusinessObjectProvider)_provider).AddService(expectedService.Object.GetType(), expectedService.Object);
 
       Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.SameAs(expectedService.Object));
     }
@@ -186,8 +186,8 @@ namespace Remotion.ObjectBinding.UnitTests
       StubBusinessObjectService expectedService = new StubBusinessObjectService();
       Assert.That(_provider.GetService(expectedService.GetType()), Is.Null);
 
-      ((BusinessObjectProvider) _provider).AddService<IBusinessObjectService>(new StubBusinessObjectService());
-      ((BusinessObjectProvider) _provider).AddService(expectedService);
+      ((BusinessObjectProvider)_provider).AddService<IBusinessObjectService>(new StubBusinessObjectService());
+      ((BusinessObjectProvider)_provider).AddService(expectedService);
 
       Assert.That(_provider.GetService(typeof(IBusinessObjectService)), Is.InstanceOf(typeof(StubBusinessObjectService)));
       Assert.That(_provider.GetService(expectedService.GetType()), Is.SameAs(expectedService));
@@ -197,10 +197,10 @@ namespace Remotion.ObjectBinding.UnitTests
     [Test]
     public void GetService_FromGeneric ()
     {
-      ((BusinessObjectProvider) _provider).AddService(typeof(IBusinessObjectService), new Mock<IBusinessObjectService>().Object);
+      ((BusinessObjectProvider)_provider).AddService(typeof(IBusinessObjectService), new Mock<IBusinessObjectService>().Object);
 
       Assert.That(
-          ((BusinessObjectProvider) _provider).GetService<IBusinessObjectService>(),
+          ((BusinessObjectProvider)_provider).GetService<IBusinessObjectService>(),
           Is.SameAs(_provider.GetService(typeof(IBusinessObjectService))));
     }
 

@@ -36,13 +36,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       testPageHolder.PageInvoker.InitRecursive();
 
       var formatter = new LosFormatter();
-      var state = (Pair) formatter.Deserialize(replacer.SaveAllState());
+      var state = (Pair)formatter.Deserialize(replacer.SaveAllState());
 
-      Pair replacerViewState = (Pair) state.Second;
+      Pair replacerViewState = (Pair)state.Second;
       Assert.That(replacerViewState.First, Is.EqualTo("value"));
-      var namingContainerViewState = (Pair) ((IList) (replacerViewState).Second)[1];
+      var namingContainerViewState = (Pair)((IList)(replacerViewState).Second)[1];
       Assert.That(namingContainerViewState.First, Is.EqualTo("NamingContainerValue"));
-      var parentViewState = (Pair) ((IList) (namingContainerViewState).Second)[1];
+      var parentViewState = (Pair)((IList)(namingContainerViewState).Second)[1];
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
     }
 
@@ -56,11 +56,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       object viewState = testPageHolder.PageInvoker.SaveViewStateRecursive(ViewStateMode.Enabled);
 
       Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
-      var replacerViewState = (Pair) ((IList) ((Pair) viewState).Second)[3];
+      var replacerViewState = (Pair)((IList)((Pair)viewState).Second)[3];
       Assert.That(replacerViewState.First, Is.EqualTo("value"));
-      var namingContainerViewState = (Pair) ((IList) (replacerViewState).Second)[1];
+      var namingContainerViewState = (Pair)((IList)(replacerViewState).Second)[1];
       Assert.That(namingContainerViewState.First, Is.EqualTo("NamingContainerValue"));
-      var parentViewState = (Pair) ((IList) (namingContainerViewState).Second)[1];
+      var parentViewState = (Pair)((IList)(namingContainerViewState).Second)[1];
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
     }
 
@@ -228,9 +228,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       testPageHolder.PageInvoker.InitRecursive();
 
       var formatter = new LosFormatter();
-      var state = (Pair) formatter.Deserialize(replacer.SaveAllState());
+      var state = (Pair)formatter.Deserialize(replacer.SaveAllState());
 
-      IDictionary controlState = (IDictionary) state.First;
+      IDictionary controlState = (IDictionary)state.First;
       Assert.That(controlState[replacer.UniqueID], Is.Null);
       Assert.That(controlState[testPageHolder.NamingContainer.UniqueID], new PairConstraint(new Pair("NamingContainerValue", null)));
       Assert.That(controlState[testPageHolder.Parent.UniqueID], new PairConstraint(new Pair("ParentValue", null)));
@@ -247,7 +247,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 
       var controlStateObject = testPageHolder.Page.GetPageStatePersister().ControlState;
       Assert.That(controlStateObject, Is.InstanceOf(typeof(IDictionary)));
-      IDictionary controlState = (IDictionary) controlStateObject;
+      IDictionary controlState = (IDictionary)controlStateObject;
       Assert.That(controlState[replacer.UniqueID], new PairConstraint(new Pair("value", null)));
       Assert.That(controlState[testPageHolder.NamingContainer.UniqueID], new PairConstraint(new Pair("NamingContainerValue", null)));
       Assert.That(controlState[testPageHolder.Parent.UniqueID], new PairConstraint(new Pair("ParentValue", null)));
@@ -427,7 +427,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 
       var sequence = new MockSequence();
       MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, null)).Returns("error").Verifiable();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error")).Returns((string) null).Callback(
+      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error")).Returns((string)null).Callback(
           (ControlCollection collection, string exceptionMessage) => Assert.That(
                               testPageHolder.Page.Controls,
                               Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }))).Verifiable();
@@ -460,7 +460,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 
       var sequence = new MockSequence();
       MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, null)).Returns("error").Verifiable();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error")).Returns((string) null).Callback(
+      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error")).Returns((string)null).Callback(
           (ControlCollection collection, string exceptionMessage) => Assert.That(
                               testPageHolder.Page.Controls,
                               Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }))).Verifiable();

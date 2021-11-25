@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public ChangeCachingDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
       : base(new ObservableDomainObjectCollectionDataDecorator(ArgumentUtility.CheckNotNull("wrappedData", wrappedData)))
     {
-      _observedWrappedData = (ObservableDomainObjectCollectionDataDecorator) WrappedData;
+      _observedWrappedData = (ObservableDomainObjectCollectionDataDecorator)WrappedData;
       _unobservedWrappedData = wrappedData;
 
       _originalData = new CopyOnWriteDomainObjectDomainObjectCollectionData(_observedWrappedData);

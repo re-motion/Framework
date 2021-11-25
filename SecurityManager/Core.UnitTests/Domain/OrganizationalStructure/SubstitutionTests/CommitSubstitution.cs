@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
       _substitutedUser.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _substitution.RegisterForCommit();
       ClientTransaction.Current.Commit();
@@ -67,7 +67,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
       _substitutedUser.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _substitution.Delete();
       ClientTransaction.Current.Commit();

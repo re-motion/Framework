@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       if (value == null)
         return null;
 
-      var enumValue = (Enum) value;
+      var enumValue = (Enum)value;
       if (IsUndefinedValue(enumValue))
         return null;
 
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       if (nativeValue != null)
       {
-        if (IsUndefinedValue((Enum) nativeValue))
+        if (IsUndefinedValue((Enum)nativeValue))
           return null;
       }
 

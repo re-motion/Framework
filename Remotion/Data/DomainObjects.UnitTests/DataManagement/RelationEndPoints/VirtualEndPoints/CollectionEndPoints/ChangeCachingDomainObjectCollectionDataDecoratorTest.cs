@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _strategyStrictMock.Expect(mock => mock.HasDataChanged(Arg.Is(_decoratorWithRealData), Arg<IDomainObjectCollectionData>.Is.Anything))
                .Return(true)
-               .WhenCalled(mi => CheckOriginalDataMatches(_decoratorWithRealData.OriginalData, (IDomainObjectCollectionData) mi.Arguments[1]))
+               .WhenCalled(mi => CheckOriginalDataMatches(_decoratorWithRealData.OriginalData, (IDomainObjectCollectionData)mi.Arguments[1]))
                .Repeat.Once();
       _strategyStrictMock.Replay();
 
@@ -729,9 +729,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private void CheckOriginalDataMatches (IDomainObjectCollectionData expected, IDomainObjectCollectionData actual)
     {
       var expectedInner = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectDomainObjectCollectionData>(
-          (ReadOnlyDomainObjectCollectionDataDecorator) expected);
+          (ReadOnlyDomainObjectCollectionDataDecorator)expected);
       var actualInner = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<CopyOnWriteDomainObjectDomainObjectCollectionData>(
-          (ReadOnlyDomainObjectCollectionDataDecorator) actual);
+          (ReadOnlyDomainObjectCollectionDataDecorator)actual);
       Assert.That(actualInner, Is.SameAs(expectedInner));
     }
 

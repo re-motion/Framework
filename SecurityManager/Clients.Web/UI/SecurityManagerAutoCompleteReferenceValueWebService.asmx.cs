@@ -133,7 +133,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       Assertion.IsNotNull(propertyDefinition);
       Assertion.IsTrue(propertyDefinition is IBusinessObjectReferenceProperty);
 
-      return (IBusinessObjectReferenceProperty) propertyDefinition;
+      return (IBusinessObjectReferenceProperty)propertyDefinition;
     }
 
     private IBusinessObjectClassWithIdentity GetBusinessObjectClassWithIdentity (string businessObjectClass)
@@ -144,7 +144,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       Assertion.IsNotNull(bindableObjectClass);
       Assertion.IsTrue(bindableObjectClass is IBusinessObjectClassWithIdentity);
 
-      return (IBusinessObjectClassWithIdentity) bindableObjectClass;
+      return (IBusinessObjectClassWithIdentity)bindableObjectClass;
     }
 
     private SecurityManagerSearchArguments GetSearchArguments (string args, int? completionSetCount, string prefixText)

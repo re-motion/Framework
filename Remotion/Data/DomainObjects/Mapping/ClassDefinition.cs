@@ -530,8 +530,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       else
       {
         var throwingDelegate =
-            (Func<IDomainObjectHandle<DomainObject>>)
-            (() => { throw new InvalidOperationException("Handles cannot be created when the ClassType does not derive from DomainObject."); });
+            (Func<IDomainObjectHandle<DomainObject>>)(() => { throw new InvalidOperationException("Handles cannot be created when the ClassType does not derive from DomainObject."); });
         body = Expression.Invoke(Expression.Constant(throwingDelegate));
       }
 

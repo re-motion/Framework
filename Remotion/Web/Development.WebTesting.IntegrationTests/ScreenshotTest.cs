@@ -74,8 +74,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       FluentScreenshotElement<DropDownListControlObject> fluentControlObject = controlObject.ForControlObjectScreenshot();
 
       Assert.That(fluentControlObject.GetTarget(), Is.SameAs(controlObject));
-      Assert.That(((IFluentScreenshotElement<DropDownListControlObject>) fluentControlObject).GetTarget(), Is.SameAs(controlObject));
-      Assert.That(((IFluentScreenshotElementWithCovariance<DropDownListControlObject>) fluentControlObject).GetTarget(), Is.SameAs(controlObject));
+      Assert.That(((IFluentScreenshotElement<DropDownListControlObject>)fluentControlObject).GetTarget(), Is.SameAs(controlObject));
+      Assert.That(((IFluentScreenshotElementWithCovariance<DropDownListControlObject>)fluentControlObject).GetTarget(), Is.SameAs(controlObject));
     }
 
     /// <summary>
@@ -304,7 +304,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                   s_foregroundBrush,
                   s_backgroundBrush,
                   s_stringFormat,
-                  (ContentAlignment) value,
+                  (ContentAlignment)value,
                   s_rainbowPaddingSmall,
                   -1f,
                   null));
@@ -666,7 +666,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                                       new RemovePixelsFromBottomScreenshotTransformation<ControlObject>(30)
                                   };
             var fluentScreenshotElement = target.ForControlObjectScreenshot();
-            ((IFluentScreenshotElement<ControlObject>) fluentScreenshotElement).Transformations = transformations;
+            ((IFluentScreenshotElement<ControlObject>)fluentScreenshotElement).Transformations = transformations;
 
             builder.Crop(fluentScreenshotElement);
           };

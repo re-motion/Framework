@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     private Tuple<ObjectID, object> GetTimestampTuple (IColumnValueProvider columnValueProvider)
     {
-      var objectIDValue = (ObjectID) _idProperty.CombineValue(columnValueProvider);
+      var objectIDValue = (ObjectID)_idProperty.CombineValue(columnValueProvider);
       if (objectIDValue == null)
         return null;
 

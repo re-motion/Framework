@@ -87,17 +87,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected RdbmsProviderDefinition TestDomainStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID]; }
+      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID]; }
     }
 
     protected NonPersistentProviderDefinition NonPersistentStorageProviderDefinition
     {
-      get { return (NonPersistentProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_nonPersistentTestDomainProviderID]; }
+      get { return (NonPersistentProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_nonPersistentTestDomainProviderID]; }
     }
 
     protected UnitTestStorageProviderStubDefinition UnitTestStorageProviderDefinition
     {
-      get { return (UnitTestStorageProviderStubDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_unitTestStorageProviderStubID]; }
+      get { return (UnitTestStorageProviderStubDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_unitTestStorageProviderStubID]; }
     }
 
     protected PropertyDefinition GetPropertyDefinition (Type declaringType, string shortPropertyName)
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected RelationEndPointDefinition GetNonVirtualEndPointDefinition (Type declaringType, string shortPropertyName)
     {
-      return (RelationEndPointDefinition) GetEndPointDefinition(declaringType, shortPropertyName);
+      return (RelationEndPointDefinition)GetEndPointDefinition(declaringType, shortPropertyName);
     }
 
     protected RelationDefinition GetRelationDefinition (Type declaringType, string shortPropertyName)

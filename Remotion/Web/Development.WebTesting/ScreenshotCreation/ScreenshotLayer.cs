@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private readonly CoordinateSystem _coordinateSystem;
 
     private ScreenshotLayer (Screenshot screenshot, IBrowserContentLocator locator)
-        : this(screenshot, locator, (Image) screenshot.Image.Clone())
+        : this(screenshot, locator, (Image)screenshot.Image.Clone())
     {
     }
 
@@ -160,7 +160,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     public Image CloneImage ()
     {
       _layerGraphics.Flush();
-      return (Image) _layerImage.Clone();
+      return (Image)_layerImage.Clone();
     }
 
     /// <inheritdoc />

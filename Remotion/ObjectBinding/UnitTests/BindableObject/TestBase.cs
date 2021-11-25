@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     protected Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
+      return (Type)PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
 
     protected PropertyBase.Parameters GetPropertyParameters (
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           bindableObjectGlobalizationService ?? SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
           businessObjectPropertyConstraintProvider ?? SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>());
 
-      return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod(
+      return (PropertyBase.Parameters)PrivateInvoke.InvokeNonPublicMethod(
           reflector,
           typeof(PropertyReflector),
           "CreateParameters",

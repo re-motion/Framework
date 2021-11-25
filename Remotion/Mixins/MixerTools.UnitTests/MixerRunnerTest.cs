@@ -56,7 +56,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       var runner = new MixerRunner(_parameters);
       var mixer = CallCreateMixer(runner);
 
-      Assert.That(((MixerPipelineFactory) mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo(_parameters.AssemblyName));
+      Assert.That(((MixerPipelineFactory)mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo(_parameters.AssemblyName));
       Assert.That(mixer.AssemblyOutputDirectory, Is.EqualTo(_parameters.AssemblyOutputDirectory));
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
 
     private Mixer CallCreateMixer (MixerRunner runner)
     {
-      return (Mixer) PrivateInvoke.InvokeNonPublicMethod(runner, "CreateMixer");
+      return (Mixer)PrivateInvoke.InvokeNonPublicMethod(runner, "CreateMixer");
     }
   }
 }

@@ -38,7 +38,7 @@ namespace Remotion.Tools.Console.CommandLine
       {
         if (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Property)
         {
-          CommandLineArgumentAttribute? argumentAttribute = (CommandLineArgumentAttribute?) AttributeUtility.GetCustomAttribute(
+          CommandLineArgumentAttribute? argumentAttribute = (CommandLineArgumentAttribute?)AttributeUtility.GetCustomAttribute(
               member, typeof(CommandLineArgumentAttribute), false);
           if (argumentAttribute != null)
           {
@@ -61,8 +61,8 @@ namespace Remotion.Tools.Console.CommandLine
 
       foreach (DictionaryEntry entry in _arguments)
       {
-        CommandLineArgument argument = (CommandLineArgument) entry.Key;
-        MemberInfo fieldOrProperty = (MemberInfo) entry.Value!;
+        CommandLineArgument argument = (CommandLineArgument)entry.Key;
+        MemberInfo fieldOrProperty = (MemberInfo)entry.Value!;
         Type memberType = CommandLineReflectionUtility.GetFieldOrPropertyType(fieldOrProperty);
         object? value = argument.ValueObject;
         if (argument is ICommandLinePartArgument)
@@ -73,7 +73,7 @@ namespace Remotion.Tools.Console.CommandLine
           if (value == null)
             throw new ApplicationException(string.Format("{0} {1}: Cannot convert null to System.Boolean. Use Nullable<Boolean> type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
           else if (value is bool?)
-            value = ((bool?) value).Value;
+            value = ((bool?)value).Value;
         }
 
         if (value != null)
@@ -101,12 +101,12 @@ namespace Remotion.Tools.Console.CommandLine
 
     public new T Parse (string commandLine, bool includeFirstArgument)
     {
-      return (T) base.Parse(commandLine, includeFirstArgument);
+      return (T)base.Parse(commandLine, includeFirstArgument);
     }
 
     public new T Parse (string[] args)
     {
-      return (T) base.Parse(args);
+      return (T)base.Parse(args);
     }
   }
 }

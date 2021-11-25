@@ -45,7 +45,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       get
       {
-        return (SecurableObject) Variables["ThisObject"];
+        return (SecurableObject)Variables["ThisObject"];
       }
       set
       {

@@ -89,7 +89,7 @@ namespace Remotion.Extensions.UnitTests.Utilities
       using (var key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(registryKeyPath))
       {
         Assertion.IsNotNull(key, "Registry key '{0}' not found.", registryKeyPath);
-        var release = (int?) key.GetValue("Release");
+        var release = (int?)key.GetValue("Release");
         Assertion.IsNotNull(release, "Registry value 'Release' not found.");
 
         return release >= expectedReleaseVersion;

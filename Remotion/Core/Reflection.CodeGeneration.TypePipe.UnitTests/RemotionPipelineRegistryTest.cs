@@ -33,7 +33,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var action = (Action<object, IProxyTypeAssemblyContext>) ((id, ctx) => ctx.ProxyType.AddField("field", 0, typeof(int)));
+      var action = (Action<object, IProxyTypeAssemblyContext>)((id, ctx) => ctx.ProxyType.AddField("field", 0, typeof(int)));
       var participantStub = new Mock<IParticipant>();
       // Modify proxy type to avoid no-modification optimization.
       participantStub.Setup(_ => _.Participate(It.IsAny<object>(), It.IsAny<IProxyTypeAssemblyContext>())).Callback(action);

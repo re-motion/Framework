@@ -76,7 +76,7 @@ namespace Remotion.Validation.Validators
       if (propertyValue.GetType() != ComparisonValue.GetType())
         return true;
 
-      return IsComparisonResultValid(((IComparable) propertyValue).CompareTo(ComparisonValue));
+      return IsComparisonResultValid(((IComparable)propertyValue).CompareTo(ComparisonValue));
     }
 
     private bool IsComparisonResultValid (int comparisonResult)
@@ -100,7 +100,7 @@ namespace Remotion.Validation.Validators
     {
       string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
-          (IFormatProvider) CultureInfo.CurrentCulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
           ComparisonValue);
 
       return new PropertyValidationFailure(

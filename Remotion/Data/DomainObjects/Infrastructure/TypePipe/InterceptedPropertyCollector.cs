@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (!_typeConversionProvider.CanConvert(propertyInformation.GetType(), typeof(PropertyInfo)))
         return;
 
-      var property = (PropertyInfo) _typeConversionProvider.Convert(propertyInformation.GetType(), typeof(PropertyInfo), propertyInformation);
+      var property = (PropertyInfo)_typeConversionProvider.Convert(propertyInformation.GetType(), typeof(PropertyInfo), propertyInformation);
       var isMixinProperty = !property.DeclaringType.IsAssignableFrom(_baseType);
 
       var getMethod = property.GetGetMethod(true);

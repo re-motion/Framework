@@ -40,9 +40,9 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       Assert.That(validatorBuilder, Is.Not.Null);
       Assert.That(validatorBuilder, Is.TypeOf(typeof(ValidatorBuilderSerializationDecorator)));
-      var validatorBuilderSerializationDecorator = ((ValidatorBuilderSerializationDecorator) validatorBuilder).InnerValidatorBuilder;
+      var validatorBuilderSerializationDecorator = ((ValidatorBuilderSerializationDecorator)validatorBuilder).InnerValidatorBuilder;
       Assert.That(validatorBuilderSerializationDecorator, Is.TypeOf(typeof(CompoundValidatorBuilder)));
-      var validatorBuilders = ((CompoundValidatorBuilder) validatorBuilderSerializationDecorator).Builders;
+      var validatorBuilders = ((CompoundValidatorBuilder)validatorBuilderSerializationDecorator).Builders;
       Assert.That(validatorBuilders.Select(b => b.GetType()), Is.EqualTo(new[] { typeof(ValidationRuleCollectorBasedValidatorBuilder) }));
     }
 

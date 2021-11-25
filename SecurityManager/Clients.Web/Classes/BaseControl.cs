@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     public new BasePage Page
     {
-      get { return (BasePage) base.Page; }
+      get { return (BasePage)base.Page; }
       set { base.Page = value; }
     }
 
@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected IDomainObjectHandle<Tenant> CurrentTenantHandle
     {
-      get { return (IDomainObjectHandle<Tenant>) ViewState[s_currentTenantHandleKey]; }
+      get { return (IDomainObjectHandle<Tenant>)ViewState[s_currentTenantHandleKey]; }
       set { ViewState[s_currentTenantHandleKey] = value; }
     }
 
@@ -157,7 +157,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
             string.Format("Control '{0}' on {2} must implement the '{1}' interface.", controlID, typeof(IFocusableControl).GetFullNameSafe(), GetType().Name));
       }
 
-      var boundEditableWebControl = (TControl) control;
+      var boundEditableWebControl = (TControl)control;
       if (boundEditableWebControl.Property == null || boundEditableWebControl.Property.Identifier != propertyIdentifier)
       {
         throw new InvalidOperationException(

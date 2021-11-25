@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition =
-          (DomainObjectCollectionRelationEndPointDefinition) orderClassDefinition.GetRelationEndPointDefinition(typeof(Order) + ".OrderItems");
+          (DomainObjectCollectionRelationEndPointDefinition)orderClassDefinition.GetRelationEndPointDefinition(typeof(Order) + ".OrderItems");
       Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderItems"))));
     }
 

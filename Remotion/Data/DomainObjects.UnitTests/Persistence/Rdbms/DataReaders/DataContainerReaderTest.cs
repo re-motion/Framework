@@ -205,21 +205,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _idPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(objectID)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Repeat.Once();
       _timestampPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(timestamp)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Repeat.Once();
       _fileNamePropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(fileName)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Repeat.Once();
       _orderPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Return(order)
           .Repeat.Once();
     }

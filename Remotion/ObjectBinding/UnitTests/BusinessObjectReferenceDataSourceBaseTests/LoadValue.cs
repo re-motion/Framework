@@ -204,7 +204,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void SetsDefaultValue ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
       var expectedValue = new Mock<IBusinessObject>();
       _referencePropertyStub.Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject)).Returns(expectedValue.Object);
@@ -220,7 +220,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void SetsDefaultValue_ClearsHasBusinessObjectChanged ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
       var expectedValue = new Mock<IBusinessObject>();
       _referencePropertyStub.Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject)).Returns(expectedValue.Object);
@@ -236,7 +236,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void SetsDefaultValue_SetHasBusinessObjectCreated ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
       var expectedValue = new Mock<IBusinessObject>();
       _referencePropertyStub.Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject)).Returns(expectedValue.Object);
@@ -252,7 +252,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void DataSourceModeRead_DoesNotSetDefaultValue ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
@@ -267,7 +267,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void DataSourceModeSearch_DoesNotSetDefaultValue ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
@@ -282,7 +282,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void SupportsDefaultValueFalse_DoesNotSetDefaultValue ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(false);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
@@ -315,7 +315,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void LoadValueCalledAgainWithInterimTrue_HasBusinessObjectCreatedTrue_LeavesBusinessObjectUntouched ()
     {
       Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object))
-          .Returns((object) null)
+          .Returns((object)null)
           .Throws(new InvalidOperationException("Method is supposed to be called only once"));
       _referencePropertyStub.SetupSequence(stub => stub.SupportsDefaultValue)
           .Returns(true)
@@ -340,7 +340,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void LoadValueCalledAgainWithInterimFalse_HasBusinessObjectCreatedTrue_CreatesNewDefaultValue ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
       var oldValue = new Mock<IBusinessObject>();
       _referencePropertyStub.Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject))
@@ -368,7 +368,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void LoadValueCalledAgainWithInterimFalse_HasBusinessObjectCreatedTrue_SupportsDelete_DeletesOldValue ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
       _referencePropertyStub.Setup(stub => stub.SupportsDelete).Returns(true);
       var oldValue = new Mock<IBusinessObject>();
@@ -397,7 +397,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     [Test]
     public void LoadValueCalledAgainWithInterimFalse_HasBusinessObjectCreatedTrue_DoesNotSupportDelete_DoesNotDeleteOldValue ()
     {
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
       _referencePropertyStub.Setup(stub => stub.SupportsDelete).Returns(false);
       var oldValue = new Mock<IBusinessObject>();
@@ -437,7 +437,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
 
       var expectedValue = new Mock<IBusinessObject>();
       Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object))
-          .Returns((object) null)
+          .Returns((object)null)
           .Returns(expectedValue.Object)
           .Throws(new InvalidOperationException("Method is not supposed to be called more than two times."));
 

@@ -99,7 +99,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     public void InvalidValue ()
     {
       Assert.That(
-          () => Filter.IsEnabled(CreateEnumValueInfo((GroupCondition) 1000), _ace, _property),
+          () => Filter.IsEnabled(CreateEnumValueInfo((GroupCondition)1000), _ace, _property),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The value '1000' is not a valid value for 'GroupCondition'."));

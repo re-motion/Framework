@@ -104,7 +104,7 @@ namespace Remotion.Security.UnitTests
     {
       _securityProviderMock
           .Setup(_ => _.GetAccess(SecurityContext.CreateStateless(_securableType), _principalStub.Object))
-          .Returns((AccessType[]) null)
+          .Returns((AccessType[])null)
           .Verifiable();
 
       Assert.That(

@@ -175,10 +175,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       object viewState = _memberCaller.SaveViewStateRecursive(_parent);
 
       Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
-      var parentViewState = (Pair) viewState;
+      var parentViewState = (Pair)viewState;
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
       Assert.That(parentViewState.Second, Is.InstanceOf(typeof(ArrayList)));
-      var childViewStates = (IList) parentViewState.Second;
+      var childViewStates = (IList)parentViewState.Second;
       Assert.That(childViewStates.Count, Is.EqualTo(2));
       Assert.That(childViewStates[0], Is.EqualTo(0));
       Assert.That(childViewStates[1], new PairConstraint(new Pair("ChildValue", null)));
@@ -195,10 +195,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       object viewState = _memberCaller.SaveViewStateRecursive(_parent);
 
       Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
-      var parentViewState = (Pair) viewState;
+      var parentViewState = (Pair)viewState;
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
       Assert.That(parentViewState.Second, Is.InstanceOf(typeof(ArrayList)));
-      var childViewStates = (IList) parentViewState.Second;
+      var childViewStates = (IList)parentViewState.Second;
       Assert.That(childViewStates.Count, Is.EqualTo(2));
       Assert.That(childViewStates[0], Is.EqualTo(0));
       Assert.That(childViewStates[1], new PairConstraint(new Pair("ChildValue", null)));
@@ -227,10 +227,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       object viewState = _memberCaller.SaveViewStateRecursive(_parent);
 
       Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
-      var parentViewState = (Pair) viewState;
+      var parentViewState = (Pair)viewState;
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
       Assert.That(parentViewState.Second, Is.InstanceOf(typeof(ArrayList)));
-      var childViewStates = (IList) parentViewState.Second;
+      var childViewStates = (IList)parentViewState.Second;
       Assert.That(childViewStates.Count, Is.EqualTo(2));
       Assert.That(childViewStates[0], Is.EqualTo(0));
       Assert.That(childViewStates[1], new PairConstraint(new Pair("ChildValue", null)));
@@ -415,7 +415,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var viewState = _page.GetPageStatePersister().ViewState;
 
       Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
-      var pageViewState = (Pair) viewState;
+      var pageViewState = (Pair)viewState;
       var namingContainerViewState = pageViewState.Second;
       Assert.That(namingContainerViewState, Is.InstanceOf(typeof(Pair)));
     }

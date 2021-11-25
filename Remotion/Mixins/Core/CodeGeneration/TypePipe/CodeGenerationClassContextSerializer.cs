@@ -67,7 +67,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
 
-      _constructorArguments[2] = Expression.NewArrayInit(typeof(Type), composedInterfaces.Select(ci => (Expression) Expression.Constant(ci)));
+      _constructorArguments[2] = Expression.NewArrayInit(typeof(Type), composedInterfaces.Select(ci => (Expression)Expression.Constant(ci)));
     }
   }
 }

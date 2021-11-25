@@ -70,7 +70,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((PreparingRedirectToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((PreparingRedirectToSubFunctionState)executionState);
                 Assert.That(nextState.Parameters.PostBackCollection, Is.Not.SameAs(PostBackCollection));
                 Assert.That(
                     nextState.Parameters.PostBackCollection.AllKeys,

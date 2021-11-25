@@ -55,28 +55,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       ObjectID newID = classWithAllDataTypes.ID;
 
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty", true);
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty", (byte) 42);
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty", (byte)42);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateTime(1974, 10, 25));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(
           1974, 10, 26, 18, 9, 18));
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", (decimal) 564.956);
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", (decimal)564.956);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty", 5334.2456);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "EnumProperty",
           ClassWithAllDataTypes.EnumType.Value0);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "ExtensibleEnumProperty", Color.Values.Green());
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "GuidProperty",
           new Guid("{98E0FE88-7DB4-4f6c-A1C1-86682D5C95C9}"));
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int16Property", (short) 67);
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int16Property", (short)67);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int32Property", 42424242);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int64Property", 424242424242424242);
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty", (float) 42.42);
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty", (float)42.42);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty", "zyxwvuZaphodBeeblebrox");
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength",
           "123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876");
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty", ResourceManager.GetImage1());
 
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty", false);
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty", (byte) 21);
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty", (byte)21);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty", new DateTime(2007, 1, 18));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty", new DateTime(
           2005, 1, 18, 11, 11, 11));
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           ClassWithAllDataTypes.EnumType.Value1);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaGuidProperty",
           new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"));
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property", (short) 51);
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt16Property", (short)51);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt32Property", 52);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaInt64Property", 53L);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaSingleProperty", 54F);
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo("zyxwvuZaphodBeeblebrox"));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876"));
       ResourceManager.IsEqualToImage1(
-          (byte[]) GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
+          (byte[])GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(false));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo(21));
@@ -159,21 +159,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var reloadedClassWithAllDataTypes = ReloadDataContainer(newID);
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty"), Is.EqualTo(false));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty"), Is.EqualTo((byte) 0));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty"), Is.EqualTo((byte)0));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateTime(1753, 1, 1)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty"), Is.EqualTo(new DateTime(1753, 1, 1, 0, 0, 0)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty"), Is.EqualTo(0d));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "EnumProperty"), Is.EqualTo(ClassWithAllDataTypes.EnumType.Value0));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ExtensibleEnumProperty"), Is.EqualTo(Color.Values.Blue()));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "GuidProperty"), Is.EqualTo(Guid.Empty));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int16Property"), Is.EqualTo((short) 0));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int16Property"), Is.EqualTo((short)0));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int32Property"), Is.EqualTo(0));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int64Property"), Is.EqualTo(0L));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty"), Is.EqualTo(0F));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo(string.Empty));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo(string.Empty));
       ResourceManager.IsEmptyImage(
-          (byte[]) GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
+          (byte[])GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.Null);
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.Null);
@@ -294,7 +294,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Provider.Save(new[] { dataContainer });
 
       DataContainer reloadedDataContainer = ReloadDataContainer(newID);
-      ResourceManager.IsEmptyImage((byte[]) reloadedDataContainer.GetValue(propertyDefinition));
+      ResourceManager.IsEmptyImage((byte[])reloadedDataContainer.GetValue(propertyDefinition));
     }
 
     [Test]
@@ -310,7 +310,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Provider.Save(new[] { dataContainer });
 
       DataContainer reloadedDataContainer = ReloadDataContainer(newID);
-      ResourceManager.IsEqualToImageLarger1MB((byte[]) reloadedDataContainer.GetValue(propertyDefinition));
+      ResourceManager.IsEqualToImageLarger1MB((byte[])reloadedDataContainer.GetValue(propertyDefinition));
     }
 
     [Test]

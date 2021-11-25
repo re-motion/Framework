@@ -165,12 +165,12 @@ namespace Remotion.Reflection
         let map = _methodInfo.DeclaringType.GetInterfaceMap(interfaceType)
         from index in Enumerable.Range(0, map.TargetMethods.Length)
         where MemberInfoEqualityComparer<MethodInfo>.Instance.Equals(map.TargetMethods[index], _methodInfo)
-        select (IMethodInformation) Create(map.InterfaceMethods[index])).ToArray();
+        select (IMethodInformation)Create(map.InterfaceMethods[index])).ToArray();
     }
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T) (object) GetFastInvoker(typeof(T));
+      return (T)(object)GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)

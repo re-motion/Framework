@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     public void LoadDataContainersByRelatedID ()
     {
       var objectID = DomainObjectIDs.OrderViewModel1;
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(OrderViewModel), "Object");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(OrderViewModel), "Object");
 
       var result = _provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID);
 
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     public void LoadDataContainersByRelatedID_Disposed ()
     {
       var objectID = DomainObjectIDs.OrderViewModel1;
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(OrderViewModel), "Object");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(OrderViewModel), "Object");
 
       _provider.Dispose();
 
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
           new NonPersistentProviderDefinition("Test", new NonPersistentStorageObjectFactory()),
           NullPersistenceExtension.Instance);
       var objectID = DomainObjectIDs.OrderViewModel1;
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(OrderViewModel), "Object");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(OrderViewModel), "Object");
 
       Assert.That(
           () => providerWithDifferentID.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID),

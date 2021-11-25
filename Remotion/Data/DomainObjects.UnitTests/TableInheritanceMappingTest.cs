@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       get
       {
-        return (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[TableInheritanceTestDomainProviderID];
+        return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[TableInheritanceTestDomainProviderID];
       }
     }
 

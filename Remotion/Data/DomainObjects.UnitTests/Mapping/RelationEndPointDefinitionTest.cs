@@ -36,10 +36,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         + "Integration.Order.Customer->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain."
         + "Integration.Customer.Orders"];
 
-      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition) customerToOrder.GetEndPointDefinition(
+      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition)customerToOrder.GetEndPointDefinition(
           "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders");
 
-      _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition(
+      _orderEndPoint = (RelationEndPointDefinition)customerToOrder.GetEndPointDefinition(
           "Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
     }
 

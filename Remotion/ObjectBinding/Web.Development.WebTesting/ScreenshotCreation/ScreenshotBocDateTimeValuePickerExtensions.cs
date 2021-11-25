@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       var root = fluentDatePicker.GetElement();
 
-      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) root).Target.FindCss("table");
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>)root).Target.FindCss("table");
       element.EnsureExistence();
 
       return FluentUtility.CloneWith(root, element);
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
-      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) headerBar).GetTarget().FindCss("tbody > tr > td:nth-child(3)", Options.NoWait);
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>)headerBar).GetTarget().FindCss("tbody > tr > td:nth-child(3)", Options.NoWait);
       element.EnsureExistence();
 
       return FluentUtility.CloneWith(headerBar, element);
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
-      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) headerBar).GetTarget().FindCss("tbody > tr > td:nth-child(1)", Options.NoWait);
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>)headerBar).GetTarget().FindCss("tbody > tr > td:nth-child(1)", Options.NoWait);
       element.EnsureExistence();
 
       return FluentUtility.CloneWith(headerBar, element);
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
-      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) headerBar).GetTarget().FindCss("tbody > tr > td:nth-child(2)", Options.NoWait);
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>)headerBar).GetTarget().FindCss("tbody > tr > td:nth-child(2)", Options.NoWait);
       element.EnsureExistence();
 
       return FluentUtility.CloneWith(headerBar, element);
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       var x = GetDayOfTheWeekIndex(date);
       var y = (GetDayOfTheWeekIndex(new DateTime(date.Year, date.Month, 1)) + date.Day - 1) / 7;
 
-      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) root).Target.FindCss(string.Format("tbody > tr:nth-child({0}) > td:nth-child({1})", y + 3, x + 1));
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>)root).Target.FindCss(string.Format("tbody > tr:nth-child({0}) > td:nth-child({1})", y + 3, x + 1));
       element.EnsureExistence();
 
       return FluentUtility.CloneWith(root, element);
@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       var root = fluentDatePicker.GetElement();
 
-      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>) root).Target.FindCss("tbody > tr:nth-child(2)");
+      var element = ((IFluentScreenshotElementWithCovariance<ElementScope>)root).Target.FindCss("tbody > tr:nth-child(2)");
       element.EnsureExistence();
 
       return FluentUtility.CloneWith(root, element);
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       if (date.DayOfWeek == DayOfWeek.Sunday)
         return 6;
-      return (int) date.DayOfWeek - 1;
+      return (int)date.DayOfWeek - 1;
     }
 
     private static bool IsVisible (IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       var dateTimeValue = fluentDatePicker.Target.DateTimeValue;
       var datePickerID = GetDatePickerID(dateTimeValue);
-      var seleniumDriver = (IWebDriver) dateTimeValue.Context.Browser.Driver.Native;
+      var seleniumDriver = (IWebDriver)dateTimeValue.Context.Browser.Driver.Native;
       var iframe = seleniumDriver.FindElement(By.Id(datePickerID)).FindElement(By.TagName("iframe"));
       iframe.WaitUntilFrameIsVisible("#Calendar", timeout);
     }

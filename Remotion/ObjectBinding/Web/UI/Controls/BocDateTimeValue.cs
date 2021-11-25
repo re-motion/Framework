@@ -227,7 +227,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Fires the <see cref="DateTimeChanged"/> event. </summary>
     protected virtual void OnDateTimeChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[s_dateTimeChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[s_dateTimeChangedEvent];
       if (eventHandler != null)
         eventHandler(this, EventArgs.Empty);
     }
@@ -297,19 +297,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]!);
 
       if (values[1] != null)
-        _internalDateValue = (string) values[1]!;
+        _internalDateValue = (string)values[1]!;
       if (values[2] != null)
-        _internalTimeValue = (string) values[2]!;
-      _valueType = (BocDateTimeValueType) values[3]!;
-      _actualValueType = (BocDateTimeValueType) values[4]!;
-      _showSeconds = (bool) values[5]!;
-      _provideMaxLength = (bool) values[6]!;
-      _savedDateTimeValue = (DateTime?) values[7];
+        _internalTimeValue = (string)values[2]!;
+      _valueType = (BocDateTimeValueType)values[3]!;
+      _actualValueType = (BocDateTimeValueType)values[4]!;
+      _showSeconds = (bool)values[5]!;
+      _provideMaxLength = (bool)values[6]!;
+      _savedDateTimeValue = (DateTime?)values[7];
     }
 
     protected override object SaveControlState ()
@@ -345,7 +345,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       DateTime? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (DateTime?) DataSource.BusinessObject.GetProperty(Property);
+        value = (DateTime?)DataSource.BusinessObject.GetProperty(Property);
 
       LoadValueInternal(value, false);
     }
@@ -640,7 +640,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectDateTimeProperty? Property
     {
-      get { return (IBusinessObjectDateTimeProperty?) base.Property; }
+      get { return (IBusinessObjectDateTimeProperty?)base.Property; }
       set { base.Property = value; }
     }
 

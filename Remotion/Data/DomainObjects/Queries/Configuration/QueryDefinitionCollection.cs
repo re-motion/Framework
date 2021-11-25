@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// </exception>
     public QueryDefinition this [int index]
     {
-      get { return (QueryDefinition) BaseGetObject(index); }
+      get { return (QueryDefinition)BaseGetObject(index); }
     }
 
     /// <summary>
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
-        return (QueryDefinition) BaseGetObject(queryID);
+        return (QueryDefinition)BaseGetObject(queryID);
       }
     }
 

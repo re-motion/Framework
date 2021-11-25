@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       Assert.That(info.MemberCount, Is.GreaterThan(0));
 
       var deserialized =
-          (ClassDerivedFromSimpleDomainObject_ImplementingISerializable) Activator.CreateInstance(((object)serializable).GetType(), info, context);
+          (ClassDerivedFromSimpleDomainObject_ImplementingISerializable)Activator.CreateInstance(((object)serializable).GetType(), info, context);
       Assert.That(deserialized.ID, Is.EqualTo(serializable.ID));
     }
   }

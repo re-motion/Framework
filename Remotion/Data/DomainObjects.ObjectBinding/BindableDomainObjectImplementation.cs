@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       ArgumentUtility.CheckNotNull("wrapper", wrapper);
       var impl = new BindableDomainObjectImplementation(wrapper);
-      ((IInitializableMixin) impl).Initialize(wrapper, null, false);
+      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
       return impl;
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public override string DisplayName
     {
-      get { return ((IBusinessObjectWithIdentity) Target).DisplayName; }
+      get { return ((IBusinessObjectWithIdentity)Target).DisplayName; }
     }
   }
 }

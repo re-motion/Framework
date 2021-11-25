@@ -48,14 +48,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var specification1 = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Ascending);
       var specification2 = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Descending);
 
-      var compoundComparer = (CompoundComparer<DomainObject>) SortedPropertyComparer.CreateCompoundComparer(new[] { specification1, specification2 }, _dataContainerMapStub, ValueAccess.Current);
+      var compoundComparer = (CompoundComparer<DomainObject>)SortedPropertyComparer.CreateCompoundComparer(new[] { specification1, specification2 }, _dataContainerMapStub, ValueAccess.Current);
       Assert.That(compoundComparer.Comparers.Count, Is.EqualTo(2));
 
-      Assert.That(((SortedPropertyComparer) compoundComparer.Comparers[0]).SortedPropertySpecification, Is.SameAs(specification1));
-      Assert.That(((SortedPropertyComparer) compoundComparer.Comparers[0]).DataContainerMap, Is.SameAs(_dataContainerMapStub));
+      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[0]).SortedPropertySpecification, Is.SameAs(specification1));
+      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[0]).DataContainerMap, Is.SameAs(_dataContainerMapStub));
 
-      Assert.That(((SortedPropertyComparer) compoundComparer.Comparers[1]).SortedPropertySpecification, Is.SameAs(specification2));
-      Assert.That(((SortedPropertyComparer) compoundComparer.Comparers[1]).DataContainerMap, Is.SameAs(_dataContainerMapStub));
+      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[1]).SortedPropertySpecification, Is.SameAs(specification2));
+      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[1]).DataContainerMap, Is.SameAs(_dataContainerMapStub));
     }
 
     [Test]

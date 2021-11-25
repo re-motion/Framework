@@ -41,7 +41,7 @@ public class TestFunction: WxeFunction
   {
     get
     {
-      return (string) Variables["UserControl"];
+      return (string)Variables["UserControl"];
     }
     set
     {
@@ -55,7 +55,7 @@ public class TestFunction: WxeFunction
   {
     get
     {
-      return (int?) Variables["Delay"];
+      return (int?)Variables["Delay"];
     }
     set
     {

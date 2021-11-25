@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       clientTransaction = clientTransaction ?? ClientTransaction.CreateRootTransaction();
 
       var securableDomainObject =
-          (SecurableDomainObject) LifetimeService.NewObject(clientTransaction, typeof(SecurableDomainObject), ParamList.Empty);
+          (SecurableDomainObject)LifetimeService.NewObject(clientTransaction, typeof(SecurableDomainObject), ParamList.Empty);
       securableDomainObject.SecurableType = typeof(SecurableDomainObject);
       securableDomainObject.SecurityStrategy = _objectSecurityStrategyStub;
       return securableDomainObject;
@@ -113,8 +113,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       var mode = MockRepository.GenerateStub<ITransactionMode>();
       mode.Stub(stub => stub.CreateTransactionStrategy(Arg<WxeFunction>.Is.Anything, Arg<WxeContext>.Is.Anything))
           .Do(
-              (Func<WxeFunction, WxeContext, TransactionStrategyBase>)
-              ((function, context) => new RootTransactionStrategy(false, clientTransaction.ToITransaction, NullTransactionStrategy.Null, function)));
+              (Func<WxeFunction, WxeContext, TransactionStrategyBase>)((function, context) => new RootTransactionStrategy(false, clientTransaction.ToITransaction, NullTransactionStrategy.Null, function)));
       return mode;
     }
   }

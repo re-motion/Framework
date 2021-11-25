@@ -52,14 +52,14 @@ public class TestTabbedFormWxeFunction: WxeFunction
 
   public BindableXmlObject Object
   {
-    get { return (BindableXmlObject) Variables["Object"]; }
+    get { return (BindableXmlObject)Variables["Object"]; }
     set { Variables["Object"] = value; }
   }
 
   [WxeParameter (1, true)]
   public bool ReadOnly
   {
-    get { return (bool) Variables["ReadOnly"]; }
+    get { return (bool)Variables["ReadOnly"]; }
     set { Variables["ReadOnly"] = value; }
   }
 
@@ -75,7 +75,7 @@ public class TestTabbedFormWxeFunction: WxeFunction
   [Serializable]
   class Step1: WxeStepList
   {
-    TestTabbedFormWxeFunction Function { get { return (TestTabbedFormWxeFunction) ParentFunction; } }
+    TestTabbedFormWxeFunction Function { get { return (TestTabbedFormWxeFunction)ParentFunction; } }
 
     WxeStep Step1_ = new WxePageStep("TestTabbedForm.aspx");
   }

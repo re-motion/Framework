@@ -288,7 +288,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       ClientTransactionTestHelper.RegisterDataContainer(_dataManager.ClientTransaction, dataContainer);
 
       var endPointID = RelationEndPointID.Create(dataContainer.ID, typeof(OrderTicket).FullName + ".Order");
-      var endPoint = (RealObjectEndPoint) _dataManager.GetRelationEndPointWithoutLoading(endPointID);
+      var endPoint = (RealObjectEndPoint)_dataManager.GetRelationEndPointWithoutLoading(endPointID);
       RealObjectEndPointTestHelper.SetOppositeObjectID(endPoint, DomainObjectIDs.Order1);
       Assert.That(
           () => _dataManager.Discard(dataContainer),
@@ -544,9 +544,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var command = _dataManager.CreateDeleteCommand(deletedObject);
 
       Assert.That(command, Is.InstanceOf(typeof(DeleteCommand)));
-      Assert.That(((DeleteCommand) command).ClientTransaction, Is.SameAs(_dataManager.ClientTransaction));
-      Assert.That(((DeleteCommand) command).DeletedObject, Is.SameAs(deletedObject));
-      Assert.That(((DeleteCommand) command).TransactionEventSink, Is.SameAs(_dataManager.TransactionEventSink));
+      Assert.That(((DeleteCommand)command).ClientTransaction, Is.SameAs(_dataManager.ClientTransaction));
+      Assert.That(((DeleteCommand)command).DeletedObject, Is.SameAs(deletedObject));
+      Assert.That(((DeleteCommand)command).TransactionEventSink, Is.SameAs(_dataManager.TransactionEventSink));
     }
 
     [Test]
@@ -609,27 +609,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var result = _dataManager.CreateUnloadCommand(DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4);
 
       Assert.That(result, Is.TypeOf<UnloadCommand>());
-      var unloadCommand = (UnloadCommand) result;
+      var unloadCommand = (UnloadCommand)result;
       Assert.That(unloadCommand.DomainObjects, Is.EqualTo(new[] { loadedObject1, loadedObject2 }));
       Assert.That(unloadCommand.UnloadDataCommand, Is.TypeOf<CompositeCommand>());
       Assert.That(unloadCommand.TransactionEventSink, Is.SameAs(_dataManager.TransactionEventSink));
 
-      var unloadDataCommandSteps = ((CompositeCommand) unloadCommand.UnloadDataCommand).GetNestedCommands();
+      var unloadDataCommandSteps = ((CompositeCommand)unloadCommand.UnloadDataCommand).GetNestedCommands();
       Assert.That(unloadDataCommandSteps, Has.Count.EqualTo(4));
 
       Assert.That(unloadDataCommandSteps[0], Is.TypeOf<UnregisterDataContainerCommand>());
-      Assert.That(((UnregisterDataContainerCommand) unloadDataCommandSteps[0]).Map, Is.SameAs(_dataManager.DataContainers));
-      Assert.That(((UnregisterDataContainerCommand) unloadDataCommandSteps[0]).ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(((UnregisterDataContainerCommand)unloadDataCommandSteps[0]).Map, Is.SameAs(_dataManager.DataContainers));
+      Assert.That(((UnregisterDataContainerCommand)unloadDataCommandSteps[0]).ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
 
       Assert.That(unloadDataCommandSteps[1], Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) unloadDataCommandSteps[1]).EndPoints, Has.Count.EqualTo(2));
+      Assert.That(((UnregisterEndPointsCommand)unloadDataCommandSteps[1]).EndPoints, Has.Count.EqualTo(2));
 
       Assert.That(unloadDataCommandSteps[2], Is.TypeOf<UnregisterDataContainerCommand>());
-      Assert.That(((UnregisterDataContainerCommand) unloadDataCommandSteps[2]).Map, Is.SameAs(_dataManager.DataContainers));
-      Assert.That(((UnregisterDataContainerCommand) unloadDataCommandSteps[2]).ObjectID, Is.EqualTo(DomainObjectIDs.Order3));
+      Assert.That(((UnregisterDataContainerCommand)unloadDataCommandSteps[2]).Map, Is.SameAs(_dataManager.DataContainers));
+      Assert.That(((UnregisterDataContainerCommand)unloadDataCommandSteps[2]).ObjectID, Is.EqualTo(DomainObjectIDs.Order3));
 
       Assert.That(unloadDataCommandSteps[3], Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) unloadDataCommandSteps[3]).EndPoints, Has.Count.EqualTo(2));
+      Assert.That(((UnregisterEndPointsCommand)unloadDataCommandSteps[3]).EndPoints, Has.Count.EqualTo(2));
     }
 
     [Test]
@@ -647,7 +647,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var result = _dataManager.CreateUnloadCommand(DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4, DomainObjectIDs.Order5);
 
       Assert.That(result, Is.TypeOf<ExceptionCommand>());
-      var exceptionCommand = (ExceptionCommand) result;
+      var exceptionCommand = (ExceptionCommand)result;
       Assert.That(exceptionCommand.Exception.Message, Is.EqualTo(
           "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
           + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' (DataContainerState (Changed)), "
@@ -665,20 +665,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var result = _dataManager.CreateUnloadCommand(new ObjectID(typeof(Order), Guid.NewGuid()), DomainObjectIDs.Order4);
 
       Assert.That(result, Is.TypeOf<UnloadCommand>());
-      var unloadCommand = (UnloadCommand) result;
+      var unloadCommand = (UnloadCommand)result;
       Assert.That(unloadCommand.DomainObjects, Is.EqualTo(new[] { loadedObject }));
       Assert.That(unloadCommand.UnloadDataCommand, Is.TypeOf<CompositeCommand>());
       Assert.That(unloadCommand.TransactionEventSink, Is.SameAs(_dataManager.TransactionEventSink));
 
-      var unloadDataCommandSteps = ((CompositeCommand) unloadCommand.UnloadDataCommand).GetNestedCommands();
+      var unloadDataCommandSteps = ((CompositeCommand)unloadCommand.UnloadDataCommand).GetNestedCommands();
       Assert.That(unloadDataCommandSteps, Has.Count.EqualTo(2));
 
       Assert.That(unloadDataCommandSteps[0], Is.TypeOf<UnregisterDataContainerCommand>());
-      Assert.That(((UnregisterDataContainerCommand) unloadDataCommandSteps[0]).Map, Is.SameAs(_dataManager.DataContainers));
-      Assert.That(((UnregisterDataContainerCommand) unloadDataCommandSteps[0]).ObjectID, Is.EqualTo(DomainObjectIDs.Order4));
+      Assert.That(((UnregisterDataContainerCommand)unloadDataCommandSteps[0]).Map, Is.SameAs(_dataManager.DataContainers));
+      Assert.That(((UnregisterDataContainerCommand)unloadDataCommandSteps[0]).ObjectID, Is.EqualTo(DomainObjectIDs.Order4));
 
       Assert.That(unloadDataCommandSteps[1], Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) unloadDataCommandSteps[1]).EndPoints, Has.Count.EqualTo(2));
+      Assert.That(((UnregisterEndPointsCommand)unloadDataCommandSteps[1]).EndPoints, Has.Count.EqualTo(2));
     }
 
     [Test]
@@ -722,7 +722,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var result = _dataManagerWithMocks.CreateUnloadVirtualEndPointsCommand(endPointIDOfUnloadedObject, endPointIDOfNewObject, endPointIDOfDeletedObject);
 
       Assert.That(result, Is.TypeOf<ExceptionCommand>());
-      var exception = ((ExceptionCommand) result).Exception;
+      var exception = ((ExceptionCommand)result).Exception;
       var expectedMessage = string.Format(
           "Cannot unload the following relation end-points because they belong to new or deleted objects: {0}, {1}.",
           endPointIDOfNewObject,
@@ -739,7 +739,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var command = _dataManagerWithMocks.CreateUnloadAllCommand();
 
       Assert.That(command, Is.TypeOf<UnloadAllCommand>());
-      var unloadAllCommand = (UnloadAllCommand) command;
+      var unloadAllCommand = (UnloadAllCommand)command;
       Assert.That(unloadAllCommand.RelationEndPointManager, Is.SameAs(DataManagerTestHelper.GetRelationEndPointManager(_dataManagerWithMocks)));
       Assert.That(unloadAllCommand.DataContainerMap, Is.SameAs(DataManagerTestHelper.GetDataContainerMap(_dataManagerWithMocks)));
       Assert.That(unloadAllCommand.InvalidDomainObjectManager, Is.SameAs(DataManagerTestHelper.GetInvalidDomainObjectManager(_dataManagerWithMocks)));
@@ -871,7 +871,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       _objectLoaderMock
           .Expect(mock => mock.LoadObjects(Arg<IEnumerable<ObjectID>>.Is.Anything, Arg<bool>.Is.Anything))
           // evaluate args to trigger exception
-          .WhenCalled(mi => ((IEnumerable<ObjectID>) mi.Arguments[0]).ToList())
+          .WhenCalled(mi => ((IEnumerable<ObjectID>)mi.Arguments[0]).ToList())
           .Return(null);
       _objectLoaderMock.Replay();
 
@@ -1085,7 +1085,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void LoadLazyVirtualObjectEndPoint_AlreadyLoaded ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
-      var endPoint = (IVirtualObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad(endPointID);
+      var endPoint = (IVirtualObjectEndPoint)_dataManager.GetRelationEndPointWithLazyLoad(endPointID);
       endPoint.EnsureDataComplete();
       Assert.That(
           () => _dataManager.LoadLazyVirtualObjectEndPoint(endPointID),

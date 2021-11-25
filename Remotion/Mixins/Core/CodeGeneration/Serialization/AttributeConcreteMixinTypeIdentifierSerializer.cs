@@ -51,7 +51,7 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
     private object[] GetStorableMethodTriplets (HashSet<MethodInfo> methodInfos)
     {
       var triples = from methodInfo in methodInfos
-                    select (object) new object[] { CheckNotClosedGeneric(methodInfo).DeclaringType!, methodInfo.Name, methodInfo.ToString()! };
+                    select (object)new object[] { CheckNotClosedGeneric(methodInfo).DeclaringType!, methodInfo.Name, methodInfo.ToString()! };
       return triples.ToArray();
     }
 

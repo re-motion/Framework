@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_filterViewDefinitionWithCustomSchema);
 
       Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
-      var elements = ((ScriptElementCollection) result).Elements;
+      var elements = ((ScriptElementCollection)result).Elements;
       Assert.That(elements.Count, Is.EqualTo(3));
       Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
          +"    FROM [SchemaName].[TableName1]\r\n"
          +"    WHERE [ClassID] IN ('ClassID1')\r\n"
          +"  WITH CHECK OPTION";
-      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = factory.GetCreateElement(_filterViewDefinitionWithDefaultSchema);
 
       Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
-      var elements = ((ScriptElementCollection) result).Elements;
+      var elements = ((ScriptElementCollection)result).Elements;
       Assert.That(elements.Count, Is.EqualTo(3));
       Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           +"    FROM [dbo].[TableName2]\r\n"
           +"    WHERE [ClassID] IN ('ClassID1', 'ClassID2')\r\n"
           +"  WITH CHECK OPTION";
-      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  DROP VIEW [SchemaName].[FilterView1]";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  DROP VIEW [dbo].[FilterView2]";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

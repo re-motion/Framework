@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
 
-      var factories = ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories;
+      var factories = ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>)instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
           Is.EqualTo(new[] { typeof(ValidationBocReferenceDataSourceValidatorFactory) }));

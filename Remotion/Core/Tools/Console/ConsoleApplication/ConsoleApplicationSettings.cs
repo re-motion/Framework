@@ -36,7 +36,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
     // Assign non-enum value != to ShowUsageMode.ShowUsage here, to default to not show usage.
     // Introducing an extra enum value for this state, would lead to it being listed in the "usage" output, which is not what we want.
     [CommandLineModeArgument (true)]
-    public ShowUsageMode Mode = (ShowUsageMode) 987654321;
+    public ShowUsageMode Mode = (ShowUsageMode)987654321;
 
     [CommandLineFlagArgument ("wait", false, Description = "Wait for keypress at end of program execution.")]
     public bool WaitForKeypress;

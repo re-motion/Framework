@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ContainsNullPropertyDefinition ()
     {
       Assert.That(
-          () => _collection.Contains((PropertyDefinition) null),
+          () => _collection.Contains((PropertyDefinition)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

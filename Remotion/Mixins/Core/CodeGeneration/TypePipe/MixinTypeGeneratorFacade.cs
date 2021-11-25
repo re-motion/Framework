@@ -92,7 +92,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IParticipantState participantState)
     {
       const string key = "ConcreteMixinTypes";
-      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetState(key);
+      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>)participantState.GetState(key);
       if (concreteMixinTypeCache == null)
       {
         concreteMixinTypeCache = new Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>();

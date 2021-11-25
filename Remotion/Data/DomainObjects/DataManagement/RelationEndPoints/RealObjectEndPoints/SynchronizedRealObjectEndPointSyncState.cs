@@ -100,8 +100,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       {
         var setCommand =
             oppositeEndPointDefinition.Cardinality == CardinalityType.One
-                ? (IDataManagementCommand)
-                  new ObjectEndPointSetOneOneCommand(endPoint, newRelatedObject, oppositeObjectSetter, _transactionEventSink)
+                ? (IDataManagementCommand)new ObjectEndPointSetOneOneCommand(endPoint, newRelatedObject, oppositeObjectSetter, _transactionEventSink)
                 : new ObjectEndPointSetOneManyCommand(endPoint, newRelatedObject, oppositeObjectSetter, _endPointProvider, _transactionEventSink);
 
         var oldRelatedEndPoint = GetOppositeEndPoint(endPoint, endPoint.OppositeObjectID);
@@ -113,7 +112,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
     private IVirtualEndPoint GetOppositeEndPoint (IRealObjectEndPoint sourceEndPoint, ObjectID oppositeObjectID)
     {
       var newOppositeID = RelationEndPointID.CreateOpposite(sourceEndPoint.Definition, oppositeObjectID);
-      return (IVirtualEndPoint) _endPointProvider.GetRelationEndPointWithLazyLoad(newOppositeID);
+      return (IVirtualEndPoint)_endPointProvider.GetRelationEndPointWithLazyLoad(newOppositeID);
     }
 
     #region Serialization

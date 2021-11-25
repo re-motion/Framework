@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     {
       ArgumentUtility.CheckNotNull("element", element);
 
-      return ((TestSiteResourceConfigurationElement) element).Path;
+      return ((TestSiteResourceConfigurationElement)element).Path;
     }
   }
 }

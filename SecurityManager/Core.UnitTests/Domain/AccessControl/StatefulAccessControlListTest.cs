@@ -120,7 +120,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        var actualAcl = (StatefulAccessControlList) LifetimeService.GetObject(ClientTransaction.Current, expectedAcl.ID, false);
+        var actualAcl = (StatefulAccessControlList)LifetimeService.GetObject(ClientTransaction.Current, expectedAcl.ID, false);
 
         Assert.That(actualAcl.StateCombinations.Count, Is.EqualTo(9));
         for (int i = 0; i < 9; i++)
@@ -152,7 +152,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         acl.RegisterForCommit();
 
@@ -175,7 +175,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         acl.Delete();
 

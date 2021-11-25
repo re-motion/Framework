@@ -51,9 +51,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
       _serializer.AddMixins(mixinContexts);
 
       // Check that the chain of serializers correctly sets up the FlatMixinContextOriginSerializer
-      var serializedMixins = ((object[]) _serializer.Values[1]);
+      var serializedMixins = ((object[])_serializer.Values[1]);
       Assert.That(serializedMixins, Has.Length.EqualTo(2));
-      var serializedMixin1 = (object[]) serializedMixins[0];
+      var serializedMixin1 = (object[])serializedMixins[0];
       Assert.That(serializedMixin1[0], Is.EqualTo(typeof(DateTime).AssemblyQualifiedName));
 
       var deserializer = new FlatClassContextDeserializer(_serializer.Values);

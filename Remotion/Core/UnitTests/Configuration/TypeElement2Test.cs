@@ -32,7 +32,7 @@ namespace Remotion.UnitTests.Configuration
     {
       TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType>();
 
-      ConfigurationPropertyCollection properties = (ConfigurationPropertyCollection) PrivateInvoke.GetNonPublicProperty(typeElement, "Properties");
+      ConfigurationPropertyCollection properties = (ConfigurationPropertyCollection)PrivateInvoke.GetNonPublicProperty(typeElement, "Properties");
       Assert.That(properties, Is.Not.Null);
       ConfigurationProperty property = properties["type"];
       Assert.That(property, Is.Not.Null);

@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     public string FileName
     {
-      get { return (string) this[_queryFileFileNameProperty]; }
+      get { return (string)this[_queryFileFileNameProperty]; }
       protected set { this[_queryFileFileNameProperty] = value; }
     }
 

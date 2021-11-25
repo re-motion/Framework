@@ -71,7 +71,7 @@ namespace Remotion.Security
       SecurityPrincipalRole? other = obj as SecurityPrincipalRole;
       if (other == null)
         return false;
-      return ((IEquatable<SecurityPrincipalRole>) this).Equals(other);
+      return ((IEquatable<SecurityPrincipalRole>)this).Equals(other);
     }
 
     public override int GetHashCode ()

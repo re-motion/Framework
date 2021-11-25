@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
       cloneDataContainer.SetDomainObject(instance);
       CloneTransaction.DataManager.RegisterDataContainer(cloneDataContainer);
 
-      return (T) instance;
+      return (T)instance;
     }
 
     /// <summary>

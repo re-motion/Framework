@@ -166,7 +166,7 @@ public abstract class WxeStep
            step = step.ParentStep)
       {
         if (step is WxeCatchBlock)
-          return ((WxeCatchBlock) step).Exception;
+          return ((WxeCatchBlock)step).Exception;
       }
 
       return null;

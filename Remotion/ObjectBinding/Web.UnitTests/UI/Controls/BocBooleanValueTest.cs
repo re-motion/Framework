@@ -54,12 +54,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject = TypeWithBoolean.Create();
 
       _propertyBooleanValue =
-          (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("BooleanValue");
+          (IBusinessObjectBooleanProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("BooleanValue");
       _propertyNullableBooleanValue =
-          (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("NullableBooleanValue");
+          (IBusinessObjectBooleanProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("NullableBooleanValue");
 
-      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 
@@ -176,8 +176,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToTrue ()
     {
       _bocBooleanValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = true;
-      Assert.That(((IBusinessObjectBoundControl) _bocBooleanValue).Value, Is.EqualTo(true));
+      ((IBusinessObjectBoundControl)_bocBooleanValue).Value = true;
+      Assert.That(((IBusinessObjectBoundControl)_bocBooleanValue).Value, Is.EqualTo(true));
       Assert.That(_bocBooleanValue.IsDirty, Is.True);
     }
 
@@ -185,8 +185,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToFalse ()
     {
       _bocBooleanValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = false;
-      Assert.That(((IBusinessObjectBoundControl) _bocBooleanValue).Value, Is.EqualTo(false));
+      ((IBusinessObjectBoundControl)_bocBooleanValue).Value = false;
+      Assert.That(((IBusinessObjectBoundControl)_bocBooleanValue).Value, Is.EqualTo(false));
       Assert.That(_bocBooleanValue.IsDirty, Is.True);
     }
 
@@ -194,8 +194,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToNull ()
     {
       _bocBooleanValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = null;
-      Assert.That(((IBusinessObjectBoundControl) _bocBooleanValue).Value, Is.EqualTo(null));
+      ((IBusinessObjectBoundControl)_bocBooleanValue).Value = null;
+      Assert.That(((IBusinessObjectBoundControl)_bocBooleanValue).Value, Is.EqualTo(null));
       Assert.That(_bocBooleanValue.IsDirty, Is.True);
     }
 
@@ -203,8 +203,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToNullableBooleanTrue ()
     {
       _bocBooleanValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = true;
-      Assert.That(((IBusinessObjectBoundControl) _bocBooleanValue).Value, Is.EqualTo(true));
+      ((IBusinessObjectBoundControl)_bocBooleanValue).Value = true;
+      Assert.That(((IBusinessObjectBoundControl)_bocBooleanValue).Value, Is.EqualTo(true));
       Assert.That(_bocBooleanValue.IsDirty, Is.True);
     }
 
@@ -212,8 +212,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToNullableBooleanFalse ()
     {
       _bocBooleanValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = false;
-      Assert.That(((IBusinessObjectBoundControl) _bocBooleanValue).Value, Is.EqualTo(false));
+      ((IBusinessObjectBoundControl)_bocBooleanValue).Value = false;
+      Assert.That(((IBusinessObjectBoundControl)_bocBooleanValue).Value, Is.EqualTo(false));
       Assert.That(_bocBooleanValue.IsDirty, Is.True);
     }
 
@@ -221,8 +221,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToNullableBooleanNull ()
     {
       _bocBooleanValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocBooleanValue).Value = null;
-      Assert.That(((IBusinessObjectBoundControl) _bocBooleanValue).Value, Is.EqualTo(null));
+      ((IBusinessObjectBoundControl)_bocBooleanValue).Value = null;
+      Assert.That(((IBusinessObjectBoundControl)_bocBooleanValue).Value, Is.EqualTo(null));
       Assert.That(_bocBooleanValue.IsDirty, Is.True);
     }
 

@@ -85,7 +85,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   {
     base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     //UnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
     UnboundReadOnlyCVField.LoadUnboundValue(person.CV, IsPostBack);
@@ -95,7 +95,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus(CVField);
+        ((ISmartNavigablePage)Page).SetFocus(CVField);
     }
   }
 

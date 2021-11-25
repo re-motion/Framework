@@ -40,7 +40,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public override bool Equals (object? obj)
     {
-      return obj is RootAssembly && Assembly.Equals(((RootAssembly) obj).Assembly);
+      return obj is RootAssembly && Assembly.Equals(((RootAssembly)obj).Assembly);
     }
 
     public override int GetHashCode ()

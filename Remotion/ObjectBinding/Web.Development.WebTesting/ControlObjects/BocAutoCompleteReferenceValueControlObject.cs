@@ -165,7 +165,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var inputScopeID = GetInputScopeID();
 
       var searchServiceRequestScript = CreateAutoCompleteSearchServiceRequest(inputScopeID, searchText, completionSetCount);
-      var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
+      var response = (IReadOnlyDictionary<string, object>)Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
       return ParseSearchServiceResponse(response);
     }
 
@@ -182,7 +182,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var inputScopeId = GetInputScopeID();
 
       var searchServiceRequestScript = CreateAutoCompleteExactSearchServiceRequest(inputScopeId, searchText);
-      var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
+      var response = (IReadOnlyDictionary<string, object>)Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
       return ParseSearchServiceResponse(response).SingleOrDefault();
     }
 
@@ -368,24 +368,24 @@ return CallWebService();";
     {
       ArgumentUtility.CheckNotNull("response", response);
 
-      var state = (string) response[AutoCompleteSearchService.State];
+      var state = (string)response[AutoCompleteSearchService.State];
       var data = response[AutoCompleteSearchService.Data];
       switch (state)
       {
         case AutoCompleteSearchService.Success:
-          var successData = (IReadOnlyCollection<object>) data;
+          var successData = (IReadOnlyCollection<object>)data;
           return successData.Cast<IDictionary<string, object>>()
               .Where(d => d != null) // empty JSON object (= no result) is converted to null
-              .Select(d => new SearchServiceResultItem((string) d["UniqueIdentifier"], (string) d["DisplayName"], (string) d["IconUrl"]))
+              .Select(d => new SearchServiceResultItem((string)d["UniqueIdentifier"], (string)d["DisplayName"], (string)d["IconUrl"]))
               .ToList();
 
         case AutoCompleteSearchService.Error:
-          var errorData = (IDictionary<string, object>) data;
+          var errorData = (IDictionary<string, object>)data;
           throw new WebServiceExceutionException(
-              (long) errorData["readyState"],
-              (string) errorData["responseText"],
-              (long) errorData["status"],
-              (string) errorData["statusText"]);
+              (long)errorData["readyState"],
+              (string)errorData["responseText"],
+              (long)errorData["status"],
+              (string)errorData["statusText"]);
 
         default:
           throw new NotSupportedException(string.Format("The script returned the unknown state '{0}'.", state));

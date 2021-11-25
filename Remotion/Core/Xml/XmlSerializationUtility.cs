@@ -53,7 +53,7 @@ namespace Remotion.Xml
           throw schemaException;
 
         // wrap any other InvalidOperationException in an XmlException with line info
-        IXmlLineInfo lineInfo = (IXmlLineInfo) innerReader;
+        IXmlLineInfo lineInfo = (IXmlLineInfo)innerReader;
         if (lineInfo != null)
         {
           string errorMessage = string.Format(
@@ -110,8 +110,8 @@ namespace Remotion.Xml
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      XmlTypeAttribute? xmlType = (XmlTypeAttribute?) Attribute.GetCustomAttribute(type, typeof(XmlTypeAttribute), true);
-      XmlRootAttribute? xmlRoot = (XmlRootAttribute?) Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute), true);
+      XmlTypeAttribute? xmlType = (XmlTypeAttribute?)Attribute.GetCustomAttribute(type, typeof(XmlTypeAttribute), true);
+      XmlRootAttribute? xmlRoot = (XmlRootAttribute?)Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute), true);
       bool hasXmlType = xmlType != null;
       bool hasXmlRoot = xmlRoot != null;
       if (!hasXmlType && !hasXmlRoot)

@@ -223,7 +223,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Convert_FromNullableInt32_ToNullableInt32 ()
     {
-      Assert.That(_provider.Convert(_nullableInt32, _nullableInt32, (int?) 1), Is.EqualTo((int?) 1));
+      Assert.That(_provider.Convert(_nullableInt32, _nullableInt32, (int?)1), Is.EqualTo((int?)1));
     }
 
     [Test]
@@ -750,7 +750,7 @@ namespace Remotion.UnitTests.Utilities
     {
       var converter = new NullableConverter(typeof(Guid?));
       Assert.That(_provider.GetTypeConverter(_guid), Is.Null);
-      ((TypeConversionProvider) _provider).AddTypeConverter(_guid, converter);
+      ((TypeConversionProvider)_provider).AddTypeConverter(_guid, converter);
       Assert.That(_provider.GetTypeConverter(_guid), Is.SameAs(converter));
     }
 
@@ -758,9 +758,9 @@ namespace Remotion.UnitTests.Utilities
     public void RemoveTypeConverter ()
     {
       var converter = new NullableConverter(typeof(Guid?));
-      ((TypeConversionProvider) _provider).AddTypeConverter(_guid, converter);
+      ((TypeConversionProvider)_provider).AddTypeConverter(_guid, converter);
       Assert.That(_provider.GetTypeConverter(_guid), Is.SameAs(converter));
-      ((TypeConversionProvider) _provider).RemoveTypeConverter(_guid);
+      ((TypeConversionProvider)_provider).RemoveTypeConverter(_guid);
       Assert.That(_provider.GetTypeConverter(_guid), Is.Null);
     }
   }

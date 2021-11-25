@@ -196,13 +196,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
           {
             DataContainer loadResult;
             if (dataContainersByID.TryGetValue(id, out loadResult))
-              return loadResult == null ? null : (T) loadResult.DomainObject;
+              return loadResult == null ? null : (T)loadResult.DomainObject;
             else
             {
               Assertion.IsTrue(
                   _invalidDomainObjectManager.IsInvalid(id),
                   "All valid IDs have been passed to GetDataContainersWithLazyLoad, so if its not in the loadResult, it must be invalid.");
-              return (T) _invalidDomainObjectManager.GetInvalidObjectReference(id);
+              return (T)_invalidDomainObjectManager.GetInvalidObjectReference(id);
             }
           });
       return result.ToArray();

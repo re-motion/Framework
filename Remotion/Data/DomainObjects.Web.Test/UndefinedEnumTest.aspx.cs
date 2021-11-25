@@ -37,14 +37,14 @@ public class UndefinedEnumTestPage : WxePage
 
   private UndefinedEnumTestFunction MyFunction
   {
-    get { return (UndefinedEnumTestFunction) CurrentFunction; }
+    get { return (UndefinedEnumTestFunction)CurrentFunction; }
   }
 
   private void Page_Load (object sender, System.EventArgs e)
 	{
-    NewObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.NewObjectWithUndefinedEnum;
-    ExistingObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.ExistingObjectWithUndefinedEnum;
-    SearchObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.SearchObjectWithUndefinedEnum;
+    NewObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject)MyFunction.NewObjectWithUndefinedEnum;
+    ExistingObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject)MyFunction.ExistingObjectWithUndefinedEnum;
+    SearchObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject)MyFunction.SearchObjectWithUndefinedEnum;
 
     NewObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);
     ExistingObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);

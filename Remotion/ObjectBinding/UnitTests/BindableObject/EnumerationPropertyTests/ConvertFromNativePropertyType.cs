@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     {
       PropertyBase property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      Assert.That(property.ConvertFromNativePropertyType((TestEnum) (-1)), Is.EqualTo((TestEnum) (-1)));
+      Assert.That(property.ConvertFromNativePropertyType((TestEnum)(-1)), Is.EqualTo((TestEnum)(-1)));
     }
 
     [Test]

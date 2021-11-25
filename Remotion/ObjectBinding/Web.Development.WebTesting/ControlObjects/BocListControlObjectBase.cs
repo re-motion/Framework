@@ -176,7 +176,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var currentPageTextInputScope = Scope.FindIdEndingWith("Boc_CurrentPage_TextBox");
       ExecuteAction(
           new FillWithAction(this, currentPageTextInputScope, oneBasedPageNumber.ToString(), FinishInput.WithTab),
-          Opt.ContinueWhen(((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -190,7 +190,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var firstPageLinkScope = Scope.FindChild("Navigation_First");
       ExecuteAction(
           new ClickAction(this, firstPageLinkScope),
-          Opt.ContinueWhen(((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -204,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var previousPageLinkScope = Scope.FindChild("Navigation_Previous");
       ExecuteAction(
           new ClickAction(this, previousPageLinkScope),
-          Opt.ContinueWhen(((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -218,7 +218,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var nextPageLinkScope = Scope.FindChild("Navigation_Next");
       ExecuteAction(
           new ClickAction(this, nextPageLinkScope),
-          Opt.ContinueWhen(((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -232,7 +232,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var lastPageLinkScope = Scope.FindChild("Navigation_Last");
       ExecuteAction(
           new ClickAction(this, lastPageLinkScope),
-          Opt.ContinueWhen(((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <summary>

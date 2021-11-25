@@ -101,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         var stringBuilder = new StringBuilder();
 
-        var failRate = failed.Count / (float) count;
+        var failRate = failed.Count / (float)count;
         stringBuilder.AppendLine(string.Format("{0}/{1} '{2}' tests failed (fail rate: {3:P}):", failed.Count, count, methodName, failRate));
         stringBuilder.AppendLine();
 

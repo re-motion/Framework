@@ -36,12 +36,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private readonly WxePageStep _pageStep;
 
     public UserControlExecutor (WxePageStep parentStep, WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
-      : this((WxeStep) parentStep, userControl, subFunction, sender, usesEventTarget)
+      : this((WxeStep)parentStep, userControl, subFunction, sender, usesEventTarget)
     {
     }
 
     public UserControlExecutor (WxeUserControlStep parentStep, WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
-      : this((WxeStep) parentStep, userControl, subFunction, sender, usesEventTarget)
+      : this((WxeStep)parentStep, userControl, subFunction, sender, usesEventTarget)
     {
     }
 
@@ -61,9 +61,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
       _function.SetParentStep(parentStep);
       if (parentStep is WxeUserControlStep)
-        _pageStep = ((WxeUserControlStep) parentStep).PageStep;
+        _pageStep = ((WxeUserControlStep)parentStep).PageStep;
       else
-        _pageStep = ((WxePageStep) parentStep);
+        _pageStep = ((WxePageStep)parentStep);
 
       if (userControl.WxePage.IsPostBack)
       {

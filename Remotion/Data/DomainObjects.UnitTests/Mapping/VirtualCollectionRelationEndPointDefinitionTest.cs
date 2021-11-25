@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Product));
       var relationEndPointDefinition =
-          (VirtualCollectionRelationEndPointDefinition) classDefinition.GetRelationEndPointDefinition(typeof(Product) + ".Reviews");
+          (VirtualCollectionRelationEndPointDefinition)classDefinition.GetRelationEndPointDefinition(typeof(Product) + ".Reviews");
       Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Product).GetProperty("Reviews"))));
     }
 

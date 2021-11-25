@@ -87,10 +87,10 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType3>().Clear().AddMixins(typeof(Bt3Mixin7TargetCall), typeof(BT3Mixin4)).EnterScope())
       {
-        var composed = (ICBaseType3BT3Mixin4) ObjectFactory.Create<BaseType3>(ParamList.Empty);
+        var composed = (ICBaseType3BT3Mixin4)ObjectFactory.Create<BaseType3>(ParamList.Empty);
 
-        Assert.That(((IBaseType33) composed).IfcMethod(), Is.EqualTo("BaseType3.IfcMethod"));
-        Assert.That(((IBaseType34) composed).IfcMethod(), Is.EqualTo("BaseType3.IfcMethod"));
+        Assert.That(((IBaseType33)composed).IfcMethod(), Is.EqualTo("BaseType3.IfcMethod"));
+        Assert.That(((IBaseType34)composed).IfcMethod(), Is.EqualTo("BaseType3.IfcMethod"));
         Assert.That(composed.IfcMethod2(), Is.EqualTo("BaseType3.IfcMethod2"));
         Assert.That(Mixin.Get<Bt3Mixin7TargetCall>(composed).InvokeThisMethods(), Is.EqualTo("BaseType3.IfcMethod-BT3Mixin4.Foo"));
       }
@@ -157,7 +157,7 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That(o, Is.InstanceOf<BaseType3>());
       Assert.That(o, Is.InstanceOf<IMixinTarget>());
 
-      Assert.That(((IMixinTarget) o).Mixins[0], Is.Not.Null);
+      Assert.That(((IMixinTarget)o).Mixins[0], Is.Not.Null);
     }
 
     [Test]
@@ -168,7 +168,7 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That(o, Is.InstanceOf <BaseType3>());
       Assert.That(o, Is.InstanceOf<IMixinTarget>());
 
-      Assert.That(((IMixinTarget) o).Mixins[0], Is.Not.Null);
+      Assert.That(((IMixinTarget)o).Mixins[0], Is.Not.Null);
     }
 
     [Test]
@@ -177,7 +177,7 @@ namespace Remotion.Mixins.UnitTests.Core
       object o = ObjectFactory.Create(typeof(BaseType3), ParamList.Empty);
       Assert.That(o, Is.Not.Null);
       Assert.That(o is IMixinTarget, Is.True);
-      Assert.That(((IMixinTarget) o).Mixins[0], Is.Not.Null);
+      Assert.That(((IMixinTarget)o).Mixins[0], Is.Not.Null);
     }
 
     [Test]
@@ -186,7 +186,7 @@ namespace Remotion.Mixins.UnitTests.Core
       object o = ObjectFactory.Create(typeof(BaseType3));
       Assert.That(o, Is.Not.Null);
       Assert.That(o is IMixinTarget, Is.True);
-      Assert.That(((IMixinTarget) o).Mixins[0], Is.Not.Null);
+      Assert.That(((IMixinTarget)o).Mixins[0], Is.Not.Null);
     }
 
     [Test]
@@ -205,7 +205,7 @@ namespace Remotion.Mixins.UnitTests.Core
     public void MixedObjectsWithMixinInstancesCanBeCreatedFromType ()
     {
       var m1 = new BT1Mixin1();
-      var bt1 = (BaseType1) ObjectFactory.Create(typeof(BaseType1), ParamList.Empty, m1);
+      var bt1 = (BaseType1)ObjectFactory.Create(typeof(BaseType1), ParamList.Empty, m1);
 
       Assert.That(Mixin.Get<BT1Mixin1>(bt1), Is.Not.Null);
       Assert.That(Mixin.Get<BT1Mixin1>(bt1), Is.SameAs(m1));

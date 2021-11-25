@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding
       {
         try
         {
-          return (string?) businessObject.GetProperty(displayNameProperty) ?? string.Empty;
+          return (string?)businessObject.GetProperty(displayNameProperty) ?? string.Empty;
         }
         catch (BusinessObjectPropertyAccessException)
         {

@@ -158,8 +158,8 @@ namespace Remotion.Mixins.CodeGeneration
 
     private InvalidOperationException CreateInvalidMixinArrayException (object[] mixins)
     {
-      var expectedMixinTypes = string.Join(", ", (IEnumerable<Type>) _expectedMixinTypes);
-      var givenMixinTypes = String.Join((string) ", ", (IEnumerable<string>) mixins.Select(mixin => mixin.GetType().ToString()));
+      var expectedMixinTypes = string.Join(", ", (IEnumerable<Type>)_expectedMixinTypes);
+      var givenMixinTypes = String.Join((string)", ", (IEnumerable<string>)mixins.Select(mixin => mixin.GetType().ToString()));
       var message = string.Format(
           "Invalid mixin instances supplied. Expected the following mixin types (in this order): ('{0}'). The given types were: ('{1}').",
           expectedMixinTypes,

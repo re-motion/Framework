@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       Assert.That(result, Has.Length.EqualTo(1));
       var clientTransactionExtension = result.Single();
       Assert.That(clientTransactionExtension, Is.TypeOf<LinqToSqlExtension>());
-      Assert.That(((LinqToSqlExtension) clientTransactionExtension).ClientTransactionID, Is.EqualTo(clientTransaction.ID));
-      Assert.That(((LinqToSqlExtension) clientTransactionExtension).AppenderProxy, Is.SameAs(AppenderProxy));
+      Assert.That(((LinqToSqlExtension)clientTransactionExtension).ClientTransactionID, Is.EqualTo(clientTransaction.ID));
+      Assert.That(((LinqToSqlExtension)clientTransactionExtension).AppenderProxy, Is.SameAs(AppenderProxy));
     }
 
     [Test]

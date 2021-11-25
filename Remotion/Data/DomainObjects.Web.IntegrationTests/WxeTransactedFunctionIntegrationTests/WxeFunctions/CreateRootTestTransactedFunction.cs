@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [WxeParameter (1, true, WxeParameterDirection.In)]
     public ClientTransactionScope PreviousClientTransactionScope
     {
-      get { return (ClientTransactionScope) Variables["PreviousClientTransactionScope"]; }
+      get { return (ClientTransactionScope)Variables["PreviousClientTransactionScope"]; }
       set { Variables["PreviousClientTransactionScope"] = value; }
     }
 

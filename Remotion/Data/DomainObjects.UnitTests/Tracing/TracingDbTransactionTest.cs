@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetConnectionID ()
     {
-      var result = ((TracingDbTransaction) _transaction).ConnectionID;
+      var result = ((TracingDbTransaction)_transaction).ConnectionID;
 
       Assert.That(result, Is.EqualTo(_connectionID));
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetTransactionID ()
     {
-      var result = ((TracingDbTransaction) _transaction).TransactionID;
+      var result = ((TracingDbTransaction)_transaction).TransactionID;
 
       Assert.That(result, Is.TypeOf(typeof(Guid)));
     }

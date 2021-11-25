@@ -57,22 +57,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var result = _factory.CreateQueryable<Order>(queryParserStub, executorStub);
 
       Assert.That(result, Is.TypeOf(typeof(DomainObjectQueryable<Order>)));
-      Assert.That(((DomainObjectQueryable<Order>) result).Provider.Executor, Is.SameAs(executorStub));
-      Assert.That(((DomainObjectQueryable<Order>) result).Provider.QueryParser, Is.SameAs(queryParserStub));
+      Assert.That(((DomainObjectQueryable<Order>)result).Provider.Executor, Is.SameAs(executorStub));
+      Assert.That(((DomainObjectQueryable<Order>)result).Provider.QueryParser, Is.SameAs(queryParserStub));
     }
 
     [Test]
     public void CreateQueryParser_HasDefaultNodesAndSteps ()
     {
       var selectMethod = SelectExpressionNode.GetSupportedMethods().First();
-      var queryParser = (QueryParser) _factory.CreateQueryParser();
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
 
       Assert.That(queryParser.NodeTypeProvider, Is.TypeOf(typeof(CompoundNodeTypeProvider)));
-      Assert.That(((CompoundNodeTypeProvider) queryParser.NodeTypeProvider).InnerProviders[1], Is.TypeOf(typeof(MethodInfoBasedNodeTypeRegistry)));
-      Assert.That(((CompoundNodeTypeProvider) queryParser.NodeTypeProvider).InnerProviders[2], Is.TypeOf(typeof(MethodNameBasedNodeTypeRegistry)));
+      Assert.That(((CompoundNodeTypeProvider)queryParser.NodeTypeProvider).InnerProviders[1], Is.TypeOf(typeof(MethodInfoBasedNodeTypeRegistry)));
+      Assert.That(((CompoundNodeTypeProvider)queryParser.NodeTypeProvider).InnerProviders[2], Is.TypeOf(typeof(MethodNameBasedNodeTypeRegistry)));
 
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(selectMethod), Is.SameAs(typeof(SelectExpressionNode)));
-      var processingSteps = ((CompoundExpressionTreeProcessor) queryParser.Processor).InnerProcessors;
+      var processingSteps = ((CompoundExpressionTreeProcessor)queryParser.Processor).InnerProcessors;
       Assert.That(processingSteps.Count,
           Is.EqualTo(ExpressionTreeParser.CreateDefaultProcessor(ExpressionTransformerRegistry.CreateDefault()).InnerProcessors.Count));
     }
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void CreateQueryParser_RegistersDomainObjectCollectionContainsObject ()
     {
       var containsObjectMethod = typeof(DomainObjectCollection).GetMethod("ContainsObject");
-      var queryParser = (QueryParser) _factory.CreateQueryParser();
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
 
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(containsObjectMethod), Is.SameAs(typeof(ContainsExpressionNode)));
     }
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void CreateQueryParser_RegistersDomainObjectCollectionCount ()
     {
       var countMethod = typeof(DomainObjectCollection).GetMethod("get_Count");
-      var queryParser = (QueryParser) _factory.CreateQueryParser();
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
 
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(countMethod), Is.SameAs(typeof(CountExpressionNode)));
     }
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void CreateQueryParser_RegistersIObjectListCount ()
     {
       var countMethod = typeof(IObjectList<>).GetMethod("get_Count");
-      var queryParser = (QueryParser) _factory.CreateQueryParser();
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
 
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(countMethod), Is.SameAs(typeof(CountExpressionNode)));
     }
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var thenFetchOneMethod = typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchOne");
       var thenFetchManyMethod = typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchMany");
 
-      var queryParser = (QueryParser) _factory.CreateQueryParser();
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
 
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(fetchOneMethod), Is.SameAs(typeof(FetchOneExpressionNode)));
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(fetchManyMethod), Is.SameAs(typeof(FetchManyExpressionNode)));
@@ -127,10 +127,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       Assert.That(executor, Is.TypeOf<DomainObjectQueryExecutor>());
 
-      var domainObjectQueryExecutor = (DomainObjectQueryExecutor) executor;
+      var domainObjectQueryExecutor = (DomainObjectQueryExecutor)executor;
       Assert.That(domainObjectQueryExecutor.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
       Assert.That(
-          ((DomainObjectQueryGenerator) domainObjectQueryExecutor.QueryGenerator).MappingConfiguration,
+          ((DomainObjectQueryGenerator)domainObjectQueryExecutor.QueryGenerator).MappingConfiguration,
           Is.SameAs(MappingConfiguration.Current));
     }
 
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(provider.Providers[0], Is.TypeOf(typeof(MethodInfoBasedMethodCallTransformerRegistry)));
       Assert.That(provider.Providers[1], Is.TypeOf(typeof(NameBasedMethodCallTransformerRegistry)));
 
-      Assert.That(((MethodInfoBasedMethodCallTransformerRegistry) provider.Providers[0]).GetItem(toStringMethod),
+      Assert.That(((MethodInfoBasedMethodCallTransformerRegistry)provider.Providers[0]).GetItem(toStringMethod),
           Is.TypeOf(typeof(ToStringMethodCallTransformer)));
     }
 
@@ -165,18 +165,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
     private CompoundMethodCallTransformerProvider GetMethodCallTransformerProviderFromExecutor (IQueryExecutor executor)
     {
-      var queryGenerator = (DomainObjectQueryGenerator) ((DomainObjectQueryExecutor) executor).QueryGenerator;
-      var sqlGenerator = (SqlQueryGenerator) queryGenerator.SqlQueryGenerator;
-      var provider = ((DefaultSqlPreparationStage) sqlGenerator.PreparationStage).MethodCallTransformerProvider;
+      var queryGenerator = (DomainObjectQueryGenerator)((DomainObjectQueryExecutor)executor).QueryGenerator;
+      var sqlGenerator = (SqlQueryGenerator)queryGenerator.SqlQueryGenerator;
+      var provider = ((DefaultSqlPreparationStage)sqlGenerator.PreparationStage).MethodCallTransformerProvider;
       Assert.That(provider, Is.TypeOf<CompoundMethodCallTransformerProvider>());
-      return (CompoundMethodCallTransformerProvider) provider;
+      return (CompoundMethodCallTransformerProvider)provider;
     }
 
     private ResultOperatorHandlerRegistry GetResultOperatorHandlerRegistryFromExecutor (IQueryExecutor executor)
     {
-      var queryGenerator = (DomainObjectQueryGenerator) ((DomainObjectQueryExecutor) executor).QueryGenerator;
-      var sqlGenerator = (SqlQueryGenerator) queryGenerator.SqlQueryGenerator;
-      return ((DefaultSqlPreparationStage) sqlGenerator.PreparationStage).ResultOperatorHandlerRegistry;
+      var queryGenerator = (DomainObjectQueryGenerator)((DomainObjectQueryExecutor)executor).QueryGenerator;
+      var sqlGenerator = (SqlQueryGenerator)queryGenerator.SqlQueryGenerator;
+      return ((DefaultSqlPreparationStage)sqlGenerator.PreparationStage).ResultOperatorHandlerRegistry;
     }
   }
 }

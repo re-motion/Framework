@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       _strictListenerMock
           .Expect(mock => mock.TransactionInitialize(Arg<ClientTransaction>.Is.Anything))
-          .WhenCalled(mi => inititalizedTransaction = (ClientTransaction) mi.Arguments[0]);
+          .WhenCalled(mi => inititalizedTransaction = (ClientTransaction)mi.Arguments[0]);
       _strictListenerMock.Replay();
 
       var result = ClientTransactionObjectMother.CreateWithCustomListeners(_strictListenerMock);
@@ -345,7 +345,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void FilterQueryResult ()
     {
       var query = QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery");
-      var orders = (OrderCollection) TestableClientTransaction.QueryManager.GetCollection(query).ToCustomCollection();
+      var orders = (OrderCollection)TestableClientTransaction.QueryManager.GetCollection(query).ToCustomCollection();
 
       TestableClientTransaction.AddListener(_strictListenerMock);
 
@@ -565,7 +565,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             .Expect(mock => mock.SubTransactionInitialize(
                 Arg.Is(TestableClientTransaction),
                 Arg<ClientTransaction>.Matches(tx => tx != null && tx != TestableClientTransaction && tx.ParentTransaction == TestableClientTransaction)))
-            .WhenCalled(mi => initializedTransaction = (ClientTransaction) mi.Arguments[1]);
+            .WhenCalled(mi => initializedTransaction = (ClientTransaction)mi.Arguments[1]);
         _strictListenerMock.Expect(mock => mock.SubTransactionCreated(
             Arg.Is(TestableClientTransaction),
             Arg<ClientTransaction>.Matches(tx => tx == initializedTransaction)));
@@ -595,7 +595,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                 Arg<ClientTransaction>.Matches(tx => tx != null && tx != TestableClientTransaction && tx.ParentTransaction == TestableClientTransaction)))
             .WhenCalled(mi =>
             {
-              initializedTransaction = (ClientTransaction) mi.Arguments[1];
+              initializedTransaction = (ClientTransaction)mi.Arguments[1];
               ClientTransactionTestHelper.AddListener(initializedTransaction, _strictListenerMock);
             });
         _strictListenerMock.Expect(mock => mock.TransactionInitialize(Arg<ClientTransaction>.Matches(tx => tx == initializedTransaction)));

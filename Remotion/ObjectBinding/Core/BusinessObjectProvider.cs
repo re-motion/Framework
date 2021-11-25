@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding
         }
 
         if (provider is BusinessObjectProvider)
-          ((BusinessObjectProvider) provider)._providerAttribute = attribute;
+          ((BusinessObjectProvider)provider)._providerAttribute = attribute;
       }
 
       if (provider == null)
@@ -119,19 +119,19 @@ namespace Remotion.ObjectBinding
       IBusinessObjectProvider provider = CreateBusinessObjectProvider(attribute.BusinessObjectProviderType);
 
       if (provider is BusinessObjectProvider)
-        ((BusinessObjectProvider) provider)._providerAttribute = attribute;
+        ((BusinessObjectProvider)provider)._providerAttribute = attribute;
 
       return provider;
     }
 
     private static BusinessObjectProviderAttribute CreateBusinessObjectProviderAttribute (Type businessObjectProviderAttributeType)
     {
-      return (BusinessObjectProviderAttribute) Activator.CreateInstance(businessObjectProviderAttributeType)!; // TODO: Not null assertion
+      return (BusinessObjectProviderAttribute)Activator.CreateInstance(businessObjectProviderAttributeType)!; // TODO: Not null assertion
     }
 
     private static IBusinessObjectProvider CreateBusinessObjectProvider (Type businessObjectProviderType)
     {
-      return (IBusinessObjectProvider) ObjectFactory.Create(businessObjectProviderType, ParamList.Empty);
+      return (IBusinessObjectProvider)ObjectFactory.Create(businessObjectProviderType, ParamList.Empty);
     }
 
     private readonly IBusinessObjectServiceFactory _serviceFactory;
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
     public T? GetService<T> () where T: IBusinessObjectService
     {
-      return (T?) GetService(typeof(T));
+      return (T?)GetService(typeof(T));
     }
 
     /// <summary> Registers a new <see cref="IBusinessObjectService"/> with this <see cref="BusinessObjectProvider"/>. </summary>

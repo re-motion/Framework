@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
       else
       {
-        var propertyDefinition = ((RelationEndPointDefinition) endPoint).PropertyDefinition;
+        var propertyDefinition = ((RelationEndPointDefinition)endPoint).PropertyDefinition;
         var storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition);
         var column = GetSingleColumnForLookup(storagePropertyDefinition);
         return GetColumnFromEntity(column, entityDefinition);

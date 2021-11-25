@@ -78,13 +78,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject = TypeWithReference.Create();
 
       _propertyReferenceValue =
-          (IBusinessObjectReferenceProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
+          (IBusinessObjectReferenceProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
 
-      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
 
-      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService((IBusinessObjectWithIdentity) TypeWithReference.Create()));
-      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
+      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService((IBusinessObjectWithIdentity)TypeWithReference.Create()));
+      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
     }
 
 
@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void SetValueToObject ()
     {
-      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = false;
       _bocReferenceValue.Value = referencedObject;
       Assert.That(_bocReferenceValue.Value, Is.EqualTo(referencedObject));
@@ -203,7 +203,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void HasValue_ValueIsSet_ReturnsTrue ()
     {
-      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.Value = referencedObject;
       Assert.That(_bocReferenceValue.HasValue, Is.True);
     }
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject.ReferenceValue = null;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = true;
 
       _bocReferenceValue.LoadValue(false);
@@ -260,7 +260,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void LoadValueAndInterimFalseWithDataSourceNull ()
     {
-      var value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      var value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.DataSource = null;
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = value;
@@ -274,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void LoadValueAndInterimFalseWithPropertyNull ()
     {
-      var value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      var value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = null;
       _bocReferenceValue.Value = value;
@@ -291,7 +291,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource.BusinessObject = null;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = true;
 
       _bocReferenceValue.LoadValue(false);
@@ -303,7 +303,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void LoadUnboundValueAndInterimTrue ()
     {
-      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
@@ -316,7 +316,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [Test]
     public void LoadUnboundValueAndInterimFalseWithObject ()
     {
-      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
@@ -331,7 +331,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       IBusinessObjectWithIdentity value = null;
       _bocReferenceValue.Property = _propertyReferenceValue;
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = true;
 
       _bocReferenceValue.LoadUnboundValue(value, false);
@@ -408,7 +408,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void GetValidationValue_ValueSet ()
     {
         var value = TypeWithReference.Create("Name");
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) value;
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)value;
 
       Assert.That(_bocReferenceValue.ValidationValue, Is.EqualTo(value.UniqueIdentifier));
     }
@@ -453,7 +453,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       control.NullItemText = "The null item";
 
       var dropDownList = new DropDownList();
-      ((IBocReferenceValue) control).PopulateDropDownList(dropDownList);
+      ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
       Assert.That(dropDownList.Items.Count, Is.EqualTo(1));
       var singleItem = dropDownList.Items[0];
 
@@ -470,7 +470,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var dropDownList = new DropDownList();
       using (CultureScope.CreateInvariantCultureScope())
       {
-        ((IBocReferenceValue) control).PopulateDropDownList(dropDownList);
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
       }
 
       Assert.That(dropDownList.Items.Count, Is.EqualTo(1));
@@ -488,7 +488,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       control.NullItemText = "The null item";
 
       var dropDownList = new DropDownList();
-      ((IBocReferenceValue) control).PopulateDropDownList(dropDownList);
+      ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
       Assert.That(dropDownList.Items.Count, Is.EqualTo(1));
       var singleItem = dropDownList.Items[0];
 
@@ -507,7 +507,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var dropDownList = new DropDownList();
       using (CultureScope.CreateInvariantCultureScope())
       {
-        ((IBocReferenceValue) control).PopulateDropDownList(dropDownList);
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
       }
 
       Assert.That(dropDownList.Items.Count, Is.EqualTo(1));

@@ -136,8 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock, _dbCommandBuilder2Mock }, _objectIDReaderStub);
 
       var result =
-          (IEnumerable<ObjectID>)
-          PrivateInvoke.InvokeNonPublicMethod(command, "LoadObjectIDsFromCommandBuilder", _dbCommandBuilder1Mock, _commandExecutionContextStub);
+          (IEnumerable<ObjectID>)PrivateInvoke.InvokeNonPublicMethod(command, "LoadObjectIDsFromCommandBuilder", _dbCommandBuilder1Mock, _commandExecutionContextStub);
       result.ToArray();
 
       _repository.VerifyAll();

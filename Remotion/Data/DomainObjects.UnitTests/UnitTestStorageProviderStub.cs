@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
                 return propertyDefinition.DefaultValue;
             });
 
-        var idAsInt = (int) id.Value;
+        var idAsInt = (int)id.Value;
         if (s_nextID <= idAsInt)
           s_nextID = idAsInt + 1;
         return new ObjectLookupResult<DataContainer>(id, container);

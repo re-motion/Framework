@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void TestDiagnosticMetadataRenderingWithEmptyDisplayName ()
     {
       var businessObject = TypeWithReference.Create("");
-      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject) businessObject, false, true);
+      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject)businessObject, false, true);
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
 
       renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void TestDiagnosticMetadataRenderingWithNullValue ()
     {
       var businessObject = TypeWithReference.Create();
-      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject) businessObject, false, true);
+      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject)businessObject, false, true);
       Column.PropertyPathIdentifier = "ReferenceValue";
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
 
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      var renderArgs = new BocListDataRowRenderEventArgs(0, (IBusinessObject) TypeWithReference.Create("value\r\nExtraText<html>"), false, true);
+      var renderArgs = new BocListDataRowRenderEventArgs(0, (IBusinessObject)TypeWithReference.Create("value\r\nExtraText<html>"), false, true);
       renderer.RenderDataCell(_renderingContext, 0, false, renderArgs);
       var document = Html.GetResultDocument();
 
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderEditModeControl ()
     {
-      var firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
+      var firstObject = (IBusinessObject)((TypeWithReference)BusinessObject).FirstValue;
 
       var editableRow = new Mock<IEditableRow>();
       editableRow.Setup(mock => mock.HasEditControl(It.IsAny<int>())).Returns(true);
@@ -217,7 +217,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void TestDiagnosticMetadataRenderingWithEditModeControl ()
     {
-      var firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
+      var firstObject = (IBusinessObject)((TypeWithReference)BusinessObject).FirstValue;
 
       var editableRow = new Mock<IEditableRow>();
       editableRow.Setup(mock => mock.HasEditControl(It.IsAny<int>())).Returns(true);

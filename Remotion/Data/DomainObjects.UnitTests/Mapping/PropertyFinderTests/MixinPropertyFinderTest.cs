@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
       var persistentMixinFinder = new PersistentMixinFinder(type, includeBaseProperties);
 
       Func<Type, bool, bool, PropertyFinderBase> propertyFinderFactory = (typeArg, includeBasePropertiesArg, includeMixinPropertiesArg) =>
-          (PropertyFinderBase) new StubPropertyFinderBase(
+          (PropertyFinderBase)new StubPropertyFinderBase(
               typeArg,
               includeBasePropertiesArg,
               includeMixinPropertiesArg,

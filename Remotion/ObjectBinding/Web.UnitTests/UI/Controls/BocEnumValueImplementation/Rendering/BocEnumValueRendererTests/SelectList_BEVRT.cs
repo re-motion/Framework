@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       IBusinessObjectEnumerationProperty property =
           new EnumerationProperty(
               new PropertyBase.Parameters(
-                  (BindableObjectProvider) businessObjectProvider,
+                  (BindableObjectProvider)businessObjectProvider,
                   propertyInfo,
                   typeof(TestEnum),
                   new Lazy<Type>(() => typeof(TestEnum)),
@@ -335,7 +335,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     private void AssertNullOptionWithScreenReaderOnlyText (XmlNode select, bool isSelected)
     {
       var option = AssertOption(select, _enumValue.Object.NullIdentifier, "", 0, isSelected);
-      Html.AssertAttribute(option, HtmlTextWriterAttribute2.Label, ((char) 160).ToString());
+      Html.AssertAttribute(option, HtmlTextWriterAttribute2.Label, ((char)160).ToString());
       Html.AssertAttribute(option, HtmlTextWriterAttribute2.AriaLabel, "null-text");
     }
 

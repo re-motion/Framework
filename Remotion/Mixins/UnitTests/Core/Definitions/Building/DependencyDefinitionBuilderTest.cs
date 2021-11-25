@@ -425,7 +425,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.That(dependency.AggregatedDependencies[typeof(IBaseType31)], Is.Not.Null);
       Assert.That(dependency.AggregatedDependencies[typeof(IBaseType31)], Is.TypeOf<ComposedInterfaceDependencyDefinition>());
       Assert.That(
-          ((ComposedInterfaceDependencyDefinition) dependency.AggregatedDependencies[typeof(IBaseType31)]).ComposedInterface,
+          ((ComposedInterfaceDependencyDefinition)dependency.AggregatedDependencies[typeof(IBaseType31)]).ComposedInterface,
           Is.SameAs(typeof(ICBaseType3)));
       Assert.That(bt3.RequiredTargetCallTypes[typeof(IBaseType31)], Is.Not.Null);
       Assert.That(bt3.RequiredTargetCallTypes[typeof(IBaseType31)], Is.SameAs(dependency.AggregatedDependencies[typeof(IBaseType31)].RequiredType));

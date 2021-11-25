@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Configuration
 
     public bool DisableSpecificUser
     {
-      get { return (bool) this[_disableSpecificUserProperty]; }
+      get { return (bool)this[_disableSpecificUserProperty]; }
       set { this[_disableSpecificUserProperty] = value; }
     }
 

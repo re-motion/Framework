@@ -328,7 +328,7 @@ namespace Remotion.Utilities
 
       if (! (actualValue is TExpected))
         throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof(TExpected));
-      return (TExpected) actualValue;
+      return (TExpected)actualValue;
     }
 
     /// <summary>Checks of the <paramref name="actualValue"/> is of the <paramref name="expectedType"/>.</summary>
@@ -380,7 +380,7 @@ namespace Remotion.Utilities
       {
         try
         {
-          return (TExpected) actualValue!;
+          return (TExpected)actualValue!;
         }
         catch (NullReferenceException)
         {
@@ -391,7 +391,7 @@ namespace Remotion.Utilities
       if (!(actualValue is TExpected))
         throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof(TExpected));
 
-      return (TExpected) actualValue;
+      return (TExpected)actualValue;
     }
 
 

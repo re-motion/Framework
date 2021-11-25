@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _relationEndPointManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager(TestableClientTransaction.DataManager);
+      _relationEndPointManager = (RelationEndPointManager)DataManagerTestHelper.GetRelationEndPointManager(TestableClientTransaction.DataManager);
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _relationEndPointManager.RegisterEndPointsForDataContainer(dataContainer);
 
-      var endPoint = (RealObjectEndPoint) _relationEndPointManager.RelationEndPoints[endPointID];
+      var endPoint = (RealObjectEndPoint)_relationEndPointManager.RelationEndPoints[endPointID];
       Assert.That(endPoint, Is.Not.Null);
       Assert.That(endPoint.PropertyDefinition, Is.EqualTo(foreignKeyProperty));
       Assert.That(endPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Order3));
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _relationEndPointManager.RegisterEndPointsForDataContainer(dataContainer);
 
       var oppositeID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order3, "OrderTicket");
-      var oppositeEndPoint = (IVirtualObjectEndPoint) _relationEndPointManager.RelationEndPoints[oppositeID];
+      var oppositeEndPoint = (IVirtualObjectEndPoint)_relationEndPointManager.RelationEndPoints[oppositeID];
 
       Assert.That(oppositeEndPoint, Is.Not.Null);
       Assert.That(oppositeEndPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _relationEndPointManager.RegisterEndPointsForDataContainer(dataContainer);
 
-      var objectEndPoint = (IVirtualObjectEndPoint) _relationEndPointManager.RelationEndPoints[endPointID];
+      var objectEndPoint = (IVirtualObjectEndPoint)_relationEndPointManager.RelationEndPoints[endPointID];
       Assert.That(objectEndPoint, Is.Not.Null);
       Assert.That(objectEndPoint.IsDataComplete, Is.True);
       Assert.That(objectEndPoint.OppositeObjectID, Is.Null);
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _relationEndPointManager.RegisterEndPointsForDataContainer(dataContainer);
 
-      var objectEndPoint = (RealObjectEndPoint) _relationEndPointManager.RelationEndPoints[endPointID];
+      var objectEndPoint = (RealObjectEndPoint)_relationEndPointManager.RelationEndPoints[endPointID];
       Assert.That(objectEndPoint.PropertyDefinition, Is.EqualTo(foreignKeyProperty));
     }
 
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _relationEndPointManager.RegisterEndPointsForDataContainer(dataContainer);
 
-      var collectionEndPoint = (IDomainObjectCollectionEndPoint) _relationEndPointManager.RelationEndPoints[endPointID];
+      var collectionEndPoint = (IDomainObjectCollectionEndPoint)_relationEndPointManager.RelationEndPoints[endPointID];
       Assert.That(collectionEndPoint, Is.Not.Null);
       Assert.That(collectionEndPoint.IsDataComplete, Is.True);
       Assert.That(collectionEndPoint.Collection, Is.Empty);
@@ -218,11 +218,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
       Assert.That(command, Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
-      Assert.That(((UnregisterEndPointsCommand) command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Has.Member(realEndPoint));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Has.No.Member(virtualObjectEndPointStub));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Has.No.Member(collectionEndPointStub));
+      Assert.That(((UnregisterEndPointsCommand)command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
+      Assert.That(((UnregisterEndPointsCommand)command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.Member(realEndPoint));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.No.Member(virtualObjectEndPointStub));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.No.Member(collectionEndPointStub));
     }
 
     [Test]
@@ -244,11 +244,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
       Assert.That(command, Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
-      Assert.That(((UnregisterEndPointsCommand) command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Has.Member(realEndPoint));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Has.Member(virtualObjectEndPoint));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Has.Member(collectionEndPoint));
+      Assert.That(((UnregisterEndPointsCommand)command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
+      Assert.That(((UnregisterEndPointsCommand)command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.Member(realEndPoint));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.Member(virtualObjectEndPoint));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.Member(collectionEndPoint));
     }
 
     [Test]
@@ -258,9 +258,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
       Assert.That(command, Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
-      Assert.That(((UnregisterEndPointsCommand) command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Is.Empty);
+      Assert.That(((UnregisterEndPointsCommand)command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
+      Assert.That(((UnregisterEndPointsCommand)command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Is.Empty);
     }
 
     [Test]
@@ -269,15 +269,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Location1, "Client");
       var dataContainer = RelationEndPointTestHelper.CreateNewDataContainer(endPointID);
       _relationEndPointManager.RegisterEndPointsForDataContainer(dataContainer);
-      var unidirectionalEndPoint = (RealObjectEndPoint) _relationEndPointManager.RelationEndPoints[endPointID];
+      var unidirectionalEndPoint = (RealObjectEndPoint)_relationEndPointManager.RelationEndPoints[endPointID];
       Assert.That(unidirectionalEndPoint, Is.Not.Null);
 
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
       Assert.That(command, Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That(((UnregisterEndPointsCommand) command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
-      Assert.That(((UnregisterEndPointsCommand) command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
-      Assert.That(((UnregisterEndPointsCommand) command).EndPoints, Has.Member(unidirectionalEndPoint));
+      Assert.That(((UnregisterEndPointsCommand)command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
+      Assert.That(((UnregisterEndPointsCommand)command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.Member(unidirectionalEndPoint));
     }
 
     [Test]
@@ -293,8 +293,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
       Assert.That(command, Is.TypeOf<ExceptionCommand>());
-      Assert.That(((ExceptionCommand) command).Exception, Is.TypeOf<InvalidOperationException>());
-      Assert.That(((ExceptionCommand) command).Exception.Message, Is.EqualTo(
+      Assert.That(((ExceptionCommand)command).Exception, Is.TypeOf<InvalidOperationException>());
+      Assert.That(((ExceptionCommand)command).Exception.Message, Is.EqualTo(
           "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\n"
           + "Relation end-point "
           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has changed. "
@@ -321,8 +321,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
       Assert.That(command, Is.TypeOf<ExceptionCommand>());
-      Assert.That(((ExceptionCommand) command).Exception, Is.TypeOf<InvalidOperationException>());
-      Assert.That(((ExceptionCommand) command).Exception.Message, Is.EqualTo(
+      Assert.That(((ExceptionCommand)command).Exception, Is.TypeOf<InvalidOperationException>());
+      Assert.That(((ExceptionCommand)command).Exception.Message, Is.EqualTo(
           "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\n"
           + "The opposite relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of relation end-point "
           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has changed. "
@@ -349,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(command, Is.TypeOf<ExceptionCommand>());
       Assert.That(
-          ((ExceptionCommand) command).Exception.Message,
+          ((ExceptionCommand)command).Exception.Message,
           Is.EqualTo(
               "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\n"
               + "Relation end-point "
@@ -438,14 +438,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result = _relationEndPointManager.CreateUnloadVirtualEndPointsCommand(new[] { endPointID1, endPointID2, endPointID3 });
 
       Assert.That(result, Is.TypeOf<CompositeCommand>());
-      var exceptionCommands = ((CompositeCommand) result).GetNestedCommands();
+      var exceptionCommands = ((CompositeCommand)result).GetNestedCommands();
       Assert.That(exceptionCommands[0], Is.TypeOf<ExceptionCommand>());
-      Assert.That(((ExceptionCommand) exceptionCommands[0]).Exception, Is.TypeOf<InvalidOperationException>().With.Message.EqualTo(
+      Assert.That(((ExceptionCommand)exceptionCommands[0]).Exception, Is.TypeOf<InvalidOperationException>().With.Message.EqualTo(
           "The end point with ID "
           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' "
           + "has been changed. Changed end points cannot be unloaded."));
       Assert.That(exceptionCommands[1], Is.TypeOf<ExceptionCommand>());
-      Assert.That(((ExceptionCommand) exceptionCommands[1]).Exception, Is.TypeOf<InvalidOperationException>().With.Message.EqualTo(
+      Assert.That(((ExceptionCommand)exceptionCommands[1]).Exception, Is.TypeOf<InvalidOperationException>().With.Message.EqualTo(
           "The end point with ID "
           + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' "
           + "has been changed. Changed end points cannot be unloaded."));
@@ -660,7 +660,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(endPoint, Is.Not.Null);
       Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPoint));
-      Assert.That(((IVirtualObjectEndPoint) endPoint).OppositeObjectID, Is.Null);
+      Assert.That(((IVirtualObjectEndPoint)endPoint).OppositeObjectID, Is.Null);
     }
 
     [Test]

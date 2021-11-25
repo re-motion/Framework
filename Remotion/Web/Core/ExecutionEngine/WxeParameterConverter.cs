@@ -121,7 +121,7 @@ public class WxeParameterConverter
 
     value = TryConvertObjectToString(value);
     if (value is string)
-      return (string) value;
+      return (string)value;
 
     if (_parameter.Required)
     {

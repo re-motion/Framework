@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [SetUp]
     public virtual void SetUp ()
     {
-      _value = (IBusinessObject) TypeWithString.Create();
+      _value = (IBusinessObject)TypeWithString.Create();
 
       _factory = new EditableRowDataSourceFactory();
     }

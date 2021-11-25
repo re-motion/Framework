@@ -162,7 +162,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassWithReferenceType<SimpleReferenceType>();
       var value = new SimpleReferenceType();
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation) null);
+      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
       _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
           MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
 
@@ -176,7 +176,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassWithReferenceType<SimpleReferenceType>();
       var value = new SimpleReferenceType();
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation) null);
+      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
       _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
           MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) }).GetSetMethod(true)));
 
@@ -206,7 +206,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var value = new SimpleReferenceType();
       instance.ImplicitInterfaceScalar = value;
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation) null);
+      _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation)null);
       _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(
           MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
 
@@ -607,7 +607,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsNull ()
     {
-      Assert.That(((IPropertyInformation) _interfaceImplementationPropertyInformation).IsNull, Is.False);
+      Assert.That(((IPropertyInformation)_interfaceImplementationPropertyInformation).IsNull, Is.False);
     }
 
     private void CheckMethodInformation (

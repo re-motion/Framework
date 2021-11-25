@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       LifetimeService.DeleteObject(instance.DefaultTransactionContext.ClientTransaction, instance);
 
       var property = GetProperty(instance);
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
+      var strategy = (IDefaultValueStrategy)new BindableDomainObjectDefaultValueStrategy();
       Assert.That(instance.State.IsNew, Is.False);
 
       var result = strategy.IsDefaultValue(instance, property);
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var instance = SampleBindableDomainObject.NewObject();
 
       var property = GetProperty(instance);
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
+      var strategy = (IDefaultValueStrategy)new BindableDomainObjectDefaultValueStrategy();
       instance.Name = instance.Name;
       Assert.That(instance.State.IsNew, Is.True);
 
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var instance = SampleBindableDomainObject.NewObject();
 
       var property = GetProperty(instance);
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
+      var strategy = (IDefaultValueStrategy)new BindableDomainObjectDefaultValueStrategy();
       Assert.That(instance.State.IsNew, Is.True);
 
       var result = strategy.IsDefaultValue(instance, property);
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void IsDefaultDefault_StateIsNewAndPropertyCannotBeResolved ()
     {
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
+      var strategy = (IDefaultValueStrategy)new BindableDomainObjectDefaultValueStrategy();
       var instance = SampleBindableDomainObject.NewObject();
 
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     private PropertyBase GetProperty (IBusinessObject instance)
     {
-      return (PropertyBase) instance.BusinessObjectClass.GetPropertyDefinition("Name");
+      return (PropertyBase)instance.BusinessObjectClass.GetPropertyDefinition("Name");
     }
 
     private BooleanProperty CreateProperty (IPropertyInformation propertyInformation)
@@ -112,13 +112,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     private PropertyBase.Parameters GetPropertyParameters (IPropertyInformation property, BindableObjectProvider provider)
     {
       PropertyReflector reflector = PropertyReflector.Create(property, provider);
-      return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod(
+      return (PropertyBase.Parameters)PrivateInvoke.InvokeNonPublicMethod(
           reflector, typeof(PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
     }
 
     private Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
+      return (Type)PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
   }
 }

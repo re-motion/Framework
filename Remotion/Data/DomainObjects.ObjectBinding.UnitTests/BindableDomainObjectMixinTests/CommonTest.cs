@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       using (deserialized.Item1.EnterDiscardingScope())
       {
         Assert.That(deserialized.Item2.Name, Is.EqualTo("Earl"));
-        Assert.That(((IBusinessObject) deserialized.Item2).BusinessObjectClass, Is.SameAs(((IBusinessObject) value).BusinessObjectClass));
+        Assert.That(((IBusinessObject)deserialized.Item2).BusinessObjectClass, Is.SameAs(((IBusinessObject)value).BusinessObjectClass));
       }
     }
 
@@ -57,11 +57,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject();
       byte[] serialized = Serializer.Serialize(Tuple.Create(TestableClientTransaction, value));
       BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
-      var deserialized = (Tuple<ClientTransaction, SampleBindableMixinDomainObject>) Serializer.Deserialize(serialized);
+      var deserialized = (Tuple<ClientTransaction, SampleBindableMixinDomainObject>)Serializer.Deserialize(serialized);
 
       using (deserialized.Item1.EnterDiscardingScope())
       {
-        Assert.That(((IBusinessObject) deserialized.Item2).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject) value).BusinessObjectClass));
+        Assert.That(((IBusinessObject)deserialized.Item2).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject)value).BusinessObjectClass));
       }
     }
   }

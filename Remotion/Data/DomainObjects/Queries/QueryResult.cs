@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </returns>
     public T[] ToArray ()
     {
-      return (T[]) _queryResult.Clone();
+      return (T[])_queryResult.Clone();
     }
 
     DomainObject[] IQueryResult.ToArray ()

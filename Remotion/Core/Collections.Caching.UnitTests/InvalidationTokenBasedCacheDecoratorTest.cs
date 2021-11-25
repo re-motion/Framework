@@ -262,7 +262,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var key = new object();
       cache.GetOrCreateValue(key, o => "Value");
 
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
 
       bool cachedResult = cache.TryGetValue(key, out var cachedValue);
       Assert.That(cachedResult, Is.False);
@@ -276,7 +276,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       var revision = decorator.InvalidationToken.GetCurrent();
 
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
 
       Assert.That(decorator.InvalidationToken.IsCurrent(revision), Is.True);
     }
@@ -288,7 +288,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
       decorator.InvalidationToken.Invalidate();
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
       var key = new object();
       cache.GetOrCreateValue(key, o => "Value");
 
@@ -315,7 +315,7 @@ namespace Remotion.Collections.Caching.UnitTests
             }
           });
 
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
     }
 
     [Test]
@@ -324,7 +324,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var cache = new Cache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
-      Assert.That(((ICache<object, string>) decorator).IsNull, Is.False);
+      Assert.That(((ICache<object, string>)decorator).IsNull, Is.False);
     }
 
     [Test]
@@ -333,7 +333,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var cache = new NullCache<object, string>();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
-      Assert.That(((ICache<object, string>) decorator).IsNull, Is.True);
+      Assert.That(((ICache<object, string>)decorator).IsNull, Is.True);
     }
 
     [Test]

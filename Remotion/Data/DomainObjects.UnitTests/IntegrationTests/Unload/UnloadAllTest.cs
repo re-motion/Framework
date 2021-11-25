@@ -520,8 +520,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     public void Events_Recalculation ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
-      var order3 = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order3);
-      var order4 = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order4);
+      var order3 = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order3);
+      var order4 = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order4);
 
       var mockRepository = new MockRepository();
       // Actual events are more comprehensive, since all opposite objects are also unloaded. We only test for some of them, so use a dynamic mock.

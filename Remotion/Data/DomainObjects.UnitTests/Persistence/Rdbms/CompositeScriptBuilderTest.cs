@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       builder.AddEntityDefinition(entityDefinition1);
       builder.AddEntityDefinition(entityDefinition2);
 
-      var result = (ScriptElementCollection) builder.GetCreateScript();
+      var result = (ScriptElementCollection)builder.GetCreateScript();
 
       _builder1Mock.VerifyAllExpectations();
       _builder2Mock.VerifyAllExpectations();
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       builder.AddEntityDefinition(entityDefinition1);
       builder.AddEntityDefinition(entityDefinition2);
 
-      var result = (ScriptElementCollection) builder.GetDropScript();
+      var result = (ScriptElementCollection)builder.GetDropScript();
 
       _builder1Mock.VerifyAllExpectations();
       _builder2Mock.VerifyAllExpectations();

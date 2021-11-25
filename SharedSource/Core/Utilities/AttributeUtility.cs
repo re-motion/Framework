@@ -63,7 +63,7 @@ namespace Remotion.Utilities
       return new Lazy<AttributeUsageAttribute>(
           () =>
           {
-            var usage = (AttributeUsageAttribute[]) attributeType.GetCustomAttributes(typeof(AttributeUsageAttribute), true);
+            var usage = (AttributeUsageAttribute[])attributeType.GetCustomAttributes(typeof(AttributeUsageAttribute), true);
             if (usage.Length == 0)
               return new AttributeUsageAttribute(AttributeTargets.All);
 

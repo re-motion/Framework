@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         throw new InvalidOperationException(message);
       }
 
-      return (T) oppositeEndPoint;
+      return (T)oppositeEndPoint;
     }
   }
 }

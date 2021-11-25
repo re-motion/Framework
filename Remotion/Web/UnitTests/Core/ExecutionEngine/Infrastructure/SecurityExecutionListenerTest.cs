@@ -49,8 +49,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      Assert.That(((SecurityExecutionListener) securityListener).Function, Is.SameAs(_function));
-      Assert.That(((SecurityExecutionListener) securityListener).InnerListener, Is.SameAs(_innerListenerMock.Object));
+      Assert.That(((SecurityExecutionListener)securityListener).Function, Is.SameAs(_function));
+      Assert.That(((SecurityExecutionListener)securityListener).InnerListener, Is.SameAs(_innerListenerMock.Object));
     }
 
     [Test]

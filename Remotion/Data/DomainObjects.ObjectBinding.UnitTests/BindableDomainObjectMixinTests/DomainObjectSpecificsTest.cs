@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void NoPropertyFromDomainObject ()
     {
-      PropertyBase[] properties = (PropertyBase[]) _businessObjectSampleClass.GetPropertyDefinitions();
+      PropertyBase[] properties = (PropertyBase[])_businessObjectSampleClass.GetPropertyDefinitions();
 
       foreach (PropertyBase property in properties)
         Assert.That(property.PropertyInfo.DeclaringType, Is.Not.EqualTo(typeof(DomainObject)));
@@ -134,13 +134,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void MaxLength ()
     {
-      Assert.That(((IBusinessObjectStringProperty)
-                    _businessObjectClassWithProperties.GetPropertyDefinition("MaxLength7StringProperty")).MaxLength, Is.EqualTo(7));
+      Assert.That(((IBusinessObjectStringProperty)_businessObjectClassWithProperties.GetPropertyDefinition("MaxLength7StringProperty")).MaxLength, Is.EqualTo(7));
 
-      Assert.That(((IBusinessObjectStringProperty)
-                    _businessObjectClassWithProperties.GetPropertyDefinition("NoMaxLengthStringPropertyNotInMapping")).MaxLength, Is.Null);
-      Assert.That(((IBusinessObjectStringProperty)
-                    _businessObjectClassWithProperties.GetPropertyDefinition("NoMaxLengthStringProperty")).MaxLength, Is.Null);
+      Assert.That(((IBusinessObjectStringProperty)_businessObjectClassWithProperties.GetPropertyDefinition("NoMaxLengthStringPropertyNotInMapping")).MaxLength, Is.Null);
+      Assert.That(((IBusinessObjectStringProperty)_businessObjectClassWithProperties.GetPropertyDefinition("NoMaxLengthStringProperty")).MaxLength, Is.Null);
     }
 
     [Test]
@@ -149,10 +146,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       Assert.That(_businessObjectClassWithProperties.GetPropertyDefinition("BasePropertyWithMaxLength3"), Is.Not.Null);
       Assert.That(_businessObjectClassWithProperties.GetPropertyDefinition("BasePropertyWithMaxLength4"), Is.Not.Null);
 
-      Assert.That(((IBusinessObjectStringProperty)
-                    _businessObjectClassWithProperties.GetPropertyDefinition("BasePropertyWithMaxLength3")).MaxLength, Is.EqualTo(33));
-      Assert.That(((IBusinessObjectStringProperty)
-                    _businessObjectClassWithProperties.GetPropertyDefinition("BasePropertyWithMaxLength4")).MaxLength, Is.EqualTo(4));
+      Assert.That(((IBusinessObjectStringProperty)_businessObjectClassWithProperties.GetPropertyDefinition("BasePropertyWithMaxLength3")).MaxLength, Is.EqualTo(33));
+      Assert.That(((IBusinessObjectStringProperty)_businessObjectClassWithProperties.GetPropertyDefinition("BasePropertyWithMaxLength4")).MaxLength, Is.EqualTo(4));
     }
 
     [Test]
@@ -193,11 +188,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       var businessObjectClass = provider.GetBindableObjectClass(typeof(BindableDomainObjectAboveInheritanceRoot));
 
       var stringPropertyWithLengthConstraint =
-          (IBusinessObjectStringProperty) businessObjectClass.GetPropertyDefinition("NotNullableStringPropertyWithLengthConstraint");
+          (IBusinessObjectStringProperty)businessObjectClass.GetPropertyDefinition("NotNullableStringPropertyWithLengthConstraint");
       Assert.That(stringPropertyWithLengthConstraint.MaxLength, Is.EqualTo(100));
 
       var stringPropertyWithoutLengthConstraint =
-          (IBusinessObjectStringProperty) businessObjectClass.GetPropertyDefinition("NullableStringPropertyWithoutLengthConstraint");
+          (IBusinessObjectStringProperty)businessObjectClass.GetPropertyDefinition("NullableStringPropertyWithoutLengthConstraint");
       Assert.That(stringPropertyWithoutLengthConstraint.MaxLength, Is.Null);
     }
   }

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       _boundSource.Int32Property = 123;
 
       _classWithClonerCallback =
-          (ClassWithClonerCallback) LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithClonerCallback), ParamList.Empty);
+          (ClassWithClonerCallback)LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithClonerCallback), ParamList.Empty);
     }
 
     [Test]
@@ -99,8 +99,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     {
       Order clone = _cloner.CreateCloneHull(_order1);
       Assert.That(clone.CtorCalled, Is.False);
-      var pipeline = ((DomainObjectCreator) clone.ID.ClassDefinition.InstanceCreator).PipelineRegistry.DefaultPipeline;
-      Assert.That(pipeline.ReflectionService.IsAssembledType(((object) clone).GetType()));
+      var pipeline = ((DomainObjectCreator)clone.ID.ClassDefinition.InstanceCreator).PipelineRegistry.DefaultPipeline;
+      Assert.That(pipeline.ReflectionService.IsAssembledType(((object)clone).GetType()));
     }
 
     [Test]
@@ -381,7 +381,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       var cloneTransaction = ClientTransaction.CreateRootTransaction();
       _cloner.CloneTransaction = cloneTransaction;
 
-      var referencedObject = (ClassWithClonerCallback) LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithClonerCallback), ParamList.Empty);
+      var referencedObject = (ClassWithClonerCallback)LifetimeService.NewObject(TestableClientTransaction, typeof(ClassWithClonerCallback), ParamList.Empty);
       referencedObject.Property = 42;
       _classWithClonerCallback.ReferencedObject = referencedObject;
 

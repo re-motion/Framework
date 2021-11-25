@@ -184,7 +184,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([CanBeNull] TimeSpan? timeout = null)
     {
-      var outerFrame = (string) JsExecutor.ExecuteScript("return self.name;");
+      var outerFrame = (string)JsExecutor.ExecuteScript("return self.name;");
       if (outerFrame != "")
         WebDriver.SwitchTo().DefaultContent();
 
@@ -212,7 +212,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       string result;
       using (new PerformanceTimer(Logger, "Accessibility analysis has been performed."))
       {
-        result = (string) JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
+        result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
 
         if (result == null)
           result = GetRawAxeResultForInternetExplorer(axeRunFunctionCall);
@@ -225,7 +225,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
     private bool AxeIsInjected ()
     {
-      return (bool) JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
+      return (bool)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
     }
 
     /// <summary>
@@ -324,7 +324,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       // Internet Explorer does sometimes return a null result instead of the actual result, which will be available after a short delay.
       foreach (var _ in Enumerable.Range(0, 5))
       {
-        var result = (string) JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
+        var result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
         if (result == null)
           Thread.Sleep(500);
         else

@@ -46,7 +46,7 @@ namespace Remotion.Diagnostics
     /// <param name="numberElementsPerDimension">"Number of loops for each for"-loop array</param>
     public OuterProductIndexGenerator (int[] numberElementsPerDimension)
     {
-      Init((int[]) numberElementsPerDimension.Clone());
+      Init((int[])numberElementsPerDimension.Clone());
     }
 
     /// <summary>

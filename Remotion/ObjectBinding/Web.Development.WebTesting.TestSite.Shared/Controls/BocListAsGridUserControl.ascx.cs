@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
       var dummyPersonWithNoJobs = Person.CreateObject();
       dummyPersonWithNoJobs.Jobs = new Job[0];
-      EmptyObject.BusinessObject = (IBusinessObject) dummyPersonWithNoJobs;
+      EmptyObject.BusinessObject = (IBusinessObject)dummyPersonWithNoJobs;
       EmptyObject.LoadValues(false);
 
       var view1 = new BocListView { ItemID = "ViewCmd1", Title = "View 1" };
@@ -77,14 +77,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private void MenuItemClickHandler (object sender, WebMenuItemClickEventArgs e)
     {
-      var bocList = (BocList) sender;
+      var bocList = (BocList)sender;
       var command = e.Item.ItemID + "|" + e.Item.Text;
       TestOutput.SetActionPerformed(bocList.ID, -1, "ListMenuOrOptionsClick", command);
     }
 
     private void SortingOrderChangedHandler (object sender, BocListSortingOrderChangeEventArgs bocListSortingOrderChangeEventArgs)
     {
-      var bocList = (BocList) sender;
+      var bocList = (BocList)sender;
       TestOutput.SetActionPerformed(
           bocList.ID,
           -1,
@@ -95,19 +95,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private void EditableRowChangedSavedHandler (object sender, BocListItemEventArgs bocListItemEventArgs)
     {
-      var bocList = (BocList) sender;
+      var bocList = (BocList)sender;
       TestOutput.SetActionPerformed(bocList.ID, bocListItemEventArgs.ListIndex, "InLineEdit", "Saved");
     }
 
     private void EditableRowChangesCanceledHandler (object sender, BocListItemEventArgs bocListItemEventArgs)
     {
-      var bocList = (BocList) sender;
+      var bocList = (BocList)sender;
       TestOutput.SetActionPerformed(bocList.ID, bocListItemEventArgs.ListIndex, "InLineEdit", "Canceled");
     }
 
     private void ListItemCommandClickHandler (object sender, BocListItemCommandClickEventArgs bocListItemCommandClickEventArgs)
     {
-      var bocList = (BocList) sender;
+      var bocList = (BocList)sender;
       var cell = bocListItemCommandClickEventArgs.Column.ItemID;
       TestOutput.SetActionPerformed(
           bocList.ID,
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private void CustomCellClickHandler (object sender, BocCustomCellClickEventArgs bocCustomCellClickEventArgs)
     {
-      var bocList = (BocList) sender;
+      var bocList = (BocList)sender;
       var cell = bocCustomCellClickEventArgs.Column.ItemID + "|" + bocCustomCellClickEventArgs.Column.ColumnTitleDisplayValue;
       TestOutput.SetActionPerformed(bocList.ID, -1, "CustomCellClick", cell);
     }
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private BocListAsGridUserControlTestOutput TestOutput
     {
-      get { return (BocListAsGridUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocListAsGridUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       var relationEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
       var collection = Provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           null,
           DomainObjectIDs.Customer1).ToList();
 
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var relationEndPointDefinition = GetEndPointDefinition(typeof(Partner), "ContactPerson");
 
       var collection = Provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           null,
           DomainObjectIDs.Person6).ToList();
 
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var sortExpression = new SortExpressionDefinition(new[] { new SortedPropertySpecification(orderNumberProperty, SortOrder.Ascending) });
 
       var orderContainers = Provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           sortExpression,
           DomainObjectIDs.Customer1).ToList();
 
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var relationEndPointDefinition = GetEndPointDefinition(typeof(Order), "Official");
 
       var orderContainers = Provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           null,
           DomainObjectIDs.Official1);
       Assert.That(orderContainers, Is.Not.Null);
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var relationEndPointDefinition = GetEndPointDefinition(typeof(Computer), "EmployeeTransactionProperty");
 
       var result = Provider.LoadDataContainersByRelatedID(
-          (RelationEndPointDefinition) relationEndPointDefinition,
+          (RelationEndPointDefinition)relationEndPointDefinition,
           null,
           DomainObjectIDs.Employee1);
       Assert.That(result, Is.Not.Null);

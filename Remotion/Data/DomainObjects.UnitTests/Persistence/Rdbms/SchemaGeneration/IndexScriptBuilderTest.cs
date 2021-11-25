@@ -82,13 +82,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void GetCreateScript_GetDropScript_NoEntitiesAdded ()
     {
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(1));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(1));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
     }
 
     [Test]
@@ -99,15 +99,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
       _builder.AddEntityDefinition(_tableDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(2));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
 
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(2));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
       Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
     }
 
@@ -124,17 +124,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _builder.AddEntityDefinition(_tableDefinition1);
       _builder.AddEntityDefinition(_tableDefinition2);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(4));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
       Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
       Assert.That(createScriptResult.Elements[3], Is.SameAs(_fakeElement3));
 
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(4));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
       Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement3));
       Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement2));
       Assert.That(dropScriptResult.Elements[3], Is.SameAs(_fakeElement1));
@@ -148,15 +148,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
       _builder.AddEntityDefinition(_unionViewDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(2));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
 
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(2));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
       Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
     }
 
@@ -173,17 +173,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _builder.AddEntityDefinition(_unionViewDefinition1);
       _builder.AddEntityDefinition(_unionViewDefinition2);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(4));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
       Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
       Assert.That(createScriptResult.Elements[3], Is.SameAs(_fakeElement3));
 
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(4));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
       Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement3));
       Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement2));
       Assert.That(dropScriptResult.Elements[3], Is.SameAs(_fakeElement1));
@@ -197,15 +197,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
       _builder.AddEntityDefinition(_filterViewDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(2));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
 
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(2));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
       Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
     }
 
@@ -222,17 +222,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _builder.AddEntityDefinition(_filterViewDefinition1);
       _builder.AddEntityDefinition(_filterViewDefinition2);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(4));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
       Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
       Assert.That(createScriptResult.Elements[3], Is.SameAs(_fakeElement3));
 
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(4));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
       Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement3));
       Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement2));
       Assert.That(dropScriptResult.Elements[3], Is.SameAs(_fakeElement1));
@@ -244,13 +244,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var entityDefinition = EmptyViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
       _builder.AddEntityDefinition(entityDefinition);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
+      var createScriptResult = (ScriptElementCollection)_builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection)_builder.GetDropScript();
 
       Assert.That(createScriptResult.Elements.Count, Is.EqualTo(1));
-      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
+      Assert.That(((ScriptStatement)createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create indexes for tables that were created above"));
       Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(1));
-      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
+      Assert.That(((ScriptStatement)dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all indexes"));
     }
   }
 }

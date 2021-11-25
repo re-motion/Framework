@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointID.Create(DomainObjectIDs.ProductReview1, typeof(ProductReview).FullName + ".Product");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
 
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IVirtualCollectionEndPoint>((DomainObject) null);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IVirtualCollectionEndPoint>((DomainObject)null);
 
       Assert.That(oppositeEndPoint, Is.InstanceOf(typeof(NullVirtualCollectionEndPoint)));
       var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition());
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointID.Create(DomainObjectIDs.ProductReview1, typeof(ProductReview).FullName + ".Product");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
 
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IVirtualCollectionEndPoint>((ObjectID) null);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IVirtualCollectionEndPoint>((ObjectID)null);
 
       Assert.That(oppositeEndPoint, Is.InstanceOf(typeof(NullVirtualCollectionEndPoint)));
       var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition());
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointID.Create(DomainObjectIDs.ProductReview1, typeof(ProductReview).FullName + ".Product");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
       Assert.That(
-          () => endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint>((ObjectID) null),
+          () => endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint>((ObjectID)null),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The opposite end point 'null/Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews' is of type "

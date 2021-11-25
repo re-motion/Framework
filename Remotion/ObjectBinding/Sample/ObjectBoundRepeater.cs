@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Sample
         set
         {
           _value = value;
-          ((Repeater) _owner).DataSource = value;
+          ((Repeater)_owner).DataSource = value;
         }
       }
 
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Sample
       protected override sealed object ValueImplementation
       {
         get { return Value; }
-        set { Value = (IList) value; }
+        set { Value = (IList)value; }
       }
 
       public override bool HasValue
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding.Sample
     object IBusinessObjectBoundControl.Value
     {
       get { return _repeaterInternal.Value; }
-      set { _repeaterInternal.Value = (IList) value; }
+      set { _repeaterInternal.Value = (IList)value; }
     }
 
     public bool HasValue
@@ -386,12 +386,12 @@ namespace Remotion.ObjectBinding.Sample
 
     Type[] IBusinessObjectBoundWebControl.SupportedPropertyInterfaces
     {
-      get { return ((IBusinessObjectBoundWebControl) _repeaterInternal).SupportedPropertyInterfaces; }
+      get { return ((IBusinessObjectBoundWebControl)_repeaterInternal).SupportedPropertyInterfaces; }
     }
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
     {
-      return ((IBusinessObjectBoundWebControl) _repeaterInternal).SupportsPropertyMultiplicity(isList);
+      return ((IBusinessObjectBoundWebControl)_repeaterInternal).SupportsPropertyMultiplicity(isList);
     }
 
     public bool SupportsProperty (IBusinessObjectProperty property)
@@ -453,20 +453,20 @@ namespace Remotion.ObjectBinding.Sample
     {
       base.OnItemDataBound(e);
 
-      IBusinessObject obj = (IBusinessObject) e.Item.DataItem;
+      IBusinessObject obj = (IBusinessObject)e.Item.DataItem;
 
       foreach (Control control in e.Item.Controls)
       {
         if (control is BusinessObjectDataSourceControl)
         {
-          BusinessObjectDataSourceControl dataSource = (BusinessObjectDataSourceControl) control;
+          BusinessObjectDataSourceControl dataSource = (BusinessObjectDataSourceControl)control;
           _dataSources.Add(dataSource);
 
           dataSource.BusinessObject = obj;
         }
         else if (control is IDataEditControl)
         {
-          DataEditUserControl dataEditControl = (DataEditUserControl) control;
+          DataEditUserControl dataEditControl = (DataEditUserControl)control;
           _dataEditControls.Add(dataEditControl);
 
           dataEditControl.BusinessObject = obj;
@@ -556,9 +556,9 @@ namespace Remotion.ObjectBinding.Sample
 
     protected override void LoadViewState (object savedState)
     {
-      object[] values = (object[]) savedState;
+      object[] values = (object[])savedState;
       base.LoadViewState(values[0]);
-      _isDirty = (bool) values[1];
+      _isDirty = (bool)values[1];
     }
 
     protected override object SaveViewState ()

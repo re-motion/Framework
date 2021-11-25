@@ -99,7 +99,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_NullCollection ()
     {
-      var result = ArgumentUtility.CheckNotEmpty("arg", (ICollection?) null);
+      var result = ArgumentUtility.CheckNotEmpty("arg", (ICollection?)null);
       Assert.That(result, Is.Null);
     }
 

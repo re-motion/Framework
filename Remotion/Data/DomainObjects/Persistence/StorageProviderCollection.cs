@@ -78,7 +78,7 @@ public class StorageProviderCollection : CommonCollection, IDisposable
 
   public StorageProvider this [int index]
   {
-    get { return (StorageProvider) BaseGetObject(index); }
+    get { return (StorageProvider)BaseGetObject(index); }
   }
 
   public StorageProvider this [string storageProviderID]
@@ -86,7 +86,7 @@ public class StorageProviderCollection : CommonCollection, IDisposable
     get
     {
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
-      return (StorageProvider) BaseGetObject(storageProviderID);
+      return (StorageProvider)BaseGetObject(storageProviderID);
     }
   }
 

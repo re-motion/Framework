@@ -43,7 +43,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects
 
     public static DataManager GetDataManager (ClientTransaction clientTransaction)
     {
-      return (DataManager) DataManagementService.GetDataManager(clientTransaction);
+      return (DataManager)DataManagementService.GetDataManager(clientTransaction);
     }
 
     public static IDataManager GetIDataManager (ClientTransaction clientTransaction)
@@ -53,90 +53,90 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects
 
     public static IObjectLifetimeAgent GetObjectLifetimeAgent (ClientTransaction clientTransaction)
     {
-      return (IObjectLifetimeAgent) PrivateInvoke.GetNonPublicField(clientTransaction, "_objectLifetimeAgent")!;
+      return (IObjectLifetimeAgent)PrivateInvoke.GetNonPublicField(clientTransaction, "_objectLifetimeAgent")!;
     }
 
     public static IEnlistedDomainObjectManager GetEnlistedDomainObjectManager (ClientTransaction clientTransaction)
     {
-      return (IEnlistedDomainObjectManager) PrivateInvoke.GetNonPublicField(clientTransaction, "_enlistedDomainObjectManager")!;
+      return (IEnlistedDomainObjectManager)PrivateInvoke.GetNonPublicField(clientTransaction, "_enlistedDomainObjectManager")!;
     }
 
     public static IInvalidDomainObjectManager GetInvalidDomainObjectManager (ClientTransaction clientTransaction)
     {
-      return (IInvalidDomainObjectManager) PrivateInvoke.GetNonPublicField(clientTransaction, "_invalidDomainObjectManager")!;
+      return (IInvalidDomainObjectManager)PrivateInvoke.GetNonPublicField(clientTransaction, "_invalidDomainObjectManager")!;
     }
 
     public static IPersistenceStrategy GetPersistenceStrategy (ClientTransaction clientTransaction)
     {
-      return (IPersistenceStrategy) PrivateInvoke.GetNonPublicField(clientTransaction, "_persistenceStrategy")!;
+      return (IPersistenceStrategy)PrivateInvoke.GetNonPublicField(clientTransaction, "_persistenceStrategy")!;
     }
 
     public static IClientTransactionEventBroker GetEventBroker (ClientTransaction clientTransaction)
     {
-      return (IClientTransactionEventBroker) PrivateInvoke.GetNonPublicField(clientTransaction, "_eventBroker")!;
+      return (IClientTransactionEventBroker)PrivateInvoke.GetNonPublicField(clientTransaction, "_eventBroker")!;
     }
 
     public static ICommitRollbackAgent GetCommitRollbackAgent (ClientTransaction clientTransaction)
     {
-      return (ICommitRollbackAgent) PrivateInvoke.GetNonPublicField(clientTransaction, "_commitRollbackAgent")!;
+      return (ICommitRollbackAgent)PrivateInvoke.GetNonPublicField(clientTransaction, "_commitRollbackAgent")!;
     }
     public static DomainObject CallGetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
     {
-      return (DomainObject) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetObject", objectID, includeDeleted)!;
+      return (DomainObject)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetObject", objectID, includeDeleted)!;
     }
 
     public static DomainObject? CallTryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      return (DomainObject?) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "TryGetObject", objectID);
+      return (DomainObject?)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "TryGetObject", objectID);
     }
 
     public static DomainObject CallGetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      return (DomainObject) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetObjectReference", objectID)!;
+      return (DomainObject)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetObjectReference", objectID)!;
     }
 
     public static DomainObject CallGetInvalidObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      return (DomainObject) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetInvalidObjectReference", objectID)!;
+      return (DomainObject)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetInvalidObjectReference", objectID)!;
     }
 
     public static DomainObject? CallGetRelatedObject (ClientTransaction clientTransaction, RelationEndPointID relationEndPointID)
     {
-      return (DomainObject?) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetRelatedObject", relationEndPointID);
+      return (DomainObject?)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetRelatedObject", relationEndPointID);
     }
 
     public static DomainObject? CallGetOriginalRelatedObject (ClientTransaction clientTransaction, RelationEndPointID relationEndPointID)
     {
-      return (DomainObject?) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetOriginalRelatedObject", relationEndPointID);
+      return (DomainObject?)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetOriginalRelatedObject", relationEndPointID);
     }
 
     public static DomainObjectCollection CallGetRelatedObjects (ClientTransaction clientTransaction, RelationEndPointID relationEndPointID)
     {
-      return (DomainObjectCollection) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetRelatedObjects", relationEndPointID)!;
+      return (DomainObjectCollection)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetRelatedObjects", relationEndPointID)!;
     }
 
     public static DomainObjectCollection CallGetOriginalRelatedObjects (ClientTransaction clientTransaction, RelationEndPointID relationEndPointID)
     {
-      return (DomainObjectCollection) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetOriginalRelatedObjects", relationEndPointID)!;
+      return (DomainObjectCollection)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "GetOriginalRelatedObjects", relationEndPointID)!;
     }
 
     public static DomainObject CallNewObject (ClientTransaction clientTransaction, Type domainObjectType, ParamList constructorParameters)
     {
-      return (DomainObject) PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "NewObject", domainObjectType, constructorParameters)!;
+      return (DomainObject)PrivateInvoke.InvokeNonPublicMethod(clientTransaction, "NewObject", domainObjectType, constructorParameters)!;
     }
 
     public static T[] CallGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
     {
       // TODO 5118: Use PrivateInvoke when it gets support for generic.
       var method = typeof(ClientTransaction).GetMethod("GetObjects", BindingFlags.NonPublic | BindingFlags.Instance)!.MakeGenericMethod(typeof(T));
-      return (T[]) method.Invoke(clientTransaction, new object[] { objectIDs })!;
+      return (T[])method.Invoke(clientTransaction, new object[] { objectIDs })!;
     }
 
     public static T[] CallTryGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
     {
       // TODO 5118: Use PrivateInvoke when it gets support for generic.
       var method = typeof(ClientTransaction).GetMethod("TryGetObjects", BindingFlags.NonPublic | BindingFlags.Instance)!.MakeGenericMethod(typeof(T));
-      return (T[]) method.Invoke(clientTransaction, new object[] { objectIDs })!;
+      return (T[])method.Invoke(clientTransaction, new object[] { objectIDs })!;
     }
 
     public static void AddListener (ClientTransaction clientTransaction, IClientTransactionListener listener)
@@ -163,13 +163,13 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects
 
     public static void SetIsWriteable (ClientTransaction transaction, bool value)
     {
-      var hierarchyManager = (TransactionHierarchyManager) GetHierarchyManager(transaction);
+      var hierarchyManager = (TransactionHierarchyManager)GetHierarchyManager(transaction);
       TransactionHierarchyManagerTestHelper.SetIsWriteable(hierarchyManager, value);
     }
 
     public static void SetSubTransaction (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
-      var hierarchyManager = (TransactionHierarchyManager) GetHierarchyManager(clientTransaction);
+      var hierarchyManager = (TransactionHierarchyManager)GetHierarchyManager(clientTransaction);
       TransactionHierarchyManagerTestHelper.SetSubtransaction(hierarchyManager, subTransaction);
     }
 

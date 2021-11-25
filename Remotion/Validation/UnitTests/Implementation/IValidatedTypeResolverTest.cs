@@ -40,10 +40,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That(factory, Is.Not.Null);
       Assert.That(factory, Is.TypeOf<ClassTypeAwareValidatedTypeResolverDecorator>());
       Assert.That(
-          ((ClassTypeAwareValidatedTypeResolverDecorator) factory).InnerResolver,
+          ((ClassTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver,
           Is.TypeOf<GenericTypeAwareValidatedTypeResolverDecorator>());
       Assert.That(
-          ((GenericTypeAwareValidatedTypeResolverDecorator) ((ClassTypeAwareValidatedTypeResolverDecorator) factory).InnerResolver).InnerResolver,
+          ((GenericTypeAwareValidatedTypeResolverDecorator)((ClassTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver).InnerResolver,
           Is.TypeOf<NullValidatedTypeResolver>());
     }
 

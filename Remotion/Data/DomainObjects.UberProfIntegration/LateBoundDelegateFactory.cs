@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
       try
       {
-        return (TSignature) (object) Delegate.CreateDelegate(typeof(TSignature), target, methodName, false, true);
+        return (TSignature)(object)Delegate.CreateDelegate(typeof(TSignature), target, methodName, false, true);
       }
       catch (ArgumentException ex)
       {
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public static TSignature CreateDelegate<TSignature> (Type target, string methodName)
     {
-      return (TSignature) (object) CreateDelegate(target, methodName, typeof(TSignature));
+      return (TSignature)(object)CreateDelegate(target, methodName, typeof(TSignature));
     }
 
     public static Delegate CreateDelegate (Type target, string methodName, Type signature)
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     private static MissingMethodException CreateMissingMethodException (object target, string methodName, Type signatureType, Exception innerException)
     {
-      Type targetType = (target is Type) ? (Type) target : target.GetType();
+      Type targetType = (target is Type) ? (Type)target : target.GetType();
 
       Assertion.IsTrue(typeof(Delegate).IsAssignableFrom(signatureType));
       MethodInfo invoke = signatureType.GetMethod("Invoke");

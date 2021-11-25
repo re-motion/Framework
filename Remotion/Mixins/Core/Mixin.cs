@@ -42,7 +42,7 @@ namespace Remotion.Mixins
     public static TMixin? Get<TMixin> (object mixinTarget) where TMixin : class
     {
       ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
-      return (TMixin?) Get(typeof(TMixin), mixinTarget);
+      return (TMixin?)Get(typeof(TMixin), mixinTarget);
     }
 
     /// <summary>
@@ -200,8 +200,8 @@ namespace Remotion.Mixins
 
     void IInitializableMixin.Initialize (object target, object? next, bool deserialization)
     {
-      _target = (TTarget) target;
-      _next = (TNext?) next;
+      _target = (TTarget)target;
+      _next = (TNext?)next;
       if (deserialization)
         OnDeserialized();
       else
@@ -303,7 +303,7 @@ namespace Remotion.Mixins
 
     void IInitializableMixin.Initialize (object target, object? next, bool deserialization)
     {
-      _target = (TTarget) target;
+      _target = (TTarget)target;
       if (deserialization)
         OnDeserialized();
       else

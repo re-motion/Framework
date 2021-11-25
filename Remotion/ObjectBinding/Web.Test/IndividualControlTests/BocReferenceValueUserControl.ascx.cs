@@ -188,11 +188,11 @@ public class BocReferenceValueUserControl : BaseUserControl
   {
     base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[])ArrayUtility.Convert(
           XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)), typeof(IBusinessObjectWithIdentity));
       UnboundPartnerField.SetBusinessObjectList(objects);
       DisabledUnboundPartnerField.SetBusinessObjectList(objects);
@@ -200,13 +200,13 @@ public class BocReferenceValueUserControl : BaseUserControl
 
     //UnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
     UnboundReadOnlyPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
-    DisabledUnboundPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-    DisabledUnboundReadOnlyPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
+    DisabledUnboundPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
+    DisabledUnboundReadOnlyPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus(PartnerField);
+        ((ISmartNavigablePage)Page).SetFocus(PartnerField);
     }
   }
 
@@ -250,7 +250,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     person.LastName = person.ID.ToByteArray()[15].ToString();
     person.FirstName = "--";
 
-    PartnerField.Value = (IBusinessObjectWithIdentity) person;
+    PartnerField.Value = (IBusinessObjectWithIdentity)person;
   }
 
   private void ReadOnlyPartnerTestSetNullButton_Click (object sender, EventArgs e)
@@ -264,7 +264,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     person.LastName = person.ID.ToByteArray()[15].ToString();
     person.FirstName = "--";
 
-    ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity) person;
+    ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity)person;
   }
 
   private void PartnerField_SelectionChanged (object sender, EventArgs e)

@@ -82,7 +82,7 @@ namespace Remotion.Web.UnitTests.Core.Context
     public void FallbackToAsyncLocal_IfNoCurrentHttpContext ()
     {
       HttpContext.Current = null;
-      var fallbackProvider = (AsyncLocalStorageProvider) PrivateInvoke.GetNonPublicField(_provider, "_fallbackProvider");
+      var fallbackProvider = (AsyncLocalStorageProvider)PrivateInvoke.GetNonPublicField(_provider, "_fallbackProvider");
 
       _provider.SetData("Foo", 123);
       Assert.That(_provider.GetData("Foo"), Is.EqualTo(123));

@@ -43,7 +43,7 @@ public class SmartHyperLink : HyperLink, IControl
     bool hasNavigateUrl = ! string.IsNullOrEmpty(NavigateUrl);
 
     if (Page is ISmartNavigablePage && hasNavigateUrl)
-      NavigateUrl = ((ISmartNavigablePage) Page).AppendNavigationUrlParameters(NavigateUrl);
+      NavigateUrl = ((ISmartNavigablePage)Page).AppendNavigationUrlParameters(NavigateUrl);
 
     base.AddAttributesToRender(writer);
 

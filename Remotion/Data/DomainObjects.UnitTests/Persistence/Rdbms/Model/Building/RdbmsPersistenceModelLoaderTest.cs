@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     public void CreatePersistenceMappingValidator ()
     {
       var validator =
-          (PersistenceMappingValidator) _rdbmsPersistenceModelLoader.CreatePersistenceMappingValidator(_testModel.BaseBaseClassDefinition);
+          (PersistenceMappingValidator)_rdbmsPersistenceModelLoader.CreatePersistenceMappingValidator(_testModel.BaseBaseClassDefinition);
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(6));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(OnlyOneTablePerHierarchyValidationRule)));

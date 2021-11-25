@@ -105,9 +105,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(endPoint, Is.TypeOf<RealObjectEndPoint>());
       Assert.That(endPoint.ClientTransaction, Is.SameAs(_clientTransaction));
       Assert.That(endPoint.ID, Is.EqualTo(endPointID));
-      Assert.That(((RealObjectEndPoint) endPoint).ForeignKeyDataContainer, Is.SameAs(dataContainer));
-      Assert.That(((RealObjectEndPoint) endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
-      Assert.That(((RealObjectEndPoint) endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(((RealObjectEndPoint)endPoint).ForeignKeyDataContainer, Is.SameAs(dataContainer));
+      Assert.That(((RealObjectEndPoint)endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((RealObjectEndPoint)endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
     }
 
     [Test]
@@ -131,10 +131,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(endPoint, Is.TypeOf<VirtualObjectEndPoint>());
       Assert.That(endPoint.ClientTransaction, Is.SameAs(_clientTransaction));
       Assert.That(endPoint.ID, Is.EqualTo(endPointID));
-      Assert.That(((VirtualObjectEndPoint) endPoint).LazyLoader, Is.SameAs(_lazyLoaderStub));
-      Assert.That(((VirtualObjectEndPoint) endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
-      Assert.That(((VirtualObjectEndPoint) endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
-      Assert.That(((VirtualObjectEndPoint) endPoint).DataManagerFactory, Is.SameAs(_virtualObjectEndPointDataManagerFactoryStub));
+      Assert.That(((VirtualObjectEndPoint)endPoint).LazyLoader, Is.SameAs(_lazyLoaderStub));
+      Assert.That(((VirtualObjectEndPoint)endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((VirtualObjectEndPoint)endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(((VirtualObjectEndPoint)endPoint).DataManagerFactory, Is.SameAs(_virtualObjectEndPointDataManagerFactoryStub));
       Assert.That(endPoint.IsDataComplete, Is.False);
     }
 
@@ -169,13 +169,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(endPoint.ClientTransaction, Is.SameAs(_clientTransaction));
       Assert.That(endPoint.ID, Is.EqualTo(endPointID));
       Assert.That(
-          ((VirtualCollectionEndPoint) endPoint).CollectionManager,
+          ((VirtualCollectionEndPoint)endPoint).CollectionManager,
           Is.TypeOf<VirtualCollectionEndPointCollectionManager>()
               .With.Property<VirtualCollectionEndPointCollectionManager>(p => p.CollectionProvider).SameAs(_virtualCollectionEndPointCollectionProviderStub));
-      Assert.That(((VirtualCollectionEndPoint) endPoint).LazyLoader, Is.SameAs(_lazyLoaderStub));
-      Assert.That(((VirtualCollectionEndPoint) endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
-      Assert.That(((VirtualCollectionEndPoint) endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
-      Assert.That(((VirtualCollectionEndPoint) endPoint).DataManagerFactory, Is.SameAs(_virtualCollectionEndPointDataManagerFactoryStub));
+      Assert.That(((VirtualCollectionEndPoint)endPoint).LazyLoader, Is.SameAs(_lazyLoaderStub));
+      Assert.That(((VirtualCollectionEndPoint)endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((VirtualCollectionEndPoint)endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(((VirtualCollectionEndPoint)endPoint).DataManagerFactory, Is.SameAs(_virtualCollectionEndPointDataManagerFactoryStub));
       Assert.That(endPoint.IsDataComplete, Is.False);
     }
 
@@ -210,14 +210,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(endPoint.ClientTransaction, Is.SameAs(_clientTransaction));
       Assert.That(endPoint.ID, Is.EqualTo(endPointID));
       Assert.That(
-          ((DomainObjectCollectionEndPoint) endPoint).CollectionManager,
+          ((DomainObjectCollectionEndPoint)endPoint).CollectionManager,
           Is.TypeOf<DomainObjectCollectionEndPointCollectionManager>()
             .With.Property<DomainObjectCollectionEndPointCollectionManager>(p => p.DomainObjectCollectionProvider).SameAs(_domainObjectCollectionEndPointCollectionProviderStub)
             .And.Property<DomainObjectCollectionEndPointCollectionManager>(p => p.DataStrategyFactory).SameAs(_associatedDomainObjectCollectionStrategyFactoryStub));
-      Assert.That(((DomainObjectCollectionEndPoint) endPoint).LazyLoader, Is.SameAs(_lazyLoaderStub));
-      Assert.That(((DomainObjectCollectionEndPoint) endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
-      Assert.That(((DomainObjectCollectionEndPoint) endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
-      Assert.That(((DomainObjectCollectionEndPoint) endPoint).DataManagerFactory, Is.SameAs(_domainObjectCollectionEndPointDataManagerFactoryStub));
+      Assert.That(((DomainObjectCollectionEndPoint)endPoint).LazyLoader, Is.SameAs(_lazyLoaderStub));
+      Assert.That(((DomainObjectCollectionEndPoint)endPoint).EndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((DomainObjectCollectionEndPoint)endPoint).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(((DomainObjectCollectionEndPoint)endPoint).DataManagerFactory, Is.SameAs(_domainObjectCollectionEndPointDataManagerFactoryStub));
       Assert.That(endPoint.IsDataComplete, Is.False);
     }
 

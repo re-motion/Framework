@@ -122,7 +122,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectMemberResolverGetMethodInformation(_methodInfo, MemberAffiliation.Static, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[])null);
 
       Assert.That(
           () => _securityClient.HasStaticMethodAccess(typeof(SecurableObject), _methodInfo),
@@ -138,7 +138,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectMemberResolverGetMethodInformation(_methodInfo, MemberAffiliation.Static, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[])null);
 
       using (SecurityFreeSection.Activate())
       {

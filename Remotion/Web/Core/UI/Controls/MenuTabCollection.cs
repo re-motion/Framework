@@ -52,7 +52,7 @@ namespace Remotion.Web.UI.Controls
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
     protected internal new MainMenuTab this [int index]
     {
-      get { return (MainMenuTab) List[index]!; }
+      get { return (MainMenuTab)List[index]!; }
       set { List[index] = value; }
     }
   }
@@ -101,7 +101,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull("parent", parent);
       _parent = parent;
       for (int i = 0; i < InnerList.Count; i++)
-        ((SubMenuTab) InnerList[i]!).SetParent(_parent);
+        ((SubMenuTab)InnerList[i]!).SetParent(_parent);
     }
 
     public int Add (SubMenuTab tab)
@@ -122,7 +122,7 @@ namespace Remotion.Web.UI.Controls
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
     protected internal new SubMenuTab this [int index]
     {
-      get { return (SubMenuTab) List[index]!; }
+      get { return (SubMenuTab)List[index]!; }
       set { List[index] = value; }
     }
   }

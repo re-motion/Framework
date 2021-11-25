@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
 
         Guid fixedGuid = Guid.NewGuid();
-        ((IStorageProviderWithFixedGuid) provider).FixedGuid = fixedGuid;
+        ((IStorageProviderWithFixedGuid)provider).FixedGuid = fixedGuid;
 
         ObjectID id = provider.CreateNewObjectID(orderDefinition);
         Assert.That(id.Value, Is.EqualTo(fixedGuid));

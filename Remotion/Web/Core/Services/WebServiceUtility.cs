@@ -189,7 +189,7 @@ namespace Remotion.Web.Services
         where T: Attribute
     {
       // C# compiler 7.2 already provides caching for anonymous method.
-      return (T?) s_attributeCache.GetOrAdd(
+      return (T?)s_attributeCache.GetOrAdd(
           Tuple.Create(memberInfo, typeof(T)),
           key => AttributeUtility.GetCustomAttribute<T>(key.Item1, true));
     }

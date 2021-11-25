@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           new DerivedScreenshotBocListHeaderRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               fluentHeaderRow.GetTarget().FluentElement),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
       Assert.That(derivedHeaderRow.GetCell(), Is.Not.Null);
       Assert.That(derivedHeaderRow.GetCell(1), Is.Not.Null);
       Assert.That(derivedHeaderRow.GetCell("RowCmd"), Is.Not.Null);
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           new DerivedScreenshotBocListRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentRow.GetTarget().FluentList,
               fluentRow.GetTarget().FluentRow),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
       Assert.That(derivedRow.GetCell(), Is.Not.Null);
       Assert.That(derivedRow.GetCell(1), Is.Not.Null);
       Assert.That(derivedRow.GetCell("RowCmd"), Is.Not.Null);
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               fluentTableContainer.GetTarget().FluentList,
               includeHeader : false,
               columnIndex : 1),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
       Assert.That(derivedColumn.GetCell(), Is.Not.Null);
       Assert.That(derivedColumn.GetCell(1), Is.Not.Null);
       Assert.That(derivedColumn.GetCell("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           new DerivedScreenshotBocListHeaderRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               fluentHeaderRow.GetTarget().FluentElement),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
       Assert.That(derivedHeaderRow.GetCell(), Is.Not.Null);
       Assert.That(derivedHeaderRow.GetCell(1), Is.Not.Null);
       Assert.That(derivedHeaderRow.GetCell("RowCmd"), Is.Not.Null);
@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           new DerivedScreenshotBocListRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentRow.GetTarget().FluentList,
               fluentRow.GetTarget().FluentRow),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
       Assert.That(derivedRow.GetCell(), Is.Not.Null);
       Assert.That(derivedRow.GetCell(1), Is.Not.Null);
       Assert.That(derivedRow.GetCell("RowCmd"), Is.Not.Null);
@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               fluentTableContainer.GetTarget().FluentList,
               includeHeader : false,
               columnIndex : 1),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
       Assert.That(derivedColumn.GetCell(), Is.Not.Null);
       Assert.That(derivedColumn.GetCell(1), Is.Not.Null);
       Assert.That(derivedColumn.GetCell("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);

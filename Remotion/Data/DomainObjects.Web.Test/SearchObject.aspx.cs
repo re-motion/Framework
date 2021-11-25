@@ -41,14 +41,14 @@ public class SearchObjectPage : WxePage
 
   private SearchFunction MyFunction
   {
-    get { return (SearchFunction) CurrentFunction; }
+    get { return (SearchFunction)CurrentFunction; }
   }
 
   private void Page_Load (object sender, System.EventArgs e)
 	{
     ResultList.ValueAsList = MyFunction.Result;
 
-    CurrentSearchObject.BusinessObject = (IBusinessObject) MyFunction.SearchObject;
+    CurrentSearchObject.BusinessObject = (IBusinessObject)MyFunction.SearchObject;
     CurrentSearchObject.LoadValues(IsPostBack);
 	}
 

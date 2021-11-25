@@ -34,28 +34,28 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Assert.IsTrue(bt1.GetType().IsDefined(typeof(BT1Attribute), true), "Attribute is inherited");
       Assert.That(bt1.GetType().IsDefined(typeof(ReplicatableAttribute), false), Is.True);
 
-      var atts = (ReplicatableAttribute[]) bt1.GetType().GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      var atts = (ReplicatableAttribute[])bt1.GetType().GetCustomAttributes(typeof(ReplicatableAttribute), false);
       Assert.That(atts.Length, Is.EqualTo(1));
       Assert.That(atts[0].I, Is.EqualTo(4));
 
       PropertyInfo property = bt1.GetType().GetProperty(typeof(IMixinWithPropsEventsAtts).FullName + ".Property",
                                                          BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(property, Is.Not.Null);
-      atts = (ReplicatableAttribute[]) property.GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      atts = (ReplicatableAttribute[])property.GetCustomAttributes(typeof(ReplicatableAttribute), false);
       Assert.That(atts.Length, Is.EqualTo(1));
       Assert.That(atts[0].S, Is.EqualTo("bla"));
       Assert.That(property.GetGetMethod(true).IsSpecialName, Is.True);
-      atts = (ReplicatableAttribute[]) property.GetGetMethod(true).GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      atts = (ReplicatableAttribute[])property.GetGetMethod(true).GetCustomAttributes(typeof(ReplicatableAttribute), false);
       Assert.That(atts[0].Named2, Is.EqualTo(1.0));
 
       Assert.That(property.GetSetMethod(true).IsSpecialName, Is.True);
-      atts = (ReplicatableAttribute[]) property.GetSetMethod(true).GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      atts = (ReplicatableAttribute[])property.GetSetMethod(true).GetCustomAttributes(typeof(ReplicatableAttribute), false);
       Assert.That(atts[0].Named2, Is.EqualTo(2.0));
 
       EventInfo eventInfo = bt1.GetType().GetEvent(typeof(IMixinWithPropsEventsAtts).FullName + ".Event",
                                                     BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(eventInfo, Is.Not.Null);
-      atts = (ReplicatableAttribute[]) eventInfo.GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      atts = (ReplicatableAttribute[])eventInfo.GetCustomAttributes(typeof(ReplicatableAttribute), false);
       Assert.That(atts.Length, Is.EqualTo(1));
       Assert.That(atts[0].S, Is.EqualTo("blo"));
       Assert.That(eventInfo.GetAddMethod(true).IsSpecialName, Is.True);

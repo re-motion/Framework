@@ -147,7 +147,7 @@ namespace Remotion.Security.UnitTests
       var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
       var right = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That(left.Equals((object) right), Is.True);
+      Assert.That(left.Equals((object)right), Is.True);
     }
 
     [Test]
@@ -155,7 +155,7 @@ namespace Remotion.Security.UnitTests
     {
       var role = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That(role.Equals((object) null), Is.False);
+      Assert.That(role.Equals((object)null), Is.False);
     }
 
     [Test]

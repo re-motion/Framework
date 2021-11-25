@@ -306,12 +306,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       try
       {
-        ((IControlObjectNotifier) itemCommand).ActionExecute += OnActionExecute;
+        ((IControlObjectNotifier)itemCommand).ActionExecute += OnActionExecute;
         return itemCommand.Click(actionOptions);
       }
       finally
       {
-        ((IControlObjectNotifier) itemCommand).ActionExecute -= OnActionExecute;
+        ((IControlObjectNotifier)itemCommand).ActionExecute -= OnActionExecute;
       }
     }
 

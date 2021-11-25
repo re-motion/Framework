@@ -125,7 +125,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     private void DisableSpecCompliance (ExtendedChromeOptions chromeOptions)
     {
-      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue(chromeOptions)!;
+      var knownCapabilityNames = (Dictionary<string, string>)s_knownCapabilityNamesField.Value.GetValue(chromeOptions)!;
       knownCapabilityNames.Remove("w3c");
 
       chromeOptions.AddAdditionalCapability("w3c", false);

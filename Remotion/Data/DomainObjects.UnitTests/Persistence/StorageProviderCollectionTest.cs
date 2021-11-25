@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       _collection.Add(_provider);
 
       StorageProvider copy = new RdbmsProvider(
-          (RdbmsProviderDefinition) _provider.StorageProviderDefinition,
+          (RdbmsProviderDefinition)_provider.StorageProviderDefinition,
           NullPersistenceExtension.Instance,
           _storageProviderCommandFactoryStub,
           () => new SqlConnection());

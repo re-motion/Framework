@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
         ClientTransaction.Current.Commit();
         objectID = domainObject.ID;
       }
-      return (T) LifetimeService.GetObject(ClientTransaction.Current, objectID, false);
+      return (T)LifetimeService.GetObject(ClientTransaction.Current, objectID, false);
     }
 
     protected void PrepareInconsistentState_OneMany_ObjectIncluded (out Company company, out IndustrialSector industrialSector)

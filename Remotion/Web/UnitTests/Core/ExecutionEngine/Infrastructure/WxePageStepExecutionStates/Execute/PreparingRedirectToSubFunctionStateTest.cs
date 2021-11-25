@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(
                     nextState.Parameters.DestinationUrl,
                     Is.EqualTo("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + WxeContext.FunctionToken));
@@ -87,7 +87,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(
                     nextState.Parameters.DestinationUrl,
                     Is.EqualTo("/AppDir/sub.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
@@ -112,7 +112,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
 
                 string destinationUrl = UrlUtility.AddParameters(
                     "/AppDir/sub.wxe",

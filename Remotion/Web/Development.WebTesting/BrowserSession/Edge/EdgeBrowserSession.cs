@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
     /// <inheritdoc />
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      return ((IWebDriver) Driver.Native).Manage().Logs.GetLog(LogType.Browser)
+      return ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser)
           .Select(logEntry => new BrowserLogEntry(logEntry))
           .ToArray();
     }

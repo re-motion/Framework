@@ -102,24 +102,24 @@ public class BocEnumValueUserControl : BaseUserControl
   {
     base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     GenderField.LoadUnboundValue((Gender?)null, IsPostBack);
 
-    UnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    UnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty)CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     //UnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
     UnboundReadOnlyMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
-    DisabledUnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    DisabledUnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty)CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     DisabledUnboundMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
     DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus(MarriageStatusField);
+        ((ISmartNavigablePage)Page).SetFocus(MarriageStatusField);
     }
 
-    EnumObject.BusinessObject = (IBusinessObject) ClassWithEnums.CreateObject();
+    EnumObject.BusinessObject = (IBusinessObject)ClassWithEnums.CreateObject();
   }
   public override bool Validate ()
   {

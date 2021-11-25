@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public AccessControlEntryValidationError[] GetErrors ()
     {
-      return _errors.OrderBy(e => (int) e).ToArray();
+      return _errors.OrderBy(e => (int)e).ToArray();
     }
 
     public void SetError (AccessControlEntryValidationError error)

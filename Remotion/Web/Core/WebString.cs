@@ -207,7 +207,7 @@ namespace Remotion.Web
     {
       unchecked
       {
-        return (GetValue().GetHashCode() * 397) ^ (int) _type;
+        return (GetValue().GetHashCode() * 397) ^ (int)_type;
       }
     }
 

@@ -152,10 +152,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       var size = graphics.MeasureString(_content, _font, new SizeF(_maxWidth, _maxHeight));
       var position = PositionAndApplyPadding(resolvedScreenshotElement.ElementBounds, size.Width, size.Height);
       var layout = new Rectangle(
-          (int) Math.Round(position.X),
-          (int) Math.Round(position.Y),
-          (int) Math.Round(size.Width) + 1,
-          (int) Math.Round(size.Height) + 1);
+          (int)Math.Round(position.X),
+          (int)Math.Round(position.Y),
+          (int)Math.Round(size.Width) + 1,
+          (int)Math.Round(size.Height) + 1);
 
       if (_backgroundBrush != null)
         graphics.FillRectangle(_backgroundBrush, layout);

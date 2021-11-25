@@ -141,9 +141,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new List<BocListSortingOrderEntry>(
               new[]
               {
-                  new BocListSortingOrderEntry((IBocSortableColumnDefinition) columns[0], SortingDirection.Ascending),
-                  new BocListSortingOrderEntry((IBocSortableColumnDefinition) columns[2], SortingDirection.Descending),
-                  new BocListSortingOrderEntry((IBocSortableColumnDefinition) columns[3], SortingDirection.None)
+                  new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[0], SortingDirection.Ascending),
+                  new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[2], SortingDirection.Descending),
+                  new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[3], SortingDirection.None)
               });
       builder.IsClientSideSortingEnabled = true;
       builder.HasSortingKeys = true;

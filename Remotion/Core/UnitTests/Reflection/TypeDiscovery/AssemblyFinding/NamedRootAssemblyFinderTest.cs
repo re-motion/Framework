@@ -80,7 +80,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     public void FindAssemblies_NullsRemoved ()
     {
       _loaderMock.Setup(mock => mock.TryLoadAssembly(_name1, It.IsAny<string>())).Returns(_assembly1).Verifiable();
-      _loaderMock.Setup(mock => mock.TryLoadAssembly(_name2, It.IsAny<string>())).Returns((Assembly) null).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly(_name2, It.IsAny<string>())).Returns((Assembly)null).Verifiable();
       _loaderMock.Setup(mock => mock.TryLoadAssembly(_name3, It.IsAny<string>())).Returns(_assembly3).Verifiable();
 
       var finder = CreateRootAssemblyFinder(_specification1, _specification2, _specification3);

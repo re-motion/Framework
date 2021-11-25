@@ -157,7 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       _eventReceiverMock.Replay();
       _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That(() => _collection.Remove((DomainObject) null), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() => _collection.Remove((DomainObject)null), Throws.TypeOf<ArgumentNullException>());
 
       _eventReceiverMock.VerifyAllExpectations();
     }
@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       _eventReceiverMock.Replay();
       _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That(() => _collection.Remove((ObjectID) null), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() => _collection.Remove((ObjectID)null), Throws.TypeOf<ArgumentNullException>());
 
       _eventReceiverMock.VerifyAllExpectations();
     }

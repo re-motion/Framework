@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting
         where TPageObject : PageObject
     {
       actualMatchesExpectedPageAssertion(newPageObjectContext);
-      return (TPageObject) Activator.CreateInstance(typeof(TPageObject), new object[] { newPageObjectContext })!;
+      return (TPageObject)Activator.CreateInstance(typeof(TPageObject), new object[] { newPageObjectContext })!;
     }
   }
 }

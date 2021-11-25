@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public TargetClassAccessingMixinsFromCtor ()
     {
-      var mixinTarget = (IMixinTarget) this;
+      var mixinTarget = (IMixinTarget)this;
       Mixins = mixinTarget.Mixins;
 
       Assert.That(Mixins.Length, Is.EqualTo(1));

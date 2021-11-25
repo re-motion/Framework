@@ -129,7 +129,7 @@ namespace Remotion.Mixins.Context
 
     void ICollection.CopyTo (Array array, int index)
     {
-      ((ICollection) _internalCollection.Values).CopyTo(array, index);
+      ((ICollection)_internalCollection.Values).CopyTo(array, index);
     }
 
     object ICollection.SyncRoot

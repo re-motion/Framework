@@ -63,7 +63,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
 
-      _constructorArguments[3] = Expression.NewArrayInit(typeof(Type), explicitDependencies.Select(d => (Expression) Expression.Constant(d)));
+      _constructorArguments[3] = Expression.NewArrayInit(typeof(Type), explicitDependencies.Select(d => (Expression)Expression.Constant(d)));
     }
 
     public void AddOrigin (MixinContextOrigin origin)

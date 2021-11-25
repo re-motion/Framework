@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result.CollectionType, Is.Null);
       Assert.That(result.EagerFetchQueries, Is.Empty);
 
-      var resultConversion = ((ScalarQueryAdapter<int>) result).ResultConversion;
+      var resultConversion = ((ScalarQueryAdapter<int>)result).ResultConversion;
       Assert.That(resultConversion("an object"), Is.EqualTo(42));
     }
 
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Return(fakeFetchSqlQueryResult)
           .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
             var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
             CheckActualFetchQueryModel(actualQueryModel, fetchQueryModel);
           });
@@ -235,7 +235,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Return(fakeFetchSqlQueryResult)
           .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
             var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
             CheckActualFetchQueryModel(actualQueryModel, fetchQueryModel);
           });
@@ -262,7 +262,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Return(fakeFetchSqlQueryResult)
           .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
             var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
             CheckActualFetchQueryModel(actualQueryModel, fetchQueryModel);
           });
@@ -295,18 +295,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Return(fakeFetchSqlQueryResult)
           .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
             var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
 
             Assert.That(actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression>());
-            CheckActualFetchQueryModel(((SubQueryExpression) actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
+            CheckActualFetchQueryModel(((SubQueryExpression)actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
 
             Assert.That(actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause>());
-            var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single();
-            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition(typeof(Customer), "Orders"));
+            var orderByClause = (OrderByClause)actualQueryModel.BodyClauses.Single();
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition)GetEndPointDefinition(typeof(Customer), "Orders"));
             Assert.That(endPointDefinition.GetSortExpression().ToString(), Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber ASC"));
             var orderNumberMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((Order o) => o.OrderNumber);
-            Assert.That(((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs(orderNumberMember));
+            Assert.That(((MemberExpression)orderByClause.Orderings[0].Expression).Member, Is.SameAs(orderNumberMember));
             Assert.That(orderByClause.Orderings[0].OrderingDirection, Is.EqualTo(OrderingDirection.Asc));
           });
 
@@ -330,19 +330,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Return(fakeFetchSqlQueryResult)
           .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
             var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
 
             Assert.That(actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression>());
-            CheckActualFetchQueryModel(((SubQueryExpression) actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
+            CheckActualFetchQueryModel(((SubQueryExpression)actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
 
             Assert.That(actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause>());
-            var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single();
-            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition(typeof(RelationTargetForPersistentMixin), "RelationProperty4"));
+            var orderByClause = (OrderByClause)actualQueryModel.BodyClauses.Single();
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition)GetEndPointDefinition(typeof(RelationTargetForPersistentMixin), "RelationProperty4"));
             Assert.That(endPointDefinition.GetSortExpression().ToString(),
                 Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.MixinAddingPersistentProperties.PersistentProperty ASC"));
             var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((IMixinAddingPersistentProperties o) => o.PersistentProperty);
-            Assert.That(((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs(sortedByMember));
+            Assert.That(((MemberExpression)orderByClause.Orderings[0].Expression).Member, Is.SameAs(sortedByMember));
             Assert.That(orderByClause.Orderings[0].OrderingDirection, Is.EqualTo(OrderingDirection.Asc));
           });
       _generator.CreateSequenceQuery<RelationTargetForPersistentMixin>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
@@ -402,19 +402,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Return(fakeFetchSqlQueryResult)
           .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
             var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
 
             Assert.That(actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression>());
-            CheckActualFetchQueryModel(((SubQueryExpression) actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
+            CheckActualFetchQueryModel(((SubQueryExpression)actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
 
             Assert.That(actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause>());
-            var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single();
-            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition(typeof(RelationTargetManySide), "CollectionProperty"));
+            var orderByClause = (OrderByClause)actualQueryModel.BodyClauses.Single();
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition)GetEndPointDefinition(typeof(RelationTargetManySide), "CollectionProperty"));
             Assert.That(endPointDefinition.GetSortExpression().ToString(),
                 Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType.DerivedRelationTargetOneSide.SortProperty ASC"));
             var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((DerivedRelationTargetOneSide o) => o.SortProperty);
-            Assert.That(((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs(sortedByMember));
+            Assert.That(((MemberExpression)orderByClause.Orderings[0].Expression).Member, Is.SameAs(sortedByMember));
             Assert.That(orderByClause.Orderings[0].OrderingDirection, Is.EqualTo(OrderingDirection.Asc));
           });
 
@@ -442,8 +442,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Return(fakeInnerFetchSqlQueryResult)
           .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            Assert.That(((StreamedSequenceInfo) actualQueryModel.GetOutputDataInfo()).ItemExpression.Type, Is.SameAs(typeof(Company)));
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            Assert.That(((StreamedSequenceInfo)actualQueryModel.GetOutputDataInfo()).ItemExpression.Type, Is.SameAs(typeof(Company)));
           });
 
       var result = _generator.CreateSequenceQuery<Customer>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
@@ -506,7 +506,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result.CollectionType, Is.Null);
       Assert.That(result.EagerFetchQueries, Is.Empty);
 
-      var resultConversion = ((CustomSequenceQueryAdapter<int>) result).ResultConversion;
+      var resultConversion = ((CustomSequenceQueryAdapter<int>)result).ResultConversion;
       Assert.That(resultConversion(fakeQueryResultRow), Is.EqualTo(42));
     }
 
@@ -633,15 +633,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     private int CheckScalarResultRowAdapter (IDatabaseResultRow row, string expectedScalarValue, int fakeResult)
     {
       Assert.That(row, Is.TypeOf<ScalarResultRowAdapter>());
-      Assert.That(((ScalarResultRowAdapter) row).ScalarValue, Is.EqualTo(expectedScalarValue));
-      Assert.That(((ScalarResultRowAdapter) row).StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
+      Assert.That(((ScalarResultRowAdapter)row).ScalarValue, Is.EqualTo(expectedScalarValue));
+      Assert.That(((ScalarResultRowAdapter)row).StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
       return fakeResult;
     }
 
     private int CheckQueryResultRowAdapter (IDatabaseResultRow row, IQueryResultRow expectedResultRow, int fakeResult)
     {
       Assert.That(row, Is.TypeOf<QueryResultRowAdapter>());
-      Assert.That(((QueryResultRowAdapter) row).QueryResultRow, Is.EqualTo(expectedResultRow));
+      Assert.That(((QueryResultRowAdapter)row).QueryResultRow, Is.EqualTo(expectedResultRow));
       return fakeResult;
     }
   }

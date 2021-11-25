@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnRelationChanged(args);
       if (args.IsRelation(this, "StateCombinationsInternal"))
-        HandleStateCombinationsChanged((StateCombination) args.NewRelatedObject);
+        HandleStateCombinationsChanged((StateCombination)args.NewRelatedObject);
     }
 
     private void HandleStateCombinationsChanged (StateCombination stateCombination)

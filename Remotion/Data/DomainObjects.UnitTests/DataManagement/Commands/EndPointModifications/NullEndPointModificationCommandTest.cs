@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     public void Initialization_FromNullObjectEndPoint ()
     {
       var endPoint = new NullObjectEndPoint(TestableClientTransaction, _id.Definition);
-      var command = (NullEndPointModificationCommand) endPoint.CreateSetCommand(Employee.NewObject());
+      var command = (NullEndPointModificationCommand)endPoint.CreateSetCommand(Employee.NewObject());
       Assert.That(command.AffectedEndPoint, Is.SameAs(endPoint));
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      var result = ((IDataManagementCommand) _command).ExpandToAllRelatedObjects();
+      var result = ((IDataManagementCommand)_command).ExpandToAllRelatedObjects();
 
       Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }

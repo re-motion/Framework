@@ -49,8 +49,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       base.SetUp();
 
-      IBusinessObject firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
-      IBusinessObject secondObject = (IBusinessObject) ((TypeWithReference) BusinessObject).SecondValue;
+      IBusinessObject firstObject = (IBusinessObject)((TypeWithReference)BusinessObject).FirstValue;
+      IBusinessObject secondObject = (IBusinessObject)((TypeWithReference)BusinessObject).SecondValue;
       var triplets = new[]
                      {
                          new BocListCustomColumnTuple(firstObject, 10, new WebControl(HtmlTextWriterTag.Div)),

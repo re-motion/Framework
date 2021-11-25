@@ -72,11 +72,11 @@ namespace Remotion.Web.UI.Controls
     {
       if (savedState != null)
       {
-        var pair = (Pair) savedState;
+        var pair = (Pair)savedState;
 
         base.LoadViewState(pair.First);
 
-        _cssClass = (string) (pair.Second ?? string.Empty);
+        _cssClass = (string)(pair.Second ?? string.Empty);
       }
     }
 

@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding
 
           if (ReferencedDataSource.BusinessObject != null)
           {
-            _businessObject = (IBusinessObject?) ReferencedDataSource.BusinessObject.GetProperty(ReferenceProperty);
+            _businessObject = (IBusinessObject?)ReferencedDataSource.BusinessObject.GetProperty(ReferenceProperty);
             if (_businessObject == null && SupportsDefaultValueSemantics)
             {
               _businessObject = ReferenceProperty.CreateDefaultValue(ReferencedDataSource.BusinessObject);

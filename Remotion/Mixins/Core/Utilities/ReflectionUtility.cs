@@ -177,14 +177,14 @@ namespace Remotion.Mixins.Utilities
       switch (memberInfo.MemberType)
       {
         case MemberTypes.Method:
-          return new[] { (MethodInfo) memberInfo };
+          return new[] { (MethodInfo)memberInfo };
 
         case MemberTypes.Property:
-          var propertyInfo = (PropertyInfo) memberInfo;
+          var propertyInfo = (PropertyInfo)memberInfo;
           return propertyInfo.GetAccessors(true);
 
         case MemberTypes.Event:
-          var eventInfo = (EventInfo) memberInfo;
+          var eventInfo = (EventInfo)memberInfo;
           return new[] { eventInfo.GetAddMethod(true), eventInfo.GetRemoveMethod(true) };
 
         default:

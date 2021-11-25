@@ -54,10 +54,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject = TypeWithEnum.Create();
 
       _propertyEnumValue =
-          (IBusinessObjectEnumerationProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("EnumValue");
+          (IBusinessObjectEnumerationProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("EnumValue");
 
-      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 
@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string[] actual = _bocEnumValue.GetTrackedClientIDs();
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.Length, Is.EqualTo(3));
-      var valueName = ((IBocEnumValue) _bocEnumValue).GetValueName();
+      var valueName = ((IBocEnumValue)_bocEnumValue).GetValueName();
       Assert.That(actual[0], Is.EqualTo(valueName + "_0"));
       Assert.That(actual[1], Is.EqualTo(valueName + "_1"));
       Assert.That(actual[2], Is.EqualTo(valueName + "_2"));
@@ -390,7 +390,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       control.UndefinedItemText = "The undefined item";
       control.ListControlStyle.ControlType = listControlType;
 
-      Assert.That(((IBocEnumValue) control).GetNullItemText(), Is.EqualTo("The undefined item"));
+      Assert.That(((IBocEnumValue)control).GetNullItemText(), Is.EqualTo("The undefined item"));
     }
 
     [Test]
@@ -404,7 +404,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That(((IBocEnumValue) control).GetNullItemText(), Is.Not.Empty);
+        Assert.That(((IBocEnumValue)control).GetNullItemText(), Is.Not.Empty);
       }
     }
   }

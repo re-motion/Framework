@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     private EditObjectFunction MyFunction
     {
-      get { return (EditObjectFunction) CurrentFunction; }
+      get { return (EditObjectFunction)CurrentFunction; }
     }
 
 		private void Page_Load (object sender, System.EventArgs e)

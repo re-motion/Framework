@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var list = _collection.AsList<Customer>();
 
       Assert.That(list, Is.InstanceOf(typeof(DomainObjectCollectionWrapper<Customer>)));
-      Assert.That(((DomainObjectCollectionWrapper<Customer>) list).WrappedCollection, Is.SameAs(_collection));
+      Assert.That(((DomainObjectCollectionWrapper<Customer>)list).WrappedCollection, Is.SameAs(_collection));
     }
 
     [Test]

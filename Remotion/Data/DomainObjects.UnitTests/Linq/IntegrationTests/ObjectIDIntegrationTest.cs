@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void CoalesceExpression_UsesIDValue ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee>()
-        where (e.Computer ?? (DomainObject) e).ID.Value == DomainObjectIDs.Employee2.Value
+        where (e.Computer ?? (DomainObject)e).ID.Value == DomainObjectIDs.Employee2.Value
         select e;
 
       CheckQueryResult(query, DomainObjectIDs.Employee2);
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void CoalesceExpression_UsesCompoundID_ThrowsNotSupportedException ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee>()
-        where (e.Computer ?? (DomainObject) e).ID == DomainObjectIDs.Employee2
+        where (e.Computer ?? (DomainObject)e).ID == DomainObjectIDs.Employee2
         select e;
       Assert.That(
           () => CheckQueryResult(query, DomainObjectIDs.Employee2),
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void ConditionalExpression_UsesIDValue ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee>()
-        where (e.Computer.ID.Value == DomainObjectIDs.Computer1.Value ? e.Computer : (DomainObject) e).ID.Value == DomainObjectIDs.Computer1.Value
+        where (e.Computer.ID.Value == DomainObjectIDs.Computer1.Value ? e.Computer : (DomainObject)e).ID.Value == DomainObjectIDs.Computer1.Value
         select e;
 
       CheckQueryResult(query, DomainObjectIDs.Employee3);
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void ConditionalExpression_UsesCompundID_ThrowsNotSupportedException ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee>()
-        where (e.Computer.ID == DomainObjectIDs.Computer1 ? e.Computer : (DomainObject) e).ID == DomainObjectIDs.Computer1
+        where (e.Computer.ID == DomainObjectIDs.Computer1 ? e.Computer : (DomainObject)e).ID == DomainObjectIDs.Computer1
         select e;
       Assert.That(
           () => CheckQueryResult(query, DomainObjectIDs.Employee3),

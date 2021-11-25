@@ -135,7 +135,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(TenantPropertyTypeSearchService), searchServiceStub.Object);
       IBusinessObjectClass tenantClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Tenant));
-      IBusinessObjectReferenceProperty parentProperty = (IBusinessObjectReferenceProperty) tenantClass.GetPropertyDefinition("Parent");
+      IBusinessObjectReferenceProperty parentProperty = (IBusinessObjectReferenceProperty)tenantClass.GetPropertyDefinition("Parent");
       Assert.That(parentProperty, Is.Not.Null);
 
       Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);

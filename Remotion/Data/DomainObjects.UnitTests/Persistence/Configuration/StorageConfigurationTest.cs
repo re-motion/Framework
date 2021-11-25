@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       Assert.That(_configuration.DefaultStorageProviderDefinition, Is.InstanceOf(typeof(RdbmsProviderDefinition)));
       Assert.That(_configuration.StorageProviderDefinitions.Count, Is.EqualTo(1));
       Assert.That(_configuration.StorageProviderDefinitions["Rdbms"], Is.SameAs(_configuration.DefaultStorageProviderDefinition));
-      Assert.That(((RdbmsProviderDefinition) _configuration.DefaultStorageProviderDefinition).ConnectionString, Is.EqualTo("ConnectionString"));
+      Assert.That(((RdbmsProviderDefinition)_configuration.DefaultStorageProviderDefinition).ConnectionString, Is.EqualTo("ConnectionString"));
     }
 
     [Test]
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 
       Assert.That(_configuration.DefaultStorageProviderDefinition, Is.Null);
       Assert.That(_configuration.StorageProviderDefinitions.Count, Is.EqualTo(1));
-      Assert.That(((RdbmsProviderDefinition) _configuration.StorageProviderDefinitions["Rdbms"]).ConnectionString, Is.EqualTo("ConnectionString"));
+      Assert.That(((RdbmsProviderDefinition)_configuration.StorageProviderDefinitions["Rdbms"]).ConnectionString, Is.EqualTo("ConnectionString"));
     }
 
     [Test]

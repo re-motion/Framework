@@ -78,9 +78,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       var current = BaseEntity;
       while (current is FilterViewDefinition)
-        current = ((FilterViewDefinition) current).BaseEntity;
+        current = ((FilterViewDefinition)current).BaseEntity;
 
-      return (TableDefinition) current;
+      return (TableDefinition)current;
     }
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)

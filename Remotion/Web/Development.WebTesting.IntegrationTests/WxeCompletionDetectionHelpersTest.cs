@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [SetUp]
     public void SetUp ()
     {
-      _requestErrorDetectionStrategy = (DiagnosticInformationCollectioningRequestErrorDetectionStrategy) Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
+      _requestErrorDetectionStrategy = (DiagnosticInformationCollectioningRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
     }
 
     [Test]

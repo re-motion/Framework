@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Metadat
 
       _searchService = new AbstractRoleDefinitionPropertyTypeSearchService();
       IBusinessObjectClass aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(AccessControlEntry));
-      _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition("SpecificAbstractRole");
+      _property = (IBusinessObjectReferenceProperty)aceClass.GetPropertyDefinition("SpecificAbstractRole");
       Assert.That(_property, Is.Not.Null);
     }
 

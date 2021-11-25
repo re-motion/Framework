@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       foreach (var person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)))
       {
         persons.Add(
-            new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity) person) { IconUrl = GetUrl(GetIcon((IBusinessObject) person)) });
+            new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity)person) { IconUrl = GetUrl(GetIcon((IBusinessObject)person)) });
       }
 
       var filteredPersons = persons.FindAll(person => person.DisplayName.StartsWith(searchString, StringComparison.OrdinalIgnoreCase));

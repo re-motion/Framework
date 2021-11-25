@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       var classesByBaseClass = (from classDefinition in classDefinitions
                                 where classDefinition.BaseClass != null
                                 group classDefinition by classDefinition.BaseClass)
-          .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<ClassDefinition>) grouping);
+          .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<ClassDefinition>)grouping);
 
       foreach (var classDefinition in classDefinitions)
       {

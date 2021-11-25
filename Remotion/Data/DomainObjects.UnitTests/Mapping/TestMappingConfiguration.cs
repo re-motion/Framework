@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var rootAssemblyFinder = new FixedRootAssemblyFinder(rootAssemlbies);
       var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
       var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
-      var typeDiscoveryService = (ITypeDiscoveryService) new AssemblyFinderTypeDiscoveryService(assemblyFinder);
+      var typeDiscoveryService = (ITypeDiscoveryService)new AssemblyFinderTypeDiscoveryService(assemblyFinder);
       typeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(typeDiscoveryService, testMappingNamespace);
 
       return typeDiscoveryService;

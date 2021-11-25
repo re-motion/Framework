@@ -33,7 +33,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public override void SetUp ()
     {
       base.SetUp();
-      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject(typeof(ILGenerator));
+      _fakeILGenerator = (ILGenerator)FormatterServices.GetSafeUninitializedObject(typeof(ILGenerator));
     }
 
     [Test]

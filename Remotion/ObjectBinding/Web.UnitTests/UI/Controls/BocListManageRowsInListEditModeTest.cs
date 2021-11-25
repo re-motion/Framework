@@ -44,15 +44,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       base.SetUp();
 
       _values = new IBusinessObject[5];
-      _values[0] = (IBusinessObject) TypeWithString.Create("0", "A");
-      _values[1] = (IBusinessObject) TypeWithString.Create("1", "A");
-      _values[2] = (IBusinessObject) TypeWithString.Create("2", "B");
-      _values[3] = (IBusinessObject) TypeWithString.Create("3", "B");
-      _values[4] = (IBusinessObject) TypeWithString.Create("4", "C");
+      _values[0] = (IBusinessObject)TypeWithString.Create("0", "A");
+      _values[1] = (IBusinessObject)TypeWithString.Create("1", "A");
+      _values[2] = (IBusinessObject)TypeWithString.Create("2", "B");
+      _values[3] = (IBusinessObject)TypeWithString.Create("3", "B");
+      _values[4] = (IBusinessObject)TypeWithString.Create("4", "C");
 
       _newValues = new IBusinessObject[2];
-      _newValues[0] = (IBusinessObject) TypeWithString.Create("5", "C");
-      _newValues[1] = (IBusinessObject) TypeWithString.Create("6", "D");
+      _newValues[0] = (IBusinessObject)TypeWithString.Create("5", "C");
+      _newValues[1] = (IBusinessObject)TypeWithString.Create("6", "D");
 
       _typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
 

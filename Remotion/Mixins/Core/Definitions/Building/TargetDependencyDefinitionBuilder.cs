@@ -51,14 +51,14 @@ namespace Remotion.Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      _mixin.TargetClass.RequiredTargetCallTypes.Add((RequiredTargetCallTypeDefinition) requirement);
+      _mixin.TargetClass.RequiredTargetCallTypes.Add((RequiredTargetCallTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      return new TargetCallDependencyDefinition((RequiredTargetCallTypeDefinition) requirement, _mixin, (TargetCallDependencyDefinition?) aggregator);
+      return new TargetCallDependencyDefinition((RequiredTargetCallTypeDefinition)requirement, _mixin, (TargetCallDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
@@ -66,7 +66,7 @@ namespace Remotion.Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull("dependency", dependency);
 
       if (!_mixin.TargetCallDependencies.ContainsKey(dependency.RequiredType.Type))
-        _mixin.TargetCallDependencies.Add((TargetCallDependencyDefinition) dependency);
+        _mixin.TargetCallDependencies.Add((TargetCallDependencyDefinition)dependency);
     }
   }
 }

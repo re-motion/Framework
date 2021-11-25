@@ -59,7 +59,7 @@ namespace Remotion.Xml
     private void HandleValidation (object? sender, ValidationEventArgs args)
     {
       // TODO RM-7772: sender should be checked for null
-      XmlReader reader = (XmlReader) sender!;
+      XmlReader reader = (XmlReader)sender!;
 
       // WORKAROUND: known bug in .NET framework 1.x
       // TODO: verify for 2.0

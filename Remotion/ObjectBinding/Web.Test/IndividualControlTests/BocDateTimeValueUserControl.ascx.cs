@@ -97,7 +97,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
   {
     base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     //UnboundBirthdayField.LoadUnboundValue (person.DateOFBirth, IsPostBack);
     UnboundReadOnlyBirthdayField.LoadUnboundValue(person.DateOfBirth, IsPostBack);
@@ -114,7 +114,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus(BirthdayField);
+        ((ISmartNavigablePage)Page).SetFocus(BirthdayField);
     }
   }
 

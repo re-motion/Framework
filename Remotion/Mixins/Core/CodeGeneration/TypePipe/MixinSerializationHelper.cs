@@ -79,7 +79,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var mixinType = pipeline.ReflectionService.GetAdditionalType(identifier);
 
-      _baseMemberValues = (object[]?) info.GetValue("__baseMemberValues", typeof(object[]));
+      _baseMemberValues = (object[]?)info.GetValue("__baseMemberValues", typeof(object[]));
 
       // Usually, instantiate a deserialized object using GetSafeUninitializedObject.
       // However, _baseMemberValues being null means that the object itself manages its member deserialization via ISerializable. In such a case, we

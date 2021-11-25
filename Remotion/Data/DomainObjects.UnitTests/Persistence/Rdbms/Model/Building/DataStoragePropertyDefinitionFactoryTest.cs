@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       _valuePropertyFactoryMock.Expect(mock => mock.CreateStoragePropertyDefinition(null, "Value")).Return(_fakeStoragePropertyDefinition);
 
-      var result = _factory.CreateStoragePropertyDefinition((object) null);
+      var result = _factory.CreateStoragePropertyDefinition((object)null);
 
       _valuePropertyFactoryMock.VerifyAllExpectations();
       Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition));

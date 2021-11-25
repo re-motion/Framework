@@ -218,7 +218,7 @@ namespace Remotion.Security.UnitTests
     public void Equals_WithNull ()
     {
       var left = CreatePrincipal("TheUser", new[] { "TheGroup" }, "SomeUser", new[] { "SomeGroup" });
-      var right = (SecurityPrincipal) null;
+      var right = (SecurityPrincipal)null;
 
       Assert.That(left.Equals(right), Is.False);
     }
@@ -229,7 +229,7 @@ namespace Remotion.Security.UnitTests
       var left = CreatePrincipal("TheUser", new[] { "TheGroup" }, "SomeUser", new[] { "SomeGroup" });
       var right = CreatePrincipal("TheUser", new[] { "TheGroup" }, "SomeUser", new[] { "SomeGroup" });
 
-      Assert.That(left.Equals((object) right), Is.True);
+      Assert.That(left.Equals((object)right), Is.True);
     }
 
     [Test]
@@ -237,7 +237,7 @@ namespace Remotion.Security.UnitTests
     {
       var left = CreatePrincipal("TheUser", new[] { "TheGroup" }, "SomeUser", new[] { "SomeGroup" });
 
-      Assert.That(left.Equals((object) null), Is.False);
+      Assert.That(left.Equals((object)null), Is.False);
     }
 
     [Test]

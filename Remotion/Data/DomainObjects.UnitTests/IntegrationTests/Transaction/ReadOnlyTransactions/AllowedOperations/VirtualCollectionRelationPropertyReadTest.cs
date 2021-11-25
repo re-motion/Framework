@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     {
       base.SetUp();
 
-      _order1 = (Order) LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
+      _order1 = (Order)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
       _relationEndPointID = RelationEndPointID.Resolve(_order1, o => o.OrderItems);
       _oppositeRelationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, _relationEndPointID.Definition.GetOppositeEndPointDefinition());
     }

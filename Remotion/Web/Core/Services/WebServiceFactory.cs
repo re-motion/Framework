@@ -53,7 +53,7 @@ namespace Remotion.Web.Services
       foreach (var searchServiceMethod in GetServiceMethodsFromCache<T>())
         WebServiceUtility.CheckWebService(compiledType, searchServiceMethod.Item1);
 
-      return (T) Activator.CreateInstance(compiledType)!;
+      return (T)Activator.CreateInstance(compiledType)!;
     }
 
     public T CreateScriptService<T> (string virtualPath) where T: class
@@ -63,7 +63,7 @@ namespace Remotion.Web.Services
       foreach (var serviceMethod in GetServiceMethodsFromCache<T>())
         WebServiceUtility.CheckScriptService(compiledType, serviceMethod.Item1);
 
-      return (T) Activator.CreateInstance(compiledType)!;
+      return (T)Activator.CreateInstance(compiledType)!;
     }
 
     public T CreateJsonService<T> (string virtualPath) where T: class
@@ -73,7 +73,7 @@ namespace Remotion.Web.Services
       foreach (var serviceMethod in GetServiceMethodsFromCache<T>())
         WebServiceUtility.CheckJsonService(compiledType, serviceMethod.Item1, serviceMethod.Item2);
 
-      return (T) Activator.CreateInstance(compiledType)!;
+      return (T)Activator.CreateInstance(compiledType)!;
     }
 
     private Type GetAndCheckCompiledType<T> (string virtualPath)

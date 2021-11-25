@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
 
       Assert.That(result, Is.TypeOf(typeof(MultiObjectLoadCommand<DataContainer>)));
-      var command = ((MultiObjectLoadCommand<DataContainer>) result);
+      var command = ((MultiObjectLoadCommand<DataContainer>)result);
       Assert.That(command.DbCommandBuildersAndReaders.Length, Is.EqualTo(1));
       Assert.That(command.DbCommandBuildersAndReaders[0].Item1, Is.SameAs(commandBuilderStub));
       Assert.That(command.DbCommandBuildersAndReaders[0].Item2, Is.SameAs(_dataContainerReader1Stub));
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var result = _factory.CreateForCustomQuery(_queryStub);
 
       Assert.That(result, Is.TypeOf(typeof(MultiObjectLoadCommand<IQueryResultRow>)));
-      var command = ((MultiObjectLoadCommand<IQueryResultRow>) result);
+      var command = ((MultiObjectLoadCommand<IQueryResultRow>)result);
       Assert.That(command.DbCommandBuildersAndReaders.Length, Is.EqualTo(1));
       Assert.That(command.DbCommandBuildersAndReaders[0].Item1, Is.SameAs(commandBuilderStub));
       Assert.That(command.DbCommandBuildersAndReaders[0].Item2, Is.SameAs(_resultRowReaderStub));
@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
 
       Assert.That(result, Is.TypeOf(typeof(ScalarValueLoadCommand)));
-      var command = ((ScalarValueLoadCommand) result);
+      var command = ((ScalarValueLoadCommand)result);
       Assert.That(command.DbCommandBuilder, Is.SameAs(commandBuilderStub));
     }
 

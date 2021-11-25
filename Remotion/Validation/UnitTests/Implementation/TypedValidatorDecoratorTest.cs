@@ -86,7 +86,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void Validate_InvalidInstance ()
     {
       Assert.That(
-          () => ((IValidator) _validatorDecorator).Validate("Invalid"),
+          () => ((IValidator)_validatorDecorator).Validate("Invalid"),
           Throws.InvalidOperationException.And.Message.EqualTo(
               "Cannot validate instances of type 'String'. This validator can only validate instances of type 'Customer'."));
     }

@@ -41,8 +41,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
     {
       ArgumentUtility.CheckNotNull("driver", driver);
 
-      var jsExecutor = (IJavaScriptExecutor) driver;
-      var data = ((ReadOnlyCollection<object>) jsExecutor.ExecuteScript(c_getWindowRectangleJs)).Select(e => (int) (long) e).ToArray();
+      var jsExecutor = (IJavaScriptExecutor)driver;
+      var data = ((ReadOnlyCollection<object>)jsExecutor.ExecuteScript(c_getWindowRectangleJs)).Select(e => (int)(long)e).ToArray();
       if (data.Length != 4)
         throw new InvalidOperationException("JS script for getting the IE content bounds is outdated.");
       return new Rectangle(data[0], data[1], data[2], data[3]);

@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       else
       {
         _currentOppositeEndPoint =
-            (IRealObjectEndPoint) endPointProvider.GetRelationEndPointWithoutLoading(sourceDataManager.CurrentOppositeEndPoint.ID);
+            (IRealObjectEndPoint)endPointProvider.GetRelationEndPointWithoutLoading(sourceDataManager.CurrentOppositeEndPoint.ID);
         Assertion.IsNotNull(
             _currentOppositeEndPoint,
             "When committing a current virtual relation value from a sub-transaction, the opposite end-point is guaranteed to exist.");

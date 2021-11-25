@@ -55,7 +55,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+      _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
     }
@@ -65,7 +65,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+        _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();
@@ -74,7 +74,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _securityClient.CheckAccess(new SecurableObject(null), (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+      _securityClient.CheckAccess(new SecurableObject(null), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
     }

@@ -30,21 +30,21 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Nullable_Fail ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNull("arg", (int?) null),
+          () => ArgumentUtility.CheckNotNull("arg", (int?)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Nullable_Succeed ()
     {
-      int? result = ArgumentUtility.CheckNotNull("arg", (int?) 1);
+      int? result = ArgumentUtility.CheckNotNull("arg", (int?)1);
       Assert.That(result, Is.EqualTo(1));
     }
 
     [Test]
     public void Value_Succeed ()
     {
-      int result = ArgumentUtility.CheckNotNull("arg", (int) 1);
+      int result = ArgumentUtility.CheckNotNull("arg", (int)1);
       Assert.That(result, Is.EqualTo(1));
     }
 
@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Reference_Fail ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNull("arg", (string) null),
+          () => ArgumentUtility.CheckNotNull("arg", (string)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

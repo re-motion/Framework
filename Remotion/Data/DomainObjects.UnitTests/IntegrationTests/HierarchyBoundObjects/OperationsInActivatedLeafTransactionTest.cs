@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        var order = (Order) LifetimeService.NewObject(_leafTransaction, typeof(Order), ParamList.Empty);
+        var order = (Order)LifetimeService.NewObject(_leafTransaction, typeof(Order), ParamList.Empty);
 
         Assert.That(GetStateFromTransaction(order, _leafTransaction).IsNew, Is.True);
         Assert.That(order.State.IsInvalid, Is.False);

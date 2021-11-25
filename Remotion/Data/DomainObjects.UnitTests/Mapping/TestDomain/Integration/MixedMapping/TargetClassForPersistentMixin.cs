@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     public int RedirectedPersistentProperty
     {
       [LinqPropertyRedirection (typeof(MixinAddingPersistentProperties), "PersistentProperty")]
-      get { return ((IMixinAddingPersistentProperties) this).PersistentProperty; }
+      get { return ((IMixinAddingPersistentProperties)this).PersistentProperty; }
     }
   }
 }

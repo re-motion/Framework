@@ -93,8 +93,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var user = _userHandle.GetObject();
-        userSecurityContext = ((ISecurityContextFactory) user).CreateSecurityContext();
-        tenantSecurityContext = ((ISecurityContextFactory) user.Tenant).CreateSecurityContext();
+        userSecurityContext = ((ISecurityContextFactory)user).CreateSecurityContext();
+        tenantSecurityContext = ((ISecurityContextFactory)user.Tenant).CreateSecurityContext();
       }
 
       var securityProviderStub = new Mock<ISecurityProvider>();

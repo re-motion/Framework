@@ -284,7 +284,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_transaction.EnterNonDiscardingScope())
       {
         List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates(classDefinition);
-        return (StatefulAccessControlList) acls[2];
+        return (StatefulAccessControlList)acls[2];
       }
     }
 
@@ -293,7 +293,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_transaction.EnterNonDiscardingScope())
       {
         List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates(classDefinition);
-        return (StatelessAccessControlList) acls[4];
+        return (StatelessAccessControlList)acls[4];
       }
     }
 

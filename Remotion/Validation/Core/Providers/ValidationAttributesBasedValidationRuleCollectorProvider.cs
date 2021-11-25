@@ -51,7 +51,7 @@ namespace Remotion.Validation.Providers
               .Where(HasValidationRulesOnProperty)
               .Select(p => new { Type = t, Property = p }))
           .Select(r => new { r.Type, Reflector = new ValidationAttributesBasedPropertyRuleReflector(r.Property, ValidationMessageFactory) })
-          .ToLookup(r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
+          .ToLookup(r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector)c.Reflector);
     }
 
     private bool HasValidationRulesOnProperty (PropertyInfo property)

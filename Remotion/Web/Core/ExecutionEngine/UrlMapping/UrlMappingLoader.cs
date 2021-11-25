@@ -50,7 +50,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     public UrlMappingConfiguration CreateUrlMappingConfiguration ()
     {
-      return (UrlMappingConfiguration) LoadConfiguration(_configurationFile!, _type!, _schemas!);
+      return (UrlMappingConfiguration)LoadConfiguration(_configurationFile!, _type!, _schemas!);
     }
 
     [MemberNotNull (nameof(_configurationFile))]

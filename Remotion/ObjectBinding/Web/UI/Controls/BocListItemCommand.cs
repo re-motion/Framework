@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       parameters["index"] = listIndex;
       parameters["object"] = businessObject;
       if (businessObject is IBusinessObjectWithIdentity)
-        parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
+        parameters["id"] = ((IBusinessObjectWithIdentity)businessObject).UniqueIdentifier;
       else
         parameters["id"] = null;
       if (OwnerControl != null)
@@ -233,7 +233,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override HrefCommandInfo HrefCommand
     {
       get { return _hrefCommand; }
-      set { _hrefCommand = (ListItemHrefCommandInfo) value; }
+      set { _hrefCommand = (ListItemHrefCommandInfo)value; }
     }
 
     /// <summary>
@@ -244,7 +244,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override WxeFunctionCommandInfo WxeFunctionCommand
     {
       get { return _wxeFunctionCommand; }
-      set { _wxeFunctionCommand = (ListItemWxeFunctionCommandInfo) value; }
+      set { _wxeFunctionCommand = (ListItemWxeFunctionCommandInfo)value; }
     }
 
     /// <summary> The <see cref="IBocListItemCommandState"/> to be used for evaluating whether to render the command. </summary>
@@ -257,7 +257,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (_commandState == null && !string.IsNullOrEmpty(_commandStateType))
         {
           Type type = WebTypeUtility.GetType(_commandStateType, true)!;
-          _commandState = (IBocListItemCommandState) Activator.CreateInstance(type, null)!;
+          _commandState = (IBocListItemCommandState)Activator.CreateInstance(type, null)!;
         }
         return _commandState;
       }
@@ -309,7 +309,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The <see cref="BocListItemCommand"/> that caused the event. </summary>
     public new BocListItemCommand Command
     {
-      get { return (BocListItemCommand) base.Command; }
+      get { return (BocListItemCommand)base.Command; }
     }
 
     /// <summary> The <see cref="BocCommandEnabledColumnDefinition"/> to which the command belongs. </summary>

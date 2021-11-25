@@ -41,7 +41,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       var emitter = new MethodWrapperEmitter(ilGenerator, methodInfo, parameterTypes, returnType);
       emitter.EmitStaticMethodBody();
 
-      var propertyGetter = (Func<object, object>) dynamicMethod.CreateDelegate(typeof(Func<object, object>));
+      var propertyGetter = (Func<object, object>)dynamicMethod.CreateDelegate(typeof(Func<object, object>));
 
       var expectedValue = new SimpleReferenceType();
       var obj = new ClassWithReferenceTypeProperties();

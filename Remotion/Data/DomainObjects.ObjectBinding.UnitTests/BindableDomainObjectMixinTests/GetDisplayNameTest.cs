@@ -55,14 +55,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       BindableDomainObjectMixin bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin>(SampleBindableMixinDomainObject.NewObject());
 
       Assert.That(
-          ((IBusinessObjectWithIdentity) bindableObjectMixin).DisplayName,
+          ((IBusinessObjectWithIdentity)bindableObjectMixin).DisplayName,
           Is.EqualTo("Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SampleBindableMixinDomainObject, Remotion.Data.DomainObjects.ObjectBinding.UnitTests"));
     }
 
     [Test]
     public void OverriddenDisplayName ()
     {
-      var businessObject = (IBusinessObjectWithIdentity) SampleBindableMixinDomainObjectWithOverriddenDisplayName.NewObject();
+      var businessObject = (IBusinessObjectWithIdentity)SampleBindableMixinDomainObjectWithOverriddenDisplayName.NewObject();
 
       Assert.That(
           businessObject.DisplayName,

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Linq
   public class ExtendedSqlGeneratingOuterSelectExpressionVisitor : SqlGeneratingOuterSelectExpressionVisitor
   {
     private static readonly MethodInfo s_getObjectIDOrNullMethod = MemberInfoFromExpressionUtility.GetMethod(() => GetObjectIDOrNull(null, null));
-    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor(() => new ObjectID((string) null, null));
+    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor(() => new ObjectID((string)null, null));
 
     public static new void GenerateSql (
         Expression expression,
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Linq
         // If the NewExpression represents a selected ObjectID, we want to return null if the ID value is null. Therefore, change the projection
         // to use the GetObjectIDOrNull method.
 
-        var originalObjectIDProjection = (NewExpression) CommandBuilder.GetInMemoryProjectionBody();
+        var originalObjectIDProjection = (NewExpression)CommandBuilder.GetInMemoryProjectionBody();
         Assertion.IsNotNull(originalObjectIDProjection);
         Assertion.IsTrue(originalObjectIDProjection.Constructor.Equals(s_objectIDConstructor));
 

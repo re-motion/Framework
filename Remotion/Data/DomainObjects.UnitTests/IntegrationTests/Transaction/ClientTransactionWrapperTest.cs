@@ -68,9 +68,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ITransaction child = _transaction.CreateChild();
       Assert.That(child, Is.Not.Null);
       Assert.IsInstanceOf(typeof(ClientTransactionWrapper), child);
-      Assert.IsInstanceOf(typeof(ClientTransaction), ((ClientTransactionWrapper) child).WrappedInstance);
+      Assert.IsInstanceOf(typeof(ClientTransaction), ((ClientTransactionWrapper)child).WrappedInstance);
 
-      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(((ClientTransactionWrapper) child).WrappedInstance);
+      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(((ClientTransactionWrapper)child).WrappedInstance);
       Assert.IsInstanceOf(typeof(SubPersistenceStrategy), persistenceStrategy);
     }
 
@@ -87,19 +87,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void Parent ()
     {
       ITransaction child = _transaction.CreateChild();
-      Assert.That(((ClientTransactionWrapper) child.Parent).WrappedInstance, Is.SameAs(((ClientTransactionWrapper) _transaction).WrappedInstance));
-      Assert.That(((ClientTransactionWrapper) child.CreateChild().Parent).WrappedInstance, Is.SameAs(((ClientTransactionWrapper) child).WrappedInstance));
+      Assert.That(((ClientTransactionWrapper)child.Parent).WrappedInstance, Is.SameAs(((ClientTransactionWrapper)_transaction).WrappedInstance));
+      Assert.That(((ClientTransactionWrapper)child.CreateChild().Parent).WrappedInstance, Is.SameAs(((ClientTransactionWrapper)child).WrappedInstance));
     }
 
     [Test]
     public void Release ()
     {
       ITransaction child = _transaction.CreateChild();
-      Assert.That(((ClientTransactionWrapper) _transaction).WrappedInstance.IsWriteable, Is.False);
-      Assert.That(((ClientTransactionWrapper) child).WrappedInstance.IsDiscarded, Is.False);
+      Assert.That(((ClientTransactionWrapper)_transaction).WrappedInstance.IsWriteable, Is.False);
+      Assert.That(((ClientTransactionWrapper)child).WrappedInstance.IsDiscarded, Is.False);
       child.Release();
-      Assert.That(((ClientTransactionWrapper) _transaction).WrappedInstance.IsWriteable, Is.True);
-      Assert.That(((ClientTransactionWrapper) child).WrappedInstance.IsDiscarded, Is.True);
+      Assert.That(((ClientTransactionWrapper)_transaction).WrappedInstance.IsWriteable, Is.True);
+      Assert.That(((ClientTransactionWrapper)child).WrappedInstance.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ITransactionScope transactionScope = transaction.EnterScope();
 
       Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(transactionScope));
-      Assert.That(ClientTransactionScope.ActiveScope.ScopedTransaction, Is.SameAs(((ClientTransactionWrapper) transaction).WrappedInstance));
+      Assert.That(ClientTransactionScope.ActiveScope.ScopedTransaction, Is.SameAs(((ClientTransactionWrapper)transaction).WrappedInstance));
       Assert.That(ClientTransactionScope.ActiveScope.AutoRollbackBehavior, Is.EqualTo(AutoRollbackBehavior.None));
       ClientTransactionScope.ResetActiveScope();
     }

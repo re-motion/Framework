@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
     [WxeParameter (1, false, WxeParameterDirection.In)]
     public IDomainObjectHandle<T> CurrentObjectHandle
     {
-      get { return (IDomainObjectHandle<T>) Variables["CurrentObjectHandle"]; }
+      get { return (IDomainObjectHandle<T>)Variables["CurrentObjectHandle"]; }
       set { Variables["CurrentObjectHandle"] = value; }
     }
 

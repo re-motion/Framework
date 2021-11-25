@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public TargetClassAccessingFirstCallProxyFromCtor ()
     {
-      var mixinTarget = (IMixinTarget) this;
+      var mixinTarget = (IMixinTarget)this;
       FirstNextCallProxy = mixinTarget.FirstNextCallProxy;
       Assert.That(FirstNextCallProxy, Is.Not.Null);
     }

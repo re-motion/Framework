@@ -131,14 +131,14 @@ public class WxeMethodStep: WxeStep
       if (_methodWithContext == null)
       {
         _methodWithContext =
-          (WxeMethodWithContext) Delegate.CreateDelegate(typeof(WxeMethodWithContext), _target, _methodName, false);
+          (WxeMethodWithContext)Delegate.CreateDelegate(typeof(WxeMethodWithContext), _target, _methodName, false);
       }
       _methodWithContext(context);
     }
     else
     {
       if (_method == null)
-        _method = (WxeMethod) Delegate.CreateDelegate(typeof(WxeMethod), _target, _methodName, false);
+        _method = (WxeMethod)Delegate.CreateDelegate(typeof(WxeMethod), _target, _methodName, false);
       _method();
     }
   }

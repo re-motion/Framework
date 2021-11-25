@@ -37,7 +37,7 @@ namespace OBWTest.IndividualControlTests
       IBusinessObjectWithIdentity businessObjectWithIdentity = null;
       if (!string.IsNullOrEmpty(businessObject))
       {
-        var businessObjectClassWithIdentity = (IBusinessObjectClassWithIdentity) bindableObjectClass;
+        var businessObjectClassWithIdentity = (IBusinessObjectClassWithIdentity)bindableObjectClass;
         businessObjectWithIdentity = businessObjectClassWithIdentity.GetObject(businessObject);
       }
 

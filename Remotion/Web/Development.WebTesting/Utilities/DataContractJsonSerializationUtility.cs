@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(serializedData)))
       {
         var serializer = new DataContractJsonSerializer(typeof(T));
-        return (T?) serializer.ReadObject(dataStream);
+        return (T?)serializer.ReadObject(dataStream);
       }
     }
   }

@@ -79,13 +79,13 @@ namespace Remotion.Web.UnitTests.Core
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.InstanceOf<InstanceDescriptor>());
 
-      var instanceDescriptorResult = (InstanceDescriptor) result;
+      var instanceDescriptorResult = (InstanceDescriptor)result;
       Assert.That(
           instanceDescriptorResult.MemberInfo,
           Is.InstanceOf<MethodInfo>()
               .And.Property(nameof(MethodInfo.IsPublic)).True);
 
-      var instance = (PlainTextString) instanceDescriptorResult.Invoke();
+      var instance = (PlainTextString)instanceDescriptorResult.Invoke();
       Assert.That(instance.GetValue(), Is.EqualTo("test"));
     }
 
@@ -121,7 +121,7 @@ namespace Remotion.Web.UnitTests.Core
     public void ConvertFromInstanceDescriptor_WithNull_ReturnsNull ()
     {
       var converter = new PlainTextStringConverter();
-      var input = (InstanceDescriptor) null;
+      var input = (InstanceDescriptor)null;
 
       var canConvert = converter.CanConvertFrom(typeof(InstanceDescriptor));
       Assert.That(canConvert, Is.True);

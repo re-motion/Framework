@@ -239,7 +239,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDisplayName_WithPropertyAddedByMixin ()
     {
       BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithMixedPropertyAndResources));
-      PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition("MixedProperty");
+      PropertyBase property = (PropertyBase)bindableClass.GetPropertyDefinition("MixedProperty");
 
       Assert.That(
           _globalizationService.GetPropertyDisplayName(property.PropertyInfo, TypeAdapter.Create(bindableClass.TargetType)),
@@ -250,7 +250,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDisplayName_WithPropertyAddedByMixin_MixinResourceDeclaredWithShortName ()
     {
       BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithMixedPropertyAndResources));
-      PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition("MixedPropertyWithShortNameInLocalization");
+      PropertyBase property = (PropertyBase)bindableClass.GetPropertyDefinition("MixedPropertyWithShortNameInLocalization");
 
       Assert.That(
           _globalizationService.GetPropertyDisplayName(property.PropertyInfo, TypeAdapter.Create(bindableClass.TargetType)),
@@ -261,7 +261,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDisplayName_WithPropertyAddedByMixin_NoMixinResource ()
     {
       BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithMixedPropertyAndResources));
-      PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition("MixedPropertyWithoutLocalization");
+      PropertyBase property = (PropertyBase)bindableClass.GetPropertyDefinition("MixedPropertyWithoutLocalization");
 
       Assert.That(
           _globalizationService.GetPropertyDisplayName(property.PropertyInfo, TypeAdapter.Create(bindableClass.TargetType)),
@@ -272,7 +272,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDisplayName_WithExplicitPropertyAddedByMixin_MixinResourceDeclaredWithShortName ()
     {
       BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithMixedPropertyAndResources));
-      PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition("ExplicitMixedPropertyWithShortNameInLocalization");
+      PropertyBase property = (PropertyBase)bindableClass.GetPropertyDefinition("ExplicitMixedPropertyWithShortNameInLocalization");
 
       Assert.That(
           _globalizationService.GetPropertyDisplayName(property.PropertyInfo, TypeAdapter.Create(bindableClass.TargetType)),

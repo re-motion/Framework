@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void Search_WithSearchNotSupported ()
     {
-      IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
+      IBusinessObject businessObject = (IBusinessObject)ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
       var mockService = new Mock<ISearchServiceOnProperty>(MockBehavior.Strict);
       IBusinessObjectReferenceProperty property = CreateProperty("SearchServiceFromPropertyDeclaration");
       var searchArgumentsStubb = new Mock<ISearchAvailableObjectsArguments>();

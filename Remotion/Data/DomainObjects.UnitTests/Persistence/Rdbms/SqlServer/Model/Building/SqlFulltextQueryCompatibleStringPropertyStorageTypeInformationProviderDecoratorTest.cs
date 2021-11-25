@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var result = decorator.GetStorageType(propertyDefinition, forceNullable);
 
       Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
-      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
+      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)result;
       Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
       Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var result = decorator.GetStorageType(type);
 
       Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
-      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
+      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)result;
       Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
       Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
@@ -229,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var result = decorator.GetStorageType(value);
 
       Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
-      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
+      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)result;
       Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
       Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }

@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(nestedCommands.Count, Is.EqualTo(1));
       Assert.That(nestedCommands[0], Is.TypeOf(typeof(VirtualEndPointStateUpdatedRaisingCommandDecorator)));
 
-      var innerExpandedCommand = (VirtualEndPointStateUpdatedRaisingCommandDecorator) nestedCommands[0];
+      var innerExpandedCommand = (VirtualEndPointStateUpdatedRaisingCommandDecorator)nestedCommands[0];
       Assert.That(innerExpandedCommand.DecoratedCommand, Is.SameAs(fakeExpandedCommand));
       Assert.That(innerExpandedCommand.ModifiedEndPointID, Is.EqualTo(_modifiedEndPointID));
       Assert.That(innerExpandedCommand.Listener, Is.SameAs(_stateUpdateListenerMock));

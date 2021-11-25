@@ -154,7 +154,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
       var groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Group));
-      var groupTypeProperty = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition("Parent");
+      var groupTypeProperty = (IBusinessObjectReferenceProperty)groupClass.GetPropertyDefinition("Parent");
       Assert.That(groupTypeProperty, Is.Not.Null);
 
       var group = CreateGroup();
@@ -179,7 +179,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
           .AddService(typeof(GroupTypePropertyTypeSearchService), searchServiceStub.Object);
       var groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Group));
-      var groupTypeProperty = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition("GroupType");
+      var groupTypeProperty = (IBusinessObjectReferenceProperty)groupClass.GetPropertyDefinition("GroupType");
       Assert.That(groupTypeProperty, Is.Not.Null);
 
       var group = CreateGroup();

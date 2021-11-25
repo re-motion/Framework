@@ -52,9 +52,9 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>("property", property);
 
-      object nativeValue = propertyBase.GetValue((IBusinessObject) Target);
+      object nativeValue = propertyBase.GetValue((IBusinessObject)Target);
 
-      if (!propertyBase.IsList && propertyBase.IsDefaultValue(((IBusinessObject) Target)))
+      if (!propertyBase.IsList && propertyBase.IsDefaultValue(((IBusinessObject)Target)))
         return null;
       else
         return propertyBase.ConvertFromNativePropertyType(nativeValue);
@@ -93,12 +93,11 @@ namespace Remotion.ObjectBinding.BindableObject
     public string GetPropertyString (IBusinessObjectProperty property, string? format)
     {
       var stringFormatterService =
-          (IBusinessObjectStringFormatterService?)
-          BusinessObjectClass.BusinessObjectProvider.GetService(typeof(IBusinessObjectStringFormatterService));
+          (IBusinessObjectStringFormatterService?)BusinessObjectClass.BusinessObjectProvider.GetService(typeof(IBusinessObjectStringFormatterService));
 
       Assertion.IsNotNull(stringFormatterService, "An implementation of {0} must be available.", nameof(IBusinessObjectStringFormatterService));
 
-      return stringFormatterService.GetPropertyString((IBusinessObject) Target, property, format);
+      return stringFormatterService.GetPropertyString((IBusinessObject)Target, property, format);
     }
 
     /// <summary> Gets the <see cref="BindableObjectClass"/> of this business object. </summary>

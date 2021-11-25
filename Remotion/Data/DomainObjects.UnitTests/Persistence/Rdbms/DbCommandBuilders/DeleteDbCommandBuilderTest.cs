@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
                   Arg<StringBuilder>.Is.Anything,
                   Arg.Is(_dbCommandStub),
                   Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
       _comparedColumnsSpecificationStrictMock.Replay();
 
       var result = builder.Create(_commandExecutionContextStub);
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
                   Arg<StringBuilder>.Is.Anything,
                   Arg.Is(_dbCommandStub),
                   Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
       _comparedColumnsSpecificationStrictMock.Replay();
 
       var result = builder.Create(_commandExecutionContextStub);

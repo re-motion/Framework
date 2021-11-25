@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(() => _listener.RelationChanging(_transaction, _order1, _orderTicketEndPointDefinition, null, null), Throws.Nothing);
 
       fakeSubTransaction.EnsureDataComplete(relationEndPointID);
-      var relationEndPoint = (IVirtualEndPoint) ClientTransactionTestHelper.GetIDataManager(fakeSubTransaction).RelationEndPoints[relationEndPointID];
+      var relationEndPoint = (IVirtualEndPoint)ClientTransactionTestHelper.GetIDataManager(fakeSubTransaction).RelationEndPoints[relationEndPointID];
 
       // Still works if the matching end-point is incomplete
       relationEndPoint.MarkDataIncomplete();

@@ -191,7 +191,7 @@ namespace Remotion.Mixins
     {
       var definitions = from classContext in ClassContexts
                         where !classContext.Type.IsGenericTypeDefinition && !classContext.Type.IsInterface
-                        select (IVisitableDefinition) TargetClassDefinitionFactory.CreateWithoutValidation(classContext);
+                        select (IVisitableDefinition)TargetClassDefinitionFactory.CreateWithoutValidation(classContext);
 
       return Validator.Validate(definitions);
     }

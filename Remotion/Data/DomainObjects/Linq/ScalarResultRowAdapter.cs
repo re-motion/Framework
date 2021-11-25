@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
 
       var storageTypeInformation = _storageTypeInformationProvider.GetStorageType(typeof(T));
-      return (T) storageTypeInformation.ConvertFromStorageType(_scalarValue);
+      return (T)storageTypeInformation.ConvertFromStorageType(_scalarValue);
     }
 
     public T GetEntity<T> (params ColumnID[] columnIDs)

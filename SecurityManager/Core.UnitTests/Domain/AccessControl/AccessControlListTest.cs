@@ -241,7 +241,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        var actualAcl = (AccessControlList) LifetimeService.GetObject(ClientTransaction.Current, expectedAcl.ID, false);
+        var actualAcl = (AccessControlList)LifetimeService.GetObject(ClientTransaction.Current, expectedAcl.ID, false);
 
         Assert.That(actualAcl.AccessControlEntries.Count, Is.EqualTo(10));
         for (int i = 0; i < 10; i++)

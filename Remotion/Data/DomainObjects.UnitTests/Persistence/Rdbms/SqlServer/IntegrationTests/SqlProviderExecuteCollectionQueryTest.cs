@@ -60,28 +60,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       var query = QueryFactory.CreateQueryFromConfiguration("QueryWithAllDataTypes");
       query.Parameters.Add("@boolean", false);
-      query.Parameters.Add("@byte", (byte) 85);
+      query.Parameters.Add("@byte", (byte)85);
       query.Parameters.Add("@date", new DateTime(2005, 1, 1));
       query.Parameters.Add("@dateTime", new DateTime(2005, 1, 1, 17, 0, 0));
-      query.Parameters.Add("@decimal", (decimal) 123456.789);
+      query.Parameters.Add("@decimal", (decimal)123456.789);
       query.Parameters.Add("@doubleLowerBound", 987654D);
       query.Parameters.Add("@doubleUpperBound", 987655D);
       query.Parameters.Add("@enum", ClassWithAllDataTypes.EnumType.Value1);
       query.Parameters.Add("@flags", ClassWithAllDataTypes.FlagsType.Flag0 | ClassWithAllDataTypes.FlagsType.Flag2);
       query.Parameters.Add("@extensibleEnum", Color.Values.Red());
       query.Parameters.Add("@guid", new Guid("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"));
-      query.Parameters.Add("@int16", (short) 32767);
+      query.Parameters.Add("@int16", (short)32767);
       query.Parameters.Add("@int32", 2147483647);
       query.Parameters.Add("@int64", 9223372036854775807L);
-      query.Parameters.Add("@singleLowerBound", (float) 6789);
-      query.Parameters.Add("@singleUpperBound", (float) 6790);
+      query.Parameters.Add("@singleLowerBound", (float)6789);
+      query.Parameters.Add("@singleUpperBound", (float)6790);
       query.Parameters.Add("@string", "abcdeföäü");
       query.Parameters.Add("@stringWithoutMaxLength",
           "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
       query.Parameters.Add("@binary", ResourceManager.GetImage1());
 
       query.Parameters.Add("@naBoolean", true);
-      query.Parameters.Add("@naByte", (byte) 78);
+      query.Parameters.Add("@naByte", (byte)78);
       query.Parameters.Add("@naDate", new DateTime(2005, 2, 1));
       query.Parameters.Add("@naDateTime", new DateTime(2005, 2, 1, 5, 0, 0));
       query.Parameters.Add("@naDecimal", 765.098m);
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       query.Parameters.Add("@naEnum", ClassWithAllDataTypes.EnumType.Value2);
       query.Parameters.Add("@naFlags", ClassWithAllDataTypes.FlagsType.Flag1 | ClassWithAllDataTypes.FlagsType.Flag2);
       query.Parameters.Add("@naGuid", new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"));
-      query.Parameters.Add("@naInt16", (short) 12000);
+      query.Parameters.Add("@naInt16", (short)12000);
       query.Parameters.Add("@naInt32", -2147483647);
       query.Parameters.Add("@naInt64", 3147483647L);
       query.Parameters.Add("@naSingleLowerBound", 12F);

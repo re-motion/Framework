@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void SetValue_OldValueIsNewlyCreatedDefaultValue ()
     {
       Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object))
-          .Returns((object) null)
+          .Returns((object)null)
           .Throws(new InvalidOperationException("Method is supposed to be called only once!"));
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
       _referencePropertyStub.Setup(stub => stub.SupportsDelete).Returns(true);

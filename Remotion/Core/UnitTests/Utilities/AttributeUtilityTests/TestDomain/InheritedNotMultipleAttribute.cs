@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
     {
       if (obj.GetType() != this.GetType())
         return false;
-      return ((InheritedNotMultipleAttribute) obj).Context == Context;
+      return ((InheritedNotMultipleAttribute)obj).Context == Context;
     }
 
     public override int GetHashCode ()

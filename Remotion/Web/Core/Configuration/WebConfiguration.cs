@@ -54,12 +54,12 @@ public class WebConfiguration: IConfigurationSectionHandler
 
   private static WebConfiguration CreateConfig ()
   {
-    XmlNode section = (XmlNode) ConfigurationManager.GetSection(ElementName);
+    XmlNode section = (XmlNode)ConfigurationManager.GetSection(ElementName);
     if (section == null)
       return new WebConfiguration();
 
     var schema = new WebConfigurationSchema();
-    return (WebConfiguration) XmlSerializationUtility.DeserializeUsingSchema(
+    return (WebConfiguration)XmlSerializationUtility.DeserializeUsingSchema(
         new XmlNodeReader(section),
         // "web.config/configuration/" + ElementName,  // TODO: context is no longer supported, verify that node has correct BaseURI
         typeof(WebConfiguration),

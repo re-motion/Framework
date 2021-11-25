@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyAccess_ShouldThrow_ValueProperty ()
     {
-      var instance = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
+      var instance = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
       Assert.That(instance.State.IsNotLoadedYet, Is.True);
       Assert.That(() => instance.OrderNumber, ThrowsObjectNotFoundException(_nonExistingObjectID));
       CheckObjectIsMarkedInvalid(instance.ID);
@@ -283,7 +283,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyAccess_ShouldThrow_VirtualRelationProperty ()
     {
-      var instance = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
+      var instance = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
       Assert.That(instance.State.IsNotLoadedYet, Is.True);
       Assert.That(() => instance.OrderTicket, ThrowsObjectNotFoundException(_nonExistingObjectID));
       CheckObjectIsMarkedInvalid(instance.ID);
@@ -295,7 +295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyAccess_ShouldThrow_ForeignKeyRelationProperty ()
     {
-      var instance = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
+      var instance = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
       Assert.That(instance.State.IsNotLoadedYet, Is.True);
       Assert.That(() => instance.Customer, ThrowsObjectNotFoundException(_nonExistingObjectID));
       CheckObjectIsMarkedInvalid(instance.ID);
@@ -307,7 +307,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyAccess_ShouldThrow_CollectionRelationProperty ()
     {
-      var instance = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
+      var instance = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
       Assert.That(instance.State.IsNotLoadedYet, Is.True);
       Assert.That(() => instance.OrderItems, ThrowsObjectNotFoundException(_nonExistingObjectID));
       CheckObjectIsMarkedInvalid(instance.ID);
@@ -321,12 +321,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var instance = (ClassWithAllDataTypes) LifetimeService.GetObjectReference(ClientTransaction.Current, _nonExistingObjectIDForSubtransaction);
+        var instance = (ClassWithAllDataTypes)LifetimeService.GetObjectReference(ClientTransaction.Current, _nonExistingObjectIDForSubtransaction);
         CheckObjectIsMarkedInvalid(_nonExistingObjectIDForSubtransaction);
 
         Assert.That(() => instance.StringProperty, ThrowsObjectInvalidException(_nonExistingObjectIDForSubtransaction));
 
-        var instance2 = (Order) LifetimeService.GetObjectReference(ClientTransaction.Current, _nonExistingObjectID);
+        var instance2 = (Order)LifetimeService.GetObjectReference(ClientTransaction.Current, _nonExistingObjectID);
         Assert.That(() => instance2.OrderNumber, ThrowsObjectNotFoundException(_nonExistingObjectID));
         CheckObjectIsMarkedInvalid(_nonExistingObjectID);
       }
@@ -340,7 +340,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       SetDatabaseModifyable();
 
       // Need to disable the foreign key constraints so that the property is allowed to point to an invalid ID in the database
-      var clientTable = (TableDefinition) GetTypeDefinition(typeof(Client)).StorageEntityDefinition;
+      var clientTable = (TableDefinition)GetTypeDefinition(typeof(Client)).StorageEntityDefinition;
       DisableConstraints(clientTable);
 
       ObjectID clientID = null;
@@ -388,7 +388,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void BidirectionalForeignKeyRelationProperty_ShouldReturnNotLoadedObject ()
     {
       var id = new ObjectID(typeof(ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
-      var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
+      var objectWithInvalidRelation = (ClassWithInvalidRelation)id.GetObject<TestDomainBase>();
 
       DomainObject instance = null;
 
@@ -410,7 +410,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       {
         var id = new ObjectID(typeof(ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
 
-        var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
+        var objectWithInvalidRelation = (ClassWithInvalidRelation)id.GetObject<TestDomainBase>();
 
         Assert.That(() => instance = objectWithInvalidRelation.ClassWithGuidKey, Throws.Nothing);
         Assert.That(instance.State.IsNotLoadedYet, Is.True);
@@ -429,7 +429,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       // The only way to test this ATM is to trigger the loading of the non-existing object from a load event handler (which is triggered while the
       // parent transaction is temporarily writeable).
-      var triggeringObjectReference = (TestDomainBase) LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1);
+      var triggeringObjectReference = (TestDomainBase)LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1);
       triggeringObjectReference.ProtectedLoaded += (sender, args) =>
       {
         if (ClientTransaction.Current == TestableClientTransaction)

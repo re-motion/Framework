@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     {
       base.Check(expectedState);
 
-      PropertyChangeState propertyChangeState = (PropertyChangeState) expectedState;
+      PropertyChangeState propertyChangeState = (PropertyChangeState)expectedState;
 
       if (_propertyDefinition != propertyChangeState.PropertyDefinition)
       {

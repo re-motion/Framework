@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var strategy = _serviceLocator.GetInstance<IBindablePropertyWriteAccessStrategy>();
 
       Assert.That(strategy, Is.TypeOf(typeof(CompundBindablePropertyWriteAccessStrategy)));
-      Assert.That(((CompundBindablePropertyWriteAccessStrategy) strategy).BindablePropertyWriteAccessStrategies, Is.Empty);
+      Assert.That(((CompundBindablePropertyWriteAccessStrategy)strategy).BindablePropertyWriteAccessStrategies, Is.Empty);
     }
 
     [Test]

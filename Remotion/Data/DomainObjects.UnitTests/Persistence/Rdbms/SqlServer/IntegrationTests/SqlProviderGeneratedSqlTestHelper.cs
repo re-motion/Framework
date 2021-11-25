@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       _executionListenerStrictMock
           .Expect(mock => mock.OnExecuteReader(Arg<IDbCommand>.Is.Anything, Arg.Is(expectedCommandBehavior)))
-          .WhenCalled(mi => CheckCommand((IDbCommand) mi.Arguments[0], expectedSql, expectedParametersData))
+          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
           .Repeat.Once();
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       _executionListenerStrictMock
           .Expect(mock => mock.OnExecuteScalar(Arg<IDbCommand>.Is.Anything))
-          .WhenCalled(mi => CheckCommand((IDbCommand) mi.Arguments[0], expectedSql, expectedParametersData))
+          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
           .Repeat.Once();
     }
 
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       _executionListenerStrictMock
           .Expect(mock => mock.OnExecuteNonQuery(Arg<IDbCommand>.Is.Anything))
-          .WhenCalled(mi => CheckCommand((IDbCommand) mi.Arguments[0], expectedSql, expectedParametersData))
+          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
           .Repeat.Once();
     }
 
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
             expectedSql);
         for (int i = 0; i < expectedParametersData.Length; ++i)
         {
-          var actualParameter = (IDataParameter) sqlCommand.Parameters[i];
+          var actualParameter = (IDataParameter)sqlCommand.Parameters[i];
           var expectedParameterData = expectedParametersData[i];
 
           Assert.That(

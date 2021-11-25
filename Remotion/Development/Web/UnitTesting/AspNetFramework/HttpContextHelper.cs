@@ -125,7 +125,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       HttpSessionStateContainer httpSessionStateContainer = new HttpSessionStateContainer(
           id, sessionItems, staticObjects, timeout, newSession, HttpCookieMode.UseCookies, mode, isReadOnly);
 
-      sessionState = (HttpSessionState) PrivateInvoke.CreateInstanceNonPublicCtor(typeof(HttpSessionState), httpSessionStateContainer);
+      sessionState = (HttpSessionState)PrivateInvoke.CreateInstanceNonPublicCtor(typeof(HttpSessionState), httpSessionStateContainer);
       return sessionState;
     }
 

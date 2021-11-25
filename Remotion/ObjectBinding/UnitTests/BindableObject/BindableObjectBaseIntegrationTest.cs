@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void BusinessObjectClass ()
     {
       Assert.That(_instance.BusinessObjectClass, Is.InstanceOf(typeof(BindableObjectClass)));
-      var bindableObjectClass = (BindableObjectClass) _instance.BusinessObjectClass;
+      var bindableObjectClass = (BindableObjectClass)_instance.BusinessObjectClass;
       Assert.That(bindableObjectClass.BusinessObjectProvider, Is.InstanceOf(typeof(BindableObjectProvider)));
       Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof(ClassDerivedFromBindableObjectBase)));
       Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof(ClassDerivedFromBindableObjectBase)));
@@ -56,8 +56,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
       var value = new SimpleReferenceType();
-      ((IInterfaceWithReferenceType<SimpleReferenceType>) instance).ExplicitInterfaceScalar = value;
-      Assert.That(((IBusinessObject) instance).GetProperty("ExplicitInterfaceScalar"), Is.SameAs(value));
+      ((IInterfaceWithReferenceType<SimpleReferenceType>)instance).ExplicitInterfaceScalar = value;
+      Assert.That(((IBusinessObject)instance).GetProperty("ExplicitInterfaceScalar"), Is.SameAs(value));
     }
 
     [Test]
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
       var value = new SimpleReferenceType();
       instance.ImplicitInterfaceScalar = value;
-      Assert.That(((IBusinessObject) instance).GetProperty("ImplicitInterfaceScalar"), Is.SameAs(value));
+      Assert.That(((IBusinessObject)instance).GetProperty("ImplicitInterfaceScalar"), Is.SameAs(value));
     }
 
     [Test]
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
       var value = new SimpleReferenceType();
       instance.ImplicitInterfaceReadOnlyScalar = value;
-      Assert.That(((IBusinessObject) instance).GetProperty("ImplicitInterfaceReadOnlyScalar"), Is.SameAs(value));
+      Assert.That(((IBusinessObject)instance).GetProperty("ImplicitInterfaceReadOnlyScalar"), Is.SameAs(value));
     }
 
     [Test]
@@ -90,8 +90,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
       var value = new SimpleReferenceType();
-      ((IBusinessObject) instance).SetProperty("ExplicitInterfaceScalar", value);
-      Assert.That(((IInterfaceWithReferenceType<SimpleReferenceType>) instance).ExplicitInterfaceScalar, Is.SameAs(value));
+      ((IBusinessObject)instance).SetProperty("ExplicitInterfaceScalar", value);
+      Assert.That(((IInterfaceWithReferenceType<SimpleReferenceType>)instance).ExplicitInterfaceScalar, Is.SameAs(value));
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
       var value = new SimpleReferenceType();
-      ((IBusinessObject) instance).SetProperty("ImplicitInterfaceScalar", value);
+      ((IBusinessObject)instance).SetProperty("ImplicitInterfaceScalar", value);
       Assert.That(instance.ImplicitInterfaceScalar, Is.SameAs(value));
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
       var value = new SimpleReferenceType();
-      ((IBusinessObject) instance).SetProperty("ImplicitInterfaceReadOnlyScalar", value);
+      ((IBusinessObject)instance).SetProperty("ImplicitInterfaceReadOnlyScalar", value);
       Assert.That(instance.ImplicitInterfaceReadOnlyScalar, Is.SameAs(value));
     }
 
@@ -130,10 +130,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassDerivedFromBindableObjectBaseOverridingMixinMethod();
       Assert.That(instance.BusinessObjectClass, Is.InstanceOf(typeof(BindableObjectClass)));
       Assert.That(
-          ((BindableObjectClass) instance.BusinessObjectClass).TargetType,
+          ((BindableObjectClass)instance.BusinessObjectClass).TargetType,
           Is.SameAs(typeof(ClassDerivedFromBindableObjectBaseOverridingMixinMethod)));
       Assert.That(
-          ((BindableObjectClass) instance.BusinessObjectClass).ConcreteType,
+          ((BindableObjectClass)instance.BusinessObjectClass).ConcreteType,
           Is.SameAs(TypeFactory.GetConcreteType(typeof(ClassDerivedFromBindableObjectBaseOverridingMixinMethod))));
     }
   }

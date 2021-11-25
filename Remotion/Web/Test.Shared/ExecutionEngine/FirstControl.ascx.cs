@@ -28,7 +28,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss") + ": Executed";
       try
       {
-        SecondControl.Call(WxePage, this, (Control) sender);
+        SecondControl.Call(WxePage, this, (Control)sender);
         ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss") + ": Returned";
       }
       catch (WxeUserCancelException)
@@ -127,11 +127,11 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     protected override void LoadControlState (object savedState)
     {
-      var controlState = (object[]) savedState;
+      var controlState = (object[])savedState;
       base.LoadControlState(controlState[0]);
-      ControlStateValue = (int) controlState[1];
-      Assertion.IsTrue((Type) controlState[2] == typeof(FirstControl), "Expected ControlState from 'FirstControl' but was '{0}'.", ((Type)controlState[2]).Name);
-      HasLoaded = (bool) controlState[3];
+      ControlStateValue = (int)controlState[1];
+      Assertion.IsTrue((Type)controlState[2] == typeof(FirstControl), "Expected ControlState from 'FirstControl' but was '{0}'.", ((Type)controlState[2]).Name);
+      HasLoaded = (bool)controlState[3];
       Assertion.IsTrue(((NonSerializeableObject)controlState[4]).Value == "TheValue");
     }
 
@@ -144,7 +144,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
       Assertion.IsNotNull(savedState, "Missing ViewState.");
 
-      var viewState = (Tuple<object, Type>) savedState;
+      var viewState = (Tuple<object, Type>)savedState;
       base.LoadViewState(viewState.Item1);
 
       Assertion.IsTrue(viewState.Item2 == typeof(FirstControl), "Expected ViewState from 'FirstControl' but was '{0}'.", viewState.Item2.Name);
@@ -157,7 +157,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private int ViewStateValue
     {
-      get { return (int?) ViewState["Value"] ?? 0; }
+      get { return (int?)ViewState["Value"] ?? 0; }
       set { ViewState["Value"] = value; }
     }
 

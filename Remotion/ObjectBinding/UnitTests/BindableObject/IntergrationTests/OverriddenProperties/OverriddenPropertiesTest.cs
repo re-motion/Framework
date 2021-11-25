@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     public void GetProperty_OverriddenByMixin_AndOnlyAccessorIsMixed ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObject = (IBusinessObject) instance;
+      var businessObject = (IBusinessObject)instance;
       var businessObjectClass = businessObject.BusinessObjectClass;
       var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetProperty");
       Assert.That(businessObjectProperty, Is.Not.Null);
@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     public void GetProperty_OverriddenByMixin_PropertyMetadataIsMixed ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObject = (IBusinessObject) instance;
+      var businessObject = (IBusinessObject)instance;
       var businessObjectClass = businessObject.BusinessObjectClass;
       var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetPropertyWithPropertyMetadata");
       Assert.That(businessObjectProperty, Is.Not.Null);
@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     public void GetProperty_OverriddenByMixin_AndOnlyAccessorIsMixed_AndDerivedInstanceType ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObjectClass = ((IBusinessObject) instance).BusinessObjectClass;
+      var businessObjectClass = ((IBusinessObject)instance).BusinessObjectClass;
       var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetProperty");
       Assert.That(businessObjectProperty, Is.Not.Null);
 
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
 
       derived.MixinOverrideTargetProperty = "Value";
 
-      Assert.That(((IBusinessObject) derived).GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
+      Assert.That(((IBusinessObject)derived).GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     public void GetProperty_OverriddenByMixin_PropertyMetadataIsMixed_AndDerivedInstanceType ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObjectClass = ((IBusinessObject) instance).BusinessObjectClass;
+      var businessObjectClass = ((IBusinessObject)instance).BusinessObjectClass;
       var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetPropertyWithPropertyMetadata");
       Assert.That(businessObjectProperty, Is.Not.Null);
 
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
 
       derived.MixinOverrideTargetPropertyWithPropertyMetadata = "Value";
 
-      Assert.That(((IBusinessObject) derived).GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
+      Assert.That(((IBusinessObject)derived).GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
     }
   }
 }

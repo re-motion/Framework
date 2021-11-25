@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     protected ConcurrencyViolationException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _ids = (ObjectID[]) info.GetValue("_ids", typeof(ObjectID[]));
+      _ids = (ObjectID[])info.GetValue("_ids", typeof(ObjectID[]));
     }
 
     public ReadOnlyCollection<ObjectID> IDs

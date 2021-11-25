@@ -123,7 +123,7 @@ namespace Remotion.Security.Metadata
       if (foundMembers.Count == 0)
         return new NullMethodInformation();
 
-      var foundMethodInfo = (MethodInfo) foundMembers[0];
+      var foundMethodInfo = (MethodInfo)foundMembers[0];
       if (type.BaseType != null && foundMethodInfo.DeclaringType == type && TypeHasMember(type.BaseType, methodName, bindingFlags))
       {
         throw new ArgumentException(
@@ -146,7 +146,7 @@ namespace Remotion.Security.Metadata
 
     private static bool IsSecuredMethod (MemberInfo memberInfo, object? filterCriteria)
     {
-      var memberName = (string) filterCriteria!;
+      var memberName = (string)filterCriteria!;
       return memberInfo.Name == memberName && memberInfo.IsDefined(typeof(DemandPermissionAttribute), false);
     }
 

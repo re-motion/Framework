@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
           classDefinition.PersistentMixinFinder,
           propertyMetadataReflector);
 
-      var result = (NameBasedPropertyFinder) PrivateInvoke.InvokeNonPublicMethod(
+      var result = (NameBasedPropertyFinder)PrivateInvoke.InvokeNonPublicMethod(
           propertyFinder,
           "CreateNewFinder",
           typeof(string),

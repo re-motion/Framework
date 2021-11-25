@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects
         : base(info, context)
     {
       _propertyName = info.GetString("PropertyName");
-      _underlyingPropertyType = (Type) info.GetValue("UnderlyingPropertyType", typeof(Type));
+      _underlyingPropertyType = (Type)info.GetValue("UnderlyingPropertyType", typeof(Type));
       _invalidValue = info.GetValue("InvalidValue", typeof(object));
     }
 

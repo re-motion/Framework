@@ -163,7 +163,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       else
         visibility = ElementVisibility.PartiallyVisible;
 
-      var window = locator.GetBrowserContentBounds(((IWrapsDriver) target).WrappedDriver);
+      var window = locator.GetBrowserContentBounds(((IWrapsDriver)target).WrappedDriver);
       elementBounds.Offset(window.Location);
       parentBounds.Offset(window.Location);
 

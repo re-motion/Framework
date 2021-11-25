@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Sample
       }
       else
       {
-        var targetType = ((BindableObjectClass) obj.BusinessObjectClass).TargetType;
+        var targetType = ((BindableObjectClass)obj.BusinessObjectClass).TargetType;
         var fileName = targetType.GetFullNameChecked() + ".gif";
         string url = _resourceUrlFactory.CreateResourceUrl(targetType, ResourceType.Image, fileName).GetUrl();
         return new IconInfo(url, Unit.Pixel(16), Unit.Pixel(16));
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Sample
       if (obj == null)
         return "No ToolTip";
       else
-        return "ToolTip: " + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.GetFullNameChecked();
+        return "ToolTip: " + ((BindableObjectClass)obj.BusinessObjectClass).TargetType.GetFullNameChecked();
     }
 
     public HelpInfo GetHelpInfo (

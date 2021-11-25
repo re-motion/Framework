@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NewObject
       TestDomainBase.StaticCtorHandler += (sender, args) =>
       {
         if (sender is T)
-          handler((T) sender);
+          handler((T)sender);
       };
     }
 

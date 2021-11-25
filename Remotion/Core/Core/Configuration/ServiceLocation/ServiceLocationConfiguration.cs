@@ -51,8 +51,7 @@ namespace Remotion.Configuration.ServiceLocation
 
     private static ServiceLocationConfiguration GetServiceLocationConfiguration ()
     {
-      return (ServiceLocationConfiguration)
-             (ConfigurationWrapper.Current.GetSection("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
+      return (ServiceLocationConfiguration)(ConfigurationWrapper.Current.GetSection("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
     }
 
     /// <summary>
@@ -74,7 +73,7 @@ namespace Remotion.Configuration.ServiceLocation
     [ConfigurationProperty ("serviceLocatorProvider", IsRequired = false)]
     public TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider> ServiceLocatorProvider
     {
-      get { return (TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider>) this["serviceLocatorProvider"]; }
+      get { return (TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider>)this["serviceLocatorProvider"]; }
     }
 
     /// <summary>

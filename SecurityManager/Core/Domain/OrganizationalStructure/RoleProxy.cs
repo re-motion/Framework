@@ -38,8 +38,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
       return new RoleProxy(
           role.GetHandle(),
-          ((IBusinessObjectWithIdentity) role).UniqueIdentifier,
-          ((IBusinessObjectWithIdentity) role).DisplayName);
+          ((IBusinessObjectWithIdentity)role).UniqueIdentifier,
+          ((IBusinessObjectWithIdentity)role).DisplayName);
     }
 
     private RoleProxy (IDomainObjectHandle<Role> handle, string uniqueIdentifier, string displayName)

@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Sample
       if (httpSession == null)
         return _reflectionBusinessObjectStorageProviderFactory.CreateBusinessObjectStorageProvider();
 
-      var reflectionBusinessObjectStorageProvider = (IReflectionBusinessObjectStorageProvider) httpSession[s_sessionKeyForStorageProvider];
+      var reflectionBusinessObjectStorageProvider = (IReflectionBusinessObjectStorageProvider)httpSession[s_sessionKeyForStorageProvider];
       if (reflectionBusinessObjectStorageProvider == null)
       {
         reflectionBusinessObjectStorageProvider = _reflectionBusinessObjectStorageProviderFactory.CreateBusinessObjectStorageProvider();

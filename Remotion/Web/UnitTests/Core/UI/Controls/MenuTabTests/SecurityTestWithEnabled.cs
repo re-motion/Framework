@@ -34,7 +34,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     public void Setup ()
     {
       _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter>(MockBehavior.Strict);
-      _mockNavigationCommand = new Mock<NavigationCommand>(MockBehavior.Strict, CommandType.Href, _mockWebSecurityAdapter.Object, (IWxeSecurityAdapter) null);
+      _mockNavigationCommand = new Mock<NavigationCommand>(MockBehavior.Strict, CommandType.Href, _mockWebSecurityAdapter.Object, (IWxeSecurityAdapter)null);
     }
 
     [Test]

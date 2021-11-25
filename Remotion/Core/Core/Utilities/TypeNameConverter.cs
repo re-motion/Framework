@@ -51,7 +51,7 @@ namespace Remotion.Utilities
     {
       if (value is string)
       {
-        string stringValue = (string) value;
+        string stringValue = (string)value;
         if (stringValue.Length == 0)
           return null;
         else
@@ -70,7 +70,7 @@ namespace Remotion.Utilities
         return string.Empty;
 
       if (value is Type && destinationType == typeof(string))
-        return TypeUtility.GetPartialAssemblyQualifiedName((Type) value);
+        return TypeUtility.GetPartialAssemblyQualifiedName((Type)value);
 
       return base.ConvertTo(context, culture, value, destinationType);
     }

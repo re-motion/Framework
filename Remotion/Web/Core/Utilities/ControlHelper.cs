@@ -79,7 +79,7 @@ namespace Remotion.Web.Utilities
       GetControlsRecursiveInternal(parentControl, type, controlList);
       if (type.IsInterface)
         type = typeof(Control);
-      return (Control[]) controlList.ToArray(type);
+      return (Control[])controlList.ToArray(type);
     }
 
     public static Control[] GetControlsRecursive (Control parentControl, Type type, Control[] stopList)
@@ -88,7 +88,7 @@ namespace Remotion.Web.Utilities
       GetControlsRecursiveInternal(parentControl, type, new ArrayList(stopList), controlList);
       if (type.IsInterface)
         type = typeof(Control);
-      return (Control[]) controlList.ToArray(type);
+      return (Control[])controlList.ToArray(type);
     }
 
     private static void GetControlsRecursiveInternal (Control parentControl, Type type, ArrayList stopList, ArrayList controlList)
@@ -137,8 +137,8 @@ namespace Remotion.Web.Utilities
       if (!(smallerValidator.IsValid && largerValidator.IsValid))
         return true;
 
-      IComparable smallerValue = (IComparable) Convert.ChangeType(smallerField.Text, type);
-      IComparable largerValue = (IComparable) Convert.ChangeType(largerField.Text, type);
+      IComparable smallerValue = (IComparable)Convert.ChangeType(smallerField.Text, type);
+      IComparable largerValue = (IComparable)Convert.ChangeType(largerField.Text, type);
 
       if (smallerValue.CompareTo(largerValue) > 0)
         return false;
@@ -156,7 +156,7 @@ namespace Remotion.Web.Utilities
            parent = parent.Parent)
       {
         if (parent is TemplateControl)
-          return (TemplateControl) parent;
+          return (TemplateControl)parent;
       }
       return null;
     }
@@ -240,7 +240,7 @@ namespace Remotion.Web.Utilities
     {
       ArgumentUtility.CheckNotNull("context", context);
 
-      XhtmlConformanceSection xhtmlConformanceSection = (XhtmlConformanceSection) WebConfigurationManager.GetSection("system.web/xhtmlConformance");
+      XhtmlConformanceSection xhtmlConformanceSection = (XhtmlConformanceSection)WebConfigurationManager.GetSection("system.web/xhtmlConformance");
       Assertion.IsNotNull(xhtmlConformanceSection, "Config section 'system.web/xhtmlConformance' was not found.");
 
       if (xhtmlConformanceSection.Mode != XhtmlConformanceMode.Legacy)

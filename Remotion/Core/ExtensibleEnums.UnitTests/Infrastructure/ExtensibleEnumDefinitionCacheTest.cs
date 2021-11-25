@@ -44,7 +44,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     {
       Assert.That(_cache.ValueDiscoveryService, Is.InstanceOf(typeof(ExtensibleEnumValueDiscoveryService)));
       Assert.That(
-          ((ExtensibleEnumValueDiscoveryService) _cache.ValueDiscoveryService).TypeDiscoveryService,
+          ((ExtensibleEnumValueDiscoveryService)_cache.ValueDiscoveryService).TypeDiscoveryService,
           Is.SameAs(ContextAwareTypeUtility.GetTypeDiscoveryService()));
     }
 

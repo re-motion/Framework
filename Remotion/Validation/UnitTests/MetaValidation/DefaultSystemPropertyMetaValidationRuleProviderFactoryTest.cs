@@ -41,7 +41,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var result = _factory.Create(fakePropertyInformation.Object);
 
       Assert.That(result, Is.TypeOf<DefaultSystemPropertyMetaValidationRuleProvider>());
-      Assert.That(((DefaultSystemPropertyMetaValidationRuleProvider) result).PropertyInformation, Is.SameAs(fakePropertyInformation.Object));
+      Assert.That(((DefaultSystemPropertyMetaValidationRuleProvider)result).PropertyInformation, Is.SameAs(fakePropertyInformation.Object));
     }
   }
 }

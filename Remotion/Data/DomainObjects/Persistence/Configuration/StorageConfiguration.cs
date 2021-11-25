@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public ConfigurationElementCollection<StorageGroupElement> StorageGroups
     {
-      get { return (ConfigurationElementCollection<StorageGroupElement>) this[_storageProviderGroupsProperty]; }
+      get { return (ConfigurationElementCollection<StorageGroupElement>)this[_storageProviderGroupsProperty]; }
     }
 
     public StorageProviderDefinition DefaultStorageProviderDefinition

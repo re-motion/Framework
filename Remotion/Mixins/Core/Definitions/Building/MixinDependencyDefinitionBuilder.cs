@@ -50,14 +50,14 @@ namespace Remotion.Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      _mixin.TargetClass.RequiredMixinTypes.Add((RequiredMixinTypeDefinition) requirement);
+      _mixin.TargetClass.RequiredMixinTypes.Add((RequiredMixinTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      return new MixinDependencyDefinition((RequiredMixinTypeDefinition) requirement, _mixin, (MixinDependencyDefinition?) aggregator);
+      return new MixinDependencyDefinition((RequiredMixinTypeDefinition)requirement, _mixin, (MixinDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull("dependency", dependency);
 
       if (!_mixin.MixinDependencies.ContainsKey(dependency.RequiredType.Type))
-        _mixin.MixinDependencies.Add((MixinDependencyDefinition) dependency);
+        _mixin.MixinDependencies.Add((MixinDependencyDefinition)dependency);
     }
   }
 }

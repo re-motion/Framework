@@ -141,7 +141,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual void OnSelectedIndexChanged ()
     {
-      EventHandler? handler = (EventHandler?) Events[s_selectedIndexChangedEvent];
+      EventHandler? handler = (EventHandler?)Events[s_selectedIndexChangedEvent];
       if (handler != null)
         handler(this, EventArgs.Empty);
     }
@@ -164,7 +164,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("tab", tab);
       tab.OnClick();
-      WebTabClickEventHandler? handler = (WebTabClickEventHandler?) Events[s_clickEvent];
+      WebTabClickEventHandler? handler = (WebTabClickEventHandler?)Events[s_clickEvent];
       if (handler != null)
       {
         WebTabClickEventArgs e = new WebTabClickEventArgs(tab);
@@ -190,10 +190,10 @@ namespace Remotion.Web.UI.Controls
     {
       if (savedState != null)
       {
-        object?[] values = (object?[]) savedState;
+        object?[] values = (object?[])savedState;
         base.LoadControlState(values[0]);
         _tabsControlState = values[1];
-        _selectedItemID = (string?) values[2];
+        _selectedItemID = (string?)values[2];
       }
     }
 
@@ -209,14 +209,14 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the settings of the <paramref name="tabs"/> from <paramref name="tabsControlState"/>. </summary>
     private void LoadTabsControlState (object tabsControlState, WebTabCollection tabs)
     {
-      ((IControlStateManager) tabs).LoadControlState(tabsControlState);
+      ((IControlStateManager)tabs).LoadControlState(tabsControlState);
     }
 
     /// <summary> Saves the settings of the  <paramref name="tabs"/> and returns this view state </summary>
     private object? SaveTabsControlState (WebTabCollection tabs)
     {
       EnsureTabsRestored();
-      return ((IControlStateManager) tabs).SaveControlState();
+      return ((IControlStateManager)tabs).SaveControlState();
     }
 
     protected override void OnPreRender (EventArgs e)
@@ -297,7 +297,7 @@ namespace Remotion.Web.UI.Controls
 
       foreach (DictionaryEntry entry in values)
       {
-        string key = (string) entry.Key;
+        string key = (string)entry.Key;
         string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
@@ -338,7 +338,7 @@ namespace Remotion.Web.UI.Controls
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary? elementValues = (IDictionary?) currentCollection[elementID];
+            IDictionary? elementValues = (IDictionary?)currentCollection[elementID];
 
             //  If no dictonary exists, create it and insert it into the elements hashtable.
             if (elementValues == null)
@@ -437,7 +437,7 @@ namespace Remotion.Web.UI.Controls
     [MergableProperty (false)]
     //  Default category
     [Description ("The tabs displayed by this tab strip.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     public WebTabCollection Tabs
     {
       get { return _tabs; }

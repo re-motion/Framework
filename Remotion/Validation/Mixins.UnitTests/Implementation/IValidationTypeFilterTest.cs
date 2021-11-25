@@ -40,7 +40,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
       var factory = _serviceLocator.GetInstance<IValidationTypeFilter>();
 
       Assert.That(factory, Is.TypeOf(typeof(CompoundValidationTypeFilter)));
-      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray();
+      var compoundGlobalizationServices = ((CompoundValidationTypeFilter)factory).ValidationTypeFilters.ToArray();
       Assert.That(compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
       Assert.That(compoundGlobalizationServices[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter>());
     }

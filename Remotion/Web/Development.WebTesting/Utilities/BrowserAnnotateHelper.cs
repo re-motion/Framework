@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
       ArgumentUtility.CheckNotNull("content", content);
 
-      var seleniumDriver = (IWebDriver) browserSession.Driver.Native;
+      var seleniumDriver = (IWebDriver)browserSession.Driver.Native;
 
       var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone(positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
       var browserContentBounds = BrowserConfiguration.Locator.GetBrowserContentBounds(seleniumDriver).Location;
@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull("builder", builder);
       ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return DrawTooltip(builder, (IWebElement) controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
+      return DrawTooltip(builder, (IWebElement)controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull("builder", builder);
       ArgumentUtility.CheckNotNull("element", element);
 
-      return DrawTooltip(builder, (IWebElement) element.Native, style, padding, positioning, wrapLines, maximumSize);
+      return DrawTooltip(builder, (IWebElement)element.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
@@ -145,10 +145,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           new Rectangle(
               WebElementResolver.Instance.ResolveBrowserCoordinates(webElement).ElementBounds.Location,
               new Size(1, 1)),
-          new RectangleResolver(((IWrapsDriver) webElement).WrappedDriver),
+          new RectangleResolver(((IWrapsDriver)webElement).WrappedDriver),
           tooltipAnnotation);
 
-      return new FluentScreenshotElement<Rectangle>(tooltipAnnotation.TooltipBounds, new RectangleResolver(((IWrapsDriver) webElement).WrappedDriver));
+      return new FluentScreenshotElement<Rectangle>(tooltipAnnotation.TooltipBounds, new RectangleResolver(((IWrapsDriver)webElement).WrappedDriver));
     }
   }
 }

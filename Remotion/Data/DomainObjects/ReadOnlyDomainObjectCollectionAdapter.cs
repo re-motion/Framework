@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects
 
     public T this[int index]
     {
-      get { return (T) _wrappedData[index]; }
+      get { return (T)_wrappedData[index]; }
     }
 
     public T this[ObjectID objectID]
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects
     public T GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
-      return (T) _wrappedData[objectID];
+      return (T)_wrappedData[objectID];
     }
 
     public int IndexOf (ObjectID objectID)

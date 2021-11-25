@@ -114,7 +114,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       _transactionMock.Setup(stub => stub.EnsureCompatibility(It.IsNotNull<IEnumerable>()));
 
       var strategy = new Mock<ScopedTransactionStrategyBase>(
-          autoCommit, (Func<ITransaction>) _transactionFactoryMock.Object.Create, parentTransactionStrategy, _executionContextMock.Object) { CallBase = true };
+          autoCommit, (Func<ITransaction>)_transactionFactoryMock.Object.Create, parentTransactionStrategy, _executionContextMock.Object) { CallBase = true };
 
       SetChild(strategy.Object, ChildTransactionStrategyMock.Object);
 

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _selectedColumnsStub = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
       _selectedColumnsStub
           .Stub(stub => stub.AppendProjection(Arg<StringBuilder>.Is.Anything, Arg<ISqlDialect>.Is.Anything))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
       _comparedColumnsStrictMock = MockRepository.GenerateStrictMock<IComparedColumnsSpecification>();
       _orderedColumnsStub = MockRepository.GenerateStub<IOrderedColumnsSpecification>();
 
@@ -84,13 +84,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
                   Arg<StringBuilder>.Is.Anything,
                   Arg.Is(_dbCommandStub),
                   Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
       _comparedColumnsStrictMock.Replay();
 
       _orderedColumnsStub.Stub(stub => stub.IsEmpty).Return(false);
       _orderedColumnsStub
           .Stub(stub => stub.AppendOrderings(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[Name] ASC, [City] DESC"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Name] ASC, [City] DESC"));
 
      var result = builder.Create(_commandExecutionContextStub);
 
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
                   Arg<StringBuilder>.Is.Anything,
                   Arg.Is(_dbCommandStub),
                   Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
       _comparedColumnsStrictMock.Replay();
 
       _orderedColumnsStub.Stub(stub => stub.IsEmpty).Return(true);

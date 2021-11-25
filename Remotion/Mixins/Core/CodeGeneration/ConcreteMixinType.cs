@@ -153,7 +153,7 @@ namespace Remotion.Mixins.CodeGeneration
     {
       var mutableMember = member as IMutableMember;
       if (mutableMember != null)
-        return (T) context.GetGeneratedMember(mutableMember);
+        return (T)context.GetGeneratedMember(mutableMember);
       else
         return member;
     }

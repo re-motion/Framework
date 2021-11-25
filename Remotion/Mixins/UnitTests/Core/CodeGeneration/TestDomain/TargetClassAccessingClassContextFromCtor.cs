@@ -28,7 +28,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public TargetClassAccessingClassContextFromCtor ()
     {
-      var mixinTarget = (IMixinTarget) this;
+      var mixinTarget = (IMixinTarget)this;
       ClassContext = mixinTarget.ClassContext;
 
       Assert.That(ClassContext.Mixins.Count, Is.EqualTo(1));

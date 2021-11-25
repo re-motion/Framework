@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     {
       string queryID = queryNode.SelectSingleNode("@id", NamespaceManager).InnerText;
       string queryTypeAsString = queryNode.SelectSingleNode("@type", NamespaceManager).InnerText;
-      QueryType queryType = (QueryType) Enum.Parse(typeof(QueryType), queryTypeAsString, true);
+      QueryType queryType = (QueryType)Enum.Parse(typeof(QueryType), queryTypeAsString, true);
 
       XmlNode node = queryNode.SelectSingleNode(FormatXPath("{0}:storageGroupType"), NamespaceManager);
       StorageProviderDefinition storageProviderDefinition;

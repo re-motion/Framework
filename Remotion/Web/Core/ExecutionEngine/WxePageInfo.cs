@@ -193,9 +193,9 @@ namespace Remotion.Web.ExecutionEngine
         if (fields.Length == 0)
         {
           if (page is Page)
-            page = ((Page) page).Master;
+            page = ((Page)page).Master;
           else
-            page = ((MasterPage) page).Master;
+            page = ((MasterPage)page).Master;
         }
       } while (fields.Length == 0 && page != null);
 
@@ -212,14 +212,14 @@ namespace Remotion.Web.ExecutionEngine
       }
 
       if (fields.Length == 1) // Can only be 0 without an exception during design mode
-        return (HtmlForm?) ((FieldInfo) fields[0]).GetValue(page);
+        return (HtmlForm?)((FieldInfo)fields[0]).GetValue(page);
       else
         return null;
     }
 
     private bool FindHtmlFormControlFilter (MemberInfo member, object? filterCriteria)
     {
-      return (member is FieldInfo && ((FieldInfo) member).FieldType == typeof(HtmlForm));
+      return (member is FieldInfo && ((FieldInfo)member).FieldType == typeof(HtmlForm));
     }
     private void HandlePageInit (object? sender, EventArgs e)
     {
@@ -556,7 +556,7 @@ namespace Remotion.Web.ExecutionEngine
       get
       {
         NameObjectCollection? windowState =
-            (NameObjectCollection?) CurrentPageFunction.RootFunction!.Variables["WxeWindowState"];
+            (NameObjectCollection?)CurrentPageFunction.RootFunction!.Variables["WxeWindowState"];
         if (windowState == null)
         {
           windowState = new NameObjectCollection();

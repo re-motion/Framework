@@ -69,7 +69,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
     protected IBusinessObjectEnumerationProperty GetPropertyDefinition (AccessControlEntry ace, string propertyName)
     {
-      var property = (IBusinessObjectEnumerationProperty) ((IBusinessObject) ace).BusinessObjectClass.GetPropertyDefinition(propertyName);
+      var property = (IBusinessObjectEnumerationProperty)((IBusinessObject)ace).BusinessObjectClass.GetPropertyDefinition(propertyName);
       Assert.That(property, Is.Not.Null, propertyName);
       return property;
     }

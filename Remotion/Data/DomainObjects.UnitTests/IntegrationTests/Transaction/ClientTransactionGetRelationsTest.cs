@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Assert.That(orders, Is.Not.Null);
       Assert.That(orders, Is.TypeOf<OrderCollection>());
-      Assert.That(((OrderCollection) orders).Count, Is.EqualTo(2));
+      Assert.That(((OrderCollection)orders).Count, Is.EqualTo(2));
 
       var domainObjects = _eventReceiver.LoadedDomainObjectLists[0];
       Assert.That(domainObjects.Count, Is.EqualTo(2));
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Assert.That(productReviews, Is.Not.Null);
       Assert.That(productReviews, Is.TypeOf<VirtualObjectList<ProductReview>>());
-      Assert.That(((IObjectList<ProductReview>) productReviews).Count, Is.EqualTo(3));
+      Assert.That(((IObjectList<ProductReview>)productReviews).Count, Is.EqualTo(3));
 
       var domainObjects = _eventReceiver.LoadedDomainObjectLists[0];
       Assert.That(domainObjects.Count, Is.EqualTo(3));
@@ -231,10 +231,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       _eventReceiver.Clear();
 
-      DomainObjectCollection orders1 = (DomainObjectCollection) TestableClientTransaction.GetRelatedObjects(
+      DomainObjectCollection orders1 = (DomainObjectCollection)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
-      DomainObjectCollection orders2 = (DomainObjectCollection) TestableClientTransaction.GetRelatedObjects(
+      DomainObjectCollection orders2 = (DomainObjectCollection)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.That(ReferenceEquals(orders1, orders2), Is.True);
@@ -248,10 +248,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Product product = DomainObjectIDs.Product1.GetObject<Product>();
       _eventReceiver.Clear();
 
-      IObjectList<IDomainObject> productReviews1 = (IObjectList<IDomainObject>) TestableClientTransaction.GetRelatedObjects(
+      IObjectList<IDomainObject> productReviews1 = (IObjectList<IDomainObject>)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(product.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
 
-      IObjectList<IDomainObject> productReviews2 = (IObjectList<IDomainObject>) TestableClientTransaction.GetRelatedObjects(
+      IObjectList<IDomainObject> productReviews2 = (IObjectList<IDomainObject>)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(product.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
 
       Assert.That(ReferenceEquals(productReviews1, productReviews2), Is.True);
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       _eventReceiver.Clear();
 
-      DomainObjectCollection orders = (DomainObjectCollection) TestableClientTransaction.GetRelatedObjects(
+      DomainObjectCollection orders = (DomainObjectCollection)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       orders.EnsureDataComplete();
@@ -283,7 +283,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ProductReview productReview = DomainObjectIDs.ProductReview2.GetObject<ProductReview>();
       _eventReceiver.Clear();
 
-      IObjectList<IDomainObject> productReviews = (IObjectList<IDomainObject>) TestableClientTransaction.GetRelatedObjects(
+      IObjectList<IDomainObject> productReviews = (IObjectList<IDomainObject>)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(product.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
 
       productReviews.EnsureDataComplete();
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Customer customer = DomainObjectIDs.Customer2.GetObject<Customer>();
       _eventReceiver.Clear();
 
-      DomainObjectCollection orders = (DomainObjectCollection) TestableClientTransaction.GetRelatedObjects(
+      DomainObjectCollection orders = (DomainObjectCollection)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.That(orders, Is.Not.Null);
@@ -313,7 +313,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Person person = DomainObjectIDs.Person4.GetObject<Person>();
       _eventReceiver.Clear();
 
-      IObjectList<ProductReview> productReviews = (IObjectList<ProductReview>) TestableClientTransaction.GetRelatedObjects(
+      IObjectList<ProductReview> productReviews = (IObjectList<ProductReview>)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(person.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Person.Reviews"));
 
       Assert.That(productReviews, Is.Not.Null);
@@ -326,11 +326,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer>();
 
-      DomainObjectCollection orders = (DomainObjectCollection) TestableClientTransaction.GetRelatedObjects(
+      DomainObjectCollection orders = (DomainObjectCollection)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Order orderFromClientTransaction = DomainObjectIDs.Order1.GetObject<Order>();
-      Order orderFromCollection = (Order) orders[DomainObjectIDs.Order1];
+      Order orderFromCollection = (Order)orders[DomainObjectIDs.Order1];
 
       Assert.That(orderFromClientTransaction, Is.SameAs(orderFromCollection));
     }
@@ -340,7 +340,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Product product = DomainObjectIDs.Product1.GetObject<Product>();
 
-      IObjectList<ProductReview> productReviews = (IObjectList<ProductReview>) TestableClientTransaction.GetRelatedObjects(
+      IObjectList<ProductReview> productReviews = (IObjectList<ProductReview>)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(product.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
 
       ProductReview productReviewFromClientTransaction = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
@@ -354,7 +354,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer>();
 
-      DomainObjectCollection orders = (DomainObjectCollection) TestableClientTransaction.GetRelatedObjects(
+      DomainObjectCollection orders = (DomainObjectCollection)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(customer.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.That(
@@ -369,7 +369,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       DomainObject industrialSector = TestableClientTransaction.GetObject(DomainObjectIDs.IndustrialSector2, false);
       DomainObject expectedPartner = TestableClientTransaction.GetObject(DomainObjectIDs.Partner2, false);
 
-      DomainObjectCollection companies = (DomainObjectCollection) TestableClientTransaction.GetRelatedObjects(
+      DomainObjectCollection companies = (DomainObjectCollection)TestableClientTransaction.GetRelatedObjects(
           RelationEndPointID.Create(industrialSector.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"));
 
       Assert.That(companies[DomainObjectIDs.Partner2], Is.SameAs(expectedPartner));

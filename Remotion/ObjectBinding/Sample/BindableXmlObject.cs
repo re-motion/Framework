@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Sample
     protected static T GetObject<T> (Guid id)
       where T:BindableXmlObject
     {
-      return (T) XmlReflectionBusinessObjectStorageProvider.Current.GetObject(typeof(T), id);
+      return (T)XmlReflectionBusinessObjectStorageProvider.Current.GetObject(typeof(T), id);
     }
 
     protected static T CreateObject<T> ()

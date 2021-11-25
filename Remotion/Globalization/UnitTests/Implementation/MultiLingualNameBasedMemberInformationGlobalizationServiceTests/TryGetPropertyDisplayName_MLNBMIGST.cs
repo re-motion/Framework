@@ -166,7 +166,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
       var service = new MultiLingualNameBasedMemberInformationGlobalizationService();
 
       var typeInformationStub = new Mock<ITypeInformation>();
-      typeInformationStub.Setup(_ => _.Assembly).Returns((Assembly) null);
+      typeInformationStub.Setup(_ => _.Assembly).Returns((Assembly)null);
 
       var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub
@@ -209,7 +209,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
                   new MultiLingualNameAttribute("The Name en-GB", "en-GB")
               });
       propertyInformationStub.Setup(_ => _.GetOriginalDeclaration()).Returns(propertyInformationStub.Object);
-      propertyInformationStub.Setup(_ => _.GetOriginalDeclaringType()).Returns((ITypeInformation) null);
+      propertyInformationStub.Setup(_ => _.GetOriginalDeclaringType()).Returns((ITypeInformation)null);
 
       var typeInformationForResourceResolutionStub = new Mock<ITypeInformation>();
 

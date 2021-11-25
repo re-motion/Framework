@@ -34,9 +34,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var column = new BocSimpleColumnDefinition();
       column.SetPropertyPath(propertyPath.Object);
 
-      var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
+      var comparer = ((IBocSortableColumnDefinition)column).CreateCellValueComparer();
       Assert.That(comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());
-      Assert.That(((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.SameAs(propertyPath.Object));
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparer).PropertyPath, Is.SameAs(propertyPath.Object));
     }
 
     [Test]
@@ -45,9 +45,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var column = new BocSimpleColumnDefinition();
       column.SetPropertyPath(null);
 
-      var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
+      var comparer = ((IBocSortableColumnDefinition)column).CreateCellValueComparer();
       Assert.That(comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());
-      Assert.That(((BusinessObjectPropertyPathBasedComparer) comparer).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparer).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
     }
   }
 }

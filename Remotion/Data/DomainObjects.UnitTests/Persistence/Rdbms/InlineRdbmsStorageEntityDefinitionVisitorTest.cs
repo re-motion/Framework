@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
+                  var continuation = (Action<IRdbmsStorageEntityDefinition>)mi.Arguments[1];
                   continuation(_filterViewDefinition);
                 });
         _voidReceiverMock
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
+                  var continuation = (Action<IRdbmsStorageEntityDefinition>)mi.Arguments[1];
                   continuation(_unionViewDefinition);
                 });
         _voidReceiverMock
@@ -157,7 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
+                  var continuation = (Action<IRdbmsStorageEntityDefinition>)mi.Arguments[1];
                   continuation(_emptyViewDefinition);
                 });
         _voidReceiverMock
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
+                  var continuation = (Action<IRdbmsStorageEntityDefinition>)mi.Arguments[1];
                   continuation(_tableDefinition);
                 });
         _voidReceiverMock.Expect(mock => mock.HandleTableDefinition(Arg.Is(_tableDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
@@ -269,7 +269,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
+                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>)mi.Arguments[1];
                   var value = continuation(_filterViewDefinition);
                   Assert.That(value, Is.EqualTo("3"));
                 })
@@ -279,7 +279,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
+                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>)mi.Arguments[1];
                   var value = continuation(_unionViewDefinition);
                   Assert.That(value, Is.EqualTo("2"));
                 })
@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
+                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>)mi.Arguments[1];
                   var value = continuation(_emptyViewDefinition);
                   Assert.That(value, Is.EqualTo("1"));
                 })
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
             .WhenCalled(
                 mi =>
                 {
-                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
+                  var continuation = (Func<IRdbmsStorageEntityDefinition, string>)mi.Arguments[1];
                   var value = continuation(_tableDefinition);
                   Assert.That(value, Is.EqualTo("0"));
                 })

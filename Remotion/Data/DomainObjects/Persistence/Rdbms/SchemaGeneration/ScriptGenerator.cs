@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
           where cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition
           group cd by cd.StorageEntityDefinition.StorageProviderDefinition
           into g
-            select new { StorageProviderDefinition = (RdbmsProviderDefinition) g.Key, ClassDefinitions = g };
+            select new { StorageProviderDefinition = (RdbmsProviderDefinition)g.Key, ClassDefinitions = g };
 
       foreach (var group in classDefinitionsByStorageProvider)
       {

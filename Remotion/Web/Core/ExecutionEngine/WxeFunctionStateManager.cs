@@ -102,7 +102,7 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull("session", session);
       _session = session;
 
-      _functionStates = (Dictionary<string, WxeFunctionStateMetaData>) _session[s_sessionKeyForFunctionStates];
+      _functionStates = (Dictionary<string, WxeFunctionStateMetaData>)_session[s_sessionKeyForFunctionStates];
       if (_functionStates == null)
       {
         _functionStates = new Dictionary<string, WxeFunctionStateMetaData>();
@@ -172,7 +172,7 @@ namespace Remotion.Web.ExecutionEngine
       WxeFunctionState functionState;
       lock (_lockObject)
       {
-        functionState = (WxeFunctionState) _session[GetSessionKeyForFunctionState(functionToken)];
+        functionState = (WxeFunctionState)_session[GetSessionKeyForFunctionState(functionToken)];
       }
 
       if (hasOutOfProcessSession)

@@ -145,7 +145,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
       File.WriteAllText(expectedFilePath, "hello");
 
-      var actual = (ResourceVirtualFile) provider.GetFile("~/res/test/testfile.txt");
+      var actual = (ResourceVirtualFile)provider.GetFile("~/res/test/testfile.txt");
 
       Assert.That(actual.PhysicalPath, Is.EqualTo(expectedFilePath));
       Assert.That(actual.Exists);
@@ -162,7 +162,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
       File.WriteAllText(expectedFilePath, "hello");
 
-      var actual = (ResourceVirtualFile) provider.GetFile("~/res/test/subdirectory/testfile.txt");
+      var actual = (ResourceVirtualFile)provider.GetFile("~/res/test/subdirectory/testfile.txt");
 
       Assert.That(actual.PhysicalPath, Is.EqualTo(expectedFilePath));
       Assert.That(actual.Exists);
@@ -178,7 +178,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       var expectedFile = new ResourceVirtualFile("test", new FileInfo(Path.Combine(_testDirectory, "file.txt")));
       previousProviderStub.Stub(_ => _.GetFile("~/res/UnknownDirectory/testfile.txt")).Return(expectedFile);
 
-      var actual = (ResourceVirtualFile) provider.GetFile("~/res/UnknownDirectory/testfile.txt");
+      var actual = (ResourceVirtualFile)provider.GetFile("~/res/UnknownDirectory/testfile.txt");
 
       Assert.That(actual, Is.SameAs(expectedFile));
     }
@@ -250,7 +250,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       var expectedDirectoryPath = Path.Combine(_testDirectory, "testResourceFolder\\testDirectory");
       Directory.CreateDirectory(expectedDirectoryPath);
 
-      var actual = (ResourceVirtualDirectory) provider.GetDirectory("~/res/test/testDirectory");
+      var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/test/testDirectory");
 
       Assert.That(actual.PhysicalPath, Is.EqualTo(expectedDirectoryPath));
       Assert.That(actual.Exists);
@@ -268,7 +268,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
 
       Directory.CreateDirectory(expectedDirectoryPath);
 
-      var actual = (ResourceVirtualDirectory) provider.GetDirectory("~/res/");
+      var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/");
 
       Assert.That(actual.PhysicalPath, Is.EqualTo(expectedDirectoryPath));
       Assert.That(actual.Exists);
@@ -285,7 +285,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       var expectedDirectory = new ResourceVirtualDirectory("test", new DirectoryInfo(Path.Combine(_testDirectory, "Directory.txt")));
       previousProviderStub.Stub(_ => _.GetDirectory("~/res/UnknownDirectory/testDirectory")).Return(expectedDirectory);
 
-      var actual = (ResourceVirtualDirectory) provider.GetDirectory("~/res/UnknownDirectory/testDirectory");
+      var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/UnknownDirectory/testDirectory");
 
       Assert.That(actual, Is.SameAs(expectedDirectory));
     }

@@ -45,7 +45,7 @@ public class ResourceIdentifiersAttribute: Attribute
     if (attributes == null || attributes.Length == 0)
       return null;
     else
-      return (ResourceIdentifiersAttribute) attributes[0];
+      return (ResourceIdentifiersAttribute)attributes[0];
   }
 
   private static bool IsEnumTypeNameSuppressed (Type type)

@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates ()
     {
-      return ((IFluentScreenshotElement<ElementScope>) _fluentDateTimeValue.GetDatePicker().GetElement()).ResolveBrowserCoordinates();
+      return ((IFluentScreenshotElement<ElementScope>)_fluentDateTimeValue.GetDatePicker().GetElement()).ResolveBrowserCoordinates();
     }
 
     /// <inheritdoc />
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull("locator", locator);
 
-      return ((IFluentScreenshotElement<ElementScope>) _fluentDateTimeValue.GetDatePicker().GetElement()).ResolveDesktopCoordinates(locator);
+      return ((IFluentScreenshotElement<ElementScope>)_fluentDateTimeValue.GetDatePicker().GetElement()).ResolveDesktopCoordinates(locator);
     }
   }
 }

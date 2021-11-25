@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       StubInnerData(_order1, _order2, _order3);
       Assert.That(_readOnlyAdapter.ToArray(), Is.EqualTo(new[] { _order1, _order2, _order3 }));
 
-      var nonGenericEnumerableAdapter = (IEnumerable) _readOnlyAdapter;
+      var nonGenericEnumerableAdapter = (IEnumerable)_readOnlyAdapter;
       var enumerator = nonGenericEnumerableAdapter.GetEnumerator();
       Assert.That(enumerator.MoveNext(), Is.True);
       Assert.That(enumerator.Current, Is.SameAs(_order1));

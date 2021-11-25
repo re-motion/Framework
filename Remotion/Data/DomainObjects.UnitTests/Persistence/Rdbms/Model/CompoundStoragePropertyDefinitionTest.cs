@@ -51,14 +51,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _property2Stub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
       _property3Stub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
 
-      _yearProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property1Stub, o => ((DateTime) o).Year);
-      _monthProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property2Stub, o => ((DateTime) o).Month);
-      _dayProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property3Stub, o => ((DateTime) o).Day);
+      _yearProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property1Stub, o => ((DateTime)o).Year);
+      _monthProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property2Stub, o => ((DateTime)o).Month);
+      _dayProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property3Stub, o => ((DateTime)o).Day);
 
       _compoundStoragePropertyDefinition = new CompoundStoragePropertyDefinition(
           typeof(DateTime),
           new[] { _yearProperty, _monthProperty, _dayProperty },
-          objects => new DateTime((int) objects[0], (int) objects[1], (int) objects[2]));
+          objects => new DateTime((int)objects[0], (int)objects[1], (int)objects[2]));
     }
 
     [Test]
@@ -204,12 +204,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       property1bMock.VerifyAllExpectations();
 
       Assert.That(result, Is.TypeOf<CompoundStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof(int)));
-      Assert.That(((CompoundStoragePropertyDefinition) result).ValueCombinator, Is.SameAs(property1.ValueCombinator));
-      Assert.That(((CompoundStoragePropertyDefinition) result).Properties, Has.Count.EqualTo(2));
-      Assert.That(((CompoundStoragePropertyDefinition) result).Properties[0].ValueAccessor, Is.SameAs(property1.Properties[0].ValueAccessor));
-      Assert.That(((CompoundStoragePropertyDefinition) result).Properties[0].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyA));
-      Assert.That(((CompoundStoragePropertyDefinition) result).Properties[1].ValueAccessor, Is.SameAs(property1.Properties[1].ValueAccessor));
-      Assert.That(((CompoundStoragePropertyDefinition) result).Properties[1].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyB));
+      Assert.That(((CompoundStoragePropertyDefinition)result).ValueCombinator, Is.SameAs(property1.ValueCombinator));
+      Assert.That(((CompoundStoragePropertyDefinition)result).Properties, Has.Count.EqualTo(2));
+      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[0].ValueAccessor, Is.SameAs(property1.Properties[0].ValueAccessor));
+      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[0].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyA));
+      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[1].ValueAccessor, Is.SameAs(property1.Properties[1].ValueAccessor));
+      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[1].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyB));
     }
 
     [Test]

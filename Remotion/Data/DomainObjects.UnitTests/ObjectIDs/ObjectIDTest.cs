@@ -219,8 +219,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
 // ReSharper disable RedundantCast
 // ReSharper disable EqualExpressionComparison
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
-      Assert.That((ObjectID) null == (ObjectID) null, Is.True);
-      Assert.That((ObjectID) null != (ObjectID) null, Is.False);
+      Assert.That((ObjectID)null == (ObjectID)null, Is.True);
+      Assert.That((ObjectID)null != (ObjectID)null, Is.False);
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
 // ReSharper restore EqualExpressionComparison
 // ReSharper restore RedundantCast
@@ -356,7 +356,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     public void Initialize_WithInvalidType ()
     {
       Assert.That(
-          () => new ObjectID("Official", (byte) 1),
+          () => new ObjectID("Official", (byte)1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Remotion.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.", "value"));

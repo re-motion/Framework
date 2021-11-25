@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentUtility.CheckNotNull("values", values);
 
-      return _serializedIDProperty.SplitValuesForComparison(values.Select(v => (object) GetStringOrNull((ObjectID) v)));
+      return _serializedIDProperty.SplitValuesForComparison(values.Select(v => (object)GetStringOrNull((ObjectID)v)));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       var value = _serializedIDProperty.CombineValue(columnValueProvider);
       if (value == null)
         return null;
-      return ObjectID.Parse((string) value);
+      return ObjectID.Parse((string)value);
     }
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)

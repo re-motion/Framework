@@ -102,11 +102,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       factoryPartialMock
           .Expect(mock => mock.CallGetEndPointProvider(Arg<DelegatingDataManager>.Is.TypeOf))
           .Return(fakeEndPointProvider)
-          .WhenCalled(mi => endPointProviderDataManager = (DelegatingDataManager) mi.Arguments[0]);
+          .WhenCalled(mi => endPointProviderDataManager = (DelegatingDataManager)mi.Arguments[0]);
       factoryPartialMock
           .Expect(mock => mock.CallGetLazyLoader(Arg<DelegatingDataManager>.Is.TypeOf))
           .Return(fakeLazyLoader)
-          .WhenCalled(mi => lazyLoaderDataManager = (DelegatingDataManager) mi.Arguments[0]);
+          .WhenCalled(mi => lazyLoaderDataManager = (DelegatingDataManager)mi.Arguments[0]);
       factoryPartialMock
           .Expect(
               mock => mock.CallCreateRelationEndPointManager(
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
                   Arg.Is(fakeEventSink),
                   Arg<DelegatingDataContainerMap>.Is.TypeOf))
           .Return(fakeRelationEndPointManager)
-          .WhenCalled(mi => relationEndPointManagerDataContainerMap = (DelegatingDataContainerMap) mi.Arguments[4]);
+          .WhenCalled(mi => relationEndPointManagerDataContainerMap = (DelegatingDataContainerMap)mi.Arguments[4]);
       factoryPartialMock
           .Expect(
               mock => mock.CallCreateObjectLoader(
@@ -127,10 +127,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
                   Arg<DelegatingDataManager>.Is.TypeOf,
                   Arg.Is(fakeHierarchyManager)))
           .Return(fakeObjectLoader)
-          .WhenCalled(mi => objectLoaderDataManager = (DelegatingDataManager) mi.Arguments[4]);
+          .WhenCalled(mi => objectLoaderDataManager = (DelegatingDataManager)mi.Arguments[4]);
       factoryPartialMock.Replay();
 
-      var dataManager = (DataManager) factoryPartialMock.CreateDataManager(
+      var dataManager = (DataManager)factoryPartialMock.CreateDataManager(
           _fakeConstructedTransaction,
           fakeEventSink,
           fakeInvalidDomainObjectManager,
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       Assert.That(result, Is.TypeOf(typeof(ObjectLifetimeAgent)));
 
-      var objectLifetimeAgent = ((ObjectLifetimeAgent) result);
+      var objectLifetimeAgent = ((ObjectLifetimeAgent)result);
       Assert.That(objectLifetimeAgent.ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
       Assert.That(objectLifetimeAgent.EventSink, Is.SameAs(eventSink));
       Assert.That(objectLifetimeAgent.InvalidDomainObjectManager, Is.SameAs(invalidDomainObjectManager));
@@ -199,9 +199,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       factoryPartialMock.VerifyAllExpectations();
 
       Assert.That(result, Is.TypeOf(typeof(QueryManager)));
-      Assert.That(((QueryManager) result).PersistenceStrategy, Is.SameAs(persistenceStrategy));
-      Assert.That(((QueryManager) result).TransactionEventSink, Is.SameAs(eventSink));
-      Assert.That(((QueryManager) result).ObjectLoader, Is.SameAs(fakeObjectLoader));
+      Assert.That(((QueryManager)result).PersistenceStrategy, Is.SameAs(persistenceStrategy));
+      Assert.That(((QueryManager)result).TransactionEventSink, Is.SameAs(eventSink));
+      Assert.That(((QueryManager)result).ObjectLoader, Is.SameAs(fakeObjectLoader));
     }
 
     [Test]
@@ -214,10 +214,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var result = _factory.CreateCommitRollbackAgent(_fakeConstructedTransaction, eventSink, persistenceStrategy, dataManager);
 
       Assert.That(result, Is.TypeOf<CommitRollbackAgent>());
-      Assert.That(((CommitRollbackAgent) result).ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
-      Assert.That(((CommitRollbackAgent) result).EventSink, Is.SameAs(eventSink));
-      Assert.That(((CommitRollbackAgent) result).PersistenceStrategy, Is.SameAs(persistenceStrategy));
-      Assert.That(((CommitRollbackAgent) result).DataManager, Is.SameAs(dataManager));
+      Assert.That(((CommitRollbackAgent)result).ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
+      Assert.That(((CommitRollbackAgent)result).EventSink, Is.SameAs(eventSink));
+      Assert.That(((CommitRollbackAgent)result).PersistenceStrategy, Is.SameAs(persistenceStrategy));
+      Assert.That(((CommitRollbackAgent)result).DataManager, Is.SameAs(dataManager));
     }
 
     [Test]

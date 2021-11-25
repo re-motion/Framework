@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected new FormFunction<T> CurrentFunction
     {
-      get { return (FormFunction<T>) base.CurrentFunction; }
+      get { return (FormFunction<T>)base.CurrentFunction; }
     }
 
     protected override void OnLoad (EventArgs e)

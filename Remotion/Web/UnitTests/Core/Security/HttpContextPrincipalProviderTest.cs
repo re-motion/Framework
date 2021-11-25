@@ -80,7 +80,7 @@ namespace Remotion.Web.UnitTests.Core.Security
     public void GetPrincipal_HttpContextProviderReturnsNull_ThrowsInvalidOperationException ()
     {
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
-      httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns((HttpContextBase) null);
+      httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns((HttpContextBase)null);
 
       IPrincipalProvider principalProvider = new HttpContextPrincipalProvider(httpContextProviderStub.Object);
 

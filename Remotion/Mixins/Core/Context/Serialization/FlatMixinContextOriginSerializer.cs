@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Context.Serialization
     protected override object ConvertToStorageFormat<T> (T value)
     {
       if (typeof(T) == typeof(Assembly))
-        return ((Assembly) (object) value).GetFullNameChecked();
+        return ((Assembly)(object)value).GetFullNameChecked();
 
       return base.ConvertToStorageFormat(value);
     }

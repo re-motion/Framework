@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       // Exception is only triggered when somebody actually accesses the arguments
       _valuePropertyStub
           .Stub(stub => stub.SplitValuesForComparison(Arg<IEnumerable<object>>.Is.Anything))
-          .WhenCalled(mi => ((IEnumerable<object>) mi.Arguments[0]).ToArray())
+          .WhenCalled(mi => ((IEnumerable<object>)mi.Arguments[0]).ToArray())
           .Return(new ColumnValueTable());
       Assert.That(
           () => _objectIDWithoutClassIDStoragePropertyDefinition.SplitValuesForComparison(new object[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 })
@@ -234,8 +234,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = _objectIDWithoutClassIDStoragePropertyDefinition.CombineValue(_columnValueProviderStub);
 
       Assert.That(result, Is.TypeOf(typeof(ObjectID)));
-      Assert.That(((ObjectID) result).Value.ToString(), Is.EqualTo(DomainObjectIDs.Order1.Value.ToString()));
-      Assert.That(((ObjectID) result).ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(((ObjectID)result).Value.ToString(), Is.EqualTo(DomainObjectIDs.Order1.Value.ToString()));
+      Assert.That(((ObjectID)result).ClassDefinition, Is.SameAs(_classDefinition));
     }
 
     [Test]
@@ -272,8 +272,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       fakeUnifiedValueProperty.VerifyAllExpectations();
 
       Assert.That(result, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
-      Assert.That(((ObjectIDWithoutClassIDStoragePropertyDefinition) result).ValueProperty, Is.SameAs(fakeUnifiedValueProperty));
-      Assert.That(((ObjectIDWithoutClassIDStoragePropertyDefinition) result).ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(((ObjectIDWithoutClassIDStoragePropertyDefinition)result).ValueProperty, Is.SameAs(fakeUnifiedValueProperty));
+      Assert.That(((ObjectIDWithoutClassIDStoragePropertyDefinition)result).ClassDefinition, Is.SameAs(_classDefinition));
     }
 
     [Test]

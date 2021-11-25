@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding
     public UndefinedEnumValueAttribute (object value)
     {
       ArgumentUtility.CheckNotNullAndType<Enum>("value", value);
-      ArgumentUtility.CheckValidEnumValue("value", (Enum) value);
+      ArgumentUtility.CheckValidEnumValue("value", (Enum)value);
 
       _value = value;
     }
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding
     // http://connect.microsoft.com/VisualStudio/feedback/details/296032/customattributedata-throws-when-attribute-has-a-public-enum-property 
     public Enum GetValue ()
     {
-      return (Enum) _value;
+      return (Enum)_value;
     }
   }
 }

@@ -97,7 +97,7 @@ namespace Remotion.Web.Security.UI
       List<DemandTargetPermissionAttribute> attributes = new List<DemandTargetPermissionAttribute>();
       foreach (Delegate handler in delegates)
       {
-        DemandTargetPermissionAttribute? attribute = (DemandTargetPermissionAttribute?) Attribute.GetCustomAttribute(
+        DemandTargetPermissionAttribute? attribute = (DemandTargetPermissionAttribute?)Attribute.GetCustomAttribute(
             handler.Method,
             typeof(DemandTargetPermissionAttribute),
             false);

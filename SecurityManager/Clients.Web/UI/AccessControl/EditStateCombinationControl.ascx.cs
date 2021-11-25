@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected StateCombination CurrentStateCombination
     {
-      get { return (StateCombination) CurrentObject.BusinessObject; }
+      get { return (StateCombination)CurrentObject.BusinessObject; }
     }
 
     protected override void OnInit (EventArgs e)
@@ -131,7 +131,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
-        var stateDefinition = (StateDefinition) StateDefinitionField.Value;
+        var stateDefinition = (StateDefinition)StateDefinitionField.Value;
         CurrentStateCombination.ClearStates();
         CurrentStateCombination.AttachState(stateDefinition);
       }
@@ -141,7 +141,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void DeleteStateDefinitionButton_Click (object sender, EventArgs e)
     {
-      var handler = (EventHandler) Events[s_deleteEvent];
+      var handler = (EventHandler)Events[s_deleteEvent];
       if (handler != null)
         handler(this, EventArgs.Empty);
     }

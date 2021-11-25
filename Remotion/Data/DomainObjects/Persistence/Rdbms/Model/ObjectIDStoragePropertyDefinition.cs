@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentUtility.CheckNotNull("values", values);
 
-      return _valueProperty.SplitValuesForComparison(values.Select(v => GetValueOrNull((ObjectID) v)));
+      return _valueProperty.SplitValuesForComparison(values.Select(v => GetValueOrNull((ObjectID)v)));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
 
       var value = _valueProperty.CombineValue(columnValueProvider);
-      var classID = (string) _classIDProperty.CombineValue(columnValueProvider);
+      var classID = (string)_classIDProperty.CombineValue(columnValueProvider);
       if (value == null)
       {
         if (classID != null)

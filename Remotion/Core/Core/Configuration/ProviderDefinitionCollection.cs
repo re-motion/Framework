@@ -34,7 +34,7 @@ namespace Remotion.Configuration
     /// <returns>The provider with the specified name.</returns>
     public new T this[string name]
     {
-      get { return (T) (object) base[name]; }
+      get { return (T)(object)base[name]; }
     }
 
     /// <summary>Adds a provider to the collection.</summary>

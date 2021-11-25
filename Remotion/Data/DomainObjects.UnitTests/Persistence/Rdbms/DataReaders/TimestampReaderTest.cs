@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _idPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(null)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]));
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]));
       ReplayAll();
 
       var result = _reader.Read(_dataReaderStrictMock);
@@ -89,11 +89,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _idPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(_fakeObjectIDResult)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]));
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]));
       _timestampStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(_fakeTimestampResult)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]));
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]));
       ReplayAll();
 
       var result = _reader.Read(_dataReaderStrictMock);
@@ -114,26 +114,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _idPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(_fakeObjectIDResult)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Repeat.Once();
       _idPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(null)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Repeat.Once();
       _idPropertyStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
           .Return(fakeObjectIDResult2)
-          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Repeat.Once();
       _timestampStrictMock
         .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
         .Return(_fakeTimestampResult)
-        .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+        .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
         .Repeat.Once();
       _timestampStrictMock
           .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
-        .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader) mi.Arguments[0]))
+        .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]))
           .Return(fakeTimestampResult2)
           .Repeat.Once();
       ReplayAll();

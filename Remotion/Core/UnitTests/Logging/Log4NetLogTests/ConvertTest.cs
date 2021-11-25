@@ -59,7 +59,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     public void Test_InvalidLevel ()
     {
       Assert.That(
-          () => Log4NetLog.Convert((LogLevel) 10),
+          () => Log4NetLog.Convert((LogLevel)10),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "LogLevel does not support value 10.", "logLevel"));

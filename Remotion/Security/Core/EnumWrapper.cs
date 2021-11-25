@@ -120,7 +120,7 @@ namespace Remotion.Security
         return false;
       if (obj.GetType() != typeof(EnumWrapper))
         return false;
-      return Equals((EnumWrapper) obj);
+      return Equals((EnumWrapper)obj);
     }
 
     public override int GetHashCode ()

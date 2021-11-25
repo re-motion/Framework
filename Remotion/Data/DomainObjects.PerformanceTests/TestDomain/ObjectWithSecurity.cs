@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
       if (_securityContext == null)
       {
         _securityContext = SecurityContext.Create(
-            ((ISecurableObject) this).GetSecurableType(),
+            ((ISecurableObject)this).GetSecurableType(),
             null,
             null,
             null,

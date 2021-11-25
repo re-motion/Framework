@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected WxeTestPageFunction CurrentWxeTestPageFunction
     {
-      get { return (WxeTestPageFunction) CurrentFunction; }
+      get { return (WxeTestPageFunction)CurrentFunction; }
     }
 
     protected HtmlHeadContents HtmlHeadContents;

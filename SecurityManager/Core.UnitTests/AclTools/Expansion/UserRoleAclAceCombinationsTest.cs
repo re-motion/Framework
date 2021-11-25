@@ -86,9 +86,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       var userRoleAclAceCombination = new UserRoleAclAceCombination(Role, Ace);
       var userRoleAclAceCombinationSame = new UserRoleAclAceCombination(Role, Ace);
-      Assert.That(userRoleAclAceCombination,Is.EqualTo((Object) userRoleAclAceCombination));
-      Assert.That(userRoleAclAceCombination, Is.EqualTo((Object) userRoleAclAceCombinationSame));
-      Assert.That(userRoleAclAceCombinationSame, Is.EqualTo((Object) userRoleAclAceCombination));
+      Assert.That(userRoleAclAceCombination,Is.EqualTo((Object)userRoleAclAceCombination));
+      Assert.That(userRoleAclAceCombination, Is.EqualTo((Object)userRoleAclAceCombinationSame));
+      Assert.That(userRoleAclAceCombinationSame, Is.EqualTo((Object)userRoleAclAceCombination));
     }
 
     [Test]

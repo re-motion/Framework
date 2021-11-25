@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       else
       {
         if (mustCreateCopy)
-          list = (IList) ((ICloneable) list).Clone();
+          list = (IList)((ICloneable)list).Clone();
 
         foreach (object obj in objects)
           list.Add(obj);
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       else
       {
         if (mustCreateCopy)
-          list = (IList) ((ICloneable) list).Clone();
+          list = (IList)((ICloneable)list).Clone();
 
         foreach (object obj in objects)
           list.Remove(obj);

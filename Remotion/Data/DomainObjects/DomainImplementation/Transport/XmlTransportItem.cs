@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       }
       else if (ExtensibleEnumUtility.IsExtensibleEnumType(valueType))
       {
-        writer.WriteString(((IExtensibleEnum) value).ID);
+        writer.WriteString(((IExtensibleEnum)value).ID);
       }
       else
       {

@@ -41,7 +41,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("style", style);
 
-      var menuTab = ((IMenuTab) tab).GetActiveTab();
+      var menuTab = ((IMenuTab)tab).GetActiveTab();
       var command = GetRenderingCommand(isEnabled, menuTab);
 
       var additionalUrlParameters = menuTab.GetUrlParameters();

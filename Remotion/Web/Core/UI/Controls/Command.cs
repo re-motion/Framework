@@ -298,7 +298,7 @@ namespace Remotion.Web.UI.Controls
       public virtual WxeFunction InitializeFunction (NameObjectCollection? additionalWxeParameters)
       {
         Type functionType = ResolveFunctionType();
-        WxeFunction function = (WxeFunction) Activator.CreateInstance(functionType)!;
+        WxeFunction function = (WxeFunction)Activator.CreateInstance(functionType)!;
 
         function.VariablesContainer.InitializeParameters(_parameters, additionalWxeParameters);
 
@@ -787,7 +787,7 @@ namespace Remotion.Web.UI.Controls
 
         IWxeCallArguments callArguments;
         if (hasTarget)
-          callArguments = new WxeCallArguments((Control) OwnerControl!, new WxeCallOptionsExternal(target, null, false)); // TODO RM-8118: not null assertion
+          callArguments = new WxeCallArguments((Control)OwnerControl!, new WxeCallOptionsExternal(target, null, false)); // TODO RM-8118: not null assertion
         else
           callArguments = WxeCallArguments.Default;
 
@@ -883,7 +883,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties when there is no command. Interpreted if Type is set to None.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     [NotifyParentProperty (true)]
     public virtual NoneCommandInfo NoneCommand
     {
@@ -902,7 +902,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties of the event. Interpreted if Type is set to Event.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     [NotifyParentProperty (true)]
     public virtual EventCommandInfo EventCommand
     {
@@ -921,7 +921,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties of the hyperlink. Interpreted if Type is set to Href.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     [NotifyParentProperty (true)]
     public virtual HrefCommandInfo HrefCommand
     {
@@ -940,7 +940,7 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The properties of the WxeFunction. Interpreted if Type is set to WxeFunction.")]
-    [DefaultValue ((string?) null)]
+    [DefaultValue ((string?)null)]
     [NotifyParentProperty (true)]
     public virtual WxeFunctionCommandInfo WxeFunctionCommand
     {

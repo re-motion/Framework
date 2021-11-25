@@ -110,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     {
       foreach (var method in GetType().GetMethods())
       {
-        var testCaseAttribute = (TestMethodAttribute) Attribute.GetCustomAttribute(method, typeof(TestMethodAttribute), true);
+        var testCaseAttribute = (TestMethodAttribute)Attribute.GetCustomAttribute(method, typeof(TestMethodAttribute), true);
         if (testCaseAttribute != null)
         {
           if (method.ReturnType != typeof(void) || method.GetParameters().Length != 0)
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
                     testCaseAttribute.GetType().Name));
           }
 
-          var testCaseData = testCaseDataFactory((T) testCaseAttribute, method);
+          var testCaseData = testCaseDataFactory((T)testCaseAttribute, method);
           if (testCaseData != null)
           {
             // Handle TestName
@@ -146,26 +146,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
             }
 
             // Handle CategoryAttribute
-            var categoryAttribute = (CategoryAttribute) Attribute.GetCustomAttribute(method, typeof(CategoryAttribute));
+            var categoryAttribute = (CategoryAttribute)Attribute.GetCustomAttribute(method, typeof(CategoryAttribute));
             if (categoryAttribute != null)
               testCaseData.SetCategory(categoryAttribute.Name);
 
             // Handle IgnoreAttribute
-            var ignoreAttribute = (IgnoreAttribute) Attribute.GetCustomAttribute(method, typeof(IgnoreAttribute));
+            var ignoreAttribute = (IgnoreAttribute)Attribute.GetCustomAttribute(method, typeof(IgnoreAttribute));
             if (ignoreAttribute != null)
             {
               var dummyTest = new TestSuite("");
               ignoreAttribute.ApplyToTest(dummyTest);
-              testCaseData.Ignore((string) dummyTest.Properties.Get(PropertyNames.SkipReason));
+              testCaseData.Ignore((string)dummyTest.Properties.Get(PropertyNames.SkipReason));
             }
 
             // Handle ExplicitAttribute
-            var explicitAttribute = (ExplicitAttribute) Attribute.GetCustomAttribute(method, typeof(ExplicitAttribute));
+            var explicitAttribute = (ExplicitAttribute)Attribute.GetCustomAttribute(method, typeof(ExplicitAttribute));
             if (explicitAttribute != null)
             {
               var dummyTest = new TestSuite("");
               explicitAttribute.ApplyToTest(dummyTest);
-              testCaseData.Explicit((string) dummyTest.Properties.Get(PropertyNames.SkipReason));
+              testCaseData.Explicit((string)dummyTest.Properties.Get(PropertyNames.SkipReason));
             }
 
             testCaseAttribute.Apply(testCaseData);
@@ -218,7 +218,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       ArgumentUtility.CheckNotNull("method", method);
 
       return new TestCaseData(
-          (TestSetupAction) ((helper, url) =>
+          (TestSetupAction)((helper, url) =>
           {
             PrepareTest(attribute, helper, url);
             RunTest(method);

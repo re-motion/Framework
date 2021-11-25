@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Sample
           Type concreteType = GetConcreteType(type);
           XmlSerializer serializer = GetXmlSerializer(concreteType);
 
-          obj = (BindableXmlObject) serializer.Deserialize(stream);
+          obj = (BindableXmlObject)serializer.Deserialize(stream);
         }
 
         obj._id = id;
@@ -120,12 +120,12 @@ namespace Remotion.ObjectBinding.Sample
 
     public T CreateObject<T> () where T: BindableXmlObject
     {
-      return (T) CreateObject(typeof(T), Guid.NewGuid());
+      return (T)CreateObject(typeof(T), Guid.NewGuid());
     }
 
     public T CreateObject<T> (Guid id) where T: BindableXmlObject
     {
-      return (T) CreateObject(typeof(T), id);
+      return (T)CreateObject(typeof(T), id);
     }
 
     public BindableXmlObject CreateObject (Type concreteType)
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Sample
     {
       lock (_reflectionBusinessObjectStorageProvider)
       {
-        BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create(true, type, ParamList.Empty);
+        BindableXmlObject obj = (BindableXmlObject)ObjectFactory.Create(true, type, ParamList.Empty);
         obj._id = id;
         AddToIdentityMap(obj);
         return obj;
@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding.Sample
 
     private BindableXmlObject GetFromIdentityMap (Guid id)
     {
-      BindableXmlObject bindableXmlObject = (BindableXmlObject) _identityMap[id];
+      BindableXmlObject bindableXmlObject = (BindableXmlObject)_identityMap[id];
       if (bindableXmlObject == null)
         return null;
       return bindableXmlObject;
@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Sample
 
     private Type GetTargetType (BindableXmlObject obj)
     {
-      return ((BindableObjectClass) ((IBusinessObject) obj).BusinessObjectClass).TargetType;
+      return ((BindableObjectClass)((IBusinessObject)obj).BusinessObjectClass).TargetType;
     }
 
     private XmlSerializer GetXmlSerializer (Type concreteType)
@@ -211,7 +211,7 @@ namespace Remotion.ObjectBinding.Sample
       ArgumentUtility.CheckNotNull("classWithIdentity", classWithIdentity);
       ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
-      return (IBusinessObjectWithIdentity) GetObject(classWithIdentity.TargetType, new Guid(uniqueIdentifier));
+      return (IBusinessObjectWithIdentity)GetObject(classWithIdentity.TargetType, new Guid(uniqueIdentifier));
     }
   }
 }

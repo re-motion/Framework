@@ -92,7 +92,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseWithInheritedNonMultipleAttribute), typeof(Attribute), true);
       Assert.That(attributes, Has.Length.EqualTo(1));
-      Assert.That(((InheritedNotMultipleAttribute) attributes[0]).Context, Is.EqualTo("Base"));
+      Assert.That(((InheritedNotMultipleAttribute)attributes[0]).Context, Is.EqualTo("Base"));
     }
 
     [Test]
@@ -100,7 +100,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     {
       object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedShadowingNonMultipleAttribute), typeof(Attribute), true);
       Assert.That(attributes, Has.Length.EqualTo(1));
-      Assert.That(((InheritedNotMultipleAttribute) attributes[0]).Context, Is.EqualTo("Derived"));
+      Assert.That(((InheritedNotMultipleAttribute)attributes[0]).Context, Is.EqualTo("Derived"));
     }
 
     [Test]
@@ -134,7 +134,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void GetCustomAttributes_WithMemberInfo_DelegatesToTypeVersion ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes((MemberInfo) typeof(DerivedWithAttributesAndSuppressed), typeof(Attribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes((MemberInfo)typeof(DerivedWithAttributesAndSuppressed), typeof(Attribute), true);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"),
         new DerivedInheritedAttribute("DerivedWithAttributesAndSuppressed")}));

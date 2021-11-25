@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected new EditUserFormFunction CurrentFunction
     {
-      get { return (EditUserFormFunction) base.CurrentFunction; }
+      get { return (EditUserFormFunction)base.CurrentFunction; }
     }
 
     protected override FormGridManager GetFormGridManager ()
@@ -82,8 +82,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
       {
         RolesList.SetSortingOrder(
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition) RolesList.FixedColumns.Find("Group"), SortingDirection.Ascending),
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition) RolesList.FixedColumns.Find("Position"), SortingDirection.Ascending));
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("Group"), SortingDirection.Ascending),
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("Position"), SortingDirection.Ascending));
       }
 
       if (RolesList.IsReadOnly)

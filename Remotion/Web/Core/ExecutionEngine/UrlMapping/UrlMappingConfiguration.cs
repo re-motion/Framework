@@ -212,7 +212,7 @@ public class UrlMappingCollection: CollectionBase
 
   public UrlMappingEntry this[int index]
   {
-    get { return (UrlMappingEntry) List[index]!; } // TODO RM-8118: not null assertion
+    get { return (UrlMappingEntry)List[index]!; } // TODO RM-8118: not null assertion
     set { List[index] = value; }
   }
 

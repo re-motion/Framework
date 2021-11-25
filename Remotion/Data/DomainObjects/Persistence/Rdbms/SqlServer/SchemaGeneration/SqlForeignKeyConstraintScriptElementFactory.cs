@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     private string GetColumnNameList (IEnumerable<ColumnDefinition> columns)
     {
-      return String.Join((string) ", ", (IEnumerable<string>) columns.Select(c => "[" + c.Name + "]"));
+      return String.Join((string)", ", (IEnumerable<string>)columns.Select(c => "[" + c.Name + "]"));
     }
   }
 }

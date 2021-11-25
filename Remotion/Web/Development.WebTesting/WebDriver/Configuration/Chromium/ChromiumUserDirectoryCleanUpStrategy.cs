@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
                 ex.Message);
           }
 
-          Thread.Sleep((int) sleep);
+          Thread.Sleep((int)sleep);
           sleep *= 1.25f;
 
           tries++;

@@ -349,7 +349,7 @@ namespace Remotion.Reflection
 
     private ITypeInformation[] ConvertToTypeAdapters (IEnumerable<Type> types)
     {
-      return types.Select(t => (ITypeInformation) TypeAdapter.Create(t)).ToArray();
+      return types.Select(t => (ITypeInformation)TypeAdapter.Create(t)).ToArray();
     }
 
     /*

@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _customer.Committing += (sender, e) => order.OrderNumber = 1000;
       TestableClientTransaction.Committing += (sender1, args) =>
       {
-        var customer = (Customer) args.DomainObjects.SingleOrDefault(obj => obj.ID == DomainObjectIDs.Customer1);
+        var customer = (Customer)args.DomainObjects.SingleOrDefault(obj => obj.ID == DomainObjectIDs.Customer1);
         if (customer != null)
           customer.IndustrialSector.Name = "New industrial sector name";
       };

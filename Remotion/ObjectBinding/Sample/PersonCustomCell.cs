@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Sample
     {
       if (arguments.List.Page.IsPostBack)
       {
-        HtmlInputFile inputFile = (HtmlInputFile) arguments.Control;
+        HtmlInputFile inputFile = (HtmlInputFile)arguments.Control;
         if (inputFile != null && inputFile.PostedFile != null)
         {
         }

@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void HasBusinessObjectChangedFalse_BusinessObjectNull_DoesNotSaveValueIntoBoundObject_AndReturnsTrue ()
     {
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object) null);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object)).Returns((object)null);
       referenceDataSource.LoadValue(false);
       Assert.That(referenceDataSource.HasBusinessObjectChanged, Is.False);
 

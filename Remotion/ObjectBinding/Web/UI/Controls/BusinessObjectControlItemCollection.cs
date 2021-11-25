@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public new IBusinessObjectBoundWebControl? OwnerControl
     {
-      get { return (IBusinessObjectBoundWebControl?) base.OwnerControl; }
+      get { return (IBusinessObjectBoundWebControl?)base.OwnerControl; }
       set { base.OwnerControl = value; }
     }
   }
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     IControl? IControlItem.OwnerControl
     {
       get { return _ownerControl; }
-      set { OwnerControl = (IBusinessObjectBoundWebControl?) value; }
+      set { OwnerControl = (IBusinessObjectBoundWebControl?)value; }
     }
 
     /// <summary> Not supported by base implementation. </summary>

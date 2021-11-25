@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected new BaseListTransactedFunction CurrentFunction
     {
-      get { return (BaseListTransactedFunction) base.CurrentFunction; }
+      get { return (BaseListTransactedFunction)base.CurrentFunction; }
     }
 
     protected void HandleEditItemClick (BocList sender, BocListItemCommandClickEventArgs e)
@@ -45,12 +45,12 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
       if (!Page.IsReturningPostBack)
       {
-        var editUserFormFunction = CreateEditFunction(WxeTransactionMode.CreateRootWithAutoCommit, ((T) e.BusinessObject).GetHandle());
+        var editUserFormFunction = CreateEditFunction(WxeTransactionMode.CreateRootWithAutoCommit, ((T)e.BusinessObject).GetHandle());
         Page.ExecuteFunction(editUserFormFunction, WxeCallArguments.Default);
       }
       else
       {
-        if (!((FormFunction<T>) Page.ReturningFunction).HasUserCancelled)
+        if (!((FormFunction<T>)Page.ReturningFunction).HasUserCancelled)
         {
           CurrentFunction.Reset();
           sender.LoadUnboundValue(GetValues(), false);
@@ -69,7 +69,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       }
       else
       {
-        if (!((FormFunction<T>) Page.ReturningFunction).HasUserCancelled)
+        if (!((FormFunction<T>)Page.ReturningFunction).HasUserCancelled)
         {
           CurrentFunction.Reset();
           sender.LoadUnboundValue(GetValues(), false);

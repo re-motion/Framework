@@ -140,7 +140,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void Add ()
     {
       Assert.That(
-          () => ((ICollection<int>) _collection).Add(0),
+          () => ((ICollection<int>)_collection).Add(0),
           Throws.InstanceOf<NotSupportedException>());
     }
 
@@ -148,7 +148,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void Clear ()
     {
       Assert.That(
-          () => ((ICollection<int>) _collection).Clear(),
+          () => ((ICollection<int>)_collection).Clear(),
           Throws.InstanceOf<NotSupportedException>());
     }
 
@@ -156,34 +156,34 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void Remove ()
     {
       Assert.That(
-          () => ((ICollection<int>) _collection).Remove(1),
+          () => ((ICollection<int>)_collection).Remove(1),
           Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
     public void IsReadOnly ()
     {
-      Assert.That(((ICollection<int>) _collection).IsReadOnly, Is.True);
+      Assert.That(((ICollection<int>)_collection).IsReadOnly, Is.True);
     }
 
     [Test]
     public void CopyTo_NonGeneric ()
     {
       object[] values = new object[5];
-      ((ICollection) _collection).CopyTo(values, 1);
+      ((ICollection)_collection).CopyTo(values, 1);
       Assert.That(values, Is.EqualTo(new object[] { null, 1, 2, 3, null }));
     }
 
     [Test]
     public void IsSynchronized ()
     {
-      Assert.That(((ICollection) _collection).IsSynchronized, Is.False);
+      Assert.That(((ICollection)_collection).IsSynchronized, Is.False);
     }
 
     [Test]
     public void SyncRoot ()
     {
-      Assert.That(((ICollection) _collection).SyncRoot, Is.Not.Null);
+      Assert.That(((ICollection)_collection).SyncRoot, Is.Not.Null);
     }
   }
 }

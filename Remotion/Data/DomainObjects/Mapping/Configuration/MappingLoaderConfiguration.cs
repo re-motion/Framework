@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
 
     protected TypeElement<IMappingLoader> MappingLoaderElement
     {
-      get { return (TypeElement<IMappingLoader>) this[_mappingLoaderProperty]; }
+      get { return (TypeElement<IMappingLoader>)this[_mappingLoaderProperty]; }
     }
   }
 }

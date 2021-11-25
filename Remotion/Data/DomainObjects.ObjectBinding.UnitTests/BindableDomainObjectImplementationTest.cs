@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void UniqueIdentifierViaImplementation ()
     {
       var instance = SampleBindableDomainObject.NewObject();
-      var mixin = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, typeof(BindableDomainObject), "_implementation");
+      var mixin = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, typeof(BindableDomainObject), "_implementation");
       Assert.That(mixin.UniqueIdentifier, Is.EqualTo(instance.ID.ToString()));
     }
 
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var wrapper = SampleBindableDomainObject.NewObject();
       var implementation = BindableDomainObjectImplementation.Create(wrapper);
-      Assert.That(implementation.DisplayName, Is.EqualTo(((IBusinessObject) wrapper).BusinessObjectClass.Identifier));
+      Assert.That(implementation.DisplayName, Is.EqualTo(((IBusinessObject)wrapper).BusinessObjectClass.Identifier));
     }
 
     [Test]

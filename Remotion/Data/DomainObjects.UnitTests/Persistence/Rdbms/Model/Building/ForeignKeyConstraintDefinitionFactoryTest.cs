@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _infrastructureStoragePropertyDefintionProviderMock.Replay();
 
       var customerProperty = orderClassDefinition.MyPropertyDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
-      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition) customerProperty.StoragePropertyDefinition).GetColumnsForComparison();
+      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition)customerProperty.StoragePropertyDefinition).GetColumnsForComparison();
 
       _storageNameProviderMock
           .Expect(mock => mock.GetForeignKeyConstraintName(
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _infrastructureStoragePropertyDefintionProviderMock.Replay();
 
       var employeeProperty = computerClassDefinition.MyPropertyDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"];
-      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition) employeeProperty.StoragePropertyDefinition).GetColumnsForComparison();
+      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition)employeeProperty.StoragePropertyDefinition).GetColumnsForComparison();
 
       _storageNameProviderMock
           .Expect(mock => mock.GetForeignKeyConstraintName(

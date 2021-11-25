@@ -107,7 +107,7 @@ C:\ServiceMonitor.exe w3svc;
         if (!_docker.ContainerExists(_containerName))
           return true;
 
-        Thread.Sleep((int) interval.TotalMilliseconds);
+        Thread.Sleep((int)interval.TotalMilliseconds);
       }
 
       return false;

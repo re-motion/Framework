@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       if (StorageTypeLength.HasValue)
       {
         var parameterSize = StorageTypeLength.Value;
-        var isStringAndValueExceedsParameterSize = convertedValue is string && ((string) convertedValue).Length > parameterSize;
+        var isStringAndValueExceedsParameterSize = convertedValue is string && ((string)convertedValue).Length > parameterSize;
 
         if (!isStringAndValueExceedsParameterSize)
           parameter.Size = parameterSize;
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       if (dotNetValue == null)
         return DBNull.Value;
-      var simpleDataType = (SimpleDataType) dotNetValue;
+      var simpleDataType = (SimpleDataType)dotNetValue;
       return simpleDataType.StringValue;
     }
 
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       if (storageValue == DBNull.Value)
         return null;
 
-      return new SimpleDataType((string) storageValue);
+      return new SimpleDataType((string)storageValue);
     }
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)

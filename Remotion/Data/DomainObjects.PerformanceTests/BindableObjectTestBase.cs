@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     public virtual void BusinessObject_Property_IsAccessible ()
     {
-      var obj = (IBusinessObject) ObjectWithSecurity.NewObject();
+      var obj = (IBusinessObject)ObjectWithSecurity.NewObject();
       var property = obj.BusinessObjectClass.GetPropertyDefinition("TheProperty");
 
       bool value = true;
@@ -50,15 +50,15 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("BusinessObject_Property_IsAccessible (executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
     }
 
     public virtual void BusinessObject_GetProperty ()
     {
-      var obj = (IBusinessObject) ObjectWithSecurity.NewObject();
-      ((ObjectWithSecurity) obj).TheProperty = -1;
+      var obj = (IBusinessObject)ObjectWithSecurity.NewObject();
+      ((ObjectWithSecurity)obj).TheProperty = -1;
       var property = obj.BusinessObjectClass.GetPropertyDefinition("TheProperty");
 
       bool value = false;
@@ -76,16 +76,16 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("BusinessObject_GetProperty (executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
     }
 
     public virtual void DynamicMethod_GetProperty ()
     {
-      var obj = (IBusinessObject) ObjectWithSecurity.NewObject();
-      ((ObjectWithSecurity) obj).TheProperty = -1;
-      var property = (PropertyBase) obj.BusinessObjectClass.GetPropertyDefinition("TheProperty");
+      var obj = (IBusinessObject)ObjectWithSecurity.NewObject();
+      ((ObjectWithSecurity)obj).TheProperty = -1;
+      var property = (PropertyBase)obj.BusinessObjectClass.GetPropertyDefinition("TheProperty");
 
       bool value = false;
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("DynamicMethod_GetProperty (executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
     }
@@ -133,14 +133,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("DomainObject_GetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
     }
 
     public virtual void BusinessObject_SetProperty ()
     {
-      var obj = (IBusinessObject) ObjectWithSecurity.NewObject();
+      var obj = (IBusinessObject)ObjectWithSecurity.NewObject();
       var property = obj.BusinessObjectClass.GetPropertyDefinition("TheProperty");
 
       obj.SetProperty(property, -1);
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       stopwatch.Stop();
       gcCounter.EndCount();
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("BusinessObject_SetProperty (executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
     }
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       Trace.WriteLine(obj.TheProperty);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
       Console.WriteLine("DomainObject_SetProperty ((executed {0:N0}x): Average duration: {1:N} 탎", TestRepititions, averageMilliSeconds);
       gcCounter.PrintCount(Console.Out);
     }

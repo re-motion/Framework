@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
       base.OnClick(menuItem);
 
-      ((BocList) OwnerControl).AddAndEditRow(_newObjectFactory());
+      ((BocList)OwnerControl).AddAndEditRow(_newObjectFactory());
     }
   }
 }

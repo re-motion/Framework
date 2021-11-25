@@ -279,7 +279,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       Assert.That(viewState, Is.Not.Null);
       Assert.That(viewState is Pair, Is.True);
-      Pair values = (Pair) viewState;
+      Pair values = (Pair)viewState;
       Assert.That(values.Second, Is.Null);
     }
 
@@ -314,7 +314,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       Assert.That(viewState, Is.Not.Null);
       Assert.That(viewState is Pair, Is.True);
-      Pair values = (Pair) viewState;
+      Pair values = (Pair)viewState;
       Assert.That(values.Second, Is.Not.Null);
     }
 
@@ -381,18 +381,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       object controlState = _lazyContainerInvoker.SaveControlState();
 
       Assert.That(controlState is Triplet, Is.True);
-      Triplet values = (Triplet) controlState;
+      Triplet values = (Triplet)controlState;
       Assert.IsInstanceOf((typeof(HybridDictionary)), values.Third);
-      IDictionary actualControlStates = (IDictionary) values.Third;
+      IDictionary actualControlStates = (IDictionary)values.Third;
       Assert.That(actualControlStates.Count, Is.EqualTo(2));
 
       foreach (string expectedKey in expectedControlStates.Keys)
       {
-        Pair expectedValues = (Pair) expectedControlStates[expectedKey];
+        Pair expectedValues = (Pair)expectedControlStates[expectedKey];
 
         object actualControlState = actualControlStates[expectedKey];
         Assert.That(actualControlState is Pair, Is.True);
-        Pair actualValues = (Pair) actualControlState;
+        Pair actualValues = (Pair)actualControlState;
         Assert.AreEqual(expectedValues.First, actualValues.First, expectedKey);
         Assert.AreEqual(expectedValues.Second, actualValues.Second, expectedKey);
       }
@@ -419,7 +419,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       pageStatePersisterBackup = Page.GetPageStatePersister();
 
       Assert.That(pageStatePersisterBackup.ControlState is IDictionary, Is.True);
-      IDictionary controlStates = (IDictionary) pageStatePersisterBackup.ControlState;
+      IDictionary controlStates = (IDictionary)pageStatePersisterBackup.ControlState;
       Assert.That(controlStates.Count, Is.EqualTo(1));
       Assert.That(controlStates.Contains(_lazyContainer.UniqueID), Is.True);
 
@@ -466,7 +466,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       pageStatePersisterBackup = Page.GetPageStatePersister();
 
       Assert.That(pageStatePersisterBackup.ControlState is IDictionary, Is.True);
-      IDictionary controlStates = (IDictionary) pageStatePersisterBackup.ControlState;
+      IDictionary controlStates = (IDictionary)pageStatePersisterBackup.ControlState;
       Assert.That(controlStates.Count, Is.EqualTo(1));
       Assert.That(controlStates.Contains(_lazyContainer.UniqueID), Is.True);
 

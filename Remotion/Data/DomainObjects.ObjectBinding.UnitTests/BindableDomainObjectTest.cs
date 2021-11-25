@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void Implementation_IsInitialized ()
     {
       var instance = SampleBindableDomainObject.NewObject();
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      var implementation = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       var instance = SampleBindableDomainObject.NewObject();
       instance = Serializer.SerializeAndDeserialize(instance);
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      var implementation = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof(SampleBindableDomainObject)));
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var instance = SampleBindableDomainObject_ImplementingISerializable.NewObject();
       instance = Serializer.SerializeAndDeserialize(instance);
 
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      var implementation = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof(SampleBindableDomainObject_ImplementingISerializable)));
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
         StubStorageProvider.LoadDataContainerResult = DataContainer.CreateNew(newInstanceID);
         {
           var instance = newInstanceID.GetObject<SampleBindableDomainObject>();
-          var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+          var implementation = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
           Assert.That(implementation, Is.Not.Null);
           Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
         }
@@ -135,11 +135,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void Reloading ()
     {
       var instance1 = SampleBindableDomainObject.NewObject();
-      var implementation1 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance1, "_implementation");
+      var implementation1 = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance1, "_implementation");
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         var instance2 = instance1.ID.GetObject<SampleBindableDomainObject>();
-        var implementation2 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance2, "_implementation");
+        var implementation2 = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance2, "_implementation");
         Assert.That(implementation2, Is.SameAs(implementation1));
       }
     }
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SampleBindableDomainObject));
       var instance = LifetimeService.GetObjectReference(TestableClientTransaction, new ObjectID(classDefinition, Guid.NewGuid()));
 
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      var implementation = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
     }
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _implementationMock.Expect(mock => mock.SetProperty(_propertyFake, 174));
       _implementationMock.Replay();
 
-      ((IBusinessObject) instance).SetProperty(_propertyFake, 174);
+      ((IBusinessObject)instance).SetProperty(_propertyFake, 174);
       _implementationMock.VerifyAllExpectations();
     }
 
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _implementationMock.Expect(mock => mock.GetPropertyString(_propertyFake, "gj")).Return("yay");
       _implementationMock.Replay();
 
-      Assert.That(((IBusinessObject) instance).GetPropertyString(_propertyFake, "gj"), Is.EqualTo("yay"));
+      Assert.That(((IBusinessObject)instance).GetPropertyString(_propertyFake, "gj"), Is.EqualTo("yay"));
       _implementationMock.VerifyAllExpectations();
     }
 
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _implementationMock.Expect(mock => mock.BusinessObjectClass).Return(_businessObjectClassFake);
       _implementationMock.Replay();
 
-      Assert.That(((IBusinessObject) instance).BusinessObjectClass, Is.SameAs(_businessObjectClassFake));
+      Assert.That(((IBusinessObject)instance).BusinessObjectClass, Is.SameAs(_businessObjectClassFake));
       _implementationMock.VerifyAllExpectations();
     }
 
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _implementationMock.Expect(mock => mock.BaseUniqueIdentifier).Return("123");
       _implementationMock.Replay();
 
-      Assert.That(((IBusinessObjectWithIdentity) instance).UniqueIdentifier, Is.EqualTo("123"));
+      Assert.That(((IBusinessObjectWithIdentity)instance).UniqueIdentifier, Is.EqualTo("123"));
       _implementationMock.VerifyAllExpectations();
     }
 

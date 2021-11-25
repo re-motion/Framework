@@ -69,7 +69,7 @@ public class DesignTestBooleanValueForm : DesignTestWxeBasePage
     Person person = Person.GetObject(personID);
     Person partner = person.Partner;
 
-    CurrentObject.BusinessObject = (IBusinessObject) person;
+    CurrentObject.BusinessObject = (IBusinessObject)person;
     CurrentObject.LoadValues(IsPostBack);
   }
 

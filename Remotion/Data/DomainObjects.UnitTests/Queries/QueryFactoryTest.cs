@@ -245,12 +245,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private void ResetCaches ()
     {
       var linqProviderComponentFactoryCache =
-          (DoubleCheckedLockingContainer<ILinqProviderComponentFactory>)
-          PrivateInvoke.GetNonPublicStaticField(typeof(QueryFactory), "s_linqProviderComponentFactory");
+          (DoubleCheckedLockingContainer<ILinqProviderComponentFactory>)PrivateInvoke.GetNonPublicStaticField(typeof(QueryFactory), "s_linqProviderComponentFactory");
       linqProviderComponentFactoryCache.Value = null;
 
       var queryParserCache =
-          (DoubleCheckedLockingContainer<IQueryParser>) PrivateInvoke.GetNonPublicStaticField(typeof(QueryFactory), "s_queryParser");
+          (DoubleCheckedLockingContainer<IQueryParser>)PrivateInvoke.GetNonPublicStaticField(typeof(QueryFactory), "s_queryParser");
       queryParserCache.Value = null;
     }
   }

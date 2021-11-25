@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     [Test]
     public void Scalar_WithNull ()
     {
-      _businessObjectStub.Setup(_=>_.GetProperty(_propertyStub.Object)).Returns((object) null);
+      _businessObjectStub.Setup(_=>_.GetProperty(_propertyStub.Object)).Returns((object)null);
 
       string actual = _stringFormatterService.GetPropertyString(_businessObjectStub.Object, _propertyStub.Object, null);
 

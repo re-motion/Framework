@@ -92,13 +92,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     public bool IsCollapsed
     {
-      get { return (bool?) ViewState["IsCollapsed"] ?? true; }
+      get { return (bool?)ViewState["IsCollapsed"] ?? true; }
       set { ViewState["IsCollapsed"] = value; }
     }
 
     protected AccessControlEntry CurrentAccessControlEntry
     {
-      get { return (AccessControlEntry) CurrentObject.BusinessObject; }
+      get { return (AccessControlEntry)CurrentObject.BusinessObject; }
     }
 
     protected override void OnInit (EventArgs e)
@@ -273,7 +273,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void DeleteAccessControlEntryButton_Click (object sender, EventArgs e)
     {
-      EventHandler handler = (EventHandler) Events[s_deleteEvent];
+      EventHandler handler = (EventHandler)Events[s_deleteEvent];
       if (handler != null)
         handler(this, e);
     }
@@ -305,7 +305,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void AdjustSpecificTenantField (bool hasTenantConditionChanged)
     {
-      var isSpecifciTenantSelected = (TenantCondition?) TenantConditionField.Value == TenantCondition.SpecificTenant;
+      var isSpecifciTenantSelected = (TenantCondition?)TenantConditionField.Value == TenantCondition.SpecificTenant;
       if (hasTenantConditionChanged && !isSpecifciTenantSelected)
         SpecificTenantField.Value = null;
       SpecificTenantField.Visible = isSpecifciTenantSelected;
@@ -313,8 +313,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void AdjustTenantHierarchyConditionField (bool hasTenantConditionChanged)
     {
-      bool isSpecificTenantSelected = (TenantCondition?) TenantConditionField.Value == TenantCondition.SpecificTenant;
-      bool isOwningTenantSelected = (TenantCondition?) TenantConditionField.Value == TenantCondition.OwningTenant;
+      bool isSpecificTenantSelected = (TenantCondition?)TenantConditionField.Value == TenantCondition.SpecificTenant;
+      bool isOwningTenantSelected = (TenantCondition?)TenantConditionField.Value == TenantCondition.OwningTenant;
 
       if (hasTenantConditionChanged)
       {
@@ -336,13 +336,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       SpecificGroupField.ControlServiceArguments = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
 
-      SpecificGroupField.Visible = (GroupCondition?) GroupConditionField.Value == GroupCondition.SpecificGroup;
+      SpecificGroupField.Visible = (GroupCondition?)GroupConditionField.Value == GroupCondition.SpecificGroup;
     }
 
     private void AdjustGroupHierarchyConditionField (bool hasGroupConditionChanged)
     {
-      bool isSpecificGroupSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.SpecificGroup;
-      bool isOwningGroupSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.OwningGroup;
+      bool isSpecificGroupSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.SpecificGroup;
+      bool isOwningGroupSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.OwningGroup;
 
       if (hasGroupConditionChanged)
       {
@@ -357,8 +357,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void AdjustSpecificGroupTypeField ()
     {
-      bool isSpecificGroupTypeSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.AnyGroupWithSpecificGroupType;
-      bool isBranchOfOwningGroupSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.BranchOfOwningGroup;
+      bool isSpecificGroupTypeSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.AnyGroupWithSpecificGroupType;
+      bool isBranchOfOwningGroupSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.BranchOfOwningGroup;
       SpecificGroupTypeField.Visible = isSpecificGroupTypeSelected || isBranchOfOwningGroupSelected;
     }
 
@@ -369,12 +369,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       SpecificUserField.ControlServiceArguments = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
 
-      SpecificUserField.Visible = (UserCondition?) UserConditionField.Value == UserCondition.SpecificUser;
+      SpecificUserField.Visible = (UserCondition?)UserConditionField.Value == UserCondition.SpecificUser;
     }
 
     private void AdjustSpecificPositionField ()
     {
-      bool isPositionSelected = (UserCondition?) UserConditionField.Value == UserCondition.SpecificPosition;
+      bool isPositionSelected = (UserCondition?)UserConditionField.Value == UserCondition.SpecificPosition;
       SpecificPositionField.Visible = isPositionSelected;
     }
 

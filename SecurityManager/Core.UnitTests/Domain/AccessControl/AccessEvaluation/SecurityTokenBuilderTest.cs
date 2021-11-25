@@ -137,7 +137,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns("substituting.user");
-      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string) null);
+      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string)null);
       var princialSubstitutedRoleStub = new Mock<ISecurityPrincipalRole>();
       princialSubstitutedRoleStub.Setup(stub => stub.Group).Returns("UID: testGroup");
       princialSubstitutedRoleStub.Setup(stub => stub.Position).Returns("UID: Official");
@@ -162,7 +162,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns("substituting.user");
-      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string) null);
+      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string)null);
       principalStub.Setup(stub => stub.SubstitutedRoles).Returns(new ISecurityPrincipalRole[0]);
 
       SecurityContext context = CreateContext();
@@ -181,7 +181,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns("substituting.user");
-      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string) null);
+      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string)null);
       var princialSubstitutedRoleStub1 = new Mock<ISecurityPrincipalRole>();
       princialSubstitutedRoleStub1.Setup(stub => stub.Group).Returns("UID: testGroup");
       princialSubstitutedRoleStub1.Setup(stub => stub.Position).Returns("UID: Official");
@@ -212,7 +212,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns(principalUser.UserName);
-      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string) null);
+      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string)null);
       var princialSubstitutedRoleStub = new Mock<ISecurityPrincipalRole>();
       princialSubstitutedRoleStub.Setup(stub => stub.Group).Returns(substitution.SubstitutedRole.Group.UniqueIdentifier);
       princialSubstitutedRoleStub.Setup(stub => stub.Position).Returns(substitution.SubstitutedRole.Position.UniqueIdentifier);
@@ -235,7 +235,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns("substituting.user");
       principalStub.Setup(stub => stub.SubstitutedUser).Returns("test.user");
-      principalStub.Setup(stub => stub.SubstitutedRoles).Returns((IReadOnlyList<ISecurityPrincipalRole>) null);
+      principalStub.Setup(stub => stub.SubstitutedRoles).Returns((IReadOnlyList<ISecurityPrincipalRole>)null);
 
       SecurityContext context = CreateContext();
       ISecurityPrincipal principal = principalStub.Object;
@@ -410,7 +410,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns("substituting.user");
-      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string) null);
+      principalStub.Setup(stub => stub.SubstitutedUser).Returns((string)null);
       var princialSubstitutedRoleStub = new Mock<ISecurityPrincipalRole>();
       princialSubstitutedRoleStub.Setup(stub => stub.Group).Returns("UID: testGroup");
       princialSubstitutedRoleStub.Setup(stub => stub.Position).Returns("UID: Manager");

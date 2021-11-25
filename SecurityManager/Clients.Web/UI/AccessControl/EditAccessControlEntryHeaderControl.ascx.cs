@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected SecurableClassDefinition CurrentClassDefinition
     {
-      get { return (SecurableClassDefinition) CurrentObject.BusinessObject; }
+      get { return (SecurableClassDefinition)CurrentObject.BusinessObject; }
     }
 
     public override void LoadValues (bool interim)

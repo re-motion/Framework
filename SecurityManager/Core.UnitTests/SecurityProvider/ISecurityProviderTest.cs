@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.UnitTests.SecurityProvider
 
       Assert.That(obj, Is.Not.Null);
       Assert.That(obj, Is.TypeOf<RevisionBasedCachingSecurityProviderDecorator>());
-      Assert.That(((RevisionBasedCachingSecurityProviderDecorator) obj).InnerSecurityProvider, Is.TypeOf<SecurityService>());
+      Assert.That(((RevisionBasedCachingSecurityProviderDecorator)obj).InnerSecurityProvider, Is.TypeOf<SecurityService>());
     }
 
     [Test]

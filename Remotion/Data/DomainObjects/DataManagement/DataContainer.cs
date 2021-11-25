@@ -680,7 +680,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       _clientTransaction = info.GetValueForHandle<ClientTransaction>();
       _eventListener = info.GetValueForHandle<IDataContainerEventListener>();
-      _state = (DataContainerStateType) info.GetIntValue();
+      _state = (DataContainerStateType)info.GetIntValue();
       _domainObject = info.GetValueForHandle<DomainObject>();
       _hasBeenMarkedChanged = info.GetBoolValue();
       _hasBeenChanged = info.GetValue<bool?>();
@@ -703,7 +703,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       info.AddHandle(_clientTransaction);
       info.AddHandle(_eventListener);
-      info.AddIntValue((int) _state);
+      info.AddIntValue((int)_state);
       info.AddHandle(_domainObject);
       info.AddBoolValue(_hasBeenMarkedChanged);
       info.AddValue(_hasBeenChanged);

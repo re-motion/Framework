@@ -186,7 +186,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private void AssertMenuItem (XmlNode parentCell, int itemIndex, int nodeIndex, string tabIndex)
     {
-      var item = (WebMenuItem) _control.Object.MenuItems[itemIndex];
+      var item = (WebMenuItem)_control.Object.MenuItems[itemIndex];
 
       switch (item.Style)
       {
@@ -257,12 +257,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       AddMenuItem("item 1", "category 1", "Event", WebMenuItemStyle.IconAndText, RequiredSelection.Any, CommandType.Event);
       AddMenuItem("item 2", "category 1", "WxeFunction", WebMenuItemStyle.Text, RequiredSelection.OneOrMore, CommandType.WxeFunction);
       AddMenuItem("item 3", "category 2", "Href", WebMenuItemStyle.Icon, RequiredSelection.ExactlyOne, CommandType.Href);
-      ((WebMenuItem) _control.Object.MenuItems[2]).Command.HrefCommand.Href = "/LinkedPage.html";
-      ((WebMenuItem) _control.Object.MenuItems[2]).Command.HrefCommand.Target = "_blank";
+      ((WebMenuItem)_control.Object.MenuItems[2]).Command.HrefCommand.Href = "/LinkedPage.html";
+      ((WebMenuItem)_control.Object.MenuItems[2]).Command.HrefCommand.Target = "_blank";
       AddMenuItem("invisible item", "category 2", "Href", WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
-      ((WebMenuItem) _control.Object.MenuItems[3]).IsVisible = false;
+      ((WebMenuItem)_control.Object.MenuItems[3]).IsVisible = false;
       AddMenuItem("disabled item", "category 2", "Href", WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
-      ((WebMenuItem) _control.Object.MenuItems[4]).IsDisabled = true;
+      ((WebMenuItem)_control.Object.MenuItems[4]).IsDisabled = true;
     }
 
     private void SetUpGetPostBackLinkExpectations (bool withHrefItem)
@@ -298,7 +298,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     private string GetItemScript (int itemIndex)
     {
       const string itemTemplate = "new ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})";
-      var menuItem = (WebMenuItem) _control.Object.MenuItems[itemIndex];
+      var menuItem = (WebMenuItem)_control.Object.MenuItems[itemIndex];
       const string diagnosticMetadata = "null";
       const string diagnosticMetadataForCommand = "null";
 
@@ -326,7 +326,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
           menuItem.Style != WebMenuItemStyle.Icon ? "'" + menuItem.Text + "'" : "null",
           menuItem.Style != WebMenuItemStyle.Text ? "'" + menuItem.Icon.Url.TrimStart('~') + "'" : "null",
           menuItem.Style != WebMenuItemStyle.Text ? "'" + menuItem.DisabledIcon.Url.TrimStart('~') + "'" : "null",
-          (int) menuItem.RequiredSelection,
+          (int)menuItem.RequiredSelection,
           (itemIndex == 4) ? "true" : "false",
           href,
           target,

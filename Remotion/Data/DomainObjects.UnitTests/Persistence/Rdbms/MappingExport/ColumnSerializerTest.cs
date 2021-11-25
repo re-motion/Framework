@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 
     private IRdbmsPersistenceModelProvider GetRdbmsPersistenceModelProvider (ClassDefinition classDefinition)
     {
-      var storageProviderDefinition = (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
+      var storageProviderDefinition = (RdbmsProviderDefinition)classDefinition.StorageEntityDefinition.StorageProviderDefinition;
       var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
       return persistenceModelProvider;
     }

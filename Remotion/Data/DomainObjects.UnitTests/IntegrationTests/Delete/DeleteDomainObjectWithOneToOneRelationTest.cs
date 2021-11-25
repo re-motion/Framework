@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _orderTicket.Delete();
 
-      Order originalOrder = (Order) _orderTicket.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
+      Order originalOrder = (Order)_orderTicket.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       Assert.That(originalOrder, Is.Not.Null);
       Assert.That(originalOrder.ID, Is.EqualTo(DomainObjectIDs.Order1));
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Order oldRelatedOrder = _orderTicket.Order;
       _orderTicket.Delete();
 
-      OrderTicket deletedOrderTicket = (OrderTicket) oldRelatedOrder.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      OrderTicket deletedOrderTicket = (OrderTicket)oldRelatedOrder.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       Assert.That(deletedOrderTicket, Is.Not.Null);
       Assert.That(deletedOrderTicket.ID, Is.EqualTo(_orderTicket.ID));

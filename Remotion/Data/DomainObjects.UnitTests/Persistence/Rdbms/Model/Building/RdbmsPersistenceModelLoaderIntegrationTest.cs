@@ -53,22 +53,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       base.SetUp();
 
       _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-      _storageProviderDefinition = (RdbmsProviderDefinition) _storageProviderDefinitionFinder.GetStorageProviderDefinition(
+      _storageProviderDefinition = (RdbmsProviderDefinition)_storageProviderDefinitionFinder.GetStorageProviderDefinition(
           storageGroupTypeOrNull: null, errorMessageContext: "SetUp");
 
       var factory = _storageProviderDefinition.Factory;
       _rdbmsPersistenceModelLoader =
-          (RdbmsPersistenceModelLoader) factory.CreatePersistenceModelLoader(_storageProviderDefinition, _storageProviderDefinitionFinder);
+          (RdbmsPersistenceModelLoader)factory.CreatePersistenceModelLoader(_storageProviderDefinition, _storageProviderDefinitionFinder);
 
       _testModel = new RdbmsPersistenceModelLoaderTestHelper();
 
       var infrastructureStoragePropertyDefinitionProvider =
-          ((RdbmsStorageEntityDefinitionFactory) _rdbmsPersistenceModelLoader.EntityDefinitionFactory).InfrastructureStoragePropertyDefinitionProvider;
+          ((RdbmsStorageEntityDefinitionFactory)_rdbmsPersistenceModelLoader.EntityDefinitionFactory).InfrastructureStoragePropertyDefinitionProvider;
       _infrastructureObjectIDStoragePropertyDefinition = infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
-      _infrastructureIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition) _infrastructureObjectIDStoragePropertyDefinition.ValueProperty;
-      _infrastructureClassIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition) _infrastructureObjectIDStoragePropertyDefinition.ClassIDProperty;
+      _infrastructureIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition)_infrastructureObjectIDStoragePropertyDefinition.ValueProperty;
+      _infrastructureClassIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition)_infrastructureObjectIDStoragePropertyDefinition.ClassIDProperty;
       _infrastructureTimestampStoragePropertyDefinition =
-          (SimpleStoragePropertyDefinition) infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
+          (SimpleStoragePropertyDefinition)infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
 
       _fakeBaseBaseStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("BaseBaseProperty");
       _fakeBaseStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("BaseProperty");
@@ -259,13 +259,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(TableDefinition)));
       Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
-      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).TableName.EntityName, Is.EqualTo(tableName));
-      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).TableName.SchemaName, Is.Null);
-      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
-      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
-      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
-      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).Constraints[0], Is.TypeOf(typeof(PrimaryKeyConstraintDefinition)));
-      var primaryKey = (PrimaryKeyConstraintDefinition) ((TableDefinition) classDefinition.StorageEntityDefinition).Constraints[0];
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).TableName.EntityName, Is.EqualTo(tableName));
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).TableName.SchemaName, Is.Null);
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).Constraints[0], Is.TypeOf(typeof(PrimaryKeyConstraintDefinition)));
+      var primaryKey = (PrimaryKeyConstraintDefinition)((TableDefinition)classDefinition.StorageEntityDefinition).Constraints[0];
       Assert.That(primaryKey.ConstraintName, Is.EqualTo(primaryKeyConstraintDefinition.ConstraintName));
       Assert.That(primaryKey.Columns, Is.EqualTo(primaryKeyConstraintDefinition.Columns));
     }
@@ -279,11 +279,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(FilterViewDefinition)));
       Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
-      Assert.That(((FilterViewDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
-      Assert.That(((FilterViewDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
-      Assert.That(((FilterViewDefinition) classDefinition.StorageEntityDefinition).BaseEntity, Is.SameAs(baseEntity));
-      Assert.That(((FilterViewDefinition) classDefinition.StorageEntityDefinition).ClassIDs, Is.EqualTo(classIDs));
-      Assert.That(((FilterViewDefinition) classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).BaseEntity, Is.SameAs(baseEntity));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).ClassIDs, Is.EqualTo(classIDs));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
     }
 
     private void AssertUnionViewDefinition (
@@ -294,10 +294,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(UnionViewDefinition)));
       Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
-      Assert.That(((UnionViewDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
-      Assert.That(((UnionViewDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
-      Assert.That(((UnionViewDefinition) classDefinition.StorageEntityDefinition).UnionedEntities, Is.EqualTo(storageEntityDefinitions));
-      Assert.That(((UnionViewDefinition) classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).UnionedEntities, Is.EqualTo(storageEntityDefinitions));
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
     }
   }
 }

@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void Command (object sender, CommandEventArgs e)
     {
-      ((Layout) Master).SetTestOutput(((Control) sender).ID + "|" + e.CommandName);
+      ((Layout)Master).SetTestOutput(((Control)sender).ID + "|" + e.CommandName);
     }
   }
 }

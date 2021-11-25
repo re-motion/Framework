@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var fakeResult = new object();
 
-      _declarationMethodInformationStub.Setup(stub => stub.GetFastInvoker(typeof(Func<object>))).Returns((Func<object>) (() => fakeResult));
+      _declarationMethodInformationStub.Setup(stub => stub.GetFastInvoker(typeof(Func<object>))).Returns((Func<object>)(() => fakeResult));
 
       var invoker = _mixinIntroducedMethodInformation.GetFastInvoker<Func<object>>();
 
@@ -215,7 +215,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsNull ()
     {
-      Assert.That(((IMethodInformation) _mixinIntroducedMethodInformation).IsNull, Is.False);
+      Assert.That(((IMethodInformation)_mixinIntroducedMethodInformation).IsNull, Is.False);
     }
   }
 }

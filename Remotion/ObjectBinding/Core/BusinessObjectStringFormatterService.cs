@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding
 
     private string GetStringValues (IBusinessObject businessObject, IBusinessObjectProperty property, string? format, int lines)
     {
-      IList? list = (IList?) businessObject.GetProperty(property);
+      IList? list = (IList?)businessObject.GetProperty(property);
       if (list == null)
         return string.Empty;
 
@@ -177,11 +177,11 @@ namespace Remotion.ObjectBinding
     private string GetStringValue (IBusinessObject businessObject, object? value, IBusinessObjectProperty property, string? format)
     {
       if (property is IBusinessObjectBooleanProperty)
-        return GetStringValueForBooleanProperty(value, (IBusinessObjectBooleanProperty) property);
+        return GetStringValueForBooleanProperty(value, (IBusinessObjectBooleanProperty)property);
       if (property is IBusinessObjectDateTimeProperty)
-        return GetStringValueForDateTimeProperty(value, (IBusinessObjectDateTimeProperty) property, format);
+        return GetStringValueForDateTimeProperty(value, (IBusinessObjectDateTimeProperty)property, format);
       if (property is IBusinessObjectEnumerationProperty)
-        return GetStringValueForEnumerationProperty(value, (IBusinessObjectEnumerationProperty) property, businessObject);
+        return GetStringValueForEnumerationProperty(value, (IBusinessObjectEnumerationProperty)property, businessObject);
       if (property is IBusinessObjectNumericProperty)
         return GetStringValueForNumericProperty(value, format);
       if (property is IBusinessObjectReferenceProperty)
@@ -202,13 +202,13 @@ namespace Remotion.ObjectBinding
           format = "g";
       }
 
-      return GetStringValueForFormattableValue((IFormattable?) value, format);
+      return GetStringValueForFormattableValue((IFormattable?)value, format);
     }
 
     private string GetStringValueForBooleanProperty (object? value, IBusinessObjectBooleanProperty property)
     {
       if (value is bool)
-        return property.GetDisplayName((bool) value);
+        return property.GetDisplayName((bool)value);
       else
         return string.Empty;
     }
@@ -223,7 +223,7 @@ namespace Remotion.ObjectBinding
 
     private string GetStringValueForNumericProperty (object? value, string? format)
     {
-      return GetStringValueForFormattableValue((IFormattable?) value, format);
+      return GetStringValueForFormattableValue((IFormattable?)value, format);
     }
 
     private string GetStringValueForReferenceProperty (object? value)
@@ -235,14 +235,14 @@ namespace Remotion.ObjectBinding
       // This check is not possible with IBusinessObject. Here, the implementation must take care to check the string value before returning it.
 
       if (value is IBusinessObjectWithIdentity)
-        return ((IBusinessObjectWithIdentity) value).GetAccessibleDisplayName();
+        return ((IBusinessObjectWithIdentity)value).GetAccessibleDisplayName();
 
       return value.ToString() ?? string.Empty;
     }
 
     private string GetStringValueForStringProperty (object? value)
     {
-      return (string?) value ?? string.Empty;
+      return (string?)value ?? string.Empty;
     }
 
     private string GetStringValueForFormattableValue (IFormattable? value, string? format)

@@ -80,14 +80,14 @@ namespace Remotion.Validation.Validators
       if (propertyValue.GetType() != From.GetType())
         return true;
 
-      return ((IComparable) propertyValue).CompareTo(From) > 0 && ((IComparable) propertyValue).CompareTo(To) < 0;
+      return ((IComparable)propertyValue).CompareTo(From) > 0 && ((IComparable)propertyValue).CompareTo(To) < 0;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
       string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
-          (IFormatProvider) CultureInfo.CurrentCulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
           From,
           To);
 

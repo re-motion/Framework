@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
       Assertion.IsNotNull(s_getQueryMethod);
 
-      return (IQuery) s_getQueryMethod.MakeGenericMethod(type).Invoke(this, null);
+      return (IQuery)s_getQueryMethod.MakeGenericMethod(type).Invoke(this, null);
     }
 
     [ReflectionAPI]

@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Clients.Web
 
     protected SecurityManagerHttpApplication ApplicationInstance
     {
-      get { return (SecurityManagerHttpApplication) Context.ApplicationInstance; }
+      get { return (SecurityManagerHttpApplication)Context.ApplicationInstance; }
     }
 
     protected override void OnLoad (EventArgs e)
@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Clients.Web
 
     protected void UsersField_SelectionChanged (object sender, EventArgs e)
     {
-      var user = (SecurityManagerUser) UsersField.Value;
+      var user = (SecurityManagerUser)UsersField.Value;
       if (user == null)
       {
         ApplicationInstance.SetCurrentPrincipal(SecurityManagerPrincipal.Null);

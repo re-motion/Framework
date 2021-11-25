@@ -222,7 +222,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
     protected virtual void OnTextChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[s_textChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[s_textChangedEvent];
       if (eventHandler != null)
         eventHandler(this, EventArgs.Empty);
     }

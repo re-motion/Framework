@@ -172,8 +172,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var result = _serializedObjectIDStoragePropertyDefinition.CombineValue(_columnValueProviderStub);
 
       Assert.That(result, Is.TypeOf(typeof(ObjectID)));
-      Assert.That(((ObjectID) result).Value.ToString(), Is.EqualTo(DomainObjectIDs.Order1.Value.ToString()));
-      Assert.That(((ObjectID) result).ClassID, Is.EqualTo("Order"));
+      Assert.That(((ObjectID)result).Value.ToString(), Is.EqualTo(DomainObjectIDs.Order1.Value.ToString()));
+      Assert.That(((ObjectID)result).ClassID, Is.EqualTo("Order"));
     }
 
     [Test]
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       fakeUnifiedSerializedIDProperty.VerifyAllExpectations();
 
       Assert.That(result, Is.TypeOf<SerializedObjectIDStoragePropertyDefinition>());
-      Assert.That(((SerializedObjectIDStoragePropertyDefinition) result).SerializedIDProperty, Is.SameAs(fakeUnifiedSerializedIDProperty));
+      Assert.That(((SerializedObjectIDStoragePropertyDefinition)result).SerializedIDProperty, Is.SameAs(fakeUnifiedSerializedIDProperty));
     }
 
     [Test]

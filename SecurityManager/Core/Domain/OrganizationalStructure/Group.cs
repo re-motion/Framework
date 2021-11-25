@@ -276,7 +276,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       if (parentID == null)
         return null;
 
-      var parent = (Group) LifetimeService.GetObjectReference(DefaultTransactionContext.ClientTransaction, parentID);
+      var parent = (Group)LifetimeService.GetObjectReference(DefaultTransactionContext.ClientTransaction, parentID);
       UnloadService.TryUnloadData(DefaultTransactionContext.ClientTransaction, parent.ID);
 
       return parent;

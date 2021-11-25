@@ -484,11 +484,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="savedState">The control state object created by <see cref="SaveControlState"/>.</param>
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
       base.LoadControlState(values[0]);
-      _text = (string) values[1]!;
-      _valueType = (BocTextValueType) values[2]!;
-      _actualValueType = (BocTextValueType) values[3]!;
+      _text = (string)values[1]!;
+      _valueType = (BocTextValueType)values[2]!;
+      _actualValueType = (BocTextValueType)values[3]!;
     }
 
     /// <summary>
@@ -674,7 +674,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return BocTextValueType.String;
       else if (property is IBusinessObjectNumericProperty)
       {
-        IBusinessObjectNumericProperty numericProperty = (IBusinessObjectNumericProperty) property;
+        IBusinessObjectNumericProperty numericProperty = (IBusinessObjectNumericProperty)property;
         if (numericProperty.Type == typeof(byte))
           return BocTextValueType.Byte;
         else if (numericProperty.Type == typeof(decimal))
@@ -694,7 +694,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else if (property is IBusinessObjectDateTimeProperty)
       {
-        IBusinessObjectDateTimeProperty dateTimeProperty = (IBusinessObjectDateTimeProperty) property;
+        IBusinessObjectDateTimeProperty dateTimeProperty = (IBusinessObjectDateTimeProperty)property;
         if (dateTimeProperty.Type == DateTimeType.Date)
           return BocTextValueType.Date;
         else

@@ -52,11 +52,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
         firstDerivedClass.BaseProperty = "BasePropertyValue 1";
         firstDerivedClass.FirstDerivedProperty = "FirstDerivedPropertyValue 1";
-        ((ISingleInheritancePersistentMixin) firstDerivedClass).PersistentProperty = "PersistentPropertyValue 1";
+        ((ISingleInheritancePersistentMixin)firstDerivedClass).PersistentProperty = "PersistentPropertyValue 1";
 
         secondDerivedClass.BaseProperty = "BasePropertyValue 2";
         secondDerivedClass.SecondDerivedProperty = "SecondDerivedPropertyValue 2";
-        ((ISingleInheritancePersistentMixin) secondDerivedClass).PersistentProperty = "PersistentPropertyValue 2";
+        ((ISingleInheritancePersistentMixin)secondDerivedClass).PersistentProperty = "PersistentPropertyValue 2";
 
         ClientTransaction.Current.Commit();
       }
@@ -73,11 +73,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
         Assert.That(actualFirstDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 1"));
         Assert.That(actualFirstDerivedClass.FirstDerivedProperty, Is.EqualTo("FirstDerivedPropertyValue 1"));
-        Assert.That(((ISingleInheritancePersistentMixin) actualFirstDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 1"));
+        Assert.That(((ISingleInheritancePersistentMixin)actualFirstDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 1"));
 
         Assert.That(actualSecondDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 2"));
         Assert.That(actualSecondDerivedClass.SecondDerivedProperty, Is.EqualTo("SecondDerivedPropertyValue 2"));
-        Assert.That(((ISingleInheritancePersistentMixin) actualSecondDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 2"));
+        Assert.That(((ISingleInheritancePersistentMixin)actualSecondDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 2"));
       }
     }
 
@@ -140,11 +140,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
         firstDerivedClass.BaseProperty = "BasePropertyValue 1";
         firstDerivedClass.FirstDerivedProperty = "FirstDerivedPropertyValue 1";
-        ((IConcreteInheritancePersistentMixin) firstDerivedClass).PersistentProperty = "PersistentPropertyValue 1";
+        ((IConcreteInheritancePersistentMixin)firstDerivedClass).PersistentProperty = "PersistentPropertyValue 1";
 
         secondDerivedClass.BaseProperty = "BasePropertyValue 2";
         secondDerivedClass.SecondDerivedProperty = "SecondDerivedPropertyValue 2";
-        ((IConcreteInheritancePersistentMixin) secondDerivedClass).PersistentProperty = "PersistentPropertyValue 2";
+        ((IConcreteInheritancePersistentMixin)secondDerivedClass).PersistentProperty = "PersistentPropertyValue 2";
 
         ClientTransaction.Current.Commit();
       }
@@ -161,11 +161,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
         Assert.That(actualFirstDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 1"));
         Assert.That(actualFirstDerivedClass.FirstDerivedProperty, Is.EqualTo("FirstDerivedPropertyValue 1"));
-        Assert.That(((IConcreteInheritancePersistentMixin) actualFirstDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 1"));
+        Assert.That(((IConcreteInheritancePersistentMixin)actualFirstDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 1"));
 
         Assert.That(actualSecondDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 2"));
         Assert.That(actualSecondDerivedClass.SecondDerivedProperty, Is.EqualTo("SecondDerivedPropertyValue 2"));
-        Assert.That(((IConcreteInheritancePersistentMixin) actualSecondDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 2"));
+        Assert.That(((IConcreteInheritancePersistentMixin)actualSecondDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 2"));
       }
     }
 

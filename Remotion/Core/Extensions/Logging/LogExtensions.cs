@@ -61,7 +61,7 @@ namespace Remotion.Logging
     public static void LogFormat (this ILog log, LogLevel logLevel, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
-      log.LogFormat(logLevel, messageEnum, (Exception?) null, args);
+      log.LogFormat(logLevel, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ namespace Remotion.Logging
     public static void DebugFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
-      log.LogFormat(LogLevel.Debug, messageEnum, (Exception?) null, args);
+      log.LogFormat(LogLevel.Debug, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
@@ -115,7 +115,7 @@ namespace Remotion.Logging
     public static void InfoFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
-      log.LogFormat(LogLevel.Info, messageEnum, (Exception?) null, args);
+      log.LogFormat(LogLevel.Info, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ namespace Remotion.Logging
     public static void WarnFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
-      log.LogFormat(LogLevel.Warn, messageEnum, (Exception?) null, args);
+      log.LogFormat(LogLevel.Warn, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ namespace Remotion.Logging
     public static void ErrorFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
-      log.LogFormat(LogLevel.Error, messageEnum, (Exception?) null, args);
+      log.LogFormat(LogLevel.Error, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
@@ -196,7 +196,7 @@ namespace Remotion.Logging
     public static void FatalFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
-      log.LogFormat(LogLevel.Fatal, messageEnum, (Exception?) null, args);
+      log.LogFormat(LogLevel.Fatal, messageEnum, (Exception?)null, args);
     }
   }
 }

@@ -62,7 +62,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo("DefaultReturn.html"));
                 Assert.That(
                     nextState.Parameters.DestinationUrl,
@@ -84,7 +84,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo("DefaultReturn.html"));
                 Assert.That(
                     nextState.Parameters.DestinationUrl,
@@ -107,7 +107,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(
                     nextState.Parameters.SubFunction.ReturnUrl,
                     Is.EqualTo("/AppDir/root.wxe?WxeFunctionToken=" + WxeContext.FunctionToken));
@@ -133,7 +133,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(
                     nextState.Parameters.SubFunction.ReturnUrl,
                     Is.EqualTo("/AppDir/root.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
@@ -158,7 +158,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo("DefaultReturn.html"));
                 Assert.That(
                     nextState.Parameters.DestinationUrl,
@@ -183,7 +183,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((RedirectingToSubFunctionState) executionState);
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
                 Assert.That(nextState.Parameters.SubFunction.ReturnUrl, Is.EqualTo("DefaultReturn.html"));
 
                 string destinationUrl = UrlUtility.AddParameters(

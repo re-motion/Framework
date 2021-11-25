@@ -117,7 +117,7 @@ public class BocTextValueUserControl : BaseUserControl
   {
     base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     //UnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
     UnboundReadOnlyFirstNameField.LoadUnboundValue(person.FirstName, IsPostBack);
@@ -134,7 +134,7 @@ line 3", IsPostBack);
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus(FirstNameField);
+        ((ISmartNavigablePage)Page).SetFocus(FirstNameField);
     }
   }
 

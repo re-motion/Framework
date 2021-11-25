@@ -52,17 +52,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public DomainObject GetChangingRelatedDomainObject (string propertyName)
     {
-      return (DomainObject) _changingRelatedObjects[propertyName];
+      return (DomainObject)_changingRelatedObjects[propertyName];
     }
 
     public DomainObject GetChangedRelatedDomainObject (string propertyName)
     {
-      return (DomainObject) _changedRelatedObjects[propertyName];
+      return (DomainObject)_changedRelatedObjects[propertyName];
     }
 
     protected override void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
     {
-      TestDomainBase domainObject = (TestDomainBase) sender;
+      TestDomainBase domainObject = (TestDomainBase)sender;
 
       Dev.Null = domainObject.State;
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     protected override void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
     {
-      TestDomainBase domainObject = (TestDomainBase) sender;
+      TestDomainBase domainObject = (TestDomainBase)sender;
 
       Dev.Null = domainObject.State;
 

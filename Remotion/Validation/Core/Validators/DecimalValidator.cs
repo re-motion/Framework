@@ -119,7 +119,7 @@ namespace Remotion.Validation.Validators
     {
       string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
-          (IFormatProvider) CultureInfo.CurrentCulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
           MaxIntegerPlaces,
           MaxDecimalPlaces);
 

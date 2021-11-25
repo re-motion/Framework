@@ -504,7 +504,7 @@ namespace Remotion.UnitTests.FunctionalProgramming
     [Test]
     public void Concat_WithSingleElement_NullItem ()
     {
-      var result = new[] { "test" }.Concat((string?) null);
+      var result = new[] { "test" }.Concat((string?)null);
       Assert.That(result, Is.EqualTo(new[] { "test", null }));
     }
 

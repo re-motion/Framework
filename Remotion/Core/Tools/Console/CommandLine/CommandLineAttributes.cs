@@ -210,7 +210,7 @@ namespace Remotion.Tools.Console.CommandLine
             string.Format(
                 "Attribute {0} can only be applied to enumeration fields or properties.", typeof(CommandLineEnumArgumentAttribute).GetFullNameSafe()));
       }
-      ((CommandLineEnumArgument) Argument).EnumType = enumType;
+      ((CommandLineEnumArgument)Argument).EnumType = enumType;
     }
   }
 
@@ -226,7 +226,7 @@ namespace Remotion.Tools.Console.CommandLine
 
     public new CommandLineModeArgument Argument
     {
-      get { return (CommandLineModeArgument) base.Argument; }
+      get { return (CommandLineModeArgument)base.Argument; }
     }
 
     public override void SetMember (MemberInfo fieldOrProperty)
@@ -262,7 +262,7 @@ namespace Remotion.Tools.Console.CommandLine
   {
     public static CommandLineModeAttribute? GetAttribute (FieldInfo field)
     {
-      return (CommandLineModeAttribute?) AttributeUtility.GetCustomAttribute(field, typeof(CommandLineModeAttribute), false);
+      return (CommandLineModeAttribute?)AttributeUtility.GetCustomAttribute(field, typeof(CommandLineModeAttribute), false);
     }
 
     private string _name;

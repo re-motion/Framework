@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public T GetConvertedValue<T> (int position)
     {
-      return (T) GetConvertedValue(position, typeof(T));
+      return (T)GetConvertedValue(position, typeof(T));
     }
 
     private IStorageTypeInformation GetStorageType (Type type)

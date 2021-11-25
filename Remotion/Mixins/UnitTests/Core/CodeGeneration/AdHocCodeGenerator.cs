@@ -113,7 +113,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
       try
       {
-        return (T) actualType.InvokeMember(tuple.Item2.Name, BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, null);
+        return (T)actualType.InvokeMember(tuple.Item2.Name, BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, null);
       }
       catch (Exception)
       {

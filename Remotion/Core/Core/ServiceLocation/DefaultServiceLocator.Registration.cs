@@ -300,7 +300,7 @@ namespace Remotion.ServiceLocation
           {
             if (!enumerator.MoveNext())
               yield break;
-            current = (T) enumerator.Current;
+            current = (T)enumerator.Current;
           }
           catch (ActivationException ex)
           {

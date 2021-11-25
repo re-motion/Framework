@@ -45,9 +45,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         return false;
 
       if (x is Role)
-        return Equals((Role) x, (PrincipalRole) y);
+        return Equals((Role)x, (PrincipalRole)y);
       else
-        return Equals((Role) y, (PrincipalRole) x);
+        return Equals((Role)y, (PrincipalRole)x);
     }
 
     private bool Equals (Role role, PrincipalRole principalRole)

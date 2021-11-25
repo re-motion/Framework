@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       extensionStub.Setup(_ => _.PropertyValueChanging(It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()))
           .Callback((ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
           {
-            if (propertyDefinition.PropertyInfo.Name == "UniqueIdentifier" && (string) newValue != "id")
+            if (propertyDefinition.PropertyInfo.Name == "UniqueIdentifier" && (string)newValue != "id")
             {
               propertyValueChangingCalled = true;
               Assert.That(SecurityFreeSection.IsActive, Is.True);

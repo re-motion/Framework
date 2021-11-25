@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       var expression = selectProjection;
       while (expression is UnaryExpression)
-        expression = ((UnaryExpression) expression).Operand;
+        expression = ((UnaryExpression)expression).Operand;
       if (expression is SqlEntityExpression)
         return expression.Type;
 

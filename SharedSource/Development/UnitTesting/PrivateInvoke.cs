@@ -34,12 +34,12 @@ namespace Remotion.Development.UnitTesting
     private static MethodInfo GetMethod (Type type, string methodName, BindingFlags bindingFlags, object?[] arguments)
     {
       Debug.Assert(methodName != null);
-      return (MethodInfo) GetMethodBaseInternal(type, methodName, type.GetMethods(bindingFlags), arguments);
+      return (MethodInfo)GetMethodBaseInternal(type, methodName, type.GetMethods(bindingFlags), arguments);
     }
 
     private static ConstructorInfo GetConstructor (Type type, BindingFlags bindingFlags, object?[] arguments)
     {
-      return (ConstructorInfo) GetMethodBaseInternal(type, null, type.GetConstructors(bindingFlags), arguments);
+      return (ConstructorInfo)GetMethodBaseInternal(type, null, type.GetConstructors(bindingFlags), arguments);
     }
 
     private static MethodBase GetMethodBaseInternal (Type type, string? methodName, MethodBase[] methods, object?[] arguments)

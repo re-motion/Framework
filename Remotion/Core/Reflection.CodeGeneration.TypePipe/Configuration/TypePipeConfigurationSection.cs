@@ -39,13 +39,13 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
     [ConfigurationProperty ("forceStrongNaming")]
     public ForceStrongNamingConfigurationElement ForceStrongNaming
     {
-      get { return (ForceStrongNamingConfigurationElement) this["forceStrongNaming"]; }
+      get { return (ForceStrongNamingConfigurationElement)this["forceStrongNaming"]; }
     }
 
     [ConfigurationProperty ("enableSerializationWithoutAssemblySaving")]
     public EnableSerializationWithoutAssemblySavingConfigurationElement EnableSerializationWithoutAssemblySaving
     {
-      get { return (EnableSerializationWithoutAssemblySavingConfigurationElement) this["enableSerializationWithoutAssemblySaving"]; }
+      get { return (EnableSerializationWithoutAssemblySavingConfigurationElement)this["enableSerializationWithoutAssemblySaving"]; }
     }
 
     protected override bool OnDeserializeUnrecognizedElement (string elementName, XmlReader reader)

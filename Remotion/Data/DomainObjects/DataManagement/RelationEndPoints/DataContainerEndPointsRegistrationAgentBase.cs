@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       foreach (var id in GetOwnedEndPointIDs(dataContainer))
       {
         var endPoint = id.Definition.IsVirtual
-                           ? (IRelationEndPoint) _endPointFactory.CreateVirtualEndPoint(id, true)
+                           ? (IRelationEndPoint)_endPointFactory.CreateVirtualEndPoint(id, true)
                            : _endPointFactory.CreateRealObjectEndPoint(id, dataContainer);
         _registrationAgent.RegisterEndPoint(endPoint, relationEndPointMap);
       }

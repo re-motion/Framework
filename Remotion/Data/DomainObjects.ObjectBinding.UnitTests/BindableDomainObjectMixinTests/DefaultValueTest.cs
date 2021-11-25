@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       _subTxScope = subTx.EnterDiscardingScope();
 
       _loadedObject = objectID.GetObject<SampleBindableMixinDomainObject>();
-      _loadedBusinessObject = (IBusinessObject) _loadedObject;
+      _loadedBusinessObject = (IBusinessObject)_loadedObject;
 
       _newObject = SampleBindableMixinDomainObject.NewObject();
-      _newBusinessOrder = (IBusinessObject) _newObject;
+      _newBusinessOrder = (IBusinessObject)_newObject;
     }
 
     public override void TearDown ()
@@ -107,8 +107,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void GetPropertyDefaultForNonMappingProperties ()
     {
-      var businessObject = (IBusinessObject)
-                           LifetimeService.NewObject(ClientTransaction.Current, typeof(BindableDomainObjectWithProperties), ParamList.Empty);
+      var businessObject = (IBusinessObject)LifetimeService.NewObject(ClientTransaction.Current, typeof(BindableDomainObjectWithProperties), ParamList.Empty);
       Assert.That(businessObject.GetProperty("RequiredPropertyNotInMapping"), Is.Not.Null);
       Assert.That(businessObject.GetProperty("RequiredPropertyNotInMapping"), Is.EqualTo(true));
     }
@@ -172,13 +171,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     private PropertyBase.Parameters GetPropertyParameters (IPropertyInformation property, BindableObjectProvider provider)
     {
       PropertyReflector reflector = PropertyReflector.Create(property, provider);
-      return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod(
+      return (PropertyBase.Parameters)PrivateInvoke.InvokeNonPublicMethod(
           reflector, typeof(PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
     }
 
     private Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
+      return (Type)PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
   }
 }

@@ -145,7 +145,7 @@ namespace Remotion.Development.UnitTesting.Reflection
     private static MemberInfo GetMemberInfoFromExpression (Type? sourceObjectType, Expression expression)
     {
       if (expression is MemberExpression)
-        if (((MemberExpression) expression).Member is PropertyInfo)
+        if (((MemberExpression)expression).Member is PropertyInfo)
           return GetPropertyInfoFromMemberExpression(sourceObjectType, expression);
         else
           return GetFieldInfoFromMemberExpression(expression);

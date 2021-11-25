@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsValidEnumValue_WithValueNotMatchingType ()
     {
       Assert.That(
-          () => EnumUtility.IsValidEnumValue(typeof(TestFlags), (Int16Enum.TestEnum) (short) 1),
+          () => EnumUtility.IsValidEnumValue(typeof(TestFlags), (Int16Enum.TestEnum)(short)1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Object must be the same type as the enum. The type passed in was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Int16Enum+TestEnum'; "
@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsValidEnumValue_WithValueNotMatchingUnderlyingType ()
     {
       Assert.That(
-          () => EnumUtility.IsValidEnumValue(typeof(TestFlags), (short) 1),
+          () => EnumUtility.IsValidEnumValue(typeof(TestFlags), (short)1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Enum underlying type and the object must be same type. The type passed in was 'System.Int16'; the enum underlying type was 'System.Int32'.",
@@ -88,7 +88,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsValidEnumValue_WithValueOfOtherType ()
     {
       Assert.That(
-          () => EnumUtility.IsValidEnumValue((short) 1),
+          () => EnumUtility.IsValidEnumValue((short)1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Argument was of type 'System.Int16' but only enum-types are supported with this overload.", "enumValue"));
@@ -98,7 +98,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsValidEnumValue_WithOtherType ()
     {
       Assert.That(
-          () => EnumUtility.IsValidEnumValue(typeof(Int32), (short) 1),
+          () => EnumUtility.IsValidEnumValue(typeof(Int32), (short)1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Argument was a type representing 'System.Int32' but only enum-types are supported.", "enumType"));
@@ -114,49 +114,49 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     [Test]
     public void IsValidEnumValue_FlagCombinations ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlagsWithoutZero) 0), Is.False);
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlagsWithoutZero) 1), Is.True);
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlagsWithoutZero) 2), Is.False);
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlagsWithoutZero)0), Is.False);
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlagsWithoutZero)1), Is.True);
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlagsWithoutZero)2), Is.False);
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 00), Is.True,  "00000");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 01), Is.True,  "00001");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 02), Is.False, "00010");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 03), Is.False, "00011");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)00), Is.True,  "00000");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)01), Is.True,  "00001");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)02), Is.False, "00010");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)03), Is.False, "00011");
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 04), Is.True,  "00100");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 05), Is.True,  "00101");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 06), Is.False, "00110");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 07), Is.False, "00111");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)04), Is.True,  "00100");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)05), Is.True,  "00101");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)06), Is.False, "00110");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)07), Is.False, "00111");
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 08), Is.True,  "01000");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 09), Is.True,  "01001");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 10), Is.False, "01010");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 11), Is.False, "01010");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)08), Is.True,  "01000");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)09), Is.True,  "01001");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)10), Is.False, "01010");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)11), Is.False, "01010");
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 12), Is.True,  "01100");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 13), Is.True,  "01101");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 14), Is.False, "01110");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 15), Is.False, "01111");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)12), Is.True,  "01100");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)13), Is.True,  "01101");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)14), Is.False, "01110");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)15), Is.False, "01111");
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 16), Is.False, "10000");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 17), Is.True,  "10001");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 18), Is.True,  "10010");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 19), Is.True,  "10011");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)16), Is.False, "10000");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)17), Is.True,  "10001");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)18), Is.True,  "10010");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)19), Is.True,  "10011");
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 20), Is.False, "10100");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 21), Is.True,  "10101");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 22), Is.True,  "10110");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 23), Is.True,  "10111");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)20), Is.False, "10100");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)21), Is.True,  "10101");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)22), Is.True,  "10110");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)23), Is.True,  "10111");
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 24), Is.False, "11000");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 25), Is.True,  "11001");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 26), Is.True,  "11010");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 27), Is.True,  "11011");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)24), Is.False, "11000");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)25), Is.True,  "11001");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)26), Is.True,  "11010");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)27), Is.True,  "11011");
 
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 28), Is.False, "11100");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 29), Is.True,  "11101");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 30), Is.True,  "11110");
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) 31), Is.True,  "11111");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)28), Is.False, "11100");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)29), Is.True,  "11101");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)30), Is.True,  "11110");
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)31), Is.True,  "11111");
     }
 
     [Test]

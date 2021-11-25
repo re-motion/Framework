@@ -195,7 +195,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     public void List_WithNull ()
     {
       _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
-      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object) null).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object)null).Verifiable();
 
       string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 

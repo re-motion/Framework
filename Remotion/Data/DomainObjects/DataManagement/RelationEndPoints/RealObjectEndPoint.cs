@@ -88,12 +88,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override ObjectID OppositeObjectID
     {
-      get { return (ObjectID) ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Current); }
+      get { return (ObjectID)ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Current); }
     }
 
     public override ObjectID OriginalOppositeObjectID
     {
-      get { return (ObjectID) ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Original); }
+      get { return (ObjectID)ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Original); }
     }
 
     public override bool HasChanged
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public override void Synchronize ()
     {
       var oppositeID = RelationEndPointID.CreateOpposite(Definition, OppositeObjectID);
-      var oppositeEndPoint = (IVirtualEndPoint) _endPointProvider.GetRelationEndPointWithLazyLoad(oppositeID);
+      var oppositeEndPoint = (IVirtualEndPoint)_endPointProvider.GetRelationEndPointWithLazyLoad(oppositeID);
       _syncState.Synchronize(this, oppositeEndPoint);
     }
 
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     private PropertyDefinition GetPropertyDefinition ()
     {
-      return ((RelationEndPointDefinition) ID.Definition).PropertyDefinition;
+      return ((RelationEndPointDefinition)ID.Definition).PropertyDefinition;
     }
 
 

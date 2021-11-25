@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       T value;
       try
       {
-        value = (T) uncastValue;
+        value = (T)uncastValue;
       }
       catch (InvalidCastException ex)
       {
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     {
       int handle = GetIntValue();
       if (handle == -1)
-        return (T) (object) null;
+        return (T)(object)null;
       else
       {
         object objectValue;

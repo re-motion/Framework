@@ -56,7 +56,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That(validator.EvaluateIsTextValid(new string((char) 160, 1)), Is.True);
+      Assert.That(validator.EvaluateIsTextValid(new string((char)160, 1)), Is.True);
     }
 
     [Test]
@@ -162,7 +162,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That(validator.EvaluateIsTextValid("a" + new string((char) 160, 1) + "b"), Is.True);
+      Assert.That(validator.EvaluateIsTextValid("a" + new string((char)160, 1) + "b"), Is.True);
     }
 
     [Test]

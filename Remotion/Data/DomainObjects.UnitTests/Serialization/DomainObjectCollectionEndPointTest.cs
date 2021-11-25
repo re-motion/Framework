@@ -41,8 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       Dev.Null = DomainObjectIDs.Order1.GetObject<Order>().OrderItems;
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
-      _endPoint = (DomainObjectCollectionEndPoint)
-          ((StateUpdateRaisingDomainObjectCollectionEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID)).InnerEndPoint;
+      _endPoint = (DomainObjectCollectionEndPoint)((StateUpdateRaisingDomainObjectCollectionEndPointDecorator)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID)).InnerEndPoint;
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }

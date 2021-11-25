@@ -130,8 +130,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void FilterExcludesSystemAssemblies ()
     {
       var service =
-          (AssemblyFinderTypeDiscoveryService)
-              PrivateInvoke.InvokeNonPublicStaticMethod(typeof(DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
+          (AssemblyFinderTypeDiscoveryService)PrivateInvoke.InvokeNonPublicStaticMethod(typeof(DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
 
       var assemblyFinder = GetAssemblyFinder(service);
       var filter = ((FilteringAssemblyLoader)assemblyFinder.AssemblyLoader).Filter;
@@ -144,11 +143,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void FilterExcludesGeneratedAssemblies ()
     {
       var service =
-          (AssemblyFinderTypeDiscoveryService)
-              PrivateInvoke.InvokeNonPublicStaticMethod(typeof(DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
+          (AssemblyFinderTypeDiscoveryService)PrivateInvoke.InvokeNonPublicStaticMethod(typeof(DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
 
       var assemblyFinder = GetAssemblyFinder(service);
-      var filter = ((FilteringAssemblyLoader) assemblyFinder.AssemblyLoader).Filter;
+      var filter = ((FilteringAssemblyLoader)assemblyFinder.AssemblyLoader).Filter;
 
       Assembly generatedAssembly = TypeGenerationHelper.ForceTypeGeneration(typeof(object)).Assembly;
 
@@ -157,18 +155,17 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
 
     private AssemblyFinder GetAssemblyFinder (AssemblyFinderTypeDiscoveryService service)
     {
-      return (AssemblyFinder) ((CachingAssemblyFinderDecorator) service.AssemblyFinder).InnerFinder;
+      return (AssemblyFinder)((CachingAssemblyFinderDecorator)service.AssemblyFinder).InnerFinder;
     }
 
     [Test]
     public void FilterIncludesAllNormalAssemblies ()
     {
       var service =
-          (AssemblyFinderTypeDiscoveryService)
-              PrivateInvoke.InvokeNonPublicStaticMethod(typeof(DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
+          (AssemblyFinderTypeDiscoveryService)PrivateInvoke.InvokeNonPublicStaticMethod(typeof(DeclarativeConfigurationBuilder), "GetTypeDiscoveryService");
 
       var assemblyFinder = GetAssemblyFinder(service);
-      var filter = ((FilteringAssemblyLoader) assemblyFinder.AssemblyLoader).Filter;
+      var filter = ((FilteringAssemblyLoader)assemblyFinder.AssemblyLoader).Filter;
 
       Assert.That(filter.ShouldConsiderAssembly(typeof(DeclarativeConfigurationBuilderGeneralTest).Assembly.GetName()), Is.True);
       Assert.That(filter.ShouldConsiderAssembly(typeof(DeclarativeConfigurationBuilder).Assembly.GetName()), Is.True);

@@ -165,13 +165,13 @@ namespace Remotion.SecurityManager.Domain
     private static RdbmsProviderDefinition GetStorageProviderDefinition ()
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SecurableClassDefinition));
-      return (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
+      return (RdbmsProviderDefinition)classDefinition.StorageEntityDefinition.StorageProviderDefinition;
     }
 
     private static string GetRevisionTableIdentifier (ISqlDialect sqlDialect)
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SecurableClassDefinition));
-      var tableDefinition = (TableDefinition) classDefinition.StorageEntityDefinition;
+      var tableDefinition = (TableDefinition)classDefinition.StorageEntityDefinition;
 
       if (tableDefinition.TableName.SchemaName == null)
         return sqlDialect.DelimitIdentifier("Revision");

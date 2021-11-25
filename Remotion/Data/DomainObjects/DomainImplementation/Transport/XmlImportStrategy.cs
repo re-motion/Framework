@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("dataStream", dataStream);
       ArgumentUtility.CheckNotNull("formatter", formatter);
 
-      return (XmlTransportItem[]) formatter.Deserialize(dataStream);
+      return (XmlTransportItem[])formatter.Deserialize(dataStream);
     }
   }
 }

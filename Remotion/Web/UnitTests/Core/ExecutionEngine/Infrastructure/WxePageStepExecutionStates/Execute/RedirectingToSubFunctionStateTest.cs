@@ -55,7 +55,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState((ExecutingSubFunctionWithPermaUrlState) executionState);
+                var nextState = CheckExecutionState((ExecutingSubFunctionWithPermaUrlState)executionState);
                 Assert.That(nextState.Parameters.ResumeUrl, Is.EqualTo("~/resume.wxe"));
               })
           .Verifiable();

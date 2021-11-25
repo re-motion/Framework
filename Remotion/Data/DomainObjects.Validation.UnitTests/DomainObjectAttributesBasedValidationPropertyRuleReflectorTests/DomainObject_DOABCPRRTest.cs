@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Length, Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
-      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -156,8 +156,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Length, Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
-      Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(10));
-      Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(10));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -190,12 +190,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       lengthValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for Length");
       Assert.That(result.Length, Is.EqualTo(2));
       Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
-      Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(20));
-      Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for Length"));
+      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(20));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for Length"));
 
       notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
       Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
+      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Length, Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -253,11 +253,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       notNullValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotNull");
       Assert.That(result.Count(), Is.EqualTo(2));
       Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
-      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
 
       notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
       Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
+      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]
@@ -290,11 +290,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       notNullValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotNull");
       Assert.That(result.Count(), Is.EqualTo(2));
       Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
-      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
 
       notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
       Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
+      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Count(), Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
-      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -365,7 +365,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       Assert.That(result.Count(), Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(RemotionMaxLengthPropertyMetaValidationRule)));
-      Assert.That(((RemotionMaxLengthPropertyMetaValidationRule) result[0]).MaxLength, Is.EqualTo(10));
+      Assert.That(((RemotionMaxLengthPropertyMetaValidationRule)result[0]).MaxLength, Is.EqualTo(10));
     }
 
     [Test]

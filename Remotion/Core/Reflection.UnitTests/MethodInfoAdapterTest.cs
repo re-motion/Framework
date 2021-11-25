@@ -197,7 +197,7 @@ namespace Remotion.Reflection.UnitTests
       var implementation = adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>));
 
       var expectedPropertyGetter = typeof(ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
-      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation);
+      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter)implementation);
     }
 
     [Test]
@@ -211,7 +211,7 @@ namespace Remotion.Reflection.UnitTests
       var expectedPropertyGetter = typeof(ClassWithReferenceType<object>).GetMethod(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.get_ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter) implementation);
+      CheckMethodInfo(expectedPropertyGetter, (MethodInfoAdapter)implementation);
     }
 
     [Test]
@@ -440,7 +440,7 @@ namespace Remotion.Reflection.UnitTests
       var result = adapter.GetOriginalDeclaration();
 
       Assert.That(result, Is.TypeOf(typeof(MethodInfoAdapter)));
-      CheckMethodInfo(method, (MethodInfoAdapter) result);
+      CheckMethodInfo(method, (MethodInfoAdapter)result);
     }
 
     [Test]
@@ -454,7 +454,7 @@ namespace Remotion.Reflection.UnitTests
       Assert.That(result, Is.TypeOf(typeof(MethodInfoAdapter)));
 
       var expectedMethodInfo = typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("get_ImplicitInterfaceScalar");
-      CheckMethodInfo(expectedMethodInfo, (MethodInfoAdapter) result);
+      CheckMethodInfo(expectedMethodInfo, (MethodInfoAdapter)result);
     }
 
     [Test]
@@ -488,7 +488,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((IMethodInformation) _adapter).IsNull, Is.False);
+      Assert.That(((IMethodInformation)_adapter).IsNull, Is.False);
     }
 
     [Test]

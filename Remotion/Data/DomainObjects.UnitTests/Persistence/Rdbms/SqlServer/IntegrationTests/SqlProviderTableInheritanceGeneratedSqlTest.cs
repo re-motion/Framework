@@ -55,14 +55,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [FirstName], [LastName], [DateOfBirth], [Photo], "
           + "[CustomerType], [CustomerSince], [RegionID] FROM [TableInheritance_Person] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
+          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
       _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [Name] FROM [TableInheritance_OrganizationalUnit] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.OrganizationalUnit.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(TIDomainBase), "Client");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(TIDomainBase), "Client");
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, DomainObjectIDs.Client).ToArray();
 
       _testHelper.VerifyAllExpectations();
@@ -82,14 +82,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [FirstName], [LastName], [DateOfBirth], [Photo], "
           + "[CustomerType], [CustomerSince], [RegionID] FROM [TableInheritance_Person] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
+          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
       _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [Name] FROM [TableInheritance_OrganizationalUnit] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.OrganizationalUnit.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(TIDomainBase), "Client");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(TIDomainBase), "Client");
       var sortExpression = new SortExpressionDefinition(
           new[]
           {
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@ClientID", DbType.Guid, newObjectID.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof(TIDomainBase), "Client");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(TIDomainBase), "Client");
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, newObjectID).ToArray();
 
       _testHelper.VerifyAllExpectations();

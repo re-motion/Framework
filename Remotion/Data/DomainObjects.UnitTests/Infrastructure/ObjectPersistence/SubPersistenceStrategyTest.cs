@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       Assert.That(result, Is.TypeOf<FreshlyLoadedObjectData>());
       Assert.That(result.ObjectID, Is.EqualTo(objectID));
-      var dataContainer = ((FreshlyLoadedObjectData) result).FreshlyLoadedDataContainer;
+      var dataContainer = ((FreshlyLoadedObjectData)result).FreshlyLoadedDataContainer;
       CheckDataContainer(dataContainer, objectID, 4711, state => state.IsUnchanged, _orderNumberPropertyDefinition, 17, 17, false);
     }
 
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       Assert.That(result[0], Is.TypeOf<FreshlyLoadedObjectData>());
       Assert.That(result[0].ObjectID, Is.EqualTo(objectID1));
-      CheckDataContainer(((FreshlyLoadedObjectData) result[0]).FreshlyLoadedDataContainer, objectID1, 4711, state => state.IsUnchanged, _orderNumberPropertyDefinition, 17, 17, false);
+      CheckDataContainer(((FreshlyLoadedObjectData)result[0]).FreshlyLoadedDataContainer, objectID1, 4711, state => state.IsUnchanged, _orderNumberPropertyDefinition, 17, 17, false);
 
       Assert.That(result[1], Is.TypeOf<NotFoundLoadedObjectData>());
       Assert.That(result[1].ObjectID, Is.EqualTo(objectID2));
@@ -324,7 +324,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(result, Is.TypeOf<FreshlyLoadedObjectData>());
       Assert.That(result.ObjectID, Is.EqualTo(parentObject.ID));
 
-      var dataContainer = ((FreshlyLoadedObjectData) result).FreshlyLoadedDataContainer;
+      var dataContainer = ((FreshlyLoadedObjectData)result).FreshlyLoadedDataContainer;
       CheckDataContainer(dataContainer, parentObject.ID, 4711, state => state.IsUnchanged, _fileNamePropertyDefinition, "Hugo", "Hugo", false);
     }
 
@@ -389,7 +389,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _alreadyLoadedObjectDataProviderMock.VerifyAllExpectations();
       Assert.That(result[0], Is.SameAs(alreadyLoadedObjectData));
       Assert.That(result[1], Is.TypeOf<FreshlyLoadedObjectData>());
-      var dataContainer = ((FreshlyLoadedObjectData) result[1]).FreshlyLoadedDataContainer;
+      var dataContainer = ((FreshlyLoadedObjectData)result[1]).FreshlyLoadedDataContainer;
       CheckDataContainer(dataContainer, parentDataContainer.ID, 4711, state => state.IsUnchanged, _productPropertyDefinition, "Keyboard", "Keyboard", false);
     }
 
@@ -598,7 +598,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Expect(mock => mock.RegisterDataContainer(Arg<DataContainer>.Is.Anything))
           .WhenCalledOrdered(
               counter,
-              mi => CheckDataContainer((DataContainer) mi.Arguments[0], domainObject, null, state => state.IsNew, _orderNumberPropertyDefinition, 12, 0, true),
+              mi => CheckDataContainer((DataContainer)mi.Arguments[0], domainObject, null, state => state.IsNew, _orderNumberPropertyDefinition, 12, 0, true),
               "New DataContainers must be registered before the parent relation end-points are retrieved for persistence (and prior to Dispose)."
           );
 

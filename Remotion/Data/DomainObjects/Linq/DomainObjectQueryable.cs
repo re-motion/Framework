@@ -66,12 +66,12 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public DomainObjectQueryExecutor GetExecutor ()
     {
-      return (DomainObjectQueryExecutor) Provider.Executor;
+      return (DomainObjectQueryExecutor)Provider.Executor;
     }
 
     public new QueryProviderBase Provider
     {
-      get { return (QueryProviderBase) base.Provider; }
+      get { return (QueryProviderBase)base.Provider; }
     }
   }
 }

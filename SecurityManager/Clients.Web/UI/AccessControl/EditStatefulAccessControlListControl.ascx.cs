@@ -107,7 +107,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       {
         StateCombination stateCombination = stateCombinations[i];
 
-        EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl) LoadControl("EditStateCombinationControl.ascx");
+        EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl)LoadControl("EditStateCombinationControl.ascx");
         editStateCombinationControl.ID = "SC_" + i;
         editStateCombinationControl.BusinessObject = stateCombination;
         editStateCombinationControl.Delete += EditStateCombinationControl_Delete;
@@ -188,14 +188,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     void EditStateCombinationControl_Delete (object sender, EventArgs e)
     {
-      EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl) sender;
+      EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl)sender;
       Page.PrepareValidation();
       bool isValid = ValidateStateCombinations(editStateCombinationControl);
       if (!isValid)
         return;
 
       _editStateCombinationControls.Remove(editStateCombinationControl);
-      StateCombination accessControlEntry = (StateCombination) editStateCombinationControl.DataSource.BusinessObject;
+      StateCombination accessControlEntry = (StateCombination)editStateCombinationControl.DataSource.BusinessObject;
       accessControlEntry.Delete();
 
       SaveStateCombinations(false);

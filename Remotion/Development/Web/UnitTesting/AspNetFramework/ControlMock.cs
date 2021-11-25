@@ -61,7 +61,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     protected override void LoadViewState (object? savedState)
     {
-      _valueInViewState = (string?) savedState;
+      _valueInViewState = (string?)savedState;
     }
 
     protected override object? SaveViewState ()
@@ -71,7 +71,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     protected override void LoadControlState (object? savedState)
     {
-      _valueInControlState = (string?) savedState;
+      _valueInControlState = (string?)savedState;
     }
 
     protected override object? SaveControlState ()

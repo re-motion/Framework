@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      var webFormsPageObject = (IWebFormsPageObject) Context.PageObject;
+      var webFormsPageObject = (IWebFormsPageObject)Context.PageObject;
 
       // Note: we assume that ASP.NET WebForms control objects have auto-postback enabled, that is no the default value, however, it is the 90% case
       // in re-motion-based projects.

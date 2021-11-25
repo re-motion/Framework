@@ -427,7 +427,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       base.OnRelationChanged(args);
       if (args.IsRelation(this, "StatefulAccessControlLists"))
-        HandleStatefulAccessControlListsChanged((StatefulAccessControlList) args.NewRelatedObject);
+        HandleStatefulAccessControlListsChanged((StatefulAccessControlList)args.NewRelatedObject);
     }
 
     private void HandleStatefulAccessControlListsChanged (StatefulAccessControlList acl)

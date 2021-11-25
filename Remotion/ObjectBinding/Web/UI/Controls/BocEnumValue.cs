@@ -289,7 +289,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectEnumerationProperty? Property
     {
-      get { return (IBusinessObjectEnumerationProperty?) base.Property; }
+      get { return (IBusinessObjectEnumerationProperty?)base.Property; }
       set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty>("value", value); }
     }
 
@@ -527,12 +527,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
       base.LoadControlState(values[0]);
       _value = values[1];
       if (values[2] != null)
-        _internalValue = (string?) values[2];
+        _internalValue = (string?)values[2];
     }
 
     protected override object SaveControlState ()
@@ -584,7 +584,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
     protected virtual void OnSelectionChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[s_selectionChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[s_selectionChangedEvent];
       if (eventHandler != null)
         eventHandler(this, EventArgs.Empty);
     }

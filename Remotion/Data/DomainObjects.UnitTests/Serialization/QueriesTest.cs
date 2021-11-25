@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void Query ()
     {
-      var query = (Query) QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = (Query)QueryFactory.CreateQueryFromConfiguration("OrderQuery");
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1);
 
       var deserializedQuery = Serializer.SerializeAndDeserialize(query);

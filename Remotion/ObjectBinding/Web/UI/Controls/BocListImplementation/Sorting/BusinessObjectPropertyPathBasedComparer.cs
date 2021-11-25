@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       {
         s_log.ErrorFormat(
             e, "Exception thrown while evaluating the result for property path '{0}' in row {1} of BocList.", _propertyPath.Identifier, row.Index);
-        return Tuple.Create((object?) null, new DoubleCheckedLockingContainer<string>(() => null!));
+        return Tuple.Create((object?)null, new DoubleCheckedLockingContainer<string>(() => null!));
       }
 
       return Tuple.Create(

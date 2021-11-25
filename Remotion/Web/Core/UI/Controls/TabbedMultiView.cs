@@ -80,7 +80,7 @@ namespace Remotion.Web.UI.Controls
 
       protected new TabbedMultiView Parent
       {
-        get { return (TabbedMultiView) Assertion.IsNotNull(base.Parent, "The current control must have a parent."); }
+        get { return (TabbedMultiView)Assertion.IsNotNull(base.Parent, "The current control must have a parent."); }
       }
 
       protected override void OnActiveViewChanged (EventArgs e)
@@ -138,7 +138,7 @@ namespace Remotion.Web.UI.Controls
       {
         base.OnSelectionChanged();
 
-        TabbedMultiView multiView = ((TabbedMultiView) OwnerControl!); // TODO RM-8118: not null assertion
+        TabbedMultiView multiView = ((TabbedMultiView)OwnerControl!); // TODO RM-8118: not null assertion
         TabView? view = null;
         //  Cannot use FindControl without a Naming Container. Only during initialization phase of aspx.
         if (multiView.NamingContainer != null)
@@ -147,7 +147,7 @@ namespace Remotion.Web.UI.Controls
           if (isPlaceHolderTab) // TODO RM-8118: inline
             view = multiView._placeHolderTabView;
           else
-            view = (TabView?) multiView.MultiViewInternal.FindControl(_target!);
+            view = (TabView?)multiView.MultiViewInternal.FindControl(_target!);
         }
         else
         {
@@ -251,7 +251,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnLoad (EventArgs e)
     {
       base.OnLoad(e);
-      TabView? view = (TabView?) MultiViewInternal.GetActiveView();
+      TabView? view = (TabView?)MultiViewInternal.GetActiveView();
       if (view != null)
         view.EnsureLazyControls();
     }
@@ -286,12 +286,12 @@ namespace Remotion.Web.UI.Controls
         if (isLastTab)
         {
           if (MultiViewInternal.Controls.Count > 1)
-            _newActiveTabAfterRemove = (TabView) MultiViewInternal.Controls[index - 1];
+            _newActiveTabAfterRemove = (TabView)MultiViewInternal.Controls[index - 1];
           else // No Tabs left after this tab
             _newActiveTabAfterRemove = _placeHolderTabView;
         }
         else
-          _newActiveTabAfterRemove = (TabView) MultiViewInternal.Controls[index + 1];
+          _newActiveTabAfterRemove = (TabView)MultiViewInternal.Controls[index + 1];
       }
       else
         _newActiveTabAfterRemove = null;
@@ -337,7 +337,7 @@ namespace Remotion.Web.UI.Controls
 
     public TabView? GetActiveView ()
     {
-      TabView? view = (TabView?) MultiViewInternal.GetActiveView();
+      TabView? view = (TabView?)MultiViewInternal.GetActiveView();
       if (view != null && _isInitialized)
         view.EnsureLazyControls();
       return view;
@@ -390,7 +390,7 @@ namespace Remotion.Web.UI.Controls
     [Browsable (false)]
     public TabViewCollection Views
     {
-      get { return (TabViewCollection) MultiViewInternal.Controls; }
+      get { return (TabViewCollection)MultiViewInternal.Controls; }
     }
 
     /// <summary>

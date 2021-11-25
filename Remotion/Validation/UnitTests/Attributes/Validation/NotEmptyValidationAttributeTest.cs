@@ -52,10 +52,10 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
 
       Assert.That(result.Length, Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator) result[0]).ValidationMessage, Is.Not.Null);
+      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage, Is.Not.Null);
 
       validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(((NotEmptyValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -67,8 +67,8 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
       var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(((NotEmptyValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
-      Assert.That(((NotEmptyValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
+      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
     }
 
     [Test]

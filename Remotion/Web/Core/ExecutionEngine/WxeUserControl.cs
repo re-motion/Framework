@@ -75,8 +75,8 @@ namespace Remotion.Web.ExecutionEngine
         if (!userControlExecutor.IsNull && !userControlExecutor.IsReturningPostBack)
         {
           Assertion.IsTrue(userControlExecutor.UserControlID == _permanentUniqueID);
-          var currentUserControlStep = (WxeUserControlStep) userControlExecutor.Function.ExecutingStep;
-          control = (WxeUserControl) Page!.LoadControl(currentUserControlStep.UserControl);
+          var currentUserControlStep = (WxeUserControlStep)userControlExecutor.Function.ExecutingStep;
+          control = (WxeUserControl)Page!.LoadControl(currentUserControlStep.UserControl);
 
           if (!currentUserControlStep.IsPostBack)
             stateModificationStrategy = new StateClearingStrategy();
@@ -87,7 +87,7 @@ namespace Remotion.Web.ExecutionEngine
         {
           if (userControlExecutor.IsReturningPostBack)
           {
-            control = (WxeUserControl) Page!.LoadControl(userControlExecutor.BackedUpUserControl);
+            control = (WxeUserControl)Page!.LoadControl(userControlExecutor.BackedUpUserControl);
             stateModificationStrategy = new StateReplacingStrategy(userControlExecutor.BackedUpUserControlState);
           }
           else
@@ -180,7 +180,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public IWxePage? WxePage
     {
-      get { return (IWxePage?) base.Page; }
+      get { return (IWxePage?)base.Page; }
     }
 
     public bool IsUserControlPostBack

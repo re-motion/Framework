@@ -152,7 +152,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
 
     private T ToEnum<T> (string enumAsString)
     {
-      return (T) Enum.Parse(typeof(T), enumAsString, true);
+      return (T)Enum.Parse(typeof(T), enumAsString, true);
     }
   }
 }

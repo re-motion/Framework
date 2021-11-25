@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var validator = _serviceLocator.GetInstance<IDataContainerValidator>();
 
       Assert.That(validator, Is.TypeOf(typeof(CompoundDataContainerValidator)));
-      var compoundValidators = ((CompoundDataContainerValidator) validator).Validators;
+      var compoundValidators = ((CompoundDataContainerValidator)validator).Validators;
       Assert.That(
           compoundValidators.Select(v => v.GetType()),
           Is.EqualTo(

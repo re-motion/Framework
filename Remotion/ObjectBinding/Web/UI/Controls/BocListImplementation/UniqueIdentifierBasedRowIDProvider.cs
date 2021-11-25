@@ -34,14 +34,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     {
       ArgumentUtility.CheckNotNull("row", row);
 
-      return EscapeUniqueIdentifier(((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier);
+      return EscapeUniqueIdentifier(((IBusinessObjectWithIdentity)row.BusinessObject).UniqueIdentifier);
     }
 
     public string GetItemRowID (BocListRow row)
     {
       ArgumentUtility.CheckNotNull("row", row);
 
-      return FormatItemRowID(row.Index, ((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier);
+      return FormatItemRowID(row.Index, ((IBusinessObjectWithIdentity)row.BusinessObject).UniqueIdentifier);
     }
 
     public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
@@ -53,16 +53,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       int rowIndex = tuple.Item1;
       string uniqueIdentifier = tuple.Item2;
 
-      if (rowIndex < values.Count && ((IBusinessObjectWithIdentity) values[rowIndex]).UniqueIdentifier == uniqueIdentifier)
+      if (rowIndex < values.Count && ((IBusinessObjectWithIdentity)values[rowIndex]).UniqueIdentifier == uniqueIdentifier)
       {
-        return new BocListRow(rowIndex, (IBusinessObjectWithIdentity) values[rowIndex]);
+        return new BocListRow(rowIndex, (IBusinessObjectWithIdentity)values[rowIndex]);
       }
       else
       {
         for (int indexDown = rowIndex - 1, indexUp = rowIndex + 1; indexDown >= 0 || indexUp < values.Count; indexDown--, indexUp++)
         {
-          if (indexDown >= 0 && indexDown < values.Count && ((IBusinessObjectWithIdentity) values[indexDown]).UniqueIdentifier == uniqueIdentifier)
-            return new BocListRow(indexDown, ((IBusinessObjectWithIdentity) values[indexDown]));
+          if (indexDown >= 0 && indexDown < values.Count && ((IBusinessObjectWithIdentity)values[indexDown]).UniqueIdentifier == uniqueIdentifier)
+            return new BocListRow(indexDown, ((IBusinessObjectWithIdentity)values[indexDown]));
 
           if (indexUp < values.Count && ((IBusinessObjectWithIdentity)values[indexUp]).UniqueIdentifier == uniqueIdentifier)
             return new BocListRow(indexUp,  ((IBusinessObjectWithIdentity)values[indexUp]));

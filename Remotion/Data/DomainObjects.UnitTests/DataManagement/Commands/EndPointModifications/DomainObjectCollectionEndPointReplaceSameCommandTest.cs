@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       // customer.Orders[index].Touch()
       Assert.That(steps[1], Is.InstanceOf(typeof(RelationEndPointTouchCommand)));
-      Assert.That(((RelationEndPointTouchCommand) steps[1]).EndPoint, Is.SameAs(oppositeEndPoint));
+      Assert.That(((RelationEndPointTouchCommand)steps[1]).EndPoint, Is.SameAs(oppositeEndPoint));
     }
   }
 }

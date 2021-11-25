@@ -506,7 +506,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           throw new InvalidOperationException();
       }
 
-      return (TService?) provider.GetService(serviceDefinition.Item2);
+      return (TService?)provider.GetService(serviceDefinition.Item2);
     }
 
     [NotNull]

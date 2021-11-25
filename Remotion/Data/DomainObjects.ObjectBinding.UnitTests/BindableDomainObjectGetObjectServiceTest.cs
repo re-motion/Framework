@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _service = new BindableDomainObjectGetObjectService();
 
       _instance = SampleBindableDomainObject.NewObject();
-      _businessObjectClass = (BindableObjectClassWithIdentity) ((IBusinessObject) _instance).BusinessObjectClass;
-      _id =  ((IBusinessObjectWithIdentity) _instance).UniqueIdentifier;
+      _businessObjectClass = (BindableObjectClassWithIdentity)((IBusinessObject)_instance).BusinessObjectClass;
+      _id =  ((IBusinessObjectWithIdentity)_instance).UniqueIdentifier;
     }
 
     [Test]

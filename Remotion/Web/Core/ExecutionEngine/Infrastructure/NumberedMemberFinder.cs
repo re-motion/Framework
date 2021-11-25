@@ -66,7 +66,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       double num;
       if (! double.TryParse(numStr, System.Globalization.NumberStyles.Integer, null, out num))
         return -1;
-      return (int) num;
+      return (int)num;
     }
   }
 }

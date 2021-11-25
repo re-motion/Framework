@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Test]
     public void PublicWrapperGeneratedForProtectedOverrider ()
     {
-      Type type = ((IMixinTarget) CreateMixedObject<BaseType1>(typeof(MixinWithProtectedOverrider))).Mixins[0].GetType();
+      Type type = ((IMixinTarget)CreateMixedObject<BaseType1>(typeof(MixinWithProtectedOverrider))).Mixins[0].GetType();
       MethodInfo wrappedMethod = typeof(MixinWithProtectedOverrider).GetMethod("VirtualMethod", BindingFlags.NonPublic | BindingFlags.Instance);
 
       MethodInfo wrapper = GetWrapper(type, wrappedMethod);
@@ -41,7 +41,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Test]
     public void NoPublicWrapperGeneratedForInfrastructureMembers ()
     {
-      Type type = ((IMixinTarget) CreateMixedObject<BaseType1>(typeof(MixinWithProtectedOverrider))).Mixins[0].GetType();
+      Type type = ((IMixinTarget)CreateMixedObject<BaseType1>(typeof(MixinWithProtectedOverrider))).Mixins[0].GetType();
       IEnumerable<MethodInfo> wrappedMethods =
           from method in type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
           let attribute = AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute>(method, false)

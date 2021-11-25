@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void UniqueIdentifier ()
     {
       SampleBindableMixinDomainObject domainObject = SampleBindableMixinDomainObject.NewObject();
-      Assert.That(((IBusinessObjectWithIdentity) domainObject).UniqueIdentifier, Is.EqualTo(domainObject.ID.ToString()));
+      Assert.That(((IBusinessObjectWithIdentity)domainObject).UniqueIdentifier, Is.EqualTo(domainObject.ID.ToString()));
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       SampleBindableMixinDomainObject original = SampleBindableMixinDomainObject.NewObject();
 
       var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SampleBindableMixinDomainObject));
-      var boClass = (BindableObjectClassWithIdentity) provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));
+      var boClass = (BindableObjectClassWithIdentity)provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));
       Assert.That(boClass.GetObject(original.ID.ToString()), Is.SameAs(original));
     }
   }

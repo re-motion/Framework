@@ -55,7 +55,7 @@ namespace Remotion.UnitTests.Logging
       var log = _logManager.GetLogger("The Name");
 
       Assert.IsInstanceOf(typeof(Log4NetLog), log);
-      var log4NetLog = (Log4NetLog) log;
+      var log4NetLog = (Log4NetLog)log;
       Assert.That(log4NetLog.Logger.Name, Is.EqualTo("The Name"));
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.UnitTests.Logging
 
       Assert.IsInstanceOf(typeof(Log4NetLog), log);
 
-      var log4NetLog = (Log4NetLog) log;
+      var log4NetLog = (Log4NetLog)log;
       Assert.That(log4NetLog.Logger.Name, Is.EqualTo("Remotion.UnitTests.Logging.SampleType"));
     }
 

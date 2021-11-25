@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       CheckDelegation(dm => dm.Count, 5);
       CheckDelegation(dm => dm[objectID], dataContainer);
       CheckDelegation(dm => dm.GetEnumerator(), enumeratorGeneric);
-      CheckDelegation(dm => ((IEnumerable) dm).GetEnumerator(), enumeratorObject);
+      CheckDelegation(dm => ((IEnumerable)dm).GetEnumerator(), enumeratorObject);
     }
 
     private void CheckDelegation<TR> (Func<IDataContainerMapReadOnlyView, TR> func, TR fakeResult)

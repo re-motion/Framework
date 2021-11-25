@@ -52,14 +52,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 
     protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
     {
-      var mimeType = GetMimeType(Path.GetExtension((ReadOnlySpan<char>) Request.PhysicalPath));
+      var mimeType = GetMimeType(Path.GetExtension((ReadOnlySpan<char>)Request.PhysicalPath));
 
       if (mimeType != null)
         Response.ContentType = mimeType;
 
       static string GetMimeType (ReadOnlySpan<char> extension)
       {
-        var svg = (ReadOnlySpan<char>) ".svg";
+        var svg = (ReadOnlySpan<char>)".svg";
         if (extension.Equals(svg, StringComparison.OrdinalIgnoreCase))
           return "image/svg+xml";
 

@@ -52,8 +52,8 @@ namespace OBWTest.UI
 
     public WaiConformanceLevel ConformanceLevel
     {
-      get { return (WaiConformanceLevel) WebConfiguration.Current.Wcag.ConformanceLevel; }
-      set { WebConfiguration.Current.Wcag.ConformanceLevel = (Remotion.Web.Configuration.WaiConformanceLevel) value; }
+      get { return (WaiConformanceLevel)WebConfiguration.Current.Wcag.ConformanceLevel; }
+      set { WebConfiguration.Current.Wcag.ConformanceLevel = (Remotion.Web.Configuration.WaiConformanceLevel)value; }
     }
 
     protected override void OnLoad (EventArgs e)
@@ -64,7 +64,7 @@ namespace OBWTest.UI
       PropertyInfo propertyInfo = itemType.GetProperty("ConformanceLevel");
       EnumerationProperty property = new EnumerationProperty(
           new PropertyBase.Parameters(
-              (BindableObjectProvider) BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>(),
+              (BindableObjectProvider)BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>(),
               PropertyInfoAdapter.Create(propertyInfo),
               propertyInfo.PropertyType,
               new Lazy<Type>(() => propertyInfo.PropertyType),
@@ -90,7 +90,7 @@ namespace OBWTest.UI
       string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
       TabbedMenu.StatusText = mode + " " + theme;
 
-      var mainContentScrollable = (bool?) Session[c_mainContentScrollableKey] ?? false;
+      var mainContentScrollable = (bool?)Session[c_mainContentScrollableKey] ?? false;
       MainContentScrollableCheckBox.Checked = mainContentScrollable;
       if (mainContentScrollable)
         (Page.Master as StandardMode)?.SetPageContentScrollable();
@@ -98,7 +98,7 @@ namespace OBWTest.UI
 
     private void WaiConformanceLevelField_SelectionChanged (object sender, EventArgs e)
     {
-      ConformanceLevel = (WaiConformanceLevel) WaiConformanceLevelField.Value;
+      ConformanceLevel = (WaiConformanceLevel)WaiConformanceLevelField.Value;
       WaiConformanceLevelField.IsDirty = false;
     }
 

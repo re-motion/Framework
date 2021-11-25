@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [WxeParameter (1, true, WxeParameterDirection.In)]
     public ObjectID ObjectWithAllDataTypes
     {
-      get { return (ObjectID) Variables["ObjectWithAllDataTypes"]; }
+      get { return (ObjectID)Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 

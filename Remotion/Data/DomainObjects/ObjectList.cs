@@ -86,23 +86,23 @@ namespace Remotion.Data.DomainObjects
 
     public new T this [int index]
     {
-      get { return (T) base[index]; }
+      get { return (T)base[index]; }
       set { base[index] = value; }
     }
 
     public new T this [ObjectID id]
     {
-      get { return (T) base[id]; }
+      get { return (T)base[id]; }
     }
 
     public new ObjectList<T> Clone ()
     {
-      return (ObjectList<T>) base.Clone();
+      return (ObjectList<T>)base.Clone();
     }
 
     public new ObjectList<T> Clone (bool makeCloneReadOnly)
     {
-      return (ObjectList<T>) base.Clone(makeCloneReadOnly);
+      return (ObjectList<T>)base.Clone(makeCloneReadOnly);
     }
 
     public void Add (T item)
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects
 
     public new IEnumerator<T> GetEnumerator ()
     {
-      foreach (T t in (IEnumerable) this)
+      foreach (T t in (IEnumerable)this)
         yield return t;
     }
 

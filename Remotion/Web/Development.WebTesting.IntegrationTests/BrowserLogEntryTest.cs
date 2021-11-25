@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var js = JavaScriptExecutor.GetJavaScriptExecutor(home.Context.Browser);
       js.ExecuteScript($"console.error('{errorMessage}')");
 
-      var browserLogEntries = ((IWebDriver) home.Context.Browser.Driver.Native)
+      var browserLogEntries = ((IWebDriver)home.Context.Browser.Driver.Native)
           .Manage().Logs.GetLog(LogType.Browser);
 
       var errorLogEntry = browserLogEntries.Single(log => log.Message.Contains(errorMessage));

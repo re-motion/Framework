@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var webtestingAssembly = typeof(TestExecutionScreenshotRecorder).Assembly;
       var screenshotRecorderPathUtilityType = webtestingAssembly.GetType("Remotion.Web.Development.WebTesting.Utilities.ScreenshotRecorderPathUtility");
 
-      return (string) PrivateInvoke.InvokePublicStaticMethod(
+      return (string)PrivateInvoke.InvokePublicStaticMethod(
         screenshotRecorderPathUtilityType,
         "GetFullScreenshotFilePath",
         screenshotDirectory,

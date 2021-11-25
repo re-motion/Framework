@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       var newRelatedObject = ArgumentUtility.CheckType<DomainObject>("value", value);
 
       var endPointID = CreateRelationEndPointID(propertyAccessor);
-      var endPoint = (IObjectEndPoint) transaction.DataManager.GetRelationEndPointWithLazyLoad(endPointID);
+      var endPoint = (IObjectEndPoint)transaction.DataManager.GetRelationEndPointWithLazyLoad(endPointID);
 
       if (newRelatedObject != null && transaction.RootTransaction != newRelatedObject.RootTransaction)
       {

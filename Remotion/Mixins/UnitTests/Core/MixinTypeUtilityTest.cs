@@ -496,7 +496,7 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void CreateInstance_WithCtorArgs ()
     {
-      var instance = (List<int>) MixinTypeUtility.CreateInstance(typeof(List<int>), 51);
+      var instance = (List<int>)MixinTypeUtility.CreateInstance(typeof(List<int>), 51);
       Assert.That(instance.Capacity, Is.EqualTo(51));
     }
 

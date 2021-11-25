@@ -38,12 +38,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// <summary>
     /// Gets the path to the test site used in the integration test project.
     /// </summary>
-    public string RootPath => (string) this[_rootPathProperty];
+    public string RootPath => (string)this[_rootPathProperty];
 
     /// <summary>
     /// Gets the resources needed by the test site.
     /// </summary>
-    public IReadOnlyList<TestSiteResourceConfigurationElement> Resources => ((ConfigurationElementCollection) this[_resourcesProperty])
+    public IReadOnlyList<TestSiteResourceConfigurationElement> Resources => ((ConfigurationElementCollection)this[_resourcesProperty])
         .Cast<TestSiteResourceConfigurationElement>()
         .ToArray();
 

@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     [SetUp]
     public void SetUp ()
     {
-      _section = (WebTestConfigurationSection) Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
+      _section = (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
     }
 
     [Test]

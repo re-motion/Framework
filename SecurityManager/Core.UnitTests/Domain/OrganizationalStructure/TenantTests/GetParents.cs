@@ -143,7 +143,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
 
       var securityProviderStub = new Mock<ISecurityProvider>();
 
-      var grandParent1SecurityContext = ((ISecurityContextFactory) grandParent1).CreateSecurityContext();
+      var grandParent1SecurityContext = ((ISecurityContextFactory)grandParent1).CreateSecurityContext();
       securityProviderStub.Setup(
           stub => stub.GetAccess(
               It.Is<ISecurityContext>(_ => !object.Equals(_, grandParent1SecurityContext)),

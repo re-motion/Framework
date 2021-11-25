@@ -299,7 +299,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var definition = CreateDefinition(_red, _green);
 
-      ReadOnlyCollection<IExtensibleEnumInfo> valueInfos = ((IExtensibleEnumDefinition) definition).GetValueInfos();
+      ReadOnlyCollection<IExtensibleEnumInfo> valueInfos = ((IExtensibleEnumDefinition)definition).GetValueInfos();
       Assert.That(valueInfos, Is.EqualTo(definition.GetValueInfos()));
     }
 
@@ -308,7 +308,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var definition = CreateDefinition(_red, _green);
 
-      IExtensibleEnumInfo valueInfo = ((IExtensibleEnumDefinition) definition).GetValueInfoByID("Red");
+      IExtensibleEnumInfo valueInfo = ((IExtensibleEnumDefinition)definition).GetValueInfoByID("Red");
       Assert.That(valueInfo, Is.SameAs(definition.GetValueInfoByID("Red")));
     }
 
@@ -318,7 +318,7 @@ namespace Remotion.ExtensibleEnums.UnitTests
       var definition = CreateDefinition(_red, _green);
 
       IExtensibleEnumInfo valueInfo;
-      bool success = ((IExtensibleEnumDefinition) definition).TryGetValueInfoByID("Red", out valueInfo);
+      bool success = ((IExtensibleEnumDefinition)definition).TryGetValueInfoByID("Red", out valueInfo);
 
       ExtensibleEnumInfo<Color> expectedValueInfo;
       bool expectedSuccess = definition.TryGetValueInfoByID("Red", out expectedValueInfo);

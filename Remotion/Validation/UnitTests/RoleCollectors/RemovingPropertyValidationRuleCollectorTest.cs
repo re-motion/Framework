@@ -72,7 +72,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void Create_PropertyDeclaredInBaseClass ()
     {
       var componentPropertyRule = AddingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof(CustomerValidationRuleCollector1));
-      var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
+      var propertyInfo = ((PropertyInfoAdapter)componentPropertyRule.Property).PropertyInfo;
 
       //TODO-5906 simplify assertion with PropertyInfoAdapter compare
       Assert.That(

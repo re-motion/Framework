@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Invoker.InitRecursive();
       Controller.SwitchRowIntoEditMode(0, Columns);
-      EditableRow row = (EditableRow) Controller.Controls[0];
+      EditableRow row = (EditableRow)Controller.Controls[0];
 
       Assert.That(row.DataSourceFactory, Is.SameAs(EditModeHost.EditModeDataSourceFactory));
       Assert.That(row.ControlFactory, Is.SameAs(EditModeHost.EditModeControlFactory));
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.Controls.Count, Is.EqualTo(1));
       Assert.That(Controller.Controls[0] is EditableRow, Is.True);
 
-      EditableRow row = (EditableRow) Controller.Controls[0];
+      EditableRow row = (EditableRow)Controller.Controls[0];
       Assert.That(row.ID, Is.EqualTo("Controller_Row_2"));
 
       Assert.That(ActualEvents.Count, Is.EqualTo(0));
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(1));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value B", "200");
+      SetValues((EditableRow)Controller.Controls[0], "New Value B", "200");
 
       Controller.SwitchRowIntoEditMode(2, Columns);
 
@@ -133,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(1));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value B", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value B", "");
 
       Controller.SwitchRowIntoEditMode(2, Columns);
 
@@ -160,7 +160,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "300");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "300");
 
       Controller.SwitchRowIntoEditMode(2, Columns);
 
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "");
 
       Controller.SwitchRowIntoEditMode(2, Columns);
 
@@ -219,11 +219,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(Controller.IsListEditModeActive, Is.True);
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value A", "100");
-      SetValues((EditableRow) Controller.Controls[1], "New Value B", "200");
-      SetValues((EditableRow) Controller.Controls[2], "New Value C", "300");
-      SetValues((EditableRow) Controller.Controls[3], "New Value D", "400");
-      SetValues((EditableRow) Controller.Controls[4], "New Value E", "500");
+      SetValues((EditableRow)Controller.Controls[0], "New Value A", "100");
+      SetValues((EditableRow)Controller.Controls[1], "New Value B", "200");
+      SetValues((EditableRow)Controller.Controls[2], "New Value C", "300");
+      SetValues((EditableRow)Controller.Controls[3], "New Value D", "400");
+      SetValues((EditableRow)Controller.Controls[4], "New Value E", "500");
 
       Controller.SwitchRowIntoEditMode(2, Columns);
 
@@ -255,11 +255,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(Controller.IsListEditModeActive, Is.True);
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value A", "");
-      SetValues((EditableRow) Controller.Controls[1], "New Value B", "");
-      SetValues((EditableRow) Controller.Controls[2], "New Value C", "");
-      SetValues((EditableRow) Controller.Controls[3], "New Value D", "");
-      SetValues((EditableRow) Controller.Controls[4], "New Value E", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value A", "");
+      SetValues((EditableRow)Controller.Controls[1], "New Value B", "");
+      SetValues((EditableRow)Controller.Controls[2], "New Value C", "");
+      SetValues((EditableRow)Controller.Controls[3], "New Value D", "");
+      SetValues((EditableRow)Controller.Controls[4], "New Value E", "");
 
       Controller.SwitchRowIntoEditMode(2, Columns);
 
@@ -302,7 +302,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.Controls.Count, Is.EqualTo(1));
       Assert.That(Controller.Controls[0] is EditableRow, Is.True);
 
-      EditableRow row = (EditableRow) Controller.Controls[0];
+      EditableRow row = (EditableRow)Controller.Controls[0];
       Assert.That(row.ID, Is.EqualTo("Controller_Row_5"));
 
       Assert.That(ActualEvents.Count, Is.EqualTo(0));
@@ -325,7 +325,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "300");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "300");
 
       Assert.That(Controller.AddAndEditRow(NewValues[0], Columns), Is.True);
 
@@ -352,7 +352,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "");
 
       Assert.That(Controller.AddAndEditRow(NewValues[0], Columns), Is.False);
 
@@ -387,11 +387,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(Controller.IsListEditModeActive, Is.True);
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value A", "100");
-      SetValues((EditableRow) Controller.Controls[1], "New Value B", "200");
-      SetValues((EditableRow) Controller.Controls[2], "New Value C", "300");
-      SetValues((EditableRow) Controller.Controls[3], "New Value D", "400");
-      SetValues((EditableRow) Controller.Controls[4], "New Value E", "500");
+      SetValues((EditableRow)Controller.Controls[0], "New Value A", "100");
+      SetValues((EditableRow)Controller.Controls[1], "New Value B", "200");
+      SetValues((EditableRow)Controller.Controls[2], "New Value C", "300");
+      SetValues((EditableRow)Controller.Controls[3], "New Value D", "400");
+      SetValues((EditableRow)Controller.Controls[4], "New Value E", "500");
 
       Assert.That(Controller.AddAndEditRow(NewValues[0], Columns), Is.True);
 
@@ -425,11 +425,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(Controller.IsListEditModeActive, Is.True);
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value A", "");
-      SetValues((EditableRow) Controller.Controls[1], "New Value B", "");
-      SetValues((EditableRow) Controller.Controls[2], "New Value C", "");
-      SetValues((EditableRow) Controller.Controls[3], "New Value D", "");
-      SetValues((EditableRow) Controller.Controls[4], "New Value E", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value A", "");
+      SetValues((EditableRow)Controller.Controls[1], "New Value B", "");
+      SetValues((EditableRow)Controller.Controls[2], "New Value C", "");
+      SetValues((EditableRow)Controller.Controls[3], "New Value D", "");
+      SetValues((EditableRow)Controller.Controls[4], "New Value E", "");
 
       Assert.That(Controller.AddAndEditRow(NewValues[0], Columns), Is.False);
 
@@ -461,7 +461,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.Controls.Count, Is.EqualTo(1));
       Assert.That(Controller.Controls[0] is EditableRow, Is.True);
 
-      EditableRow row = (EditableRow) Controller.Controls[0];
+      EditableRow row = (EditableRow)Controller.Controls[0];
       Assert.That(row.ID, Is.EqualTo("Controller_Row_5"));
 
       Assert.That(ActualEvents.Count, Is.EqualTo(0));
@@ -484,7 +484,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "300");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "300");
       Controller.EndRowEditMode(true, Columns);
 
       CheckEvents(expectedEvents, ActualEvents);
@@ -508,7 +508,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "300");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "300");
       Controller.EndRowEditMode(false, Columns);
 
       CheckEvents(expectedEvents, ActualEvents);
@@ -533,7 +533,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(5));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value F", "600");
+      SetValues((EditableRow)Controller.Controls[0], "New Value F", "600");
       Controller.EndRowEditMode(true, Columns);
 
       CheckEvents(expectedEvents, ActualEvents);
@@ -558,7 +558,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(5));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value F", "600");
+      SetValues((EditableRow)Controller.Controls[0], "New Value F", "600");
       Controller.EndRowEditMode(false, Columns);
 
       CheckEvents(expectedEvents, ActualEvents);
@@ -582,7 +582,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "");
       Controller.EndRowEditMode(true, Columns);
 
       CheckEvents(expectedEvents, ActualEvents);
@@ -607,7 +607,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "");
       Controller.EndRowEditMode(false, Columns);
 
       CheckEvents(expectedEvents, ActualEvents);
@@ -685,7 +685,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void EnsureEditModeRestored_CallsLoadValueWithInterimTrue ()
     {
-      var editedObject = (IBusinessObject) EditModeHost.Value[2];
+      var editedObject = (IBusinessObject)EditModeHost.Value[2];
       var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
       dataSourceStub.SetupProperty(_ => _.BusinessObject);
       dataSourceStub.Object.BusinessObject = editedObject;
@@ -785,7 +785,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(Controller.IsRowEditModeActive, Is.True);
       Assert.That(Controller.GetEditedRow().Index, Is.EqualTo(2));
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "300");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "300");
 
       Assert.That(Controller.Validate(), Is.True);
     }
@@ -796,7 +796,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Invoker.InitRecursive();
       Controller.SwitchRowIntoEditMode(2, Columns);
 
-      SetValues((EditableRow) Controller.Controls[0], "New Value C", "");
+      SetValues((EditableRow)Controller.Controls[0], "New Value C", "");
 
       Assert.That(Controller.Validate(), Is.False);
     }
@@ -808,10 +808,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Invoker.InitRecursive();
       Controller.SwitchRowIntoEditMode(2, Columns);
 
-      EditableRow editableRow = (EditableRow) Controller.Controls[0];
+      EditableRow editableRow = (EditableRow)Controller.Controls[0];
 
-      BocTextValue stringValueField = (BocTextValue) editableRow.GetEditControl(0);
-      BocTextValue int32ValueField = (BocTextValue) editableRow.GetEditControl(1);
+      BocTextValue stringValueField = (BocTextValue)editableRow.GetEditControl(0);
+      BocTextValue int32ValueField = (BocTextValue)editableRow.GetEditControl(1);
 
       Controller.PrepareValidation();
 
@@ -837,9 +837,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Invoker.InitRecursive();
       Controller.SwitchRowIntoEditMode(2, Columns);
 
-      EditableRow row = (EditableRow) Controller.Controls[0];
+      EditableRow row = (EditableRow)Controller.Controls[0];
       Remotion.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField =
-          (Remotion.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl(0);
+          (Remotion.ObjectBinding.Web.UI.Controls.BocTextValue)row.GetEditControl(0);
       stringValueField.Value = "New Value";
 
       Assert.That(Controller.IsDirty(), Is.True);

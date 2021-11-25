@@ -168,7 +168,7 @@ namespace Remotion.Reflection.CodeGeneration
       {
         var parameterIndex = parameter.Position + 1;
 
-        _ilGenerator.Emit(OpCodes.Ldarg, (ushort) parameterIndex);
+        _ilGenerator.Emit(OpCodes.Ldarg, (ushort)parameterIndex);
 
         if (_wrapperParameterTypes[parameterIndex] == parameter.ParameterType)
           _ilGenerator.Emit(OpCodes.Nop);

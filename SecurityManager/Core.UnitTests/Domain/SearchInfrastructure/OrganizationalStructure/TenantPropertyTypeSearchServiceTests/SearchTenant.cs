@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
       _searchService = new TenantPropertyTypeSearchService();
       IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(User));
-      _property = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition("Tenant");
+      _property = (IBusinessObjectReferenceProperty)userClass.GetPropertyDefinition("Tenant");
       Assert.That(_property, Is.Not.Null);
     }
 

@@ -85,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [Test]
     public void Analyze_ExecuteAsyncReturnsNull_ThrowsInvalidOperationException ()
     {
-      _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(), It.IsAny<object[]>())).Returns((object) null);
+      _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(), It.IsAny<object[]>())).Returns((object)null);
       _jsExecutorStub.Setup(_ => _.ExecuteScript("return (typeof axe !== 'undefined')")).Returns(true);
       _jsExecutorStub.Setup(_ => _.ExecuteScript("return self.name;")).Returns("TestFrame");
       _webDriverStub.Setup(_ => _.FindElements(It.IsAny<By>())).Returns(new List<IWebElement>().AsReadOnly());
@@ -141,7 +141,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       _jsExecutorStub.Setup(_ => _.ExecuteScript(axeSource)).Returns(true);
       _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(), It.IsAny<object[]>())).Returns(axeResult);
       _resultParserStub.Setup(_ => _.Parse(axeResult)).Returns(parsedAxeResult);
-      _resultMapperStub.Setup(_ => _.Map(parsedAxeResult)).Returns((AccessibilityResult) null);
+      _resultMapperStub.Setup(_ => _.Map(parsedAxeResult)).Returns((AccessibilityResult)null);
       _configStub.Setup(_ => _.ConformanceLevel).Returns(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
       var analyzer = CreateAccessibilityAnalyzer();
 
@@ -161,7 +161,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       _jsExecutorStub.Setup(_ => _.ExecuteScript(axeSource)).Returns(true);
       _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(), It.IsAny<object[]>())).Returns(axeResult);
       _resultParserStub.Setup(_ => _.Parse(axeResult)).Returns(parsedAxeResult);
-      _resultMapperStub.Setup(_ => _.Map(parsedAxeResult)).Returns((AccessibilityResult) null);
+      _resultMapperStub.Setup(_ => _.Map(parsedAxeResult)).Returns((AccessibilityResult)null);
       _configStub.Setup(_ => _.ConformanceLevel).Returns(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
       var analyzer = CreateAccessibilityAnalyzer();
 

@@ -113,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
 
     private DriverConfiguration GetBrowserFactoryStubCreateBrowserArgument (IBrowserFactory browserFactoryStub)
     {
-      return (DriverConfiguration) Mock.Get(browserFactoryStub).Invocations.Single().Arguments.Single();
+      return (DriverConfiguration)Mock.Get(browserFactoryStub).Invocations.Single().Arguments.Single();
     }
 
     private class TestWebTestConfigurationFactory : WebTestConfigurationFactory

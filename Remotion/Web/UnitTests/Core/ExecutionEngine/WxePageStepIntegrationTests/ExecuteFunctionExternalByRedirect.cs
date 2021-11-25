@@ -123,7 +123,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _pageExecutorMock.InSequence(sequence).Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", true)).Callback(
           (WxeContext context, string page, bool isPostBack) =>
           {
-            Assert.That(((IExecutionStateContext) _pageStep.Object).ExecutionState, Is.SameAs(NullExecutionState.Null));
+            Assert.That(((IExecutionStateContext)_pageStep.Object).ExecutionState, Is.SameAs(NullExecutionState.Null));
             Assert.That(_pageStep.Object.PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo("100"));
             Assert.That(_pageStep.Object.PostBackCollection.AllKeys, Has.Member("Key"));
             Assert.That(_pageStep.Object.ReturningFunction, Is.SameAs(_subFunction.Object));

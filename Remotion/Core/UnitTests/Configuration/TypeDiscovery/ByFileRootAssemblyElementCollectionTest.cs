@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var collection = DeserializeFromXmlFragment(_xmlFragment);
 
       ByFileRootAssemblyElementBase[] result = collection.ToArray();
-      Assert.That(((ByFileIncludeRootAssemblyElement) result[0]).IncludeReferencedAssemblies, Is.False);
+      Assert.That(((ByFileIncludeRootAssemblyElement)result[0]).IncludeReferencedAssemblies, Is.False);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var collection = DeserializeFromXmlFragment(_xmlFragment);
 
       ByFileRootAssemblyElementBase[] result = collection.ToArray();
-      Assert.That(((ByFileIncludeRootAssemblyElement) result[1]).IncludeReferencedAssemblies, Is.True);
+      Assert.That(((ByFileIncludeRootAssemblyElement)result[1]).IncludeReferencedAssemblies, Is.True);
     }
 
     [Test]

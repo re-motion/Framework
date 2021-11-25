@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       var typeDefinition = mappingConfiguration.GetTypeDefinition(typeof(TSource));
       var propertyInfoAdapter = PropertyInfoAdapter.Create(NormalizingMemberInfoFromExpressionUtility.GetProperty(propertyAccessExpression));
-      return (RelationEndPointDefinition) typeDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
+      return (RelationEndPointDefinition)typeDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
     }
   }
 }

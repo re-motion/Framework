@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(nestedCommands, Has.Count.EqualTo(1));
       var nestedCommand = nestedCommands.Single();
       Assert.That(nestedCommand, Is.TypeOf<TestableDataManagementCommandDecoratorBase>());
-      Assert.That(((TestableDataManagementCommandDecoratorBase) nestedCommand).DecoratedCommand, Is.SameAs(fakeExpanded));
+      Assert.That(((TestableDataManagementCommandDecoratorBase)nestedCommand).DecoratedCommand, Is.SameAs(fakeExpanded));
     }
   }
 

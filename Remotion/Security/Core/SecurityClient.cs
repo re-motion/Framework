@@ -114,7 +114,7 @@ namespace Remotion.Security
 
     public bool HasAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
     {
-      return HasAccess(securableObject, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>) requiredAccessTypes);
+      return HasAccess(securableObject, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public bool HasAccess (ISecurableObject securableObject, IReadOnlyList<AccessType> requiredAccessTypes)
@@ -124,7 +124,7 @@ namespace Remotion.Security
 
     public bool HasAccess (ISecurableObject securableObject, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
-      return HasAccess(securableObject, principal, (IReadOnlyList<AccessType>) requiredAccessTypes);
+      return HasAccess(securableObject, principal, (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public virtual bool HasAccess (ISecurableObject securableObject, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
@@ -144,7 +144,7 @@ namespace Remotion.Security
 
     public void CheckAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
     {
-      CheckAccess(securableObject, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>) requiredAccessTypes);
+      CheckAccess(securableObject, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public void CheckAccess (ISecurableObject securableObject, IReadOnlyList<AccessType> requiredAccessTypes)
@@ -154,7 +154,7 @@ namespace Remotion.Security
 
     public void CheckAccess (ISecurableObject securableObject, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
-      CheckAccess(securableObject, principal, (IReadOnlyList<AccessType>) requiredAccessTypes);
+      CheckAccess(securableObject, principal, (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public void CheckAccess (ISecurableObject securableObject, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
@@ -170,7 +170,7 @@ namespace Remotion.Security
 
     public bool HasStatelessAccess (Type securableClass, params AccessType[] requiredAccessTypes)
     {
-      return HasStatelessAccess(securableClass, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>) requiredAccessTypes);
+      return HasStatelessAccess(securableClass, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public bool HasStatelessAccess (Type securableClass, IReadOnlyList<AccessType> requiredAccessTypes)
@@ -180,7 +180,7 @@ namespace Remotion.Security
 
     public bool HasStatelessAccess (Type securableClass, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
-      return HasStatelessAccess(securableClass, principal, (IReadOnlyList<AccessType>) requiredAccessTypes);
+      return HasStatelessAccess(securableClass, principal, (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public virtual bool HasStatelessAccess (Type securableClass, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
@@ -197,7 +197,7 @@ namespace Remotion.Security
 
     public void CheckStatelessAccess (Type securableClass, params AccessType[] requiredAccessTypes)
     {
-      CheckStatelessAccess(securableClass, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>) requiredAccessTypes);
+      CheckStatelessAccess(securableClass, _principalProvider.GetPrincipal(), (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public void CheckStatelessAccess (Type securableClass, IReadOnlyList<AccessType> requiredAccessTypes)
@@ -207,7 +207,7 @@ namespace Remotion.Security
 
     public void CheckStatelessAccess (Type securableClass, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
-      CheckStatelessAccess(securableClass, principal, (IReadOnlyList<AccessType>) requiredAccessTypes);
+      CheckStatelessAccess(securableClass, principal, (IReadOnlyList<AccessType>)requiredAccessTypes);
     }
 
     public void CheckStatelessAccess (Type securableClass, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)

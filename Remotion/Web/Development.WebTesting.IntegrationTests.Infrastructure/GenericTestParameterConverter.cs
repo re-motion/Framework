@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     public override GenericTestPageParameterDto Read (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
       var container = Assertion.IsNotNull(JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(ref reader, options));
-      var status = (GenericTestPageStatus) container["status"].GetInt32();
+      var status = (GenericTestPageStatus)container["status"].GetInt32();
       var parameters = container["parameters"].EnumerateObject()
           .ToDictionary(
               p => p.Name,
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     {
       var container = new Dictionary<string, object>
                       {
-                          { "status", (int) value.Status },
+                          { "status", (int)value.Status },
                           { "parameters", value.Parameters.ToDictionary(pair => pair.Key, pair => pair.Value.Arguments) },
                       };
 

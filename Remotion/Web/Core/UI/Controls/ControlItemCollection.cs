@@ -114,7 +114,7 @@ namespace Remotion.Web.UI.Controls
       ValidateNewValue(value);
 
       base.OnInsert(index, value);
-      IControlItem controlItem = (IControlItem) value;
+      IControlItem controlItem = (IControlItem)value;
       controlItem.OwnerControl = _ownerControl;
     }
 
@@ -132,7 +132,7 @@ namespace Remotion.Web.UI.Controls
       ValidateNewValue(newValue);
 
       base.OnSet(index, oldValue, newValue);
-      IControlItem controlItem = (IControlItem) newValue;
+      IControlItem controlItem = (IControlItem)newValue;
       controlItem.OwnerControl = _ownerControl;
     }
 
@@ -164,7 +164,7 @@ namespace Remotion.Web.UI.Controls
 
     public void AddRange (params IControlItem[] values)
     {
-      AddRange((IList) values);
+      AddRange((IList)values);
     }
 
     protected void AddRange (IList values)
@@ -174,7 +174,7 @@ namespace Remotion.Web.UI.Controls
 
       BeginEdit();
       for (int i = 0; i < values.Count; i++)
-        Add((IControlItem?) values[i]);
+        Add((IControlItem?)values[i]);
       EndEdit();
     }
 
@@ -186,7 +186,7 @@ namespace Remotion.Web.UI.Controls
     /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </remarks>
     public IControlItem[] ToArray ()
     {
-      return (IControlItem[]) InnerList.ToArray(typeof(IControlItem));
+      return (IControlItem[])InnerList.ToArray(typeof(IControlItem));
     }
 
     public virtual void Sort ()
@@ -219,7 +219,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < InnerList.Count; i++)
       {
-        IControlItem item = (IControlItem) InnerList[i]!;
+        IControlItem item = (IControlItem)InnerList[i]!;
         if (item.ItemID == id)
           return item;
       }
@@ -233,7 +233,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     public IControlItem this [int index]
     {
-      get { return (IControlItem) List[index]!; }
+      get { return (IControlItem)List[index]!; }
       set { List[index] = value; }
     }
 
@@ -263,7 +263,7 @@ namespace Remotion.Web.UI.Controls
         _ownerControl = value;
         for (int i = 0; i < InnerList.Count; i++)
         {
-          IControlItem controlItem = (IControlItem) InnerList[i]!;
+          IControlItem controlItem = (IControlItem)InnerList[i]!;
           controlItem.OwnerControl = _ownerControl;
         }
       }
@@ -281,11 +281,11 @@ namespace Remotion.Web.UI.Controls
 
       foreach (DictionaryEntry entry in values)
       {
-        string id = (string) entry.Key;
+        string id = (string)entry.Key;
 
         IControlItem? item = Find(id);
         if (item != null)
-          ResourceDispatcher.DispatchGeneric(item, (IDictionary) entry.Value!); // TODO: not null assertion
+          ResourceDispatcher.DispatchGeneric(item, (IDictionary)entry.Value!); // TODO: not null assertion
         else //  Invalid collection element
         {
           s_log.Debug(
@@ -302,7 +302,7 @@ namespace Remotion.Web.UI.Controls
 
       for (int i = 0; i < InnerList.Count; i++)
       {
-        IControlItem controlItem = (IControlItem) InnerList[i]!;
+        IControlItem controlItem = (IControlItem)InnerList[i]!;
         controlItem.LoadResources(resourceManager, globalizationService);
       }
     }

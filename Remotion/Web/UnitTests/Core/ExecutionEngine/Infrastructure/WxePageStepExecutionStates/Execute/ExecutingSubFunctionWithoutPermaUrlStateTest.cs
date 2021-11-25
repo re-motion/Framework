@@ -56,7 +56,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
       ExecutionStateContextMock.InSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<PostProcessingSubFunctionState>()))
-          .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState) executionState))
+          .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState)executionState))
           .Verifiable();
 
       _executionState.ExecuteSubFunction(WxeContext);

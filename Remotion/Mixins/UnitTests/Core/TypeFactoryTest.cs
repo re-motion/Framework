@@ -44,7 +44,7 @@ namespace Remotion.Mixins.UnitTests.Core
     public void InitializeUnconstructedInstance_ConstructionSemantics ()
     {
       var concreteType = TypeFactory.GetConcreteType(typeof(BaseType3));
-      var target = (BaseType3) FormatterServices.GetSafeUninitializedObject(concreteType);
+      var target = (BaseType3)FormatterServices.GetSafeUninitializedObject(concreteType);
 
 // ReSharper disable SuspiciousTypeConversion.Global
       TypeFactory.InitializeUnconstructedInstance(target as IMixinTarget, InitializationSemantics.Construction);

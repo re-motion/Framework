@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       for (int i = 0; i < numberOfTests; i++)
       {
         ClientTransaction transaction = transactionInitializer();
-        DataManager dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
+        DataManager dataManager = (DataManager)PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
         dataContainers += dataManager.DataContainers.Count;
         relationEndPoints += dataManager.RelationEndPoints.Count;
 
@@ -165,10 +165,10 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       }
 
       double serAverageMilliSeconds = (double)serializationStopwatch.ElapsedMilliseconds / numberOfTests;
-      double deserAverageMilliSeconds = (double) deserializationStopwatch.ElapsedMilliseconds / numberOfTests;
-      double averageDataContainers = ((double) dataContainers) / numberOfTests;
-      double averageRelationEndPoints = ((double) relationEndPoints) / numberOfTests;
-      double averageSize = ((double) dataSize) / numberOfTests;
+      double deserAverageMilliSeconds = (double)deserializationStopwatch.ElapsedMilliseconds / numberOfTests;
+      double averageDataContainers = ((double)dataContainers) / numberOfTests;
+      double averageRelationEndPoints = ((double)relationEndPoints) / numberOfTests;
+      double averageSize = ((double)dataSize) / numberOfTests;
 
       Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}", numberOfTests, serAverageMilliSeconds.ToString("n"),
           deserAverageMilliSeconds.ToString("n"), averageSize.ToString("n0"), averageDataContainers.ToString("n0"),

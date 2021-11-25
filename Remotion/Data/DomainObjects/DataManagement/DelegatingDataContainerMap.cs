@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IEnumerator<DataContainer> GetEnumerator () => SafeInnerDataContainerMap.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator () => ((IEnumerable) SafeInnerDataContainerMap).GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator () => ((IEnumerable)SafeInnerDataContainerMap).GetEnumerator();
 
     public int Count => SafeInnerDataContainerMap.Count;
 

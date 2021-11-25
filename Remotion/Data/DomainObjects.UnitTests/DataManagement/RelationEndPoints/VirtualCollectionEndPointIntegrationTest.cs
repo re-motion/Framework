@@ -43,13 +43,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _productReview3 = DomainObjectIDs.ProductReview3.GetObject<ProductReview>();
       _product1 = DomainObjectIDs.Product1.GetObject<Product>();
 
-      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingVirtualCollectionEndPointDecorator)
-          TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
+      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingVirtualCollectionEndPointDecorator)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
               RelationEndPointID.Create(
                   DomainObjectIDs.Product1,
                   typeof(Product),
                   "Reviews"));
-      _productEndPoint = (VirtualCollectionEndPoint) stateUpdateRaisingEndPointDecorator.InnerEndPoint;
+      _productEndPoint = (VirtualCollectionEndPoint)stateUpdateRaisingEndPointDecorator.InnerEndPoint;
     }
 
     [Test]

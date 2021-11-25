@@ -163,7 +163,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
                   new MultiLingualNameAttribute("The Name invariant", ""),
                   new MultiLingualNameAttribute("The Name en-US", "en-US")
               });
-      typeInformationStub.Setup(_ => _.Assembly).Returns((Assembly) null);
+      typeInformationStub.Setup(_ => _.Assembly).Returns((Assembly)null);
 
       var typeInformationForResourceResolutionStub = new Mock<ITypeInformation>();
 
@@ -517,7 +517,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
       typeInformationStub
           .Setup(_ => _.GetCustomAttributes<MultiLingualNameAttribute>(false))
           .Returns(new MultiLingualNameAttribute[0]);
-      typeInformationStub.Setup(_ => _.BaseType).Returns((ITypeInformation) null);
+      typeInformationStub.Setup(_ => _.BaseType).Returns((ITypeInformation)null);
       Assert.That(typeof(object).BaseType, Is.Null, "Defined behavior for BaseType of Object is to return null");
 
       var typeInformationForResourceResolutionStub = new Mock<ITypeInformation>();

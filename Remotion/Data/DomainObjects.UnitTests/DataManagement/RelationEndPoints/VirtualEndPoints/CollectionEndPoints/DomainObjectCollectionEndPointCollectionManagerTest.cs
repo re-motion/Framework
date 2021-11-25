@@ -125,14 +125,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var oldDataStrategyOfOldCollection = new DomainObjectCollectionData();
       var oldCollectionMock = MockRepository.GenerateStrictMock<DomainObjectCollection, IAssociatableDomainObjectCollection>();
-      oldCollectionMock.Stub(mock => ((IAssociatableDomainObjectCollection) mock).AssociatedEndPointID).Return(_endPointID);
-      oldCollectionMock.Expect(mock => ((IAssociatableDomainObjectCollection) mock).TransformToStandAlone()).Return(oldDataStrategyOfOldCollection);
+      oldCollectionMock.Stub(mock => ((IAssociatableDomainObjectCollection)mock).AssociatedEndPointID).Return(_endPointID);
+      oldCollectionMock.Expect(mock => ((IAssociatableDomainObjectCollection)mock).TransformToStandAlone()).Return(oldDataStrategyOfOldCollection);
       oldCollectionMock.Replay();
 
       var oldDataStrategyOfNewCollection = new DomainObjectCollectionData();
       var newCollectionMock = MockRepository.GenerateStrictMock<DomainObjectCollection, IAssociatableDomainObjectCollection>();
       newCollectionMock
-          .Expect(mock => ((IAssociatableDomainObjectCollection) mock).TransformToAssociated(_endPointID, _associatedDomainObjectCollectionDataStrategyFactoryMock))
+          .Expect(mock => ((IAssociatableDomainObjectCollection)mock).TransformToAssociated(_endPointID, _associatedDomainObjectCollectionDataStrategyFactoryMock))
           .Return(oldDataStrategyOfNewCollection);
       newCollectionMock.Replay();
 

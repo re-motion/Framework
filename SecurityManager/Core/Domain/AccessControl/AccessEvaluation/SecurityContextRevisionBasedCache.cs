@@ -244,7 +244,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       using (CreateStopwatchScopeForQueryExecution("state properties"))
       {
         var lookUp = result.ToLookup(o => o.PropertyHandle, o => o.PropertyValue);
-        return lookUp.ToDictionary(o => o.Key, o => (IReadOnlyCollection<string>) Array.AsReadOnly(o.ToArray())).AsReadOnly();
+        return lookUp.ToDictionary(o => o.Key, o => (IReadOnlyCollection<string>)Array.AsReadOnly(o.ToArray())).AsReadOnly();
       }
     }
   }

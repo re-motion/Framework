@@ -48,7 +48,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public HttpException? HttpException
     {
-      get { return (HttpException?) InnerException; }
+      get { return (HttpException?)InnerException; }
     }
   }
 }

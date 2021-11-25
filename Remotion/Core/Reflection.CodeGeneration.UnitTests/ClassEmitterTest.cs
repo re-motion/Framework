@@ -344,7 +344,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       Assert.That(method.IsVirtual, Is.True);
       Assert.That(method.IsFinal, Is.True);
 
-      var instance = (ClassWithProtectedVirtualMethod) Activator.CreateInstance(builtType);
+      var instance = (ClassWithProtectedVirtualMethod)Activator.CreateInstance(builtType);
       Assert.That(method.Invoke(instance, null), Is.EqualTo("P0wned!"));
     }
 
@@ -436,7 +436,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
       object instance = Activator.CreateInstance(builtType);
-      Assert.That(((ICloneable) instance).Clone(), Is.EqualTo("P0wned!"));
+      Assert.That(((ICloneable)instance).Clone(), Is.EqualTo("P0wned!"));
     }
 
     [Test]
@@ -476,7 +476,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       property.GetMethod.AddStatement(new ReturnStatement(new ConstReference(17)));
 
       Type builtType = classEmitter.BuildType();
-      var instance = (ClassWithAllKindsOfMembers) Activator.CreateInstance(builtType);
+      var instance = (ClassWithAllKindsOfMembers)Activator.CreateInstance(builtType);
 
       Assert.That(instance.Property, Is.EqualTo(17));
       instance.Property = 7; // inherited, not overridden
@@ -495,7 +495,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       property.CreateSetMethod().ImplementByBaseCall(baseProperty.GetSetMethod());
 
       Type builtType = classEmitter.BuildType();
-      var instance = (ClassWithAllKindsOfMembers) Activator.CreateInstance(builtType);
+      var instance = (ClassWithAllKindsOfMembers)Activator.CreateInstance(builtType);
 
       Assert.That(instance[17], Is.EqualTo("17"));
       instance[18] = "foo";
@@ -538,7 +538,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
 
-      var instance = (IInterfaceWithProperty) Activator.CreateInstance(builtType);
+      var instance = (IInterfaceWithProperty)Activator.CreateInstance(builtType);
       instance.Property = 7;
     }
 
@@ -560,7 +560,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
 
-      var instance = (IInterfaceWithProperty) Activator.CreateInstance(builtType);
+      var instance = (IInterfaceWithProperty)Activator.CreateInstance(builtType);
       instance.Property = 7;
     }
 
@@ -619,7 +619,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       eventEmitter.RemoveMethod.AddStatement(new ReturnStatement());
 
       Type builtType = classEmitter.BuildType();
-      var instance = (ClassWithAllKindsOfMembers) Activator.CreateInstance(builtType);
+      var instance = (ClassWithAllKindsOfMembers)Activator.CreateInstance(builtType);
 
       EventHandler eventHandler = delegate { };
       instance.Event += eventHandler;
@@ -672,7 +672,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
 
-      var instance = (IInterfaceWithEvent) Activator.CreateInstance(builtType);
+      var instance = (IInterfaceWithEvent)Activator.CreateInstance(builtType);
       EventHandler eventHandler = delegate { };
       instance.Event += eventHandler;
       instance.Event -= eventHandler;
@@ -697,7 +697,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
 
-      var instance = (IInterfaceWithEvent) Activator.CreateInstance(builtType);
+      var instance = (IInterfaceWithEvent)Activator.CreateInstance(builtType);
       EventHandler eventHandler = delegate { };
       instance.Event += eventHandler;
       instance.Event -= eventHandler;
@@ -757,7 +757,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
 
-      var attributes = (SimpleAttribute[]) builtType.GetCustomAttributes(typeof(SimpleAttribute), false);
+      var attributes = (SimpleAttribute[])builtType.GetCustomAttributes(typeof(SimpleAttribute), false);
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0].S, Is.EqualTo("value"));
     }
@@ -778,10 +778,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Type builtType = classEmitter.BuildType();
 
-      var instance1 = (ClassWithReplicatableConstructors) Activator.CreateInstance(builtType); // default ctor
+      var instance1 = (ClassWithReplicatableConstructors)Activator.CreateInstance(builtType); // default ctor
       Assert.That(instance1.CtorString, Is.EqualTo("preClassWithReplicatableConstructors()post"));
 
-      var instance2 = (ClassWithReplicatableConstructors) Activator.CreateInstance(builtType, 7); // int ctor
+      var instance2 = (ClassWithReplicatableConstructors)Activator.CreateInstance(builtType, 7); // int ctor
       Assert.That(instance2.CtorString, Is.EqualTo("preClassWithReplicatableConstructors(7)post"));
     }
 

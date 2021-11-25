@@ -198,7 +198,7 @@ namespace Remotion.Web.ExecutionEngine
       PageStatePersister persister = this.PageStatePersister;
       if (state is Pair)
       {
-        Pair pair = (Pair) state;
+        Pair pair = (Pair)state;
         persister.ControlState = pair.First!;
         persister.ViewState = pair.Second!;
       }

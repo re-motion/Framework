@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.OnInit(e);
       if (Page is ISmartPage)
-        ((ISmartPage) Page).RegisterControlForDirtyStateTracking(this);
+        ((ISmartPage)Page).RegisterControlForDirtyStateTracking(this);
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
@@ -400,10 +400,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="savedState">The object saved by <see cref="SaveControlState"/>.</param>
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
       base.LoadControlState(values[0]);
-      _isDirty = (bool) values[1]!;
-      _hasBeenRenderedInPreviousLifecycle = (bool) values[2]!;
+      _isDirty = (bool)values[1]!;
+      _hasBeenRenderedInPreviousLifecycle = (bool)values[2]!;
     }
 
     /// <summary>

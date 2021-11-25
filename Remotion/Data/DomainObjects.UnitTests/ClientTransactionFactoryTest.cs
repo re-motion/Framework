@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       extensionStub.Stub(stub => stub.Key).Return("extension");
 
       factory.Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull)).WhenCalled(
-          invocation => ((ClientTransaction) invocation.Arguments[0]).Extensions.Add(extensionStub));
+          invocation => ((ClientTransaction)invocation.Arguments[0]).Extensions.Add(extensionStub));
 
       ITransaction transaction = factory.CreateRootTransaction();
 
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       factory
           .Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull))
-          .WhenCalled(invocation => ((ClientTransaction) invocation.Arguments[0]).Extensions.Add(extensionStub));
+          .WhenCalled(invocation => ((ClientTransaction)invocation.Arguments[0]).Extensions.Add(extensionStub));
 
       ITransaction rootTransaction = factory.CreateRootTransaction();
       ITransaction childTransaction = rootTransaction.CreateChild();

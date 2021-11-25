@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
 
       var concreteType = Pipeline.ReflectionService.GetAssembledType(objectID.ClassDefinition.ClassType);
-      var instance = (DomainObject) FormatterServices.GetSafeUninitializedObject(concreteType);
+      var instance = (DomainObject)FormatterServices.GetSafeUninitializedObject(concreteType);
       Pipeline.ReflectionService.PrepareExternalUninitializedObject(instance, InitializationSemantics.Construction);
 
       // These calls are normally performed by DomainObject's ctor
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       {
         using (new ObjectInititalizationContextScope(objectInitializationContext))
         {
-          var instance = (DomainObject) Pipeline.Create(domainObjectType, constructorParameters, allowNonPublicConstructor: true);
+          var instance = (DomainObject)Pipeline.Create(domainObjectType, constructorParameters, allowNonPublicConstructor: true);
           DomainObjectMixinCodeGenerationBridge.OnDomainObjectCreated(instance);
           return instance;
         }

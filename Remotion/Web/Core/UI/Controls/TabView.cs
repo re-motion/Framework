@@ -100,13 +100,13 @@ namespace Remotion.Web.UI.Controls
     {
       get
       {
-        return (TabbedMultiView.MultiView?) Parent;
+        return (TabbedMultiView.MultiView?)Parent;
       }
     }
 
     protected void OnInsert (Control multiView)
     {
-      OnInsert((TabbedMultiView.MultiView) multiView);
+      OnInsert((TabbedMultiView.MultiView)multiView);
     }
 
     /// <summary> Gets or sets the title displayed in the tab for this view. </summary>

@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       bool? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (bool?) DataSource.BusinessObject.GetProperty(Property);
+        value = (bool?)DataSource.BusinessObject.GetProperty(Property);
 
       LoadValueInternal(value, false);
     }
@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectBooleanProperty? Property
     {
-      get { return (IBusinessObjectBooleanProperty?) base.Property; }
+      get { return (IBusinessObjectBooleanProperty?)base.Property; }
       set { base.Property = value; }
     }
 
@@ -283,7 +283,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
     protected virtual void OnCheckedChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[s_checkedChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[s_checkedChangedEvent];
       if (eventHandler != null)
         eventHandler(this, EventArgs.Empty);
     }

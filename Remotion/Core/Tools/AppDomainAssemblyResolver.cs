@@ -37,7 +37,7 @@ namespace Remotion.Tools
       ArgumentUtility.CheckNotNullOrEmpty("applicationBase", applicationBase);
 
       // TODO RM-7761: null guard should be added.
-      return (AppDomainAssemblyResolver) appDomain.CreateInstanceFromAndUnwrap(
+      return (AppDomainAssemblyResolver)appDomain.CreateInstanceFromAndUnwrap(
                                              typeof(AppDomainAssemblyResolver).Assembly.Location,
                                              typeof(AppDomainAssemblyResolver).GetFullNameChecked(),
                                              false,

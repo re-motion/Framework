@@ -48,7 +48,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
       public override bool Equals (object? obj)
       {
-        return obj is FileDescription && Equals(FilePath, ((FileDescription) obj).FilePath);
+        return obj is FileDescription && Equals(FilePath, ((FileDescription)obj).FilePath);
       }
 
       public override int GetHashCode ()

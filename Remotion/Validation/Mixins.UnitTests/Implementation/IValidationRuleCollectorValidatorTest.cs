@@ -40,7 +40,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
       var factory = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
       Assert.That(factory, Is.TypeOf(typeof(CompoundValidationRuleCollectorValidator)));
-      var compoundFactories = ((CompoundValidationRuleCollectorValidator) factory).CollectorValidators.ToArray();
+      var compoundFactories = ((CompoundValidationRuleCollectorValidator)factory).CollectorValidators.ToArray();
       Assert.That(compoundFactories[0], Is.TypeOf<CheckNoMixinValidationRuleCollectorValidator>());
     }
 

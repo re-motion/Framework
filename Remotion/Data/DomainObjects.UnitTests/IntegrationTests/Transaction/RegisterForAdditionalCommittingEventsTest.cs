@@ -35,21 +35,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
              // This triggers _one_ (not two) additional run for _changedObject
             .ExtensionOptions.WhenCalled(mi => Transaction.ExecuteInScope(() =>
             {
-              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents(ChangedObject);
-              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents(ChangedObject);
+              ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(ChangedObject);
+              ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(ChangedObject);
             }));
 
         ExpectCommittingEventsWithCustomOptions(Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock))
             .ExtensionOptions
             // This triggers one additional run for _newObject
             .WhenCalled(
-                mi => Transaction.ExecuteInScope(() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents(NewObject)));
+                mi => Transaction.ExecuteInScope(() => ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(NewObject)));
 
         ExpectCommittingEventsWithCustomOptions(Tuple.Create(NewObject, NewObjectEventReceiverMock))
             .ExtensionOptions
             // This triggers one additional run for _newObject
             .WhenCalled(
-                mi => Transaction.ExecuteInScope(() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents(NewObject)));
+                mi => Transaction.ExecuteInScope(() => ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(NewObject)));
 
         // No more additional runs
         ExpectCommittingEvents(Tuple.Create(NewObject, NewObjectEventReceiverMock));
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             .WhenCalled(
                 mi =>
                 {
-                  var args = ((ClientTransactionCommittingEventArgs) mi.Arguments[1]);
+                  var args = ((ClientTransactionCommittingEventArgs)mi.Arguments[1]);
                   Transaction.ExecuteInScope(() => args.EventRegistrar.RegisterForAdditionalCommittingEvents(ChangedObject));
                 });
 
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             .WhenCalled(
                 mi =>
                 {
-                  var args = ((DomainObjectCommittingEventArgs) mi.Arguments[1]);
+                  var args = ((DomainObjectCommittingEventArgs)mi.Arguments[1]);
                   Transaction.ExecuteInScope(() => args.EventRegistrar.RegisterForAdditionalCommittingEvents(DeletedObject));
                 });
 
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                     () =>
                     {
                       Assert.That(
-                          () => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents(UnchangedObject),
+                          () => ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(UnchangedObject),
                           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
                               string.Format(
                                   "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Unchanged). "
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                                   UnchangedObject.ID),
                               "domainObjects"));
                       UnchangedObject.RegisterForCommit();
-                      ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents(UnchangedObject);
+                      ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(UnchangedObject);
                     }));
 
         // No more additional runs

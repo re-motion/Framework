@@ -79,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
       _serializer.AddOrigin(mixinContextOrigin);
 
       // Check that the chain of serializers correctly sets up the AttributeMixinContextOriginSerializer
-      var serializedMixinOrigin = (object[]) _serializer.Values[4];
+      var serializedMixinOrigin = (object[])_serializer.Values[4];
       var serializedMixinOriginAssembly = serializedMixinOrigin[1];
       Assert.That(serializedMixinOriginAssembly, Is.EqualTo(GetType().Assembly.FullName));
 

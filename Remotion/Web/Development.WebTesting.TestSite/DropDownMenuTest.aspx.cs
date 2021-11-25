@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void MyDropDownMenuOnCommandClick (object sender, WebMenuItemClickEventArgs webMenuItemClickEventArgs)
     {
-      ((Layout) Master).SetTestOutput(webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
+      ((Layout)Master).SetTestOutput(webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
     }
   }
 }

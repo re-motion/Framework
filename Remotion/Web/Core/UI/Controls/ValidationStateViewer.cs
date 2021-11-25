@@ -94,7 +94,7 @@ public class ValidationStateViewer : WebControl, IControl
     //  Add all FormGridManager instances
     for (int i = 0; i < parent.Controls.Count; i++)
     {
-      Control childControl = (Control) parent.Controls[i];
+      Control childControl = (Control)parent.Controls[i];
       FormGridManager? formGridManager = childControl as FormGridManager;
 
       if (formGridManager != null)
@@ -160,7 +160,7 @@ public class ValidationStateViewer : WebControl, IControl
     bool isPageValid = true;
     for (int i = 0; i < Page!.Validators.Count; i++)
     {
-      IValidator validator = (IValidator) Page.Validators[i];
+      IValidator validator = (IValidator)Page.Validators[i];
       if (! validator.IsValid)
       {
         isPageValid = false;
@@ -201,12 +201,12 @@ public class ValidationStateViewer : WebControl, IControl
     writer.RenderBeginTag(HtmlTextWriterTag.Table);
     for (int idxFormGridManagers = 0; idxFormGridManagers < _formGridManagers.Count; idxFormGridManagers++)
     {
-      FormGridManager formGridManager = (FormGridManager) _formGridManagers[idxFormGridManagers]!; // TODO RM-8118: not null assertion
+      FormGridManager formGridManager = (FormGridManager)_formGridManagers[idxFormGridManagers]!; // TODO RM-8118: not null assertion
       ValidationError[] validationErrors = formGridManager.GetValidationErrors();
       //  Get validation messages
       for (int idxErrors = 0; idxErrors < validationErrors.Length; idxErrors++)
       {
-        ValidationError validationError = (ValidationError) validationErrors[idxErrors];
+        ValidationError validationError = (ValidationError)validationErrors[idxErrors];
         if (validationError == null)
           continue;
 
@@ -218,16 +218,16 @@ public class ValidationStateViewer : WebControl, IControl
           writer.RenderBeginTag(HtmlTextWriterTag.Td);
           for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
-            Control control = (Control) validationError.Labels[idxErrorLabels];
+            Control control = (Control)validationError.Labels[idxErrorLabels];
             string text = string.Empty;
             if (control is SmartLabel)
-              text = ((SmartLabel) control).GetText();
+              text = ((SmartLabel)control).GetText();
             else if (control is FormGridLabel)
-              text = ((FormGridLabel) control).Text;
+              text = ((FormGridLabel)control).Text;
             else if (control is Label)
-              text = ((Label) control).Text;
+              text = ((Label)control).Text;
             else if (control is LiteralControl)
-              text = ((LiteralControl) control).Text;
+              text = ((LiteralControl)control).Text;
 
             text = text ?? string.Empty;
             // Do not HTML enocde.

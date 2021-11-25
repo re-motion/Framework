@@ -60,7 +60,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+      _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
     }
@@ -71,7 +71,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.First, false);
 
       Assert.That(
-          () => _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) }),
+          () => _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) }),
           Throws.InstanceOf<PermissionDeniedException>());
 
       _testHelper.VerifyAll();
@@ -82,7 +82,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+        _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();
@@ -95,7 +95,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithSecurityStrategyIsNull ()
     {
       Assert.That(
-          () => _securityClient.CheckAccess(new SecurableObject(null), (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) }),
+          () => _securityClient.CheckAccess(new SecurableObject(null), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) }),
           Throws.InvalidOperationException
               .With.Message.EqualTo("The securableObject did not return an IObjectSecurityStrategy."));
 

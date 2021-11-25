@@ -176,7 +176,7 @@ public class BocMenuItemCommand: BocCommand
     {
       string[] ids = new string[businessObjects.Length];
       for (int i = 0; i < businessObjects.Length; i++)
-        ids[i] = ((IBusinessObjectWithIdentity) businessObjects[i]).UniqueIdentifier;
+        ids[i] = ((IBusinessObjectWithIdentity)businessObjects[i]).UniqueIdentifier;
       parameters["ids"] = ids;
     }
     if (OwnerControl != null)
@@ -198,7 +198,7 @@ public class BocMenuItemCommand: BocCommand
   public override HrefCommandInfo HrefCommand
   {
     get { return _hrefCommand; }
-    set { _hrefCommand = (MenuItemHrefCommandInfo) value; }
+    set { _hrefCommand = (MenuItemHrefCommandInfo)value; }
   }
 
   /// <summary>
@@ -209,7 +209,7 @@ public class BocMenuItemCommand: BocCommand
   public override WxeFunctionCommandInfo WxeFunctionCommand
   {
     get { return _wxeFunctionCommand; }
-    set { _wxeFunctionCommand = (MenuItemWxeFunctionCommandInfo) value; }
+    set { _wxeFunctionCommand = (MenuItemWxeFunctionCommandInfo)value; }
   }
 }
 

@@ -112,7 +112,7 @@ public class BocListView: BusinessObjectControlItem
   /// </value>
   [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
   [Category ("Data")]
-  [DefaultValue((string?) null)]
+  [DefaultValue((string?)null)]
   [NotifyParentProperty (true)]
   public BocColumnDefinitionCollection ColumnDefinitions
   {

@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
       _searchService = new UserPropertyTypeSearchService();
       IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
-      _property = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("User");
+      _property = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("User");
       Assert.That(_property, Is.Not.Null);
 
       var user = User.FindByUserName("group0/user1");

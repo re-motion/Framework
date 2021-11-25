@@ -147,7 +147,7 @@ namespace Remotion.ServiceLocation
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> ()
     {
-      return (TService) GetInstance(typeof(TService));
+      return (TService)GetInstance(typeof(TService));
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ namespace Remotion.ServiceLocation
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> (string key)
     {
-      return (TService) GetInstance(typeof(TService), key);
+      return (TService)GetInstance(typeof(TService), key);
     }
 
     /// <summary>

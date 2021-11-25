@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void Implementation_IsInitialized ()
     {
       var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
-      var mixin = (BindableObjectWithIdentityBaseImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      var mixin = (BindableObjectWithIdentityBaseImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
     }
 
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
       instance = Serializer.SerializeAndDeserialize(instance);
-      var mixin = (BindableObjectWithIdentityBaseImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      var mixin = (BindableObjectWithIdentityBaseImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
     }
 

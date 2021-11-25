@@ -217,7 +217,7 @@ namespace Remotion.ObjectBinding.BindableObject
       if (obj.GetType() != GetType())
         return false;
 
-      var other = (InterfaceImplementationPropertyInformation) obj;
+      var other = (InterfaceImplementationPropertyInformation)obj;
       return _implementationPropertyInfo.Equals(other._implementationPropertyInfo) && _declarationPropertyInfo.Equals(other._declarationPropertyInfo);
     }
 

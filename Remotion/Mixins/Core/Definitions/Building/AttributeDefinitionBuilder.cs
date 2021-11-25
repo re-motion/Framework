@@ -68,7 +68,7 @@ namespace Remotion.Mixins.Definitions.Building
       Assertion.IsTrue(copyAttributeData.Constructor.DeclaringType == typeof(CopyCustomAttributesAttribute));
       string sourceName = GetFullMemberNameSafe(copyAttributeSource);
 
-      var copyAttribute = (CopyCustomAttributesAttribute) copyAttributeData.CreateInstance();
+      var copyAttribute = (CopyCustomAttributesAttribute)copyAttributeData.CreateInstance();
 
       MemberInfo? copiedAttributesSource;
       try

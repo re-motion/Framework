@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
       {
         PositionsList.SetSortingOrder(
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition) PositionsList.FixedColumns.Find("Position"), SortingDirection.Ascending));
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)PositionsList.FixedColumns.Find("Position"), SortingDirection.Ascending));
       }
 
       if (PositionsList.IsReadOnly)

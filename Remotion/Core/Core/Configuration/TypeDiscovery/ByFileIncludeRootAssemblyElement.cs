@@ -28,7 +28,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
     public bool IncludeReferencedAssemblies
     {
-      get { return (bool) this["includeReferencedAssemblies"]; }
+      get { return (bool)this["includeReferencedAssemblies"]; }
       set { this["includeReferencedAssemblies"] = value; }
     }
 

@@ -58,12 +58,12 @@ public class TestTabbedPersonJobsUserControl :
 
   public virtual StringCollection GetHiddenRows (HtmlTable table)
   {
-    return (StringCollection) _listOfHiddenRows[table];
+    return (StringCollection)_listOfHiddenRows[table];
   }
 
   public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
   {
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
   }
 
 	override protected void OnInit (EventArgs e)

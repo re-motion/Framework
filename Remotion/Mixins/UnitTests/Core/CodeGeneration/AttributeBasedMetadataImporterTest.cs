@@ -312,7 +312,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var importer = new AttributeBasedMetadataImporter();
       var method = GetType().GetMethod("FakeWrapperMethod");
-      var attribute = (GeneratedMethodWrapperAttribute) PrivateInvoke.InvokeNonPublicMethod(importer, "GetWrapperAttribute", method);
+      var attribute = (GeneratedMethodWrapperAttribute)PrivateInvoke.InvokeNonPublicMethod(importer, "GetWrapperAttribute", method);
 
       Assert.That(attribute, Is.Not.Null);
       Assert.That(attribute.DeclaringType, Is.EqualTo(typeof(DateTime)));
@@ -325,7 +325,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var importer = new AttributeBasedMetadataImporter();
       var method = GetType().GetMethod("FakeNonWrapperMethod");
-      var attribute = (GeneratedMethodWrapperAttribute) PrivateInvoke.InvokeNonPublicMethod(importer, "GetWrapperAttribute", method);
+      var attribute = (GeneratedMethodWrapperAttribute)PrivateInvoke.InvokeNonPublicMethod(importer, "GetWrapperAttribute", method);
 
       Assert.That(attribute, Is.Null);
     }

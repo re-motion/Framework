@@ -46,14 +46,14 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_Int_NullableInt ()
     {
-      int result = ArgumentUtility.CheckNotNullAndType<int>("arg", (int?) 1);
+      int result = ArgumentUtility.CheckNotNullAndType<int>("arg", (int?)1);
       Assert.That(result, Is.EqualTo(1));
     }
 
     [Test]
     public void Succeed_NullableInt ()
     {
-      int? result = ArgumentUtility.CheckNotNullAndType<int?>("arg", (int?) 1);
+      int? result = ArgumentUtility.CheckNotNullAndType<int?>("arg", (int?)1);
       Assert.That(result, Is.EqualTo(1));
     }
 
@@ -145,7 +145,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_Null_String_NonGeneric ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullAndType("arg", (object) null, typeof(string)),
+          () => ArgumentUtility.CheckNotNullAndType("arg", (object)null, typeof(string)),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
@@ -163,7 +163,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_Null_Int_NonGeneric ()
     {
       Assert.That(
-          () => ArgumentUtility.CheckNotNullAndType("arg", (object) null, typeof(int)),
+          () => ArgumentUtility.CheckNotNullAndType("arg", (object)null, typeof(int)),
           Throws.InstanceOf<ArgumentNullException>());
     }
 

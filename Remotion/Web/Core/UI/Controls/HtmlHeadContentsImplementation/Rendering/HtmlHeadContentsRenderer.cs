@@ -46,11 +46,11 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
       foreach (var element in renderingContext.HtmlHeadElements)
       {
         if (element is TitleTag)
-          titleTags.Add((TitleTag) element);
+          titleTags.Add((TitleTag)element);
         else if (element is JavaScriptInclude)
-          javascriptIncludes.Add((JavaScriptInclude) element);
+          javascriptIncludes.Add((JavaScriptInclude)element);
         else if (element is StyleSheetElement)
-          stylesheetElements.Add((StyleSheetElement) element);
+          stylesheetElements.Add((StyleSheetElement)element);
         else
           remainingHtmlHeadElements.Add(element);
       }

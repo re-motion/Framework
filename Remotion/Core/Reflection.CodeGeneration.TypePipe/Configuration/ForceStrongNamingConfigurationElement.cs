@@ -24,7 +24,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
     [ConfigurationProperty ("keyFilePath")]
     public string KeyFilePath
     {
-      get { return (string) this["keyFilePath"]; }
+      get { return (string)this["keyFilePath"]; }
     }
   }
 }

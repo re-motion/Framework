@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return ((IEnumerable) _innerVirtualCollectionData).GetEnumerator();
+      return ((IEnumerable)_innerVirtualCollectionData).GetEnumerator();
     }
 
     public int Count => _innerVirtualCollectionData.Count;

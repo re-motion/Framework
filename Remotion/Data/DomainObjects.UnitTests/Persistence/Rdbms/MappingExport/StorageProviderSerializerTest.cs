@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
       var groupedByStorageProvider = classDefinitions.Where(c => c.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
-          .GroupBy(c => (RdbmsProviderDefinition) c.StorageEntityDefinition.StorageProviderDefinition)
+          .GroupBy(c => (RdbmsProviderDefinition)c.StorageEntityDefinition.StorageProviderDefinition)
           .First();
 
       var storageProviderSerializer = new StorageProviderSerializer(MockRepository.GenerateStub<IClassSerializer>());
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
       var groupedByStorageProvider = classDefinitions.Where(c => c.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
-          .GroupBy(c => (RdbmsProviderDefinition) c.StorageEntityDefinition.StorageProviderDefinition)
+          .GroupBy(c => (RdbmsProviderDefinition)c.StorageEntityDefinition.StorageProviderDefinition)
           .First();
 
       var classSerializerStub = MockRepository.GenerateStub<IClassSerializer>();

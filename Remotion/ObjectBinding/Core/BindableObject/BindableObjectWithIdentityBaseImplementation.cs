@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull("wrapper", wrapper);
       var impl = new BindableObjectWithIdentityBaseImplementation(wrapper);
-      ((IInitializableMixin) impl).Initialize(wrapper, null, false);
+      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
       return impl;
     }
 
@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string UniqueIdentifier
     {
-      get { return ((BindableObjectWithIdentityBase) Target).UniqueIdentifier; }
+      get { return ((BindableObjectWithIdentityBase)Target).UniqueIdentifier; }
     }
 
     void IDeserializationCallback.OnDeserialization (object? sender)
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string DisplayName
     {
-      get { return ((IBusinessObjectWithIdentity) Target).DisplayName; }
+      get { return ((IBusinessObjectWithIdentity)Target).DisplayName; }
     }
   }
 }

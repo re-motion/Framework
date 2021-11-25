@@ -20,7 +20,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       IBusinessObjectWithIdentity businessObjectWithIdentity = null;
       if (!string.IsNullOrEmpty(businessObject))
       {
-        var businessObjectClassWithIdentity = (IBusinessObjectClassWithIdentity) bindableObjectClass;
+        var businessObjectClassWithIdentity = (IBusinessObjectClassWithIdentity)bindableObjectClass;
         businessObjectWithIdentity = businessObjectClassWithIdentity.GetObject(businessObject);
       }
 

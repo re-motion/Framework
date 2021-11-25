@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
       ArgumentUtility.CheckNotNull("property", property);
 
-      return (int) value.Value % 2 == 1;
+      return (int)value.Value % 2 == 1;
     }
   }
 }

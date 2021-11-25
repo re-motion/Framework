@@ -73,7 +73,7 @@ namespace Remotion.ServiceLocation
       ArgumentUtility.CheckNotNull("serviceConfigurationRegistry", serviceConfigurationRegistry);
       ArgumentUtility.CheckNotNull("instanceFactories", instanceFactories);
 
-      serviceConfigurationRegistry.RegisterMultiple((IEnumerable<Func<TService>>) instanceFactories);
+      serviceConfigurationRegistry.RegisterMultiple((IEnumerable<Func<TService>>)instanceFactories);
     }
 
     //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects

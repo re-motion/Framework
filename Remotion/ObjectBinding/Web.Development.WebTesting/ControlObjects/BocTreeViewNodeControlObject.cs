@@ -105,14 +105,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         : base(context)
     {
       _webTreeViewNode = new WebTreeViewNodeControlObject(context);
-      ((IControlObjectNotifier) _webTreeViewNode).ActionExecute += OnActionExecute;
+      ((IControlObjectNotifier)_webTreeViewNode).ActionExecute += OnActionExecute;
     }
 
     internal BocTreeViewNodeControlObject ([NotNull] WebTreeViewNodeControlObject webTreeViewNode)
         : base(webTreeViewNode.Context)
     {
       _webTreeViewNode = webTreeViewNode;
-      ((IControlObjectNotifier) _webTreeViewNode).ActionExecute += OnActionExecute;
+      ((IControlObjectNotifier)_webTreeViewNode).ActionExecute += OnActionExecute;
     }
 
     /// <inheritdoc/>

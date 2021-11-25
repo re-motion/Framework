@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var strategy = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
 
       Assert.That(strategy, Is.TypeOf(typeof(CompundBindablePropertyReadAccessStrategy)));
-      var compoundStrategies = ((CompundBindablePropertyReadAccessStrategy) strategy).BindablePropertyReadAccessStrategies;
+      var compoundStrategies = ((CompundBindablePropertyReadAccessStrategy)strategy).BindablePropertyReadAccessStrategies;
       Assert.That(compoundStrategies.Select(s=>s.GetType()), Has.Member(typeof(BindableDomainObjectPropertyReadAccessStrategy)));
       Assert.That(compoundStrategies.Select(s=>s.GetType()), Has.Member(typeof(SecurityBasedBindablePropertyReadAccessStrategy)));
 

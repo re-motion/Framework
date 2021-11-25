@@ -39,7 +39,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       if (!WxePage.IsReturningPostBack)
       {
         ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss") + ": Executed";
-        ExecuteFunction(new ShowFourthUserControlFormFunction(), (Control) sender, null);
+        ExecuteFunction(new ShowFourthUserControlFormFunction(), (Control)sender, null);
       }
       else
       {
@@ -81,7 +81,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     protected override void LoadControlState (object savedState)
     {
-      var controlState = (Tuple<object, int, Type>) savedState;
+      var controlState = (Tuple<object, int, Type>)savedState;
       base.LoadControlState(controlState.Item1);
       ControlStateValue = controlState.Item2;
       Assertion.IsTrue(controlState.Item3 == typeof(ThirdControl), "Expected ControlState from 'ThirdControl' but was '{0}'.", controlState.Item3.Name);
@@ -96,7 +96,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
       Assertion.IsNotNull(savedState, "Missing ViewState.");
 
-      var  statePair =  (Tuple<object, Type>) savedState;
+      var  statePair =  (Tuple<object, Type>)savedState;
       base.LoadViewState(statePair.Item1);
 
       Assertion.IsTrue(statePair.Item2 == typeof(ThirdControl), "Expected ViewState from 'ThirdControl' but was '{0}'.", statePair.Item2.Name);
@@ -109,7 +109,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private int ViewStateValue
     {
-      get { return (int?) ViewState["Value"] ?? 0; }
+      get { return (int?)ViewState["Value"] ?? 0; }
       set { ViewState["Value"] = value; }
     }
 

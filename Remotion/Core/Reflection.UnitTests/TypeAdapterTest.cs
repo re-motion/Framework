@@ -907,7 +907,7 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void IsNull ()
     {
-      Assert.That(((ITypeInformation) TypeAdapter.Create(typeof(ArrayList))).IsNull, Is.False);
+      Assert.That(((ITypeInformation)TypeAdapter.Create(typeof(ArrayList))).IsNull, Is.False);
     }
 
     [Test]

@@ -125,7 +125,7 @@ namespace Remotion.Logging
 
     private ILog WrapLogger (ILogger logger)
     {
-      return (Log4NetLog) _wrapperMap.GetWrapper(logger);
+      return (Log4NetLog)_wrapperMap.GetWrapper(logger);
     }
 
     private ConsoleAppender CreateConsoleAppender ()

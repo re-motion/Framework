@@ -213,7 +213,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNull("context", context);
 
-      var computedBackgroundColor = (string) context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
+      var computedBackgroundColor = (string)context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
 
       if (IsTransparent(computedBackgroundColor))
         return WebColor.Transparent;
@@ -231,7 +231,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNull("context", context);
 
-      var computedTextColor = (string) context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
+      var computedTextColor = (string)context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
 
       if (IsTransparent(computedTextColor))
         return WebColor.Transparent;
@@ -247,7 +247,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull("scope", scope);
 
-      return (IDriver) s_driverFieldInfo.Value.GetValue(scope)!;
+      return (IDriver)s_driverFieldInfo.Value.GetValue(scope)!;
     }
 
     private static bool IsTransparent ([NotNull] string color)
@@ -283,7 +283,7 @@ namespace Remotion.Web.Development.WebTesting
       return RetryUntilTimeout.Run(
           () =>
           {
-            var webElement = (IWebElement) scope.Native;
+            var webElement = (IWebElement)scope.Native;
             return webElement.Selected;
           });
     }
@@ -300,7 +300,7 @@ namespace Remotion.Web.Development.WebTesting
       return RetryUntilTimeout.Run(
           () =>
           {
-            var webElement = (IWebElement) scope.Native;
+            var webElement = (IWebElement)scope.Native;
             return webElement.Displayed;
           });
     }

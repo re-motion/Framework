@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
             string.Format("The JavaScript statement returned null which is incompatible with the specified type '{0}'.", typeof(T).Name));
       }
 
-      return (T?) result;
+      return (T?)result;
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return (IJavaScriptExecutor) browserSession.Driver.Native;
+      return (IJavaScriptExecutor)browserSession.Driver.Native;
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return (IJavaScriptExecutor) ((IWrapsDriver) controlObject.Scope.Native).WrappedDriver;
+      return (IJavaScriptExecutor)((IWrapsDriver)controlObject.Scope.Native).WrappedDriver;
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("element", element);
 
-      return (IJavaScriptExecutor) ((IWrapsDriver) element.Native).WrappedDriver;
+      return (IJavaScriptExecutor)((IWrapsDriver)element.Native).WrappedDriver;
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      return (IJavaScriptExecutor) ((IWrapsDriver) webElement).WrappedDriver;
+      return (IJavaScriptExecutor)((IWrapsDriver)webElement).WrappedDriver;
     }
   }
 }

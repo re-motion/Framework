@@ -80,7 +80,7 @@ namespace Remotion.Web.UI.Controls
 
       _commandClick = new CommandClickEventHandler(Command_Click);
       if (_command.ControlItem != null)
-        ((Command) _command.ControlItem).Click += _commandClick;
+        ((Command)_command.ControlItem).Click += _commandClick;
     }
 
     public WebMenuItem ()
@@ -305,7 +305,7 @@ namespace Remotion.Web.UI.Controls
     [NotifyParentProperty (true)]
     public virtual Command? Command
     {
-      get { return (Command?) _command.ControlItem; }
+      get { return (Command?)_command.ControlItem; }
       set
       {
         if (Command != null)
@@ -347,7 +347,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (Command) Activator.CreateInstance(Command.GetType())!;
+        Command = (Command)Activator.CreateInstance(Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }

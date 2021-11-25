@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects
     {
       try
       {
-        return (IDomainObjectHandle<TOther>) this;
+        return (IDomainObjectHandle<TOther>)this;
       }
       catch (InvalidCastException ex)
       {

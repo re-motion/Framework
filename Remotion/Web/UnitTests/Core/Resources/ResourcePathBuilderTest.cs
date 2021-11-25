@@ -79,7 +79,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void BuildAbsolutePath_MultipleCalls_DoesNotCacheHttpContext ()
     {
-      var builder = (TestableResourcePathBuilder) CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
+      var builder = (TestableResourcePathBuilder)CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
       builder.BuildAbsolutePath(GetType().Assembly, "part1");
       Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext());

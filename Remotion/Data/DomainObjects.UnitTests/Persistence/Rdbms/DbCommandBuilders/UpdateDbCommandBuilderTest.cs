@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _updatedColumnsSpecificationStub
           .Stub(stub => stub.AppendColumnValueAssignments(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
 
       _comparedColumnsSpecificationStrictMock.Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub));
       _comparedColumnsSpecificationStrictMock
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
                   Arg<StringBuilder>.Is.Anything,
                   Arg.Is(_dbCommandStub),
                   Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
       _comparedColumnsSpecificationStrictMock.Replay();
 
       var result = builder.Create(_commandExecutionContextStub);
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _updatedColumnsSpecificationStub
           .Stub(stub => stub.AppendColumnValueAssignments(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
 
       _comparedColumnsSpecificationStrictMock.Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub));
       _comparedColumnsSpecificationStrictMock
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
                   Arg<StringBuilder>.Is.Anything,
                   Arg.Is(_dbCommandStub),
                   Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
       _comparedColumnsSpecificationStrictMock.Replay();
 
       var result = builder.Create(_commandExecutionContextStub);

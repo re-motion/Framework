@@ -63,7 +63,7 @@ public class WebTab: IWebTab, IControlStateManager
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text)
-    : this(itemID, text, (IconInfo?) null)
+    : this(itemID, text, (IconInfo?)null)
   {
   }
 
@@ -380,7 +380,7 @@ public class WebTab: IWebTab, IControlStateManager
     if (state == null)
       return;
 
-    IsSelected = (bool) state;
+    IsSelected = (bool)state;
   }
 
   object? IControlStateManager.SaveControlState ()

@@ -117,7 +117,7 @@ namespace Remotion.Reflection
       if (ctor == null)
       {
         string message = string.Format("Type '{0}' does not contain a constructor with the following arguments types: {1}.",
-                                        _definingType, string.Join(", ", (IEnumerable<Type>) parameterTypes));
+                                        _definingType, string.Join(", ", (IEnumerable<Type>)parameterTypes));
         throw new MissingMethodException(message);
       }
       return ctor;

@@ -101,8 +101,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     {
       var transaction = ClientTransaction.CreateRootTransaction();
       var result = _service.GetAllObjects(transaction, typeof(SampleBindableDomainObject));
-      Assert.That(transaction.IsEnlisted((DomainObject) result[0]), Is.True);
-      Assert.That(ClientTransaction.Current.IsEnlisted((DomainObject) result[0]), Is.False);
+      Assert.That(transaction.IsEnlisted((DomainObject)result[0]), Is.True);
+      Assert.That(ClientTransaction.Current.IsEnlisted((DomainObject)result[0]), Is.False);
     }
 
     [Test]
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var property = GetBusinessObjectProperty(typeof(OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
       var result = _service.Search(null, property, null);
       Assert.That(result.Length, Is.EqualTo(2));
-      Assert.That(((DomainObject) result[0]).RootTransaction, Is.SameAs(ClientTransaction.Current));
+      Assert.That(((DomainObject)result[0]).RootTransaction, Is.SameAs(ClientTransaction.Current));
     }
 
     [Test]
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var property = GetBusinessObjectProperty(typeof(BindableNonDomainObjectReferencingDomainObject), "OppositeSampleObject");
       var result = _service.Search(new BindableNonDomainObjectReferencingDomainObject(), property, null);
       Assert.That(result.Length, Is.EqualTo(2));
-      Assert.That(((DomainObject) result[0]).RootTransaction, Is.SameAs(ClientTransaction.Current));
+      Assert.That(((DomainObject)result[0]).RootTransaction, Is.SameAs(ClientTransaction.Current));
     }
 
     [Test]
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var result = _service.Search(referencingObject, property, null);
 
       Assert.That(result.Length, Is.EqualTo(2));
-      Assert.That(((DomainObject) result[0]).RootTransaction, Is.SameAs(otherTransaction));
+      Assert.That(((DomainObject)result[0]).RootTransaction, Is.SameAs(otherTransaction));
     }
 
     [Test]
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     {
       var provider = BindableObjectProvider.GetProviderForBindableObjectType(bindableObjectType);
       var bindableObjectClass = provider.GetBindableObjectClass(bindableObjectType);
-      return (IBusinessObjectReferenceProperty) bindableObjectClass.GetPropertyDefinition(propertyName);
+      return (IBusinessObjectReferenceProperty)bindableObjectClass.GetPropertyDefinition(propertyName);
     }
   }
 }

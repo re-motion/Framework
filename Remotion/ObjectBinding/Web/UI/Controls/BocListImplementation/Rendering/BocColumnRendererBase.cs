@@ -190,7 +190,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       bool hasSortingCommand = renderingContext.Control.IsClientSideSortingEnabled
                                &&
                                (renderingContext.ColumnDefinition is IBocSortableColumnDefinition
-                                && ((IBocSortableColumnDefinition) renderingContext.ColumnDefinition).IsSortable);
+                                && ((IBocSortableColumnDefinition)renderingContext.ColumnDefinition).IsSortable);
 
       if (hasSortingCommand)
       {

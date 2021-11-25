@@ -153,8 +153,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 
       Assert.That(properties, Has.Length.EqualTo(1)); // instead of 2 properties
       Assert.That(properties[0], Is.TypeOf<SimpleStoragePropertyDefinition>());
-      Assert.That(((SimpleStoragePropertyDefinition) properties[0]).ColumnDefinition.Name, Is.EqualTo("Test1"));
-      Assert.That(((SimpleStoragePropertyDefinition) properties[0]).ColumnDefinition.StorageTypeInfo.IsStorageTypeNullable, Is.True);
+      Assert.That(((SimpleStoragePropertyDefinition)properties[0]).ColumnDefinition.Name, Is.EqualTo("Test1"));
+      Assert.That(((SimpleStoragePropertyDefinition)properties[0]).ColumnDefinition.StorageTypeInfo.IsStorageTypeNullable, Is.True);
     }
 
     [Test]

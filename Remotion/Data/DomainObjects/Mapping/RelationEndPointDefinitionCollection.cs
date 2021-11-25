@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     public new IEnumerator<IRelationEndPointDefinition> GetEnumerator ()
     {
       // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (IRelationEndPointDefinition relationEndPoint in (IEnumerable) this) // use base implementation
+      foreach (IRelationEndPointDefinition relationEndPoint in (IEnumerable)this) // use base implementation
           // ReSharper restore LoopCanBeConvertedToQuery
         yield return relationEndPoint;
     }
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition this [int index]
     {
-      get { return (IRelationEndPointDefinition) BaseGetObject(index); }
+      get { return (IRelationEndPointDefinition)BaseGetObject(index); }
     }
 
     public IRelationEndPointDefinition this [string propertyName]
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-        return (IRelationEndPointDefinition) BaseGetObject(propertyName);
+        return (IRelationEndPointDefinition)BaseGetObject(propertyName);
       }
     }
 

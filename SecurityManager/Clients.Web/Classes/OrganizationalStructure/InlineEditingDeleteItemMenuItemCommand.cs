@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
       base.OnClick(menuItem);
 
-      var bocList = (BocList) OwnerControl;
+      var bocList = (BocList)OwnerControl;
       foreach (TBusinessObject businessObject in bocList.GetSelectedBusinessObjects())
       {
         bocList.RemoveRow(businessObject);

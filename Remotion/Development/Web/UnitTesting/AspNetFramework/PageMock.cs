@@ -46,7 +46,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public NameValueCollection? RequestValueCollection
     {
-      get { return (NameValueCollection?) PrivateInvoke.GetNonPublicField(this,"_requestValueCollection"); }
+      get { return (NameValueCollection?)PrivateInvoke.GetNonPublicField(this,"_requestValueCollection"); }
     }
 
     public void SetRequestValueCollection (NameValueCollection requestValueCollection)

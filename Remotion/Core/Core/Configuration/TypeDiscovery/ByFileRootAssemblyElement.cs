@@ -28,7 +28,7 @@ namespace Remotion.Configuration.TypeDiscovery
     [ConfigurationProperty ("filePattern", IsRequired = true, IsKey = true)]
     public string FilePattern
     {
-      get { return (string) this["filePattern"]; }
+      get { return (string)this["filePattern"]; }
       set { this["filePattern"] = value; }
     }
 

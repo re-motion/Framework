@@ -55,11 +55,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public int Count => _dataStrategy.Count;
 
-    public T this [int index] => (T) _dataStrategy.GetObject(index);
+    public T this [int index] => (T)_dataStrategy.GetObject(index);
 
     public bool Contains (ObjectID objectID) => _dataStrategy.ContainsObjectID(objectID);
 
-    public T GetObject (ObjectID objectID) => (T) _dataStrategy.GetObject(objectID);
+    public T GetObject (ObjectID objectID) => (T)_dataStrategy.GetObject(objectID);
 
     bool IList.IsReadOnly => true;
 
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return _dataStrategy
           .Select((obj, index) => new KeyValuePair<DomainObject, int>(obj, index))
           .Where(kvp => ReferenceEquals(kvp.Key, value))
-          .Select(kvp => (int?) kvp.Value).FirstOrDefault() ?? -1;
+          .Select(kvp => (int?)kvp.Value).FirstOrDefault() ?? -1;
     }
 
     object IList.this [int index]

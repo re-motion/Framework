@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void IsNull ()
     {
-      Assert.That(((INullObject) _loadedObjectData).IsNull, Is.False);
+      Assert.That(((INullObject)_loadedObjectData).IsNull, Is.False);
     }
   }
 }

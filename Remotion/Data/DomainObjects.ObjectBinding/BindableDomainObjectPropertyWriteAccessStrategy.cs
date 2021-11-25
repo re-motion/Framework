@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
             "An {0} occured while setting the value of property '{1}' for business object with ID '{2}'.",
             exception.GetType().Name,
             bindableProperty.Identifier,
-            ((DomainObject) businessObject).ID);
+            ((DomainObject)businessObject).ID);
         propertyAccessException = new BusinessObjectPropertyAccessException(message, exception);
         return true;
       }

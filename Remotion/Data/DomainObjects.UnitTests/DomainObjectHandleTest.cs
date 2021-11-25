@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var handle1 = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
       var handle2 = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
 
-      Assert.That(handle1.Equals((object) handle2), Is.True);
+      Assert.That(handle1.Equals((object)handle2), Is.True);
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var handle = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
 
-      Assert.That(handle.Equals((object) null), Is.False);
+      Assert.That(handle.Equals((object)null), Is.False);
     }
 
     [Test]
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var handle1 = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
       var handle2 = new DomainObjectHandle<Order>(DomainObjectIDs.Order2);
 
-      Assert.That(handle1.Equals((object) handle2), Is.False);
+      Assert.That(handle1.Equals((object)handle2), Is.False);
     }
 
     [Test]
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var handle2 = MockRepository.GenerateStub<IDomainObjectHandle<DomainObject>>();
       handle2.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
 
-      Assert.That(handle1.Equals((object) handle2), Is.False);
+      Assert.That(handle1.Equals((object)handle2), Is.False);
     }
 
     [Test]
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var handle = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
 
 // ReSharper disable RedundantCast
-      Assert.That(handle.Equals((IDomainObjectHandle<DomainObject>) null), Is.False);
+      Assert.That(handle.Equals((IDomainObjectHandle<DomainObject>)null), Is.False);
 // ReSharper restore RedundantCast
     }
 

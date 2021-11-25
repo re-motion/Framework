@@ -114,11 +114,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var items = new List<IRelationEndPoint>();
 
-      var enumerator = ((IEnumerable) _map).GetEnumerator();
+      var enumerator = ((IEnumerable)_map).GetEnumerator();
       Assert.That(enumerator.MoveNext(), Is.True);
-      items.Add((IRelationEndPoint) enumerator.Current);
+      items.Add((IRelationEndPoint)enumerator.Current);
       Assert.That(enumerator.MoveNext(), Is.True);
-      items.Add((IRelationEndPoint) enumerator.Current);
+      items.Add((IRelationEndPoint)enumerator.Current);
       Assert.That(enumerator.MoveNext(), Is.False);
 
       Assert.That(items, Is.EquivalentTo(new[] { _endPointMock1, _endPointMock2 }));

@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       foreach (var domainObject in domainObjects)
       {
         var oppositeEndPointID = RelationEndPointID.Create(domainObject.ID, endPoint.Definition.GetOppositeEndPointDefinition());
-        var oppositeEndPoint = (IRealObjectEndPoint) dataManager.GetRelationEndPointWithLazyLoad(oppositeEndPointID);
+        var oppositeEndPoint = (IRealObjectEndPoint)dataManager.GetRelationEndPointWithLazyLoad(oppositeEndPointID);
         endPoint.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
       }
       endPoint.MarkDataComplete(domainObjects);
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public static IDomainObjectCollectionEndPointLoadState GetLoadState (DomainObjectCollectionEndPoint collectionEndPoint)
     {
-      return (IDomainObjectCollectionEndPointLoadState) PrivateInvoke.GetNonPublicField(collectionEndPoint, "_loadState");
+      return (IDomainObjectCollectionEndPointLoadState)PrivateInvoke.GetNonPublicField(collectionEndPoint, "_loadState");
     }
 
     public static void SetLoadState (DomainObjectCollectionEndPoint collectionEndPoint, IDomainObjectCollectionEndPointLoadState loadState)

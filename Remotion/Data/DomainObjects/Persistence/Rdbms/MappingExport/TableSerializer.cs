@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       if (tableDefinition == null)
         yield break;
 
-      var storageProviderDefinition = (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
+      var storageProviderDefinition = (RdbmsProviderDefinition)classDefinition.StorageEntityDefinition.StorageProviderDefinition;
       var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
 
       yield return new XElement(
@@ -60,10 +60,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     private TableDefinition GetTableDefinition (ClassDefinition classDefinition)
     {
       if (classDefinition.StorageEntityDefinition is FilterViewDefinition)
-        return ((FilterViewDefinition) classDefinition.StorageEntityDefinition).GetBaseTable();
+        return ((FilterViewDefinition)classDefinition.StorageEntityDefinition).GetBaseTable();
 
       if (classDefinition.StorageEntityDefinition is TableDefinition)
-        return (TableDefinition) classDefinition.StorageEntityDefinition;
+        return (TableDefinition)classDefinition.StorageEntityDefinition;
 
       return null;
     }

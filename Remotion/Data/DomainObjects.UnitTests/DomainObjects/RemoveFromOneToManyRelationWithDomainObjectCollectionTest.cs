@@ -244,8 +244,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetNumericIndexerOfSupervisorNull ()
     {
-      Employee employeeToRemove = (Employee) _supervisor.Subordinates[0];
-      Employee unaffectedEmployee = (Employee) _supervisor.Subordinates[1];
+      Employee employeeToRemove = (Employee)_supervisor.Subordinates[0];
+      Employee unaffectedEmployee = (Employee)_supervisor.Subordinates[1];
 
       _supervisor.Subordinates[0] = null;
 
@@ -260,8 +260,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetNumericIListIndexerOfSupervisorNull ()
     {
-      Employee employeeToRemove = (Employee) _supervisor.Subordinates[0];
-      Employee unaffectedEmployee = (Employee) _supervisor.Subordinates[1];
+      Employee employeeToRemove = (Employee)_supervisor.Subordinates[0];
+      Employee unaffectedEmployee = (Employee)_supervisor.Subordinates[1];
 
       IList list = _supervisor.Subordinates;
       list[0] = null;

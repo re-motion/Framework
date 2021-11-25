@@ -170,7 +170,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var declaringEntity = attribute.DeclaringDefinition.CustomAttributeProvider;
       var suppressAttributesAttributes =
           from suppressAttribute in targetClassDefinition.ReceivedAttributes[typeof(SuppressAttributesAttribute)]
-          let suppressAttributeInstance = (SuppressAttributesAttribute) suppressAttribute.Attribute.Data.CreateInstance()
+          let suppressAttributeInstance = (SuppressAttributesAttribute)suppressAttribute.Attribute.Data.CreateInstance()
           let suppressingEntity = suppressAttribute.Attribute.DeclaringDefinition.CustomAttributeProvider
           where suppressAttributeInstance.IsSuppressed(attribute.AttributeType, declaringEntity, suppressingEntity)
           select suppressAttributeInstance;
@@ -186,9 +186,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private NamedArgumentDeclaration CreateNamedArgumentDeclaration (ICustomAttributeNamedArgument namedArgument)
     {
       if (namedArgument.MemberInfo is FieldInfo)
-        return new NamedArgumentDeclaration((FieldInfo) namedArgument.MemberInfo, namedArgument.Value);
+        return new NamedArgumentDeclaration((FieldInfo)namedArgument.MemberInfo, namedArgument.Value);
       else
-        return new NamedArgumentDeclaration((PropertyInfo) namedArgument.MemberInfo, namedArgument.Value);
+        return new NamedArgumentDeclaration((PropertyInfo)namedArgument.MemberInfo, namedArgument.Value);
     }
   }
 }

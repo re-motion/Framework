@@ -338,12 +338,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var ruleStub1 = MockRepository.GenerateStub<IMixinSuppressionRule>();
       ruleStub1
           .Stub(stub => stub.RemoveAffectedMixins(Arg<Dictionary<Type, MixinContext>>.Is.Anything))
-          .WhenCalled(mi => ((Dictionary<Type, MixinContext>) mi.Arguments[0]).Remove(typeof(int)));
+          .WhenCalled(mi => ((Dictionary<Type, MixinContext>)mi.Arguments[0]).Remove(typeof(int)));
 
       var ruleStub2 = MockRepository.GenerateStub<IMixinSuppressionRule>();
       ruleStub2
           .Stub(stub => stub.RemoveAffectedMixins(Arg<Dictionary<Type, MixinContext>>.Is.Anything))
-          .WhenCalled(mi => ((Dictionary<Type, MixinContext>) mi.Arguments[0]).Remove(typeof(double)));
+          .WhenCalled(mi => ((Dictionary<Type, MixinContext>)mi.Arguments[0]).Remove(typeof(double)));
 
       var original = ClassContextObjectMother.Create(typeof(NullTarget), typeof(int), typeof(double), typeof(string));
 

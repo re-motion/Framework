@@ -53,11 +53,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _businessObject = TypeWithDateTime.Create();
 
-      _propertyDateTimeValue = (IBusinessObjectDateTimeProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("DateTimeValue");
-      _propertyNullableDateTimeValue = (IBusinessObjectDateTimeProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("NullableDateTimeValue");
+      _propertyDateTimeValue = (IBusinessObjectDateTimeProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("DateTimeValue");
+      _propertyNullableDateTimeValue = (IBusinessObjectDateTimeProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("NullableDateTimeValue");
 
-      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.Length, Is.EqualTo(2));
-      Assert.That(actual[0], Is.EqualTo(((IBocDateTimeValue) _bocDateTimeValue).GetDateValueName()));
+      Assert.That(actual[0], Is.EqualTo(((IBocDateTimeValue)_bocDateTimeValue).GetDateValueName()));
       Assert.That(actual[1], Is.EqualTo(((IBocDateTimeValue)_bocDateTimeValue).GetTimeValueName()));
     }
 
@@ -224,8 +224,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       DateTime dateTime = new DateTime(2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = dateTime;
-      Assert.That(((IBusinessObjectBoundControl) _bocDateTimeValue).Value, Is.EqualTo(dateTime));
+      ((IBusinessObjectBoundControl)_bocDateTimeValue).Value = dateTime;
+      Assert.That(((IBusinessObjectBoundControl)_bocDateTimeValue).Value, Is.EqualTo(dateTime));
       Assert.That(_bocDateTimeValue.IsDirty, Is.True);
     }
 
@@ -233,8 +233,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToNull ()
     {
       _bocDateTimeValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = null;
-      Assert.That(((IBusinessObjectBoundControl) _bocDateTimeValue).Value, Is.EqualTo(null));
+      ((IBusinessObjectBoundControl)_bocDateTimeValue).Value = null;
+      Assert.That(((IBusinessObjectBoundControl)_bocDateTimeValue).Value, Is.EqualTo(null));
       Assert.That(_bocDateTimeValue.IsDirty, Is.True);
     }
 
@@ -243,8 +243,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       DateTime? dateTime = new DateTime(2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = dateTime;
-      Assert.That(((IBusinessObjectBoundControl) _bocDateTimeValue).Value, Is.EqualTo(dateTime));
+      ((IBusinessObjectBoundControl)_bocDateTimeValue).Value = dateTime;
+      Assert.That(((IBusinessObjectBoundControl)_bocDateTimeValue).Value, Is.EqualTo(dateTime));
       Assert.That(_bocDateTimeValue.IsDirty, Is.True);
     }
 
@@ -252,8 +252,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void IBusinessObjectBoundControl_SetValueToNullableDateTimeNull ()
     {
       _bocDateTimeValue.IsDirty = false;
-      ((IBusinessObjectBoundControl) _bocDateTimeValue).Value = null;
-      Assert.That(((IBusinessObjectBoundControl) _bocDateTimeValue).Value, Is.EqualTo(null));
+      ((IBusinessObjectBoundControl)_bocDateTimeValue).Value = null;
+      Assert.That(((IBusinessObjectBoundControl)_bocDateTimeValue).Value, Is.EqualTo(null));
       Assert.That(_bocDateTimeValue.IsDirty, Is.True);
     }
 

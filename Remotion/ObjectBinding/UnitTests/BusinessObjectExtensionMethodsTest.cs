@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.UnitTests
       var classStub = new Mock<IBusinessObjectClass>();
 
       businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
-      classStub.Setup(_ => _.GetPropertyDefinition("InvalidProperty")).Returns((IBusinessObjectProperty) null);
+      classStub.Setup(_ => _.GetPropertyDefinition("InvalidProperty")).Returns((IBusinessObjectProperty)null);
       classStub.Setup(_ => _.Identifier).Returns("TheClass");
 
       Assert.That(
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.UnitTests
       var businessObjectStub = new Mock<IBusinessObjectWithIdentity>();
       var classStub = new Mock<IBusinessObjectClass>();
 
-      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns((IBusinessObjectProperty) null);
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns((IBusinessObjectProperty)null);
       businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
       businessObjectStub.Setup(_ => _.DisplayName).Returns("The DisplayName");
 

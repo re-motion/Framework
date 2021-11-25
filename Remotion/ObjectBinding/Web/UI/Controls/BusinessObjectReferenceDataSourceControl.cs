@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       public override IBusinessObjectReferenceProperty? ReferenceProperty
       {
-        get { return (IBusinessObjectReferenceProperty?) _owner.Property; }
+        get { return (IBusinessObjectReferenceProperty?)_owner.Property; }
       }
 
       public override IBusinessObjectDataSource? ReferencedDataSource
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return _internalDataSource.BusinessObject; }
-      set { _internalDataSource.BusinessObject = (IBusinessObject?) value; }
+      set { _internalDataSource.BusinessObject = (IBusinessObject?)value; }
     }
 
     public override bool HasValue
@@ -210,7 +210,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectReferenceProperty? ReferenceProperty
     {
-      get { return (IBusinessObjectReferenceProperty?) Property; }
+      get { return (IBusinessObjectReferenceProperty?)Property; }
     }
 
     /// <summary>

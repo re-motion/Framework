@@ -34,7 +34,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
 
     // construction and disposing
 
-    public ContainsConstraint (params object[] objects) : this((IEnumerable) objects)
+    public ContainsConstraint (params object[] objects) : this((IEnumerable)objects)
     {
     }
 

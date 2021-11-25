@@ -58,7 +58,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var result = _compoundValidatorBuilder.BuildValidator(typeof(Customer));
 
       Assert.That(result, Is.TypeOf(typeof(CompoundValidator)));
-      var compoundValidator = (CompoundValidator) result;
+      var compoundValidator = (CompoundValidator)result;
       Assert.That(compoundValidator.Validators, Is.EquivalentTo(new[] { _validatorStub1.Object, _validatorStub2.Object }));
     }
   }

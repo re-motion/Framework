@@ -28,8 +28,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       if (IsPostBack)
       {
         var controlName = Request.Params["__EVENTTARGET"];
-        var control = (TestCommand) Page.FindControl(controlName);
-        ((Layout) Page.Master).SetTestOutput(control.ItemID);
+        var control = (TestCommand)Page.FindControl(controlName);
+        ((Layout)Page.Master).SetTestOutput(control.ItemID);
       }
     }
   }

@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNull("state", state!);
 
-      var oldWxeFunctionToken = (string) state;
+      var oldWxeFunctionToken = (string)state;
       WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_log, _context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;

@@ -47,7 +47,7 @@ public class ObjectDeletedException : DomainObjectException
 
   protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
-    _id = (ObjectID) info.GetValue("ID", typeof(ObjectID));
+    _id = (ObjectID)info.GetValue("ID", typeof(ObjectID));
   }
 
   public ObjectDeletedException (ObjectID id) : this(string.Format("Object '{0}' is already deleted.", id), id)

@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateClassDefinitionValidator ()
     {
-      var validator = (ClassDefinitionValidator) _mappingReflector.CreateClassDefinitionValidator();
+      var validator = (ClassDefinitionValidator)_mappingReflector.CreateClassDefinitionValidator();
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(7));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule)));
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreatePropertyDefinitionValidator ()
     {
-      var validator = (PropertyDefinitionValidator) _mappingReflector.CreatePropertyDefinitionValidator();
+      var validator = (PropertyDefinitionValidator)_mappingReflector.CreatePropertyDefinitionValidator();
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(6));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule)));
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationDefinitionValidator ()
     {
-      var validator = (RelationDefinitionValidator) _mappingReflector.CreateRelationDefinitionValidator();
+      var validator = (RelationDefinitionValidator)_mappingReflector.CreateRelationDefinitionValidator();
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(10));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(RdbmsRelationEndPointCombinationIsSupportedValidationRule)));
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateSortExpressionValidator ()
     {
-      var validator = (SortExpressionValidator) _mappingReflector.CreateSortExpressionValidator();
+      var validator = (SortExpressionValidator)_mappingReflector.CreateSortExpressionValidator();
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(1));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(SortExpressionIsValidValidationRule)));

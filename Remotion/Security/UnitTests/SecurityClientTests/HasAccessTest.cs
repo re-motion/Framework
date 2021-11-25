@@ -64,7 +64,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
       bool hasAccess = _securityClient.HasAccess(
           _testHelper.SecurableObject,
-          (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+          (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(true));
@@ -77,7 +77,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
       bool hasAccess = _securityClient.HasAccess(
           _testHelper.SecurableObject,
-          (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+          (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(false));
@@ -91,7 +91,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       {
         hasAccess = _securityClient.HasAccess(
             _testHelper.SecurableObject,
-            (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
+            (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();
@@ -105,7 +105,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     public void Test_WithSecurityStrategyIsNull ()
     {
       Assert.That(
-          () =>  _securityClient.HasAccess(new SecurableObject(null), (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) }),
+          () =>  _securityClient.HasAccess(new SecurableObject(null), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) }),
           Throws.InvalidOperationException
               .With.Message.EqualTo("The securableObject did not return an IObjectSecurityStrategy."));
 

@@ -102,7 +102,7 @@ namespace Remotion.SecurityManager.PerformanceTests
         dummy += provider.GetAccess(context, user).Length;
       }
       stopwatch.Stop();
-      Console.WriteLine("Time taken: {0}ms", ((decimal) stopwatch.ElapsedMilliseconds) / count);
+      Console.WriteLine("Time taken: {0}ms", ((decimal)stopwatch.ElapsedMilliseconds) / count);
 
       provider.GetAccess(
           new SimpleSecurityContext(

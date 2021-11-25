@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                     OwnerControl!.ID));
           }
           Type type = WebTypeUtility.GetType(_customCellType, true)!;
-          _customCell = (BocCustomColumnDefinitionCell) Activator.CreateInstance(type)!;
+          _customCell = (BocCustomColumnDefinitionCell)Activator.CreateInstance(type)!;
         }
         return _customCell;
       }
@@ -227,7 +227,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       Assertion.IsNotNull(OwnerControl, "OwnerControl must not be null.");
 
-      var args = new BocCustomCellArguments((IBocList) OwnerControl, this);
+      var args = new BocCustomCellArguments((IBocList)OwnerControl, this);
       return CustomCell.CreateCellValueComparerInternal(args);
     }
   }

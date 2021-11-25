@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
           CurrentPageStep.Page,
           CurrentFunction.ParentFunction != null ? CurrentFunction.ParentFunction.GetType().Name : "&lt;none&gt;",
           CurrentFunction.ParentFunction != null ? CurrentFunction.ParentFunction.FunctionToken : "&lt;none&gt;",
-          CurrentFunction.ParentFunction != null ? ((WxePageStep) CurrentFunction.ParentStep).Page : "&lt;none&gt;",
+          CurrentFunction.ParentFunction != null ? ((WxePageStep)CurrentFunction.ParentStep).Page : "&lt;none&gt;",
           IsReturningPostBack);
     }
 
@@ -135,12 +135,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     private void ExecuteWxeFunction (WxeFunction function, object sender, bool shouldExecuteAsSubFunction)
     {
       if (shouldExecuteAsSubFunction)
-        ExecuteFunction(function, new WxeCallArguments((Control) sender, new WxeCallOptions()));
+        ExecuteFunction(function, new WxeCallArguments((Control)sender, new WxeCallOptions()));
       else
       {
         try
         {
-          ExecuteFunction(function, new WxeCallArguments((Control) sender, new WxeCallOptionsExternal("_self")));
+          ExecuteFunction(function, new WxeCallArguments((Control)sender, new WxeCallOptionsExternal("_self")));
         }
         catch (WxeCallExternalException)
         {

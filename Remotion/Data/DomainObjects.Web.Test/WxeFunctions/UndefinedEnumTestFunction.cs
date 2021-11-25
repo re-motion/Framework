@@ -43,19 +43,19 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public SearchObjectWithUndefinedEnum SearchObjectWithUndefinedEnum
     {
-      get { return (SearchObjectWithUndefinedEnum) Variables["SearchObjectWithUndefinedEnum"]; }
+      get { return (SearchObjectWithUndefinedEnum)Variables["SearchObjectWithUndefinedEnum"]; }
       set { Variables["SearchObjectWithUndefinedEnum"] = value; }
     }
 
     public ClassWithUndefinedEnum ExistingObjectWithUndefinedEnum
     {
-      get { return (ClassWithUndefinedEnum) Variables["ExistingObjectWithUndefinedEnum"]; }
+      get { return (ClassWithUndefinedEnum)Variables["ExistingObjectWithUndefinedEnum"]; }
       set { Variables["ExistingObjectWithUndefinedEnum"] = value; }
     }
 
     public ClassWithUndefinedEnum NewObjectWithUndefinedEnum
     {
-      get { return (ClassWithUndefinedEnum) Variables["NewObjectWithUndefinedEnum"]; }
+      get { return (ClassWithUndefinedEnum)Variables["NewObjectWithUndefinedEnum"]; }
       set { Variables["NewObjectWithUndefinedEnum"] = value; }
     }
 

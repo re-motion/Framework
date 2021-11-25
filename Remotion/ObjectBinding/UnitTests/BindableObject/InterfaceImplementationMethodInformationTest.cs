@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetFastInvoker ()
     {
-      var objToReturn = (Func<string>) (() => "Test");
+      var objToReturn = (Func<string>)(() => "Test");
       _declarationMethodInformationStub.Setup(stub => stub.GetFastInvoker(typeof(Func<string>))).Returns(objToReturn);
 
       var invoker = _interfaceImplementationMethodInformation.GetFastInvoker<Func<string>>();
@@ -212,7 +212,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsNull ()
     {
-      Assert.That(((IMethodInformation) _interfaceImplementationMethodInformation).IsNull, Is.False);
+      Assert.That(((IMethodInformation)_interfaceImplementationMethodInformation).IsNull, Is.False);
     }
   }
 }

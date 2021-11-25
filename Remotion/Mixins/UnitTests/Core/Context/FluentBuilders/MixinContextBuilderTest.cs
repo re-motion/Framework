@@ -143,8 +143,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       _parentBuilderMock
           .Expect(mock => mock.SuppressMixin(Arg<IMixinSuppressionRule>.Matches(
-              rule => ((MixinTreeReplacementSuppressionRule) rule).ReplacingMixinType == _mixinBuilder.MixinType
-                  && ((MixinTreeReplacementSuppressionRule) rule).MixinBaseTypeToSuppress == typeof(int))))
+              rule => ((MixinTreeReplacementSuppressionRule)rule).ReplacingMixinType == _mixinBuilder.MixinType
+                  && ((MixinTreeReplacementSuppressionRule)rule).MixinBaseTypeToSuppress == typeof(int))))
           .Return(_parentBuilderMock);
       _parentBuilderMock.Replay();
 
@@ -239,8 +239,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       _parentBuilderMock
           .Expect(mock => mock.SuppressMixin(Arg<IMixinSuppressionRule>.Matches(
-              rule => ((MixinTreeReplacementSuppressionRule) rule).ReplacingMixinType == _mixinBuilder.MixinType
-                  && ((MixinTreeReplacementSuppressionRule) rule).MixinBaseTypeToSuppress == _mixinBuilder.MixinType.BaseType)))
+              rule => ((MixinTreeReplacementSuppressionRule)rule).ReplacingMixinType == _mixinBuilder.MixinType
+                  && ((MixinTreeReplacementSuppressionRule)rule).MixinBaseTypeToSuppress == _mixinBuilder.MixinType.BaseType)))
           .Return(_parentBuilderMock);
       _parentBuilderMock.Replay();
 

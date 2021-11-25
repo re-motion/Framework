@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void Delete_WithDeleteNotSupported ()
     {
-      IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
+      IBusinessObject businessObject = (IBusinessObject)ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
       var mockService = new Mock<IDeleteObjectServiceOnProperty>(MockBehavior.Strict);
       IBusinessObjectReferenceProperty property = DeleteProperty("DeleteObjectServiceFromPropertyDeclaration");
       var value = new Mock<IBusinessObject>();

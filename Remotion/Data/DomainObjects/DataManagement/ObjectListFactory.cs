@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       var ctor = GetConstructorInfoForVirtualObjectListFromCache(virtualCollectionData.RequiredItemType);
 
-      return (IObjectList<IDomainObject>) ctor.Invoke(new object[] { virtualCollectionData });
+      return (IObjectList<IDomainObject>)ctor.Invoke(new object[] { virtualCollectionData });
     }
 
     private static ConstructorInfo GetConstructorInfoForVirtualObjectListFromCache (Type domainObjectType)

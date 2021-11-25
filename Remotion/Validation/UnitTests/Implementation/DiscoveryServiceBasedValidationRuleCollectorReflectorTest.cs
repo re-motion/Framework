@@ -78,7 +78,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof(IValidationRuleCollector), false)).Returns(new[] { typeof(Person) });
 
       var validatedTypeResolverStub = new Mock<IValidatedTypeResolver>();
-      validatedTypeResolverStub.Setup(stub => stub.GetValidatedType(typeof(Person))).Returns((Type) null);
+      validatedTypeResolverStub.Setup(stub => stub.GetValidatedType(typeof(Person))).Returns((Type)null);
 
       Assert.That(
           () =>
@@ -174,7 +174,7 @@ namespace Remotion.Validation.UnitTests.Implementation
           .Returns(new[] { typeof(CustomerValidationRuleCollector1) });
 
       var validatedTypeResolverStub = new Mock<IValidatedTypeResolver>();
-      validatedTypeResolverStub.Setup(stub => stub.GetValidatedType(typeof(CustomerValidationRuleCollector1))).Returns((Type) null);
+      validatedTypeResolverStub.Setup(stub => stub.GetValidatedType(typeof(CustomerValidationRuleCollector1))).Returns((Type)null);
 
       var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create(_typeDiscoveryServiceStub.Object, validatedTypeResolverStub.Object);
       Assert.That(

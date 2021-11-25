@@ -40,7 +40,7 @@ namespace Remotion.ExtensibleEnums
   {
     private static readonly Lazy<ExtensibleEnumDefinition<T>> s_values =
         new Lazy<ExtensibleEnumDefinition<T>>(
-            () => (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition(typeof(T)),
+            () => (ExtensibleEnumDefinition<T>)ExtensibleEnumUtility.GetDefinition(typeof(T)),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
     /// <summary>
@@ -101,7 +101,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (string id)
         : this(
-            (string?) null,
+            (string?)null,
             ArgumentUtility.CheckNotNullOrEmpty("id", id))
     {
     }

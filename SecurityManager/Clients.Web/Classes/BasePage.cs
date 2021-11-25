@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     public new BaseTransactedFunction CurrentFunction
     {
-      get { return (BaseTransactedFunction) base.CurrentFunction; }
+      get { return (BaseTransactedFunction)base.CurrentFunction; }
     }
 
     protected virtual IFocusableControl InitialFocusControl

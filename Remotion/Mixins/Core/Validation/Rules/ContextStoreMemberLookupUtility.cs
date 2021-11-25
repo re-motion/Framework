@@ -34,9 +34,9 @@ namespace Remotion.Mixins.Validation.Rules
 
       // Optimized for memory allocations
       if (_contextStoreValueFactory == null)
-        _contextStoreValueFactory = key => GetUncachedMethodDefinitions(((Tuple<string, TargetClassDefinition>) key).Item2);
+        _contextStoreValueFactory = key => GetUncachedMethodDefinitions(((Tuple<string, TargetClassDefinition>)key).Item2);
 
-      var methodDefinitions = (MultiDictionary<string, TMemberDefinition>) contextStore.GetOrCreateValue(cacheKey, _contextStoreValueFactory);
+      var methodDefinitions = (MultiDictionary<string, TMemberDefinition>)contextStore.GetOrCreateValue(cacheKey, _contextStoreValueFactory);
       return methodDefinitions[name];
     }
 

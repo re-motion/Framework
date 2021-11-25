@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         return null;
       if (domainObjectOrNull.State.IsDeleted)
         return null;
-      return (IBusinessObjectWithIdentity) domainObjectOrNull;
+      return (IBusinessObjectWithIdentity)domainObjectOrNull;
     }
   }
 }

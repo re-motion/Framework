@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     public new IEnumerator<PropertyDefinition> GetEnumerator ()
     {
       // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (PropertyDefinition propertyDefinition in (IEnumerable) this) // use base implementation
+      foreach (PropertyDefinition propertyDefinition in (IEnumerable)this) // use base implementation
           // ReSharper restore LoopCanBeConvertedToQuery
         yield return propertyDefinition;
     }
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinition this [int index]
     {
-      get { return (PropertyDefinition) BaseGetObject(index); }
+      get { return (PropertyDefinition)BaseGetObject(index); }
     }
 
     public PropertyDefinition this [string propertyName]
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-        return (PropertyDefinition) BaseGetObject(propertyName);
+        return (PropertyDefinition)BaseGetObject(propertyName);
       }
     }
 

@@ -193,8 +193,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Initialize(true);
 
-      IBusinessObject firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
-      IBusinessObject secondObject = (IBusinessObject) ((TypeWithReference) BusinessObject).SecondValue;
+      IBusinessObject firstObject = (IBusinessObject)((TypeWithReference)BusinessObject).FirstValue;
+      IBusinessObject secondObject = (IBusinessObject)((TypeWithReference)BusinessObject).SecondValue;
       BocListRowRenderingContext[] rows = new[]
                           {
                             new BocListRowRenderingContext(new BocListRow(0, firstObject), 0, false),

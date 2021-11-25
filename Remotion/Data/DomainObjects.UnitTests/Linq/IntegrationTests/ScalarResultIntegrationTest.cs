@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void Sum_WithEmptyResultSet_AndAggregatedValueIsNotNullablePropertyButCastToNullable_ReturnsNull ()
     {
       Assert.That(
-          () => (from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber == -1 select o).Sum(o => (int?) o.OrderNumber),
+          () => (from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber == -1 select o).Sum(o => (int?)o.OrderNumber),
           Is.Null);
     }
   }

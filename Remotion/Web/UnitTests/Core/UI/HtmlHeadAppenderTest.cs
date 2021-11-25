@@ -33,7 +33,7 @@ namespace Remotion.Web.UnitTests.Core.UI
     [SetUp]
     public void SetUp ()
     {
-      _htmlHeadAppender = (HtmlHeadAppender) Activator.CreateInstance(typeof(HtmlHeadAppender), nonPublic: true);
+      _htmlHeadAppender = (HtmlHeadAppender)Activator.CreateInstance(typeof(HtmlHeadAppender), nonPublic: true);
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.Web.UnitTests.Core.UI
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
 
       Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(TitleTag)));
-      var titleTag = (TitleTag) htmlHeadElements[0];
+      var titleTag = (TitleTag)htmlHeadElements[0];
       Assert.That(titleTag.Title, Is.EqualTo("The Title"));
     }
 
@@ -60,7 +60,7 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
 
-      var titleTag = (TitleTag) htmlHeadElements[0];
+      var titleTag = (TitleTag)htmlHeadElements[0];
       Assert.That(titleTag.Title, Is.EqualTo("The Title2"));
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
       Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(JavaScriptInclude)));
-      Assert.That(((JavaScriptInclude) htmlHeadElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
+      Assert.That(((JavaScriptInclude)htmlHeadElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
     }
 
     [Test]
@@ -87,7 +87,7 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
       Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(JavaScriptInclude)));
-      Assert.That(((JavaScriptInclude) htmlHeadElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.js"));
+      Assert.That(((JavaScriptInclude)htmlHeadElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.js"));
     }
 
     [Test]
@@ -100,10 +100,10 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
       Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(StyleSheetBlock)));
-      var styleSheetBlock = (StyleSheetBlock) htmlHeadElements[0];
+      var styleSheetBlock = (StyleSheetBlock)htmlHeadElements[0];
       Assert.That(styleSheetBlock.StyleSheetElements.Count, Is.EqualTo(1));
       Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof(StyleSheetImportRule)));
-      Assert.That(((StyleSheetImportRule) styleSheetBlock.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
     }
 
     [Test]
@@ -116,10 +116,10 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
       Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(StyleSheetBlock)));
-      var styleSheetBlock = (StyleSheetBlock) htmlHeadElements[0];
+      var styleSheetBlock = (StyleSheetBlock)htmlHeadElements[0];
       Assert.That(styleSheetBlock.StyleSheetElements.Count, Is.EqualTo(1));
       Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof(StyleSheetImportRule)));
-      Assert.That(((StyleSheetImportRule) styleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.css"));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.css"));
     }
 
     [Test]
@@ -134,13 +134,13 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(2));
 
-      var styleSheetBlock1 = (StyleSheetBlock) htmlHeadElements[0];
+      var styleSheetBlock1 = (StyleSheetBlock)htmlHeadElements[0];
       Assert.That(styleSheetBlock1.StyleSheetElements.Count, Is.EqualTo(1));
-      Assert.That(((StyleSheetImportRule) styleSheetBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl1));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl1));
 
-      var styleSheetBlock2 = (StyleSheetBlock) htmlHeadElements[1];
+      var styleSheetBlock2 = (StyleSheetBlock)htmlHeadElements[1];
       Assert.That(styleSheetBlock2.StyleSheetElements.Count, Is.EqualTo(1));
-      Assert.That(((StyleSheetImportRule) styleSheetBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl2));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl2));
     }
 
     [Test]
@@ -154,11 +154,11 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(2));
 
-      var styleSheetBlock1 = (StyleSheetBlock) htmlHeadElements[0];
-      Assert.That(((StyleSheetImportRule) styleSheetBlock1.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url1.css"));
+      var styleSheetBlock1 = (StyleSheetBlock)htmlHeadElements[0];
+      Assert.That(((StyleSheetImportRule)styleSheetBlock1.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url1.css"));
 
-      var styleSheetBlock2 = (StyleSheetBlock) htmlHeadElements[1];
-      Assert.That(((StyleSheetImportRule) styleSheetBlock2.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url2.css"));
+      var styleSheetBlock2 = (StyleSheetBlock)htmlHeadElements[1];
+      Assert.That(((StyleSheetImportRule)styleSheetBlock2.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url2.css"));
     }
 
     [Test]
@@ -181,25 +181,25 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(4));
 
-      var libraryBlock1 = (StyleSheetBlock) htmlHeadElements[0];
+      var libraryBlock1 = (StyleSheetBlock)htmlHeadElements[0];
       Assert.That(libraryBlock1.StyleSheetElements.Count, Is.EqualTo(31));
-      Assert.That(((StyleSheetImportRule) libraryBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(libraryUrls[0]));
-      Assert.That(((StyleSheetImportRule) libraryBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs(libraryUrls[30]));
+      Assert.That(((StyleSheetImportRule)libraryBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(libraryUrls[0]));
+      Assert.That(((StyleSheetImportRule)libraryBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs(libraryUrls[30]));
 
-      var libraryBlock2 = (StyleSheetBlock) htmlHeadElements[1];
+      var libraryBlock2 = (StyleSheetBlock)htmlHeadElements[1];
       Assert.That(libraryBlock2.StyleSheetElements.Count, Is.EqualTo(9));
-      Assert.That(((StyleSheetImportRule) libraryBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(libraryUrls[31]));
-      Assert.That(((StyleSheetImportRule) libraryBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs(libraryUrls[39]));
+      Assert.That(((StyleSheetImportRule)libraryBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(libraryUrls[31]));
+      Assert.That(((StyleSheetImportRule)libraryBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs(libraryUrls[39]));
 
-      var userControlBlock1 = (StyleSheetBlock) htmlHeadElements[2];
+      var userControlBlock1 = (StyleSheetBlock)htmlHeadElements[2];
       Assert.That(userControlBlock1.StyleSheetElements.Count, Is.EqualTo(31));
-      Assert.That(((StyleSheetImportRule) userControlBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(userControlUrls[0]));
-      Assert.That(((StyleSheetImportRule) userControlBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs(userControlUrls[30]));
+      Assert.That(((StyleSheetImportRule)userControlBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(userControlUrls[0]));
+      Assert.That(((StyleSheetImportRule)userControlBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs(userControlUrls[30]));
 
-      var userControlBlock2 = (StyleSheetBlock) htmlHeadElements[3];
+      var userControlBlock2 = (StyleSheetBlock)htmlHeadElements[3];
       Assert.That(userControlBlock2.StyleSheetElements.Count, Is.EqualTo(9));
-      Assert.That(((StyleSheetImportRule) userControlBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(userControlUrls[31]));
-      Assert.That(((StyleSheetImportRule) userControlBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs(userControlUrls[39]));
+      Assert.That(((StyleSheetImportRule)userControlBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(userControlUrls[31]));
+      Assert.That(((StyleSheetImportRule)userControlBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs(userControlUrls[39]));
     }
 
     [Test]
@@ -230,22 +230,22 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(4));
 
-      var libraryBlock1 = (StyleSheetBlock) htmlHeadElements[0];
+      var libraryBlock1 = (StyleSheetBlock)htmlHeadElements[0];
       Assert.That(libraryBlock1.StyleSheetElements.Count, Is.EqualTo(2));
       Assert.That(libraryBlock1.StyleSheetElements[0], Is.SameAs(libraryRule1));
       Assert.That(libraryBlock1.StyleSheetElements[1], Is.SameAs(libraryRule2));
 
-      var libraryBlock2 = (StyleSheetBlock) htmlHeadElements[1];
+      var libraryBlock2 = (StyleSheetBlock)htmlHeadElements[1];
       Assert.That(libraryBlock2.StyleSheetElements.Count, Is.EqualTo(3));
       Assert.That(libraryBlock2.StyleSheetElements[0], Is.SameAs(libraryElement1.Object));
       Assert.That(libraryBlock2.StyleSheetElements[1], Is.SameAs(libraryElement2.Object));
       Assert.That(libraryBlock2.StyleSheetElements[2], Is.SameAs(libraryElement3.Object));
 
-      var userControlBlock1 = (StyleSheetBlock) htmlHeadElements[2];
+      var userControlBlock1 = (StyleSheetBlock)htmlHeadElements[2];
       Assert.That(userControlBlock1.StyleSheetElements.Count, Is.EqualTo(1));
       Assert.That(userControlBlock1.StyleSheetElements[0], Is.SameAs(userControlRule1));
 
-      var userControlBlock2 = (StyleSheetBlock) htmlHeadElements[3];
+      var userControlBlock2 = (StyleSheetBlock)htmlHeadElements[3];
       Assert.That(userControlBlock2.StyleSheetElements.Count, Is.EqualTo(1));
       Assert.That(userControlBlock2.StyleSheetElements[0], Is.SameAs(userControlElement1.Object));
     }

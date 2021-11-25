@@ -73,7 +73,7 @@ namespace Remotion.Context
         if (oldValue == newValue)
           return this;
 
-        var newHashTable = (Hashtable) _hashtable.Clone();
+        var newHashTable = (Hashtable)_hashtable.Clone();
         newHashTable[key] = newValue;
 
         return new StorageContext(newHashTable, _previous);
@@ -87,7 +87,7 @@ namespace Remotion.Context
         if (!_hashtable.ContainsKey(key))
           return this;
 
-        var newHashtable = (Hashtable) _hashtable.Clone();
+        var newHashtable = (Hashtable)_hashtable.Clone();
         newHashtable.Remove(key);
 
         return new StorageContext(newHashtable, _previous);

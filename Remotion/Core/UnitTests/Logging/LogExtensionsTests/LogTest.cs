@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(LogLevel.Info, 2, (object) "The message.", exception);
+      Log.Log(LogLevel.Info, 2, (object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -48,7 +48,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     {
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(LogLevel.Info, 1, (object) "The message.");
+      Log.Log(LogLevel.Info, 1, (object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -67,7 +67,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(LogLevel.Info, (object) "The message.", exception);
+      Log.Log(LogLevel.Info, (object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -84,7 +84,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     {
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(LogLevel.Info, (object) "The message.");
+      Log.Log(LogLevel.Info, (object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -101,7 +101,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.Log(LogLevel.Info, 1, (object) "The message.");
+      Log.Log(LogLevel.Info, 1, (object)"The message.");
 
       Assert.That(GetLoggingEvents(), Is.Empty);
     }

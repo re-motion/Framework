@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  ON [SchemaName].[TableName1] ([IndexColumn1] DESC)";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  ON [dbo].[TableName2] ([IndexColumn2] ASC)";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  ON [dbo].[TableName] ([IndexColumn1] DESC, [IndexColumn2] ASC)\r\n"
           + "  INCLUDE ([IncludedColumn1])\r\n"
           + "  WITH (IGNORE_DUP_KEY = ON, ONLINE = ON)";
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  INCLUDE ([IncludedColumn1], [IncludedColumn2])\r\n"
           + "  WITH (IGNORE_DUP_KEY = ON, ONLINE = ON, PAD_INDEX = ON, FILLFACTOR = 5, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON, "
           + "DROP_EXISTING = ON, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, MAXDOP = 2)";
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  INCLUDE ([IncludedColumn1])\r\n"
           + "  WITH (IGNORE_DUP_KEY = OFF, ONLINE = OFF, PAD_INDEX = OFF, FILLFACTOR = 0, SORT_IN_TEMPDB = OFF, STATISTICS_NORECOMPUTE = OFF, "
           + "DROP_EXISTING = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF, MAXDOP = 0)";
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  DROP INDEX [Index1] ON [SchemaName].[TableName1]";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  DROP INDEX [Index2] ON [dbo].[TableName2]";
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
-      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

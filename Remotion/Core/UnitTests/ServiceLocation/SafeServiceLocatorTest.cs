@@ -34,7 +34,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      _serviceLocatorProviderBackup = (ServiceLocatorProvider) PrivateInvoke.GetNonPublicStaticField(typeof(ServiceLocator), "_currentProvider");
+      _serviceLocatorProviderBackup = (ServiceLocatorProvider)PrivateInvoke.GetNonPublicStaticField(typeof(ServiceLocator), "_currentProvider");
       PrivateInvoke.SetNonPublicStaticField(typeof(ServiceLocator), "_currentProvider", null);
     }
 
@@ -204,7 +204,7 @@ namespace Remotion.UnitTests.ServiceLocation
               {
                 Assert.That(
                     SafeServiceLocator.Current,
-                    Is.Not.Null.And.SameAs(((BootstrapServiceConfiguration) SafeServiceLocator.BootstrapConfiguration).BootstrapServiceLocator));
+                    Is.Not.Null.And.SameAs(((BootstrapServiceConfiguration)SafeServiceLocator.BootstrapConfiguration).BootstrapServiceLocator));
               });
 
       ConfigureServiceLocatorProvider(serviceLocatorProvider.Object);
@@ -236,7 +236,7 @@ namespace Remotion.UnitTests.ServiceLocation
     private void ResetDefaultServiceLocator ()
     {
       var defaultServiceLocatorContainer =
-          (DoubleCheckedLockingContainer<IServiceLocator>) PrivateInvoke.GetNonPublicStaticField(typeof(SafeServiceLocator), "s_defaultServiceLocator");
+          (DoubleCheckedLockingContainer<IServiceLocator>)PrivateInvoke.GetNonPublicStaticField(typeof(SafeServiceLocator), "s_defaultServiceLocator");
       defaultServiceLocatorContainer.Value = null;
     }
 

@@ -65,7 +65,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub.Object;
       _addingPropertyValidationRuleCollectorMock.Setup(mock => mock.RegisterValidator(validatorFactory)).Verifiable();
 
-      ((IAddingPropertyValidationRuleBuilder<Customer, string>) _addingPropertyValidationBuilder).SetValidator(validatorFactory);
+      ((IAddingPropertyValidationRuleBuilder<Customer, string>)_addingPropertyValidationBuilder).SetValidator(validatorFactory);
 
       _addingPropertyValidationRuleCollectorMock.Verify();
     }

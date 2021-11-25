@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
 
       try
       {
-        return (CommandLineArguments) parser.Parse(args);
+        return (CommandLineArguments)parser.Parse(args);
       }
       catch (CommandLineArgumentException e)
       {

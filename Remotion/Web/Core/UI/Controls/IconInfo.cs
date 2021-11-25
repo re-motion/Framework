@@ -257,7 +257,7 @@ namespace Remotion.Web.UI.Controls
         return null;
       if (value is string)
       {
-        string stringValue = (string) value;
+        string stringValue = (string)value;
         IconInfo icon = new IconInfo();
         if (stringValue != string.Empty)
         {
@@ -284,7 +284,7 @@ namespace Remotion.Web.UI.Controls
           return null;
         if (value is IconInfo)
         {
-          IconInfo icon = (IconInfo) value;
+          IconInfo icon = (IconInfo)value;
           if (context == null) // Requried to circumvent the Designer
           {
             if (IconInfo.ShouldSerialize(icon))

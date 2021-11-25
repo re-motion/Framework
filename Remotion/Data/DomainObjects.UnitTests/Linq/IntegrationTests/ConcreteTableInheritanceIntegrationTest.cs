@@ -185,13 +185,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var partnerIDs = new[]
                        {
-                           (Guid) DomainObjectIDs.Partner1.Value,
-                           (Guid) DomainObjectIDs.Distributor1.Value,
-                           (Guid) DomainObjectIDs.Supplier1.Value,
-                           (Guid) DomainObjectIDs.Company1.Value,
-                           (Guid) DomainObjectIDs.Customer1.Value
+                           (Guid)DomainObjectIDs.Partner1.Value,
+                           (Guid)DomainObjectIDs.Distributor1.Value,
+                           (Guid)DomainObjectIDs.Supplier1.Value,
+                           (Guid)DomainObjectIDs.Company1.Value,
+                           (Guid)DomainObjectIDs.Customer1.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Partner>().Where(p => partnerIDs.Contains((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Partner>().Where(p => partnerIDs.Contains((Guid)p.ID.Value));
 
       CheckQueryResult(
           query,
@@ -205,13 +205,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var partnerIDs = new[]
                        {
-                           (Guid) DomainObjectIDs.Partner1.Value,
-                           (Guid) DomainObjectIDs.Distributor1.Value,
-                           (Guid) DomainObjectIDs.Supplier1.Value,
-                           (Guid) DomainObjectIDs.Company1.Value,
-                           (Guid) DomainObjectIDs.Customer1.Value
+                           (Guid)DomainObjectIDs.Partner1.Value,
+                           (Guid)DomainObjectIDs.Distributor1.Value,
+                           (Guid)DomainObjectIDs.Supplier1.Value,
+                           (Guid)DomainObjectIDs.Company1.Value,
+                           (Guid)DomainObjectIDs.Customer1.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<Company>().Where(c => c is Partner).Where(p => partnerIDs.Contains((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<Company>().Where(c => c is Partner).Where(p => partnerIDs.Contains((Guid)p.ID.Value));
 
       CheckQueryResult(
           query,
@@ -357,11 +357,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var personIDs = new[]
                        {
-                           (Guid) _concreteObjectIDs.Person.Value,
-                           (Guid) _concreteObjectIDs.Customer.Value,
-                           (Guid) _concreteObjectIDs.OrganizationalUnit.Value
+                           (Guid)_concreteObjectIDs.Person.Value,
+                           (Guid)_concreteObjectIDs.Customer.Value,
+                           (Guid)_concreteObjectIDs.OrganizationalUnit.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().OfType<TIPerson>().Where(p => personIDs.Contains((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().OfType<TIPerson>().Where(p => personIDs.Contains((Guid)p.ID.Value));
 
       CheckQueryResult(
           query,
@@ -374,11 +374,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var personIDs = new[]
                        {
-                           (Guid) _concreteObjectIDs.Person.Value,
-                           (Guid) _concreteObjectIDs.Customer.Value,
-                           (Guid) _concreteObjectIDs.OrganizationalUnit.Value
+                           (Guid)_concreteObjectIDs.Person.Value,
+                           (Guid)_concreteObjectIDs.Customer.Value,
+                           (Guid)_concreteObjectIDs.OrganizationalUnit.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().Where(b => b is TIPerson).Where(p => personIDs.Contains((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().Where(b => b is TIPerson).Where(p => personIDs.Contains((Guid)p.ID.Value));
 
       CheckQueryResult(
           query,

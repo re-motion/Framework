@@ -47,7 +47,7 @@ namespace Remotion.Development.UnitTesting
         if (result == null)
           throw new InvalidOperationException("Deserializing null values is not supported.");
 
-        return (T) result;
+        return (T)result;
       }
     }
 

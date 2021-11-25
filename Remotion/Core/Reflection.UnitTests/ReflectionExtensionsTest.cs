@@ -53,7 +53,7 @@ namespace Remotion.Reflection.UnitTests
     public void IsOriginalDeclaration_DeclaringTypeIsNull_False ()
     {
       var memberInfoStub = new Mock<IMemberInformation>();
-      memberInfoStub.Setup(stub => stub.DeclaringType).Returns((ITypeInformation) null);
+      memberInfoStub.Setup(stub => stub.DeclaringType).Returns((ITypeInformation)null);
       memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(new Mock<ITypeInformation>().Object);
 
       Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.False);
@@ -64,7 +64,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var memberInfoStub = new Mock<IMemberInformation>();
       memberInfoStub.Setup(stub => stub.DeclaringType).Returns(new Mock<ITypeInformation>().Object);
-      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns((ITypeInformation) null);
+      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns((ITypeInformation)null);
 
       Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.False);
     }
@@ -73,8 +73,8 @@ namespace Remotion.Reflection.UnitTests
     public void IsOriginalDeclaration_DeclaringTypeIsNullAndOrignalDeclaringTypeIsNull_True ()
     {
       var memberInfoStub = new Mock<IMemberInformation>();
-      memberInfoStub.Setup(stub => stub.DeclaringType).Returns((ITypeInformation) null);
-      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns((ITypeInformation) null);
+      memberInfoStub.Setup(stub => stub.DeclaringType).Returns((ITypeInformation)null);
+      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns((ITypeInformation)null);
 
       Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.True);
     }

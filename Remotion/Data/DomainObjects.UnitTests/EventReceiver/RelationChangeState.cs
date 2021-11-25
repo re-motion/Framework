@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     {
       base.Check(expectedState);
 
-      RelationChangeState relationChangeState = (RelationChangeState) expectedState;
+      RelationChangeState relationChangeState = (RelationChangeState)expectedState;
 
       if (_propertyName != relationChangeState.PropertyName)
       {

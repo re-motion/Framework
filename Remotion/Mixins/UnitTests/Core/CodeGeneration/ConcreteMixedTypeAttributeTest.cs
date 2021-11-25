@@ -33,8 +33,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void FromAttributeApplication ()
     {
-      var attribute = ((ConcreteMixedTypeAttribute[])
-          typeof(LoadableConcreteMixedTypeForBaseType1).GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false)).Single();
+      var attribute = ((ConcreteMixedTypeAttribute[])typeof(LoadableConcreteMixedTypeForBaseType1).GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false)).Single();
       var classContext = attribute.GetClassContext();
 
       var expectedContext = new ClassContext(

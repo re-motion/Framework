@@ -26,12 +26,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
   {
     public static ColumnDefinition GetIDColumnDefinition (ObjectIDStoragePropertyDefinition objectIDStoragePropertyDefinition)
     {
-      return ((SimpleStoragePropertyDefinition) objectIDStoragePropertyDefinition.ValueProperty).ColumnDefinition;
+      return ((SimpleStoragePropertyDefinition)objectIDStoragePropertyDefinition.ValueProperty).ColumnDefinition;
     }
 
     public static ColumnDefinition GetClassIDColumnDefinition (ObjectIDStoragePropertyDefinition objectIDStoragePropertyDefinition)
     {
-      return ((SimpleStoragePropertyDefinition) objectIDStoragePropertyDefinition.ClassIDProperty).ColumnDefinition;
+      return ((SimpleStoragePropertyDefinition)objectIDStoragePropertyDefinition.ClassIDProperty).ColumnDefinition;
     }
 
     public static ColumnDefinition GetSingleColumn (IRdbmsStoragePropertyDefinition rdbmsStoragePropertyDefinition)

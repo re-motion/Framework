@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     public override void SetUp ()
     {
       base.SetUp();
-      _relationEndPointManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager(TestableClientTransaction.DataManager);
+      _relationEndPointManager = (RelationEndPointManager)DataManagerTestHelper.GetRelationEndPointManager(TestableClientTransaction.DataManager);
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       DomainObjectIDs.Order1.GetObject<Order>().OrderItems.EnsureDataComplete();
       Assert.That(_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo(7));
 
-      var deserializedManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager(
+      var deserializedManager = (RelationEndPointManager)DataManagerTestHelper.GetRelationEndPointManager(
           Serializer.SerializeAndDeserialize(TestableClientTransaction.DataManager));
 
       Assert.That(deserializedManager.ClientTransaction, Is.Not.Null);
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That(deserializedManager.RelationEndPoints.Count, Is.EqualTo(7));
 
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
-      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>) deserializedManager.GetRelationEndPointWithoutLoading(endPointID);
+      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>)deserializedManager.GetRelationEndPointWithoutLoading(endPointID);
 
       Assert.That(endPoint.ClientTransaction, Is.SameAs(deserializedManager.ClientTransaction));
     }

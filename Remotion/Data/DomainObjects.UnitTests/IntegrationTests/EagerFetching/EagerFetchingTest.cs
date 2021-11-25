@@ -47,13 +47,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       var result = TestableClientTransaction.QueryManager.GetCollection(ordersQuery);
       Assert.That(result.ToArray(), Is.EquivalentTo(new[] { DomainObjectIDs.Order1.GetObject<Order>(), DomainObjectIDs.Order3.GetObject<Order>() }));
 
-      var orderItemsEndPoint1 = (IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id1);
+      var orderItemsEndPoint1 = (IDomainObjectCollectionEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id1);
       Assert.That(orderItemsEndPoint1, Is.Not.Null);
       Assert.That(orderItemsEndPoint1.IsSynchronized, Is.True);
       Assert.That(orderItemsEndPoint1.Collection,
           Is.EquivalentTo(new[] { DomainObjectIDs.OrderItem1.GetObject<OrderItem>(), DomainObjectIDs.OrderItem2.GetObject<OrderItem>() }));
 
-      var orderEndPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(
+      var orderEndPoint = (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(
           RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order"));
       Assert.That(orderEndPoint, Is.Not.Null);
       Assert.That(orderEndPoint.IsSynchronized, Is.True);
@@ -85,19 +85,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           result.ToArray(),
           Is.EquivalentTo(new[] { employeeWithoutComputer.GetObject<Employee>(), employeeWithComputer.GetObject<Employee>() }));
 
-      var existingComputerEndPoint = (IVirtualObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id1);
+      var existingComputerEndPoint = (IVirtualObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id1);
       Assert.That(existingComputerEndPoint, Is.Not.Null);
       Assert.That(existingComputerEndPoint.IsSynchronized, Is.True);
       Assert.That(existingComputerEndPoint.OppositeObjectID, Is.EqualTo(existingComputer));
       Assert.That(existingComputerEndPoint.GetOppositeObject(), Is.EqualTo(existingComputer.GetObject<Computer>()));
 
-      var employeeEndPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(
+      var employeeEndPoint = (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(
           RelationEndPointID.Create(existingComputer, typeof(Computer), "Employee"));
       Assert.That(employeeEndPoint, Is.Not.Null);
       Assert.That(employeeEndPoint.IsSynchronized, Is.True);
       Assert.That(employeeEndPoint.OppositeObjectID, Is.EqualTo(employeeWithComputer));
 
-      var missingComputerEndPoint = (IVirtualObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id2);
+      var missingComputerEndPoint = (IVirtualObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id2);
       Assert.That(missingComputerEndPoint, Is.Not.Null);
       Assert.That(missingComputerEndPoint.IsSynchronized, Is.True);
       Assert.That(missingComputerEndPoint.OppositeObjectID, Is.Null);
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
 
     private OrderItem RegisterFakeOrderItem (ObjectID objectID, ObjectID fakeOrderID)
     {
-      var orderItem = (OrderItem) LifetimeService.GetObjectReference(TestableClientTransaction, objectID);
+      var orderItem = (OrderItem)LifetimeService.GetObjectReference(TestableClientTransaction, objectID);
       var fakeDataContainer = DataContainer.CreateForExisting(
           orderItem.ID,
           null,

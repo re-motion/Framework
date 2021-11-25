@@ -115,8 +115,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
         var expectedNamedArgumentData =
             new[]
             {
-                new { MemberInfo = (MemberInfo) typeof(AttributeWithParameters).GetField("Field"), Value = (object) 5 },
-                new { MemberInfo = (MemberInfo) typeof(AttributeWithParameters).GetProperty("Property"), Value = (object) 4 }
+                new { MemberInfo = (MemberInfo)typeof(AttributeWithParameters).GetField("Field"), Value = (object)5 },
+                new { MemberInfo = (MemberInfo)typeof(AttributeWithParameters).GetProperty("Property"), Value = (object)4 }
             };
         Assert.That(namedArgumentData, Is.EquivalentTo(expectedNamedArgumentData));
       }
@@ -223,7 +223,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       var builder = new AttributeDefinitionBuilder(DefinitionObjectMother.CreateMixinDefinition(typeof(MixinWithAmbiguousSource)));
       var method = typeof(MixinWithAmbiguousSource).GetMethod("ToString", BindingFlags.NonPublic | BindingFlags.Instance);
-      var data = CustomAttributeData.GetCustomAttributes(method).Select(d => (ICustomAttributeData) new CustomAttributeDataAdapter(d));
+      var data = CustomAttributeData.GetCustomAttributes(method).Select(d => (ICustomAttributeData)new CustomAttributeDataAdapter(d));
       Assert.That(
           () => builder.Apply(method, data, true),
           Throws.InstanceOf<ConfigurationException>()
@@ -303,7 +303,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       var expectedNamedArgumentData =
           new[]
             {
-                new { MemberInfo = (MemberInfo) typeof(TagAttribute).GetField("Named"), Value = (object) 5 }
+                new { MemberInfo = (MemberInfo)typeof(TagAttribute).GetField("Named"), Value = (object)5 }
             };
       Assert.That(namedArgumentData, Is.EquivalentTo(expectedNamedArgumentData));
 

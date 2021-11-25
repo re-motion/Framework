@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       for (var i = 0; i < data.Length; i++)
         data[i] = new SendInputDto { Type = 0, MouseInfo = { Flags = flags[i] } };
 
-      SendInput((uint) data.Length, data, s_dtoStructureSize);
+      SendInput((uint)data.Length, data, s_dtoStructureSize);
     }
   }
 }

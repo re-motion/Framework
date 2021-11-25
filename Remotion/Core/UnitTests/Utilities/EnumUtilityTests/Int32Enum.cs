@@ -44,13 +44,13 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     [Test]
     public void IsValidEnumValue_WithEnum_AndValueOutOfRange_Negative ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue((TestEnum) (-3)), Is.False);
+      Assert.That(EnumUtility.IsValidEnumValue((TestEnum)(-3)), Is.False);
     }
 
     [Test]
     public void IsValidEnumValue_WithEnum_AndValueOutOfRange_Positive ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue((TestEnum) 3), Is.False);
+      Assert.That(EnumUtility.IsValidEnumValue((TestEnum)3), Is.False);
     }
 
     [Test]
@@ -86,19 +86,19 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     [Test]
     public void IsValidEnumValue_WithFlag_AndValueOutOfRange_Negative ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) (-3)), Is.False);
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)(-3)), Is.False);
     }
 
     [Test]
     public void IsValidEnumValue_WithFlag_AndValueOutOfRange_Zero ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue((TestFlags) (0)), Is.False);
+      Assert.That(EnumUtility.IsValidEnumValue((TestFlags)(0)), Is.False);
     }
 
     [Test]
     public void IsValidEnumValue_WithFlag_AndValueOutOfRange_UndefinedBit ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue(TestFlags.Flag1 | ((TestFlags) 16)), Is.False);
+      Assert.That(EnumUtility.IsValidEnumValue(TestFlags.Flag1 | ((TestFlags)16)), Is.False);
     }
 
     [Test]

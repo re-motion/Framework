@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
       var classDefinitionsByStorageProvider = classDefinitions
           .Where(cd => cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
-          .GroupBy(cd => (RdbmsProviderDefinition) cd.StorageEntityDefinition.StorageProviderDefinition);
+          .GroupBy(cd => (RdbmsProviderDefinition)cd.StorageEntityDefinition.StorageProviderDefinition);
 
       var mappingElement = new XElement(Constants.Namespace + "mapping");
       var enumElements = new List<XElement>();

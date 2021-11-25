@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
           new ProviderCollection<StorageProviderDefinition>(),
           new UnitTestStorageProviderStubDefinition("Test"));
       var storageProviderDefinitionHelper =
-          (StorageProviderDefinitionHelper) PrivateInvoke.GetNonPublicField(_storageConfigurationWithoutDefaultProvider, "_defaultStorageProviderDefinitionHelper");
+          (StorageProviderDefinitionHelper)PrivateInvoke.GetNonPublicField(_storageConfigurationWithoutDefaultProvider, "_defaultStorageProviderDefinitionHelper");
       storageProviderDefinitionHelper.Provider = null;
     }
 
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     {
       var finder = new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfigurationWithoutDefaultProvider);
       Assert.That(
-          () => finder.GetStorageProviderDefinition((Type) null, null),
+          () => finder.GetStorageProviderDefinition((Type)null, null),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.Contains("Missing default storage provider."));
     }
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     {
       var finder = new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfigurationWithoutDefaultProvider);
       Assert.That(
-          () => finder.GetStorageProviderDefinition((Type) null, "Test"),
+          () => finder.GetStorageProviderDefinition((Type)null, "Test"),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.Contains("Missing default storage provider. Test"));
     }
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void GetStorageProviderDefinition_ClassWithoutStorageGroupType_DefaultStorageProviderDefinitionDefined ()
     {
       var finder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-      var result = finder.GetStorageProviderDefinition((Type) null, null);
+      var result = finder.GetStorageProviderDefinition((Type)null, null);
 
       Assert.That(result.Name, Is.EqualTo("DefaultStorageProvider"));
     }

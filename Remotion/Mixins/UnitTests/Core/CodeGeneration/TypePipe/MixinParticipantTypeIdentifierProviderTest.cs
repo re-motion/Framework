@@ -71,7 +71,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var result = _provider.GetExpression(_classContext);
 
       Assert.That(result.NodeType, Is.EqualTo(ExpressionType.Convert));
-      var inner = ((UnaryExpression) result).Operand;
+      var inner = ((UnaryExpression)result).Operand;
 
       // Must _not_ be a ConstantExpression containing the ClassContext, but instead a NewExpression constructing the ClassContext from scratch.
       Assert.That(inner.NodeType, Is.EqualTo(ExpressionType.New));
@@ -91,7 +91,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var evaluatedResult = compiledResult();
 
       Assert.That(evaluatedResult, Is.TypeOf<FlatClassContext>());
-      Assert.That(((FlatClassContext) evaluatedResult).GetRealValue(), Is.EqualTo(_classContext));
+      Assert.That(((FlatClassContext)evaluatedResult).GetRealValue(), Is.EqualTo(_classContext));
     }
   }
 }

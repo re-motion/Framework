@@ -37,7 +37,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         if (ifMethod == null || ifMethod.ReturnType != typeof(bool))
           throw new WxeException("If-block " + type.FullName + " does not define method \"bool If()\".");
 
-        bool result = (bool) ifMethod.Invoke(this, new object[0])!;
+        bool result = (bool)ifMethod.Invoke(this, new object[0])!;
         if (result)
         {
           _stepList = GetResultList("Then");
@@ -65,7 +65,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       if (! typeof(WxeStepList).IsAssignableFrom(stepListType))
         throw new WxeException("Type " + stepListType.FullName + " must be derived from WxeStepList.");
 
-      WxeStepList resultList = (WxeStepList) System.Activator.CreateInstance(stepListType)!;
+      WxeStepList resultList = (WxeStepList)System.Activator.CreateInstance(stepListType)!;
       resultList.SetParentStep(this);
       return resultList;
     }

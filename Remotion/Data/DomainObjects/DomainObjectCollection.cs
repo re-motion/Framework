@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects
     /// Initializes a new <see cref="DomainObjectCollection" />.
     /// </summary>
     public DomainObjectCollection ()
-        : this((Type) null)
+        : this((Type)null)
     {
     }
 

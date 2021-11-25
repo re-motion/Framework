@@ -52,13 +52,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     [DefaultValue (true)]
     public bool EnableAbstractTenants
     {
-      get { return (bool?) ViewState[s_enableAbstractTenantsKey] ?? true; }
+      get { return (bool?)ViewState[s_enableAbstractTenantsKey] ?? true; }
       set { ViewState[s_enableAbstractTenantsKey] = value; }
     }
 
     protected SecurityManagerHttpApplication ApplicationInstance
     {
-      get { return (SecurityManagerHttpApplication) Context.ApplicationInstance; }
+      get { return (SecurityManagerHttpApplication)Context.ApplicationInstance; }
     }
 
     protected override void OnLoad (EventArgs e)
@@ -188,13 +188,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     private bool IsTenantSelectionEnabled
     {
-      get { return (bool?) ViewState[s_isTenantSelectionEnabledKey] ?? true; }
+      get { return (bool?)ViewState[s_isTenantSelectionEnabledKey] ?? true; }
       set { ViewState[s_isTenantSelectionEnabledKey] = value; }
     }
 
     private bool IsSubstitutionSelectionEnabled
     {
-      get { return (bool?) ViewState[s_isSubstitutionSelectionEnabledKey] ?? true; }
+      get { return (bool?)ViewState[s_isSubstitutionSelectionEnabledKey] ?? true; }
       set { ViewState[s_isSubstitutionSelectionEnabledKey] = value; }
     }
   }

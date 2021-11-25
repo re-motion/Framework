@@ -185,7 +185,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
           childNode.NodeType,
           XmlNodeType.Text);
 
-      var node = (XmlText) childNode;
+      var node = (XmlText)childNode;
 
       AssertAreEqual(content, node.InnerText.Trim(), "Unexpected text node content.");
     }

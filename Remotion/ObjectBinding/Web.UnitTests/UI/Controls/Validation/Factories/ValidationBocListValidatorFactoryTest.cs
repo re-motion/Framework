@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocList>>());
 
-      var factories = ((CompoundValidatorFactory<IBocList>) instance).VlidatorFactories.Select(f => f.GetType()).ToList();
+      var factories = ((CompoundValidatorFactory<IBocList>)instance).VlidatorFactories.Select(f => f.GetType()).ToList();
       Assert.That(factories, Has.Member(typeof(BocListValidatorFactory)));
       Assert.That(factories, Has.Member(typeof(ValidationBocListValidatorFactory)));
       Assert.That(factories.IndexOf(typeof(BocListValidatorFactory)), Is.LessThan(factories.IndexOf(typeof(ValidationBocListValidatorFactory))));

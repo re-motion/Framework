@@ -7,7 +7,7 @@ public static class Remotion_Mixins_Samples_CompositionPattern_Core_ExternalDoma
 {
   public static IMunicipalSettlement AsMunicipalSettlement (this ISettlement settlement)
   {
-    return (IMunicipalSettlement) settlement;
+    return (IMunicipalSettlement)settlement;
   }
 }
 // ReSharper restore CheckNamespace

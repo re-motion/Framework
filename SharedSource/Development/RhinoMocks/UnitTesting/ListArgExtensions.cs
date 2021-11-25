@@ -41,7 +41,7 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
     {
       var items = collection.Cast<object>().ToArray();
       var type = typeof(ListArg<>).Assembly.GetType("Rhino.Mocks.ArgManager", true)!;
-      var message = "equivalent to collection [" + string.Join(", ", (IEnumerable<object>) items) + "]";
+      var message = "equivalent to collection [" + string.Join(", ", (IEnumerable<object>)items) + "]";
       var constraint = new PredicateConstraintWithMessage<T>(c => c.Cast<object>().SetEquals(items), message);
       PrivateInvoke.InvokeNonPublicStaticMethod(type, "AddInArgument", constraint);
       return default(T)!;
@@ -53,7 +53,7 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
     [return: MaybeNull]
     public static T Equivalent<T> (this ListArg<T> arg, params object[] items) where T : IEnumerable
     {
-      return Equivalent(arg, (IEnumerable) items)!;
+      return Equivalent(arg, (IEnumerable)items)!;
     }
 
     /// <summary>

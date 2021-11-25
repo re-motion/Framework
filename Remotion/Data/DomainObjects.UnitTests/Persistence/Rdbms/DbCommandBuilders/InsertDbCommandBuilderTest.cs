@@ -67,10 +67,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _insertedColumnsSpecificationStub
           .Stub(stub => stub.AppendColumnNames(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
       _insertedColumnsSpecificationStub
           .Stub(stub => stub.AppendColumnValues(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("5, 'test', true"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("5, 'test', true"));
 
       var result = builder.Create(_commandExecutionContextStub);
 
@@ -88,10 +88,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _insertedColumnsSpecificationStub
           .Stub(stub => stub.AppendColumnNames(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
       _insertedColumnsSpecificationStub
           .Stub(stub => stub.AppendColumnValues(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("5, 'test', true"));
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("5, 'test', true"));
 
       var result = builder.Create(_commandExecutionContextStub);
 

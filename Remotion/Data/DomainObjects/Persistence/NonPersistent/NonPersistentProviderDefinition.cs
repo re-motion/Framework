@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public new INonPersistentStorageObjectFactory Factory
     {
-      get { return (INonPersistentStorageObjectFactory) base.Factory; }
+      get { return (INonPersistentStorageObjectFactory)base.Factory; }
     }
 
     public override bool IsIdentityTypeSupported (Type identityType)

@@ -219,7 +219,7 @@ namespace OBWTest.IndividualControlTests
       List<BusinessObjectWithIdentityProxy> persons = new List<BusinessObjectWithIdentityProxy>();
       foreach (Person person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)))
         persons.Add(
-            new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity) person) { IconUrl = GetUrl(GetIcon((IBusinessObject) person)) });
+            new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity)person) { IconUrl = GetUrl(GetIcon((IBusinessObject)person)) });
 
       foreach (string value in s_values)
         persons.Add(new BusinessObjectWithIdentityProxy { UniqueIdentifier = "invalid", DisplayName = value, IconUrl = GetUrl(IconInfo.CreateSpacer(_resourceUrlFactory)) });

@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
           .WhenCalled(mi => Assert.That(mi.Arguments[0], Is.SameAs(ctx)))
           .Return(arguments);
 
-      var result = (Expression) PrivateInvoke.InvokeNonPublicMethod(_interceptorPartialMock, "CreateBody", ctx);
+      var result = (Expression)PrivateInvoke.InvokeNonPublicMethod(_interceptorPartialMock, "CreateBody", ctx);
 
       var expectedbody =
           Expression.Call(

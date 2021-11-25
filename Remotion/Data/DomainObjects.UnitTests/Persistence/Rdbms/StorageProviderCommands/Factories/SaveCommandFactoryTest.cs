@@ -71,9 +71,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var updateDbCommandBuilderNew1 = MockRepository.GenerateStub<IDbCommandBuilder>();
       var updateDbCommandBuilderNew2 = MockRepository.GenerateStub<IDbCommandBuilder>();
 
-      var tableDefinition1 = (TableDefinition) dataContainerNew1.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition2 = (TableDefinition) dataContainerNew2.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition3 = (TableDefinition) dataContainerNewWithoutRelations.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinition1 = (TableDefinition)dataContainerNew1.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinition2 = (TableDefinition)dataContainerNew2.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinition3 = (TableDefinition)dataContainerNewWithoutRelations.ID.ClassDefinition.StorageEntityDefinition;
 
       _dbCommandBuilderFactoryStrictMock
           .Stub(
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
       Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
-      var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
+      var tuples = ((MultiDataContainerSaveCommand)result).Tuples.ToList();
 
       Assert.That(tuples.Count, Is.EqualTo(5));
       Assert.That(tuples[0].Item1, Is.EqualTo(dataContainerNew1.ID));
@@ -155,9 +155,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var updateDbCommandBuilderChangedEmployee = MockRepository.GenerateStub<IDbCommandBuilder>();
       var updateDbCommandBuilderMarkedAsChanged = MockRepository.GenerateStub<IDbCommandBuilder>();
 
-      var tableDefinitionChangedSerialNumber = (TableDefinition) dataContainerChangedSerialNumber.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinitionChangedEmployee = (TableDefinition) dataContainerChangedEmployee.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinitionMarkedAsChanged = (TableDefinition) dataContainerChangedMarkedAsChanged.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinitionChangedSerialNumber = (TableDefinition)dataContainerChangedSerialNumber.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinitionChangedEmployee = (TableDefinition)dataContainerChangedEmployee.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinitionMarkedAsChanged = (TableDefinition)dataContainerChangedMarkedAsChanged.ID.ClassDefinition.StorageEntityDefinition;
 
       _dbCommandBuilderFactoryStrictMock
           .Stub(
@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           _factory.CreateForSave(new[] { dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged });
 
       Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
-      var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
+      var tuples = ((MultiDataContainerSaveCommand)result).Tuples.ToList();
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
       Assert.That(tuples.Count, Is.EqualTo(3));
@@ -217,9 +217,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var dataContainerDeletedWithRelations2 = DataContainer.CreateForExisting(DomainObjectIDs.Computer2, null, pd => pd.DefaultValue);
       dataContainerDeletedWithRelations2.Delete();
 
-      var tableDefinition1 = (TableDefinition) dataContainerDeletedWithoutRelations.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition2 = (TableDefinition) dataContainerDeletedWithRelations1.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition3 = (TableDefinition) dataContainerDeletedWithRelations2.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinition1 = (TableDefinition)dataContainerDeletedWithoutRelations.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinition2 = (TableDefinition)dataContainerDeletedWithRelations1.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinition3 = (TableDefinition)dataContainerDeletedWithRelations2.ID.ClassDefinition.StorageEntityDefinition;
 
       var updateDbCommandBuilderDeleted2 = MockRepository.GenerateStub<IDbCommandBuilder>();
       var updateDbCommandBuilderDeleted3 = MockRepository.GenerateStub<IDbCommandBuilder>();
@@ -279,7 +279,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
       Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
-      var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
+      var tuples = ((MultiDataContainerSaveCommand)result).Tuples.ToList();
 
       Assert.That(tuples.Count, Is.EqualTo(5));
       Assert.That(tuples[0].Item1, Is.EqualTo(dataContainerDeletedWithRelations1.ID));
@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
       Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
-      var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
+      var tuples = ((MultiDataContainerSaveCommand)result).Tuples.ToList();
 
       Assert.That(tuples.Count, Is.EqualTo(0));
     }
@@ -368,7 +368,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
     private object GetObjectIDValue (DataContainer dataContainer, Type declaringType, string shortPropertyName)
     {
-      var objectID = (ObjectID) GetPropertyValue(dataContainer, declaringType, shortPropertyName);
+      var objectID = (ObjectID)GetPropertyValue(dataContainer, declaringType, shortPropertyName);
       return objectID != null ? objectID.Value : null;
     }
 

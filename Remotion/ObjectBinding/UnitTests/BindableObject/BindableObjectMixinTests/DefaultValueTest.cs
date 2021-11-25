@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     public void GetProperty_NormallyReturnsNonNull ()
     {
       ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>>(ParamList.Empty);
-      IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;
+      IBusinessObject instanceAsIBusinessObject = (IBusinessObject)instance;
 
       Assert.That(instanceAsIBusinessObject.GetProperty("Scalar"), Is.Not.Null);
       Assert.That(instanceAsIBusinessObject.GetProperty("Scalar"), Is.EqualTo(instance.Scalar));
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     public void GetProperty_ReturnsNull_WhenDefaultValueTrue ()
     {
       ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>>(ParamList.Empty);
-      IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;
+      IBusinessObject instanceAsIBusinessObject = (IBusinessObject)instance;
 
       Assert.That(instanceAsIBusinessObject.GetProperty("Scalar"), Is.EqualTo(0));
     }
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     public void GetProperty_ReturnsNonNull_WhenDefaultValueTrueOnList ()
     {
       ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>>(ParamList.Empty);
-      IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;
+      IBusinessObject instanceAsIBusinessObject = (IBusinessObject)instance;
 
       Assert.That(instanceAsIBusinessObject.GetProperty("List"), Is.Not.Null);
       Assert.That(instanceAsIBusinessObject.GetProperty("List"), Is.EqualTo(instance.List));

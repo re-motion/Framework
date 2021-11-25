@@ -109,8 +109,8 @@ namespace Remotion.Collections.Caching.UnitTests
       var revision = token.GetCurrent();
 
       var deserializedObjects = Serializer.SerializeAndDeserialize(new object[] { token, revision });
-      var deserializedToken = (InvalidationToken) deserializedObjects[0];
-      var deserializedRevision = (InvalidationToken.Revision) deserializedObjects[1];
+      var deserializedToken = (InvalidationToken)deserializedObjects[0];
+      var deserializedRevision = (InvalidationToken.Revision)deserializedObjects[1];
 
       Assert.That(deserializedToken.IsCurrent(deserializedRevision), Is.True);
 #if DEBUG

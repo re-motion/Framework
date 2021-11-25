@@ -38,8 +38,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
       return new UserProxy(
           user.GetHandle(),
-          ((IBusinessObjectWithIdentity) user).UniqueIdentifier,
-          ((IBusinessObjectWithIdentity) user).DisplayName);
+          ((IBusinessObjectWithIdentity)user).UniqueIdentifier,
+          ((IBusinessObjectWithIdentity)user).DisplayName);
     }
 
     private UserProxy (IDomainObjectHandle<User> handle, string uniqueIdentifier, string displayName)

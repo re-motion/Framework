@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public UserControl GetTestOutputControl ()
     {
-      return (UserControl) testOutput.Controls[1].Controls[0];
+      return (UserControl)testOutput.Controls[1].Controls[0];
     }
   }
 }

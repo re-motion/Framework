@@ -66,7 +66,7 @@ namespace Remotion.Web.UI.Controls
 
     IControl? IDatePickerButton.Parent
     {
-      get { return (IControl?) Parent; }
+      get { return (IControl?)Parent; }
     }
 
     public new IPage? Page

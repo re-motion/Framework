@@ -945,7 +945,7 @@ public class ClientTransaction
 
     _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-    var objectEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    var objectEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
     DomainObject relatedObject = objectEndPoint.GetOppositeObject();
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
@@ -971,7 +971,7 @@ public class ClientTransaction
 
     _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-    var objectEndPoint = (IObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    var objectEndPoint = (IObjectEndPoint)_dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
     DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject();
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
@@ -1003,14 +1003,14 @@ public class ClientTransaction
     if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
     {
       var domainObjectCollection = domainObjectCollectionEndPoint.Collection;
-      relatedObjects = (IReadOnlyList<IDomainObject>) domainObjectCollection;
+      relatedObjects = (IReadOnlyList<IDomainObject>)domainObjectCollection;
       readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(domainObjectCollection);
     }
     else
     {
-      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint) collectionEndPoint;
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint)collectionEndPoint;
       relatedObjects = virtualCollectionEndPoint.Collection;
-      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>) relatedObjects;
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>)relatedObjects;
     }
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
@@ -1042,14 +1042,14 @@ public class ClientTransaction
     if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
     {
       var domainObjectCollection = domainObjectCollectionEndPoint.GetCollectionWithOriginalData();
-      relatedObjects = (IReadOnlyList<IDomainObject>) domainObjectCollection;
+      relatedObjects = (IReadOnlyList<IDomainObject>)domainObjectCollection;
       readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(domainObjectCollection);
     }
     else
     {
-      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint) collectionEndPoint;
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint)collectionEndPoint;
       relatedObjects = virtualCollectionEndPoint.GetCollectionWithOriginalData();
-      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>) relatedObjects;
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>)relatedObjects;
     }
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);

@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (ctor == null)
         throw CreateMissingConstructorException(collectionType);
 
-      return (DomainObjectCollection) ctor.Invoke(new[] { dataStrategy });
+      return (DomainObjectCollection)ctor.Invoke(new[] { dataStrategy });
     }
 
     /// <summary>
