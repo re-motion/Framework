@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -50,12 +50,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void Instantiate_WithCustomValues ()
     {
-      IMetadataFactory metadataFactoryStub = MockRepository.GenerateStub<IMetadataFactory>();
-      IBusinessObjectServiceFactory serviceFactoryStub = MockRepository.GenerateStub<IBusinessObjectServiceFactory>();
-      BindableDomainObjectProvider provider = new BindableDomainObjectProvider(metadataFactoryStub, serviceFactoryStub);
+      var metadataFactoryStub = new Mock<IMetadataFactory>();
+      var serviceFactoryStub = new Mock<IBusinessObjectServiceFactory>();
+      BindableDomainObjectProvider provider = new BindableDomainObjectProvider(metadataFactoryStub.Object, serviceFactoryStub.Object);
 
-      Assert.That(provider.MetadataFactory, Is.SameAs(metadataFactoryStub));
-      Assert.That(provider.ServiceFactory, Is.SameAs(serviceFactoryStub));
+      Assert.That(provider.MetadataFactory, Is.SameAs(metadataFactoryStub.Object));
+      Assert.That(provider.ServiceFactory, Is.SameAs(serviceFactoryStub.Object));
     }
   }
 }
