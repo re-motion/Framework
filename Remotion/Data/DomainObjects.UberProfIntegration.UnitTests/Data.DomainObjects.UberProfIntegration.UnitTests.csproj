@@ -21,8 +21,5 @@
     <ProjectReference Include="..\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj" />
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
