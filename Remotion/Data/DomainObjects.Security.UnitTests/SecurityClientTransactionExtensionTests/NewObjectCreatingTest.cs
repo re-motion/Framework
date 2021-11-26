@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
@@ -49,7 +50,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessGranted_DowsNotThrow ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(typeof(SecurableObject), GeneralAccessTypes.Create, true);
-      _testHelper.ReplayAll();
 
       _extension.NewObjectCreating(_testHelper.Transaction, typeof(SecurableObject));
 
@@ -60,7 +60,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessDenied_ThrowsPermissionDeniedException ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(typeof(SecurableObject), GeneralAccessTypes.Create, false);
-      _testHelper.ReplayAll();
       Assert.That(
           () => _extension.NewObjectCreating(_testHelper.Transaction, typeof(SecurableObject)),
           Throws.InstanceOf<PermissionDeniedException>());
@@ -69,8 +68,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     [Test]
     public void Test_AccessGranted_WithinSecurityFreeSection_DoesNotPerformSecurityCheck ()
     {
-      _testHelper.ReplayAll();
-
       using (SecurityFreeSection.Activate())
       {
         _extension.NewObjectCreating(_testHelper.Transaction, typeof(SecurableObject));
@@ -82,8 +79,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     [Test]
     public void Test_WithNonSecurableObject_DoesNotPerformSecurityCheck ()
     {
-      _testHelper.ReplayAll();
-
       _extension.NewObjectCreating(_testHelper.Transaction, typeof(NonSecurableObject));
 
       _testHelper.VerifyAll();
@@ -97,9 +92,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
         _extension.NewObjectCreating(_testHelper.Transaction, typeof(SecurableObject));
         return true;
       };
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(typeof(SecurableObject), GeneralAccessTypes.Create, hasAccess);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(typeof(SecurableObject), GeneralAccessTypes.Create, true);
-      _testHelper.ReplayAll();
+      var sequence = new MockSequence();
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(sequence, typeof(SecurableObject), GeneralAccessTypes.Create, hasAccess);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(sequence, typeof(SecurableObject), GeneralAccessTypes.Create, true);
 
       _extension.NewObjectCreating(_testHelper.Transaction, typeof(SecurableObject));
 
@@ -112,7 +107,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       IObjectSecurityStrategy objectSecurityStrategy = _testHelper.CreateObjectSecurityStrategy();
       _testHelper.AddExtension(_extension);
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(typeof(SecurableObject), GeneralAccessTypes.Create, true);
-      _testHelper.ReplayAll();
 
       SecurableObject.NewObject(_testHelper.Transaction, objectSecurityStrategy);
 
@@ -125,7 +119,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       using (var scope = _testHelper.Transaction.EnterNonDiscardingScope())
       {
         _testHelper.ExpectFunctionalSecurityStrategyHasAccessWithMatchingScope(scope);
-        _testHelper.ReplayAll();
 
         _extension.NewObjectCreating(_testHelper.Transaction, typeof(SecurableObject));
       }
@@ -137,7 +130,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithActiveTransactionNotMatchingTransactionPassedAsArgument_CreatesScope ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(typeof(SecurableObject), GeneralAccessTypes.Create, true);
-      _testHelper.ReplayAll();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -151,7 +143,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithInactiveTransaction_CreatesScope ()
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(typeof(SecurableObject), GeneralAccessTypes.Create, true);
-      _testHelper.ReplayAll();
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {

@@ -51,7 +51,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Delete, true);
-      _testHelper.ReplayAll();
 
       _extension.ObjectDeleting(_testHelper.Transaction, securableObject);
 
@@ -64,7 +63,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Delete, false);
-      _testHelper.ReplayAll();
       Assert.That(
           () => _extension.ObjectDeleting(_testHelper.Transaction, securableObject),
           Throws.InstanceOf<PermissionDeniedException>());
@@ -75,7 +73,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
-      _testHelper.ReplayAll();
 
       using (SecurityFreeSection.Activate())
       {
@@ -90,7 +87,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       NonSecurableObject nonSecurableObject = _testHelper.CreateNonSecurableObject();
       _testHelper.Transaction.Commit();
-      _testHelper.ReplayAll();
 
       _extension.ObjectDeleting(_testHelper.Transaction, nonSecurableObject);
 
@@ -110,7 +106,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       };
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Delete, hasAccess);
       _testHelper.ExpectObjectSecurityStrategyHasAccess(otherObject, GeneralAccessTypes.Delete, true);
-      _testHelper.ReplayAll();
 
       _extension.ObjectDeleting(_testHelper.Transaction, securableObject);
 
@@ -124,7 +119,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.Transaction.Commit();
       _testHelper.AddExtension(_extension);
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Delete, true);
-      _testHelper.ReplayAll();
 
       _testHelper.Transaction.ExecuteInScope(securableObject.Delete);
 
@@ -135,7 +129,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithNewObject_DoesNotPerformSecurityCheck ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ReplayAll();
 
       _extension.ObjectDeleting(_testHelper.Transaction, securableObject);
 
@@ -150,7 +143,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       using (var scope = _testHelper.Transaction.EnterNonDiscardingScope())
       {
         _testHelper.ExpectObjectSecurityStrategyHasAccessWithMatchingScope(securableObject, scope);
-        _testHelper.ReplayAll();
 
         _extension.ObjectDeleting(_testHelper.Transaction, securableObject);
       }
@@ -164,7 +156,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Delete, true);
-      _testHelper.ReplayAll();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -180,7 +171,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Delete, true);
-      _testHelper.ReplayAll();
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
