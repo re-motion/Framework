@@ -332,7 +332,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showEditModeValidationMarkers;
     private bool _disableEditModeValidationMessages;
 
-    private string _errorMessage;
+    private PlainTextString _errorMessage;
     private bool? _isBrowserCapableOfSCripting;
     private ScalarLoadPostDataTarget _currentPagePostBackTarget;
 
@@ -939,17 +939,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var validatorFactory = ServiceLocator.GetInstance<IBocListValidatorFactory>();
       _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
 
-      if (!string.IsNullOrEmpty (ErrorMessage))
-        UpdateValidtaorErrorMessages<EditModeValidator> (ErrorMessage);
+      if (!ErrorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<EditModeValidator> (ErrorMessage);
 
       return _validators;
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -2070,9 +2070,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! string.IsNullOrEmpty (key))
         AvailableViewsListTitle = resourceManager.GetWebString (key, AvailableViewsListTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
+      key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage.GetValue());
       if (! string.IsNullOrEmpty (key))
-        ErrorMessage = resourceManager.GetString (key);
+        ErrorMessage = resourceManager.GetText (key);
 
       _fixedColumns.LoadResources (resourceManager, globalizationService);
       OptionsMenuItems.LoadResources (resourceManager, globalizationService);
@@ -3526,14 +3526,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description ("Validation message displayed if there is an error.")]
     [Category ("Validator")]
-    [DefaultValue ("")]
-    public string ErrorMessage
+    [DefaultValue (typeof (PlainTextString), "")]
+    public PlainTextString ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<EditModeValidator> (_errorMessage);
+        UpdateValidatorErrorMessages<EditModeValidator> (_errorMessage);
       }
     }
 
@@ -3605,9 +3605,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> (_customColumnControls); }
     }
 
-    IEnumerable<string> IBocList.GetValidationErrors ()
+    IEnumerable<PlainTextString> IBocList.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where (v => !v.IsValid)
+          .Select (v => v.ErrorMessage)
+          .Select (PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()

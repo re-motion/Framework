@@ -32,6 +32,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -52,8 +53,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     private const string c_timeValueName = "MyDateTimeValue_TimeValue";
     private const string c_dateValueID = "MyDateTimeValue";
     private const string c_labelID = "Label";
-    private const string c_dateValidationErrors = "DateValidationError";
-    private const string c_timeValidationErrors = "TimeValidationError";
+
+    private static readonly PlainTextString s_dateValidationErrors = PlainTextString.CreateFromText ("DateValidationError");
+    private static readonly PlainTextString s_timeValidationErrors = PlainTextString.CreateFromText ("TimeValidationError");
 
     private Mock<IBocDateTimeValue> _control;
     private SingleRowTextBoxStyle _dateStyle;
@@ -77,8 +79,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       _control.Setup (stub => stub.GetDateValueName()).Returns (c_dateValueName);
       _control.Setup (stub => stub.GetTimeValueName()).Returns (c_timeValueName);
       _control.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
-      _control.Setup (mock => mock.GetDateValueValidationErrors()).Returns (EnumerableUtility.Singleton (c_dateValidationErrors));
-      _control.Setup (mock => mock.GetTimeValueValidationErrors()).Returns (EnumerableUtility.Singleton (c_timeValidationErrors));
+      _control.Setup (mock => mock.GetDateValueValidationErrors()).Returns (EnumerableUtility.Singleton (s_dateValidationErrors));
+      _control.Setup (mock => mock.GetTimeValueValidationErrors()).Returns (EnumerableUtility.Singleton (s_timeValidationErrors));
 
       _dateStyle = new SingleRowTextBoxStyle();
       _timeStyle = new SingleRowTextBoxStyle();
@@ -263,11 +265,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         Assert.That (_timeTextBox.Attributes[StubLabelReferenceRenderer.LabelReferenceAttribute], Is.EqualTo (c_labelID));
         Assert.That (_timeTextBox.Attributes[StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute], Is.EqualTo (c_dateValueID + "_TimeLabel"));
         Assert.That (_timeTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsIDAttribute], Is.EqualTo (c_dateValueID + "_TimeValueValidationErrors"));
-        Assert.That (_timeTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute], Is.EqualTo (c_timeValidationErrors));
+        Assert.That (
+            _timeTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute],
+            Is.EqualTo (s_timeValidationErrors.ToString (WebStringEncoding.Attribute)));
 
         var validationErrors = container.GetAssertedChildElement ("span", 2).GetAssertedChildElement ("fake", 2);
         validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_dateValueID + "_TimeValueValidationErrors");
-        validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_timeValidationErrors);
+        validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_timeValidationErrors);
       }
       else
       {
@@ -279,14 +283,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         timeValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
         timeValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_dateValueID + "_TimeLabel "+ c_dateValueID + "_TimeValue");
         timeValueLabel.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_dateValueID + "_TimeValueValidationErrors");
-        timeValueLabel.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_timeValidationErrors);
+        timeValueLabel.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_timeValidationErrors);
 
         var timeDescriptionLabel = container.GetAssertedChildElement ("span", 4);
         timeDescriptionLabel.AssertAttributeValueEquals ("id", c_dateValueID + "_TimeLabel");
 
         var validationErrors = container.GetAssertedChildElement ("fake", 5);
         validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_dateValueID + "_TimeValueValidationErrors");
-        validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_timeValidationErrors);
+        validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_timeValidationErrors);
       }
     }
 
@@ -316,14 +320,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         Assert.That (_dateTextBox.MaxLength, Is.EqualTo (10));
         Assert.That (_dateTextBox.Attributes[StubLabelReferenceRenderer.LabelReferenceAttribute], Is.EqualTo (c_labelID));
         Assert.That (_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsIDAttribute], Is.EqualTo (c_dateValueID + "_DateValueValidationErrors"));
-        Assert.That (_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute], Is.EqualTo (c_dateValidationErrors));
+        Assert.That (_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute], Is.EqualTo (s_dateValidationErrors.ToString (WebStringEncoding.Attribute)));
         
         if (isDateOnly)
         {
 		  Assert.That (_dateTextBox.Attributes[StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute], Is.EqualTo (""));
 
           var validationErrors = container.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("fake", 1);
-          validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_dateValidationErrors);
+          validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_dateValidationErrors);
         }
         else
         {
@@ -332,7 +336,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
               Is.EqualTo (c_dateValueID + "_DateLabel"));
           var validationErrors = container.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("fake", 2);
           validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_dateValueID + "_DateValueValidationErrors");
-          validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_dateValidationErrors);
+          validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_dateValidationErrors);
         }
       }
       else
@@ -343,7 +347,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         dateValueLabel.AssertAttributeValueEquals ("data-value", _dateValue.ToString ("yyyy-MM-dd"));
         dateValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
         dateValueLabel.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_dateValueID + "_DateValueValidationErrors");
-        dateValueLabel.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_dateValidationErrors);
+        dateValueLabel.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_dateValidationErrors);
 
         if (isDateOnly)
           dateValueLabel.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_dateValueID + "_DateValue");

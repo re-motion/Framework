@@ -320,7 +320,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       return label;
     }
 
-    private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<IBocEnumValue> renderingContext)
+    private IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<IBocEnumValue> renderingContext)
     {
       return renderingContext.Control.GetValidationErrors();
     }

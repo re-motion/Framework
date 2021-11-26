@@ -152,14 +152,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      SpecificGroupField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificGroupFieldRequiredFieldErrorMessage);
-      SpecificGroupTypeField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificGroupTypeFieldRequiredFieldErrorMessage);
-      SpecificPositionField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificPositionFieldRequiredFieldErrorMessage);
-      SpecificTenantField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificTenantFieldRequiredFieldErrorMessage);
-      SpecificUserField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
+      SpecificGroupField.NullItemErrorMessage = resourceManager.GetText (ResourceIdentifier.SpecificGroupFieldRequiredFieldErrorMessage);
+      SpecificGroupTypeField.NullItemErrorMessage = resourceManager.GetText (ResourceIdentifier.SpecificGroupTypeFieldRequiredFieldErrorMessage);
+      SpecificPositionField.NullItemErrorMessage = resourceManager.GetText (ResourceIdentifier.SpecificPositionFieldRequiredFieldErrorMessage);
+      SpecificTenantField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificTenantFieldRequiredFieldErrorMessage);
+      SpecificUserField.NullItemErrorMessage = resourceManager.GetText (ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
 
-      SpecificGroupField.InvalidItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificGroupFieldInvalidItemErrorMessage);
-      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificUserFieldInvalidItemErrorMessage);
+      SpecificGroupField.InvalidItemErrorMessage = resourceManager.GetText (ResourceIdentifier.SpecificGroupFieldInvalidItemErrorMessage);
+      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetText (ResourceIdentifier.SpecificUserFieldInvalidItemErrorMessage);
 
       base.OnPreRender (e);
 

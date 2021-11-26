@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.EditableRowSupport
@@ -51,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public bool? EnableOptionalValidators { get; set; }
     public EditableRowDataSourceFactory EditModeDataSourceFactory { get; set; }
     public EditableRowControlFactory EditModeControlFactory { get; set; }
-    public string ErrorMessage { get; set; }
+    public PlainTextString ErrorMessage { get; set; }
     public bool DisableEditModeValidationMessages { get; set; }
     public bool ShowEditModeValidationMarkers { get; set; }
     public bool ShowEditModeRequiredMarkers { get; set; }

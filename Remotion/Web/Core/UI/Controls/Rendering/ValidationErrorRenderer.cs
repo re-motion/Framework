@@ -50,7 +50,7 @@ namespace Remotion.Web.UI.Controls.Rendering
     public void SetValidationErrorsReferenceOnControl (
         IAttributeAccessor attributeAccessor,
         string validationErrorID,
-        IReadOnlyCollection<string> validationErrors)
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull ("attributeAccessor", attributeAccessor);
       ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
@@ -71,7 +71,10 @@ namespace Remotion.Web.UI.Controls.Rendering
       attributeAccessor.SetAttribute (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
     }
 
-    public void AddValidationErrorsReference (AttributeCollection attributeCollection, string validationErrorID, IReadOnlyCollection<string> validationErrors)
+    public void AddValidationErrorsReference (
+        AttributeCollection attributeCollection,
+        string validationErrorID,
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull ("attributeCollection", attributeCollection);
       ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
@@ -91,7 +94,10 @@ namespace Remotion.Web.UI.Controls.Rendering
       attributeCollection[HtmlTextWriterAttribute2.AriaInvalid] = HtmlAriaInvalidAttributeValue.True;
     }
 
-    public void RenderValidationErrors (HtmlTextWriter htmlTextWriter, string validationErrorID, IReadOnlyCollection<string> validationErrors)
+    public void RenderValidationErrors (
+        HtmlTextWriter htmlTextWriter,
+        string validationErrorID,
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull ("htmlTextWriter", htmlTextWriter);
       ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
@@ -106,7 +112,7 @@ namespace Remotion.Web.UI.Controls.Rendering
 
       foreach (var validationError in validationErrors)
       {
-        htmlTextWriter.Write (validationError);
+        validationError.Write (htmlTextWriter);
         htmlTextWriter.WriteBreak();
       }
 

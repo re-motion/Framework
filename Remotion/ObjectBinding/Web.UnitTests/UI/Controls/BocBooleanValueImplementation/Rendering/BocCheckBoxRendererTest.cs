@@ -47,7 +47,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_clientID = "MyCheckBox";
     private const string c_valueName = "MyCheckBox_Value";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
+
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText ("ValidationError");
 
     private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
 
@@ -65,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Setup (mock => mock.ControlType).Returns ("BocCheckBox");
       _checkbox.Setup (mock => mock.GetValueName()).Returns (c_valueName);
       _checkbox.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
-      _checkbox.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
+      _checkbox.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (s_validationErrors));
       
       var clientScriptManagerMock = new Mock<IClientScriptManager>();
       _startupScript = string.Format (
@@ -283,7 +284,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
         Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
         Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-        Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+        Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
         CheckImage (value, valueSpan, spanText);
         CheckOuterSpan (outerSpan);
@@ -316,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var validationErrorsSpan = node.GetAssertedChildElement ("fake", 3);
 
       Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
     }
 
@@ -343,7 +344,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute (checkbox, "aria-describedby", c_clientID + "_Description");
 
       Html.AssertAttribute (checkbox, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (checkbox, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute (checkbox, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void CheckImage (bool value, XmlNode outerSpan, WebString altText)

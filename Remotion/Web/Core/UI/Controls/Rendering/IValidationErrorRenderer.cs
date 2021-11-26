@@ -29,16 +29,16 @@ namespace Remotion.Web.UI.Controls.Rendering
     void SetValidationErrorsReferenceOnControl (
         [NotNull] IAttributeAccessor attributeAccessor,
         [NotNull] string validationErrorID,
-        [NotNull] IReadOnlyCollection<string> validationErrors);
+        [NotNull] IReadOnlyCollection<PlainTextString> validationErrors);
 
     void AddValidationErrorsReference (
         [NotNull] AttributeCollection attributeCollection,
         [NotNull] string validationErrorID,
-        [NotNull] IReadOnlyCollection<string> validationErrors);
+        [NotNull] IReadOnlyCollection<PlainTextString> validationErrors);
 
     void RenderValidationErrors (
         [NotNull] HtmlTextWriter htmlTextWriter,
         [NotNull] string validationErrorID,
-        [NotNull] IReadOnlyCollection<string> validationErrors);
+        [NotNull] IReadOnlyCollection<PlainTextString> validationErrors);
   }
 }

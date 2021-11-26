@@ -489,7 +489,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           else
             writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
           writer.RenderBeginTag (HtmlTextWriterTag.Div);
-          WebString.CreateFromText (validator.ErrorMessage).Write (writer);
+          PlainTextString.CreateFromText (validator.ErrorMessage).Write (writer);
           writer.RenderEndTag();
         }
       }

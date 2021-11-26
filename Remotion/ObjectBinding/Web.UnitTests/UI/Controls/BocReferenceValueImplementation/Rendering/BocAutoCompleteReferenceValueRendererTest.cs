@@ -51,7 +51,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_readOnlyTextValueName = "MyReferenceValue_Value";
     private const string c_uniqueidentifier = "uniqueidentifier";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
+
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText ("ValidationError");
 
     private enum OptionMenuConfiguration
     {
@@ -94,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup (stub => stub.GetTextValueName()).Returns (c_textValueName);
       Control.Setup (stub => stub.GetKeyValueName()).Returns (c_keyValueName);
       Control.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
-      Control.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
+      Control.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (s_validationErrors));
       Control.Setup (stub => stub.BusinessObjectUniqueIdentifier).Returns (c_uniqueidentifier);
       Control.Setup (stub=>stub.ControlServicePath).Returns ("~/ControlService.asmx");
 
@@ -469,7 +470,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
       contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
-      contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
       contentSpan.AssertChildElementCount (1);
       
       var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
@@ -500,7 +501,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var inputField = inputSpan.GetAssertedChildElement ("input", 0);
       inputField.AssertAttributeValueEquals ("type", "stub");
       inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
-      inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      inputField.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
       int hiddenFieldIndex = 1;
       if (Control.Object.Enabled)
@@ -552,7 +553,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
       var validationErrors = contentSpan.GetAssertedChildElement ("fake", 3);
       validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
-      validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      validationErrors.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
       if (optionMenuConfiguration == OptionMenuConfiguration.HasOptionsMenu)
       {
