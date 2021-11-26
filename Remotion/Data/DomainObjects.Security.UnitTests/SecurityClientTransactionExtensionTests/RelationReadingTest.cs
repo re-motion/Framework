@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -58,9 +59,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessGranted_DowsNotThrow ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, true);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
@@ -73,9 +73,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessDenied_ThrowsPermissionDeniedException ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, false);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, false);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
       Assert.That(
@@ -90,9 +89,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           typeof(SecurableObject).GetProperty("NonPublicRelationPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
       var getMethodInformation = MethodInfoAdapter.Create(propertyInfo.GetGetMethod(true));
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, true);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
 
@@ -108,9 +106,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           typeof(SecurableObject).GetProperty("NonPublicRelationPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
       var getMethodInformation = MethodInfoAdapter.Create(propertyInfo.GetGetMethod(true));
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, false);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, false);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
       Assert.That(
@@ -122,9 +119,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessGranted_WithMissingAccessor_DowsNotThrow ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new NullMethodInformation());
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Read, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), new NullMethodInformation());
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Read, true);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".RelationPropertyWithMissingGetAccessor");
 
@@ -137,9 +133,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessDenied_WithMissingAccessor_ThrowsPermissionDeniedException ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new NullMethodInformation());
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Read, false);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), new NullMethodInformation());
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Read, false);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".RelationPropertyWithMissingGetAccessor");
       Assert.That(
@@ -151,7 +146,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessGranted_WithinSecurityFreeSection_DoesNotPerformSecurityCheck ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ReplayAll();
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
@@ -167,7 +161,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithNonSecurableObject_DoesNotPerformSecurityCheck ()
     {
       NonSecurableObject nonSecurableObject = _testHelper.CreateNonSecurableObject();
-      _testHelper.ReplayAll();
 
       var nonSecurableEndPointDefintion = nonSecurableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(NonSecurableObject).FullName + ".Parent");
 
@@ -181,7 +174,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithAnonymousRelationEndPoint_DoesNotPerformSecurityCheck ()
     {
       NonSecurableObject nonSecurableObject = _testHelper.CreateNonSecurableObject();
-      _testHelper.ReplayAll();
+
       var endPointDefinition = new AnonymousRelationEndPointDefinition(nonSecurableObject.ID.ClassDefinition);
 
       _extension.RelationReading(_testHelper.Transaction, nonSecurableObject, endPointDefinition, ValueAccess.Current);
@@ -196,16 +189,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject otherObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.ExecuteInScope(() => securableObject.OtherParent = _testHelper.CreateSecurableObject());
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
       HasAccessDelegate hasAccess = delegate
       {
         _extension.RelationReading(_testHelper.Transaction, otherObject, securableEndPointDefintion, ValueAccess.Current);
         return true;
       };
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, hasAccess);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(otherObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), otherObject, TestAccessTypes.First, true);
 
 
       _extension.RelationReading(_testHelper.Transaction, securableObject, securableEndPointDefintion, ValueAccess.Current);
@@ -221,16 +213,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.Transaction.ExecuteInScope(() => securableObject.OtherChildren.Add(_testHelper.CreateSecurableObject()));
       var setMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetProperty("Children").GetGetMethod());
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Children");
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(setMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(setMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), setMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), setMethodInformation, TestAccessTypes.First);
       HasAccessDelegate hasAccess = delegate
       {
         _extension.RelationReading(_testHelper.Transaction, otherObject, securableEndPointDefintion, ValueAccess.Current);
         return true;
       };
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, hasAccess);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(otherObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), otherObject, TestAccessTypes.First, true);
 
 
       _extension.RelationReading(_testHelper.Transaction, securableObject, securableEndPointDefintion, ValueAccess.Current);
@@ -244,9 +235,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.ExecuteInScope(() => securableObject.Parent = _testHelper.CreateSecurableObject());
       _testHelper.AddExtension(_extension);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, true);
 
 
       Dev.Null = _testHelper.Transaction.ExecuteInScope(() => securableObject.Parent);
@@ -261,9 +251,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.Transaction.ExecuteInScope(() => securableObject.Children.Add(_testHelper.CreateSecurableObject()));
       _testHelper.AddExtension(_extension);
       var propertyInfo = typeof(SecurableObject).GetProperty("Children");
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(MethodInfoAdapter.Create(propertyInfo.GetGetMethod()), TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), MethodInfoAdapter.Create(propertyInfo.GetGetMethod()), TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, true);
 
       Dev.Null = _testHelper.Transaction.ExecuteInScope(() => securableObject.Children[0]);
 
@@ -276,9 +265,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       using (var scope = _testHelper.Transaction.EnterNonDiscardingScope())
       {
-        _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
+        _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
         _testHelper.ExpectObjectSecurityStrategyHasAccessWithMatchingScope(securableObject, scope);
-        _testHelper.ReplayAll();
 
         var securableEndPointDefintion =
             securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
@@ -292,9 +280,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithActiveTransactionNotMatchingTransactionPassedAsArgument_CreatesScope ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, true);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
@@ -310,9 +297,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithInactiveTransaction_CreatesScope ()
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_getMethodInformation, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new MockSequence(), _getMethodInformation, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, TestAccessTypes.First, true);
 
       var securableEndPointDefintion = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".Parent");
 
