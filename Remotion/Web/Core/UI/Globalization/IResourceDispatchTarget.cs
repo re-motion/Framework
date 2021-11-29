@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Web.UI;
 using Remotion.Globalization;
 
@@ -47,7 +47,7 @@ public interface IResourceDispatchTarget
   /// <param name="values">
   ///   An <b>IDictonary</b>: &lt;string key, string value&gt;.
   /// </param>
-  void Dispatch (IDictionary values);
+  void Dispatch (IDictionary<string, WebString> values);
 }
 
 }
