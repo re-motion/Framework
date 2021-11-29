@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var result = _decoratorWithRealData.HasChanged(_strategyStrictMock.Object);
 
-      _strategyStrictMock.Verify (          mock => mock.HasDataChanged(_decoratorWithRealData, It.IsAny<IDomainObjectCollectionData>()), Times.Never());
+      _strategyStrictMock.Verify(mock => mock.HasDataChanged(_decoratorWithRealData, It.IsAny<IDomainObjectCollectionData>()), Times.Never());
       Assert.That(result, Is.False);
     }
 
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _strategyStrictMock.Setup(mock => mock.HasDataChanged(_decoratorWithRealData, It.IsAny<IDomainObjectCollectionData>()))
                .Returns(true)
-               .Callback((IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData) => CheckOriginalDataMatches(_decoratorWithRealData.OriginalData, (IDomainObjectCollectionData)mi.Arguments[1]))
+               .Callback((IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData) => CheckOriginalDataMatches(_decoratorWithRealData.OriginalData,  originalData))
                .Verifiable();
 
       // Make strategy call necessary because both collections have the same count, but different items.
