@@ -21,4 +21,12 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)Remotion\Web\Development.Analyzers\Web.Development.Analyzers.csproj"
+                      PrivateAssets="all"
+                      ReferenceOutputAssembly="false"
+                      SetTargetFramework="TargetFramework=netstandard2.0"
+                      OutputItemType="Analyzer" />
+  </ItemGroup>
+
 </Project>

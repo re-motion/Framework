@@ -248,6 +248,10 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Core\Web.Core.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\ClientScript\Web.ClientScript.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.Analyzers\Web.Development.Analyzers.csproj"/>
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.Analyzers.IntegrationTests\Web.Development.Analyzers.IntegrationTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </IntegrationTestProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj"/>
