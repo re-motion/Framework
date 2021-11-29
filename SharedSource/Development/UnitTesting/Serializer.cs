@@ -27,7 +27,7 @@ namespace Remotion.Development.UnitTesting
   /// Provides quick serialization and deserialization functionality for unit tests.
   /// </summary>
   /// <remarks>The methods of this class use a <see cref="BinaryFormatter"/> for serialization.</remarks>
-  public static partial class Serializer
+  static partial class Serializer
   {
     public static T SerializeAndDeserialize<T> (T t) where T : notnull
     {
